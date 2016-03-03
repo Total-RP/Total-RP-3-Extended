@@ -189,9 +189,11 @@
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
+				self.Name:SetTextColor(0.95, 0.65, 0);
 			</OnEnter>
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
+				self.Name:SetTextColor(0.95, 0.95, 0.95);
 			</OnLeave>
 		</Scripts>
 		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>

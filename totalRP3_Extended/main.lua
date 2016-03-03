@@ -114,10 +114,47 @@ local function registerObject(objectFullID, object, count)
 
 	return count + 1;
 end
+TRP3_API.extended.registerObject = registerObject;
+
+local function registerDB(db, count)
+	-- Register object
+	for id, object in pairs(db or EMPTY) do
+		count = registerObject(id, object, count);
+		-- Quests
+		for questID, quest in pairs(object.QE or EMPTY) do
+			count = registerObject(getFullID(id, questID), quest, count);
+			-- Steps
+			for stepID, step in pairs(quest.ST or EMPTY) do
+				count = registerObject(getFullID(id, questID, stepID), step, count);
+			end
+		end
+	end
+	return count;
+end
+
+local function unregisterObject(objectFullID)
+	for id, _ in pairs(TRP3_DB.global) do
+		if id == objectFullID or id:sub(1, objectFullID:len()) == objectFullID then
+			TRP3_DB.global[id] = nil;
+		end
+	end
+	TRP3_DB.exchange[objectFullID] = nil;
+	TRP3_Exchange_DB[objectFullID] = nil;
+	(TRP3_DB.my or EMPTY)[objectFullID] = nil;
+	(TRP3_Tools_DB or EMPTY)[objectFullID] = nil;
+end
+TRP3_API.extended.unregisterObject = unregisterObject;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function onInit()
+	if not TRP3_Exchange_DB then
+		TRP3_Exchange_DB = {};
+	end
+	TRP3_DB.exchange = TRP3_Exchange_DB;
+end
 
 local function onStart()
 
@@ -130,22 +167,14 @@ local function onStart()
 	end
 
 	-- Calculate global environement with all ids
-	local count = 0;
-
-	-- Register object
-	for id, object in pairs(TRP3_DB.inner or EMPTY) do
-		count = registerObject(id, object, count);
-		-- Quests
-		for questID, quest in pairs(object.QE or EMPTY) do
-			count = registerObject(getFullID(id, questID), quest, count);
-			-- Steps
-			for stepID, step in pairs(quest.ST or EMPTY) do
-				count = registerObject(getFullID(id, questID, stepID), step, count);
-			end
-		end
-	end
-
-	Log.log(("Registred %s creations"):format(count));
+	local countInner, countExchange, countMy;
+	countInner = registerDB(TRP3_DB.inner, 0);
+	Log.log(("Registred %s inner ceations"):format(countInner));
+	countExchange = registerDB(TRP3_DB.exchange, 0);
+	Log.log(("Registred %s exchange ceations"):format(countExchange));
+	countMy = registerDB(TRP3_DB.my, 0);
+	Log.log(("Registred %s my ceations"):format(countMy));
+	Log.log(("Registred %s total ceations"):format(countInner + countExchange + countMy));
 
 	-- Start other systems
 	TRP3_API.inventory.onStart();
@@ -159,6 +188,7 @@ local MODULE_STRUCTURE = {
 	["description"] = "Total RP 3 extended features: inventory, quest log, document and more !",
 	["version"] = 1.000,
 	["id"] = "trp3_extended",
+	["onInit"] = onInit,
 	["onStart"] = onStart,
 	["minVersion"] = 12,
 };

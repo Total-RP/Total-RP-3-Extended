@@ -235,11 +235,19 @@ local function onStart()
 	NavBar_Initialize(ToolFrame.navBar, "NavButtonTemplate", homeData, ToolFrame.navBar.home, ToolFrame.navBar.overflow);
 
 	-- Init tabs
+	TRP3_API.extended.tools.initItems();
 	TRP3_API.extended.tools.initList();
 
 	goToListPage();
 
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, ToolFrame:GetWidth(), ToolFrame:GetHeight());
+end
+
+local function onInit()
+	if not TRP3_Tools_DB then
+		TRP3_Tools_DB = {};
+	end
+	TRP3_DB.my = TRP3_Tools_DB;
 end
 
 local MODULE_STRUCTURE = {
@@ -248,6 +256,7 @@ local MODULE_STRUCTURE = {
 	["version"] = 1.000,
 	["id"] = "trp3_extended_tools",
 	["onStart"] = onStart,
+	["onInit"] = onInit,
 	["minVersion"] = 12,
 };
 

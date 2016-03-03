@@ -1,0 +1,99 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	
+<!--
+	Total RP 3
+	Copyright 2014-2016 Sylvain Cossement (telkostrasz@totalrp3.info)
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--  Item quick editor   -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_ItemQuickEditor" inherits="TRP3_HoveredFrame" hidden="true">
+		<Size x="500" y="350"/>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+						<Anchor point="RIGHT" x="-10" y="0"/>
+						<Anchor point="LEFT" x="10" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<!-- *_*_*_*_*_*_*_*_*_*  -->
+			<!--  Form   -->
+			<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+			<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
+				<Size x="0" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.title"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="description" inherits="TRP3_TitledHelpEditBox">
+				<Size x="0" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+				</Anchors>
+			</Button>
+
+			<!-- *_*_*_*_*_*_*_*_*_*  -->
+			<!--  Widget  -->
+			<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+			<Frame name="$parentPeek" parentKey="peek" inherits="TRP3_FieldSetFrame">
+				<Size x="100" y="100"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+				</Anchors>
+			</Frame>
+
+			<Button parentKey="Close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TRP3_ItemQuickEditor:Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+		</Frames>
+
+	</Frame>
+
+</Ui>

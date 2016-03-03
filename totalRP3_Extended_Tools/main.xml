@@ -19,7 +19,8 @@
 	limitations under the License.
 -->
 
-	<Include file="pages/list.xml"/>
+	<Include file="list/list.xml"/>
+	<Include file="items/quick.xml"/>
 
 	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
 		<Anchors>
@@ -95,7 +96,7 @@
 
 			<Frame name="$parentList" inherits="TRP3_Tools_ListTemplate" parentKey="list">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="$parentNavBar" relativePoint="BOTTOM" x="0" y="-25"/>
+					<Anchor point="TOP" relativeTo="$parentNavBar" relativePoint="BOTTOM" x="0" y="-35"/>
 					<Anchor point="LEFT" x="24" y="0"/>
 					<Anchor point="BOTTOMRIGHT" x="-45" y="24"/>
 				</Anchors>
@@ -105,7 +106,9 @@
 	</Frame>
 
 	<Script file="main.lua"/>
-	<Script file="pages/list.lua"/>
+	<Script file="items/items.lua"/>
+	<Script file="items/quick.lua"/>
+	<Script file="list/list.lua"/>
 	<Script file="locale/locale_enEN.lua"/>
 	<Script file="locale/locale_frFR.lua"/>
 
