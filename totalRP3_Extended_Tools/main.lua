@@ -17,9 +17,10 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, assert, tostring = pairs, assert, tostring;
+local pairs, assert, tostring, strsplit = pairs, assert, tostring, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
+local loc = TRP3_API.locale.getText;
 local fireEvent = TRP3_API.events.fireEvent;
 local after  = C_Timer.After;
 
@@ -49,18 +50,61 @@ function TRP3_API.extended.tools.setBackground(backgroundIndex)
 end
 local setBackground = TRP3_API.extended.tools.setBackground;
 
-local TYPE_LOCALE = { -- TODO: locals
-	[TRP3_DB.types.CAMPAIGN] = "Campaign",
-	[TRP3_DB.types.QUEST] = "Quest",
-	[TRP3_DB.types.QUEST_STEP] = "Quest step",
-	[TRP3_DB.types.ITEM] = "Item",
-	[TRP3_DB.types.LOOT] = "Loot",
-	[TRP3_DB.types.DOCUMENT] = "Document",
-	[TRP3_DB.types.DIALOG] = "Dialog",
+local PAGE_BY_TYPE = {
+	[TRP3_DB.types.CAMPAIGN] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return loc("TYPE_CAMPAIGN") .. ": " .. id;
+		end,
+		background = 2,
+	},
+	[TRP3_DB.types.QUEST] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return loc("TYPE_QUEST") .. ": " .. id;
+		end,
+		background = 2,
+	},
+	[TRP3_DB.types.QUEST_STEP] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return loc("TYPE_QUEST_STEP") .. ": " .. id;
+		end,
+		background = 2,
+	},
+	[TRP3_DB.types.ITEM] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return loc("TYPE_ITEM") .. ": " .. id;
+		end,
+		background = 3,
+	},
+	[TRP3_DB.types.DOCUMENT] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return loc("TYPE_DOCUMENT") .. ": " .. id;
+		end,
+		background = 4,
+	},
+	[TRP3_DB.types.DIALOG] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return loc("TYPE_DIALOG") .. ": " .. id;
+		end,
+		background = 5,
+	},
+	[TRP3_DB.types.LOOT] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return loc("TYPE_LOOT") .. ": " .. id;
+		end,
+		background = 6,
+	},
 }
+
 local function getTypeLocale(type)
-	if TYPE_LOCALE[type] then
-		return TYPE_LOCALE[type];
+	if PAGE_BY_TYPE[type] and PAGE_BY_TYPE[type].loc then
+		return PAGE_BY_TYPE[type].loc;
 	end
 	return UNKOWN;
 end
@@ -96,58 +140,6 @@ local function goToListPage(skipButton)
 	TRP3_API.extended.tools.toList();
 end
 
-local PAGE_BY_TYPE = {
-	[TRP3_DB.types.CAMPAIGN] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return "Campaign: " .. id; -- TODO: locals
-		end,
-		background = 2,
-	},
-	[TRP3_DB.types.QUEST] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return "Quest: " .. id; -- TODO: locals
-		end,
-		background = 2,
-	},
-	[TRP3_DB.types.QUEST_STEP] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return "Quest step: " .. id; -- TODO: locals
-		end,
-		background = 2,
-	},
-	[TRP3_DB.types.ITEM] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return "Item: " .. id; -- TODO: locals
-		end,
-		background = 3,
-	},
-	[TRP3_DB.types.DOCUMENT] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return "Document: " .. id; -- TODO: locals
-		end,
-		background = 4,
-	},
-	[TRP3_DB.types.DIALOG] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return "Dialog: " .. id; -- TODO: locals
-		end,
-		background = 5,
-	},
-	[TRP3_DB.types.LOOT] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return "Loot: " .. id; -- TODO: locals
-		end,
-		background = 6,
-	},
-}
-
 local function goToPage(classID)
 	-- Ensure buttons up to the target
 	NavBar_Reset(ToolFrame.navBar);
@@ -158,7 +150,7 @@ local function goToPage(classID)
 		local reconstruct = fullId;
 		local class = getClass(reconstruct);
 		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part);
-		NavBar_AddButton(ToolFrame.navBar, {id = reconstruct, name = text, OnClick = function(self)
+		NavBar_AddButton(ToolFrame.navBar, {id = reconstruct, name = text, OnClick = function()
 			goToPage(reconstruct);
 		end});
 	end
@@ -193,6 +185,23 @@ function TRP3_API.extended.tools.showFrame(reset)
 end
 
 local function onStart()
+
+	-- Register locales
+	for localeID, localeStructure in pairs(TRP3_EXTENDED_TOOL_LOCALE) do
+		local locale = TRP3_API.locale.getLocale(localeID);
+		for localeKey, text in pairs(localeStructure) do
+			locale.localeContent[localeKey] = text;
+		end
+	end
+
+	PAGE_BY_TYPE[TRP3_DB.types.CAMPAIGN].loc = loc("TYPE_CAMPAIGN");
+	PAGE_BY_TYPE[TRP3_DB.types.QUEST].loc = loc("TYPE_QUEST");
+	PAGE_BY_TYPE[TRP3_DB.types.QUEST_STEP].loc = loc("TYPE_QUEST_STEP");
+	PAGE_BY_TYPE[TRP3_DB.types.ITEM].loc = loc("TYPE_ITEM");
+	PAGE_BY_TYPE[TRP3_DB.types.DOCUMENT].loc = loc("TYPE_DOCUMENT");
+	PAGE_BY_TYPE[TRP3_DB.types.DIALOG].loc = loc("TYPE_DIALOG");
+	PAGE_BY_TYPE[TRP3_DB.types.LOOT].loc = loc("TYPE_LOOT");
+
 	ToolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
 
 	TRP3_API.events.NAVIGATION_EXTENDED_RESIZED = "NAVIGATION_EXTENDED_RESIZED";
@@ -226,7 +235,7 @@ local function onStart()
 
 	-- Tab bar init
 	local homeData = {
-		name = "Database", -- TODO: locale
+		name = loc("DB"),
 		OnClick = function()
 			goToListPage();
 		end

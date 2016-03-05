@@ -200,7 +200,7 @@ local function init()
 	-- Slash command to reset frames
 	TRP3_API.slash.registerCommand({
 		id = "getID",
-		helpLine = " get targeted npc id", -- TODO: locals
+		helpLine = loc("COM_NPC_ID"),
 		handler = function()
 			print(getUnitDataFromGUID("target"));
 		end

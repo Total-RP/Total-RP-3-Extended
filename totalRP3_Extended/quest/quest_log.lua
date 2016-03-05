@@ -158,7 +158,7 @@ local function onQuestButtonEnter(button)
 		if questClass.ST and questClass.ST[currentStep] then
 			stepText = questClass.ST[currentStep].TX;
 		else
-			stepText = "|cffff0000Missing step information.|r" -- TODO: locals
+			stepText = "|cffff0000" .. loc("QE_STEP_MISSING") .. "|r";
 		end
 		stepText = loc("QE_QUEST_TT_STEP"):format(stepText);
 	end
@@ -290,7 +290,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 		if questClass.ST and questClass.ST[currentStep] then
 			currentStepText = questClass.ST[currentStep].TX;
 		else
-			currentStepText = "|cffff0000Missing step information.|r" -- TODO: locals
+			currentStepText = "|cffff0000" .. loc("QE_STEP_MISSING") .. "|r";
 		end
 		html = html .. ("{h2}%s{/h2}"):format(OVERVIEW);
 		html = html .. ("\n%s\n\n"):format(currentStepText);

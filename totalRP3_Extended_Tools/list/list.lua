@@ -204,25 +204,24 @@ local tabGroup;
 local itemQuickEditor = TRP3_ItemQuickEditor;
 
 local function onTabChanged(tabWidget, tab)
-	tabGroup.tabs[1]:SetText(("My database (%s)"):format(tsize(TRP3_DB.my))); -- TODO: locals
-	tabGroup.tabs[2]:SetText(("Players database (%s)"):format(tsize(TRP3_DB.exchange))); -- TODO: locals
-	tabGroup.tabs[3]:SetText(("Backers database (%s)"):format(tsize(TRP3_DB.inner))); -- TODO: locals
-	tabGroup.tabs[4]:SetText(("Full database (%s)"):format(tsize(TRP3_DB.global))); -- TODO: locals
+	tabGroup.tabs[1]:SetText(loc("DB_MY"):format(tsize(TRP3_DB.my)));
+	tabGroup.tabs[2]:SetText(loc("DB_OTHERS"):format(tsize(TRP3_DB.exchange)));
+	tabGroup.tabs[3]:SetText(loc("DB_BACKERS"):format(tsize(TRP3_DB.inner)));
+	tabGroup.tabs[4]:SetText(loc("DB_FULL"):format(tsize(TRP3_DB.global)));
 
 	itemQuickEditor:Hide();
 	ToolFrame.list.bottom.item:Hide();
 	ToolFrame.list.bottom.campaign:Hide();
 	ToolFrame.list.bottom.item.templates:Hide();
-	ToolFrame.list.bottom.item:UnlockHighlight();
 
 	currentTab = tab or TABS.MY_DB;
 
 	if currentTab == TABS.MY_DB then
 		ToolFrame.list.bottom.item:Show();
 		ToolFrame.list.bottom.campaign:Show();
-		ToolFrame.list.container.Empty:SetText("You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!")
+		ToolFrame.list.container.Empty:SetText(loc("DB_MY_EMPTY") .. "\n\n\n" .. Utils.str.icon("misc_arrowdown", 50));
 	elseif currentTab == TABS.OTHERS_DB then
-		ToolFrame.list.container.Empty:SetText("Here will be placed all objects created by other players.\nExchange objects with others or import a packageg using the button below!")
+		ToolFrame.list.container.Empty:SetText(loc("DB_OTHERS_EMPTY"));
 	elseif currentTab == TABS.BACKERS_DB then
 	else
 	end
@@ -274,9 +273,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.extended.tools.initList()
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, "Creations list", 150); -- TODO: locals
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, "Creations filters", 150); -- TODO: locals
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, "Actions", 150); -- TODO: locals
+	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc("DB_LIST"), 150);
+	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, loc("DB_FILTERS"), 150);
+	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, loc("DB_ACTIONS"), 150);
 
 	createTabBar();
 
@@ -290,9 +289,9 @@ function TRP3_API.extended.tools.initList()
 			local toolbarButton = {
 				id = "bb_extended_tools",
 				icon = "Inv_gizmo_01",
-				configText = "Open Extended tools", -- TODO: locals
-				tooltip = "Open Extended tools", -- TODO: locals
-				tooltipSub = "Create your own items and quests.", -- TODO: locals
+				configText = loc("TB_TOOLS"),
+				tooltip = loc("TB_TOOLS"),
+				tooltipSub = loc("TB_TOOLS_TT"),
 				onClick = function()
 					TRP3_API.extended.tools.showFrame(true);
 				end,
@@ -303,19 +302,19 @@ function TRP3_API.extended.tools.initList()
 	end);
 
 	-- My creation tab
-	ToolFrame.list.bottom.item.Name:SetText("Create item"); -- TODO: locals
-	ToolFrame.list.bottom.item.InfoText:SetText("Select a template for a new item"); -- TODO: locals
-	ToolFrame.list.bottom.campaign.Name:SetText("Create campaign"); -- TODO: locals
-	ToolFrame.list.bottom.campaign.InfoText:SetText("Start creating a campaign"); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.title:SetText("Or select a template"); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.quick.Name:SetText("Quick creation"); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.quick.InfoText:SetText("Quickly creates a simple item without any effect.\nThen adds one unit of this item in your primary bag."); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.document.Name:SetText("Document item"); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.document.InfoText:SetText("A item template with an attached document.\nUseful to quickly create a book or a scroll."); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.blank.Name:SetText("Blank item"); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.blank.InfoText:SetText("A blank template.\nFor those who like to start from scratch."); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.container.Name:SetText("Container item"); -- TODO: locals
-	ToolFrame.list.bottom.item.templates.container.InfoText:SetText("A container template.\nContainer can hold other items."); -- TODO: locals
+	ToolFrame.list.bottom.item.Name:SetText(loc("DB_CREATE_ITEM"));
+	ToolFrame.list.bottom.item.InfoText:SetText(loc("DB_CREATE_ITEM_TT"));
+	ToolFrame.list.bottom.campaign.Name:SetText(loc("DB_CREATE_CAMPAIGN"));
+	ToolFrame.list.bottom.campaign.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TT"));
+	ToolFrame.list.bottom.item.templates.title:SetText(loc("DB_CREATE_ITEM_TEMPLATES"));
+	ToolFrame.list.bottom.item.templates.quick.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_QUICK"));
+	ToolFrame.list.bottom.item.templates.quick.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_QUICK_TT"));
+	ToolFrame.list.bottom.item.templates.document.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_DOCUMENT"));
+	ToolFrame.list.bottom.item.templates.document.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT"));
+	ToolFrame.list.bottom.item.templates.blank.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK"));
+	ToolFrame.list.bottom.item.templates.blank.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK_TT"));
+	ToolFrame.list.bottom.item.templates.container.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER"));
+	ToolFrame.list.bottom.item.templates.container.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT"));
 
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.item.templates.container, "inv_misc_bag_36");
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.item.templates.blank, "inv_inscription_scroll");
@@ -326,13 +325,10 @@ function TRP3_API.extended.tools.initList()
 	ToolFrame.list.bottom.item:SetScript("OnClick", function(self)
 		if itemQuickEditor:IsVisible() then
 			itemQuickEditor:Hide();
-			self:UnlockHighlight();
 		elseif self.templates:IsVisible() then
 			self.templates:Hide();
-			self:UnlockHighlight();
 		else
 			TRP3_API.ui.frame.configureHoverFrame(self.templates, self, "BOTTOM", 0, 5, true);
-			self:LockHighlight();
 		end
 	end);
 

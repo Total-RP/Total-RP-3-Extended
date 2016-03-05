@@ -114,7 +114,7 @@ local function getItemTooltipLines(slotInfo, class)
 
 		if class.missing then
 			text2 = text2 .. "\n";
-			text2 = text2 .. Utils.str.color("y") .. "Missing item class ID" .. ": " .. Utils.str.color("o") .. slotInfo.id; -- TODO: locals
+			text2 = text2 .. Utils.str.color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ": " .. Utils.str.color("o") .. slotInfo.id;
 		end
 
 	end
@@ -622,7 +622,7 @@ local function presentLoot(lootID)
 	local loot = getClass(lootID);
 	if loot and loot.IT then
 		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
-		lootFrame.Title:SetText((loot.NA or "Loot")); --TODO: locals
+		lootFrame.Title:SetText((loot.NA or loc("LOOT")));
 
 		local slotCounter = 1;
 		lootFrame.info.content = loot.IT;
@@ -668,7 +668,7 @@ function TRP3_API.inventory.initLootFrame()
 	end
 
 	lootFrame.info = {loot = true};
-	lootFrame.DurabilityText:SetText("Loot container"); -- TODO: locals
+	lootFrame.DurabilityText:SetText(loc("LOOT_CONTAINER"));
 	lootFrame.WeightText:SetText("");
 	lootFrame:RegisterForDrag("LeftButton");
 	lootFrame:SetScript("OnDragStart", lootDragStart);

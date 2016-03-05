@@ -22,7 +22,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	GM_MODULE = "Game Master Module",
 	GM_TB_NPC_TALK = "Pouic",
 
-	-- CONTAINER
+	-- INVENTORY
 	IT_CON = "Container",
 	IT_CON_OPEN = "Open/Close container",
 	IT_CON_CAN_INNER = "Can't place a container inside itself!",
@@ -32,6 +32,19 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_INV_ERROR_FULL = "%s is full.",
 	IT_INV_ERROR_CANT_HERE = "You can't place items here.",
 	IT_INV_ERROR_CANT_DESTROY_LOOT = "You can't destroy loot items.",
+	IT_CON_TT_MISSING_CLASS = "Missing item class ID",
+
+	-- INVENTORY PAGE
+	INV_PAGE_CAMERA_CONFIG = "Camera parameters:\nRotation: %.2f\nZoom: %.2f\nPosition: %.2f, %.2f",
+	INV_PAGE_MARKER = "Marker position",
+	INV_PAGE_PLAYER_INV = "%s's inventory",
+	INV_PAGE_QUICK_SLOT = "Quick slot",
+	INV_PAGE_QUICK_SLOT_TT = "This slot will be used as primary container.",
+	INV_PAGE_ITEM_LOCATION = "Item location on character",
+
+	-- LOOT
+	LOOT = "Loot",
+	LOOT_CONTAINER = "Loot container",
 
 	-- Campaign
 	QE_CAMPAIGN = "Campaign",
@@ -57,4 +70,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_STEP_LIST = "Steps for this quest",
 	QE_STEP_LIST_CURRENT = "Current quests",
 	QE_STEP_LIST_FINISHED = "Finished quests",
+	QE_STEP_MISSING = "Missing step information.",
+
+	-- COMMANDS
+	COM_NPC_ID = " get targeted npc id",
 };

@@ -109,7 +109,7 @@
 	<Script file="items/items.lua"/>
 	<Script file="items/quick.lua"/>
 	<Script file="list/list.lua"/>
-	<Script file="locale/locale_enEN.lua"/>
-	<Script file="locale/locale_frFR.lua"/>
+	<Script file="locales/locale_enEN.lua"/>
+	<Script file="locales/locale_frFR.lua"/>
 
 </Ui>

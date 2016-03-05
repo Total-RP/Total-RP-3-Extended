@@ -105,7 +105,7 @@ end
 
 local function onEquipRefresh(self)
 	-- Camera
-	local cameraString = "Camera parameters:\nRotation: %.2f\nZoom: %.2f\nPosition: %.2f, %.2f"; -- TODO: locals
+	local cameraString = loc("INV_PAGE_CAMERA_CONFIG");
 	local rotation, zoom = TRP3_InventoryPage.Main.Model.rotation, TRP3_InventoryPage.Main.Model.zoomLevel;
 	local _, cameraY, cameraZ = TRP3_InventoryPage.Main.Model:GetPosition();
 
@@ -122,7 +122,7 @@ local function onEquipRefresh(self)
 	end
 
 	-- Marker
-	self.Marker:SetText(("Marker position"));  -- TODO: locals
+	self.Marker:SetText(loc("INV_PAGE_MARKER"));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -147,8 +147,6 @@ local function containerFrameUpdate(self, elapsed)
 	TRP3_InventoryPage.Main.Model.WeightText:SetText(weight);
 end
 
-local playerInvText = ("%s's inventory"):format(Globals.player); -- TODO locals
-
 local function onToolbarButtonClicked(buttonType)
 	if buttonType == "LeftButton" then
 		local playerInventory = TRP3_API.inventory.getInventory();
@@ -163,6 +161,7 @@ local function onToolbarButtonClicked(buttonType)
 end
 
 local function initPlayerInventoryButton()
+	local playerInvText = loc("INV_PAGE_PLAYER_INV"):format(Globals.player);
 	if TRP3_API.target then
 		TRP3_API.target.registerButton({
 			id = "aa_player_d_inventory",
@@ -214,8 +213,8 @@ function TRP3_API.inventory.initInventoryPage()
 			button:SetPoint("TOPLEFT", TRP3_InventoryPage.Main.Model, "TOPRIGHT", 12, 4);
 		elseif i == 17 then
 			button:SetPoint("TOPLEFT", TRP3_InventoryPage.Main.Model, "BOTTOMLEFT", 5, -10);
-			button.First:SetText("Quick slot"); -- TODO: loc
-			button.Second:SetText("This slot will be used as primary container."); -- TODO: loc
+			button.First:SetText(loc("INV_PAGE_QUICK_SLOT"));
+			button.Second:SetText(loc("INV_PAGE_QUICK_SLOT_TT"));
 		else
 			button:SetPoint("TOP", _G["TRP3_ContainerInvPageSlot" .. (i - 1)], "BOTTOM", 0, -11);
 		end
@@ -262,7 +261,7 @@ function TRP3_API.inventory.initInventoryPage()
 
 	-- Equip
 	TRP3_InventoryPage.Main.Model.defaultRotation = 0;
-	TRP3_InventoryPage.Main.Equip.Title:SetText("Item location on character"); -- TODO: locals
+	TRP3_InventoryPage.Main.Equip.Title:SetText(loc("INV_PAGE_ITEM_LOCATION"));
 	createRefreshOnFrame(TRP3_InventoryPage.Main.Equip, 0.15, onEquipRefresh);
 	TRP3_InventoryPage.Main.Equip:SetScript("OnShow", function() TRP3_InventoryPage.Main.Model.Blocker:Hide() end);
 	TRP3_InventoryPage.Main.Equip:SetScript("OnHide", function() TRP3_InventoryPage.Main.Model.Blocker:Show() end);
