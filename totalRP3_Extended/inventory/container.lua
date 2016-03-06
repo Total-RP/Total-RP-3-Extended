@@ -50,13 +50,20 @@ local function incrementLineIfFirst(first, line)
 	return first, line;
 end
 
-local function getItemTooltipLines(slotInfo, class)
-	local title, text1, text2;
+local function getItemTooltipLines(slotInfo, class, forceAlt)
+	local title, left, right, text1, text2;
 	local icon, name = getBaseClassDataSafe(class);
 	title = getQualityColorText(class.BA.QA) .. name;
 
+	if class.BA.LE then
+		left = Utils.str.color("w") .. class.BA.LE;
+	end
+	if class.BA.RI then
+		right = Utils.str.color("w") .. class.BA.RI;
+	end
+
 	text1 = "";
-	if class.QE then
+	if class.BA.QE then
 		text1 = Utils.str.color("w") .. ITEM_BIND_QUEST;
 	end
 	if class.BA.SB then
@@ -92,12 +99,12 @@ local function getItemTooltipLines(slotInfo, class)
 		text1 = text1 .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
 	end
 
-	if IsAltKeyDown() then
+	if IsAltKeyDown() or forceAlt then
 		if slotInfo.totalWeight or (class.BA.WE and class.BA.WE > 0) then
 			text1 = incrementLine(text1);
 
 			local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * class.BA.WE);
-			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. weight .. "kg";
+			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. weight .. "g";
 		end
 
 		text2 = "";
@@ -119,21 +126,30 @@ local function getItemTooltipLines(slotInfo, class)
 
 	end
 
-	return title, text1, text2;
+	return title, left, right, text1, text2;
 end
 
 local TRP3_ItemTooltip = TRP3_ItemTooltip;
-local function showItemTooltip(frame, slotInfo, itemClass)
+local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	TRP3_ItemTooltip:Hide();
-	TRP3_ItemTooltip:SetOwner(frame, frame.tooltipRight and "ANCHOR_RIGHT" or "ANCHOR_LEFT", 0, 0);
+	TRP3_ItemTooltip:SetOwner(frame, anchor or (frame.tooltipRight and "ANCHOR_RIGHT") or "ANCHOR_LEFT", 0, 0);
 
-	local title, text1, text2 = getItemTooltipLines(slotInfo, itemClass);
+	local title, left, right, text1, text2 = getItemTooltipLines(slotInfo, itemClass, forceAlt);
 
 	local i = 1;
 	if title and title:len() > 0 then
 		TRP3_ItemTooltip:AddLine(title, 1, 1, 1,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		i = i + 1;
+	end
+
+	if (left and left:len() > 0) or (right and right:len() > 0) then
+		TRP3_ItemTooltip:AddDoubleLine(left or "", right or "", 1, 1, 1, 1, 1, 1);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		_G["TRP3_ItemTooltipTextRight"..i]:SetFontObject(GameFontNormal);
+		_G["TRP3_ItemTooltipTextRight"..i]:SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
@@ -408,7 +424,7 @@ local function containerFrameUpdate(self, elapsed)
 
 	-- Weight
 	local current = self.info.totalWeight or 0;
-	local weight = ("%s kg" .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15)):format(current);
+	local weight = ("%s g" .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15)):format(current);
 	if self.class.CO.MW and self.class.CO.MW > 0 then
 		-- TODO: color if too heavy
 	end

@@ -19,6 +19,7 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local pairs, strjoin, tostring, strtrim = pairs, strjoin, tostring, strtrim;
 local EMPTY = TRP3_API.globals.empty;
+local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local Log = Utils.log;
 
 TRP3_API.extended = {
@@ -181,6 +182,46 @@ local function onStart()
 	TRP3_API.quest.onStart();
 	TRP3_API.extended.document.onStart();
 	TRP3_API.extended.dialog.onStart();
+
+	-- Config
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+
+		local CONFIG_WEIGHT_UNIT = "extended_weight_unit";
+		local WEIGHT_UNITS = {
+			GRAMS = "g",
+			POUNDS = "p",
+		};
+		local WEIGHT_UNIT_TAB = {
+			{"Grams", WEIGHT_UNITS.GRAMS},
+			{"Pounds", WEIGHT_UNITS.POUNDS}
+		}
+
+		-- Config default value
+		registerConfigKey(CONFIG_WEIGHT_UNIT, WEIGHT_UNITS.GRAMS);
+
+		-- Build configuration page
+		local CONFIG_STRUCTURE = {
+			id = "main_config_extended",
+			menuText = "Extended settings",
+			pageText = "Extended settings",
+			elements = {
+				{
+					inherit = "TRP3_ConfigH1",
+					title = "Units",
+				},
+				{
+					inherit = "TRP3_ConfigDropDown",
+					widgetName = "TRP3_ConfigurationExtended_Units_Weight",
+					title = "Weight units",
+					listContent = WEIGHT_UNIT_TAB,
+					configKey = CONFIG_WEIGHT_UNIT,
+					listCancel = true,
+					help = "Defines how weight values are displayed. It will be converted from grams."
+				}
+			}
+		};
+		TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
+	end);
 end
 
 local MODULE_STRUCTURE = {

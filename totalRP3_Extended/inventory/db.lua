@@ -24,15 +24,14 @@ TRP3_DB.inner.main = {
 	CO = {},
 }
 
-TRP3_DB.inner.bag = {
+TRP3_DB.inner.bag_normal = {
 	TY = TRP3_DB.types.ITEM,
 	BA = {
 		IC = "inv_misc_bag_11",
 		NA = "Simple bag",
-		DE = "Un sac à dos classique",
+		DE = "A classic bag. Nothing special here.",
 		UN = 5,
-		WE = 0.6,
-		WA = true,
+		WE = 600,
 	},
 	CO = {
 		DU = 25,
@@ -41,13 +40,12 @@ TRP3_DB.inner.bag = {
 	},
 }
 
-TRP3_DB.inner.smallbag = {
+TRP3_DB.inner.bag_small = {
 	TY = TRP3_DB.types.ITEM,
 	BA = {
 		IC = "inv_misc_bag_10",
 		NA = "Small bag",
-		WE = 0.4,
-		WA = true,
+		WE = 400,
 	},
 	CO = {
 		SI = "2x4",
@@ -55,13 +53,12 @@ TRP3_DB.inner.smallbag = {
 	},
 }
 
-TRP3_DB.inner.tinybag = {
+TRP3_DB.inner.bag_tiny = {
 	TY = TRP3_DB.types.ITEM,
 	BA = {
 		IC = "inv_misc_bag_09",
 		NA = "Tiny bag",
-		WE = 0.2,
-		WA = true,
+		WE = 200,
 	},
 	CO = {
 		SI = "1x4",
@@ -69,153 +66,18 @@ TRP3_DB.inner.tinybag = {
 	},
 }
 
-TRP3_DB.inner.coin1 = {
+TRP3_DB.inner.currency_coin_copper = {
 	TY = TRP3_DB.types.ITEM,
 	BA = {
 		IC = "INV_Misc_Coin_19",
 		NA = "Copper coin",
 		DE = "A simple copper coin",
 		QA = 2,
-		WE = 0.02,
+		WE = 2,
+		VA = 1,
 	},
 	UN = 10,
 	ST = {
 		MA = 5,
-	},
-}
-
-TRP3_DB.inner.fixcontainer = {
-	TY = TRP3_DB.types.ITEM,
-	BA = {
-		IC = "inv_misc_armorkit_17",
-		NA = "Bag patch",
-		DE = "Fix one durability point for the bag where it stands.",
-		QA = 3,
-		WE = 0.3,
-	},
-	US = {
-		AC = "Fix bag",
-		SC = "onUse",
-	},
-	SC = {
-		["onUse"] = {
-			ST = {
-				["1"] = {
-					t = "list",
-					e = {
-						{
-							id = "durability",
-							args = { "con", 1 }
-						},
-					},
-					n = "2"
-				},
-				["2"] = {
-					t = "branch",
-					b = {
-						{
-							cond = { { { i = "lastReturn" }, "==", { v = "0" } } },
-							condID = "couldHeal",
-							n = "3"
-						},
-						{
-							cond = { { { i = "cond", a = { "couldHeal" } }, "~=", { v = "true" } } },
-							n = "4"
-						}
-					}
-				},
-				["3"] = {
-					t = "list",
-					e = {
-						{
-							id = "consumme",
-							args = { 1 }
-						},
-					},
-				},
-				["4"] = {
-					t = "list",
-					e = {
-						{
-							id = "text",
-							args = { "Your bag is already at full health.", 3 }
-						},
-					},
-				},
-			}
-		}
-	},
-}
-
-TRP3_DB.inner.dammagecontainer = {
-	TY = TRP3_DB.types.ITEM,
-	BA = {
-		IC = "trade_archaeology_rustedsteakknife",
-		NA = "Old rusty knife",
-		DE = "Damage for one durability point for the bag where it stands.\nBut you can also use it to kill someone.",
-		QA = 3,
-		WE = 1.25,
-	},
-	SC = {
-		["onUse"] = {
-			ST = {
-				["1"] = {
-					t = "list",
-					e = {
-						{
-							id = "text",
-							args = { "You are thinking of what to do ...", 4 }
-						},
-					},
-					n = "2"
-				},
-				["2"] = {
-					t = "delay",
-					d = 2,
-					n = "3"
-				},
-				["3"] = {
-					t = "branch",
-					b = {
-						{
-							cond = { { { i = "tar_name" }, "==", { v = "nil" } } },
-							condID = "hasTarget",
-							n = "4"
-						},
-						{
-							cond = { { { i = "cond", a = { "hasTarget" } }, "~=", { v = "true" } } },
-							n = "5"
-						}
-					},
-					n = "3"
-				},
-				["4"] = {
-					t = "list",
-					e = {
-						{
-							id = "durability",
-							args = { "con", -1 }
-						},
-					}
-				},
-				["5"] = {
-					t = "list",
-					e = {
-						{
-							id = "text",
-							args = { "You murder your target.", 3 }
-						},
-						{
-							id = "addItem",
-							args = { "boubourse", 1, true }
-						},
-					}
-				},
-			},
-		}
-	},
-	US = {
-		AC = "Damage bag or kill target",
-		SC = "onUse",
 	},
 }

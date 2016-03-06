@@ -17,10 +17,11 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, strsplit, tinsert, table = wipe, pairs, strsplit, tinsert, table;
+local wipe, pairs, tonumber, tinsert, strtrim = wipe, pairs, tonumber, tinsert, strtrim;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
+local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
@@ -31,28 +32,58 @@ local onCreatedCallback;
 -- Item quick editor
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onSave()
-	local ID, data = TRP3_API.extended.tools.createItem(
-		{
-			TY = TRP3_DB.types.ITEM,
-			BA = {
-				NA = editor.name:GetText(),
-			}
+local function getUIData()
+	local data = {
+		TY = TRP3_DB.types.ITEM,
+		BA = {
+			NA = stEtN(strtrim(editor.name:GetText())),
+			DE = stEtN(strtrim(editor.description:GetText())),
+			LE = stEtN(strtrim(editor.left:GetText())),
+			RI = stEtN(strtrim(editor.right:GetText())),
+			QA = editor.quality:GetSelectedValue() or LE_ITEM_QUALITY_COMMON,
+			VA = tonumber(editor.value:GetText()),
+			WE = tonumber(editor.weight:GetText()),
+			IC = editor.preview.selectedIcon,
+			CO = editor.component:GetChecked(),
 		}
-	);
+	};
+	return data;
+end
 
+local function onSave()
+	local ID, data = TRP3_API.extended.tools.createItem(getUIData());
 	if onCreatedCallback then
-		onCreatedCallback();
+		onCreatedCallback(ID, data);
 	end
 	editor:Hide();
 end
 
+local function onIconSelected(icon)
+	editor.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
+	editor.preview.selectedIcon = icon;
+end
+
+local function loadData(data)
+	editor.name:SetText(data.BA.NA or "");
+	editor.description:SetText(data.BA.DE or "");
+	editor.quality:SetSelectedValue(data.BA.QA or LE_ITEM_QUALITY_COMMON);
+	editor.left:SetText(data.BA.LE or "");
+	editor.right:SetText(data.BA.RI or "");
+	editor.value:SetText(data.BA.VA or "0");
+	editor.weight:SetText(data.BA.WE or "0");
+	editor.component:SetChecked(data.BA.CO or false);
+	onIconSelected(data.BA.IC);
+end
+
 function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback)
 	onCreatedCallback = callback;
-	TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "BOTTOM", 0, 5, true);
-	editor.name:SetText("New item"); -- TODO: locals
-	editor.description:SetText("");
-	editor.quality:SetSelectedValue(LE_ITEM_QUALITY_COMMON);
+	TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "BOTTOM", 0, 5, false);
+	loadData({
+		BA = {
+			NA = "New item", -- TODO: locals
+			QA = LE_ITEM_QUALITY_COMMON,
+		}
+	});
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -60,7 +91,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local colorCodeFloatTab = Utils.color.colorCodeFloatTab;
+local getQualityColorText = TRP3_API.inventory.getQualityColorText;
 
 function TRP3_API.extended.tools.initItemQuickEditor()
 	-- Name
@@ -70,31 +101,35 @@ function TRP3_API.extended.tools.initItemQuickEditor()
 	-- Quality
 	local neutral = {r = 0.95, g = 0.95, b = 0.95};
 	local qualityList = {
-		{loc("IT_FIELD_QUALITY") .. ": " .. colorCodeFloatTab(BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_COMMON] or neutral) .. ITEM_QUALITY0_DESC, LE_ITEM_QUALITY_POOR},
-		{loc("IT_FIELD_QUALITY") .. ": " .. colorCodeFloatTab(BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_POOR] or neutral) .. ITEM_QUALITY1_DESC, LE_ITEM_QUALITY_COMMON},
-		{loc("IT_FIELD_QUALITY") .. ": " .. colorCodeFloatTab(BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_UNCOMMON] or neutral) .. ITEM_QUALITY2_DESC, LE_ITEM_QUALITY_UNCOMMON},
-		{loc("IT_FIELD_QUALITY") .. ": " .. colorCodeFloatTab(BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_RARE] or neutral) .. ITEM_QUALITY3_DESC, LE_ITEM_QUALITY_RARE},
-		{loc("IT_FIELD_QUALITY") .. ": " .. colorCodeFloatTab(BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_EPIC] or neutral) .. ITEM_QUALITY4_DESC, LE_ITEM_QUALITY_EPIC},
-		{loc("IT_FIELD_QUALITY") .. ": " .. colorCodeFloatTab(BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_LEGENDARY] or neutral) .. ITEM_QUALITY5_DESC, LE_ITEM_QUALITY_LEGENDARY},
-		{loc("IT_FIELD_QUALITY") .. ": " .. colorCodeFloatTab(BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_HEIRLOOM] or neutral) .. ITEM_QUALITY7_DESC, LE_ITEM_QUALITY_HEIRLOOM},
-		{loc("IT_FIELD_QUALITY") .. ": " .. colorCodeFloatTab(BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_WOW_TOKEN] or neutral) .. ITEM_QUALITY8_DESC, LE_ITEM_QUALITY_WOW_TOKEN},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_POOR) .. ITEM_QUALITY0_DESC, LE_ITEM_QUALITY_POOR},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_COMMON) .. ITEM_QUALITY1_DESC, LE_ITEM_QUALITY_COMMON},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_UNCOMMON) .. ITEM_QUALITY2_DESC, LE_ITEM_QUALITY_UNCOMMON},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_RARE) .. ITEM_QUALITY3_DESC, LE_ITEM_QUALITY_RARE},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_EPIC) .. ITEM_QUALITY4_DESC, LE_ITEM_QUALITY_EPIC},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_LEGENDARY) .. ITEM_QUALITY5_DESC, LE_ITEM_QUALITY_LEGENDARY},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_HEIRLOOM) .. ITEM_QUALITY7_DESC, LE_ITEM_QUALITY_HEIRLOOM},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_WOW_TOKEN) .. ITEM_QUALITY8_DESC, LE_ITEM_QUALITY_WOW_TOKEN},
 	};
-	setupListBox(editor.quality, qualityList, nil, nil, 215, true);
+	setupListBox(editor.quality, qualityList, nil, nil, 165, true);
 
 	-- Left attribute
-	editor.left.title:SetText("Tooltip left text"); -- TODO: locals
-	setTooltipForSameFrame(editor.left.help, "RIGHT", 0, 5, "Tooltip left text", "It's a free text that will be in the tooltip"); -- TODO: locals
+	editor.left.title:SetText("Tooltip custom left text"); -- TODO: locals
+	setTooltipForSameFrame(editor.left.help, "RIGHT", 0, 5, "Tooltip custom left text", "It's a free text that will be in the tooltip"); -- TODO: locals
 
 	-- Right attribute
-	editor.right.title:SetText("Tooltip right text"); -- TODO: locals
-	setTooltipForSameFrame(editor.right.help, "RIGHT", 0, 5, "Tooltip right text", "It's a free text that will be in the tooltip"); -- TODO: locals
+	editor.right.title:SetText("Tooltip custom right text"); -- TODO: locals
+	setTooltipForSameFrame(editor.right.help, "RIGHT", 0, 5, "Tooltip custom right text", "It's a free text that will be in the tooltip"); -- TODO: locals
 
 	-- Description
 	editor.description.title:SetText("Tooltip description"); -- TODO: locals
 	setTooltipForSameFrame(editor.description.help, "RIGHT", 0, 5, "Tooltip description", "It's your item description."); -- TODO: locals
 
+	-- Component
+	editor.component.Text:SetText("Crafting reagent flag"); -- TODO: locals
+	setTooltipForSameFrame(editor.component, "RIGHT", 0, 5, "Crafting reagent flag", "Shows the \"Crafting reagent\" line in the tooltip. Note that this is only cosmetic and haven't any influence on gameplay."); -- TODO: locals
+
 	-- Value
-	editor.value.title:SetText("Item value"); -- TODO: locals
+	editor.value.title:SetText(("Item value (in %s)"):format(Utils.str.texture("Interface\\MONEYFRAME\\UI-CopperIcon", 15))); -- TODO: locals
 	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, "Item value", "This value will be used for transactions."); -- TODO: locals
 
 	-- Weight
@@ -103,12 +138,29 @@ function TRP3_API.extended.tools.initItemQuickEditor()
 
 	-- Preview
 	editor.preview.Name:SetText("Preview"); -- TODO: locals
-	editor.preview.InfoText:SetText("Click to select the item icon."); -- TODO: locals
+	editor.preview.InfoText:SetText("Click to select an icon."); -- TODO: locals
+	editor.preview:SetScript("OnEnter", function(self)
+		TRP3_API.inventory.showItemTooltip(self, Globals.empty, getUIData(), true);
+	end);
+	editor.preview:SetScript("OnLeave", function(self)
+		TRP3_ItemTooltip:Hide();
+	end);
+	editor.preview:SetScript("OnClick", function(self)
+		TRP3_API.popup.showIconBrowser(onIconSelected, nil, self, 1);
+	end);
 
 	-- Save
 	editor.save:SetScript("OnClick", onSave);
 
 	-- Frame
+	TRP3_API.ui.frame.setupEditBoxesNavigation({
+		editor.name,
+		editor.left,
+		editor.right,
+		editor.description,
+		editor.value,
+		editor.weight,
+	})
 	editor.title:SetText("Quick item creation"); -- TODO: locals
 	editor.display:SetText("Display attributes"); -- TODO: locals
 	editor.gameplay:SetText("Gameplay attributes"); -- TODO: locals

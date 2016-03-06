@@ -31,8 +31,10 @@ local EMPTY = TRP3_API.globals.empty;
 local playerInventory;
 local CONTAINER_SLOT_MAX = 20;
 TRP3_API.inventory.CONTAINER_SLOT_MAX = CONTAINER_SLOT_MAX;
+local QUICK_SLOT_ID = "17";
+TRP3_API.inventory.QUICK_SLOT_ID = QUICK_SLOT_ID;
 
-local function onItemAddEnd(...)
+local function onItemAddEnd(container, ...)
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	TRP3_API.inventory.recomputeAllInventory();
 	return ...;
@@ -44,8 +46,16 @@ end
 -- 1 if container full
 -- 2 if too many item already possessed (unique)
 function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
-	-- Checking data
+	-- Get the best container
 	local container = givenContainer or playerInventory;
+	if givenContainer == nil then
+		local quickSlot = playerInventory.content[QUICK_SLOT_ID];
+		if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
+			container = quickSlot;
+		end
+	end
+
+	-- Check data
 	local containerClass = getClass(container.id);
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
 	local itemClass = getClass(classID);
@@ -114,8 +124,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 
 	end
 
-	return onItemAddEnd(0, toAdd);
-
+	return onItemAddEnd(container, 0, toAdd);
 end
 
 function TRP3_API.inventory.getItem(container, slotID)

@@ -134,27 +134,27 @@
 							<Anchor point="CENTER" x="-275" y="0"/>
 						</Anchors>
 						<Frames>
-							<Frame parentKey="templates" inherits="TRP3_HoveredFrame" hidden="true">
-								<Size x="400" y="370"/>
+							<Frame parentKey="templates" inherits="TRP3_AltHoveredFrame" hidden="true" enableMouse="true">
+								<Size x="450" y="380"/>
 								<Frames>
 									<Button parentKey="quick" inherits="TRP3_QuestButtonTemplate">
 										<Anchors>
-											<Anchor point="TOPLEFT" x="20" y="-25"/>
+											<Anchor point="TOPLEFT" x="50" y="-40"/>
 										</Anchors>
 									</Button>
 									<Button parentKey="blank" inherits="TRP3_QuestButtonTemplate">
 										<Anchors>
-											<Anchor point="TOPLEFT" x="20" y="-130"/>
+											<Anchor point="TOPLEFT" x="50" y="-145"/>
 										</Anchors>
 									</Button>
 									<Button parentKey="document" inherits="TRP3_QuestButtonTemplate">
 										<Anchors>
-											<Anchor point="TOPLEFT" x="20" y="-200"/>
+											<Anchor point="TOPLEFT" x="50" y="-215"/>
 										</Anchors>
 									</Button>
 									<Button parentKey="container" inherits="TRP3_QuestButtonTemplate">
 										<Anchors>
-											<Anchor point="TOPLEFT" x="20" y="-270"/>
+											<Anchor point="TOPLEFT" x="50" y="-285"/>
 										</Anchors>
 									</Button>
 								</Frames>

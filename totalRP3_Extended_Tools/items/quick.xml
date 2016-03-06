@@ -25,8 +25,8 @@
 	<!--  Item quick editor   -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_ItemQuickEditor" inherits="TRP3_HoveredFrame" hidden="true">
-		<Size x="500" y="350"/>
+	<Frame name="TRP3_ItemQuickEditor" inherits="TRP3_AltHoveredFrame" enableMouse="true">
+		<Size x="450" y="380"/>
 
 		<Layers>
 			<Layer level="OVERLAY">
@@ -43,9 +43,9 @@
 				<FontString parentKey="display" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
 					<Size x="0" y="16"/>
 					<Anchors>
-						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-20"/>
 						<Anchor point="RIGHT" x="-10" y="0"/>
-						<Anchor point="LEFT" x="10" y="0"/>
+						<Anchor point="LEFT" x="25" y="0"/>
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
@@ -53,9 +53,9 @@
 				<FontString parentKey="gameplay" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
 					<Size x="0" y="16"/>
 					<Anchors>
-						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.display" x="0" y="-100"/>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.display" x="0" y="-150"/>
 						<Anchor point="RIGHT" x="-10" y="0"/>
-						<Anchor point="LEFT" x="10" y="0"/>
+						<Anchor point="LEFT" x="25" y="0"/>
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
@@ -78,7 +78,7 @@
 
 			<Frame parentKey="quality" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentQuality">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="6" y="-2"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="16" y="-2"/>
 					<Anchor point="RIGHT" x="-20" y="-2"/>
 				</Anchors>
 			</Frame>
@@ -86,7 +86,7 @@
 			<EditBox parentKey="left" inherits="TRP3_TitledHelpEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
+					<Anchor point="TOPLEFT" x="0" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
 					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
 				</Anchors>
 			</EditBox>
@@ -94,18 +94,24 @@
 			<EditBox parentKey="right" inherits="TRP3_TitledHelpEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="30" y="0" relativePoint="RIGHT" relativeKey="$parent.left"/>
-					<Anchor point="RIGHT" x="-20" y="-2"/>
+					<Anchor point="LEFT" x="38" y="0" relativePoint="RIGHT" relativeKey="$parent.left"/>
+					<Anchor point="RIGHT" x="-35" y="-2"/>
 				</Anchors>
 			</EditBox>
 
 			<EditBox parentKey="description" inherits="TRP3_TitledHelpEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.left"/>
-					<Anchor point="RIGHT" x="-20" y="0"/>
+					<Anchor point="TOPLEFT" x="0" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.left"/>
+					<Anchor point="RIGHT" x="-35" y="0"/>
 				</Anchors>
 			</EditBox>
+
+			<CheckButton parentKey="component" inherits="TRP3_CheckBox" name="$parentComponent">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="-8" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.description"/>
+				</Anchors>
+			</CheckButton>
 
 			<EditBox parentKey="value" inherits="TRP3_TitledHelpEditBox" numeric="true">
 				<Size x="0" y="18"/>
@@ -115,17 +121,17 @@
 				</Anchors>
 			</EditBox>
 
-			<EditBox parentKey="weight" inherits="TRP3_TitledHelpEditBox" numeric="true">
+			<EditBox parentKey="weight" inherits="TRP3_TitledHelpEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="30" y="0" relativePoint="RIGHT" relativeKey="$parent.value"/>
-					<Anchor point="RIGHT" x="-20" y="-2"/>
+					<Anchor point="LEFT" x="38" y="0" relativePoint="RIGHT" relativeKey="$parent.value"/>
+					<Anchor point="RIGHT" x="-35" y="-2"/>
 				</Anchors>
 			</EditBox>
 
 			<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.value" x="10" y="-30"/>
+					<Anchor point="BOTTOM" x="0" y="50"/>
 				</Anchors>
 			</Button>
 
@@ -135,7 +141,7 @@
 
 			<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 			</Button>
 

@@ -27,6 +27,8 @@ local EMPTY = TRP3_API.globals.empty;
 -- Slot equipement management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local QUICK_SLOT_ID = TRP3_API.inventory.QUICK_SLOT_ID;
+
 local function resetEquip()
 	Model_Reset(TRP3_InventoryPage.Main.Model);
 	TRP3_InventoryPage.Main.Equip:Hide();
@@ -150,9 +152,9 @@ end
 local function onToolbarButtonClicked(buttonType)
 	if buttonType == "LeftButton" then
 		local playerInventory = TRP3_API.inventory.getInventory();
-		local quickSlot = playerInventory.content["17"];
+		local quickSlot = playerInventory.content[QUICK_SLOT_ID];
 		if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
-			TRP3_API.inventory.switchContainerBySlotID(playerInventory, "17");
+			TRP3_API.inventory.switchContainerBySlotID(playerInventory, QUICK_SLOT_ID);
 			return;
 		end
 	end

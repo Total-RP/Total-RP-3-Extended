@@ -79,29 +79,29 @@ function TRP3_API.inventory.getItemTextLine(itemClass)
 	return Utils.str.icon(icon, 25) .. " " .. name;
 end
 
-local ITEM_QUALITY_COLORS = { -- TODO: calcul
-	{"|cff9d9d9d", 157/255, 157/255, 157/255},
-	{"|cffffffff", 1, 1, 1},
-	{"|cff1eff00", 30/255, 1, 0},
-	{"|cff0070dd", 0, 112/255, 221/255},
-	{"|cffa335ee", 163/255, 53/255, 238/255},
-	{"|cffff8000", 1, 128/255, 0},
-}
+local neutral = {r = 0.95, g = 0.95, b = 0.95};
+local colorCodeFloatTab = Utils.color.colorCodeFloatTab;
+local itemColor = BAG_ITEM_QUALITY_COLORS;
 
 local function getQualityColorTab(quality)
-	quality = quality or 1;
-	return ITEM_QUALITY_COLORS[quality];
+	-- Thanks again Blizz...
+	if quality == LE_ITEM_QUALITY_COMMON then
+		return neutral;
+	elseif quality == LE_ITEM_QUALITY_POOR then
+		return itemColor[LE_ITEM_QUALITY_COMMON];
+	end
+	return itemColor[quality or 0] or neutral;
 end
 TRP3_API.inventory.getQualityColorTab = getQualityColorTab;
 
 local function getQualityColorText(quality)
-	return getQualityColorTab(quality)[1];
+	return colorCodeFloatTab(getQualityColorTab(quality));
 end
 TRP3_API.inventory.getQualityColorText = getQualityColorText;
 
 local function getQualityColorRGB(quality)
 	local tab = getQualityColorTab(quality);
-	return tab[2], tab[3], tab[4];
+	return tab.r, tab.g, tab.b;
 end
 TRP3_API.inventory.getQualityColorRGB = getQualityColorRGB;
 

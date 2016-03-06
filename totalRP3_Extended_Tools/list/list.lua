@@ -22,9 +22,13 @@ local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.locale.getText;
+local Log = Utils.log;
+local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
+local showItemTooltip = TRP3_API.inventory.showItemTooltip;
 
 local ToolFrame = TRP3_ToolFrame;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
+local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: util methods
@@ -97,6 +101,35 @@ local function removeChildrenFromPool(parentID)
 	refresh();
 end
 
+local function onLineClick(self, button)
+	if button == "RightButton" then
+		onLineRightClick(self:GetParent(), self:GetParent().idData);
+	else
+		TRP3_API.extended.tools.goToPage(self:GetParent().idData.fullID);
+	end
+end
+
+local function onLineEnter(self)
+	refreshTooltipForFrame(self);
+	if self:GetParent().idData.type == TRP3_DB.types.ITEM then
+		local class = getClass(self:GetParent().idData.fullID);
+		showItemTooltip(self:GetParent(), Globals.empty, class, true, "ANCHOR_TOPRIGHT");
+	end
+end
+
+local function onLineLeave(self)
+	TRP3_MainTooltip:Hide();
+	TRP3_ItemTooltip:Hide();
+end
+
+local function onLineExpandClick(self)
+	if not self.isOpen then
+		addChildrenToPool(self:GetParent().idData.fullID);
+	else
+		removeChildrenFromPool(self:GetParent().idData.fullID);
+	end
+end
+
 function refresh()
 	for _, lineWidget in pairs(linesWidget) do
 		lineWidget:Hide();
@@ -112,6 +145,7 @@ function refresh()
 		local hasChildren = isOpen or objectHasChildren(class);
 		local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
 
+		-- idData is wipe frequently: DO NOT STORE PERSISTENT DATA IN IT !!!
 		idData[index] = {
 			type = class.TY,
 			icon = icon,
@@ -132,6 +166,10 @@ function refresh()
 		if not lineWidget then
 			lineWidget = CreateFrame("Frame", "TRP3_ToolFrameListLine" .. index, ToolFrame.list.container.scroll.child, "TRP3_Tools_ListLineTemplate");
 			lineWidget.Click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+			lineWidget.Click:SetScript("OnClick", onLineClick);
+			lineWidget.Click:SetScript("OnEnter", onLineEnter);
+			lineWidget.Click:SetScript("OnLeave", onLineLeave);
+			lineWidget.Expand:SetScript("OnClick", onLineExpandClick);
 			tinsert(linesWidget, lineWidget);
 		end
 
@@ -140,13 +178,6 @@ function refresh()
 		lineWidget.Expand:Hide();
 		if idData.hasChildren then
 			lineWidget.Expand:Show();
-			lineWidget.Expand:SetScript("OnClick", function(self)
-				if not self.isOpen then
-					addChildrenToPool(idData.fullID);
-				else
-					removeChildrenFromPool(idData.fullID);
-				end
-			end);
 			lineWidget.Expand.isOpen = idData.isOpen;
 			if idData.isOpen then
 				lineWidget.Expand:SetNormalTexture("Interface\\Buttons\\UI-MinusButton-UP");
@@ -162,15 +193,7 @@ function refresh()
 		lineWidget:SetPoint("RIGHT", -15, 0);
 		lineWidget:SetPoint("TOP", 0, (-LINE_TOP_MARGIN) * (index - 1));
 
-		local fullID = idData.fullID;
-		lineWidget.Click:SetScript("OnClick", function(self, button)
-			if button == "RightButton" then
-				onLineRightClick(lineWidget, fullID);
-			else
-				TRP3_API.extended.tools.goToPage(fullID);
-			end
-		end);
-
+		lineWidget.idData = idData;
 		lineWidget:Show();
 	end
 
@@ -253,14 +276,29 @@ end
 -- List management: Right click
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local ACTION_FLAG_DELETE = "1";
+local ACTION_FLAG_ADD = "2";
+
 local function onLineActionSelected(value, button)
-	TRP3_API.extended.unregisterObject(value);
-	onTabChanged(nil, currentTab);
+	local action = value:sub(1, 1);
+	local objectID = value:sub(2);
+	if action == ACTION_FLAG_DELETE then
+		TRP3_API.extended.unregisterObject(objectID);
+		onTabChanged(nil, currentTab);
+	elseif action == ACTION_FLAG_ADD then
+		TRP3_API.inventory.addItem(nil, objectID);
+	end
 end
 
-function onLineRightClick(lineWidget, fullID)
+function onLineRightClick(lineWidget, data)
 	local values = {};
-	tinsert(values, {DELETE, fullID});
+	tinsert(values, {data.text, nil});
+	if currentTab == TABS.MY_DB then
+		tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID})
+	end
+	if data.type == TRP3_DB.types.ITEM then
+		tinsert(values, {"Add to inventory", ACTION_FLAG_ADD .. data.fullID}); -- TODO locals
+	end
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
 end
 
@@ -280,7 +318,7 @@ function TRP3_API.extended.tools.initList()
 	createTabBar();
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
-		ToolFrame.list.container.scroll.child:SetWidth(containerwidth - 85);
+		ToolFrame.list.container.scroll.child:SetWidth(containerwidth - 100);
 	end);
 
 	-- Quest log button on target bar
@@ -328,7 +366,7 @@ function TRP3_API.extended.tools.initList()
 		elseif self.templates:IsVisible() then
 			self.templates:Hide();
 		else
-			TRP3_API.ui.frame.configureHoverFrame(self.templates, self, "BOTTOM", 0, 5, true);
+			TRP3_API.ui.frame.configureHoverFrame(self.templates, self, "BOTTOM", 0, 5, false);
 		end
 	end);
 
