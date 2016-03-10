@@ -17,11 +17,12 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, error, tinsert, table = wipe, pairs, error, tinsert, table;
+local wipe, pairs, error, assert, table = wipe, pairs, error, assert, table;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.locale.getText;
+local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Item management
@@ -46,10 +47,31 @@ end
 TRP3_API.extended.tools.createItem = createItem;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Item base frame
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function onLoad(rootClassID, specificClassID, rootDraft, specificDraft)
+	assert(rootClassID, "rootClassID is nil");
+	assert(specificClassID, "specificClassID is nil");
+	assert(rootDraft, "rootDraft is nil");
+	assert(specificDraft, "specificDraft is nil");
+
+	toolFrame.item.normal:Hide();
+	if TRP3_DB.modes.EXPERT ~= (specificDraft.MO or TRP3_DB.modes.NORMAL) then
+		toolFrame.item.normal:Show();
+		toolFrame.item.normal.loadItem(rootClassID, specificClassID, rootDraft, specificDraft);
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.initItems()
+function TRP3_API.extended.tools.initItems(ToolFrame)
+	toolFrame = ToolFrame;
+	toolFrame.item.onLoad = onLoad;
 
-	TRP3_API.extended.tools.initItemQuickEditor();
+	TRP3_API.extended.tools.initItemQuickEditor(toolFrame);
+	TRP3_API.extended.tools.initItemFrames(toolFrame);
+	TRP3_API.extended.tools.initItemEditorNormal(toolFrame);
 end

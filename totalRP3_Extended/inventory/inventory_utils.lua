@@ -146,3 +146,36 @@ local function countItemInstances(container, itemID)
 	return count;
 end
 TRP3_API.inventory.countItemInstances = countItemInstances;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Units
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+--- Get a formated text for this weight based on config
+-- @param value in grams !
+--
+local tostring = tostring;
+function TRP3_API.extended.formatWeight(value)
+	local config = TRP3_API.configuration.getValue(TRP3_API.extended.CONFIG_WEIGHT_UNIT);
+	if config == TRP3_API.extended.WEIGHT_UNITS.GRAMS then
+		if value < 1000 then
+			return ("%s g"):format(value);
+		else
+			return ("%0.2f kg"):format(value / 1000);
+		end
+	elseif config == TRP3_API.extended.WEIGHT_UNITS.POUNDS then
+		value = value * 0.00220462;
+		if value < 1 then
+			return ("%0.2f oz"):format(value * 16);
+		else
+			return ("%0.2f lb"):format(value);
+		end
+	elseif config == TRP3_API.extended.WEIGHT_UNITS.POTATOES then
+		value = value / 160; -- Average potatoe weight. :3
+		if value < 1 then
+			return ("%0.2f fries"):format(value * 24); -- Average fries quantity we can made out of one potatoe. :3
+		else
+			return ("%0.2f potatoes"):format(value);
+		end
+	end
+end

@@ -145,7 +145,7 @@ end
 local function containerFrameUpdate(self, elapsed)
 	-- Weight
 	local current = self.info.totalWeight or 0;
-	local weight = ("%s kg" .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15)):format(current);
+	local weight = TRP3_API.extended.formatWeight(current) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
 	TRP3_InventoryPage.Main.Model.WeightText:SetText(weight);
 end
 

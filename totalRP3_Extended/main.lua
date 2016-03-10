@@ -44,6 +44,11 @@ TRP3_DB = {
 		DOCUMENT = "DO",
 		DIALOG = "DI",
 		LOOT = "LO",
+	},
+	modes = {
+		QUICK = "QU",
+		NORMAL = "NO",
+		EXPERT = "EX",
 	}
 };
 
@@ -117,6 +122,19 @@ local function registerObject(objectFullID, object, count)
 end
 TRP3_API.extended.registerObject = registerObject;
 
+local function unregisterObject(objectFullID)
+	for id, _ in pairs(TRP3_DB.global) do
+		if id == objectFullID or id:sub(1, objectFullID:len()) == objectFullID then
+			TRP3_DB.global[id] = nil;
+		end
+	end
+	TRP3_DB.exchange[objectFullID] = nil;
+	TRP3_Exchange_DB[objectFullID] = nil;
+	(TRP3_DB.my or EMPTY)[objectFullID] = nil;
+	(TRP3_Tools_DB or EMPTY)[objectFullID] = nil;
+end
+TRP3_API.extended.unregisterObject = unregisterObject;
+
 local function registerDB(db, count)
 	-- Register object
 	for id, object in pairs(db or EMPTY) do
@@ -133,18 +151,50 @@ local function registerDB(db, count)
 	return count;
 end
 
-local function unregisterObject(objectFullID)
-	for id, _ in pairs(TRP3_DB.global) do
-		if id == objectFullID or id:sub(1, objectFullID:len()) == objectFullID then
-			TRP3_DB.global[id] = nil;
-		end
-	end
-	TRP3_DB.exchange[objectFullID] = nil;
-	TRP3_Exchange_DB[objectFullID] = nil;
-	(TRP3_DB.my or EMPTY)[objectFullID] = nil;
-	(TRP3_Tools_DB or EMPTY)[objectFullID] = nil;
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- CONFIG
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+TRP3_API.extended.CONFIG_WEIGHT_UNIT = "extended_weight_unit";
+TRP3_API.extended.WEIGHT_UNITS = {
+	GRAMS = "g",
+	POUNDS = "lb",
+	POTATOES = "po",
+};
+
+local function initConfig()
+	local WEIGHT_UNIT_TAB = {
+		{"Grams", TRP3_API.extended.WEIGHT_UNITS.GRAMS},
+		{"Pounds", TRP3_API.extended.WEIGHT_UNITS.POUNDS},
+		{"Potatoes", TRP3_API.extended.WEIGHT_UNITS.POTATOES}
+	}
+
+	-- Config default value
+	registerConfigKey(TRP3_API.extended.CONFIG_WEIGHT_UNIT, TRP3_API.extended.WEIGHT_UNITS.GRAMS);
+
+	-- Build configuration page
+	local CONFIG_STRUCTURE = {
+		id = "main_config_extended",
+		menuText = "Extended settings", -- TODO:locals
+		pageText = "Extended settings", -- TODO:locals
+		elements = {
+			{
+				inherit = "TRP3_ConfigH1",
+				title = "Units", -- TODO:locals
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationExtended_Units_Weight",
+				title = "Weight units", -- TODO:locals
+				listContent = WEIGHT_UNIT_TAB,
+				configKey = TRP3_API.extended.CONFIG_WEIGHT_UNIT,
+				listCancel = true,
+				help = "Defines how weight values are displayed. It will be converted from grams." -- TODO:locals
+			}
+		}
+	};
+	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
-TRP3_API.extended.unregisterObject = unregisterObject;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -158,7 +208,6 @@ local function onInit()
 end
 
 local function onStart()
-
 	-- Register locales
 	for localeID, localeStructure in pairs(TRP3_EXTENDED_LOCALE) do
 		local locale = TRP3_API.locale.getLocale(localeID);
@@ -184,44 +233,7 @@ local function onStart()
 	TRP3_API.extended.dialog.onStart();
 
 	-- Config
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
-
-		local CONFIG_WEIGHT_UNIT = "extended_weight_unit";
-		local WEIGHT_UNITS = {
-			GRAMS = "g",
-			POUNDS = "p",
-		};
-		local WEIGHT_UNIT_TAB = {
-			{"Grams", WEIGHT_UNITS.GRAMS},
-			{"Pounds", WEIGHT_UNITS.POUNDS}
-		}
-
-		-- Config default value
-		registerConfigKey(CONFIG_WEIGHT_UNIT, WEIGHT_UNITS.GRAMS);
-
-		-- Build configuration page
-		local CONFIG_STRUCTURE = {
-			id = "main_config_extended",
-			menuText = "Extended settings",
-			pageText = "Extended settings",
-			elements = {
-				{
-					inherit = "TRP3_ConfigH1",
-					title = "Units",
-				},
-				{
-					inherit = "TRP3_ConfigDropDown",
-					widgetName = "TRP3_ConfigurationExtended_Units_Weight",
-					title = "Weight units",
-					listContent = WEIGHT_UNIT_TAB,
-					configKey = CONFIG_WEIGHT_UNIT,
-					listCancel = true,
-					help = "Defines how weight values are displayed. It will be converted from grams."
-				}
-			}
-		};
-		TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
-	end);
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, initConfig);
 end
 
 local MODULE_STRUCTURE = {

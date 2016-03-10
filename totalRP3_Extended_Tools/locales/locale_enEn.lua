@@ -60,6 +60,16 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_CREATE_CAMPAIGN = "Create campaign",
 	DB_CREATE_CAMPAIGN_TT = "Start creating a campaign",
 
+	-- Creation
+	ROOT_TITLE = "Root object",
+	ROOT_ID = "ID",
+	ROOT_VERSION = "Version",
+	ROOT_CREATED = "Created by %s on %s",
+	ROOT_SAVED = "Last modification by %s on %s",
+	SPECIFIC_INNER_ID = "Inner ID",
+	SPECIFIC_PATH = "Root path",
+	SPECIFIC_MODE = "Mode",
+
 	-- Item creation
 	IT_FIELD_QUALITY = "Item quality",
 

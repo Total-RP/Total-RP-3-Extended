@@ -18,9 +18,10 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
+	<Script file="main.lua"/>
 
+	<Include file="items/items.xml"/>
 	<Include file="list/list.xml"/>
-	<Include file="items/quick.xml"/>
 
 	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
 		<Anchors>
@@ -102,13 +103,127 @@
 				</Anchors>
 			</Frame>
 
+			<Frame name="$parentActions" parentKey="actions" inherits="TRP3_FieldSetFrame">
+				<Size x="150" y="100"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="24"/>
+					<Anchor point="CENTER" relativePoint="CENTER" x="0" y="0"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-25"/>
+							<Anchor point="LEFT" x="18" y="0"/>
+							<Anchor point="RIGHT" x="-15" y="0"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="saveas" inherits="TRP3_CommonButton" text="[[SAVE_AS]]">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.save" x="0" y="-10"/>
+							<Anchor point="LEFT" x="18" y="0"/>
+							<Anchor point="RIGHT" x="-15" y="0"/>
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<Frame name="$parentSpecificObject" parentKey="specific" inherits="TRP3_FieldSetFrame">
+				<Size x="0" y="100"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="24"/>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.actions" x="-10" y="0"/>
+					<Anchor point="LEFT" x="24" y="0"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="id" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="20"/>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-10"/>
+								<Anchor point="LEFT" x="35" y="0"/>
+								<Anchor point="RIGHT" x="-15" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+						<FontString parentKey="fullid" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="0"/>
+								<Anchor point="RIGHT" x="-15" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+						<FontString parentKey="mode" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.fullid" x="0" y="0"/>
+								<Anchor point="RIGHT" x="-15" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+
+			<Frame name="$parentRootObject" parentKey="root" inherits="TRP3_FieldSetFrame">
+				<Size x="0" y="100"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="24"/>
+					<Anchor point="RIGHT" x="-45" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.actions" x="10" y="0"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="id" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="20"/>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-10"/>
+								<Anchor point="LEFT" x="35" y="0"/>
+								<Anchor point="RIGHT" x="-15" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+						<FontString parentKey="version" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="0"/>
+								<Anchor point="RIGHT" x="-15" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+						<FontString parentKey="created" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.version" x="0" y="0"/>
+								<Anchor point="RIGHT" x="-15" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+						<FontString parentKey="saved" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.created" x="0" y="0"/>
+								<Anchor point="RIGHT" x="-15" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+
+			<Frame name="$parentItem" inherits="TRP3_Tools_ItemTemplate" parentKey="item">
+				<Anchors>
+					<Anchor point="TOP" relativeTo="$parentNavBar" relativePoint="BOTTOM" x="0" y="-35"/>
+					<Anchor point="LEFT" x="24" y="0"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeKey="$parent.root" x="0" y="15"/>
+				</Anchors>
+			</Frame>
+
 		</Frames>
 	</Frame>
 
-	<Script file="main.lua"/>
-	<Script file="items/items.lua"/>
-	<Script file="items/quick.lua"/>
-	<Script file="list/list.lua"/>
+
+
 	<Script file="locales/locale_enEN.lua"/>
 	<Script file="locales/locale_frFR.lua"/>
 

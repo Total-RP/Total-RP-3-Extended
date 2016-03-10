@@ -17,14 +17,14 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, assert, tostring, strsplit = pairs, assert, tostring, strsplit;
+local pairs, assert, tostring, strsplit, wipe = pairs, assert, tostring, strsplit, wipe;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local loc = TRP3_API.locale.getText;
 local fireEvent = TRP3_API.events.fireEvent;
 local after  = C_Timer.After;
 
-local ToolFrame = TRP3_ToolFrame;
+local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- API
@@ -44,9 +44,9 @@ local BACKGROUNDS = {
 function TRP3_API.extended.tools.setBackground(backgroundIndex)
 	assert(BACKGROUNDS[backgroundIndex], "Unknown background index:" .. tostring(backgroundIndex));
 	local texture = BACKGROUNDS[backgroundIndex];
-	ToolFrame.BkgMain:SetTexture(texture);
-	ToolFrame.BkgHeader:SetTexture(texture);
-	ToolFrame.BkgScroll:SetTexture(texture);
+	toolFrame.BkgMain:SetTexture(texture);
+	toolFrame.BkgHeader:SetTexture(texture);
+	toolFrame.BkgScroll:SetTexture(texture);
 end
 local setBackground = TRP3_API.extended.tools.setBackground;
 
@@ -73,7 +73,7 @@ local PAGE_BY_TYPE = {
 		background = 2,
 	},
 	[TRP3_DB.types.ITEM] = {
-		frame = nil,
+		frame = "item",
 		tabTextGetter = function(id)
 			return loc("TYPE_ITEM") .. ": " .. id;
 		end,
@@ -127,6 +127,48 @@ end
 TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Root object action
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local draftData = {};
+local currentRootID;
+
+local function getModeLocale(mode)
+	if mode == TRP3_DB.modes.QUICK then
+		return "Quick"; --TODO: locales
+	end
+	if mode == TRP3_DB.modes.NORMAL then
+		return "Normal"; --TODO: locales
+	end
+	if mode == TRP3_DB.modes.EXPERT then
+		return "Expert"; --TODO: locales
+	end
+end
+
+local function openObjectAndGetDraft(rootClassID, rootClass)
+	if currentRootID ~= rootClassID then
+		wipe(draftData);
+		currentRootID = rootClassID;
+		Utils.table.copy(draftData, rootClass);
+	end
+	return draftData;
+end
+
+local function displayRootInfo(rootClassID, rootClass, classFullID, classID, specificDraft)
+	assert(rootClass.MD, "No metadata MD in root class.");
+	assert(specificDraft.MD, "No metadata MD in specific class.");
+	local color = "|cffffff00";
+	local fieldFormat = "%s: " .. color .. "%s";
+	toolFrame.root.id:SetText(fieldFormat:format(loc("ROOT_ID"), rootClassID));
+	toolFrame.root.version:SetText(fieldFormat:format(loc("ROOT_VERSION"), rootClass.MD.V or 0));
+	toolFrame.root.created:SetText(loc("ROOT_CREATED"):format(color .. (rootClass.MD.CB or "?") .. "|r", color .. (rootClass.MD.CD or "?") .. "|r"));
+	toolFrame.root.saved:SetText(loc("ROOT_SAVED"):format(color .. (rootClass.MD.SB or "?") .. "|r", color .. (rootClass.MD.SD or "?") .. "|r"));
+	toolFrame.specific.id:SetText(fieldFormat:format(loc("SPECIFIC_INNER_ID"), classID));
+	toolFrame.specific.fullid:SetText(fieldFormat:format(loc("SPECIFIC_PATH"), classFullID));
+	toolFrame.specific.mode:SetText(fieldFormat:format(loc("SPECIFIC_MODE"), getModeLocale(specificDraft.MD.MO)));
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Pages
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -134,15 +176,24 @@ local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getCl
 
 local function goToListPage(skipButton)
 	if not skipButton then
-		NavBar_Reset(ToolFrame.navBar);
+		NavBar_Reset(toolFrame.navBar);
 	end
 	setBackground(1);
+	toolFrame.actions:Hide();
+	toolFrame.specific:Hide();
+	toolFrame.root:Hide();
+	for _, pageData in pairs(PAGE_BY_TYPE) do
+		local frame = toolFrame[pageData.frame or ""];
+		if frame then
+			frame:Hide();
+		end
+	end
 	TRP3_API.extended.tools.toList();
 end
 
 local function goToPage(classID)
 	-- Ensure buttons up to the target
-	NavBar_Reset(ToolFrame.navBar);
+	NavBar_Reset(toolFrame.navBar);
 	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, classID)};
 	local fullId = "";
 	for _, part in pairs(parts) do
@@ -150,26 +201,47 @@ local function goToPage(classID)
 		local reconstruct = fullId;
 		local class = getClass(reconstruct);
 		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part);
-		NavBar_AddButton(ToolFrame.navBar, {id = reconstruct, name = text, OnClick = function()
+		NavBar_AddButton(toolFrame.navBar, {id = reconstruct, name = text, OnClick = function()
 			goToPage(reconstruct);
 		end});
 	end
 
 	-- Go to page
-	ToolFrame.list:Hide();
+	toolFrame.list:Hide();
+	toolFrame.actions:Show();
+	toolFrame.specific:Show();
+	toolFrame.root:Show();
 	local class = getClass(classID);
+
+	local selectedPageData, selectedPageFrame;
+	-- Hide all
 	for classType, pageData in pairs(PAGE_BY_TYPE) do
+		local frame = toolFrame[pageData.frame or ""];
 		if class.TY ~= classType then
-			if pageData.frame then
-				pageData.frame:Hide();
+			if frame then
+				frame:Hide();
 			end
 		else
-			if pageData.frame then
-				pageData.frame:Show();
-			end
-			setBackground(pageData.background or 1);
+			selectedPageFrame = frame;
+			selectedPageData = pageData;
 		end
 	end
+
+	setBackground(selectedPageData.background or 1);
+
+	-- Load data
+	local rootClassID = parts[1];
+	local rootClass = getClass(rootClassID);
+	local rootDraft = openObjectAndGetDraft(rootClassID, rootClass);
+	local specificDraft = rootDraft; -- FIXME: temp, won't works with inner objects :)
+	displayRootInfo(rootClassID, rootClass, classID, parts[#parts], specificDraft);
+
+	-- Show selected
+	assert(selectedPageFrame, "No editor for type " .. class.TY);
+	assert(selectedPageFrame.onLoad, "No load entry for type " .. class.TY);
+	selectedPageFrame:Show();
+	selectedPageFrame.onLoad(rootClassID, classID, rootDraft, specificDraft);
+
 end
 TRP3_API.extended.tools.goToPage = goToPage;
 
@@ -178,13 +250,17 @@ TRP3_API.extended.tools.goToPage = goToPage;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.extended.tools.showFrame(reset)
-	ToolFrame:Show();
+	toolFrame:Show();
 	if reset then
 		goToListPage();
 	end
 end
 
 local function onStart()
+
+	-- Events
+	Events.ON_OBJECT_UPDATED = "ON_OBJECT_UPDATED";
+	Events.registerEvent(Events.ON_OBJECT_UPDATED);
 
 	-- Register locales
 	for localeID, localeStructure in pairs(TRP3_EXTENDED_TOOL_LOCALE) do
@@ -194,6 +270,9 @@ local function onStart()
 		end
 	end
 
+	TRP3_API.ui.frame.setupFieldPanel(toolFrame.root, loc("ROOT_TITLE"), 150);
+	TRP3_API.ui.frame.setupFieldPanel(toolFrame.specific, "Specific object", 150); -- TODO: locals
+	TRP3_API.ui.frame.setupFieldPanel(toolFrame.actions, "Actions", 100); -- TODO: locals
 	PAGE_BY_TYPE[TRP3_DB.types.CAMPAIGN].loc = loc("TYPE_CAMPAIGN");
 	PAGE_BY_TYPE[TRP3_DB.types.QUEST].loc = loc("TYPE_QUEST");
 	PAGE_BY_TYPE[TRP3_DB.types.QUEST_STEP].loc = loc("TYPE_QUEST_STEP");
@@ -202,34 +281,34 @@ local function onStart()
 	PAGE_BY_TYPE[TRP3_DB.types.DIALOG].loc = loc("TYPE_DIALOG");
 	PAGE_BY_TYPE[TRP3_DB.types.LOOT].loc = loc("TYPE_LOOT");
 
-	ToolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
+	toolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
 
 	TRP3_API.events.NAVIGATION_EXTENDED_RESIZED = "NAVIGATION_EXTENDED_RESIZED";
 	TRP3_API.events.registerEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED);
 
-	ToolFrame.Resize.minWidth = 1150;
-	ToolFrame.Resize.minHeight = 730;
-	ToolFrame:SetSize(ToolFrame.Resize.minWidth, ToolFrame.Resize.minHeight);
-	ToolFrame.Resize.resizableFrame = ToolFrame;
-	ToolFrame.Resize.onResizeStop = function()
-		ToolFrame.Minimize:Hide();
-		ToolFrame.Maximize:Show();
-		fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, ToolFrame:GetWidth(), ToolFrame:GetHeight());
+	toolFrame.Resize.minWidth = 1150;
+	toolFrame.Resize.minHeight = 730;
+	toolFrame:SetSize(toolFrame.Resize.minWidth, toolFrame.Resize.minHeight);
+	toolFrame.Resize.resizableFrame = toolFrame;
+	toolFrame.Resize.onResizeStop = function()
+		toolFrame.Minimize:Hide();
+		toolFrame.Maximize:Show();
+		fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
 	end;
 
-	ToolFrame.Maximize:SetScript("OnClick", function()
-		ToolFrame.Maximize:Hide();
-		ToolFrame.Minimize:Show();
-		ToolFrame:SetSize(UIParent:GetWidth(), UIParent:GetHeight());
+	toolFrame.Maximize:SetScript("OnClick", function()
+		toolFrame.Maximize:Hide();
+		toolFrame.Minimize:Show();
+		toolFrame:SetSize(UIParent:GetWidth(), UIParent:GetHeight());
 		after(0.1, function()
-			fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, ToolFrame:GetWidth(), ToolFrame:GetHeight());
+			fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
 		end);
 	end);
 
-	ToolFrame.Minimize:SetScript("OnClick", function()
-		ToolFrame:SetSize(ToolFrame.Resize.minWidth, ToolFrame.Resize.minHeight);
+	toolFrame.Minimize:SetScript("OnClick", function()
+		toolFrame:SetSize(toolFrame.Resize.minWidth, toolFrame.Resize.minHeight);
 		after(0.1, function()
-			ToolFrame.Resize.onResizeStop();
+			toolFrame.Resize.onResizeStop();
 		end);
 	end);
 
@@ -240,19 +319,21 @@ local function onStart()
 			goToListPage();
 		end
 	}
-	ToolFrame.navBar.home:SetWidth(110);
-	NavBar_Initialize(ToolFrame.navBar, "NavButtonTemplate", homeData, ToolFrame.navBar.home, ToolFrame.navBar.overflow);
+	toolFrame.navBar.home:SetWidth(110);
+	NavBar_Initialize(toolFrame.navBar, "NavButtonTemplate", homeData, toolFrame.navBar.home, toolFrame.navBar.overflow);
 
 	-- Init tabs
-	TRP3_API.extended.tools.initItems();
-	TRP3_API.extended.tools.initList();
+	TRP3_API.extended.tools.initItems(toolFrame);
+	TRP3_API.extended.tools.initList(toolFrame);
 
 	goToListPage();
 
-	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, ToolFrame:GetWidth(), ToolFrame:GetHeight());
+	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
 end
 
 local function onInit()
+	toolFrame = TRP3_ToolFrame;
+
 	if not TRP3_Tools_DB then
 		TRP3_Tools_DB = {};
 	end

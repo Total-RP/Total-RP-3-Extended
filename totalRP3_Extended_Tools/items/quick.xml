@@ -19,7 +19,48 @@
 	limitations under the License.
 -->
 
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--    Item templates    -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
+	<Frame name="TRP3_ItemTemplates" inherits="TRP3_AltHoveredFrame" enableMouse="true" virtual="true">
+		<Size x="450" y="380"/>
+		<Frames>
+			<Button parentKey="quick" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="-40"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="blank" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="-145"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="document" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="-215"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="container" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="-285"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.quick" x="0" y="-25"/>
+						<Anchor point="RIGHT" x="-10" y="0"/>
+						<Anchor point="LEFT" x="10" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--  Item quick editor   -->

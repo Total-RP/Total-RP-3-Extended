@@ -104,7 +104,8 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 			text1 = incrementLine(text1);
 
 			local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * class.BA.WE);
-			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. weight .. "g";
+			local formatedWeight = TRP3_API.extended.formatWeight(weight);
+			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. formatedWeight;
 		end
 
 		text2 = "";
@@ -424,7 +425,8 @@ local function containerFrameUpdate(self, elapsed)
 
 	-- Weight
 	local current = self.info.totalWeight or 0;
-	local weight = ("%s g" .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15)):format(current);
+	local formatedWeight = TRP3_API.extended.formatWeight(current);
+	local weight = formatedWeight .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
 	if self.class.CO.MW and self.class.CO.MW > 0 then
 		-- TODO: color if too heavy
 	end

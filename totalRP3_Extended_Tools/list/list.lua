@@ -26,7 +26,7 @@ local Log = Utils.log;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
 local showItemTooltip = TRP3_API.inventory.showItemTooltip;
 
-local ToolFrame = TRP3_ToolFrame;
+local ToolFrame;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
 local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
 
@@ -224,7 +224,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tabGroup;
-local itemQuickEditor = TRP3_ItemQuickEditor;
 
 local function onTabChanged(tabWidget, tab)
 	tabGroup.tabs[1]:SetText(loc("DB_MY"):format(tsize(TRP3_DB.my)));
@@ -232,7 +231,7 @@ local function onTabChanged(tabWidget, tab)
 	tabGroup.tabs[3]:SetText(loc("DB_BACKERS"):format(tsize(TRP3_DB.inner)));
 	tabGroup.tabs[4]:SetText(loc("DB_FULL"):format(tsize(TRP3_DB.global)));
 
-	itemQuickEditor:Hide();
+	TRP3_ItemQuickEditor:Hide();
 	ToolFrame.list.bottom.item:Hide();
 	ToolFrame.list.bottom.campaign:Hide();
 	ToolFrame.list.bottom.item.templates:Hide();
@@ -302,15 +301,12 @@ function onLineRightClick(lineWidget, data)
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
 end
 
-local function onItemCreated(id, data)
-	onTabChanged(nil, currentTab);
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.initList()
+function TRP3_API.extended.tools.initList(toolFrame)
+	ToolFrame = toolFrame;
 	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc("DB_LIST"), 150);
 	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, loc("DB_FILTERS"), 150);
 	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, loc("DB_ACTIONS"), 150);
@@ -340,39 +336,12 @@ function TRP3_API.extended.tools.initList()
 	end);
 
 	-- My creation tab
-	ToolFrame.list.bottom.item.Name:SetText(loc("DB_CREATE_ITEM"));
-	ToolFrame.list.bottom.item.InfoText:SetText(loc("DB_CREATE_ITEM_TT"));
 	ToolFrame.list.bottom.campaign.Name:SetText(loc("DB_CREATE_CAMPAIGN"));
 	ToolFrame.list.bottom.campaign.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TT"));
-	ToolFrame.list.bottom.item.templates.title:SetText(loc("DB_CREATE_ITEM_TEMPLATES"));
-	ToolFrame.list.bottom.item.templates.quick.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_QUICK"));
-	ToolFrame.list.bottom.item.templates.quick.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_QUICK_TT"));
-	ToolFrame.list.bottom.item.templates.document.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_DOCUMENT"));
-	ToolFrame.list.bottom.item.templates.document.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT"));
-	ToolFrame.list.bottom.item.templates.blank.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK"));
-	ToolFrame.list.bottom.item.templates.blank.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK_TT"));
-	ToolFrame.list.bottom.item.templates.container.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER"));
-	ToolFrame.list.bottom.item.templates.container.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT"));
-
-	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.item.templates.container, "inv_misc_bag_36");
-	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.item.templates.blank, "inv_inscription_scroll");
-	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.item.templates.document, "inv_misc_book_16");
-	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.item.templates.quick, "petbattle_speed");
-	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.item, "inv_garrison_blueprints1");
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.campaign, "achievement_quests_completed_07");
-	ToolFrame.list.bottom.item:SetScript("OnClick", function(self)
-		if itemQuickEditor:IsVisible() then
-			itemQuickEditor:Hide();
-		elseif self.templates:IsVisible() then
-			self.templates:Hide();
-		else
-			TRP3_API.ui.frame.configureHoverFrame(self.templates, self, "BOTTOM", 0, 5, false);
-		end
-	end);
 
-	ToolFrame.list.bottom.item.templates.quick:SetScript("OnClick", function(self)
-		ToolFrame.list.bottom.item.templates:Hide();
-		TRP3_API.extended.tools.openItemQuickEditor(ToolFrame.list.bottom.item, onItemCreated);
+	-- Events
+	Events.listenToEvent(Events.ON_OBJECT_UPDATED, function(objectID, objectType)
+		onTabChanged(nil, currentTab);
 	end);
-
 end

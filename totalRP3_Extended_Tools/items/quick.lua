@@ -17,14 +17,13 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tonumber, tinsert, strtrim = wipe, pairs, tonumber, tinsert, strtrim;
+local wipe, pairs, tonumber, date, strtrim = wipe, pairs, tonumber, date, strtrim;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-
 local editor = TRP3_ItemQuickEditor;
 local onCreatedCallback;
 
@@ -35,6 +34,14 @@ local onCreatedCallback;
 local function getUIData()
 	local data = {
 		TY = TRP3_DB.types.ITEM,
+		MD = {
+			MO = TRP3_DB.modes.QUICK,
+			V = 1,
+			CD = date("%d/%m/%y %H:%M:%S");
+			CB = Globals.player_id,
+			SD = date("%d/%m/%y %H:%M:%S");
+			SB = Globals.player_id,
+		},
 		BA = {
 			NA = stEtN(strtrim(editor.name:GetText())),
 			DE = stEtN(strtrim(editor.description:GetText())),
@@ -56,6 +63,7 @@ local function onSave()
 		onCreatedCallback(ID, data);
 	end
 	editor:Hide();
+	Events.fireEvent(Events.ON_OBJECT_UPDATED, ID, TRP3_DB.types.ITEM);
 end
 
 local function onIconSelected(icon)
@@ -93,7 +101,7 @@ end
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local getQualityColorText = TRP3_API.inventory.getQualityColorText;
 
-function TRP3_API.extended.tools.initItemQuickEditor()
+function TRP3_API.extended.tools.initItemQuickEditor(toolFrame)
 	-- Name
 	editor.name.title:SetText("Item name"); -- TODO: locals
 	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, "Item name", "It's your item name."); -- TODO: locals
@@ -167,4 +175,38 @@ function TRP3_API.extended.tools.initItemQuickEditor()
 	editor:SetScript("OnShow", function()
 		editor.name:SetFocus();
 	end)
+
+	-- Templates
+	toolFrame.list.bottom.item.Name:SetText(loc("DB_CREATE_ITEM"));
+	toolFrame.list.bottom.item.InfoText:SetText(loc("DB_CREATE_ITEM_TT"));
+	toolFrame.list.bottom.item.templates.title:SetText(loc("DB_CREATE_ITEM_TEMPLATES"));
+	toolFrame.list.bottom.item.templates.quick.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_QUICK"));
+	toolFrame.list.bottom.item.templates.quick.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_QUICK_TT"));
+	toolFrame.list.bottom.item.templates.document.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_DOCUMENT"));
+	toolFrame.list.bottom.item.templates.document.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT"));
+	toolFrame.list.bottom.item.templates.blank.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK"));
+	toolFrame.list.bottom.item.templates.blank.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK_TT"));
+	toolFrame.list.bottom.item.templates.container.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER"));
+	toolFrame.list.bottom.item.templates.container.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT"));
+
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.container, "inv_misc_bag_36");
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.blank, "inv_inscription_scroll");
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.document, "inv_misc_book_16");
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.quick, "petbattle_speed");
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item, "inv_garrison_blueprints1");
+
+	toolFrame.list.bottom.item:SetScript("OnClick", function(self)
+		if TRP3_ItemQuickEditor:IsVisible() then
+			TRP3_ItemQuickEditor:Hide();
+		elseif self.templates:IsVisible() then
+			self.templates:Hide();
+		else
+			TRP3_API.ui.frame.configureHoverFrame(self.templates, self, "BOTTOM", 0, 5, false);
+		end
+	end);
+
+	toolFrame.list.bottom.item.templates.quick:SetScript("OnClick", function(self)
+		toolFrame.list.bottom.item.templates:Hide();
+		TRP3_API.extended.tools.openItemQuickEditor(toolFrame.list.bottom.item);
+	end);
 end
