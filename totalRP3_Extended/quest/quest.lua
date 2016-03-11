@@ -88,7 +88,7 @@ local function startQuest(campaignID, questID)
 		local questClass = getClass(campaignID, questID);
 
 		if not campaignClass or not questClass then
-			print("CAN'T FIND CAMPAIGN OR QUEST"); -- TODO: locale / message
+			Log.log("Unknown campaign class (" .. campaignID .. ") (" .. questID .. ")");
 			return;
 		end
 

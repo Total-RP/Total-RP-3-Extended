@@ -19,6 +19,7 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local pairs, strjoin, tostring, strtrim = pairs, strjoin, tostring, strtrim;
 local EMPTY = TRP3_API.globals.empty;
+local loc = TRP3_API.locale.getText;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local Log = Utils.log;
 
@@ -175,21 +176,21 @@ local function initConfig()
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_extended",
-		menuText = "Extended settings", -- TODO:locals
-		pageText = "Extended settings", -- TODO:locals
+		menuText = loc("CONF_MAIN"),
+		pageText = loc("CONF_MAIN"),
 		elements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "Units", -- TODO:locals
+				title = loc("CONF_UNIT"),
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationExtended_Units_Weight",
-				title = "Weight units", -- TODO:locals
+				title = loc("CONF_UNIT_WEIGHT"),
 				listContent = WEIGHT_UNIT_TAB,
 				configKey = TRP3_API.extended.CONFIG_WEIGHT_UNIT,
 				listCancel = true,
-				help = "Defines how weight values are displayed. It will be converted from grams." -- TODO:locals
+				help = loc("CONF_UNIT_WEIGHT_TT")
 			}
 		}
 	};

@@ -33,6 +33,11 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	TYPE_DOCUMENT = "Document",
 	TYPE_DIALOG = "Cutscene",
 
+	-- MODES
+	MODE_QUICK = "Quick",
+	MODE_NORMAL = "Normal",
+	MODE_EXPERT = "Expert",
+
 	-- DATABASE
 	DB = "Database",
 	DB_MY = "My database (%s)",
@@ -69,8 +74,34 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	SPECIFIC_INNER_ID = "Inner ID",
 	SPECIFIC_PATH = "Root path",
 	SPECIFIC_MODE = "Mode",
+	SPECIFIC = "Specific object",
+
+	-- Editor common
+	EDITOR_PREVIEW = "preview",
+	EDITOR_ICON_SELECT = "Click to select an icon.",
 
 	-- Item creation
+	IT_NEW_NAME = "New item",
+	IT_QUICK_EDITOR = "Quick item creation",
+	IT_QUICK_EDITOR_EDIT = "Quick item edition",
+	IT_CONVERT_TO_NORMAL = "Convert to normal mode",
+	IT_DISPLAY_ATT = "Display attributes",
+	IT_GAMEPLAY_ATT = "Gameplay attributes",
 	IT_FIELD_QUALITY = "Item quality",
-
+	IT_FIELD_NAME = "Item name",
+	IT_FIELD_NAME_TT = "It's your item name.",
+	IT_TT_LEFT = "Tooltip custom left text",
+	IT_TT_LEFT_TT = "It's a free text that will be in the tooltip, bellow the item name.",
+	IT_TT_RIGHT = "Tooltip custom right text",
+	IT_TT_RIGHT_TT = "It's a free text that will be in the tooltip, right to the left text.",
+	IT_TT_DESCRIPTION = "Tooltip description",
+	IT_TT_DESCRIPTION_TT = "It's your item description.",
+	IT_TT_REAGENT = "Crafting reagent flag",
+	IT_TT_REAGENT_TT = "Shows the \"Crafting reagent\" line in the tooltip.",
+	IT_TT_VALUE = "Item value",
+	IT_TT_VALUE_FORMAT = "Item value (in %s)",
+	IT_TT_VALUE_TT = "This value will be informed on the tooltip extension (hold alt) or during transactions.",
+	IT_TT_WEIGHT = "Item weight",
+	IT_TT_WEIGHT_FORMAT = "Item weight (in grams)",
+	IT_TT_WEIGHT_TT = "The weight influence the total weight of the container.",
 };

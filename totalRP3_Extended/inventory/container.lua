@@ -427,8 +427,10 @@ local function containerFrameUpdate(self, elapsed)
 	local current = self.info.totalWeight or 0;
 	local formatedWeight = TRP3_API.extended.formatWeight(current);
 	local weight = formatedWeight .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
-	if self.class.CO.MW and self.class.CO.MW > 0 then
-		-- TODO: color if too heavy
+	if self.class.CO.MW and self.class.CO.MW > 0 and current > self.class.CO.MW then
+		self.WeightText:SetTextColor(0.95, 0, 0);
+	else
+		self.WeightText:SetTextColor(0.95, 0.95, 0.95);
 	end
 	self.WeightText:SetText(weight);
 

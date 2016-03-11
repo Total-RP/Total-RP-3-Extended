@@ -186,6 +186,13 @@
 				</Anchors>
 			</Button>
 
+			<Button parentKey="convert" inherits="TRP3_CommonButton">
+				<Size x="200" y="20"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="0"/>
+				</Anchors>
+			</Button>
+
 			<Button parentKey="Close" inherits="UIPanelCloseButton">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="0" y="0"/>

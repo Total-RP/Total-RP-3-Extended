@@ -135,13 +135,13 @@ local currentRootID;
 
 local function getModeLocale(mode)
 	if mode == TRP3_DB.modes.QUICK then
-		return "Quick"; --TODO: locales
+		return loc("MODE_QUICK");
 	end
 	if mode == TRP3_DB.modes.NORMAL then
-		return "Normal"; --TODO: locales
+		return loc("MODE_NORMAL");
 	end
 	if mode == TRP3_DB.modes.EXPERT then
-		return "Expert"; --TODO: locales
+		return loc("MODE_EXPERT");
 	end
 end
 
@@ -271,8 +271,8 @@ local function onStart()
 	end
 
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.root, loc("ROOT_TITLE"), 150);
-	TRP3_API.ui.frame.setupFieldPanel(toolFrame.specific, "Specific object", 150); -- TODO: locals
-	TRP3_API.ui.frame.setupFieldPanel(toolFrame.actions, "Actions", 100); -- TODO: locals
+	TRP3_API.ui.frame.setupFieldPanel(toolFrame.specific, loc("SPECIFIC"), 150);
+	TRP3_API.ui.frame.setupFieldPanel(toolFrame.actions, loc("DB_ACTIONS"), 100);
 	PAGE_BY_TYPE[TRP3_DB.types.CAMPAIGN].loc = loc("TYPE_CAMPAIGN");
 	PAGE_BY_TYPE[TRP3_DB.types.QUEST].loc = loc("TYPE_QUEST");
 	PAGE_BY_TYPE[TRP3_DB.types.QUEST_STEP].loc = loc("TYPE_QUEST_STEP");

@@ -35,7 +35,7 @@ TRP3_DB.inner.bag_normal = {
 	},
 	CO = {
 		DU = 25,
-		MW = 30,
+		MW = 10000,
 		SI = "5x4",
 	},
 }

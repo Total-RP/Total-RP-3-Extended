@@ -102,10 +102,15 @@ local function removeChildrenFromPool(parentID)
 end
 
 local function onLineClick(self, button)
+	local data = self:GetParent().idData;
 	if button == "RightButton" then
-		onLineRightClick(self:GetParent(), self:GetParent().idData);
+		onLineRightClick(self:GetParent(), data);
 	else
-		TRP3_API.extended.tools.goToPage(self:GetParent().idData.fullID);
+		if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
+			TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID);
+		else
+			TRP3_API.extended.tools.goToPage(data.fullID);
+		end
 	end
 end
 
@@ -148,6 +153,7 @@ function refresh()
 		-- idData is wipe frequently: DO NOT STORE PERSISTENT DATA IN IT !!!
 		idData[index] = {
 			type = class.TY,
+			mode = (class.MD and class.MD.MO) or TRP3_DB.modes.NORMAL,
 			icon = icon,
 			text = name,
 			text2 = description,

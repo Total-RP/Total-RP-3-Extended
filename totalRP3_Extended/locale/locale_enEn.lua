@@ -74,4 +74,12 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",
+
+	-- SETTINGS
+	UNIT_FRIES = "fries",
+	UNIT_POTATOES = "potatoes",
+	CONF_MAIN = "Extended settings",
+	CONF_UNIT = "Units",
+	CONF_UNIT_WEIGHT = "Weight unit",
+	CONF_UNIT_WEIGHT_TT = "Defines how weight values are displayed.",
 };
