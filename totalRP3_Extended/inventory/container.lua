@@ -51,7 +51,7 @@ local function incrementLineIfFirst(first, line)
 end
 
 local function getItemTooltipLines(slotInfo, class, forceAlt)
-	local title, left, right, text1, text2;
+	local title, left, right, text1, text2,  extension1, extension2;
 	local icon, name = getBaseClassDataSafe(class);
 	title = getQualityColorText(class.BA.QA) .. name;
 
@@ -100,12 +100,17 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 	end
 
 	if IsAltKeyDown() or forceAlt then
-		if slotInfo.totalWeight or (class.BA.WE and class.BA.WE > 0) then
-			text1 = incrementLine(text1);
 
-			local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * class.BA.WE);
-			local formatedWeight = TRP3_API.extended.formatWeight(weight);
-			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. formatedWeight;
+		extension1 = "";
+		local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * (class.BA.WE or 0));
+		local formatedWeight = TRP3_API.extended.formatWeight(weight);
+		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. formatedWeight;
+
+		if (class.BA.VA or 0) > 0 then
+			extension2 = "";
+			local value = class.BA.VA or 0;
+			local formatedValue = GetCoinTextureString(value);
+			extension2 = extension2 .. Utils.str.color("w") .. formatedValue;
 		end
 
 		text2 = "";
@@ -127,7 +132,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 	end
 
-	return title, left, right, text1, text2;
+	return title, left, right, text1, text2, extension1, extension2;
 end
 
 local TRP3_ItemTooltip = TRP3_ItemTooltip;
@@ -135,7 +140,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	TRP3_ItemTooltip:Hide();
 	TRP3_ItemTooltip:SetOwner(frame, anchor or (frame.tooltipRight and "ANCHOR_RIGHT") or "ANCHOR_LEFT", 0, 0);
 
-	local title, left, right, text1, text2 = getItemTooltipLines(slotInfo, itemClass, forceAlt);
+	local title, left, right, text1, text2,  extension1, extension2 = getItemTooltipLines(slotInfo, itemClass, forceAlt);
 
 	local i = 1;
 	if title and title:len() > 0 then
@@ -159,6 +164,15 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		i = i + 1;
+	end
+
+	if (extension1 and extension1:len() > 0) or (extension2 and extension2:len() > 0) then
+		TRP3_ItemTooltip:AddDoubleLine(extension1 or "", extension2 or "", 1, 1, 1, 1, 1, 1);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		_G["TRP3_ItemTooltipTextRight"..i]:SetFontObject(GameFontNormal);
+		_G["TRP3_ItemTooltipTextRight"..i]:SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 

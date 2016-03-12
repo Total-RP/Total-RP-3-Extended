@@ -44,7 +44,7 @@ local function injectUIData(data)
 	return data;
 end
 
-local function onSave()
+local function onSave(toMode)
 	local ID, data;
 	if editor.classID then
 		-- Edition
@@ -53,12 +53,13 @@ local function onSave()
 		data.MD.V = data.MD.V + 1;
 		data.MD.SD = date("%d/%m/%y %H:%M:%S");
 		data.MD.SB = Globals.player_id;
+		data.MD.MO = toMode or TRP3_DB.modes.QUICK;
 	else
 		-- New item
 		data = {
 			TY = TRP3_DB.types.ITEM,
 			MD = {
-				MO = TRP3_DB.modes.QUICK,
+				MO = toMode or TRP3_DB.modes.QUICK,
 				V = 1,
 				CD = date("%d/%m/%y %H:%M:%S");
 				CB = Globals.player_id,
@@ -75,6 +76,11 @@ local function onSave()
 	end
 	editor:Hide();
 	Events.fireEvent(Events.ON_OBJECT_UPDATED, ID, TRP3_DB.types.ITEM);
+	return ID;
+end
+
+local function onConvert()
+	TRP3_API.extended.tools.goToPage(onSave(TRP3_DB.modes.NORMAL));
 end
 
 local function onIconSelected(icon)
@@ -111,6 +117,10 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 			}
 		});
 	end
+end
+
+local function onQuickCreatedFromList(classID, _)
+	TRP3_API.inventory.addItem(nil, classID);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -162,8 +172,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, loc("IT_TT_VALUE"), loc("IT_TT_VALUE_TT"));
 
 	-- Weight
-	editor.weight.title:SetText(loc("IT_TT_WEIGHT"));
-	setTooltipForSameFrame(editor.weight.help, "RIGHT", 0, 5, loc("IT_TT_WEIGHT_FORMAT"), loc("IT_TT_WEIGHT_TT"));
+	editor.weight.title:SetText(loc("IT_TT_WEIGHT_FORMAT"));
+	setTooltipForSameFrame(editor.weight.help, "RIGHT", 0, 5, loc("IT_TT_WEIGHT"), loc("IT_TT_WEIGHT_TT"));
 
 	-- Preview
 	editor.preview.Name:SetText(loc("EDITOR_PREVIEW"));
@@ -181,6 +191,9 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	-- Save
 	editor.save:SetScript("OnClick", onSave);
 
+	-- Save
+	editor.convert:SetScript("OnClick", onConvert);
+
 	-- Frame
 	TRP3_API.ui.frame.setupEditBoxesNavigation({
 		editor.name,
@@ -190,6 +203,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		editor.value,
 		editor.weight,
 	});
+	editor.convert:SetText(loc("IT_CONVERT_TO_NORMAL"));
 	editor.title:SetText(loc("IT_QUICK_EDITOR"));
 	editor.display:SetText(loc("IT_DISPLAY_ATT"));
 	editor.gameplay:SetText(loc("IT_GAMEPLAY_ATT"));
@@ -197,6 +211,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	editor:SetScript("OnShow", function()
 		editor.name:SetFocus();
 	end);
+	setTooltipForSameFrame(editor.convert, "TOP", 0, 0, loc("IT_CONVERT_TO_NORMAL"), loc("IT_CONVERT_TO_NORMAL_TT"));
 
 	-- Templates
 	toolFrame.list.bottom.item.Name:SetText(loc("DB_CREATE_ITEM"));
@@ -229,6 +244,6 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 
 	toolFrame.list.bottom.item.templates.quick:SetScript("OnClick", function(self)
 		toolFrame.list.bottom.item.templates:Hide();
-		TRP3_API.extended.tools.openItemQuickEditor(toolFrame.list.bottom.item);
+		TRP3_API.extended.tools.openItemQuickEditor(toolFrame.list.bottom.item, onQuickCreatedFromList);
 	end);
 end

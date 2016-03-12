@@ -16,13 +16,14 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, strsplit, tinsert, table = wipe, pairs, strsplit, tinsert, table;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.locale.getText;
 local Log = Utils.log;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
 local showItemTooltip = TRP3_API.inventory.showItemTooltip;
 
@@ -114,11 +115,23 @@ local function onLineClick(self, button)
 	end
 end
 
+local color = "|cffffff00";
+local fieldFormat = "%s: " .. color .. "%s|r";
+
+local function getMetadataTooltipText(rootID, metadata)
+	local text =  fieldFormat:format("Root class", rootID); -- TODO: locals
+	text = text .. "\n" .. fieldFormat:format("Version", metadata.V or 1); -- TODO: locals
+	text = text .. "\n" .. fieldFormat:format("Created by", metadata.CB or "?"); -- TODO: locals
+	text = text .. "\n" .. fieldFormat:format("Created on", metadata.CD or "?"); -- TODO: locals
+	text = text .. "\n" .. fieldFormat:format("Mode", TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?"); -- TODO: locals
+	return text;
+end
+
 local function onLineEnter(self)
 	refreshTooltipForFrame(self);
 	if self:GetParent().idData.type == TRP3_DB.types.ITEM then
 		local class = getClass(self:GetParent().idData.fullID);
-		showItemTooltip(self:GetParent(), Globals.empty, class, true, "ANCHOR_TOPRIGHT");
+		showItemTooltip(self:GetParent(), Globals.empty, class, true, "ANCHOR_RIGHT");
 	end
 end
 
@@ -145,6 +158,7 @@ function refresh()
 	for index, objectID in pairs(idList) do
 		local class = getClass(objectID);
 		local parts = {strsplit(ID_SEPARATOR, objectID)};
+		local rootClass = getClass(parts[1]);
 		local depth = #parts;
 		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len()) == objectID;
 		local hasChildren = isOpen or objectHasChildren(class);
@@ -162,6 +176,7 @@ function refresh()
 			fullID = objectID,
 			isOpen = isOpen,
 			hasChildren = hasChildren,
+			metadataTooltip = getMetadataTooltipText(parts[1], rootClass.MD or EMPTY),
 		}
 
 	end
@@ -193,6 +208,8 @@ function refresh()
 				lineWidget.Expand:SetPushedTexture("Interface\\Buttons\\UI-PlusButton-DOWN");
 			end
 		end
+
+		setTooltipForSameFrame(lineWidget.Click, "BOTTOMRIGHT", 0, 0, idData.ID, idData.metadataTooltip);
 
 		lineWidget:ClearAllPoints();
 		lineWidget:SetPoint("LEFT", LEFT_DEPTH_STEP_MARGIN * (idData.depth - 1), 0);

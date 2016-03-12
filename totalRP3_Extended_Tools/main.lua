@@ -144,6 +144,7 @@ local function getModeLocale(mode)
 		return loc("MODE_EXPERT");
 	end
 end
+TRP3_API.extended.tools.getModeLocale = getModeLocale;
 
 local function openObjectAndGetDraft(rootClassID, rootClass)
 	if currentRootID ~= rootClassID then
