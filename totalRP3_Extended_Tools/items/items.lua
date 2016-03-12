@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, error, assert, table = wipe, pairs, error, assert, table;
+local wipe, pairs, error, assert, date = wipe, pairs, error, assert, date;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
@@ -46,6 +46,23 @@ local function createItem(data)
 end
 TRP3_API.extended.tools.createItem = createItem;
 
+function TRP3_API.extended.tools.getBlankItemData(toMode)
+	return {
+		TY = TRP3_DB.types.ITEM,
+		MD = {
+			MO = toMode or TRP3_DB.modes.QUICK,
+			V = 1,
+			CD = date("%d/%m/%y %H:%M:%S");
+			CB = Globals.player_id,
+			SD = date("%d/%m/%y %H:%M:%S");
+			SB = Globals.player_id,
+		},
+		BA = {
+			NA = loc("IT_NEW_NAME"),
+		},
+	};
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Item base frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -63,6 +80,13 @@ local function onLoad(rootClassID, specificClassID, rootDraft, specificDraft)
 	end
 end
 
+local function onSave(specificDraft)
+	assert(specificDraft, "specificDraft is nil");
+	if TRP3_DB.modes.EXPERT ~= (specificDraft.MO or TRP3_DB.modes.NORMAL) then
+		toolFrame.item.normal.saveToDraft(specificDraft);
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -70,6 +94,7 @@ end
 function TRP3_API.extended.tools.initItems(ToolFrame)
 	toolFrame = ToolFrame;
 	toolFrame.item.onLoad = onLoad;
+	toolFrame.item.onSave = onSave;
 
 	TRP3_API.extended.tools.initItemQuickEditor(toolFrame);
 	TRP3_API.extended.tools.initItemFrames(toolFrame);

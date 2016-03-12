@@ -162,7 +162,7 @@
 				</Anchors>
 			</EditBox>
 
-			<EditBox parentKey="weight" inherits="TRP3_TitledHelpEditBox">
+			<EditBox parentKey="weight" inherits="TRP3_TitledHelpEditBox" numeric="true">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="LEFT" x="38" y="0" relativePoint="RIGHT" relativeKey="$parent.value"/>

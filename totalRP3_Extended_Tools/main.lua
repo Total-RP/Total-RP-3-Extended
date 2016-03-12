@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, assert, tostring, strsplit, wipe = pairs, assert, tostring, strsplit, wipe;
+local pairs, assert, tostring, strsplit, wipe, date = pairs, assert, tostring, strsplit, wipe, date;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local loc = TRP3_API.locale.getText;
@@ -146,8 +146,8 @@ local function getModeLocale(mode)
 end
 TRP3_API.extended.tools.getModeLocale = getModeLocale;
 
-local function openObjectAndGetDraft(rootClassID, rootClass)
-	if currentRootID ~= rootClassID then
+local function openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload)
+	if forceDraftReload or currentRootID ~= rootClassID then
 		wipe(draftData);
 		currentRootID = rootClassID;
 		Utils.table.copy(draftData, rootClass);
@@ -167,6 +167,29 @@ local function displayRootInfo(rootClassID, rootClass, classFullID, classID, spe
 	toolFrame.specific.id:SetText(fieldFormat:format(loc("SPECIFIC_INNER_ID"), classID));
 	toolFrame.specific.fullid:SetText(fieldFormat:format(loc("SPECIFIC_PATH"), classFullID));
 	toolFrame.specific.mode:SetText(fieldFormat:format(loc("SPECIFIC_MODE"), getModeLocale(specificDraft.MD.MO)));
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Editor save delegate
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local getClass = TRP3_API.extended.getClass;
+local goToPage;
+
+local function onSave(editor)
+	assert(editor, "No editor.");
+	assert(editor.onSave, "No save method in editor.");
+	assert(editor.rootClassID, "No rootClassID in editor.");
+	assert(editor.classID, "No classID in editor.");
+	local rootClassID, classID = editor.rootClassID, editor.classID;
+
+	local object = getClass(rootClassID);
+	editor.onSave(object);
+	object.MD.V = object.MD.V + 1;
+	object.MD.SD = date("%d/%m/%y %H:%M:%S");
+	object.MD.SB = Globals.player_id;
+
+	goToPage(classID, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -192,7 +215,7 @@ local function goToListPage(skipButton)
 	TRP3_API.extended.tools.toList();
 end
 
-local function goToPage(classID)
+function goToPage(classID, forceDraftReload)
 	-- Ensure buttons up to the target
 	NavBar_Reset(toolFrame.navBar);
 	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, classID)};
@@ -233,16 +256,23 @@ local function goToPage(classID)
 	-- Load data
 	local rootClassID = parts[1];
 	local rootClass = getClass(rootClassID);
-	local rootDraft = openObjectAndGetDraft(rootClassID, rootClass);
+	local rootDraft = openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload);
 	local specificDraft = rootDraft; -- FIXME: temp, won't works with inner objects :)
 	displayRootInfo(rootClassID, rootClass, classID, parts[#parts], specificDraft);
 
 	-- Show selected
 	assert(selectedPageFrame, "No editor for type " .. class.TY);
 	assert(selectedPageFrame.onLoad, "No load entry for type " .. class.TY);
-	selectedPageFrame:Show();
+	selectedPageFrame.rootClassID = rootClassID;
+	selectedPageFrame.classID = classID;
+	selectedPageFrame.rootDraft = rootDraft;
+	selectedPageFrame.specificDraft = specificDraft;
 	selectedPageFrame.onLoad(rootClassID, classID, rootDraft, specificDraft);
+	selectedPageFrame:Show();
 
+	toolFrame.actions.save:SetScript("OnClick", function()
+		onSave(selectedPageFrame);
+	end);
 end
 TRP3_API.extended.tools.goToPage = goToPage;
 

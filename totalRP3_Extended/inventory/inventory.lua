@@ -84,9 +84,9 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 			local slotID = tostring(i);
 			if not freeSlot and not container.content[slotID] then
 				freeSlot = slotID;
-			elseif container.content[slotID] and itemClass.ST and classID == container.content[slotID].id then
+			elseif container.content[slotID] and (itemClass.BA.ST or 0) > 0 and classID == container.content[slotID].id then
 				local expectedCount = (container.content[slotID].count or 1) + 1;
-				if expectedCount <= (itemClass.ST.MA or 1) then
+				if expectedCount <= (itemClass.BA.ST) then
 					stackSlot = slotID;
 					break;
 				end
@@ -144,8 +144,8 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 	local slot2Data = container2.content[slot2];
 	local done;
 
-	if slot2Data and slot1Data.id == slot2Data.id and getClass(slot1Data.id).ST then
-		local stackMax = getClass(slot1Data.id).ST.MA or 1;
+	if slot2Data and slot1Data.id == slot2Data.id and (getClass(slot1Data.id).BA.ST or 0) > 0 then
+		local stackMax = getClass(slot1Data.id).BA.ST;
 		local availableOnTarget = stackMax - (slot2Data.count or 1);
 		if availableOnTarget > 0 then
 			local canBeMoved = math.min(availableOnTarget, slot1Data.count or 1);

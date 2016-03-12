@@ -56,18 +56,7 @@ local function onSave(toMode)
 		data.MD.MO = toMode or TRP3_DB.modes.QUICK;
 	else
 		-- New item
-		data = {
-			TY = TRP3_DB.types.ITEM,
-			MD = {
-				MO = toMode or TRP3_DB.modes.QUICK,
-				V = 1,
-				CD = date("%d/%m/%y %H:%M:%S");
-				CB = Globals.player_id,
-				SD = date("%d/%m/%y %H:%M:%S");
-				SB = Globals.player_id,
-			},
-			BA = {},
-		};
+		data = TRP3_API.extended.tools.getBlankItemData(toMode);
 		ID, data = TRP3_API.extended.tools.createItem(injectUIData(data));
 	end
 
@@ -138,8 +127,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc("IT_FIELD_NAME"), loc("IT_FIELD_NAME_TT"));
 
 	-- Quality
-	local neutral = {r = 0.95, g = 0.95, b = 0.95};
-	local qualityList = {
+	editor.qualityList = {
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_POOR) .. ITEM_QUALITY0_DESC, LE_ITEM_QUALITY_POOR},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_COMMON) .. ITEM_QUALITY1_DESC, LE_ITEM_QUALITY_COMMON},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_UNCOMMON) .. ITEM_QUALITY2_DESC, LE_ITEM_QUALITY_UNCOMMON},
@@ -149,7 +137,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_HEIRLOOM) .. ITEM_QUALITY7_DESC, LE_ITEM_QUALITY_HEIRLOOM},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_WOW_TOKEN) .. ITEM_QUALITY8_DESC, LE_ITEM_QUALITY_WOW_TOKEN},
 	};
-	setupListBox(editor.quality, qualityList, nil, nil, 165, true);
+	setupListBox(editor.quality, editor.qualityList, nil, nil, 165, true);
 
 	-- Left attribute
 	editor.left.title:SetText(loc("IT_TT_LEFT"));
@@ -245,5 +233,11 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame.list.bottom.item.templates.quick:SetScript("OnClick", function(self)
 		toolFrame.list.bottom.item.templates:Hide();
 		TRP3_API.extended.tools.openItemQuickEditor(toolFrame.list.bottom.item, onQuickCreatedFromList);
+	end);
+
+	toolFrame.list.bottom.item.templates.blank:SetScript("OnClick", function(self)
+		toolFrame.list.bottom.item.templates:Hide();
+		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL));
+		TRP3_API.extended.tools.goToPage(ID);
 	end);
 end

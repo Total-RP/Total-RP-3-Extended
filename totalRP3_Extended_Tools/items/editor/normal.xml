@@ -34,11 +34,31 @@
 		<Frames>
 			<Frame parentKey="display" inherits="TRP3_ItemEditorFrameDisplay">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-10"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+					<Anchor point="TOP" x="0" y="-5"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="0" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="-15"/>
 				</Anchors>
 			</Frame>
+
+			<Frame parentKey="gameplay" inherits="TRP3_ItemEditorFrameGameplay">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="CENTER" x="0" y="-15"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="notes" inherits="TRP3_ItemEditorFrameNotes">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-5"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+			</Frame>
+
 		</Frames>
 
 	</Frame>

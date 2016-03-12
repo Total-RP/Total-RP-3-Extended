@@ -75,9 +75,8 @@ TRP3_DB.inner.currency_coin_copper = {
 		QA = 2,
 		WE = 2,
 		VA = 1,
-	},
-	UN = 10,
-	ST = {
-		MA = 5,
+		ST = 5,
+		UN = 10,
+		ST = 5,
 	},
 }

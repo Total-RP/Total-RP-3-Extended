@@ -74,9 +74,9 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("w") .. CONTAINER_SLOTS:format((class.CO.SR or 5) * (class.CO.SC or 4), BAGSLOT);
 	end
-	if class.UN and class.UN > 0 then
+	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. class.UN .. ")";
+		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. class.BA.UN .. ")";
 	end
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
@@ -94,7 +94,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		text1 = text1 .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
 	end
 
-	if slotInfo.madeBy then
+	if class.BA.CR and slotInfo.madeBy then
 		text1 = incrementLine(text1);
 		text1 = text1 .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
 	end
@@ -200,7 +200,7 @@ local function containerSlotUpdate(self, elapsed)
 		local icon, name = getBaseClassDataSafe(class);
 		self.Icon:Show();
 		self.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-		if class.QE and class.QE.QH then
+		if class.BA and class.BA.QE then
 			self.Quest:Show();
 		end
 		if class.BA and class.BA.QA and class.BA.QA ~= 1 then
