@@ -206,9 +206,7 @@ local function onInit()
 		TRP3_Exchange_DB = {};
 	end
 	TRP3_DB.exchange = TRP3_Exchange_DB;
-end
 
-local function onStart()
 	-- Register locales
 	for localeID, localeStructure in pairs(TRP3_EXTENDED_LOCALE) do
 		local locale = TRP3_API.locale.getLocale(localeID);
@@ -216,6 +214,9 @@ local function onStart()
 			locale.localeContent[localeKey] = text;
 		end
 	end
+end
+
+local function onStart()
 
 	-- Calculate global environement with all ids
 	local countInner, countExchange, countMy;

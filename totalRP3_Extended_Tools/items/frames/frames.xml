@@ -123,6 +123,7 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Frame name="TRP3_ItemEditorFrameGameplay" inherits="TRP3_EditorTitledFrame" virtual="true">
+
 		<Frames>
 
 			<EditBox parentKey="value" inherits="TRP3_TitledHelpEditBox" numeric="true">
@@ -192,6 +193,18 @@
 				</Anchors>
 			</EditBox>
 
+			<CheckButton parentKey="wearable" inherits="TRP3_CheckBox" name="$parentWearable">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.use"/>
+				</Anchors>
+			</CheckButton>
+
+			<CheckButton parentKey="container" inherits="TRP3_CheckBox" name="$parentContainer">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.wearable"/>
+				</Anchors>
+			</CheckButton>
+
 		</Frames>
 	</Frame>
 
@@ -208,6 +221,55 @@
 					<Anchor point="BOTTOM" x="0" y="40"/>
 					<Anchor point="RIGHT" x="-40" y="0"/>
 					<Anchor point="LEFT" x="40" y="0"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--    Container frame     -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_ItemEditorFrameContainer" inherits="TRP3_EditorTitledFrame" virtual="true">
+		<Frames>
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="0" y="-5"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="durability" inherits="TRP3_TitledHelpEditBox" numeric="true">
+				<Size x="0" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="22" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.type"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="maxweight" inherits="TRP3_TitledHelpEditBox" numeric="true">
+				<Size x="0" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.durability"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+				</Anchors>
+			</EditBox>
+
+
+			<Frame parentKey="bag5x4" inherits="TRP3_Container5x4Template" name="$parent5x4" hidden="false" toplevel="false" movable="false">
+				<Anchors>
+					<Anchor point="RIGHT" x="-55" y="0"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="bag2x4" inherits="TRP3_Container2x4Template" name="$parent2x4" hidden="false" toplevel="false" movable="false">
+				<Anchors>
+					<Anchor point="RIGHT" x="-55" y="0"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="bag1x4" inherits="TRP3_Container1x4Template" name="$parent1x4" hidden="false" toplevel="false" movable="false">
+				<Anchors>
+					<Anchor point="RIGHT" x="-55" y="0"/>
 				</Anchors>
 			</Frame>
 		</Frames>

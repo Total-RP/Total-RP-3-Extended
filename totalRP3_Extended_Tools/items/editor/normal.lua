@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, tonumber, tinsert, strtrim = wipe, pairs, tonumber, tinsert, strtrim;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
@@ -24,13 +24,12 @@ local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolFrame, currentTab, display, gameplay, notes, tabGroup;
+local toolFrame, currentTab, display, gameplay, notes, container, tabGroup;
 
 local TABS = {
-	GENERAL = "GENERAL",
-	EFFECTS = "EFFECTS",
-	DOCUMENT = "DOCUMENT",
-	CONTAINER = "CONTAINER",
+	MAIN = 1,
+	EFFECTS = 2,
+	CONTAINER = 3,
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -48,6 +47,7 @@ local function refreshCheck()
 	gameplay.usetext:Hide();
 	display.preview.Quest:Hide();
 	tabGroup:SetTabVisible(2, false);
+	tabGroup:SetTabVisible(3, false);
 	if gameplay.unique:GetChecked() then
 		gameplay.uniquecount:Show();
 	end
@@ -62,6 +62,9 @@ local function refreshCheck()
 	end
 	if gameplay.use:GetChecked() then
 		tabGroup:SetTabVisible(2, true);
+	end
+	if gameplay.container:GetChecked() then
+		tabGroup:SetTabVisible(3, true);
 	end
 end
 
@@ -85,6 +88,8 @@ local function loadDataMain(data)
 	gameplay.stackcount:SetText(data.BA.ST or "20");
 	gameplay.use:SetChecked(data.US or false);
 	gameplay.usetext:SetText(data.US and data.US.AC or "");
+	gameplay.wearable:SetChecked(data.BA.WA or false);
+	gameplay.container:SetChecked(data.CO or false);
 
 	notes.frame.scroll.text:SetText(data.NT or "");
 
@@ -115,8 +120,81 @@ local function storeDataMain(data)
 	if gameplay.use:GetChecked() then
 		data.US.AC = stEtN(strtrim(gameplay.usetext:GetText()));
 	end
+	data.BA.WA = gameplay.wearable:GetChecked();
+	if gameplay.container:GetChecked() then
+		if not data.CO then
+			data.CO = {};
+		end
+	else
+		data.CO = nil;
+	end
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
 	return data;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Container tab
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local containerPreview = {};
+
+local function onContainerResize(size)
+	container.bag5x4:Hide();
+	container.bag2x4:Hide();
+	container.bag1x4:Hide();
+	if size == "5x4" then
+		container.bag5x4:Show();
+	elseif size == "2x4" then
+		container.bag2x4:Show();
+	elseif size == "1x4" then
+		container.bag1x4:Show();
+	end
+end
+
+local function decorateContainerPreview(data)
+	for _, preview in pairs(containerPreview) do
+		TRP3_API.inventory.decorateContainer(preview, data);
+	end
+end
+
+local function onContainerFrameUpdate(self)
+	-- Durability
+	local durability = "";
+	local durabilityValue = tonumber(container.durability:GetText());
+	if durabilityValue and durabilityValue > 0 then
+		durability = (Utils.str.texture("Interface\\GROUPFRAME\\UI-GROUP-MAINTANKICON", 15) .. "%s/%s"):format(durabilityValue, durabilityValue);
+	end
+	self.DurabilityText:SetText(durability);
+
+	-- Weight
+	local weight = TRP3_API.extended.formatWeight(0) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
+	self.WeightText:SetText(weight);
+end
+
+local function loadDataContainer(data)
+	local containerData = data.CO or EMPTY;
+	container.type:SetSelectedValue(containerData.SI or "5x4");
+	container.durability:SetText(containerData.DU or "0");
+	container.maxweight:SetText(containerData.MW or "0");
+
+	onContainerResize(container.type:GetSelectedValue() or "5x4");
+end
+
+local function storeDataContainer(data)
+	if data.CO then
+		data.CO.SI = container.type:GetSelectedValue() or "5x4";
+		-- TODO: make this by string parsing
+		data.CO.SC = 4;
+		if data.CO.SI == "5x4" then
+			data.CO.SR = 5;
+		elseif data.CO.SI == "2x4" then
+			data.CO.SR = 2;
+		elseif data.CO.SI == "1x4" then
+			data.CO.SR = 1;
+		end
+		data.CO.DU = tonumber(container.durability:GetText());
+		data.CO.MW = tonumber(container.maxweight:GetText());
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -126,17 +204,22 @@ end
 
 local function onTabChanged(tabWidget, tab)
 	-- Hide all
-	currentTab = tab or TABS.GENERAL;
+	currentTab = tab or TABS.MAIN;
+	display:Hide();
+	gameplay:Hide();
+	notes:Hide();
+	container:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
-
+		display:Show();
+		gameplay:Show();
+		notes:Show();
 	elseif currentTab == TABS.EFFECTS then
 
-	elseif currentTab == TABS.DOCUMENT then
-
 	elseif currentTab == TABS.CONTAINER then
-
+		decorateContainerPreview(storeDataMain({}));
+		container:Show();
 	end
 end
 
@@ -149,6 +232,7 @@ local function createTabBar()
 		{
 			{ "Main", TABS.MAIN, 150 }, -- TODO locals
 			{ "On use", TABS.EFFECTS, 150 }, -- TODO locals
+			{ "Container", TABS.CONTAINER, 150 }, -- TODO locals
 		},
 		onTabChanged
 	);
@@ -162,12 +246,15 @@ local function loadItem(rootClassID, specificClassID, rootDraft, specificDraft)
 	if not specificDraft.BA then
 		specificDraft.BA = {};
 	end
-	tabGroup:SelectTab(1);
+	tabGroup:SelectTab(specificDraft.currentTab or TABS.MAIN);
 	loadDataMain(specificDraft);
+	loadDataContainer(specificDraft);
 end
 
 local function saveToDraft(draft)
+	draft.currentTab = currentTab;
 	storeDataMain(draft);
+	storeDataContainer(draft);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -233,10 +320,10 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- DISPLAY
+	-- Gameplay
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	-- Display
+	-- Gameplay
 	gameplay = toolFrame.item.normal.gameplay;
 	gameplay.title:SetText(loc("IT_GAMEPLAY_ATT"));
 
@@ -276,12 +363,21 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	gameplay.usetext.title:SetText(loc("IT_USE_TEXT"));
 	setTooltipForSameFrame(gameplay.usetext.help, "RIGHT", 0, 5, loc("IT_USE_TEXT"), loc("IT_USE_TEXT_TT"));
 
+	-- Wearable
+	gameplay.wearable.Text:SetText(loc("IT_WEARABLE"));
+	setTooltipForSameFrame(gameplay.wearable, "RIGHT", 0, 5, loc("IT_WEARABLE"), loc("IT_WEARABLE_TT"));
+
+	-- Container
+	gameplay.container.Text:SetText(loc("IT_CON"));
+	setTooltipForSameFrame(gameplay.container, "RIGHT", 0, 5, loc("IT_CON"), loc("IT_CONTAINER_TT"));
+
 	local onCheckClicked = function()
 		refreshCheck();
 	end
 	gameplay.unique:SetScript("OnClick", onCheckClicked);
 	gameplay.stack:SetScript("OnClick", onCheckClicked);
 	gameplay.use:SetScript("OnClick", onCheckClicked);
+	gameplay.container:SetScript("OnClick", onCheckClicked);
 	display.quest:SetScript("OnClick", onCheckClicked);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -291,4 +387,38 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	-- Notes
 	notes = toolFrame.item.normal.notes;
 	notes.title:SetText(loc("EDITOR_NOTES"));
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CONTAINER
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	-- container
+	container = toolFrame.item.normal.container;
+	container.title:SetText(loc("IT_CON"));
+
+	-- Type
+	container.containerTypes = {
+		{("Container size: |cff00ff00%s"):format(("%s rows by %s columns"):format(5, 4)), "5x4"},
+		{("Container size: |cff00ff00%s"):format(("%s rows by %s columns"):format(2, 4)), "2x4"},
+		{("Container size: |cff00ff00%s"):format(("%s rows by %s columns"):format(1, 4)), "1x4"},
+	};
+	TRP3_API.ui.listbox.setupListBox(container.type, container.containerTypes, onContainerResize, nil, 230, true);
+
+	-- Durability
+	container.durability.title:SetText(loc("IT_CO_DURABILITY"));
+	setTooltipForSameFrame(container.durability.help, "RIGHT", 0, 5, loc("IT_CO_DURABILITY"), loc("IT_CO_DURABILITY_TT"));
+
+	-- Unique count
+	container.maxweight.title:SetText(loc("IT_CO_MAX"));
+	setTooltipForSameFrame(container.maxweight.help, "RIGHT", 0, 5, loc("IT_CO_MAX"), loc("IT_CO_MAX_TT"));
+
+	-- Preview
+	for _, size in pairs({"5x4", "2x4", "1x4"}) do
+		local preview = container["bag" .. size];
+		containerPreview[size] = preview;
+		preview.close:Disable();
+		preview.LockIcon:Hide();
+		TRP3_API.ui.frame.createRefreshOnFrame(preview, 0.25, onContainerFrameUpdate);
+	end
+
 end

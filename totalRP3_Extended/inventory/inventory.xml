@@ -70,7 +70,7 @@
 
 	</Frame>
 
-	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true" movable="true">
+	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true" movable="true">
 		<Size x="200" y="270" />
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -164,7 +164,7 @@
 		</Scripts>
 
 		<Frames>
-			<Button inherits="UIPanelCloseButton">
+			<Button inherits="UIPanelCloseButton" parentKey="close">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="0" y="-4"/>
 				</Anchors>
