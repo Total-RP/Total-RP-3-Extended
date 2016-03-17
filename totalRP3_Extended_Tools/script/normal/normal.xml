@@ -1,0 +1,300 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	
+<!--
+	Total RP 3
+	Copyright 2014-2016 Sylvain Cossement (telkostrasz@totalrp3.info)
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+	<Frame name="TRP3_EditorTitledFrame" inherits="TRP3_AltHoveredFrame" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+						<Anchor point="RIGHT" x="-20" y="0"/>
+						<Anchor point="LEFT" x="20" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_EditorEffectFrame" virtual="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="24" />
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="418" />
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5" />
+			</BackgroundInsets>
+		</Backdrop>
+		<Size x="0" y="65" />
+		<Frames>
+			<Frame parentKey="icon" inherits="TRP3_SimpleIcon">
+				<Size x="40" y="40" />
+				<Anchors>
+					<Anchor point="LEFT" x="15" y="0" />
+				</Anchors>
+			</Frame>
+			<Frame parentKey="highlight" inherits="GlowBorderTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="5" y="-2"/>
+					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetAlpha(0.55);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level="BORDER">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="LEFT" text="[ELEMENT_NAME]">
+					<Size x="0" y="20" />
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.icon" x="5" y="0" />
+						<Anchor point="RIGHT" x="-5" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+				<FontString parentKey="description" inherits="GameFontNormalSmall" justifyH="LEFT" text="[ELEMENT_DETAILS]">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.icon" x="5" y="5" />
+						<Anchor point="RIGHT" x="-5" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10" />
+				</FontString>
+
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\MINIMAP\MiniMap-VignetteArrow">
+					<Size x="40" y="40" />
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="BOTTOMRIGHT" x="-20" y="0" />
+					</Anchors>
+					<TexCoords left="0" right="1" top="1" bottom="0"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+				self.highlight:Show();
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+				self.highlight:Hide();
+			</OnLeave>
+		</Scripts>
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--    Script normal     -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_ScriptEditorNormal" hidden="true" setAllPoints="true">
+
+		<Frames>
+
+			<Frame parentKey="list" inherits="TRP3_EditorTitledFrame">
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-5"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="0"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="script" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="30"/>
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-25"/>
+								<Anchor point="RIGHT" x="-20" y="0"/>
+								<Anchor point="LEFT" x="20" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.75" b="0.0" />
+						</FontString>
+
+						<FontString parentKey="description" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.script" x="0" y="-20"/>
+								<Anchor point="RIGHT" x="-20" y="0"/>
+								<Anchor point="LEFT" x="20" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+
+						<Texture file="Interface\GLUES\CHARACTERCREATE\CharacterCreate-Arrow">
+							<Size x="64" y="128"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="RIGHT" x="0" y="0"/>
+							</Anchors>
+							<TexCoords left="1" right="0" top="0" bottom="1"/>
+						</Texture>
+					</Layer>
+				</Layers>
+
+			</Frame>
+
+			<Frame parentKey="workflow" inherits="TRP3_EditorTitledFrame" name="$parentWorkflow">
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-5"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+
+				<Frames>
+					<Frame parentKey="container" name="$parentContainer">
+						<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\GuildBankFrame\GuildVaultBG">
+							<EdgeSize><AbsValue val="32"/></EdgeSize>
+							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+						</Backdrop>
+
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-25" relativePoint="BOTTOM" relativeKey="$parent.title"/>
+							<Anchor point="LEFT" x="35" y="0"/>
+							<Anchor point="RIGHT" x="-35" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="45"/>
+						</Anchors>
+
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="empty" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+									<Size x="0" y="30"/>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+							</Layer>
+						</Layers>
+
+						<Frames>
+							<ScrollFrame parentKey="scroll" inherits="UIPanelScrollFrameTemplate" name="$parentScroll">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="10" y="-11"/>
+									<Anchor point="BOTTOMRIGHT" x="44" y="9"/>
+								</Anchors>
+								<ScrollChild>
+
+									<Frame parentKey="list" name="$parentList">
+										<Size x="10" y="300"/>
+										<Anchors>
+											<Anchor point="TOPLEFT" x="0" y="0"/>
+										</Anchors>
+										<Layers>
+											<Layer level="OVERLAY">
+												<FontString parentKey="endofworkflow" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+													<Size x="0" y="30"/>
+													<Color r="0.95" g="0.95" b="0.95" />
+												</FontString>
+											</Layer>
+										</Layers>
+									</Frame>
+
+								</ScrollChild>
+							</ScrollFrame>
+
+							<Button parentKey="add" inherits="TRP3_CommonButton">
+								<Size x="250" y="20"/>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="-5"/>
+								</Anchors>
+							</Button>
+
+						</Frames>
+					</Frame>
+
+				</Frames>
+
+			</Frame>
+
+			<Frame parentKey="element" inherits="TRP3_EditorTitledFrame" hidden="true">
+
+				<Anchors>
+					<Anchor point="TOP" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture file="Interface\GLUES\CHARACTERCREATE\CharacterCreate-Arrow">
+							<Size x="64" y="128"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="RIGHT" x="0" y="0"/>
+							</Anchors>
+							<TexCoords left="0" right="1" top="0" bottom="1"/>
+						</Texture>
+					</Layer>
+				</Layers>
+
+				<Frames>
+					<Frame parentKey="selector" hidden="true" setAllPoints="true">
+
+						<Frames>
+							<Button parentKey="effect" inherits="TRP3_QuestButtonTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="40" y="-45"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="condition" inherits="TRP3_QuestButtonTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="40" y="-105"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="delay" inherits="TRP3_QuestButtonTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="40" y="-165"/>
+								</Anchors>
+							</Button>
+
+							<Button parentKey="Close" inherits="UIPanelCloseButton">
+								<Anchors>
+									<Anchor point="TOPRIGHT" x="0" y="0"/>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										TRP3_ScriptEditorNormal.element:Hide();
+									</OnClick>
+								</Scripts>
+							</Button>
+						</Frames>
+
+					</Frame>
+				</Frames>
+
+			</Frame>
+
+		</Frames>
+
+	</Frame>
+
+</Ui>

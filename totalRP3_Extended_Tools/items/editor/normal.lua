@@ -119,6 +119,7 @@ local function storeDataMain(data)
 	end
 	if gameplay.use:GetChecked() then
 		data.US.AC = stEtN(strtrim(gameplay.usetext:GetText()));
+		data.US.SC = "onUse";
 	end
 	data.BA.WA = gameplay.wearable:GetChecked();
 	if gameplay.container:GetChecked() then
@@ -183,18 +184,62 @@ end
 local function storeDataContainer(data)
 	if data.CO then
 		data.CO.SI = container.type:GetSelectedValue() or "5x4";
-		-- TODO: make this by string parsing
-		data.CO.SC = 4;
-		if data.CO.SI == "5x4" then
-			data.CO.SR = 5;
-		elseif data.CO.SI == "2x4" then
-			data.CO.SR = 2;
-		elseif data.CO.SI == "1x4" then
-			data.CO.SR = 1;
-		end
+		local row, column = data.CO.SI:match("(%d)x(%d)");
+		data.CO.SR = row;
+		data.CO.SC = column;
 		data.CO.DU = tonumber(container.durability:GetText());
 		data.CO.MW = tonumber(container.maxweight:GetText());
 	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Script tab
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function loadDataScript(data)
+	TRP3_ScriptEditorNormal.mode = TRP3_DB.modes.NORMAL;
+	TRP3_ScriptEditorNormal.scriptTitle = "On use"; -- TODO: locals
+	TRP3_ScriptEditorNormal.scriptDescription = "This workflow will be triggered when the player uses this item."; -- TODO: locals
+	TRP3_ScriptEditorNormal.scriptID = "onUse";
+	TRP3_ScriptEditorNormal.data = data.SC or {};
+--	TRP3_ScriptEditorNormal.data =	{
+--		["onUse"] = {
+--			ST = {
+--				["1"] = {
+--					t = "branch",
+--					b = {
+--						{
+--							cond = { { { i = "tar_name" }, "==", { v = "Kyle Radue" } } },
+--							n = "2"
+--						}
+--					},
+--				},
+--				["2"] = {
+--					t = "delay",
+--					d = 4,
+--					n = "3",
+--				},
+--				["3"] = {
+--					t = "list",
+--					e = {
+--						{
+--							id = "text",
+--							args = { "Kyle says: Hello, take this contract and sign it.", 1 }
+--						},
+--					}
+--				},
+--				["4"] = {
+--					t = "list",
+--					e = {
+--						{
+--							id = "document_show",
+--							args = { "demoCampaign quest1 recruitementDoc" }
+--						},
+--					}
+--				},
+--			},
+--		}
+--	}
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -209,6 +254,7 @@ local function onTabChanged(tabWidget, tab)
 	gameplay:Hide();
 	notes:Hide();
 	container:Hide();
+	TRP3_ScriptEditorNormal:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
@@ -216,7 +262,10 @@ local function onTabChanged(tabWidget, tab)
 		gameplay:Show();
 		notes:Show();
 	elseif currentTab == TABS.EFFECTS then
-
+		TRP3_ScriptEditorNormal:SetParent(toolFrame.item.normal);
+		TRP3_ScriptEditorNormal:SetAllPoints();
+		TRP3_ScriptEditorNormal:Show();
+		TRP3_ScriptEditorNormal.refresh();
 	elseif currentTab == TABS.CONTAINER then
 		decorateContainerPreview(storeDataMain({}));
 		container:Show();
@@ -246,9 +295,10 @@ local function loadItem(rootClassID, specificClassID, rootDraft, specificDraft)
 	if not specificDraft.BA then
 		specificDraft.BA = {};
 	end
-	tabGroup:SelectTab(specificDraft.currentTab or TABS.MAIN);
 	loadDataMain(specificDraft);
+	loadDataScript(specificDraft);
 	loadDataContainer(specificDraft);
+	tabGroup:SelectTab(specificDraft.currentTab or TABS.MAIN);
 end
 
 local function saveToDraft(draft)

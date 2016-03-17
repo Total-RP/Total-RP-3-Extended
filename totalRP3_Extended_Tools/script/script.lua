@@ -17,18 +17,17 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tonumber, tinsert, strtrim = wipe, pairs, tonumber, tinsert, strtrim;
+local wipe, pairs, error, assert, date = wipe, pairs, error, assert, date;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
-local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.initItemFrames(toolFrame)
-
+function TRP3_API.extended.tools.initScript(ToolFrame)
+	TRP3_ScriptEditorNormal.init(ToolFrame);
 end

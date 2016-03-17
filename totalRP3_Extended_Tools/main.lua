@@ -354,6 +354,8 @@ local function onStart()
 	NavBar_Initialize(toolFrame.navBar, "NavButtonTemplate", homeData, toolFrame.navBar.home, toolFrame.navBar.overflow);
 
 	-- Init tabs
+	TRP3_API.extended.tools.initBaseEffects();
+	TRP3_API.extended.tools.initScript(toolFrame);
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 
