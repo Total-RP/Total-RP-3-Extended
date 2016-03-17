@@ -220,14 +220,46 @@ local function refresh()
 		editor.list.description:SetText(editor.scriptDescription or "");
 
 		if not editor.data[editor.scriptID] then
-			editor.data[editor.scriptID] = {ST = {}};
+			editor.data[editor.scriptID] = {};
 		end
+
+		if not editor.data[editor.scriptID].ST then
+			editor.data[editor.scriptID].ST = {};
+		end
+
 		editor.list.data = editor.data[editor.scriptID];
 		refreshList();
 	end
 
 end
 editor.refresh = refresh;
+
+editor.storeData = function(draft)
+	assert(editor.scriptID, "No scriptID for storeData.");
+	if not draft.SC then
+		draft.SC = {};
+	end
+	if not draft.SC[editor.scriptID] then
+		draft.SC[editor.scriptID] = {};
+	end
+	if not draft.SC[editor.scriptID].ST then
+		draft.SC[editor.scriptID].ST = {};
+	end
+
+	-- Remove precedent compiled script
+	draft.SC[editor.scriptID].c = nil;
+
+	local workflow = draft.SC[editor.scriptID].ST;
+	for i = 1, editor.list.size, 1 do
+		local frame = editor.list.listElement[i];
+		if i < editor.list.size and frame.scriptStepData.t ~= ELEMENT_TYPE.CONDITION then
+			frame.scriptStepData.n = tostring(i + 1);
+		else
+			frame.scriptStepData.n = nil;
+		end
+		workflow[tostring(i)] = frame.scriptStepData;
+	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT

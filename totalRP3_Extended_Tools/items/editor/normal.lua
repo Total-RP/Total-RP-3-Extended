@@ -202,44 +202,12 @@ local function loadDataScript(data)
 	TRP3_ScriptEditorNormal.scriptDescription = "This workflow will be triggered when the player uses this item."; -- TODO: locals
 	TRP3_ScriptEditorNormal.scriptID = "onUse";
 	TRP3_ScriptEditorNormal.data = data.SC or {};
---	TRP3_ScriptEditorNormal.data =	{
---		["onUse"] = {
---			ST = {
---				["1"] = {
---					t = "branch",
---					b = {
---						{
---							cond = { { { i = "tar_name" }, "==", { v = "Kyle Radue" } } },
---							n = "2"
---						}
---					},
---				},
---				["2"] = {
---					t = "delay",
---					d = 4,
---					n = "3",
---				},
---				["3"] = {
---					t = "list",
---					e = {
---						{
---							id = "text",
---							args = { "Kyle says: Hello, take this contract and sign it.", 1 }
---						},
---					}
---				},
---				["4"] = {
---					t = "list",
---					e = {
---						{
---							id = "document_show",
---							args = { "demoCampaign quest1 recruitementDoc" }
---						},
---					}
---				},
---			},
---		}
---	}
+end
+
+local function storeDataScript(data)
+	TRP3_ScriptEditorNormal.mode = TRP3_DB.modes.NORMAL;
+	TRP3_ScriptEditorNormal.scriptID = "onUse";
+	TRP3_ScriptEditorNormal.storeData(data);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -304,6 +272,7 @@ end
 local function saveToDraft(draft)
 	draft.currentTab = currentTab;
 	storeDataMain(draft);
+	storeDataScript(draft);
 	storeDataContainer(draft);
 end
 
