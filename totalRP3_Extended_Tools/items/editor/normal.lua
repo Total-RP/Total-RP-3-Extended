@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, pairs, tonumber, tinsert, strtrim = wipe, pairs, tonumber, tinsert, strtrim;
+local wipe, pairs, tonumber, tinsert, strtrim, assert = wipe, pairs, tonumber, tinsert, strtrim, assert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
@@ -68,7 +68,15 @@ local function refreshCheck()
 	end
 end
 
-local function loadDataMain(data)
+local function loadDataMain()
+	local data = toolFrame.specificDraft;
+	if not data.BA then
+		data.BA = {};
+	end
+	if not data.US then
+		data.US = {};
+	end
+
 	display.name:SetText(data.BA.NA or "");
 	display.description:SetText(data.BA.DE or "");
 	display.quality:SetSelectedValue(data.BA.QA or LE_ITEM_QUALITY_COMMON);
@@ -86,20 +94,18 @@ local function loadDataMain(data)
 	gameplay.uniquecount:SetText(data.BA.UN or "1");
 	gameplay.stack:SetChecked((data.BA.ST or 0) > 0);
 	gameplay.stackcount:SetText(data.BA.ST or "20");
-	gameplay.use:SetChecked(data.US or false);
-	gameplay.usetext:SetText(data.US and data.US.AC or "");
+	gameplay.use:SetChecked(data.BA.US or false);
+	gameplay.usetext:SetText(data.US.AC or "");
 	gameplay.wearable:SetChecked(data.BA.WA or false);
-	gameplay.container:SetChecked(data.CO or false);
+	gameplay.container:SetChecked(data.BA.CT or false);
 
 	notes.frame.scroll.text:SetText(data.NT or "");
 
 	refreshCheck();
 end
 
-local function storeDataMain(data)
-	if not data.BA then
-		data.BA = {};
-	end
+local function storeDataMain()
+	local data = toolFrame.specificDraft;
 	data.BA.NA = stEtN(strtrim(display.name:GetText()));
 	data.BA.DE = stEtN(strtrim(display.description:GetText()));
 	data.BA.LE = stEtN(strtrim(display.left:GetText()));
@@ -114,21 +120,11 @@ local function storeDataMain(data)
 	data.BA.SB = gameplay.soulbound:GetChecked();
 	data.BA.UN = gameplay.unique:GetChecked() and tonumber(gameplay.uniquecount:GetText());
 	data.BA.ST = gameplay.stack:GetChecked() and tonumber(gameplay.stackcount:GetText());
-	if gameplay.use:GetChecked() and not data.US then
-		data.US = {};
-	end
-	if gameplay.use:GetChecked() then
-		data.US.AC = stEtN(strtrim(gameplay.usetext:GetText()));
-		data.US.SC = "onUse";
-	end
 	data.BA.WA = gameplay.wearable:GetChecked();
-	if gameplay.container:GetChecked() then
-		if not data.CO then
-			data.CO = {};
-		end
-	else
-		data.CO = nil;
-	end
+	data.BA.CT = gameplay.container:GetChecked();
+	data.BA.US = gameplay.use:GetChecked();
+	data.US.AC = stEtN(strtrim(gameplay.usetext:GetText()));
+	data.US.SC = "onUse";
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
 	return data;
 end
@@ -172,8 +168,11 @@ local function onContainerFrameUpdate(self)
 	self.WeightText:SetText(weight);
 end
 
-local function loadDataContainer(data)
-	local containerData = data.CO or EMPTY;
+local function loadDataContainer()
+	if not toolFrame.specificDraft.CO then
+		toolFrame.specificDraft.CO = {};
+	end
+	local containerData = toolFrame.specificDraft.CO;
 	container.type:SetSelectedValue(containerData.SI or "5x4");
 	container.durability:SetText(containerData.DU or "0");
 	container.maxweight:SetText(containerData.MW or "0");
@@ -181,33 +180,34 @@ local function loadDataContainer(data)
 	onContainerResize(container.type:GetSelectedValue() or "5x4");
 end
 
-local function storeDataContainer(data)
-	if data.CO then
-		data.CO.SI = container.type:GetSelectedValue() or "5x4";
-		local row, column = data.CO.SI:match("(%d)x(%d)");
-		data.CO.SR = row;
-		data.CO.SC = column;
-		data.CO.DU = tonumber(container.durability:GetText());
-		data.CO.MW = tonumber(container.maxweight:GetText());
-	end
+local function storeDataContainer()
+	local data = toolFrame.specificDraft;
+	data.CO.SI = container.type:GetSelectedValue() or "5x4";
+	local row, column = data.CO.SI:match("(%d)x(%d)");
+	data.CO.SR = row;
+	data.CO.SC = column;
+	data.CO.DU = tonumber(container.durability:GetText());
+	data.CO.MW = tonumber(container.maxweight:GetText());
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script tab
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function loadDataScript(data)
-	TRP3_ScriptEditorNormal.mode = TRP3_DB.modes.NORMAL;
-	TRP3_ScriptEditorNormal.scriptTitle = "On use"; -- TODO: locals
-	TRP3_ScriptEditorNormal.scriptDescription = "This workflow will be triggered when the player uses this item."; -- TODO: locals
+local function loadDataScript()
+	TRP3_ScriptEditorNormal.scriptTitle = loc("IT_ON_USE");
+	TRP3_ScriptEditorNormal.scriptDescription = loc("IT_ON_USE_TT");
 	TRP3_ScriptEditorNormal.scriptID = "onUse";
-	TRP3_ScriptEditorNormal.data = data.SC or {};
+	if not toolFrame.specificDraft.SC then
+		toolFrame.specificDraft.SC = {};
+	end
+	TRP3_ScriptEditorNormal.refresh();
 end
 
-local function storeDataScript(data)
+local function storeDataScript()
 	TRP3_ScriptEditorNormal.mode = TRP3_DB.modes.NORMAL;
 	TRP3_ScriptEditorNormal.scriptID = "onUse";
-	TRP3_ScriptEditorNormal.storeData(data);
+	TRP3_ScriptEditorNormal.storeData();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -233,7 +233,6 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.item.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
 		TRP3_ScriptEditorNormal:Show();
-		TRP3_ScriptEditorNormal.refresh();
 	elseif currentTab == TABS.CONTAINER then
 		decorateContainerPreview(storeDataMain({}));
 		container:Show();
@@ -247,9 +246,9 @@ local function createTabBar()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ "Main", TABS.MAIN, 150 }, -- TODO locals
-			{ "On use", TABS.EFFECTS, 150 }, -- TODO locals
-			{ "Container", TABS.CONTAINER, 150 }, -- TODO locals
+			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
+			{ loc("IT_ON_USE"), TABS.EFFECTS, 150 },
+			{ loc("IT_CON"), TABS.CONTAINER, 150 },
 		},
 		onTabChanged
 	);
@@ -259,21 +258,27 @@ end
 -- Load ans save
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function loadItem(rootClassID, specificClassID, rootDraft, specificDraft)
-	if not specificDraft.BA then
-		specificDraft.BA = {};
+local function loadItem()
+	assert(toolFrame.rootClassID, "rootClassID is nil");
+	assert(toolFrame.specificClassID, "specificClassID is nil");
+	assert(toolFrame.rootDraft, "rootDraft is nil");
+	assert(toolFrame.specificDraft, "specificDraft is nil");
+
+	if not toolFrame.specificDraft.BA then
+		toolFrame.specificDraft.BA = {};
 	end
-	loadDataMain(specificDraft);
-	loadDataScript(specificDraft);
-	loadDataContainer(specificDraft);
-	tabGroup:SelectTab(specificDraft.currentTab or TABS.MAIN);
+	loadDataMain();
+	loadDataScript();
+	loadDataContainer();
+--	tabGroup:SelectTab(toolFrame.specificDraft.currentTab or TABS.MAIN);
+	tabGroup:SelectTab(TABS.MAIN);
 end
 
-local function saveToDraft(draft)
-	draft.currentTab = currentTab;
-	storeDataMain(draft);
-	storeDataScript(draft);
-	storeDataContainer(draft);
+local function saveToDraft()
+	toolFrame.specificDraft.currentTab = currentTab;
+	storeDataMain();
+	storeDataScript();
+	storeDataContainer();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

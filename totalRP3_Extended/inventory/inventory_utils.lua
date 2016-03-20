@@ -25,7 +25,7 @@ local loc = TRP3_API.locale.getText;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function isContainerByClass(item)
-	return item and item.CO;
+	return item and item.BA and item.BA.CT;
 end
 TRP3_API.inventory.isContainerByClass = isContainerByClass;
 
@@ -40,7 +40,7 @@ end
 TRP3_API.inventory.isContainerByClassID = isContainerByClassID;
 
 local function isUsableByClass(item)
-	return item and item.US;
+	return item and item.BA and item.BA.US;
 end
 TRP3_API.inventory.isContainerByClass = isContainerByClass;
 

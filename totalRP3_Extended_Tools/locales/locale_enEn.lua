@@ -61,7 +61,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_CREATE_ITEM_TEMPLATES_BLANK_TT = "A blank template.\nFor those who like to start from scratch.",
 	DB_CREATE_ITEM_TEMPLATES_CONTAINER = "Container item",
 	DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT = "A container template.\nContainer can hold other items.",
-
+	DB_ADD_ITEM = "Add to inventory",
 	DB_CREATE_CAMPAIGN = "Create campaign",
 	DB_CREATE_CAMPAIGN_TT = "Start creating a campaign",
 
@@ -70,6 +70,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	ROOT_ID = "ID",
 	ROOT_VERSION = "Version",
 	ROOT_CREATED = "Created by %s on %s",
+	ROOT_CREATED_BY = "Created by",
+	ROOT_CREATED_ON = "Created on",
 	ROOT_SAVED = "Last modification by %s on %s",
 	SPECIFIC_INNER_ID = "Inner ID",
 	SPECIFIC_PATH = "Root path",
@@ -80,6 +82,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EDITOR_PREVIEW = "preview",
 	EDITOR_ICON_SELECT = "Click to select an icon.",
 	EDITOR_NOTES = "Free notes",
+	EDITOR_MAIN = "Main",
 
 	-- Item creation
 	IT_NEW_NAME = "New item",
@@ -119,6 +122,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_STACK_COUNT = "Max units per stack",
 	IT_STACK_COUNT_TT = "Sets the maximum units that can be stacked in a same container slot. Should be greated than 1.",
 	IT_USE = "Usable",
+	IT_ON_USE = "On use",
+	IT_ON_USE_TT = "This workflow will be triggered when the player uses this item.",
 	IT_USE_TT = "Allow this item to be usable.\n\n|cff00ff00You can configure the item use effect in the 'On use' tab of this editor.",
 	IT_USE_TEXT = "Usage text",
 	IT_USE_TEXT_TT = "This text, explaining the effect for using this item, will appears in the tooltip.",
@@ -129,4 +134,18 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_CO_DURABILITY_TT = "Determine the overall max health for your container. A container can lose health over time or can be damaged. But it can also be repaired with the proper items.\n\n|cff00ff00Zero means invulnerable.",
 	IT_CO_MAX = "Max weight (in grams)",
 	IT_CO_MAX_TT = "This sets the limit of weight from where your container will start losing helth over time due to overweight.\n\n|cff00ff00Zero means no limit.\n\n|cffff9900Please enter the max weight in GRAMS.",
+
+	-- Workflows
+	WO_WORKFLOW = "Workflows",
+	WO_EXECUTION = "Workflow execution",
+	WO_EMPTY = "You can start by adding an element to your workflow.\nThis can be an effect, a condition or a delay.",
+	WO_ADD = "Add element to workflow",
+	WO_END = "End of workflow",
+	WO_ELEMENT = "Element edition",
+	WO_EFFECT = "Effect",
+	WO_EFFECT_TT = "Plays an effect.\nIt can be playind sounds, displaying text ...etc",
+	WO_CONDITION = "Condition",
+	WO_CONDITION_TT = "Evaluates a condition.\nStops the workflow if the condition fails.",
+	WO_DELAY = "Delay",
+	WO_DELAY_TT = "Pauses the workflow.\nCan also be used as cast duration and can be interrupt.",
 };

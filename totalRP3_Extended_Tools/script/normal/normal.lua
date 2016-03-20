@@ -25,7 +25,7 @@ local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local editor = TRP3_ScriptEditorNormal;
-local refreshList;
+local refreshList, toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Workflow element
@@ -44,8 +44,8 @@ local function goToTypeSelector()
 end
 
 local function addDelayElement()
-	assert(editor.list.data.ST, "No step structure.");
-	editor.list.data.ST[tostring(editor.list.size + 1)] =  {
+	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	data[tostring(editor.list.size + 1)] =  {
 		t = ELEMENT_TYPE.DELAY,
 		d = 1,
 	};
@@ -53,17 +53,17 @@ local function addDelayElement()
 end
 
 local function addConditionElement()
-	assert(editor.list.data.ST, "No step structure.");
-	editor.list.data.ST[tostring(editor.list.size + 1)] =  {
+	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	data[tostring(editor.list.size + 1)] =  {
 		t = ELEMENT_TYPE.CONDITION
 	};
 	refreshList();
 end
 
 local function addEffectElement(effectID)
-	assert(editor.list.data.ST, "No step structure.");
 	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
-	editor.list.data.ST[tostring(editor.list.size + 1)] =  {
+	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	data[tostring(editor.list.size + 1)] =  {
 		t = ELEMENT_TYPE.EFFECT,
 		e = {
 			{
@@ -140,18 +140,17 @@ local function decorateElement(scriptStepFrame)
 		decorateEffect(scriptStepFrame, scriptStep.e[1]);
 	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_CONDITION_ICON);
-		scriptStepFrame.title:SetText("Condition"); -- TODO: locals
+		scriptStepFrame.title:SetText(loc("WO_CONDITION"));
 		scriptStepFrame.description:SetText("Checks if: ..."); -- TODO: locals
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_DELAY_ICON);
-		scriptStepFrame.title:SetText("Delay"); -- TODO: locals
+		scriptStepFrame.title:SetText(loc("WO_DELAY"));
 		scriptStepFrame.description:SetText(("Waits for |cffffff00%s seconds|r"):format(scriptStep.d)); -- TODO: locals
 	end
 end
 
 function refreshList()
-	assert(editor.list.data, "No data for effect list.");
-	assert(editor.list.data.ST, "No step structure.");
+	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
 
 	editor.element:Hide();
 	for _, element in pairs(editor.list.listElement) do
@@ -159,11 +158,10 @@ function refreshList()
 		element:ClearAllPoints();
 	end
 
-	local scriptData = editor.list.data.ST;
 	local stepID = 1;
 	local previous;
-	while scriptData[tostring(stepID)] do
-		local scriptStep = scriptData[tostring(stepID)];
+	while data[tostring(stepID)] do
+		local scriptStep = data[tostring(stepID)];
 		local scriptStepFrame = editor.list.listElement[stepID];
 		if not scriptStepFrame then
 			scriptStepFrame = CreateFrame("Frame", "TRP3_EditorEffectFrame" .. stepID, editor.workflow.container.scroll.list, "TRP3_EditorEffectFrame");
@@ -212,44 +210,36 @@ editor.list.refreshList = refreshList;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function refresh()
-	assert(editor.data, "No data for refresh.");
-	assert(editor.scriptID, "No scriptID for refresh.");
+	assert(toolFrame.specificDraft.SC, "No toolFrame.specificDraft.SC for refresh.");
+	assert(editor.scriptID, "No editor.scriptID for refresh.");
 
-	if editor.mode == TRP3_DB.modes.NORMAL then
+	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
 		editor.list.script:SetText(editor.scriptTitle or "");
 		editor.list.description:SetText(editor.scriptDescription or "");
 
-		if not editor.data[editor.scriptID] then
-			editor.data[editor.scriptID] = {};
+		local data = toolFrame.specificDraft.SC;
+
+		if not data[editor.scriptID] then
+			data[editor.scriptID] = {};
 		end
 
-		if not editor.data[editor.scriptID].ST then
-			editor.data[editor.scriptID].ST = {};
+		if not data[editor.scriptID].ST then
+			data[editor.scriptID].ST = {};
 		end
 
-		editor.list.data = editor.data[editor.scriptID];
 		refreshList();
 	end
 
 end
 editor.refresh = refresh;
 
-editor.storeData = function(draft)
+editor.storeData = function()
 	assert(editor.scriptID, "No scriptID for storeData.");
-	if not draft.SC then
-		draft.SC = {};
-	end
-	if not draft.SC[editor.scriptID] then
-		draft.SC[editor.scriptID] = {};
-	end
-	if not draft.SC[editor.scriptID].ST then
-		draft.SC[editor.scriptID].ST = {};
-	end
 
 	-- Remove precedent compiled script
-	draft.SC[editor.scriptID].c = nil;
+	toolFrame.specificDraft.SC[editor.scriptID].c = nil; -- TODO: in optimization
 
-	local workflow = draft.SC[editor.scriptID].ST;
+	-- Make connection between elements
 	for i = 1, editor.list.size, 1 do
 		local frame = editor.list.listElement[i];
 		if i < editor.list.size and frame.scriptStepData.t ~= ELEMENT_TYPE.CONDITION then
@@ -257,7 +247,6 @@ editor.storeData = function(draft)
 		else
 			frame.scriptStepData.n = nil;
 		end
-		workflow[tostring(i)] = frame.scriptStepData;
 	end
 end
 
@@ -266,6 +255,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 editor.init = function(ToolFrame)
+	toolFrame = ToolFrame;
 
 	-- Resize
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
@@ -273,27 +263,27 @@ editor.init = function(ToolFrame)
 	end);
 
 	-- List
-	editor.list.title:SetText("Workflows"); -- TODO: locals
+	editor.list.title:SetText(loc("WO_WORKFLOW"));
 
 	-- Workflow edition
-	editor.workflow.title:SetText("Workflow execution"); -- TODO: locals
-	editor.workflow.container.empty:SetText("You can start by adding an element to your workflow.\nThis can be an effect, a condition or a delay."); -- TODO: locals
-	editor.workflow.container.add:SetText("Add element to workflow"); -- TODO: locals
+	editor.workflow.title:SetText(loc("WO_EXECUTION"));
+	editor.workflow.container.empty:SetText(loc("WO_EMPTY"));
+	editor.workflow.container.add:SetText(loc("WO_ADD"));
 	editor.workflow.container.add:SetScript("OnClick", function(self)
 		goToTypeSelector();
 	end);
-	editor.workflow.container.scroll.list.endofworkflow:SetText("End of workflow"); -- TODO: locals
+	editor.workflow.container.scroll.list.endofworkflow:SetText(loc("WO_END"));
 
 	-- Element edition
-	editor.element.title:SetText("Element edition"); -- TODO: locals
-	editor.element.selector.effect.Name:SetText("Effect"); -- TODO: locals
-	editor.element.selector.effect.InfoText:SetText("Plays an effect.\nIt can be playind sounds, displaying text ...etc"); -- TODO: locals
+	editor.element.title:SetText(loc("WO_ELEMENT"));
+	editor.element.selector.effect.Name:SetText(loc("WO_EFFECT"));
+	editor.element.selector.effect.InfoText:SetText(loc("WO_EFFECT_TT"));
 	TRP3_API.ui.frame.setupIconButton(editor.element.selector.effect, ELEMENT_EFFECT_ICON);
-	editor.element.selector.condition.Name:SetText("Condition"); -- TODO: locals
-	editor.element.selector.condition.InfoText:SetText("Evaluates a condition.\nStops the workflow if the condition fails."); -- TODO: locals
+	editor.element.selector.condition.Name:SetText(loc("WO_CONDITION"));
+	editor.element.selector.condition.InfoText:SetText(loc("WO_CONDITION_TT"));
 	TRP3_API.ui.frame.setupIconButton(editor.element.selector.condition, ELEMENT_CONDITION_ICON);
-	editor.element.selector.delay.Name:SetText("Delay"); -- TODO: locals
-	editor.element.selector.delay.InfoText:SetText("Pauses the workflow.\nCan also be used as cast duration and can be interrupt."); -- TODO: locals
+	editor.element.selector.delay.Name:SetText(loc("WO_DELAY"));
+	editor.element.selector.delay.InfoText:SetText(loc("WO_DELAY_TT"));
 	TRP3_API.ui.frame.setupIconButton(editor.element.selector.delay, ELEMENT_DELAY_ICON);
 	editor.element.selector.condition:SetScript("OnClick", addConditionElement);
 	editor.element.selector.delay:SetScript("OnClick", addDelayElement);

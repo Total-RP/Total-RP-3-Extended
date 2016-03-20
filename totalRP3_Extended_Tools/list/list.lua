@@ -119,11 +119,11 @@ local color = "|cffffff00";
 local fieldFormat = "%s: " .. color .. "%s|r";
 
 local function getMetadataTooltipText(rootID, metadata)
-	local text =  fieldFormat:format("Root class", rootID); -- TODO: locals
-	text = text .. "\n" .. fieldFormat:format("Version", metadata.V or 1); -- TODO: locals
-	text = text .. "\n" .. fieldFormat:format("Created by", metadata.CB or "?"); -- TODO: locals
-	text = text .. "\n" .. fieldFormat:format("Created on", metadata.CD or "?"); -- TODO: locals
-	text = text .. "\n" .. fieldFormat:format("Mode", TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?"); -- TODO: locals
+	local text =  fieldFormat:format(loc("ROOT_TITLE"), rootID);
+	text = text .. "\n" .. fieldFormat:format(loc("ROOT_VERSION"), metadata.V or 1);
+	text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
+	text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_ON"), metadata.CD or "?");
+	text = text .. "\n" .. fieldFormat:format(loc("SPECIFIC_MODE"), TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
 	return text;
 end
 
@@ -319,7 +319,7 @@ function onLineRightClick(lineWidget, data)
 		tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID})
 	end
 	if data.type == TRP3_DB.types.ITEM then
-		tinsert(values, {"Add to inventory", ACTION_FLAG_ADD .. data.fullID}); -- TODO locals
+		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID});
 	end
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
 end

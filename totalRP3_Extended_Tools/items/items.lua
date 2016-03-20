@@ -67,23 +67,23 @@ end
 -- Item base frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onLoad(rootClassID, specificClassID, rootDraft, specificDraft)
-	assert(rootClassID, "rootClassID is nil");
-	assert(specificClassID, "specificClassID is nil");
-	assert(rootDraft, "rootDraft is nil");
-	assert(specificDraft, "specificDraft is nil");
+local function onLoad()
+	assert(toolFrame.rootClassID, "rootClassID is nil");
+	assert(toolFrame.specificClassID, "specificClassID is nil");
+	assert(toolFrame.rootDraft, "rootDraft is nil");
+	assert(toolFrame.specificDraft, "specificDraft is nil");
 
 	toolFrame.item.normal:Hide();
-	if TRP3_DB.modes.EXPERT ~= (specificDraft.MO or TRP3_DB.modes.NORMAL) then
+	if TRP3_DB.modes.EXPERT ~= (toolFrame.specificDraft.MO or TRP3_DB.modes.NORMAL) then
 		toolFrame.item.normal:Show();
-		toolFrame.item.normal.loadItem(rootClassID, specificClassID, rootDraft, specificDraft);
+		toolFrame.item.normal.loadItem();
 	end
 end
 
-local function onSave(specificDraft)
-	assert(specificDraft, "specificDraft is nil");
-	if TRP3_DB.modes.EXPERT ~= (specificDraft.MO or TRP3_DB.modes.NORMAL) then
-		toolFrame.item.normal.saveToDraft(specificDraft);
+local function onSave()
+	assert(toolFrame.specificDraft, "specificDraft is nil");
+	if TRP3_DB.modes.EXPERT ~= (toolFrame.specificDraft.MO or TRP3_DB.modes.NORMAL) then
+		toolFrame.item.normal.saveToDraft();
 	end
 end
 

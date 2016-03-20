@@ -179,17 +179,25 @@ local goToPage;
 local function onSave(editor)
 	assert(editor, "No editor.");
 	assert(editor.onSave, "No save method in editor.");
-	assert(editor.rootClassID, "No rootClassID in editor.");
-	assert(editor.classID, "No classID in editor.");
-	local rootClassID, classID = editor.rootClassID, editor.classID;
+	assert(toolFrame.rootClassID, "No rootClassID in editor.");
+	assert(toolFrame.specificClassID, "No classID in editor.");
+	local rootClassID, specificClassID = toolFrame.rootClassID, toolFrame.specificClassID;
+
+	-- Force save the current view in draft
+	editor.onSave();
+
+	local rootDraft = toolFrame.rootDraft;
+
+	-- TODO: Optimize data
 
 	local object = getClass(rootClassID);
-	editor.onSave(object);
+	wipe(object);
+	Utils.table.copy(object, rootDraft);
 	object.MD.V = object.MD.V + 1;
 	object.MD.SD = date("%d/%m/%y %H:%M:%S");
 	object.MD.SB = Globals.player_id;
 
-	goToPage(classID, true);
+	goToPage(specificClassID, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -263,11 +271,11 @@ function goToPage(classID, forceDraftReload)
 	-- Show selected
 	assert(selectedPageFrame, "No editor for type " .. class.TY);
 	assert(selectedPageFrame.onLoad, "No load entry for type " .. class.TY);
-	selectedPageFrame.rootClassID = rootClassID;
-	selectedPageFrame.classID = classID;
-	selectedPageFrame.rootDraft = rootDraft;
-	selectedPageFrame.specificDraft = specificDraft;
-	selectedPageFrame.onLoad(rootClassID, classID, rootDraft, specificDraft);
+	toolFrame.rootClassID = rootClassID;
+	toolFrame.specificClassID = classID;
+	toolFrame.rootDraft = rootDraft;
+	toolFrame.specificDraft = specificDraft;
+	selectedPageFrame.onLoad();
 	selectedPageFrame:Show();
 
 	toolFrame.actions.save:SetScript("OnClick", function()
