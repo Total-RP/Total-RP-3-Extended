@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tostring, tinsert, assert = wipe, pairs, tostring, tinsert, assert;
+local wipe, pairs, tostring, strtrim, assert = wipe, pairs, tostring, strtrim, assert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -41,22 +41,59 @@ function TRP3_API.extended.tools.getEffectEditorInfo(effectID)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- INIT
+-- text: Display text
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.initBaseEffects()
+local text_editor = TRP3_EffectEditorText;
+
+local function text_init()
+
+	-- Text
+	text_editor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
+	setTooltipForSameFrame(text_editor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_TEXT_TEXT_TT"));
+
+	-- Type
+	local outputs = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_1")), Utils.message.type.CHAT_FRAME},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_2")), Utils.message.type.ALERT_POPUP},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_3")), Utils.message.type.RAID_ALERT},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_4")), Utils.message.type.ALERT_MESSAGE}
+	}
+	TRP3_API.ui.listbox.setupListBox(text_editor.type, outputs, nil, nil, 250, true);
+
 	registerEffectEditor("text", {
-		title = "Display text", -- TODO: locals
+		title = loc("EFFECT_TEXT"),
 		icon = "inv_inscription_scrollofwisdom_01",
-		description = "Displays a text.\nDifferent outputs are possible.", -- TODO: locals
+		description = loc("EFFECT_TEXT_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .."Will display" .. ":|r " .. args[1]); -- TODO: locals
+			scriptStepFrame.description:SetText("|cffffff00" ..loc("EFFECT_TEXT_PREVIEW") .. ":|r " .. args[1]);
 		end,
 		getDefaultArgs = function()
-			return {"Your text", 1}; -- TODO: locals
-		end
+			return {loc("EFFECT_TEXT_TEXT_DEFAULT"), 1};
+		end,
+		editor = text_editor,
 	});
+end
 
+function text_editor.load(scriptData)
+	local data = scriptData.args or Globals.empty;
+	text_editor.text:SetText(data[1] or "");
+	text_editor.type:SetSelectedValue(data[2] or Utils.message.type.CHAT_FRAME);
+end
+
+function text_editor.save(scriptData)
+	if not scriptData.args then
+		scriptData.args = {}
+	end
+	scriptData.args[1] = stEtN(strtrim(text_editor.text:GetText()));
+	scriptData.args[2] = text_editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- document_show: Display document
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function document_show_init()
 	registerEffectEditor("document_show", {
 		title = "Open document", -- TODO: locals
 		icon = "inv_icon_mission_complete_order",
@@ -68,4 +105,13 @@ function TRP3_API.extended.tools.initBaseEffects()
 			return {""};
 		end
 	});
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- INIT
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.extended.tools.initBaseEffects()
+	text_init();
+	document_show_init();
 end

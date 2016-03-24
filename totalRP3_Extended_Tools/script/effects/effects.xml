@@ -35,4 +35,29 @@
 		</Layers>
 	</Frame>
 
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--    Display text      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorText" hidden="true">
+
+		<Frames>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="-135" y="-65"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
 </Ui>

@@ -43,21 +43,19 @@ function delayEditor.load(scriptStepStructure)
 end
 
 function delayEditor.init()
-	local listFormat = "%s: |cff00ff00%s";
-
 	-- Duration
-	delayEditor.duration.title:SetText("Duration"); -- TODO: locals
-	setTooltipForSameFrame(delayEditor.duration.help, "RIGHT", 0, 5, "Duration", "The duration for this delay, in seconds.");  -- TODO: locals
+	delayEditor.duration.title:SetText(loc("WO_DELAY_DURATION"));
+	setTooltipForSameFrame(delayEditor.duration.help, "RIGHT", 0, 5, loc("WO_DELAY_DURATION"), loc("WO_DELAY_DURATION_TT"));
 
 	-- Delay type
 	local type = {
-		{listFormat:format("Delay type", "Regular delay"), 1} -- TODO: locals
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_1")), 1}
 	}
 	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, nil, nil, 200, true);
 
 	-- Interruption
 	local type = {
-		{listFormat:format("Interruption", "No interruption"), 1} -- TODO: locals
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_1")), 1}
 	}
 	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, type, nil, nil, 200, true);
 end

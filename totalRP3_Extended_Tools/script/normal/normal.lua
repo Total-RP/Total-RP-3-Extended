@@ -39,6 +39,7 @@ local ELEMENT_TYPE = {
 }
 
 local function setCurrentElementFrame(frame, title, noConfirm)
+	assert(frame, "Editor is null.")
 	unlockElements();
 	editor.element.title:SetText(title);
 	if editor.element.current then
@@ -67,7 +68,13 @@ end
 local function addConditionElement()
 	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
 	data[tostring(editor.list.size + 1)] =  {
-		t = ELEMENT_TYPE.CONDITION
+		t = ELEMENT_TYPE.CONDITION,
+		b = {
+--			{
+--				cond = { { { i = "tar_name" }, "==", { v = "Kyle Radue" } } },
+--				n = "2"
+--			}
+		},
 	};
 	refreshList();
 end
@@ -87,16 +94,11 @@ local function addEffectElement(effectID)
 	refreshList();
 end
 
-local menuData = {
-	["Common"] = {
-		"text",
-		"document_show"
-	},
-}
+local menuData;
 
 local function displayEffectDropdown(self)
 	local values = {};
-	tinsert(values, {"Select an effect", nil}); -- TODO: locals
+	tinsert(values, {loc("WO_EFFECT_SELECT"), nil});
 	for sectionID, section in pairs(menuData) do
 		local sectionTab = {};
 		for _, effectID in pairs(section) do
@@ -160,8 +162,15 @@ local function onElementClick(self)
 
 	local scriptStep = self.scriptStepData;
 	editor.element.scriptStep = scriptStep;
-	if scriptStep.t == ELEMENT_TYPE.DELAY then
-		setCurrentElementFrame(TRP3_ScriptEditorDelay, "Delay: edition"); -- TODO: locals
+
+	if scriptStep.t == ELEMENT_TYPE.EFFECT then
+		local scriptData = scriptStep.e[1];
+		local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(scriptData.id);
+		setCurrentElementFrame(effectInfo.editor, effectInfo.title);
+		effectInfo.editor.load(scriptData);
+
+	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
+		setCurrentElementFrame(TRP3_ScriptEditorDelay, loc("WO_DELAY"));
 		TRP3_ScriptEditorDelay.load(scriptStep);
 	end
 
@@ -187,7 +196,12 @@ end
 local function onElementConfirm(self)
 	assert(editor.element.scriptStep, "No stepData in editor.element");
 	if editor.element.current and editor.element.current.save then
-		editor.element.current.save(editor.element.scriptStep);
+		if editor.element.scriptStep.t == ELEMENT_TYPE.EFFECT then
+			local scriptData = editor.element.scriptStep.e[1];
+			editor.element.current.save(scriptData);
+		else
+			editor.element.current.save(editor.element.scriptStep);
+		end
 		refreshList();
 	end
 end
@@ -195,20 +209,21 @@ end
 local function decorateEffect(scriptStepFrame, effectData)
 	local effect = TRP3_API.script.getEffect(effectData.id);
 	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectData.id);
-	local title = ("%s: %s"):format("Effect", effectInfo.title or UNKNOWN); -- TODO: locals
+	local title = ("%s: %s"):format(loc("WO_EFFECT"), effectInfo.title or UNKNOWN);
 
 	TRP3_API.ui.frame.setupIconButton(scriptStepFrame, effectInfo.icon or ELEMENT_EFFECT_ICON);
 
 	-- Tooltip
 	local tooltip = effectInfo.description or "";
 	if effect.secured then
-		tooltip = tooltip .. "\n\n|cffffff00" .. "Security level" .. ":\n"; -- TODO: locals
+		tooltip = tooltip .. "\n\n|cffffff00" .. loc("WO_SECURITY") .. ":\n";
+		local format = "|cff00ff00%s:|r %s";
 		if effect.secured == TRP3_API.script.security.HIGH then
-			tooltip = tooltip .. "|cff00ff00High:|r This effect is secured and will not prompt security warning."; -- TODO: locals
+			tooltip = tooltip .. format:format(loc("WO_SECURITY_HIGH"), loc("WO_SECURITY_HIGH_DETAILS"));
 		elseif effect.secured == TRP3_API.script.security.NORMAL then
-			tooltip = tooltip .. "|cffffff00Normal:|r This effect is not secured and could be malicious. It will prompt security warning, based on the user security settings."; -- TODO: locals
+			tooltip = tooltip .. format:format(loc("WO_SECURITY_NORMAL"), loc("WO_SECURITY_NORMAL_DETAILS"));
 		elseif effect.secured == TRP3_API.script.security.LOW then
-			tooltip = tooltip .. "|cffff9900Low:|r This effect is not secured and could be malicious. It will prompt security warning, based on a more severe user security settings."; -- TODO: locals
+			tooltip = tooltip .. format:format(loc("WO_SECURITY_LOW"), loc("WO_SECURITY_LOW_DETAILS"));
 		end
 	end
 	setTooltipForSameFrame(scriptStepFrame, "TOP", 0, 5, title, tooltip);
@@ -229,11 +244,11 @@ local function decorateElement(scriptStepFrame)
 	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_CONDITION_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_CONDITION")));
-		scriptStepFrame.description:SetText("Checks if: ..."); -- TODO: locals
+		scriptStepFrame.description:SetText("");
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_DELAY_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_DELAY")));
-		scriptStepFrame.description:SetText(("Waits for |cffffff00%s seconds|r"):format(scriptStep.d or 0)); -- TODO: locals
+		scriptStepFrame.description:SetText(("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_WAIT"), scriptStep.d or 0, loc("WO_DELAY_SECONDS")));
 	end
 end
 
@@ -378,17 +393,25 @@ editor.init = function(ToolFrame)
 	-- List
 	editor.list.title:SetText(loc("WO_WORKFLOW"));
 
+	-- Effect selector
+	menuData = {
+		[loc("WO_EFFECT_CAT_COMMON")] = {
+			"text",
+			"document_show"
+		},
+	}
+
 	-- Workflow edition
 	editor.workflow.title:SetText(loc("WO_EXECUTION"));
 	editor.workflow.container.empty:SetText(loc("WO_EMPTY"));
 	editor.workflow.container.add:SetText(loc("WO_ADD"));
 	editor.workflow.container.add:SetScript("OnClick", function(self)
-		setCurrentElementFrame(editor.element.selector, "Step 1: Select the element type", true); -- TODO: locals
+		setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
 	end);
 	editor.workflow.container.scroll.list.endofworkflow:SetText(loc("WO_END"));
 
 	-- Element edition
-	editor.element.confirm:SetText("Confirm"); -- TODO: locals
+	editor.element.confirm:SetText(loc("EDITOR_CONFIRM"));
 	editor.element.title:SetText(loc("WO_ELEMENT"));
 	editor.element.selector.effect.Name:SetText(loc("WO_EFFECT"));
 	editor.element.selector.effect.InfoText:SetText(loc("WO_EFFECT_TT"));
@@ -400,6 +423,7 @@ editor.init = function(ToolFrame)
 	editor.element.selector.delay.InfoText:SetText(loc("WO_DELAY_TT"));
 	TRP3_API.ui.frame.setupIconButton(editor.element.selector.delay, ELEMENT_DELAY_ICON);
 	editor.element.selector.condition:SetScript("OnClick", addConditionElement);
+	editor.element.selector.condition:Disable(); -- TODO: pouic
 	editor.element.selector.delay:SetScript("OnClick", addDelayElement);
 	editor.element.selector.effect:SetScript("OnClick", displayEffectDropdown);
 	editor.element.close:SetScript("OnClick", function()
