@@ -115,8 +115,8 @@ local function storeDataMain()
 	data.BA.CR = display.crafted:GetChecked();
 	data.BA.QE = display.quest:GetChecked();
 	data.BA.IC = display.preview.selectedIcon;
-	data.BA.VA = tonumber(gameplay.value:GetText());
-	data.BA.WE = tonumber(gameplay.weight:GetText());
+	data.BA.VA = tonumber(gameplay.value:GetText()) or 0;
+	data.BA.WE = tonumber(gameplay.weight:GetText()) or 0;
 	data.BA.SB = gameplay.soulbound:GetChecked();
 	data.BA.UN = gameplay.unique:GetChecked() and tonumber(gameplay.uniquecount:GetText());
 	data.BA.ST = gameplay.stack:GetChecked() and tonumber(gameplay.stackcount:GetText());

@@ -66,6 +66,29 @@
 					</OnLoad>
 				</Scripts>
 			</Frame>
+			<Button parentKey="remove" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="moveup">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="15" relativePoint="BOTTOM" relativeKey="$parent.remove"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-CollapseButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+			<Button parentKey="movedown">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="15" relativePoint="BOTTOM" relativeKey="$parent.moveup"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-ExpandButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-ExpandButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
 		</Frames>
 		<Layers>
 			<Layer level="BORDER">
@@ -85,13 +108,12 @@
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10" />
 				</FontString>
-
 			</Layer>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\MINIMAP\MiniMap-VignetteArrow">
 					<Size x="40" y="40" />
 					<Anchors>
-						<Anchor point="CENTER" relativePoint="BOTTOMRIGHT" x="-20" y="0" />
+						<Anchor point="CENTER" relativePoint="BOTTOMLEFT" x="20" y="0" />
 					</Anchors>
 					<TexCoords left="0" right="1" top="1" bottom="0"/>
 				</Texture>
@@ -104,7 +126,9 @@
 			</OnEnter>
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
-				self.highlight:Hide();
+				if not self.lock then
+					self.highlight:Hide();
+				end
 			</OnLeave>
 		</Scripts>
 	</Frame>
@@ -275,20 +299,21 @@
 									<Anchor point="TOPLEFT" x="40" y="-165"/>
 								</Anchors>
 							</Button>
-
-							<Button parentKey="Close" inherits="UIPanelCloseButton">
-								<Anchors>
-									<Anchor point="TOPRIGHT" x="0" y="0"/>
-								</Anchors>
-								<Scripts>
-									<OnClick>
-										TRP3_ScriptEditorNormal.element:Hide();
-									</OnClick>
-								</Scripts>
-							</Button>
 						</Frames>
 
 					</Frame>
+
+					<Button parentKey="confirm" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="15"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="close" inherits="UIPanelCloseButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="0" y="0"/>
+						</Anchors>
+					</Button>
 				</Frames>
 
 			</Frame>

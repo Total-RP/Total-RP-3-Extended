@@ -30,4 +30,5 @@ local toolFrame;
 
 function TRP3_API.extended.tools.initScript(ToolFrame)
 	TRP3_ScriptEditorNormal.init(ToolFrame);
+	TRP3_ScriptEditorDelay.init(ToolFrame);
 end

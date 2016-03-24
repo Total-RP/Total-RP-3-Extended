@@ -17,18 +17,19 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tostring, tinsert, assert = wipe, pairs, tostring, tinsert, assert;
+local wipe, pairs, tostring, tinsert, assert, tonumber = wipe, pairs, tostring, tinsert, assert, tonumber;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
 local editor = TRP3_ScriptEditorNormal;
-local refreshList, toolFrame;
+local refreshList, toolFrame, unlockElements;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Workflow element
+-- New element
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local ELEMENT_TYPE = {
@@ -37,9 +38,20 @@ local ELEMENT_TYPE = {
 	DELAY = "delay"
 }
 
-local function goToTypeSelector()
-	editor.element.title:SetText("Step 1: Select the element type"); -- TODO: locals
-	editor.element.selector:Show();
+local function setCurrentElementFrame(frame, title, noConfirm)
+	unlockElements();
+	editor.element.title:SetText(title);
+	if editor.element.current then
+		editor.element.current:Hide();
+	end
+	editor.element.current = frame;
+	editor.element.current:SetParent(editor.element);
+	editor.element.current:SetAllPoints(editor.element);
+	editor.element.current:Show();
+	editor.element.confirm:Show();
+	if noConfirm then
+		editor.element.confirm:Hide();
+	end
 	editor.element:Show();
 end
 
@@ -97,6 +109,43 @@ local function displayEffectDropdown(self)
 	TRP3_API.ui.listbox.displayDropDown(self, values, addEffectElement, 0, true);
 end
 
+local function removeElement(elementID)
+	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	if data[elementID] then
+		wipe(data[elementID]);
+		data[elementID] = nil;
+		local i = tonumber(elementID) + 1;
+		while data[tostring(i)] do
+			data[tostring(i - 1)] = data[tostring(i)];
+			data[tostring(i)] = nil;
+			i = i + 1;
+		end
+	end
+	refreshList();
+end
+
+local function moveUpElement(elementID)
+	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	local index = tonumber(elementID);
+	if data[tostring(index)] and data[tostring(index - 1)] then
+		local previous = data[tostring(index - 1)];
+		data[tostring(index - 1)] = data[tostring(index)];
+		data[tostring(index)] = previous;
+	end
+	refreshList();
+end
+
+local function moveDownElement(elementID)
+	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	local index = tonumber(elementID);
+	if data[tostring(index)] and data[tostring(index + 1)] then
+		local next = data[tostring(index + 1)];
+		data[tostring(index + 1)] = data[tostring(index)];
+		data[tostring(index)] = next;
+	end
+	refreshList();
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Workflow
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -106,13 +155,49 @@ local ELEMENT_DELAY_ICON = "spell_mage_altertime";
 local ELEMENT_EFFECT_ICON = "inv_misc_enggizmos_37";
 local ELEMENT_CONDITION_ICON = "Ability_druid_balanceofpower";
 
+local function onElementClick(self)
+	assert(self.scriptStepData, "No stepData in frame");
+
+	local scriptStep = self.scriptStepData;
+	editor.element.scriptStep = scriptStep;
+	if scriptStep.t == ELEMENT_TYPE.DELAY then
+		setCurrentElementFrame(TRP3_ScriptEditorDelay, "Delay: edition"); -- TODO: locals
+		TRP3_ScriptEditorDelay.load(scriptStep);
+	end
+
+	self.highlight:Show();
+	self.lock = true;
+end
+
+local function onRemoveClick(self)
+	assert(self:GetParent().scriptStepID, "No stepID in frame");
+	removeElement(self:GetParent().scriptStepID);
+end
+
+local function onMoveUpClick(self)
+	assert(self:GetParent().scriptStepID, "No stepID in frame");
+	moveUpElement(self:GetParent().scriptStepID);
+end
+
+local function onMoveDownClick(self)
+	assert(self:GetParent().scriptStepID, "No stepID in frame");
+	moveDownElement(self:GetParent().scriptStepID);
+end
+
+local function onElementConfirm(self)
+	assert(editor.element.scriptStep, "No stepData in editor.element");
+	if editor.element.current and editor.element.current.save then
+		editor.element.current.save(editor.element.scriptStep);
+		refreshList();
+	end
+end
+
 local function decorateEffect(scriptStepFrame, effectData)
 	local effect = TRP3_API.script.getEffect(effectData.id);
 	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectData.id);
 	local title = ("%s: %s"):format("Effect", effectInfo.title or UNKNOWN); -- TODO: locals
 
 	TRP3_API.ui.frame.setupIconButton(scriptStepFrame, effectInfo.icon or ELEMENT_EFFECT_ICON);
-	scriptStepFrame.title:SetText(title);
 
 	-- Tooltip
 	local tooltip = effectInfo.description or "";
@@ -131,21 +216,31 @@ local function decorateEffect(scriptStepFrame, effectData)
 	if effectInfo.effectFrameDecorator then
 		effectInfo.effectFrameDecorator(scriptStepFrame, effectData.args);
 	end
+	return title;
 end
 
 local function decorateElement(scriptStepFrame)
 	local scriptStep = scriptStepFrame.scriptStepData;
+	local stepFormat = "%s. %s"
 	scriptStepFrame.description:SetText("");
 	if scriptStep.t == ELEMENT_TYPE.EFFECT then
-		decorateEffect(scriptStepFrame, scriptStep.e[1]);
+		local title = decorateEffect(scriptStepFrame, scriptStep.e[1]);
+		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, title));
 	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_CONDITION_ICON);
-		scriptStepFrame.title:SetText(loc("WO_CONDITION"));
+		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_CONDITION")));
 		scriptStepFrame.description:SetText("Checks if: ..."); -- TODO: locals
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_DELAY_ICON);
-		scriptStepFrame.title:SetText(loc("WO_DELAY"));
-		scriptStepFrame.description:SetText(("Waits for |cffffff00%s seconds|r"):format(scriptStep.d)); -- TODO: locals
+		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_DELAY")));
+		scriptStepFrame.description:SetText(("Waits for |cffffff00%s seconds|r"):format(scriptStep.d or 0)); -- TODO: locals
+	end
+end
+
+function unlockElements()
+	for _, element in pairs(editor.list.listElement) do
+		element.lock = nil;
+		element.highlight:Hide();
 	end
 end
 
@@ -157,6 +252,7 @@ function refreshList()
 		element:Hide();
 		element:ClearAllPoints();
 	end
+	unlockElements();
 
 	local stepID = 1;
 	local previous;
@@ -165,7 +261,24 @@ function refreshList()
 		local scriptStepFrame = editor.list.listElement[stepID];
 		if not scriptStepFrame then
 			scriptStepFrame = CreateFrame("Frame", "TRP3_EditorEffectFrame" .. stepID, editor.workflow.container.scroll.list, "TRP3_EditorEffectFrame");
+			scriptStepFrame:SetScript("OnMouseUp", onElementClick);
+			scriptStepFrame.remove:SetScript("OnClick", onRemoveClick);
+			setTooltipAll(scriptStepFrame.moveup, "TOP", 0, 0, loc("CM_MOVE_UP"));
+			setTooltipAll(scriptStepFrame.movedown, "TOP", 0, 0, loc("CM_MOVE_DOWN"));
+			setTooltipAll(scriptStepFrame.remove, "TOP", 0, 5, REMOVE);
+			scriptStepFrame.moveup:SetScript("OnClick", onMoveUpClick);
+			scriptStepFrame.movedown:SetScript("OnClick", onMoveDownClick);
+
 			tinsert(editor.list.listElement, scriptStepFrame);
+		end
+
+		scriptStepFrame.moveup:Hide();
+		scriptStepFrame.movedown:Hide();
+		if stepID > 1 then
+			scriptStepFrame.moveup:Show();
+		end
+		if data[tostring(stepID + 1)] then
+			scriptStepFrame.movedown:Show();
 		end
 
 		scriptStepFrame.scriptStepData = scriptStep;
@@ -270,11 +383,12 @@ editor.init = function(ToolFrame)
 	editor.workflow.container.empty:SetText(loc("WO_EMPTY"));
 	editor.workflow.container.add:SetText(loc("WO_ADD"));
 	editor.workflow.container.add:SetScript("OnClick", function(self)
-		goToTypeSelector();
+		setCurrentElementFrame(editor.element.selector, "Step 1: Select the element type", true); -- TODO: locals
 	end);
 	editor.workflow.container.scroll.list.endofworkflow:SetText(loc("WO_END"));
 
 	-- Element edition
+	editor.element.confirm:SetText("Confirm"); -- TODO: locals
 	editor.element.title:SetText(loc("WO_ELEMENT"));
 	editor.element.selector.effect.Name:SetText(loc("WO_EFFECT"));
 	editor.element.selector.effect.InfoText:SetText(loc("WO_EFFECT_TT"));
@@ -288,4 +402,11 @@ editor.init = function(ToolFrame)
 	editor.element.selector.condition:SetScript("OnClick", addConditionElement);
 	editor.element.selector.delay:SetScript("OnClick", addDelayElement);
 	editor.element.selector.effect:SetScript("OnClick", displayEffectDropdown);
+	editor.element.close:SetScript("OnClick", function()
+		editor.element:Hide();
+		unlockElements();
+	end);
+	editor.element.confirm:SetScript("OnClick", function()
+		onElementConfirm();
+	end);
 end

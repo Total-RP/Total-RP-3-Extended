@@ -1,0 +1,50 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	
+<!--
+	Total RP 3
+	Copyright 2014-2016 Sylvain Cossement (telkostrasz@totalrp3.info)
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+	<Frame name="TRP3_ScriptEditorDelay" hidden="true">
+
+		<Frames>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="-110" y="-65"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
+				<Size x="205" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="interrupt" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentInterrupt">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-20" y="-20"/>
+					<Anchor point="RIGHT" x="-35" y="0"/>
+				</Anchors>
+			</Frame>
+
+		</Frames>
+
+	</Frame>
+
+</Ui>
