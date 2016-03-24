@@ -25,7 +25,8 @@ local tostring = tostring;
 
 TRP3_API.inventory.EFFECTS = {
 
-	["item_durability"] = {
+	["item_bag_durability"] = {
+		secured = TRP3_API.script.security.HIGH,
 		codeReplacementFunc = function (args)
 			local target = "containerInfo";
 			if args[1] == "self" then
@@ -39,6 +40,7 @@ TRP3_API.inventory.EFFECTS = {
 	},
 
 	["item_sheath"] = {
+		secured = TRP3_API.script.security.HIGH,
 		codeReplacementFunc = function ()
 			return "ToggleSheath(); lastEffectReturn = 0;"
 		end,
@@ -47,7 +49,8 @@ TRP3_API.inventory.EFFECTS = {
 		}
 	},
 
-	["item_consumme"] = {
+	["item_consume_item"] = {
+		secured = TRP3_API.script.security.HIGH,
 		codeReplacementFunc = function (args)
 			return ("lastEffectReturn = consumeItem(args.slotInfo, args.containerInfo, %s);"):format(args[1]);
 		end,
@@ -56,7 +59,8 @@ TRP3_API.inventory.EFFECTS = {
 		}
 	},
 
-	["item_addItem"] = {
+	["item_add_item"] = {
+		secured = TRP3_API.script.security.HIGH,
 		codeReplacementFunc = function (args)
 			local targetContainer = "args.containerInfo"; -- TODO: selectable or new effect for "add in" ?
 			local count = args[2] or 1;
@@ -69,6 +73,7 @@ TRP3_API.inventory.EFFECTS = {
 	},
 
 	["item_loot"] = {
+		secured = TRP3_API.script.security.HIGH,
 		codeReplacementFunc = function (args)
 			local lootID = args[1];
 			return ("lastEffectReturn = presentLoot(\"%s\");"):format(lootID);

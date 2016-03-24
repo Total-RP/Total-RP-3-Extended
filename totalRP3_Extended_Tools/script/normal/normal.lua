@@ -99,11 +99,12 @@ local menuData;
 local function displayEffectDropdown(self)
 	local values = {};
 	tinsert(values, {loc("WO_EFFECT_SELECT"), nil});
-	for sectionID, section in pairs(menuData) do
+	for _, sectionID in pairs(menuData.order) do
+		local section = menuData[sectionID];
 		local sectionTab = {};
 		for _, effectID in pairs(section) do
 			local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
-			tinsert(sectionTab, {effectInfo.title or effectID, effectID});
+			tinsert(sectionTab, {effectInfo.title or effectID, effectID, effectInfo.description});
 		end
 		tinsert(values, {sectionID, sectionTab});
 	end
@@ -222,13 +223,13 @@ local function decorateEffect(scriptStepFrame, effectData)
 	scriptStepFrame.description:SetText(tooltip);
 	if effect.secured then
 		tooltip = tooltip .. "\n\n|cffffff00" .. loc("WO_SECURITY") .. ":\n";
-		local format = "|cff00ff00%s:|r %s";
+		local format = "%s:|r %s";
 		if effect.secured == TRP3_API.script.security.HIGH then
-			tooltip = tooltip .. format:format(loc("WO_SECURITY_HIGH"), loc("WO_SECURITY_HIGH_DETAILS"));
+			tooltip = tooltip .. format:format("|cff00ff00" .. loc("WO_SECURITY_HIGH"), loc("WO_SECURITY_HIGH_DETAILS"));
 		elseif effect.secured == TRP3_API.script.security.MEDIUM then
-			tooltip = tooltip .. format:format(loc("WO_SECURITY_NORMAL"), loc("WO_SECURITY_NORMAL_DETAILS"));
+			tooltip = tooltip .. format:format("|cffff9900" .. loc("WO_SECURITY_NORMAL"), loc("WO_SECURITY_NORMAL_DETAILS"));
 		elseif effect.secured == TRP3_API.script.security.LOW then
-			tooltip = tooltip .. format:format(loc("WO_SECURITY_LOW"), loc("WO_SECURITY_LOW_DETAILS"));
+			tooltip = tooltip .. format:format("|cffff0000" .. loc("WO_SECURITY_LOW"), loc("WO_SECURITY_LOW_DETAILS"));
 		end
 	end
 	if effectInfo.editor then
@@ -263,6 +264,14 @@ local function decorateElement(scriptStepFrame)
 	end
 end
 
+local function getEffectSecurity(effectID)
+	local effect = TRP3_API.script.getEffect(effectID);
+	if effect then
+		return effect.secured or TRP3_API.script.security.HIGH;
+	end
+	return TRP3_API.script.security.LOW;
+end
+
 function unlockElements()
 	for _, element in pairs(editor.list.listElement) do
 		element.lock = nil;
@@ -281,6 +290,7 @@ function refreshList()
 	unlockElements();
 
 	local stepID = 1;
+	local workflowSecurity = TRP3_API.script.security.HIGH;
 	local previous;
 	while data[tostring(stepID)] do
 		local scriptStep = data[tostring(stepID)];
@@ -294,7 +304,6 @@ function refreshList()
 			setTooltipAll(scriptStepFrame.remove, "TOP", 0, 5, REMOVE);
 			scriptStepFrame.moveup:SetScript("OnClick", onMoveUpClick);
 			scriptStepFrame.movedown:SetScript("OnClick", onMoveDownClick);
-
 			tinsert(editor.list.listElement, scriptStepFrame);
 		end
 
@@ -311,6 +320,14 @@ function refreshList()
 		scriptStepFrame.scriptStepID = tostring(stepID);
 
 		decorateElement(scriptStepFrame);
+		if scriptStep.t == ELEMENT_TYPE.EFFECT then
+			local effectSecurity = getEffectSecurity(scriptStep.e[1].id);
+			if effectSecurity == TRP3_API.script.security.MEDIUM and workflowSecurity == TRP3_API.script.security.HIGH then
+				workflowSecurity = TRP3_API.script.security.MEDIUM;
+			elseif effectSecurity == TRP3_API.script.security.LOW then
+				workflowSecurity = TRP3_API.script.security.LOW;
+			end
+		end
 
 		scriptStepFrame:SetPoint("LEFT", 0, 0);
 		scriptStepFrame:SetPoint("RIGHT", 0, 0);
@@ -324,6 +341,14 @@ function refreshList()
 
 		stepID = stepID + 1;
 		previous = scriptStepFrame;
+	end
+
+	if workflowSecurity == TRP3_API.script.security.HIGH then
+		editor.workflow.security:SetText(("%s: %s"):format("Workflow security", "|cff00ff00" .. loc("WO_SECURITY_HIGH"))); -- TODO: locals
+	elseif workflowSecurity == TRP3_API.script.security.MEDIUM then
+		editor.workflow.security:SetText(("%s: %s"):format("Workflow security", "|cffff9900" .. loc("WO_SECURITY_NORMAL"))); -- TODO: locals
+	else
+		editor.workflow.security:SetText(("%s: %s"):format("Workflow security", "|cffff0000" .. loc("WO_SECURITY_LOW"))); -- TODO: locals
 	end
 
 	editor.workflow.container.scroll.list.endofworkflow:Hide();
@@ -410,8 +435,12 @@ editor.init = function(ToolFrame)
 			"text",
 		},
 		[loc("REG_COMPANIONS")] = {
-			"dismiss_mount",
-			"dismiss_critter",
+			"companion_dismiss_mount",
+			"companion_dismiss_critter",
+			"companion_random_critter",
+		},
+		["Inventory"] = { -- TODO: locals
+			"item_sheath",
 		},
 		["Variables"] = { -- TODO: locals
 			"var_set_execenv",
@@ -420,6 +449,13 @@ editor.init = function(ToolFrame)
 			"debug_dump_args",
 			"debug_dump_arg",
 			"debug_dump_text",
+		},
+		order = {
+			loc("WO_EFFECT_CAT_COMMON"),
+			loc("REG_COMPANIONS"),
+			"Inventory",
+			"Variables",
+			"Debug"
 		}
 	}
 

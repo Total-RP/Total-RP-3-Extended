@@ -257,6 +257,18 @@
 
 				</Frames>
 
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="security" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.container" x="5" y="10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+
 			</Frame>
 
 			<Frame parentKey="element" inherits="TRP3_EditorTitledFrame" hidden="true">

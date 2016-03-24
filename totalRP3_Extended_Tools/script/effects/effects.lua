@@ -90,19 +90,39 @@ end
 -- dismissMount - dismissCritter: Simple companion effects
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function dismiss_mount_init()
-	registerEffectEditor("dismiss_mount", {
+local function companion_dismiss_mount_init()
+	registerEffectEditor("companion_dismiss_mount", {
 		title = "Dismiss mount", -- TODO: locals
 		icon = "ability_skyreach_dismount",
 		description = "Dismount the player from his current mount.", -- TODO: locals
 	});
 end
 
-local function dismiss_critter_init()
-	registerEffectEditor("dismiss_critter", {
+local function companion_dismiss_critter_init()
+	registerEffectEditor("companion_dismiss_critter", {
 		title = "Dismiss battle pet", -- TODO: locals
 		icon = "inv_pet_pettrap01",
 		description = "Dismiss the currently invoked battle pet.", -- TODO: locals
+	});
+end
+
+local function companion_random_critter_init()
+	registerEffectEditor("companion_random_critter", {
+		title = "Summon random battle pet", -- TODO: locals
+		icon = "ability_hunter_beastcall",
+		description = "Summon a random battle pet, picked up in your favorite pets pool.", -- TODO: locals
+	});
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- item_sheath: Item: Toggle weapon sheath
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function item_sheath_init()
+	registerEffectEditor("item_sheath", {
+		title = "Toggle weapons sheath", -- TODO: locals
+		icon = "garrison_blueweapon",
+		description = "Draw or put up the character weapons.", -- TODO: locals
 	});
 end
 
@@ -157,13 +177,13 @@ local function debugs_init()
 	registerEffectEditor("debug_dump_args", {
 		title = "Debug dump args", -- TODO: locals
 		icon = "temp",
-		description = "Dump in debug chat the current workflow variables.", -- TODO: locals
+		description = "Dump in chat frame the current workflow variables.", -- TODO: locals
 	});
 
 	registerEffectEditor("debug_dump_arg", {
 		title = "Debug dump arg", -- TODO: locals
 		icon = "temp",
-		description = "Dump in debug chat a specific workflow variables.", -- TODO: locals
+		description = "Dump in chat frame a specific workflow variables.", -- TODO: locals
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText("|cffffff00" .."Variable name" .. ":|r " .. args[1]); -- TODO: locals
 		end,
@@ -180,7 +200,7 @@ local function debugs_init()
 	registerEffectEditor("debug_dump_text", {
 		title = "Debug dump text", -- TODO: locals
 		icon = "temp",
-		description = "Dump in debug chat a text. It's simple as that.", -- TODO: locals
+		description = "Display a text in debug chat frame. It's simple as that.", -- TODO: locals
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText("|cffffff00" .."Text" .. ":|r " .. args[1]); -- TODO: locals
 		end,
@@ -239,8 +259,11 @@ end
 function TRP3_API.extended.tools.initBaseEffects()
 	text_init();
 
-	dismiss_mount_init();
-	dismiss_critter_init();
+	companion_dismiss_mount_init();
+	companion_dismiss_critter_init();
+	companion_random_critter_init();
+
+	item_sheath_init();
 
 	var_set_execenv_init();
 
