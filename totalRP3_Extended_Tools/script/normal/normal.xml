@@ -104,7 +104,7 @@
 					<Size x="0" y="10" />
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.icon" x="5" y="5" />
-						<Anchor point="RIGHT" x="-5" y="0" />
+						<Anchor point="RIGHT" x="-25" y="0" />
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10" />
 				</FontString>

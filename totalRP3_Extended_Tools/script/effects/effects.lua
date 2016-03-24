@@ -82,11 +82,136 @@ function text_editor.load(scriptData)
 end
 
 function text_editor.save(scriptData)
-	if not scriptData.args then
-		scriptData.args = {}
-	end
 	scriptData.args[1] = stEtN(strtrim(text_editor.text:GetText()));
 	scriptData.args[2] = text_editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- dismissMount - dismissCritter: Simple companion effects
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function dismiss_mount_init()
+	registerEffectEditor("dismiss_mount", {
+		title = "Dismiss mount", -- TODO: locals
+		icon = "ability_skyreach_dismount",
+		description = "Dismount the player from his current mount.", -- TODO: locals
+	});
+end
+
+local function dismiss_critter_init()
+	registerEffectEditor("dismiss_critter", {
+		title = "Dismiss battle pet", -- TODO: locals
+		icon = "inv_pet_pettrap01",
+		description = "Dismiss the currently invoked battle pet.", -- TODO: locals
+	});
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- var_set_execenv: Variables set
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local varSetEditor = TRP3_EffectEditorVarSet;
+
+local function var_set_execenv_init()
+	registerEffectEditor("var_set_execenv", {
+		title = "Workflow variable", -- TODO: locals
+		icon = "inv_inscription_minorglyph00",
+		description = "Sets a variable for the current workflow execution.\n\n|cff00ff00This variable exists only during a workflow execution and will be discarded afterward.", -- TODO: locals
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .."Variable" .. ":|r " .. args[1]); -- TODO: locals
+		end,
+		getDefaultArgs = function()
+			return {"varName", "Variable value"};
+		end,
+		editor = varSetEditor
+	});
+
+	-- Var name
+	varSetEditor.var.title:SetText("Variable name");
+	setTooltipForSameFrame(varSetEditor.var.help, "RIGHT", 0, 5, "Variable name", "");
+
+	-- Var value
+	varSetEditor.value.title:SetText("Variable value");
+	setTooltipForSameFrame(varSetEditor.value.help, "RIGHT", 0, 5, "Variable value", "");
+end
+
+function varSetEditor.load(scriptData)
+	local data = scriptData.args or Globals.empty;
+	varSetEditor.var:SetText(data[1] or "");
+	varSetEditor.value:SetText(data[2] or "");
+end
+
+function varSetEditor.save(scriptData)
+	scriptData.args[1] = stEtN(strtrim(varSetEditor.var:GetText()));
+	scriptData.args[2] = stEtN(strtrim(varSetEditor.value:GetText()));
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- DEBUGS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local debugDumpArgEditor = TRP3_EffectEditorDebugDumpArg;
+local debugDumpTextEditor = TRP3_EffectEditorDebugDumpText;
+
+local function debugs_init()
+	registerEffectEditor("debug_dump_args", {
+		title = "Debug dump args", -- TODO: locals
+		icon = "temp",
+		description = "Dump in debug chat the current workflow variables.", -- TODO: locals
+	});
+
+	registerEffectEditor("debug_dump_arg", {
+		title = "Debug dump arg", -- TODO: locals
+		icon = "temp",
+		description = "Dump in debug chat a specific workflow variables.", -- TODO: locals
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .."Variable name" .. ":|r " .. args[1]); -- TODO: locals
+		end,
+		getDefaultArgs = function()
+			return {"varName"};
+		end,
+		editor = debugDumpArgEditor
+	});
+
+	-- Var name
+	debugDumpArgEditor.var.title:SetText("Variable name");
+	setTooltipForSameFrame(debugDumpArgEditor.var.help, "RIGHT", 0, 5, "Variable name", "");
+
+	registerEffectEditor("debug_dump_text", {
+		title = "Debug dump text", -- TODO: locals
+		icon = "temp",
+		description = "Dump in debug chat a text. It's simple as that.", -- TODO: locals
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .."Text" .. ":|r " .. args[1]); -- TODO: locals
+		end,
+		getDefaultArgs = function()
+			return {"Text to dump"};
+		end,
+		editor = debugDumpTextEditor
+	});
+
+	-- Text
+	debugDumpTextEditor.text.title:SetText("Text");
+	setTooltipForSameFrame(debugDumpTextEditor.text.help, "RIGHT", 0, 5, "Text", "");
+
+end
+
+function debugDumpArgEditor.load(scriptData)
+	local data = scriptData.args or Globals.empty;
+	debugDumpArgEditor.var:SetText(data[1] or "");
+end
+
+function debugDumpArgEditor.save(scriptData)
+	scriptData.args[1] = stEtN(strtrim(debugDumpArgEditor.var:GetText()));
+end
+
+function debugDumpTextEditor.load(scriptData)
+	local data = scriptData.args or Globals.empty;
+	debugDumpTextEditor.text:SetText(data[1] or "");
+end
+
+function debugDumpTextEditor.save(scriptData)
+	scriptData.args[1] = stEtN(strtrim(debugDumpTextEditor.text:GetText()));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -113,5 +238,13 @@ end
 
 function TRP3_API.extended.tools.initBaseEffects()
 	text_init();
-	document_show_init();
+
+	dismiss_mount_init();
+	dismiss_critter_init();
+
+	var_set_execenv_init();
+
+	debugs_init();
+
+--	document_show_init();
 end
