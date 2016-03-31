@@ -28,6 +28,29 @@ local editor, toolFrame = TRP3_ItemQuickEditor;
 local onCreatedCallback;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Item creation: Container template
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function getContainerItemData()
+	return {
+		TY = TRP3_DB.types.ITEM,
+		MD = {
+			MO = TRP3_DB.modes.NORMAL,
+			V = 1,
+			CD = date("%d/%m/%y %H:%M:%S");
+			CB = Globals.player_id,
+			SD = date("%d/%m/%y %H:%M:%S");
+			SB = Globals.player_id,
+		},
+		BA = {
+			NA = "Container item", -- TODO: locals
+			CT = true,
+			IC = "inv_misc_bag_01"
+		},
+	};
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Item quick editor
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -238,6 +261,12 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame.list.bottom.item.templates.blank:SetScript("OnClick", function(self)
 		toolFrame.list.bottom.item.templates:Hide();
 		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL));
+		TRP3_API.extended.tools.goToPage(ID);
+	end);
+
+	toolFrame.list.bottom.item.templates.container:SetScript("OnClick", function(self)
+		toolFrame.list.bottom.item.templates:Hide();
+		local ID, _ = TRP3_API.extended.tools.createItem(getContainerItemData());
 		TRP3_API.extended.tools.goToPage(ID);
 	end);
 end

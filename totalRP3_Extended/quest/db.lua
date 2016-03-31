@@ -37,7 +37,7 @@ Marshal McBride
 -- CAMPAIGN DB
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_DB.inner.demoCampaign = {
+local demoCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,
 
 	-- Base information, common to the whole campaign
@@ -266,8 +266,9 @@ TRP3_DB.inner.demoCampaign = {
 	-- OnStart inner handler
 	OS = "CAMPAIGN_START",
 };
+--TRP3_DB.inner.demoCampaign = demoCampaign;
 
-TRP3_DB.inner.myFirstCampaign = {
+local myFirstCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,
 
 	-- Base information, common to the whole campaign
@@ -594,3 +595,4 @@ TRP3_DB.inner.myFirstCampaign = {
 	-- OnStart inner handler
 	OS = "CAMPAIGN_START",
 };
+--TRP3_DB.inner.myFirstCampaign = myFirstCampaign;

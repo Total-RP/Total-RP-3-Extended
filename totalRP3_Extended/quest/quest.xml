@@ -104,6 +104,11 @@
 					<Anchor point="LEFT" x="10" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" parentKey="empty" text="No campaign yet, patience ! ;)" setAllPoints="true"/>
+					</Layer>
+				</Layers>
 				<Frames>
 					<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
 						<Anchors>
@@ -266,10 +271,10 @@
 													<Layer level="OVERLAY">
 														<FontString name="$parentText" font="SystemFont_Med1" justifyH="CENTER" justifyV="TOP" wordwrap="true" parentKey="Text">
 															<Size x="230" y="0"/>
-															<Color r="0.2824" g="0.0157" b="0.0157"/>
 															<Anchors>
 																<Anchor point="TOPLEFT" x="0" y="0"/>
 															</Anchors>
+															<Color r="0.2824" g="0.0157" b="0.0157"/>
 														</FontString>
 													</Layer>
 												</Layers>
@@ -339,17 +344,17 @@
 											<Layer level="OVERLAY">
 												<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Current">
 													<Size x="0" y="50"/>
-													<Color r="0.95" g="0.95" b="0.95"/>
 													<Anchors>
 														<Anchor point="TOPLEFT" x="30" y="0"/>
 													</Anchors>
+													<Color r="0.95" g="0.95" b="0.95"/>
 												</FontString>
 												<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Finished">
 													<Size x="0" y="50"/>
-													<Color r="0.95" g="0.95" b="0.95"/>
 													<Anchors>
 														<Anchor point="TOPLEFT" x="30" y="0"/>
 													</Anchors>
+													<Color r="0.95" g="0.95" b="0.95"/>
 												</FontString>
 											</Layer>
 										</Layers>

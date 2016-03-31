@@ -81,6 +81,13 @@ local function getClass(...)
 end
 TRP3_API.extended.getClass = getClass;
 
+local function classExists(...)
+	local id = getFullID(...);
+	local class = DB[id];
+	return class ~= nil;
+end
+TRP3_API.extended.classExists = classExists;
+
 local function getClassesByType(classType)
 	local classes = {};
 	for objectID, objectClass in pairs(DB) do

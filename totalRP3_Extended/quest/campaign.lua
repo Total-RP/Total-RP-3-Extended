@@ -101,6 +101,11 @@ local function activateCampaign(campaignID, force)
 		return;
 	end
 
+	if not TRP3_API.extended.classExists(campaignID) then
+		Log.log("Unknown campaignID, abord activateCampaign: " .. tostring(campaignID));
+		return;
+	end
+
 	local campaignClass = getClass(campaignID);
 	local _, campaignName = getClassDataSafe(campaignClass);
 
