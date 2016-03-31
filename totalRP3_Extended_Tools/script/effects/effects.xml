@@ -87,6 +87,47 @@
 	</Frame>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--       Speechs        -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorSpeechEnv" hidden="true">
+
+		<Frames>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorSpeechNPC" hidden="true">
+
+		<Frames>
+
+			<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.name" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--         Debug        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 

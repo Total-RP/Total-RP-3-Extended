@@ -147,12 +147,12 @@ local function var_set_execenv_init()
 	});
 
 	-- Var name
-	varSetEditor.var.title:SetText("Variable name");
-	setTooltipForSameFrame(varSetEditor.var.help, "RIGHT", 0, 5, "Variable name", "");
+	varSetEditor.var.title:SetText("Variable name")-- TODO: locals;
+	setTooltipForSameFrame(varSetEditor.var.help, "RIGHT", 0, 5, "Variable name", "");-- TODO: locals
 
 	-- Var value
-	varSetEditor.value.title:SetText("Variable value");
-	setTooltipForSameFrame(varSetEditor.value.help, "RIGHT", 0, 5, "Variable value", "");
+	varSetEditor.value.title:SetText("Variable value");-- TODO: locals
+	setTooltipForSameFrame(varSetEditor.value.help, "RIGHT", 0, 5, "Variable value", "");-- TODO: locals
 end
 
 function varSetEditor.load(scriptData)
@@ -194,8 +194,8 @@ local function debugs_init()
 	});
 
 	-- Var name
-	debugDumpArgEditor.var.title:SetText("Variable name");
-	setTooltipForSameFrame(debugDumpArgEditor.var.help, "RIGHT", 0, 5, "Variable name", "");
+	debugDumpArgEditor.var.title:SetText("Variable name");-- TODO: locals
+	setTooltipForSameFrame(debugDumpArgEditor.var.help, "RIGHT", 0, 5, "Variable name", "");-- TODO: locals
 
 	registerEffectEditor("debug_dump_text", {
 		title = "Debug dump text", -- TODO: locals
@@ -211,8 +211,8 @@ local function debugs_init()
 	});
 
 	-- Text
-	debugDumpTextEditor.text.title:SetText("Text");
-	setTooltipForSameFrame(debugDumpTextEditor.text.help, "RIGHT", 0, 5, "Text", "");
+	debugDumpTextEditor.text.title:SetText("Text");-- TODO: locals
+	setTooltipForSameFrame(debugDumpTextEditor.text.help, "RIGHT", 0, 5, "Text", "");-- TODO: locals
 
 end
 
@@ -253,6 +253,75 @@ local function document_show_init()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Speechs
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local speechEnvEditor = TRP3_EffectEditorSpeechEnv;
+local speechNPCEditor = TRP3_EffectEditorSpeechNPC;
+
+local function speech_env_init()
+	-- Narrative text
+	speechEnvEditor.text.title:SetText("Narrative text"); -- TODO: locals
+	setTooltipForSameFrame(speechEnvEditor.text.help, "RIGHT", 0, 5, "Narrative text", "Please do not include the leading pipe || character."); -- TODO: locals
+
+	registerEffectEditor("speech_env", {
+		title = "Speech: Narration", -- TODO: locals
+		icon = "inv_misc_book_07",
+		description = "Plays a narration as a formated emote.\n\n|cff00ff00Has the same effect as playing an emote starting with a || (pipe character). It will be formated in chat for other TRP users.", -- TODO: locals
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .."Text" .. ":|r " .. args[1]); -- TODO: locals
+		end,
+		getDefaultArgs = function()
+			return {"The snow blows white on the mountain tonight ..."}; -- TODO: locals
+		end,
+		editor = speechEnvEditor,
+	});
+end
+
+function speechEnvEditor.load(scriptData)
+	local data = scriptData.args or Globals.empty;
+	speechEnvEditor.text:SetText(data[1] or "");
+end
+
+function speechEnvEditor.save(scriptData)
+	scriptData.args[1] = stEtN(strtrim(speechEnvEditor.text:GetText()));
+end
+
+local function speech_npc_init()
+	-- Narrative text
+	speechNPCEditor.text.title:SetText("Narrative text"); -- TODO: locals
+	setTooltipForSameFrame(speechNPCEditor.text.help, "RIGHT", 0, 5, "Narrative text", "Please do not include the leading pipe || character."); -- TODO: locals
+
+	-- Name
+	speechNPCEditor.name.title:SetText("NPC name"); -- TODO: locals
+	setTooltipForSameFrame(speechNPCEditor.name.help, "RIGHT", 0, 5, "NPC name", "The NPC name."); -- TODO: locals
+
+	registerEffectEditor("speech_npc", {
+		title = "Speech: NPC", -- TODO: locals
+		icon = "ability_warrior_rallyingcry",
+		description = "Plays a npc speech as a formated emote.\n\n|cff00ff00Has the same effect as playing an emote starting with a || (pipe character) with a npc name and a text. It will be formated in chat for other TRP users.", -- TODO: locals
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .."Formated text" .. ":|r " .. args[1] .. args[2] .. args[3]); -- TODO: locals + format
+		end,
+		getDefaultArgs = function()
+			return {"Tish", " says: ", "Hello from the other side."}; -- TODO: locals
+		end,
+		editor = speechNPCEditor,
+	});
+end
+
+function speechNPCEditor.load(scriptData)
+	local data = scriptData.args or Globals.empty;
+	speechNPCEditor.name:SetText(data[1] or "");
+	speechNPCEditor.text:SetText(data[3] or "");
+end
+
+function speechNPCEditor.save(scriptData)
+	scriptData.args[1] = stEtN(strtrim(speechNPCEditor.name:GetText()));
+	scriptData.args[3] = stEtN(strtrim(speechNPCEditor.text:GetText()));
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -262,6 +331,9 @@ function TRP3_API.extended.tools.initBaseEffects()
 	companion_dismiss_mount_init();
 	companion_dismiss_critter_init();
 	companion_random_critter_init();
+
+	speech_env_init();
+	speech_npc_init();
 
 	item_sheath_init();
 

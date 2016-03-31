@@ -384,11 +384,14 @@ end
 local MODULE_STRUCTURE = {
 	["name"] = "Extended Tools",
 	["description"] = "Total RP 3 extended tools: item, document and campaign creation.",
-	["version"] = 1.000,
+	["version"] = 0.1,
 	["id"] = "trp3_extended_tools",
 	["onStart"] = onStart,
 	["onInit"] = onInit,
-	["minVersion"] = 12,
+	["minVersion"] = 13,
+	["requiredDeps"] = {
+		{"trp3_extended", 0.1},
+	}
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);

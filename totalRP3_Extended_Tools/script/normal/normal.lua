@@ -434,6 +434,10 @@ editor.init = function(ToolFrame)
 		[loc("WO_EFFECT_CAT_COMMON")] = {
 			"text",
 		},
+		["Speech"] = { -- TODO: locals
+			"speech_env",
+			"speech_npc",
+		},
 		[loc("REG_COMPANIONS")] = {
 			"companion_dismiss_mount",
 			"companion_dismiss_critter",
@@ -452,6 +456,7 @@ editor.init = function(ToolFrame)
 		},
 		order = {
 			loc("WO_EFFECT_CAT_COMMON"),
+			"Speech",
 			loc("REG_COMPANIONS"),
 			"Inventory",
 			"Variables",
