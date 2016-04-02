@@ -168,7 +168,7 @@ local function initPlayerInventoryButton()
 		TRP3_API.target.registerButton({
 			id = "aa_player_d_inventory",
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-			configText = playerInvText,
+			configText = loc("INV_PAGE_CHARACTER_INV"),
 			condition = function(_, unitID)
 				return unitID == Globals.player_id;
 			end,

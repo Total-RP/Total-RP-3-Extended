@@ -38,6 +38,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	INV_PAGE_CAMERA_CONFIG = "Camera parameters:\nRotation: %.2f\nZoom: %.2f\nPosition: %.2f, %.2f",
 	INV_PAGE_MARKER = "Marker position",
 	INV_PAGE_PLAYER_INV = "%s's inventory",
+	INV_PAGE_CHARACTER_INV = "Inventory",
 	INV_PAGE_QUICK_SLOT = "Quick slot",
 	INV_PAGE_QUICK_SLOT_TT = "This slot will be used as primary container.",
 	INV_PAGE_ITEM_LOCATION = "Item location on character",
