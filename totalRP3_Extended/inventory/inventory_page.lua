@@ -206,6 +206,7 @@ function TRP3_API.inventory.initInventoryPage()
 	createRefreshOnFrame(TRP3_InventoryPage.Main, 0.15, containerFrameUpdate);
 
 	-- Create model slots
+	TRP3_InventoryPage.Main.lockX = 110;
 	TRP3_InventoryPage.Main.slots = {};
 	for i=1, 17 do
 		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, TRP3_InventoryPage.Main, "TRP3_InventoryPageSlotTemplate");
