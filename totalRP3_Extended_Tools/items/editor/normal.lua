@@ -422,9 +422,9 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 
 	-- Type
 	container.containerTypes = {
-		{("Container size: |cff00ff00%s"):format(("%s rows by %s columns"):format(5, 4)), "5x4"},
-		{("Container size: |cff00ff00%s"):format(("%s rows by %s columns"):format(2, 4)), "2x4"},
-		{("Container size: |cff00ff00%s"):format(("%s rows by %s columns"):format(1, 4)), "1x4"},
+		{(loc("IT_CO_SIZE") .. ": |cff00ff00%s"):format(loc("IT_CO_SIZE_COLROW"):format(5, 4)), "5x4"},
+		{(loc("IT_CO_SIZE") .. ": |cff00ff00%s"):format(loc("IT_CO_SIZE_COLROW"):format(2, 4)), "2x4"},
+		{(loc("IT_CO_SIZE") .. ": |cff00ff00%s"):format(loc("IT_CO_SIZE_COLROW"):format(1, 4)), "1x4"},
 	};
 	TRP3_API.ui.listbox.setupListBox(container.type, container.containerTypes, onContainerResize, nil, 230, true);
 
