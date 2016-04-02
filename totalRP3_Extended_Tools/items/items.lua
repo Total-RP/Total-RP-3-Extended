@@ -63,6 +63,13 @@ function TRP3_API.extended.tools.getBlankItemData(toMode)
 	};
 end
 
+function TRP3_API.extended.tools.getContainerItemData(toMode)
+	local data = TRP3_API.extended.tools.getBlankItemData(toMode);
+	data.BA.CT = true;
+	data.BA.IC = "inv_misc_bag_01";
+	return data;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Item base frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
