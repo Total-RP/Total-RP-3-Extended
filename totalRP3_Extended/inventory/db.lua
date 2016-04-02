@@ -17,6 +17,7 @@
 ----------------------------------------------------------------------------------
 
 TRP3_DB.inner.main = {
+	hideFromList = true,
 	TY = TRP3_DB.types.ITEM,
 	BA = {
 		NA = "Main inventory",

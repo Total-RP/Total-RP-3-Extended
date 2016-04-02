@@ -50,12 +50,12 @@ local idList = {};
 local LINE_TOP_MARGIN = 25;
 local LEFT_DEPTH_STEP_MARGIN = 30;
 
-local function getDB()
-	if currentTab == TABS.MY_DB then
+local function getDB(dbType)
+	if dbType == TABS.MY_DB then
 		return TRP3_DB.my;
-	elseif currentTab == TABS.OTHERS_DB then
+	elseif dbType == TABS.OTHERS_DB then
 		return TRP3_DB.exchange;
-	elseif currentTab == TABS.BACKERS_DB then
+	elseif dbType == TABS.BACKERS_DB then
 		return TRP3_DB.inner;
 	end
 	return TRP3_DB.global;
@@ -94,7 +94,7 @@ local function addChildrenToPool(parentID)
 end
 
 local function removeChildrenFromPool(parentID)
-	for objectID, _ in pairs(getDB()) do
+	for objectID, _ in pairs(getDB(currentTab)) do
 		if objectID ~= parentID and objectID:sub(1, parentID:len()) == parentID then
 			Utils.table.remove(idList, objectID);
 		end
@@ -231,8 +231,9 @@ local function filterList()
 	-- Here we will filter
 	wipe(idList);
 
-	for objectID, _ in pairs(getDB()) do
-		if not objectID:find("%s") then -- Only take the first level objects
+	for objectID, object in pairs(getDB(currentTab)) do
+		-- Only take the first level objects
+		if not objectID:find("%s") and not object.hideFromList then
 			tinsert(idList, objectID);
 		end
 	end
@@ -248,11 +249,23 @@ end
 
 local tabGroup;
 
+local function getDBSize(dbType)
+	local DB = getDB(dbType);
+	local count = 0;
+	for objectID, object in pairs(DB) do
+		-- Only take the first level objects
+		if not objectID:find("%s") and not object.hideFromList then
+			count = count + 1;
+		end
+	end
+	return count;
+end
+
 local function onTabChanged(tabWidget, tab)
-	tabGroup.tabs[1]:SetText(loc("DB_MY"):format(tsize(TRP3_DB.my)));
-	tabGroup.tabs[2]:SetText(loc("DB_OTHERS"):format(tsize(TRP3_DB.exchange)));
-	tabGroup.tabs[3]:SetText(loc("DB_BACKERS"):format(tsize(TRP3_DB.inner)));
-	tabGroup.tabs[4]:SetText(loc("DB_FULL"):format(tsize(TRP3_DB.global)));
+	tabGroup.tabs[1]:SetText(loc("DB_MY"):format(getDBSize(TABS.MY_DB)));
+	tabGroup.tabs[2]:SetText(loc("DB_OTHERS"):format(getDBSize(TABS.OTHERS_DB)));
+	tabGroup.tabs[3]:SetText(loc("DB_BACKERS"):format(getDBSize(TABS.BACKERS_DB)));
+	tabGroup.tabs[4]:SetText(loc("DB_FULL"):format(getDBSize()));
 
 	TRP3_ItemQuickEditor:Hide();
 	ToolFrame.list.bottom.item:Hide();
