@@ -29,25 +29,23 @@ local function isContainerByClass(item)
 end
 TRP3_API.inventory.isContainerByClass = isContainerByClass;
 
-local function isUsableByClass(item)
-	return item and item.US;
-end
-TRP3_API.inventory.isUsableByClass = isUsableByClass;
-
 local function isContainerByClassID(itemID)
 	return itemID == "main" or isContainerByClass(getClass(itemID));
 end
 TRP3_API.inventory.isContainerByClassID = isContainerByClassID;
 
+
+
 local function isUsableByClass(item)
 	return item and item.BA and item.BA.US;
 end
-TRP3_API.inventory.isContainerByClass = isContainerByClass;
+TRP3_API.inventory.isUsableByClass = isUsableByClass;
 
 local function isUsableByClassID(itemID)
 	return isUsableByClass(getClass(itemID));
 end
 TRP3_API.inventory.isUsableByClassID = isUsableByClassID;
+
 
 local function getBaseClassDataSafe(itemClass)
 	local icon = "TEMP";
