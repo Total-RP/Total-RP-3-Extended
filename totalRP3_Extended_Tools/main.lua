@@ -143,6 +143,7 @@ local function getModeLocale(mode)
 	if mode == TRP3_DB.modes.EXPERT then
 		return loc("MODE_EXPERT");
 	end
+	return tostring(mode);
 end
 TRP3_API.extended.tools.getModeLocale = getModeLocale;
 
@@ -384,13 +385,13 @@ end
 local MODULE_STRUCTURE = {
 	["name"] = "Extended Tools",
 	["description"] = "Total RP 3 extended tools: item, document and campaign creation.",
-	["version"] = 0.1,
+	["version"] = 0.11,
 	["id"] = "trp3_extended_tools",
 	["onStart"] = onStart,
 	["onInit"] = onInit,
 	["minVersion"] = 13,
 	["requiredDeps"] = {
-		{"trp3_extended", 0.1},
+		{"trp3_extended", 0.11},
 	}
 };
 
