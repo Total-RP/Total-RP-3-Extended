@@ -134,7 +134,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_CO_DURABILITY = "Durability",
 	IT_CO_DURABILITY_TT = "Determine the overall max health for your container. A container can lose health over time or can be damaged. But it can also be repaired with the proper items.\n\n|cff00ff00Zero means invulnerable.",
 	IT_CO_MAX = "Max weight (in grams)",
-	IT_CO_MAX_TT = "This sets the limit of weight from where your container will start losing helth over time due to overweight.\n\n|cff00ff00Zero means no limit.\n\n|cffff9900Please enter the max weight in GRAMS.",
+	IT_CO_MAX_TT = "This sets the limit of weight from where your container will start losing health over time due to overweight.\n\n|cff00ff00Zero means no limit.\n\n|cffff9900Please enter the max weight in GRAMS.",
 
 	-- Workflows
 	WO_WORKFLOW = "Workflows",
