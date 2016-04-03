@@ -92,25 +92,25 @@ end
 
 local function companion_dismiss_mount_init()
 	registerEffectEditor("companion_dismiss_mount", {
-		title = "Dismiss mount", -- TODO: locals
+		title = loc("EFFECT_DISMOUNT"),
 		icon = "ability_skyreach_dismount",
-		description = "Dismount the player from his current mount.", -- TODO: locals
+		description = loc("EFFECT_DISMOUNT_TT"),
 	});
 end
 
 local function companion_dismiss_critter_init()
 	registerEffectEditor("companion_dismiss_critter", {
-		title = "Dismiss battle pet", -- TODO: locals
+		title = loc("EFFECT_DISPET"),
 		icon = "inv_pet_pettrap01",
-		description = "Dismiss the currently invoked battle pet.", -- TODO: locals
+		description = loc("EFFECT_DISPET_TT"),
 	});
 end
 
 local function companion_random_critter_init()
 	registerEffectEditor("companion_random_critter", {
-		title = "Summon random battle pet", -- TODO: locals
+		title = loc("EFFECT_RANDSUM"),
 		icon = "ability_hunter_beastcall",
-		description = "Summon a random battle pet, picked up in your favorite pets pool.", -- TODO: locals
+		description = loc("EFFECT_RANDSUM_TT"),
 	});
 end
 
@@ -120,9 +120,9 @@ end
 
 local function item_sheath_init()
 	registerEffectEditor("item_sheath", {
-		title = "Toggle weapons sheath", -- TODO: locals
+		title = loc("EFFECT_SHEATH"),
 		icon = "garrison_blueweapon",
-		description = "Draw or put up the character weapons.", -- TODO: locals
+		description = loc("EFFECT_SHEATH_TT"),
 	});
 end
 
@@ -134,25 +134,25 @@ local varSetEditor = TRP3_EffectEditorVarSet;
 
 local function var_set_execenv_init()
 	registerEffectEditor("var_set_execenv", {
-		title = "Workflow variable", -- TODO: locals
+		title = loc("EFFECT_VAR_WORK"),
 		icon = "inv_inscription_minorglyph00",
-		description = "Sets a variable for the current workflow execution.\n\n|cff00ff00This variable exists only during a workflow execution and will be discarded afterward.", -- TODO: locals
+		description = loc("EFFECT_VAR_WORK_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .."Variable" .. ":|r " .. args[1]); -- TODO: locals
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. args[1]);
 		end,
 		getDefaultArgs = function()
-			return {"varName", "Variable value"};
+			return {"varName", loc("EFFECT_VAR_VALUE")};
 		end,
 		editor = varSetEditor
 	});
 
 	-- Var name
-	varSetEditor.var.title:SetText("Variable name")-- TODO: locals;
-	setTooltipForSameFrame(varSetEditor.var.help, "RIGHT", 0, 5, "Variable name", "");-- TODO: locals
+	varSetEditor.var.title:SetText(loc("EFFECT_VAR"))
+	setTooltipForSameFrame(varSetEditor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
 
 	-- Var value
-	varSetEditor.value.title:SetText("Variable value");-- TODO: locals
-	setTooltipForSameFrame(varSetEditor.value.help, "RIGHT", 0, 5, "Variable value", "");-- TODO: locals
+	varSetEditor.value.title:SetText(loc("EFFECT_VAR_VALUE"));
+	setTooltipForSameFrame(varSetEditor.value.help, "RIGHT", 0, 5, loc("EFFECT_VAR_VALUE"), "");
 end
 
 function varSetEditor.load(scriptData)
@@ -175,17 +175,17 @@ local debugDumpTextEditor = TRP3_EffectEditorDebugDumpText;
 
 local function debugs_init()
 	registerEffectEditor("debug_dump_args", {
-		title = "Debug dump args", -- TODO: locals
+		title = loc("EFFECT_DEBUG_DUMP_ARGS"),
 		icon = "temp",
-		description = "Dump in chat frame the current workflow variables.", -- TODO: locals
+		description = loc("EFFECT_DEBUG_DUMP_ARGS_TT"),
 	});
 
 	registerEffectEditor("debug_dump_arg", {
-		title = "Debug dump arg", -- TODO: locals
+		title = loc("EFFECT_DEBUG_DUMP_ARG"),
 		icon = "temp",
-		description = "Dump in chat frame a specific workflow variables.", -- TODO: locals
+		description = loc("EFFECT_DEBUG_DUMP_ARG_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .."Variable name" .. ":|r " .. args[1]); -- TODO: locals
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. args[1]);
 		end,
 		getDefaultArgs = function()
 			return {"varName"};
@@ -194,25 +194,25 @@ local function debugs_init()
 	});
 
 	-- Var name
-	debugDumpArgEditor.var.title:SetText("Variable name");-- TODO: locals
-	setTooltipForSameFrame(debugDumpArgEditor.var.help, "RIGHT", 0, 5, "Variable name", "");-- TODO: locals
+	debugDumpArgEditor.var.title:SetText(loc("EFFECT_VAR"));
+	setTooltipForSameFrame(debugDumpArgEditor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
 
 	registerEffectEditor("debug_dump_text", {
-		title = "Debug dump text", -- TODO: locals
+		title = loc("EFFECT_DEBUG_DUMP_TEXT"),
 		icon = "temp",
-		description = "Display a text in debug chat frame. It's simple as that.", -- TODO: locals
+		description = loc("EFFECT_DEBUG_DUMP_TEXT_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .."Text" .. ":|r " .. args[1]); -- TODO: locals
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_TEXT") .. ":|r " .. args[1]);
 		end,
 		getDefaultArgs = function()
-			return {"Text to dump"};
+			return {loc("EFFECT_TEXT_TEXT_TT")};
 		end,
 		editor = debugDumpTextEditor
 	});
 
 	-- Text
-	debugDumpTextEditor.text.title:SetText("Text");-- TODO: locals
-	setTooltipForSameFrame(debugDumpTextEditor.text.help, "RIGHT", 0, 5, "Text", "");-- TODO: locals
+	debugDumpTextEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
+	setTooltipForSameFrame(debugDumpTextEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT_TT"), "");
 
 end
 
@@ -240,11 +240,11 @@ end
 
 local function document_show_init()
 	registerEffectEditor("document_show", {
-		title = "Open document", -- TODO: locals
+		title = loc("EFFECT_DOC_DISPLAY"),
 		icon = "inv_icon_mission_complete_order",
-		description = "Opens a document to the player.", -- TODO: locals
+		description = loc("EFFECT_DOC_DISPLAY_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .."Document" .. ":|r " .. args[1]); -- TODO: locals
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("TYPE_DOCUMENT") .. ":|r " .. args[1]);
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -260,22 +260,22 @@ local speechEnvEditor = TRP3_EffectEditorSpeechEnv;
 local speechNPCEditor = TRP3_EffectEditorSpeechNPC;
 
 local function speech_env_init()
-	-- Narrative text
-	speechEnvEditor.text.title:SetText("Narrative text"); -- TODO: locals
-	setTooltipForSameFrame(speechEnvEditor.text.help, "RIGHT", 0, 5, "Narrative text", "Please do not include the leading pipe || character."); -- TODO: locals
-
 	registerEffectEditor("speech_env", {
-		title = "Speech: Narration", -- TODO: locals
+		title = loc("EFFECT_SPEECH_NAR"),
 		icon = "inv_misc_book_07",
-		description = "Plays a narration as a formated emote.\n\n|cff00ff00Has the same effect as playing an emote starting with a || (pipe character). It will be formated in chat for other TRP users.", -- TODO: locals
+		description = loc("EFFECT_SPEECH_NAR_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .."Text" .. ":|r " .. args[1]); -- TODO: locals
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_TEXT") .. ":|r " .. args[1]);
 		end,
 		getDefaultArgs = function()
-			return {"The snow blows white on the mountain tonight ..."}; -- TODO: locals
+			return {loc("EFFECT_SPEECH_NAR_DEFAULT")};
 		end,
 		editor = speechEnvEditor,
 	});
+
+	-- Narrative text
+	speechEnvEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
+	setTooltipForSameFrame(speechEnvEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_SPEECH_NAR_TEXT_TT"));
 end
 
 function speechEnvEditor.load(scriptData)
@@ -288,26 +288,26 @@ function speechEnvEditor.save(scriptData)
 end
 
 local function speech_npc_init()
-	-- Narrative text
-	speechNPCEditor.text.title:SetText("Narrative text"); -- TODO: locals
-	setTooltipForSameFrame(speechNPCEditor.text.help, "RIGHT", 0, 5, "Narrative text", "Please do not include the leading pipe || character."); -- TODO: locals
-
-	-- Name
-	speechNPCEditor.name.title:SetText("NPC name"); -- TODO: locals
-	setTooltipForSameFrame(speechNPCEditor.name.help, "RIGHT", 0, 5, "NPC name", "The NPC name."); -- TODO: locals
-
 	registerEffectEditor("speech_npc", {
-		title = "Speech: NPC", -- TODO: locals
+		title = loc("EFFECT_SPEECH_NPC"),
 		icon = "ability_warrior_rallyingcry",
-		description = "Plays a npc speech as a formated emote.\n\n|cff00ff00Has the same effect as playing an emote starting with a || (pipe character) with a npc name and a text. It will be formated in chat for other TRP users.", -- TODO: locals
+		description = loc("EFFECT_SPEECH_NPC_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .."Formated text" .. ":|r " .. TRP3_API.ui.misc.getSpeechPrefixText(args[2], args[1], args[3])); -- TODO: locals
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_PREVIEW") .. ":|r " .. TRP3_API.ui.misc.getSpeechPrefixText(args[2], args[1], args[3]));
 		end,
 		getDefaultArgs = function()
-			return {"Tish", TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, "Hello from the other side."}; -- TODO: locals
+			return {"Tish", TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc("EFFECT_SPEECH_NPC_DEFAULT")};
 		end,
 		editor = speechNPCEditor,
 	});
+
+	-- Name
+	speechNPCEditor.name.title:SetText(loc("EFFECT_SPEECH_NPC_NAME"));
+	setTooltipForSameFrame(speechNPCEditor.name.help, "RIGHT", 0, 5, loc("EFFECT_SPEECH_NPC_NAME"), loc("EFFECT_SPEECH_NPC_NAME_TT"));
+
+	-- Narrative text
+	speechNPCEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
+	setTooltipForSameFrame(speechNPCEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT", loc("EFFECT_SPEECH_NAR_TEXT_TT")));
 end
 
 function speechNPCEditor.load(scriptData)

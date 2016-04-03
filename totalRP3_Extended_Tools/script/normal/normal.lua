@@ -344,11 +344,11 @@ function refreshList()
 	end
 
 	if workflowSecurity == TRP3_API.script.security.HIGH then
-		editor.workflow.security:SetText(("%s: %s"):format("Workflow security", "|cff00ff00" .. loc("WO_SECURITY_HIGH"))); -- TODO: locals
+		editor.workflow.security:SetText(("%s: %s"):format(loc("WO_WO_SECURITY"), "|cff00ff00" .. loc("WO_SECURITY_HIGH")));
 	elseif workflowSecurity == TRP3_API.script.security.MEDIUM then
-		editor.workflow.security:SetText(("%s: %s"):format("Workflow security", "|cffff9900" .. loc("WO_SECURITY_NORMAL"))); -- TODO: locals
+		editor.workflow.security:SetText(("%s: %s"):format(loc("WO_WO_SECURITY"), "|cffff9900" .. loc("WO_SECURITY_NORMAL")));
 	else
-		editor.workflow.security:SetText(("%s: %s"):format("Workflow security", "|cffff0000" .. loc("WO_SECURITY_LOW"))); -- TODO: locals
+		editor.workflow.security:SetText(("%s: %s"):format(loc("WO_WO_SECURITY"), "|cffff0000" .. loc("WO_SECURITY_LOW")));
 	end
 
 	editor.workflow.container.scroll.list.endofworkflow:Hide();
@@ -486,7 +486,7 @@ editor.init = function(ToolFrame)
 	editor.element.selector.delay.InfoText:SetText(loc("WO_DELAY_TT"));
 	TRP3_API.ui.frame.setupIconButton(editor.element.selector.delay, ELEMENT_DELAY_ICON);
 	editor.element.selector.condition:SetScript("OnClick", addConditionElement);
-	editor.element.selector.condition:Disable(); -- TODO: pouic
+	editor.element.selector.condition:Disable(); -- TODO: remove
 	editor.element.selector.delay:SetScript("OnClick", addDelayElement);
 	editor.element.selector.effect:SetScript("OnClick", displayEffectDropdown);
 	editor.element.close:SetScript("OnClick", function()
