@@ -301,10 +301,10 @@ local function speech_npc_init()
 		icon = "ability_warrior_rallyingcry",
 		description = "Plays a npc speech as a formated emote.\n\n|cff00ff00Has the same effect as playing an emote starting with a || (pipe character) with a npc name and a text. It will be formated in chat for other TRP users.", -- TODO: locals
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .."Formated text" .. ":|r " .. args[1] .. args[2] .. args[3]); -- TODO: locals + format
+			scriptStepFrame.description:SetText("|cffffff00" .."Formated text" .. ":|r " .. TRP3_API.ui.misc.getSpeechPrefixText(args[2], args[1], args[3])); -- TODO: locals
 		end,
 		getDefaultArgs = function()
-			return {"Tish", " says: ", "Hello from the other side."}; -- TODO: locals
+			return {"Tish", TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, "Hello from the other side."}; -- TODO: locals
 		end,
 		editor = speechNPCEditor,
 	});
