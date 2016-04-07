@@ -19,8 +19,15 @@
 TRP3_EXTENDED_LOCALE = {};
 
 TRP3_EXTENDED_LOCALE["enUS"] = {
-	GM_MODULE = "Game Master Module",
-	GM_TB_NPC_TALK = "Pouic",
+
+	-- MISC
+	EX_SOUND_HISTORY = "Sounds history",
+	EX_SOUND_HISTORY_EMPTY = "No sound has been played.",
+	EX_SOUND_HISTORY_LINE = "%s played soundID %s in channel %s.",
+	EX_SOUND_HISTORY_STOP = "Stop",
+	EX_SOUND_HISTORY_REPLAY = "Replay",
+	EX_SOUND_HISTORY_CLEAR = "Clear",
+	EX_SOUND_HISTORY_STOP_ALL = "Stop all",
 
 	-- INVENTORY
 	IT_CON = "Container",
@@ -83,4 +90,6 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	CONF_UNIT = "Units",
 	CONF_UNIT_WEIGHT = "Weight unit",
 	CONF_UNIT_WEIGHT_TT = "Defines how weight values are displayed.",
+	CONF_SOUND = "Sounds history",
+	CONF_SOUND_TT = "See what sounds have been played, see where they're from and stop them if they still are playing.",
 };

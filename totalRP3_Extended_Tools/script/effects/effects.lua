@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tostring, strtrim, assert = wipe, pairs, tostring, strtrim, assert;
+local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -66,24 +66,24 @@ local function text_init()
 		icon = "inv_inscription_scrollofwisdom_01",
 		description = loc("EFFECT_TEXT_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" ..loc("EFFECT_TEXT_PREVIEW") .. ":|r " .. args[1]);
+			scriptStepFrame.description:SetText("|cffffff00" ..loc("EFFECT_TEXT_PREVIEW") .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {loc("EFFECT_TEXT_TEXT_DEFAULT"), 1};
 		end,
 		editor = text_editor,
 	});
-end
 
-function text_editor.load(scriptData)
-	local data = scriptData.args or Globals.empty;
-	text_editor.text:SetText(data[1] or "");
-	text_editor.type:SetSelectedValue(data[2] or Utils.message.type.CHAT_FRAME);
-end
+	function text_editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		text_editor.text:SetText(data[1] or "");
+		text_editor.type:SetSelectedValue(data[2] or Utils.message.type.CHAT_FRAME);
+	end
 
-function text_editor.save(scriptData)
-	scriptData.args[1] = stEtN(strtrim(text_editor.text:GetText()));
-	scriptData.args[2] = text_editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
+	function text_editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(text_editor.text:GetText()));
+		scriptData.args[2] = text_editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -138,7 +138,7 @@ local function var_set_execenv_init()
 		icon = "inv_inscription_minorglyph00",
 		description = loc("EFFECT_VAR_WORK_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. args[1]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {"varName", loc("EFFECT_VAR_VALUE")};
@@ -153,17 +153,18 @@ local function var_set_execenv_init()
 	-- Var value
 	varSetEditor.value.title:SetText(loc("EFFECT_VAR_VALUE"));
 	setTooltipForSameFrame(varSetEditor.value.help, "RIGHT", 0, 5, loc("EFFECT_VAR_VALUE"), "");
-end
 
-function varSetEditor.load(scriptData)
-	local data = scriptData.args or Globals.empty;
-	varSetEditor.var:SetText(data[1] or "");
-	varSetEditor.value:SetText(data[2] or "");
-end
+	function varSetEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		varSetEditor.var:SetText(data[1] or "");
+		varSetEditor.value:SetText(data[2] or "");
+	end
 
-function varSetEditor.save(scriptData)
-	scriptData.args[1] = stEtN(strtrim(varSetEditor.var:GetText()));
-	scriptData.args[2] = stEtN(strtrim(varSetEditor.value:GetText()));
+	function varSetEditor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(varSetEditor.var:GetText()));
+		scriptData.args[2] = stEtN(strtrim(varSetEditor.value:GetText()));
+	end
+
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -185,7 +186,7 @@ local function debugs_init()
 		icon = "temp",
 		description = loc("EFFECT_DEBUG_DUMP_ARG_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. args[1]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {"varName"};
@@ -197,12 +198,21 @@ local function debugs_init()
 	debugDumpArgEditor.var.title:SetText(loc("EFFECT_VAR"));
 	setTooltipForSameFrame(debugDumpArgEditor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
 
+	function debugDumpArgEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		debugDumpArgEditor.var:SetText(data[1] or "");
+	end
+
+	function debugDumpArgEditor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(debugDumpArgEditor.var:GetText()));
+	end
+
 	registerEffectEditor("debug_dump_text", {
 		title = loc("EFFECT_DEBUG_DUMP_TEXT"),
 		icon = "temp",
 		description = loc("EFFECT_DEBUG_DUMP_TEXT_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_TEXT") .. ":|r " .. args[1]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_TEXT") .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {loc("EFFECT_TEXT_TEXT_TT")};
@@ -214,24 +224,15 @@ local function debugs_init()
 	debugDumpTextEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
 	setTooltipForSameFrame(debugDumpTextEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT_TT"), "");
 
-end
+	function debugDumpTextEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		debugDumpTextEditor.text:SetText(data[1] or "");
+	end
 
-function debugDumpArgEditor.load(scriptData)
-	local data = scriptData.args or Globals.empty;
-	debugDumpArgEditor.var:SetText(data[1] or "");
-end
+	function debugDumpTextEditor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(debugDumpTextEditor.text:GetText()));
+	end
 
-function debugDumpArgEditor.save(scriptData)
-	scriptData.args[1] = stEtN(strtrim(debugDumpArgEditor.var:GetText()));
-end
-
-function debugDumpTextEditor.load(scriptData)
-	local data = scriptData.args or Globals.empty;
-	debugDumpTextEditor.text:SetText(data[1] or "");
-end
-
-function debugDumpTextEditor.save(scriptData)
-	scriptData.args[1] = stEtN(strtrim(debugDumpTextEditor.text:GetText()));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -244,7 +245,7 @@ local function document_show_init()
 		icon = "inv_icon_mission_complete_order",
 		description = loc("EFFECT_DOC_DISPLAY_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("TYPE_DOCUMENT") .. ":|r " .. args[1]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("TYPE_DOCUMENT") .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -265,7 +266,7 @@ local function speech_env_init()
 		icon = "inv_misc_book_07",
 		description = loc("EFFECT_SPEECH_NAR_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_TEXT") .. ":|r " .. args[1]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_TEXT") .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {loc("EFFECT_SPEECH_NAR_DEFAULT")};
@@ -276,15 +277,15 @@ local function speech_env_init()
 	-- Narrative text
 	speechEnvEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
 	setTooltipForSameFrame(speechEnvEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_SPEECH_NAR_TEXT_TT"));
-end
 
-function speechEnvEditor.load(scriptData)
-	local data = scriptData.args or Globals.empty;
-	speechEnvEditor.text:SetText(data[1] or "");
-end
+	function speechEnvEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		speechEnvEditor.text:SetText(data[1] or "");
+	end
 
-function speechEnvEditor.save(scriptData)
-	scriptData.args[1] = stEtN(strtrim(speechEnvEditor.text:GetText()));
+	function speechEnvEditor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(speechEnvEditor.text:GetText()));
+	end
 end
 
 local function speech_npc_init()
@@ -308,17 +309,90 @@ local function speech_npc_init()
 	-- Narrative text
 	speechNPCEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
 	setTooltipForSameFrame(speechNPCEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT", loc("EFFECT_SPEECH_NAR_TEXT_TT")));
+
+	function speechNPCEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		speechNPCEditor.name:SetText(data[1] or "");
+		speechNPCEditor.text:SetText(data[3] or "");
+	end
+
+	function speechNPCEditor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(speechNPCEditor.name:GetText()));
+		scriptData.args[3] = stEtN(strtrim(speechNPCEditor.text:GetText()));
+	end
 end
 
-function speechNPCEditor.load(scriptData)
-	local data = scriptData.args or Globals.empty;
-	speechNPCEditor.name:SetText(data[1] or "");
-	speechNPCEditor.text:SetText(data[3] or "");
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Sounds
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local SoundIDSelfEditor = TRP3_EffectEditorSoundIDSelf;
+
+local function sound_id_self_init()
+	registerEffectEditor("sound_id_self", {
+		title = loc("EFFECT_SOUND_ID_SELF"),
+		icon = "inv_misc_ear_human_02",
+		description = loc("EFFECT_SOUND_ID_SELF_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_ID_SELF_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+		end,
+		getDefaultArgs = function()
+			return {"SFX", 43569};
+		end,
+		editor = SoundIDSelfEditor,
+	});
+
+	-- Channel
+	local outputs = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOUND_ID_SELF_CHANNEL"), loc("EFFECT_SOUND_ID_SELF_CHANNEL_SFX")), "SFX", loc("EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOUND_ID_SELF_CHANNEL"), loc("EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE")), "Ambience", loc("EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT")},
+	}
+	TRP3_API.ui.listbox.setupListBox(SoundIDSelfEditor.channel, outputs, nil, nil, 250, true);
+
+	-- ID
+	SoundIDSelfEditor.id.title:SetText(loc("EFFECT_SOUND_ID_SELF_ID"));
+	setTooltipForSameFrame(SoundIDSelfEditor.id.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_ID_SELF_ID"), loc("EFFECT_SOUND_ID_SELF_ID_TT"));
+
+	function SoundIDSelfEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		SoundIDSelfEditor.channel:SetSelectedValue(data[1] or "SFX");
+		SoundIDSelfEditor.id:SetText(data[2]);
+	end
+
+	function SoundIDSelfEditor.save(scriptData)
+		scriptData.args[1] = SoundIDSelfEditor.channel:GetSelectedValue() or "SFX";
+		scriptData.args[2] = tonumber(strtrim(SoundIDSelfEditor.id:GetText()));
+	end
 end
 
-function speechNPCEditor.save(scriptData)
-	scriptData.args[1] = stEtN(strtrim(speechNPCEditor.name:GetText()));
-	scriptData.args[3] = stEtN(strtrim(speechNPCEditor.text:GetText()));
+local soundMusicEditor = TRP3_EffectEditorSoundMusicSelf;
+
+local function sound_music_self_init()
+	registerEffectEditor("sound_music_self", {
+		title = loc("EFFECT_SOUND_MUSIC_SELF"),
+		icon = "inv_misc_drum_07",
+		description = loc("EFFECT_SOUND_MUSIC_SELF_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_MUSIC_SELF_PREVIEW"):format("|cff00ff00" .. tostring(args[1])));
+		end,
+		getDefaultArgs = function()
+			return {"zonemusic\\brewfest\\BF_Goblins1"};
+		end,
+		editor = soundMusicEditor,
+	});
+
+	-- ID
+	soundMusicEditor.path.title:SetText(loc("EFFECT_SOUND_MUSIC_SELF_PATH"));
+	setTooltipForSameFrame(soundMusicEditor.path.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_MUSIC_SELF_PATH"), loc("EFFECT_SOUND_MUSIC_SELF_PATH_TT"));
+
+	function soundMusicEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		soundMusicEditor.path:SetText(data[1]);
+	end
+
+	function soundMusicEditor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(soundMusicEditor.path:GetText()));
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -334,6 +408,9 @@ function TRP3_API.extended.tools.initBaseEffects()
 
 	speech_env_init();
 	speech_npc_init();
+
+	sound_id_self_init();
+	sound_music_self_init();
 
 	item_sheath_init();
 

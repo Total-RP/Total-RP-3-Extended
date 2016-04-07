@@ -236,6 +236,7 @@ local function onStart()
 	Log.log(("Registred %s total ceations"):format(countInner + countExchange + countMy));
 
 	-- Start other systems
+	TRP3_SoundsHistoryFrame.initSound();
 	TRP3_API.inventory.onStart();
 	TRP3_API.quest.onStart();
 	TRP3_API.extended.document.onStart();

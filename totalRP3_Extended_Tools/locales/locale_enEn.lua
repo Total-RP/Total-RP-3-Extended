@@ -216,6 +216,20 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_SPEECH_NPC_DEFAULT = "Do you want to build a snowman?",
 	EFFECT_SPEECH_NPC_NAME = "NPC name",
 	EFFECT_SPEECH_NPC_NAME_TT = "The NPC name.",
-
+	EFFECT_SOUND_ID_SELF = "Play sound ID",
+	EFFECT_SOUND_ID_SELF_TT = "Plays a sound in a particular channel. Only the player will hear it.",
+	EFFECT_SOUND_ID_SELF_PREVIEW = "Plays sound ID %s in channel %s.",
+	EFFECT_SOUND_ID_SELF_ID = "Sound ID",
+	EFFECT_SOUND_ID_SELF_ID_TT = "The ID is an internal identifier for sounds in the game.\n\n|cff00ff00You can easily find all ID on websites like wowhead.\n\n|cffff9900Note that if the ID points to multiple sub-sounds, a sub-sound will be chosen randomly.",
+	EFFECT_SOUND_ID_SELF_CHANNEL = "Channel",
+	EFFECT_SOUND_ID_SELF_CHANNEL_SFX = "SFX",
+	EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT = "SFX is for effect sounds. It uses the sound volume game option.\n\nMultiple different SFX sounds can be played simultaneously.",
+	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE = "Ambience",
+	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT = "Ambience is for ambiant sound. It uses the ambience volume game option\n\nMultiple different ambience sounds can be played simultaneously.\n\n|cffff9900Please do not use this effect to play music as this won't stop the current game music and you would have musics overlaping each other. If you want to play a music use the proper music effect.",
+	EFFECT_SOUND_MUSIC_SELF = "Play music",
+	EFFECT_SOUND_MUSIC_SELF_TT = "Plays a music. Only the player will hear it.\n\nNote that the music will loop until the game plays a music of his own (when entering a zone for example).",
+	EFFECT_SOUND_MUSIC_SELF_PREVIEW = "Plays music: %s",
+	EFFECT_SOUND_MUSIC_SELF_PATH = "Music path",
+	EFFECT_SOUND_MUSIC_SELF_PATH_TT = "The music path within the game files.\n\n|cffff9900It must not contains the Sounds\\Music\\ par of the path, nor the .mp3 at the end.",
 
 };

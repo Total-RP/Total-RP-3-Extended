@@ -433,6 +433,8 @@ editor.init = function(ToolFrame)
 	menuData = {
 		[loc("WO_EFFECT_CAT_COMMON")] = {
 			"text",
+			"sound_id_self",
+			"sound_music_self"
 		},
 		["Speech"] = { -- TODO: locals
 			"speech_env",
