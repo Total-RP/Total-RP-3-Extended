@@ -433,8 +433,12 @@ editor.init = function(ToolFrame)
 	menuData = {
 		[loc("WO_EFFECT_CAT_COMMON")] = {
 			"text",
+		},
+		["Sound"] = { -- TODO: locals
 			"sound_id_self",
-			"sound_music_self"
+			"sound_music_self",
+			"sound_music_stop",
+			"sound_id_local",
 		},
 		["Speech"] = { -- TODO: locals
 			"speech_env",
@@ -459,6 +463,7 @@ editor.init = function(ToolFrame)
 		order = {
 			loc("WO_EFFECT_CAT_COMMON"),
 			"Speech",
+			"Sound",
 			loc("REG_COMPANIONS"),
 			"Inventory",
 			"Variables",

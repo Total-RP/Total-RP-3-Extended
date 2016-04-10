@@ -23,6 +23,10 @@
 	
 	<Include file="libs\libs.xml"/>
 
+	<Script file="script\script_generation.lua"/>
+	<Script file="script\script_operands.lua"/>
+	<Script file="script\script_effects.lua"/>
+
 	<!-- Main -->
 	<Script file="main.lua"/>
 	

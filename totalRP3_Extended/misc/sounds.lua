@@ -16,12 +16,56 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, strsplit = pairs, strsplit;
+local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
+local pairs, strsplit, floor, sqrt = pairs, strsplit, math.floor, sqrt;
+local UnitPosition, EJ_GetCurrentInstance = UnitPosition, EJ_GetCurrentInstance;
 local loc = TRP3_API.locale.getText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- SOUNDS
+-- Shared sounds
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local LOCAL_SOUND_COMMAND = "PLS";
+
+function Utils.music.playLocalSoundID(soundID, channel, distance, source)
+	-- Get current position
+	local posY, posX, posZ, instanceID = UnitPosition("player");
+	instanceID = instanceID	.. ',' .. EJ_GetCurrentInstance();
+	posY = floor(posY + 0.5);
+	posX = floor(posX + 0.5);
+
+	if instanceID then
+		Comm.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, channel, distance, instanceID, posY, posX, posZ);
+	end
+end
+
+local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
+	local myMaxDistance = 100; --TODO: get from config
+	local distance = sqrt((posY - myPosY) ^ 2 + (posX - myPosX) ^ 2);
+	return distance <= maxDistance and distance <= myMaxDistance;
+end
+
+local function initSharedSound()
+	Comm.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
+		Utils.table.dump({sender, soundID, channel, distance, instanceID, posY, posX, posZ});
+		if sender == Globals.player_id then
+			Utils.music.playSoundID(soundID, channel, Globals.player_id);
+		else
+			-- Get current position
+			local myPosY, myPosX, myPosZ, myInstanceID = UnitPosition("player");
+			myInstanceID = myInstanceID	.. ',' .. EJ_GetCurrentInstance();
+			myPosY = floor(myPosY + 0.5);
+			myPosX = floor(myPosX + 0.5);
+
+			if instanceID == myInstanceID and isInRadius(distance, posY, posX, myPosY, myPosX) then
+				Utils.music.playSoundID(soundID, channel, sender);
+			end
+		end
+	end);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Sound history
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local historyFrame = TRP3_SoundsHistoryFrame;
@@ -72,8 +116,7 @@ function historyFrame.onSoundPlayed()
 	end
 end
 
-function historyFrame.initSound()
-
+local function initHistory()
 	-- Button on target bar
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if TRP3_API.toolbar then
@@ -116,4 +159,15 @@ function historyFrame.initSound()
 		Utils.music.stopMusic();
 		showHistory();
 	end);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Init
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function historyFrame.initSound()
+
+	initSharedSound();
+	initHistory();
+
 end

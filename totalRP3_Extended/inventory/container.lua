@@ -535,7 +535,10 @@ local function containerOnDragStart(self)
 end
 
 local function onContainerShow(self)
-	assert(self.info, "No info on container " .. self:GetName());
+	if not self.info then
+		self:Hide();
+		return;
+	end
 	self.IconButton.info = self.info;
 	self.IconButton.class = self.class;
 	lockOnContainer(self, self.originContainer);

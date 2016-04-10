@@ -152,6 +152,34 @@
 
 	</Frame>
 
+	<Frame name="TRP3_EffectEditorSoundIDLocal" hidden="true">
+
+		<Frames>
+
+			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="-135" y="-65"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.channel" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="distance" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
 	<Frame name="TRP3_EffectEditorSoundMusicSelf" hidden="true">
 
 		<Frames>

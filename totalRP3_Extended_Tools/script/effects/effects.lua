@@ -326,9 +326,9 @@ end
 -- Sounds
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local SoundIDSelfEditor = TRP3_EffectEditorSoundIDSelf;
-
 local function sound_id_self_init()
+	local SoundIDSelfEditor = TRP3_EffectEditorSoundIDSelf;
+
 	registerEffectEditor("sound_id_self", {
 		title = loc("EFFECT_SOUND_ID_SELF"),
 		icon = "inv_misc_ear_human_02",
@@ -365,9 +365,9 @@ local function sound_id_self_init()
 	end
 end
 
-local soundMusicEditor = TRP3_EffectEditorSoundMusicSelf;
-
 local function sound_music_self_init()
+	local soundMusicEditor = TRP3_EffectEditorSoundMusicSelf;
+
 	registerEffectEditor("sound_music_self", {
 		title = loc("EFFECT_SOUND_MUSIC_SELF"),
 		icon = "inv_misc_drum_07",
@@ -395,6 +395,63 @@ local function sound_music_self_init()
 	end
 end
 
+local function sound_music_stop_init()
+	registerEffectEditor("sound_music_stop", {
+		title = loc("EFFECT_SOUND_MUSIC_STOP"),
+		icon = "spell_holy_silence",
+		description = loc("EFFECT_SOUND_MUSIC_STOP_TT"),
+	});
+end
+
+
+
+local function sound_id_local_init()
+	local soundLocalEditor = TRP3_EffectEditorSoundIDLocal;
+
+	registerEffectEditor("sound_id_local", {
+		title = loc("EFFECT_SOUND_ID_LOCAL"),
+		icon = "inv_misc_ear_human_01",
+		description = loc("EFFECT_SOUND_ID_LOCAL_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_ID_LOCAL_PREVIEW"):format(
+				"|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[3]) .. "|r"
+			));
+		end,
+		getDefaultArgs = function()
+			return {"SFX", 43569, 20};
+		end,
+		editor = soundLocalEditor,
+	});
+
+	-- Channel
+	local outputs = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOUND_ID_SELF_CHANNEL"), loc("EFFECT_SOUND_ID_SELF_CHANNEL_SFX")), "SFX", loc("EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOUND_ID_SELF_CHANNEL"), loc("EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE")), "Ambience", loc("EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT")},
+	}
+	TRP3_API.ui.listbox.setupListBox(soundLocalEditor.channel, outputs, nil, nil, 250, true);
+
+	-- ID
+	soundLocalEditor.id.title:SetText(loc("EFFECT_SOUND_ID_SELF_ID"));
+	setTooltipForSameFrame(soundLocalEditor.id.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_ID_SELF_ID"), loc("EFFECT_SOUND_ID_SELF_ID_TT"));
+
+	-- Distance
+	soundLocalEditor.distance.title:SetText(loc("EFFECT_SOUND_LOCAL_DISTANCE"));
+	setTooltipForSameFrame(soundLocalEditor.distance.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_LOCAL_DISTANCE"), loc("EFFECT_SOUND_LOCAL_DISTANCE_TT"));
+
+	function soundLocalEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		soundLocalEditor.channel:SetSelectedValue(data[1] or "SFX");
+		soundLocalEditor.id:SetText(data[2]);
+		soundLocalEditor.distance:SetText(data[3]);
+	end
+
+	function soundLocalEditor.save(scriptData)
+		scriptData.args[1] = soundLocalEditor.channel:GetSelectedValue() or "SFX";
+		scriptData.args[2] = tonumber(strtrim(soundLocalEditor.id:GetText()));
+		scriptData.args[3] = tonumber(strtrim(soundLocalEditor.distance:GetText()));
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -411,6 +468,8 @@ function TRP3_API.extended.tools.initBaseEffects()
 
 	sound_id_self_init();
 	sound_music_self_init();
+	sound_music_stop_init();
+	sound_id_local_init();
 
 	item_sheath_init();
 
