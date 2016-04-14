@@ -403,8 +403,6 @@ local function sound_music_stop_init()
 	});
 end
 
-
-
 local function sound_id_local_init()
 	local soundLocalEditor = TRP3_EffectEditorSoundIDLocal;
 
@@ -452,6 +450,44 @@ local function sound_id_local_init()
 	end
 end
 
+local function sound_music_local_init()
+	local musicLocalEditor = TRP3_EffectEditorMusicLocal;
+
+	registerEffectEditor("sound_music_local", {
+		title = loc("EFFECT_SOUND_MUSIC_LOCAL"),
+		icon = "inv_misc_drum_04",
+		description = loc("EFFECT_SOUND_MUSIC_LOCAL_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_MUSIC_LOCAL_PREVIEW"):format(
+				"|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[2]) .. "|cffffff00"
+			));
+		end,
+		getDefaultArgs = function()
+			return {"zonemusic\\brewfest\\BF_Goblins1", 20};
+		end,
+		editor = musicLocalEditor,
+	});
+
+	-- ID
+	musicLocalEditor.path.title:SetText(loc("EFFECT_SOUND_MUSIC_SELF_PATH"));
+	setTooltipForSameFrame(musicLocalEditor.path.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_MUSIC_SELF_PATH"), loc("EFFECT_SOUND_MUSIC_SELF_PATH_TT"));
+
+	-- Distance
+	musicLocalEditor.distance.title:SetText(loc("EFFECT_SOUND_LOCAL_DISTANCE"));
+	setTooltipForSameFrame(musicLocalEditor.distance.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_LOCAL_DISTANCE"), loc("EFFECT_SOUND_LOCAL_DISTANCE_TT"));
+
+	function musicLocalEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		musicLocalEditor.path:SetText(data[1]);
+		musicLocalEditor.distance:SetText(data[2]);
+	end
+
+	function musicLocalEditor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(musicLocalEditor.path:GetText()));
+		scriptData.args[2] = tonumber(strtrim(musicLocalEditor.distance:GetText()));
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -470,6 +506,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	sound_music_self_init();
 	sound_music_stop_init();
 	sound_id_local_init();
+	sound_music_local_init();
 
 	item_sheath_init();
 

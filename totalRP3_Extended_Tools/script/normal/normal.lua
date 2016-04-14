@@ -397,7 +397,7 @@ local function refresh()
 end
 editor.refresh = refresh;
 
-editor.storeData = function()
+function editor.storeData()
 	assert(editor.scriptID, "No scriptID for storeData.");
 
 	-- Remove precedent compiled script
@@ -439,6 +439,7 @@ editor.init = function(ToolFrame)
 			"sound_music_self",
 			"sound_music_stop",
 			"sound_id_local",
+			"sound_music_local",
 		},
 		["Speech"] = { -- TODO: locals
 			"speech_env",

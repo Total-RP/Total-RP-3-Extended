@@ -365,6 +365,7 @@ local function onStart()
 	-- Init tabs
 	TRP3_API.extended.tools.initBaseEffects();
 	TRP3_API.extended.tools.initScript(toolFrame);
+	TRP3_InnerObjectEditor.init(toolFrame);
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 

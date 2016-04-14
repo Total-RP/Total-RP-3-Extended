@@ -113,6 +113,18 @@ local function onQuickCreatedFromList(classID, _)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- INNER OBJECT
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local innerFrame;
+
+function TRP3_API.extended.tools.openInnerObjectCreation(callback, parentClassID)
+	innerFrame.onCreatedCallback = callback;
+	innerFrame.parentClassID = parentClassID;
+	TRP3_API.ui.frame.configureHoverFrame(innerFrame, toolFrame, "CENTER", 0, 5, false);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -243,7 +255,14 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 
 	toolFrame.list.bottom.item.templates.container:SetScript("OnClick", function(self)
 		toolFrame.list.bottom.item.templates:Hide();
-		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getContainerItemData(TRP3_DB.modes.NORMAL));
+		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getContainerItemData());
 		TRP3_API.extended.tools.goToPage(ID);
 	end);
+
+	toolFrame.list.bottom.item.templates.document:SetScript("OnClick", function(self)
+		toolFrame.list.bottom.item.templates:Hide();
+		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getDocumentItemData());
+		TRP3_API.extended.tools.goToPage(ID);
+	end);
+
 end

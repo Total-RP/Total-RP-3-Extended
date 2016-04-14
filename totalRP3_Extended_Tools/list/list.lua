@@ -329,7 +329,9 @@ function onLineRightClick(lineWidget, data)
 	local values = {};
 	tinsert(values, {data.text, nil});
 	if currentTab == TABS.MY_DB then
-		tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID})
+		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+			tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID});
+		end
 	end
 	if data.type == TRP3_DB.types.ITEM then
 		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID});

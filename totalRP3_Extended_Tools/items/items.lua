@@ -17,9 +17,9 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, error, assert, date = wipe, pairs, error, assert, date;
+local wipe, tostring, error, assert, date = wipe, tostring, error, assert, date;
 local tsize = Utils.table.size;
-local getClass = TRP3_API.extended.getClass;
+local getClass, classExists = TRP3_API.extended.getClass, TRP3_API.extended.classExists;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.locale.getText;
 local toolFrame;
@@ -63,11 +63,67 @@ function TRP3_API.extended.tools.getBlankItemData(toMode)
 	};
 end
 
-function TRP3_API.extended.tools.getContainerItemData(toMode)
-	local data = TRP3_API.extended.tools.getBlankItemData(toMode);
+function TRP3_API.extended.tools.getContainerItemData()
+	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
 	data.BA.CT = true;
-	data.BA.IC = "inv_misc_bag_01";
+	data.BA.NA = loc("IT_NEW_NAME_CO");
+	data.BA.IC = "inv_misc_bag_36";
+	data.CO = {SR = 5, SC = 4};
 	return data;
+end
+
+
+function TRP3_API.extended.tools.getDocumentItemData()
+	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
+	data.BA.IC = "inv_misc_book_16";
+	data.BA.NA = loc("DO_NEW_DOC");
+	data.IN = {
+		doc = {
+			TY = TRP3_DB.types.DOCUMENT,
+			MD = {
+				MO = TRP3_DB.modes.NORMAL,
+			},
+			BA = {
+				NA = loc("DO_NEW_DOC"),
+			},
+		}
+	};
+	return data;
+end
+
+function TRP3_API.extended.tools.createInnerObject(parentID, innerID, innerType, innerData)
+	assert(classExists(parentID), "Unknown parent ID: " .. tostring(parentID));
+	local parentClass = getClass(parentID);
+	if not parentClass.IN then
+		parentClass.IN = {};
+	end
+	if not parentClass.IN[innerID] then
+		if innerType == TRP3_DB.types.ITEM then
+			parentClass.IN[innerID] = innerData or {
+				TY = TRP3_DB.types.ITEM,
+				MD = {
+					MO = TRP3_DB.modes.NORMAL,
+				},
+				BA = {
+					NA = loc("IT_NEW_NAME"),
+				},
+			}
+		elseif innerType == TRP3_DB.types.DOCUMENT then
+			parentClass.IN[innerID] = innerData or {
+				TY = TRP3_DB.types.DOCUMENT,
+				MD = {
+					MO = TRP3_DB.modes.NORMAL,
+				},
+				BA = {
+					NA = loc("DO_NEW_DOC"),
+				},
+			}
+		elseif innerType == "quick" then
+			parentClass.IN[innerID] = innerData;
+		end
+		registerItem(parentID, parentClass);
+		return TRP3_API.extended.getFullID(parentID, innerID);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

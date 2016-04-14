@@ -30,6 +30,7 @@ local TABS = {
 	MAIN = 1,
 	EFFECTS = 2,
 	CONTAINER = 3,
+	INNER = 4,
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -198,10 +199,18 @@ local function loadDataScript()
 	TRP3_ScriptEditorNormal.scriptTitle = loc("IT_ON_USE");
 	TRP3_ScriptEditorNormal.scriptDescription = loc("IT_ON_USE_TT");
 	TRP3_ScriptEditorNormal.scriptID = "onUse";
+
+	-- Load workflows
 	if not toolFrame.specificDraft.SC then
 		toolFrame.specificDraft.SC = {};
 	end
 	TRP3_ScriptEditorNormal.refresh();
+
+	-- Load inners
+	if not toolFrame.specificDraft.IN then
+		toolFrame.specificDraft.IN = {};
+	end
+	TRP3_InnerObjectEditor.refresh();
 end
 
 local function storeDataScript()
@@ -223,6 +232,7 @@ local function onTabChanged(tabWidget, tab)
 	notes:Hide();
 	container:Hide();
 	TRP3_ScriptEditorNormal:Hide();
+	TRP3_InnerObjectEditor:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
@@ -236,6 +246,10 @@ local function onTabChanged(tabWidget, tab)
 	elseif currentTab == TABS.CONTAINER then
 		decorateContainerPreview(storeDataMain({}));
 		container:Show();
+	elseif currentTab == TABS.INNER then
+		TRP3_InnerObjectEditor:SetParent(toolFrame.item.normal);
+		TRP3_InnerObjectEditor:SetAllPoints();
+		TRP3_InnerObjectEditor:Show();
 	end
 end
 
@@ -249,6 +263,7 @@ local function createTabBar()
 			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
 			{ loc("IT_ON_USE"), TABS.EFFECTS, 150 },
 			{ loc("IT_CON"), TABS.CONTAINER, 150 },
+			{ loc("IN_INNER"), TABS.INNER, 150 },
 		},
 		onTabChanged
 	);

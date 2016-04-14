@@ -137,7 +137,7 @@
 	<!--    Script normal     -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_ScriptEditorNormal" hidden="true" setAllPoints="true">
+	<Frame name="TRP3_ScriptEditorNormal" hidden="true">
 
 		<Frames>
 

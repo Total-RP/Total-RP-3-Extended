@@ -56,12 +56,13 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_CREATE_ITEM_TEMPLATES_QUICK = "Quick creation",
 	DB_CREATE_ITEM_TEMPLATES_QUICK_TT = "Quickly creates a simple item without any effect.\nThen adds one unit of this item in your primary bag.",
 	DB_CREATE_ITEM_TEMPLATES_DOCUMENT = "Document item",
-	DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT = "A item template with an attached document.\nUseful to quickly create a book or a scroll.",
+	DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT = "An item template with an inner document object.\nUseful to quickly create a book or a scroll.",
 	DB_CREATE_ITEM_TEMPLATES_BLANK = "Blank item",
 	DB_CREATE_ITEM_TEMPLATES_BLANK_TT = "A blank template.\nFor those who like to start from scratch.",
 	DB_CREATE_ITEM_TEMPLATES_CONTAINER = "Container item",
 	DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT = "A container template.\nContainer can hold other items.",
-	DB_ADD_ITEM = "Add to inventory",
+	DB_ADD_ITEM = "Add one unit to main inventory",
+	DB_ADD_INNER = "Add inner object",
 	DB_CREATE_CAMPAIGN = "Create campaign",
 	DB_CREATE_CAMPAIGN_TT = "Start creating a campaign",
 
@@ -87,6 +88,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 
 	-- Item creation
 	IT_NEW_NAME = "New item",
+	IT_NEW_NAME_CO = "New container",
 	IT_QUICK_EDITOR = "Quick item creation",
 	IT_QUICK_EDITOR_EDIT = "Quick item edition",
 	IT_CONVERT_TO_NORMAL = "Convert to normal mode",
@@ -138,6 +140,9 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_CO_SIZE = "Container size",
 	IT_CO_SIZE_COLROW = "%s |1row;rows; by %s columns",
 
+	-- Documents
+	DO_NEW_DOC = "New document",
+
 	-- Workflows
 	WO_WORKFLOW = "Workflows",
 	WO_EXECUTION = "Workflow execution",
@@ -163,9 +168,9 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_SECURITY_HIGH = "High",
 	WO_SECURITY_HIGH_DETAILS = "This effect is secured and will not prompt security warning.",
 	WO_SECURITY_NORMAL = "Medium",
-	WO_SECURITY_NORMAL_DETAILS = "This effect is not secured and could be malicious. It will prompt security warning, based on the user security settings.",
+	WO_SECURITY_NORMAL_DETAILS = "This effect is secured but could cause inconveniences. It will prompt security warning, based on the user security settings.",
 	WO_SECURITY_LOW = "Low",
-	WO_SECURITY_LOW_DETAILS = "This effect is not secured and could be malicious. It will prompt security warning, based on a more severe user security settings.",
+	WO_SECURITY_LOW_DETAILS = "This effect is not secured and could be malicious. It will prompt security warning and will ask for confirmation, based on the user security settings.",
 
 	-- Delay editor
 	WO_DELAY_DURATION = "Duration",
@@ -238,5 +243,10 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_SOUND_ID_LOCAL_PREVIEW = "Plays sound ID %s in channel %s in a %s yards radius.",
 	EFFECT_SOUND_LOCAL_DISTANCE = "Playback radius",
 	EFFECT_SOUND_LOCAL_DISTANCE_TT = "Determine the radius around the player within which other players will hear this sound.",
+	EFFECT_SOUND_MUSIC_LOCAL = "Play local music",
+	EFFECT_SOUND_MUSIC_LOCAL_TT = "Plays a music for players around you.",
+	EFFECT_SOUND_MUSIC_LOCAL_PREVIEW = "Plays music \"%s\" in a %s yards radius.",
 
+	-- Inner objects
+	IN_INNER = "Inner objects"
 };

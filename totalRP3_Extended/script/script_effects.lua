@@ -138,7 +138,20 @@ local EFFECTS = {
 		env = {
 			playLocalSoundID = "TRP3_API.utils.music.playLocalSoundID",
 		},
-		secured = security.HIGH,
+		secured = security.MEDIUM,
+	},
+
+	["sound_music_local"] = {
+		codeReplacementFunc = function (args)
+			local musicPath = (args[1] or ""):gsub("\\", "\\\\");
+			local distance = tonumber(args[2] or 0);
+			local source = "Script"; -- TODO: get source
+			return ("lastEffectReturn = playLocalMusic(\"%s\", %s, \"%s\");"):format(musicPath, distance, source);
+		end,
+		env = {
+			playLocalMusic = "TRP3_API.utils.music.playLocalMusic",
+		},
+		secured = security.MEDIUM,
 	},
 
 	-- Companions

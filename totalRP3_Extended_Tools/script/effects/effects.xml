@@ -195,6 +195,28 @@
 
 	</Frame>
 
+	<Frame name="TRP3_EffectEditorMusicLocal" hidden="true">
+
+		<Frames>
+
+			<EditBox parentKey="path" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="distance" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.path" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--         Debug        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->

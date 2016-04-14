@@ -21,6 +21,7 @@
 	<Script file="main.lua"/>
 
 	<Include file="script/script.xml"/>
+	<Include file="inner/inner.xml"/>
 	<Include file="items/items.xml"/>
 	<Include file="list/list.xml"/>
 

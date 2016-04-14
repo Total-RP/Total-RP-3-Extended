@@ -17,48 +17,86 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
-local pairs, strsplit, floor, sqrt = pairs, strsplit, math.floor, sqrt;
+local pairs, strsplit, floor, sqrt, tonumber = pairs, strsplit, math.floor, sqrt, tonumber;
 local UnitPosition, EJ_GetCurrentInstance = UnitPosition, EJ_GetCurrentInstance;
+local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.locale.getText;
+local Log = TRP3_API.utils.log;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Shared sounds
+-- Local sounds
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LOCAL_SOUND_COMMAND = "PLS";
 
-function Utils.music.playLocalSoundID(soundID, channel, distance, source)
-	-- Get current position
+local function getPosition()
 	local posY, posX, posZ, instanceID = UnitPosition("player");
 	instanceID = instanceID	.. ',' .. EJ_GetCurrentInstance();
 	posY = floor(posY + 0.5);
 	posX = floor(posX + 0.5);
+	return posY, posX, posZ, instanceID;
+end
 
+function Utils.music.playLocalSoundID(soundID, channel, distance, source)
+	-- Get current position
+	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
 		Comm.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, channel, distance, instanceID, posY, posX, posZ);
 	end
 end
 
+function Utils.music.playLocalMusic(soundID, distance, source)
+	-- Get current position
+	local posY, posX, posZ, instanceID = getPosition();
+	if instanceID then
+		Comm.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, "Music" , distance, instanceID, posY, posX, posZ);
+	end
+end
+
 local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
-	local myMaxDistance = 100; --TODO: get from config
+	local myMaxDistance = getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE);
 	local distance = sqrt((posY - myPosY) ^ 2 + (posX - myPosX) ^ 2);
 	return distance <= maxDistance and distance <= myMaxDistance;
 end
 
 local function initSharedSound()
 	Comm.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
-		Utils.table.dump({sender, soundID, channel, distance, instanceID, posY, posX, posZ});
-		if sender == Globals.player_id then
-			Utils.music.playSoundID(soundID, channel, Globals.player_id);
-		else
-			-- Get current position
-			local myPosY, myPosX, myPosZ, myInstanceID = UnitPosition("player");
-			myInstanceID = myInstanceID	.. ',' .. EJ_GetCurrentInstance();
-			myPosY = floor(myPosY + 0.5);
-			myPosX = floor(myPosX + 0.5);
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
+			if soundID and channel and distance and instanceID and posY and posX and posZ then
+				distance = tonumber(distance) or 0;
+				posY = tonumber(posY) or 0;
+				posX = tonumber(posX) or 0;
+				posZ = tonumber(posZ) or 0;
 
-			if instanceID == myInstanceID and isInRadius(distance, posY, posX, myPosY, myPosX) then
-				Utils.music.playSoundID(soundID, channel, sender);
+				if sender == Globals.player_id then
+					if channel ~= "Music" then
+						Utils.music.playSoundID(soundID, channel, Globals.player_id);
+					else
+						Utils.music.playMusic(soundID, Globals.player_id);
+					end
+				else
+					-- Get current position
+					local myPosY, myPosX, myPosZ, myInstanceID = UnitPosition("player");
+					myInstanceID = myInstanceID	.. ',' .. EJ_GetCurrentInstance();
+					myPosY = floor(myPosY + 0.5);
+					myPosX = floor(myPosX + 0.5);
+
+					if instanceID == myInstanceID and isInRadius(distance, posY, posX, myPosY, myPosX) then
+						if channel ~= "Music" then
+							if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_METHOD) == TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY then
+								Utils.music.playSoundID(soundID, channel, sender);
+							else
+								-- TODO: ask permission in chat
+							end
+						else
+							if getConfigValue(TRP3_API.extended.CONFIG_MUSIC_METHOD) == TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY then
+								Utils.music.playMusic(soundID, sender);
+							else
+								-- TODO: ask permission in chat
+							end
+						end
+					end
+				end
 			end
 		end
 	end);
@@ -123,9 +161,9 @@ local function initHistory()
 			local toolbarButton = {
 				id = "bb_extended_sounds",
 				icon = "trade_archaeology_delicatemusicbox",
-				configText = loc("CONF_SOUND"),
-				tooltip = loc("CONF_SOUND"),
-				tooltipSub = loc("CONF_SOUND_TT"),
+				configText = loc("EX_SOUND_HISTORY"),
+				tooltip = loc("EX_SOUND_HISTORY"),
+				tooltipSub = loc("EX_SOUND_HISTORY_TT"),
 				onClick = function(self)
 					if historyFrame:IsVisible() then
 						historyFrame:Hide();

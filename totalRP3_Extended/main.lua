@@ -169,16 +169,35 @@ TRP3_API.extended.WEIGHT_UNITS = {
 	POUNDS = "lb",
 	POTATOES = "po",
 };
+TRP3_API.extended.CONFIG_SOUNDS_ACTIVE = "extended_sounds_active";
+TRP3_API.extended.CONFIG_MUSIC_ACTIVE = "extended_music_active";
+TRP3_API.extended.CONFIG_SOUNDS_METHOD = "extended_sounds_method";
+TRP3_API.extended.CONFIG_MUSIC_METHOD = "extended_music_method";
+TRP3_API.extended.CONFIG_SOUNDS_METHODS = {
+	PLAY = "p",
+	ASK_FOR_PERMISSION = "a",
+};
+TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE = "extended_sounds_maxrange";
 
 local function initConfig()
 	local WEIGHT_UNIT_TAB = {
-		{"Grams", TRP3_API.extended.WEIGHT_UNITS.GRAMS},
-		{"Pounds", TRP3_API.extended.WEIGHT_UNITS.POUNDS},
-		{"Potatoes", TRP3_API.extended.WEIGHT_UNITS.POTATOES}
+		{"Grams", TRP3_API.extended.WEIGHT_UNITS.GRAMS}, -- TODO: locals
+		{"Pounds", TRP3_API.extended.WEIGHT_UNITS.POUNDS}, -- TODO: locals
+		{"Potatoes", TRP3_API.extended.WEIGHT_UNITS.POTATOES} -- TODO: locals
+	}
+
+	local SOUND_METHOD_TAB = {
+		{loc("CONF_SOUNDS_METHOD_1"), TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY, loc("CONF_SOUNDS_METHOD_1_TT")},
+		{loc("CONF_SOUNDS_METHOD_2"), TRP3_API.extended.CONFIG_SOUNDS_METHODS.ASK_FOR_PERMISSION, loc("CONF_SOUNDS_METHOD_2_TT")},
 	}
 
 	-- Config default value
 	registerConfigKey(TRP3_API.extended.CONFIG_WEIGHT_UNIT, TRP3_API.extended.WEIGHT_UNITS.GRAMS);
+	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE, true);
+	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_METHOD, TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY);
+	registerConfigKey(TRP3_API.extended.CONFIG_MUSIC_ACTIVE, true);
+	registerConfigKey(TRP3_API.extended.CONFIG_MUSIC_METHOD, TRP3_API.extended.CONFIG_SOUNDS_METHODS.ASK_FOR_PERMISSION);
+	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE, 100);
 
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
@@ -198,7 +217,51 @@ local function initConfig()
 				configKey = TRP3_API.extended.CONFIG_WEIGHT_UNIT,
 				listCancel = true,
 				help = loc("CONF_UNIT_WEIGHT_TT")
-			}
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CONF_SOUNDS"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CONF_SOUNDS_ACTIVE"),
+				configKey = TRP3_API.extended.CONFIG_SOUNDS_ACTIVE,
+				help = loc("CONF_SOUNDS_ACTIVE_TT"),
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationExtended_Sounds_Methods",
+				title = loc("CONF_SOUNDS_METHOD"),
+				listContent = SOUND_METHOD_TAB,
+				configKey = TRP3_API.extended.CONFIG_SOUNDS_METHOD,
+				listCancel = true,
+				help = loc("CONF_SOUNDS_METHOD_TT")
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CONF_MUSIC_ACTIVE"),
+				configKey = TRP3_API.extended.CONFIG_MUSIC_ACTIVE,
+				help = loc("CONF_MUSIC_ACTIVE_TT"),
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationExtended_MUSIC_Methods",
+				title = loc("CONF_MUSIC_METHOD"),
+				listContent = SOUND_METHOD_TAB,
+				configKey = TRP3_API.extended.CONFIG_MUSIC_METHOD,
+				listCancel = true,
+				help = loc("CONF_MUSIC_METHOD_TT")
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc("CONF_SOUNDS_MAXRANGE"),
+				help = loc("CONF_SOUNDS_MAXRANGE_TT"),
+				configKey = TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE,
+				min = 0,
+				max = 200,
+				step = 10,
+				integer = true,
+			},
 		}
 	};
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
