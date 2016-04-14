@@ -19,10 +19,99 @@
 	limitations under the License.
 -->
 
+	<!-- line  -->
+	<Button name="TRP3_InnerObjectEditorLine" virtual="true">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="0" y="28"/>
+		<Anchors>
+			<Anchor point="LEFT" x="15" y="0"/>
+			<Anchor point="RIGHT" x="-25" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="15" y="0"/>
+						<Anchor point="RIGHT" x="-15" y="0"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<Scripts>
+			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+			</OnLoad>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
 	<Frame name="TRP3_InnerObjectEditor" hidden="true">
 
 		<Frames>
 
+			<Frame parentKey="browser" inherits="TRP3_EditorTitledFrame">
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-5"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+
+					</Layer>
+				</Layers>
+
+				<Frames>
+
+					<!-- Content -->
+					<Frame parentKey="container">
+						<Size x="390" y="295"/>
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+							<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+						</Backdrop>
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+						<Frames>
+							<Slider parentKey="slider" name="TRP3_InnerObjectEditorSlider" inherits="OptionsSliderTemplate">
+								<Size x="15" y="0"/>
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-5"/>
+									<Anchor point="RIGHT" x="0" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="5"/>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										TRP3_InnerObjectEditorSliderText:SetText("");
+										TRP3_InnerObjectEditorSliderHigh:SetText("");
+										TRP3_InnerObjectEditorSliderLow:SetText("");
+										self:SetMinMaxValues(0, 6);
+										self:SetValueStep(1);
+										self:SetOrientation("VERTICAL");
+									</OnLoad>
+								</Scripts>
+							</Slider>
+						</Frames>
+					</Frame>
+
+				</Frames>
+
+			</Frame>
 
 		</Frames>
 

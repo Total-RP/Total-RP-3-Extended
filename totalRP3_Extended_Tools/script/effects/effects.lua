@@ -514,5 +514,5 @@ function TRP3_API.extended.tools.initBaseEffects()
 
 	debugs_init();
 
---	document_show_init();
+	document_show_init();
 end

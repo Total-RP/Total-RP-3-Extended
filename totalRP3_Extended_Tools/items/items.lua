@@ -32,8 +32,8 @@ local function registerItem(ID, data)
 	TRP3_API.extended.registerObject(ID, data, 0);
 end
 
-local function createItem(data)
-	local ID = Utils.str.id();
+local function createItem(data, ID)
+	ID = ID or Utils.str.id();
 
 	if TRP3_DB.global[ID] then
 		error("This ID already exists. This shoudn't happen: " .. ID);
@@ -73,10 +73,26 @@ function TRP3_API.extended.tools.getContainerItemData()
 end
 
 
-function TRP3_API.extended.tools.getDocumentItemData()
+function TRP3_API.extended.tools.getDocumentItemData(id)
 	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
 	data.BA.IC = "inv_misc_book_16";
 	data.BA.NA = loc("DO_NEW_DOC");
+	data.BA.US = true;
+	data.US = {
+		AC = loc("IT_DOC_ACTION"),
+		SC = "onUse"
+	};
+	data.SC = {
+		["onUse"] = { ["ST"] = { ["1"] = { ["e"] = {
+			{
+				["id"] = "document_show",
+				["args"] = {
+					id .. TRP3_API.extended.ID_SEPARATOR .. "doc",
+				},
+			},
+		},
+		["t"] = "list",
+	}}}};
 	data.IN = {
 		doc = {
 			TY = TRP3_DB.types.DOCUMENT,

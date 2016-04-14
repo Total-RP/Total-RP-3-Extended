@@ -139,6 +139,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_CO_MAX_TT = "This sets the limit of weight from where your container will start losing health over time due to overweight.\n\n|cff00ff00Zero means no limit.\n\n|cffff9900Please enter the max weight in GRAMS.",
 	IT_CO_SIZE = "Container size",
 	IT_CO_SIZE_COLROW = "%s |1row;rows; by %s columns",
+	IT_DOC_ACTION = "Read document",
 
 	-- Documents
 	DO_NEW_DOC = "New document",

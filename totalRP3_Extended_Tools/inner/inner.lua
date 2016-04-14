@@ -17,22 +17,43 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, error, assert, date = wipe, pairs, error, assert, date;
+local CreateFrame = CreateFrame;
+local wipe, pairs, error, assert, tinsert = wipe, pairs, error, assert, tinsert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.locale.getText;
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local initList = TRP3_API.ui.list.initList;
 
 local toolFrame;
 local editor = TRP3_InnerObjectEditor;
+editor.browser.container.lines = {};
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Inner object editor
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function decorateLine()
+
+end
 
 local function refresh()
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-
-
-
+	initList(
+		{
+			widgetTab = editor.browser.container.lines,
+			decorate = decorateLine
+		},
+		toolFrame.specificDraft.IN,
+		editor.browser.container.slider
+	);
 end
 editor.refresh = refresh;
+
+local function onLineClicked(line, button)
+
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -40,4 +61,14 @@ editor.refresh = refresh;
 
 function editor.init(ToolFrame)
 	toolFrame = ToolFrame;
+
+	handleMouseWheel(editor.browser.container, editor.browser.container.slider);
+	editor.browser.container.slider:SetValue(0);
+	-- Create lines
+	for line = 0, 8 do
+		local lineFrame = CreateFrame("Button", "TRP3_InnerObjectEditorLine" .. line, editor.browser.container, "TRP3_InnerObjectEditorLine");
+		lineFrame:SetPoint("TOP", editor.browser.container, "TOP", 0, -10 + (line * (-31)));
+		lineFrame:SetScript("OnClick", onLineClicked);
+		tinsert(editor.browser.container.lines, lineFrame);
+	end
 end

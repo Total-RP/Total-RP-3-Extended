@@ -261,7 +261,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 
 	toolFrame.list.bottom.item.templates.document:SetScript("OnClick", function(self)
 		toolFrame.list.bottom.item.templates:Hide();
-		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getDocumentItemData());
+		local id = Utils.str.id();
+		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getDocumentItemData(id), id);
 		TRP3_API.extended.tools.goToPage(ID);
 	end);
 
