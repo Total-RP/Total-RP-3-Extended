@@ -304,6 +304,7 @@ local function createTabBar()
 end
 
 function TRP3_API.extended.tools.toList()
+	ToolFrame.rootClassID = nil;
 	tabGroup:SelectTab(1);
 end
 

@@ -132,7 +132,6 @@ TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
 
 local draftData = {};
 local draftRegister = {};
-local currentRootID;
 
 local function getModeLocale(mode)
 	if mode == TRP3_DB.modes.QUICK then
@@ -152,9 +151,10 @@ local function openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload)
 	for k, _ in pairs(draftRegister) do
 		draftRegister[k] = nil;
 	end
-	if forceDraftReload or currentRootID ~= rootClassID then
+	if forceDraftReload or toolFrame.rootClassID ~= rootClassID then
+		Log.log(("Refreshing root draft.\nPrevious: %s\nNex: %s"):format(tostring(toolFrame.rootClassID), tostring(rootClassID)));
 		wipe(draftData);
-		currentRootID = rootClassID;
+		toolFrame.rootClassID = rootClassID;
 		Utils.table.copy(draftData, rootClass);
 	end
 	TRP3_API.extended.registerDB({[rootClassID] = draftData}, 0, draftRegister);
@@ -232,9 +232,17 @@ local function goToListPage(skipButton)
 end
 
 function goToPage(fullClassID, forceDraftReload)
+	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, fullClassID)};
+	local rootClassID = parts[1];
+	local specificClassID = parts[#parts];
+
+	-- First of all, save to draft if same rootID !
+	if toolFrame.rootClassID == rootClassID and toolFrame.currentEditor then
+		toolFrame.currentEditor.onSave();
+	end
+
 	-- Ensure buttons up to the target
 	NavBar_Reset(toolFrame.navBar);
-	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, fullClassID)};
 	local fullId = "";
 	for _, part in pairs(parts) do
 		fullId = getFullID(fullId, part);
@@ -270,26 +278,26 @@ function goToPage(fullClassID, forceDraftReload)
 	setBackground(selectedPageData.background or 1);
 
 	-- Load data
-	local rootClassID = parts[1];
-	local specificClassID = parts[#parts];
 	local rootClass = getClass(rootClassID);
 	local rootDraft = openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload);
 	local specificDraft = draftRegister[fullClassID];
+	assert(specificDraft, "Can't find object: " .. fullClassID);
+
 	displayRootInfo(rootClassID, rootClass, fullClassID, specificClassID, specificDraft);
 
 	-- Show selected
 	assert(selectedPageFrame, "No editor for type " .. class.TY);
 	assert(selectedPageFrame.onLoad, "No load entry for type " .. class.TY);
-	toolFrame.rootClassID = rootClassID;
+	toolFrame.currentEditor = selectedPageFrame;
 	toolFrame.fullClassID = fullClassID;
 	toolFrame.specificClassID = specificClassID;
 	toolFrame.rootDraft = rootDraft;
 	toolFrame.specificDraft = specificDraft;
-	selectedPageFrame.onLoad();
-	selectedPageFrame:Show();
+	toolFrame.currentEditor.onLoad();
+	toolFrame.currentEditor:Show();
 
 	toolFrame.actions.save:SetScript("OnClick", function()
-		onSave(selectedPageFrame);
+		onSave(toolFrame.currentEditor);
 	end);
 end
 TRP3_API.extended.tools.goToPage = goToPage;

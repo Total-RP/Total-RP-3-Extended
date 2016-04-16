@@ -20,7 +20,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local CreateFrame = CreateFrame;
 local wipe, pairs, error, assert, tinsert = wipe, pairs, error, assert, tinsert;
 local tsize = Utils.table.size;
-local getClass = TRP3_API.extended.getClass;
+local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.locale.getText;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -75,6 +75,7 @@ local function decorateLine(line, objectID)
 	local innerObject = toolFrame.specificDraft.IN[objectID];
 	local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(innerObject);
 	local text = ("|cff00ff00%s: |r\"%s|r\" |cff00ffff(ID: %s)"):format(getTypeLocale(innerObject.TY) or UNKNOWN, name or UNKNOWN, objectID);
+	line.objectID = objectID;
 	line.text:SetText(text);
 
 	setTooltipForSameFrame(line, "BOTTOMRIGHT", 0, 0, objectID, "[Don't know yet]"); --TODO: finish
@@ -94,8 +95,30 @@ local function refresh()
 end
 editor.refresh = refresh;
 
-local function onLineClicked(line, button)
+local LINE_ACTION_DELETE = 1;
+local LINE_ACTION_ID = 2;
+local LINE_ACTION_DUPLICATE = 3;
 
+local function onLineAction(action, line)
+	if action == LINE_ACTION_DELETE then
+		local innerObject = toolFrame.specificDraft.IN[line.objectID];
+		wipe(innerObject);
+		toolFrame.specificDraft.IN[line.objectID] = nil;
+		refresh();
+	end
+end
+
+local function onLineClicked(line, button)
+	if button == "LeftButton" then
+		TRP3_API.extended.tools.goToPage(getFullID(toolFrame.fullClassID, line.objectID));
+	else
+		local values = {};
+		tinsert(values, {line.text:GetText(), nil});
+		tinsert(values, {DELETE, LINE_ACTION_DELETE});
+		tinsert(values, {"Change object ID", LINE_ACTION_ID}); -- TODO: locals
+		tinsert(values, {"Duplicate object", LINE_ACTION_DUPLICATE}); -- TODO: locals
+		TRP3_API.ui.listbox.displayDropDown(line, values, onLineAction, 0, true);
+	end
 end
 
 local function addInnerObject(type)
