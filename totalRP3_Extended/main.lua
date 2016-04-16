@@ -118,12 +118,12 @@ local function getClassDataSafe(class)
 end
 TRP3_API.extended.getClassDataSafe = getClassDataSafe;
 
-local function registerObject(objectFullID, object, count)
-	TRP3_DB.global[objectFullID] = object;
+local function registerObject(objectFullID, object, count, registerTo)
+	(registerTo or TRP3_DB.global)[objectFullID] = object;
 
 	-- Inner object
 	for childID, childClass in pairs(object.IN or EMPTY) do
-		count = registerObject(getFullID(objectFullID, childID), childClass, count);
+		count = registerObject(getFullID(objectFullID, childID), childClass, count, registerTo);
 	end
 
 	return count + 1;
@@ -136,6 +136,7 @@ local function unregisterObject(objectFullID)
 			TRP3_DB.global[id] = nil;
 		end
 	end
+	-- TODO: check this. Why remove in a unregister ???
 	TRP3_DB.exchange[objectFullID] = nil;
 	TRP3_Exchange_DB[objectFullID] = nil;
 	(TRP3_DB.my or EMPTY)[objectFullID] = nil;
@@ -143,21 +144,22 @@ local function unregisterObject(objectFullID)
 end
 TRP3_API.extended.unregisterObject = unregisterObject;
 
-local function registerDB(db, count)
+local function registerDB(db, count, registerTo)
 	-- Register object
 	for id, object in pairs(db or EMPTY) do
-		count = registerObject(id, object, count);
+		count = registerObject(id, object, count, registerTo);
 		-- Quests
 		for questID, quest in pairs(object.QE or EMPTY) do
-			count = registerObject(getFullID(id, questID), quest, count);
+			count = registerObject(getFullID(id, questID), quest, count, registerTo);
 			-- Steps
 			for stepID, step in pairs(quest.ST or EMPTY) do
-				count = registerObject(getFullID(id, questID, stepID), step, count);
+				count = registerObject(getFullID(id, questID, stepID), step, count, registerTo);
 			end
 		end
 	end
 	return count;
 end
+TRP3_API.extended.registerDB = registerDB;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CONFIG

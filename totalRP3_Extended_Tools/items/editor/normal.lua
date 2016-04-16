@@ -275,7 +275,7 @@ end
 
 local function loadItem()
 	assert(toolFrame.rootClassID, "rootClassID is nil");
-	assert(toolFrame.specificClassID, "specificClassID is nil");
+	assert(toolFrame.fullClassID, "fullClassID is nil");
 	assert(toolFrame.rootDraft, "rootDraft is nil");
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 

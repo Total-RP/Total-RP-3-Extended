@@ -60,6 +60,31 @@
 
 		<Frames>
 
+			<Frame parentKey="help" inherits="TRP3_EditorTitledFrame">
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-5"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="text" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-5"/>
+								<Anchor point="LEFT" x="30" y="0"/>
+								<Anchor point="RIGHT" x="-30" y="0"/>
+								<Anchor point="BOTTOM" x="0" y="10"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+
 			<Frame parentKey="browser" inherits="TRP3_EditorTitledFrame">
 
 				<Anchors>
@@ -71,7 +96,15 @@
 
 				<Layers>
 					<Layer level="OVERLAY">
-
+						<FontString parentKey="addText" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="BOTTOM" x="0" y="70"/>
+								<Anchor point="LEFT" x="30" y="0"/>
+								<Anchor point="RIGHT" x="-30" y="0"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
 					</Layer>
 				</Layers>
 
@@ -79,13 +112,15 @@
 
 					<!-- Content -->
 					<Frame parentKey="container">
-						<Size x="390" y="295"/>
+						<Size x="0" y="295"/>
 						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 							<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 						</Backdrop>
 						<Anchors>
 							<Anchor point="CENTER" x="0" y="0"/>
+							<Anchor point="RIGHT" x="-15" y="0"/>
+							<Anchor point="LEFT" x="15" y="0"/>
 						</Anchors>
 						<Frames>
 							<Slider parentKey="slider" name="TRP3_InnerObjectEditorSlider" inherits="OptionsSliderTemplate">
@@ -108,6 +143,23 @@
 							</Slider>
 						</Frames>
 					</Frame>
+
+					<Button parentKey="add" inherits="TRP3_CommonButton">
+						<Size x="100" y="20"/>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.addText" x="0" y="-18"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
+						</Anchors>
+					</Button>
+
+					<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+						<Size x="260" y="18"/>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.addText" x="0" y="-20"/>
+							<Anchor point="LEFT" x="35" y="0"/>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.add" x="-30" y="0"/>
+						</Anchors>
+					</EditBox>
 
 				</Frames>
 

@@ -107,48 +107,13 @@ function TRP3_API.extended.tools.getDocumentItemData(id)
 	return data;
 end
 
-function TRP3_API.extended.tools.createInnerObject(parentID, innerID, innerType, innerData)
-	assert(classExists(parentID), "Unknown parent ID: " .. tostring(parentID));
-	local parentClass = getClass(parentID);
-	if not parentClass.IN then
-		parentClass.IN = {};
-	end
-	if not parentClass.IN[innerID] then
-		if innerType == TRP3_DB.types.ITEM then
-			parentClass.IN[innerID] = innerData or {
-				TY = TRP3_DB.types.ITEM,
-				MD = {
-					MO = TRP3_DB.modes.NORMAL,
-				},
-				BA = {
-					NA = loc("IT_NEW_NAME"),
-				},
-			}
-		elseif innerType == TRP3_DB.types.DOCUMENT then
-			parentClass.IN[innerID] = innerData or {
-				TY = TRP3_DB.types.DOCUMENT,
-				MD = {
-					MO = TRP3_DB.modes.NORMAL,
-				},
-				BA = {
-					NA = loc("DO_NEW_DOC"),
-				},
-			}
-		elseif innerType == "quick" then
-			parentClass.IN[innerID] = innerData;
-		end
-		registerItem(parentID, parentClass);
-		return TRP3_API.extended.getFullID(parentID, innerID);
-	end
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Item base frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onLoad()
 	assert(toolFrame.rootClassID, "rootClassID is nil");
-	assert(toolFrame.specificClassID, "specificClassID is nil");
+	assert(toolFrame.fullClassID, "fullClassID is nil");
 	assert(toolFrame.rootDraft, "rootDraft is nil");
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 

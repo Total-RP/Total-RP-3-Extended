@@ -131,6 +131,7 @@ TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local draftData = {};
+local draftRegister = {};
 local currentRootID;
 
 local function getModeLocale(mode)
@@ -148,11 +149,15 @@ end
 TRP3_API.extended.tools.getModeLocale = getModeLocale;
 
 local function openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload)
+	for k, _ in pairs(draftRegister) do
+		draftRegister[k] = nil;
+	end
 	if forceDraftReload or currentRootID ~= rootClassID then
 		wipe(draftData);
 		currentRootID = rootClassID;
 		Utils.table.copy(draftData, rootClass);
 	end
+	TRP3_API.extended.registerDB({[rootClassID] = draftData}, 0, draftRegister);
 	return draftData;
 end
 
@@ -181,8 +186,8 @@ local function onSave(editor)
 	assert(editor, "No editor.");
 	assert(editor.onSave, "No save method in editor.");
 	assert(toolFrame.rootClassID, "No rootClassID in editor.");
-	assert(toolFrame.specificClassID, "No classID in editor.");
-	local rootClassID, specificClassID = toolFrame.rootClassID, toolFrame.specificClassID;
+	assert(toolFrame.fullClassID, "No fullClassID in editor.");
+	local rootClassID, fullClassID = toolFrame.rootClassID, toolFrame.fullClassID;
 
 	-- Force save the current view in draft
 	editor.onSave();
@@ -198,7 +203,9 @@ local function onSave(editor)
 	object.MD.SD = date("%d/%m/%y %H:%M:%S");
 	object.MD.SB = Globals.player_id;
 
-	goToPage(specificClassID, true);
+	TRP3_API.extended.registerObject(rootClassID, object, 0);
+
+	goToPage(fullClassID, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -224,10 +231,10 @@ local function goToListPage(skipButton)
 	TRP3_API.extended.tools.toList();
 end
 
-function goToPage(classID, forceDraftReload)
+function goToPage(fullClassID, forceDraftReload)
 	-- Ensure buttons up to the target
 	NavBar_Reset(toolFrame.navBar);
-	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, classID)};
+	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, fullClassID)};
 	local fullId = "";
 	for _, part in pairs(parts) do
 		fullId = getFullID(fullId, part);
@@ -244,7 +251,7 @@ function goToPage(classID, forceDraftReload)
 	toolFrame.actions:Show();
 	toolFrame.specific:Show();
 	toolFrame.root:Show();
-	local class = getClass(classID);
+	local class = getClass(fullClassID);
 
 	local selectedPageData, selectedPageFrame;
 	-- Hide all
@@ -264,16 +271,18 @@ function goToPage(classID, forceDraftReload)
 
 	-- Load data
 	local rootClassID = parts[1];
+	local specificClassID = parts[#parts];
 	local rootClass = getClass(rootClassID);
 	local rootDraft = openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload);
-	local specificDraft = rootDraft; -- FIXME: temp, won't works with inner objects :)
-	displayRootInfo(rootClassID, rootClass, classID, parts[#parts], specificDraft);
+	local specificDraft = draftRegister[fullClassID];
+	displayRootInfo(rootClassID, rootClass, fullClassID, specificClassID, specificDraft);
 
 	-- Show selected
 	assert(selectedPageFrame, "No editor for type " .. class.TY);
 	assert(selectedPageFrame.onLoad, "No load entry for type " .. class.TY);
 	toolFrame.rootClassID = rootClassID;
-	toolFrame.specificClassID = classID;
+	toolFrame.fullClassID = fullClassID;
+	toolFrame.specificClassID = specificClassID;
 	toolFrame.rootDraft = rootDraft;
 	toolFrame.specificDraft = specificDraft;
 	selectedPageFrame.onLoad();

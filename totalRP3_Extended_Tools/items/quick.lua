@@ -113,18 +113,6 @@ local function onQuickCreatedFromList(classID, _)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- INNER OBJECT
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local innerFrame;
-
-function TRP3_API.extended.tools.openInnerObjectCreation(callback, parentClassID)
-	innerFrame.onCreatedCallback = callback;
-	innerFrame.parentClassID = parentClassID;
-	TRP3_API.ui.frame.configureHoverFrame(innerFrame, toolFrame, "CENTER", 0, 5, false);
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
