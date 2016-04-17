@@ -23,21 +23,18 @@
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Script file="items/items.lua"/>
+	<Script file="document/document.lua"/>
 
-	<Include file="items/editor/quick.xml"/>
-	<Script file="items/editor/quick.lua"/>
-
-	<Include file="items/editor/normal.xml"/>
-	<Script file="items/editor/normal.lua"/>
+	<Include file="document/editor/normal.xml"/>
+	<Script file="document/editor/normal.lua"/>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Base frame      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_Tools_ItemTemplate" virtual="true">
+	<Frame name="TRP3_Tools_DocumentTemplate" virtual="true">
 		<Frames>
-			<Frame inherits="TRP3_Tools_ItemEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
+			<Frame inherits="TRP3_Tools_DocumentEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
 		</Frames>
 	</Frame>
 

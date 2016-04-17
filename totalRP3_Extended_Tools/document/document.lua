@@ -18,62 +18,50 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local wipe, tostring, error, assert, date = wipe, tostring, error, assert, date;
-local tsize = Utils.table.size;
-local getClass, classExists = TRP3_API.extended.getClass, TRP3_API.extended.classExists;
-local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.locale.getText;
 local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Item management
+-- Document management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function registerItem(ID, data)
-	TRP3_API.extended.registerObject(ID, data, 0);
-end
-
-local function createItem(data, ID)
-	ID = ID or Utils.str.id();
-
-	if TRP3_DB.global[ID] then
-		error("This ID already exists. This shoudn't happen: " .. ID);
-	end
-
-	TRP3_DB.my[ID] = data;
-	registerItem(ID, data);
-
-	return ID, data;
-end
-TRP3_API.extended.tools.createItem = createItem;
-
-function TRP3_API.extended.tools.getBlankItemData(toMode)
-	return {
-		TY = TRP3_DB.types.ITEM,
-		MD = {
-			MO = toMode or TRP3_DB.modes.QUICK,
-			V = 1,
-			CD = date("%d/%m/%y %H:%M:%S");
-			CB = Globals.player_id,
-			SD = date("%d/%m/%y %H:%M:%S");
-			SB = Globals.player_id,
-		},
-		BA = {
-			NA = loc("IT_NEW_NAME"),
-		},
-	};
-end
-
-function TRP3_API.extended.tools.getContainerItemData()
+function TRP3_API.extended.tools.getDocumentItemData(id)
 	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
-	data.BA.CT = true;
-	data.BA.NA = loc("IT_NEW_NAME_CO");
-	data.BA.IC = "inv_misc_bag_36";
-	data.CO = {SR = 5, SC = 4};
+	data.BA.IC = "inv_misc_book_16";
+	data.BA.NA = loc("DO_NEW_DOC");
+	data.BA.US = true;
+	data.US = {
+		AC = loc("IT_DOC_ACTION"),
+		SC = "onUse"
+	};
+	data.SC = {
+		["onUse"] = { ["ST"] = { ["1"] = { ["e"] = {
+			{
+				["id"] = "document_show",
+				["args"] = {
+					id .. TRP3_API.extended.ID_SEPARATOR .. "doc",
+				},
+			},
+		},
+			["t"] = "list",
+		}}}};
+	data.IN = {
+		doc = {
+			TY = TRP3_DB.types.DOCUMENT,
+			MD = {
+				MO = TRP3_DB.modes.NORMAL,
+			},
+			BA = {
+				NA = loc("DO_NEW_DOC"),
+			},
+		}
+	};
 	return data;
 end
 
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Item base frame
+-- Document base frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onLoad()
@@ -82,29 +70,23 @@ local function onLoad()
 	assert(toolFrame.rootDraft, "rootDraft is nil");
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
-	toolFrame.item.normal:Hide();
-	if TRP3_DB.modes.EXPERT ~= (toolFrame.specificDraft.MO or TRP3_DB.modes.NORMAL) then
-		toolFrame.item.normal:Show();
-		toolFrame.item.normal.loadItem();
-	end
+	toolFrame.document.normal:Show();
+	toolFrame.document.normal.load();
 end
 
 local function onSave()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
-	if TRP3_DB.modes.EXPERT ~= (toolFrame.specificDraft.MO or TRP3_DB.modes.NORMAL) then
-		toolFrame.item.normal.saveToDraft();
-	end
+	toolFrame.document.normal.saveToDraft();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.initItems(ToolFrame)
+function TRP3_API.extended.tools.initDocument(ToolFrame)
 	toolFrame = ToolFrame;
-	toolFrame.item.onLoad = onLoad;
-	toolFrame.item.onSave = onSave;
+	toolFrame.document.onLoad = onLoad;
+	toolFrame.document.onSave = onSave;
 
-	TRP3_API.extended.tools.initItemQuickEditor(toolFrame);
-	TRP3_API.extended.tools.initItemEditorNormal(toolFrame);
+	TRP3_API.extended.tools.initDocumentEditorNormal(toolFrame);
 end

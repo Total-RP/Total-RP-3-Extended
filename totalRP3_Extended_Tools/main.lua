@@ -80,7 +80,7 @@ local PAGE_BY_TYPE = {
 		background = 3,
 	},
 	[TRP3_DB.types.DOCUMENT] = {
-		frame = nil,
+		frame = "document",
 		tabTextGetter = function(id)
 			return loc("TYPE_DOCUMENT") .. ": " .. id;
 		end,
@@ -383,6 +383,7 @@ local function onStart()
 	TRP3_API.extended.tools.initBaseEffects();
 	TRP3_API.extended.tools.initScript(toolFrame);
 	TRP3_InnerObjectEditor.init(toolFrame);
+	TRP3_API.extended.tools.initDocument(toolFrame);
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 
