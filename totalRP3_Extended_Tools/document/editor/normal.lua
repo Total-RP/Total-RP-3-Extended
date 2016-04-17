@@ -63,7 +63,7 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	-- Pages
 	pages = toolFrame.document.normal.pages;
 	pages.title:SetText("Page editor"); -- TODO: locals
-	TRP3_API.ui.text.setupToolbar(pages.toolbar, pages.editor.scroll.text, pages);
+	TRP3_API.ui.text.setupToolbar(pages.toolbar, pages.editor.scroll.text, pages, "RIGHT", "LEFT");
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
 		pages.editor.scroll.text:GetScript("OnShow")(pages.editor.scroll.text);
 	end);
