@@ -173,7 +173,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		TRP3_ItemTooltip:Hide();
 	end);
 	editor.preview:SetScript("OnClick", function(self)
-		TRP3_API.popup.showIconBrowser(onIconSelected, nil, self, 1);
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = editor, point = "LEFT", parentPoint = "RIGHT"}, {onIconSelected});
 	end);
 
 	-- Save
