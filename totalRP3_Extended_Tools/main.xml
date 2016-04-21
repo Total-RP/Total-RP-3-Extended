@@ -120,7 +120,7 @@
 							<Anchor point="RIGHT" x="-15" y="0"/>
 						</Anchors>
 					</Button>
-					<Button parentKey="saveas" inherits="TRP3_CommonButton" text="[[SAVE_AS]]">
+					<Button parentKey="cancel" inherits="TRP3_CommonButton" text="[[SAVE_AS]]">
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.save" x="0" y="-10"/>
 							<Anchor point="LEFT" x="18" y="0"/>
@@ -137,35 +137,17 @@
 					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.actions" x="-10" y="0"/>
 					<Anchor point="LEFT" x="24" y="0"/>
 				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="id" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="20"/>
-							<Anchors>
-								<Anchor point="TOP" x="0" y="-10"/>
-								<Anchor point="LEFT" x="35" y="0"/>
-								<Anchor point="RIGHT" x="-15" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-						<FontString parentKey="fullid" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="20"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="0"/>
-								<Anchor point="RIGHT" x="-15" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-						<FontString parentKey="mode" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="20"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.fullid" x="0" y="0"/>
-								<Anchor point="RIGHT" x="-15" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-					</Layer>
-				</Layers>
+				<Frames>
+					<SimpleHTML parentKey="text">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-20"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+						<FontString inherits="GameFontNormal"/>
+					</SimpleHTML>
+				</Frames>
 			</Frame>
 
 			<Frame name="$parentRootObject" parentKey="root" inherits="TRP3_FieldSetFrame">
@@ -175,43 +157,17 @@
 					<Anchor point="RIGHT" x="-45" y="0"/>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.actions" x="10" y="0"/>
 				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="id" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="20"/>
-							<Anchors>
-								<Anchor point="TOP" x="0" y="-10"/>
-								<Anchor point="LEFT" x="35" y="0"/>
-								<Anchor point="RIGHT" x="-15" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-						<FontString parentKey="version" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="20"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="0"/>
-								<Anchor point="RIGHT" x="-15" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-						<FontString parentKey="created" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="20"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.version" x="0" y="0"/>
-								<Anchor point="RIGHT" x="-15" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-						<FontString parentKey="saved" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="20"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.created" x="0" y="0"/>
-								<Anchor point="RIGHT" x="-15" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-					</Layer>
-				</Layers>
+				<Frames>
+					<SimpleHTML parentKey="text">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-15"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+						<FontString inherits="GameFontNormalSmall"/>
+					</SimpleHTML>
+				</Frames>
 			</Frame>
 
 			<Frame name="$parentItem" inherits="TRP3_Tools_ItemTemplate" parentKey="item">

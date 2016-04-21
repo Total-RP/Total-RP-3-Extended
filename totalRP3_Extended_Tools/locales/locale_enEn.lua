@@ -25,6 +25,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	TB_TOOLS_TT = "Create your own items and quests.",
 
 	-- TYPES
+	TYPE = "Type",
 	TYPE_CAMPAIGN = "Campaign",
 	TYPE_QUEST = "Quest",
 	TYPE_QUEST_STEP = "Quest step",
@@ -47,6 +48,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_LIST = "Creations list",
 	DB_FILTERS = "Creations filters",
 	DB_ACTIONS = "Actions",
+	DB_WARNING = "\n|cffff0000!!! Warning !!!\n\n|cffff9900Don't forget to save your changes before returning to the database list!",
 
 	DB_MY_EMPTY = "You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!",
 	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.\nExchange objects with others or import a packageg using the button below!",
@@ -86,6 +88,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EDITOR_NOTES = "Free notes",
 	EDITOR_MAIN = "Main",
 	EDITOR_CONFIRM = "Confirm",
+	EDITOR_SAVE_TT = "Save all changes to the whole object %s (root object and all inner objects) and automatically increments the version number.",
+	EDITOR_CANCEL_TT = "Cancel all changes to the whole object %s (root object and all inner objects).\n\n|cffff9900Unsaved changes will be lost!",
 
 	-- Item creation
 	IT_NEW_NAME = "New item",

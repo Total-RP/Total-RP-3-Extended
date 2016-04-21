@@ -94,7 +94,7 @@ local function addChildrenToPool(parentID)
 end
 
 local function removeChildrenFromPool(parentID)
-	for objectID, _ in pairs(getDB(currentTab)) do
+	for objectID, _ in pairs(TRP3_DB.global) do
 		if objectID ~= parentID and objectID:sub(1, parentID:len()) == parentID then
 			Utils.table.remove(idList, objectID);
 		end
@@ -118,7 +118,7 @@ end
 local color = "|cffffff00";
 local fieldFormat = "%s: " .. color .. "%s|r";
 
-local function getMetadataTooltipText(rootID, metadata, isRoot)
+local function getMetadataTooltipText(rootID, metadata, isRoot, innerID)
 	local text = ""
 
 	if isRoot then
@@ -126,6 +126,8 @@ local function getMetadataTooltipText(rootID, metadata, isRoot)
 		text = text .. "\n" .. fieldFormat:format(loc("ROOT_VERSION"), metadata.V or 1);
 		text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
 		text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_ON"), metadata.CD or "?");
+	else
+		text = text .. fieldFormat:format(loc("SPECIFIC_INNER_ID"), "|cff00ffff" .. innerID);
 	end
 
 	text = text .. "\n" .. fieldFormat:format(loc("SPECIFIC_MODE"), TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
@@ -183,7 +185,7 @@ function refresh()
 			fullID = objectID,
 			isOpen = isOpen,
 			hasChildren = hasChildren,
-			metadataTooltip = getMetadataTooltipText(parts[1], rootClass.MD or EMPTY, objectID == parts[#parts]),
+			metadataTooltip = getMetadataTooltipText(parts[1], rootClass.MD or EMPTY, objectID == parts[#parts], parts[#parts]),
 		}
 
 	end
@@ -201,10 +203,11 @@ function refresh()
 			tinsert(linesWidget, lineWidget);
 		end
 
-		local IDType = idData.ID == idData.fullID and loc("ROOT_GEN_ID") or loc("SPECIFIC_INNER_ID");
 		local tt = ("|cff00ff00%s: |r\"%s|r\""):format(getTypeLocale(idData.type) or UNKNOWN, idData.text or UNKNOWN);
 		lineWidget.Text:SetText(tt);
-		lineWidget.Right:SetText(("|cff00ffff%s: %s"):format(IDType, idData.ID));
+
+		local IDType = idData.ID == idData.fullID and loc("ROOT_GEN_ID") or loc("SPECIFIC_INNER_ID");
+		lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and IDType or idData.ID));
 
 		lineWidget.Expand:Hide();
 		if idData.hasChildren then

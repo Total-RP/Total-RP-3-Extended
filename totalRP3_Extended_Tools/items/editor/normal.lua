@@ -225,6 +225,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onTabChanged(tabWidget, tab)
+	assert(toolFrame.fullClassID, "fullClassID is nil");
+
 	-- Hide all
 	currentTab = tab or TABS.MAIN;
 	display:Hide();
@@ -251,6 +253,8 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_InnerObjectEditor:SetAllPoints();
 		TRP3_InnerObjectEditor:Show();
 	end
+
+	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
 end
 
 local function createTabBar()
@@ -285,12 +289,10 @@ local function loadItem()
 	loadDataMain();
 	loadDataScript();
 	loadDataContainer();
---	tabGroup:SelectTab(toolFrame.specificDraft.currentTab or TABS.MAIN);
-	tabGroup:SelectTab(TABS.MAIN);
+	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
 end
 
 local function saveToDraft()
-	toolFrame.specificDraft.currentTab = currentTab;
 	storeDataMain();
 	storeDataScript();
 	storeDataContainer();
