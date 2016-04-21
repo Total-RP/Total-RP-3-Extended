@@ -38,11 +38,18 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
+				<FontString parentKey="Right" inherits="GameFontNormal" justifyH="RIGHT" text="[Line text]">
+					<Size x="300" y="10" />
+					<Anchors>
+						<Anchor point="RIGHT" x="-15" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
 				<FontString parentKey="Text" inherits="GameFontNormal" justifyH="LEFT" text="[Line text]">
 					<Size x="0" y="10" />
 					<Anchors>
 						<Anchor point="LEFT" x="25" y="0" />
-						<Anchor point="RIGHT" x="-15" y="0" />
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Right" x="-15" y="0" />
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
@@ -80,7 +87,7 @@
 				<Anchors>
 					<Anchor point="TOP" x="0" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="0"/>
-					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.Text"/>
+					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.Right"/>
 					<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.Text"/>
 				</Anchors>
 				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">

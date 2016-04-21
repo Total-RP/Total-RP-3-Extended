@@ -315,6 +315,7 @@ function goToPage(fullClassID, forceDraftReload)
 		end
 
 	end
+
 end
 TRP3_API.extended.tools.goToPage = goToPage;
 
@@ -393,6 +394,15 @@ local function onStart()
 		end
 	}
 	toolFrame.navBar.home:SetWidth(110);
+	toolFrame.navBar.home:SetScript("OnEnter", function(self)
+		NavBar_ButtonOnEnter(self);
+		refreshTooltipForFrame(self);
+	end);
+	toolFrame.navBar.home:SetScript("OnLeave", function(self)
+		NavBar_ButtonOnLeave(self);
+		TRP3_MainTooltip:Hide();
+	end);
+	setTooltipForSameFrame(toolFrame.navBar.home, "BOTTOM", 0, 0, loc("DB"));
 	NavBar_Initialize(toolFrame.navBar, "NavButtonTemplate", homeData, toolFrame.navBar.home, toolFrame.navBar.overflow);
 
 	-- Init tabs

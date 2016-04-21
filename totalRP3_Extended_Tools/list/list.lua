@@ -118,12 +118,19 @@ end
 local color = "|cffffff00";
 local fieldFormat = "%s: " .. color .. "%s|r";
 
-local function getMetadataTooltipText(rootID, metadata)
-	local text =  fieldFormat:format(loc("ROOT_TITLE"), rootID);
-	text = text .. "\n" .. fieldFormat:format(loc("ROOT_VERSION"), metadata.V or 1);
-	text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
-	text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_ON"), metadata.CD or "?");
+local function getMetadataTooltipText(rootID, metadata, isRoot)
+	local text = ""
+
+	if isRoot then
+		text = text .. fieldFormat:format(loc("ROOT_GEN_ID"), "|cff00ffff" .. rootID);
+		text = text .. "\n" .. fieldFormat:format(loc("ROOT_VERSION"), metadata.V or 1);
+		text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
+		text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_ON"), metadata.CD or "?");
+	end
+
 	text = text .. "\n" .. fieldFormat:format(loc("SPECIFIC_MODE"), TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
+	text = text .. "\n\n|cffffff00" .. loc("CM_CLICK") .. ": |cffff9900" .. loc("CM_OPEN");
+	text = text .. "\n|cffffff00" .. loc("CM_R_CLICK") .. ": |cffff9900" .. loc("DB_ACTIONS");
 	return text;
 end
 
@@ -176,7 +183,7 @@ function refresh()
 			fullID = objectID,
 			isOpen = isOpen,
 			hasChildren = hasChildren,
-			metadataTooltip = getMetadataTooltipText(parts[1], rootClass.MD or EMPTY),
+			metadataTooltip = getMetadataTooltipText(parts[1], rootClass.MD or EMPTY, objectID == parts[#parts]),
 		}
 
 	end
@@ -194,7 +201,10 @@ function refresh()
 			tinsert(linesWidget, lineWidget);
 		end
 
-		lineWidget.Text:SetText(("|cff00ff00%s: |r\"%s|r\" |cff00ffff(ID: %s)"):format(getTypeLocale(idData.type) or UNKNOWN, idData.text or UNKNOWN, idData.ID));
+		local IDType = idData.ID == idData.fullID and loc("ROOT_GEN_ID") or loc("SPECIFIC_INNER_ID");
+		local tt = ("|cff00ff00%s: |r\"%s|r\""):format(getTypeLocale(idData.type) or UNKNOWN, idData.text or UNKNOWN);
+		lineWidget.Text:SetText(tt);
+		lineWidget.Right:SetText(("|cff00ffff%s: %s"):format(IDType, idData.ID));
 
 		lineWidget.Expand:Hide();
 		if idData.hasChildren then
@@ -209,7 +219,7 @@ function refresh()
 			end
 		end
 
-		setTooltipForSameFrame(lineWidget.Click, "BOTTOMRIGHT", 0, 0, idData.ID, idData.metadataTooltip);
+		setTooltipForSameFrame(lineWidget.Click, "BOTTOMRIGHT", 0, 0, tt, idData.metadataTooltip);
 
 		lineWidget:ClearAllPoints();
 		lineWidget:SetPoint("LEFT", LEFT_DEPTH_STEP_MARGIN * (idData.depth - 1), 0);
