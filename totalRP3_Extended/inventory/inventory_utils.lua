@@ -105,7 +105,7 @@ end
 TRP3_API.inventory.getQualityColorRGB = getQualityColorRGB;
 
 local function getItemLink(itemClass)
-	local icon, name, qa = getBaseClassDataSafe(itemClass);
+	local _, name, qa = getBaseClassDataSafe(itemClass);
 	return getQualityColorText(qa) .. "[" .. name .. "]|r";
 end
 TRP3_API.inventory.getItemLink = getItemLink;
@@ -153,7 +153,6 @@ TRP3_API.inventory.countItemInstances = countItemInstances;
 --- Get a formated text for this weight based on config
 -- @param value in grams !
 --
-local tostring = tostring;
 function TRP3_API.extended.formatWeight(value)
 	local config = TRP3_API.configuration.getValue(TRP3_API.extended.CONFIG_WEIGHT_UNIT);
 	if config == TRP3_API.extended.WEIGHT_UNITS.GRAMS then

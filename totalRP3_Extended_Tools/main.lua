@@ -24,6 +24,8 @@ local loc = TRP3_API.locale.getText;
 local fireEvent = TRP3_API.events.fireEvent;
 local after  = C_Timer.After;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
 
 local toolFrame;
 
@@ -75,8 +77,12 @@ local PAGE_BY_TYPE = {
 	},
 	[TRP3_DB.types.ITEM] = {
 		frame = "item",
-		tabTextGetter = function(id)
-			return loc("TYPE_ITEM") .. ": " .. id;
+		tabTextGetter = function(id, class, isRoot)
+			if isRoot then
+				return ("%s: %s |cff00ffff(%s)"):format(loc("TYPE_ITEM"),  TRP3_API.inventory.getItemLink(class), loc("ROOT_TITLE"));
+			else
+				return ("%s: %s |cff00ffff(%s)"):format(loc("TYPE_ITEM"),  TRP3_API.inventory.getItemLink(class), id);
+			end
 		end,
 		background = 3,
 	},
@@ -283,17 +289,31 @@ function goToPage(fullClassID, forceDraftReload)
 		onSave(toolFrame.currentEditor);
 	end);
 
-	-- Ensure buttons up to the target
+	-- Create buttons up to the target
 	NavBar_Reset(toolFrame.navBar);
 	local fullId = "";
 	for _, part in pairs(parts) do
 		fullId = getFullID(fullId, part);
 		local reconstruct = fullId;
 		local class = draftRegister[reconstruct];
-		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part);
+		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part, class, part == parts[1]);
 		NavBar_AddButton(toolFrame.navBar, {id = reconstruct, name = text, OnClick = function()
 			goToPage(reconstruct);
 		end});
+		local navButton = toolFrame.navBar.navList[#toolFrame.navBar.navList];
+		navButton:SetScript("OnEnter", function(self)
+			NavBar_ButtonOnEnter(self);
+			refreshTooltipForFrame(self);
+		end);
+		navButton:SetScript("OnLeave", function(self)
+			NavBar_ButtonOnLeave(self);
+			TRP3_MainTooltip:Hide();
+		end);
+		setTooltipForSameFrame(navButton, "BOTTOM", 0, 0);
+		if fullId == part then
+			setTooltipForSameFrame(navButton, "BOTTOM", 0, 0, loc("ROOT_GEN_ID"), "|cff00ffff" .. part);
+		end
+
 	end
 end
 TRP3_API.extended.tools.goToPage = goToPage;

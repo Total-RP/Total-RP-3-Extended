@@ -109,9 +109,9 @@ local function decorateLine(line, innerID)
 	line.text:SetText(text);
 
 	local tooltip = ("|cff00ffff%s"):format(innerID);
-	local tooltipsub = ("|cffffffffInner object, |cff00ff00%s"):format(typeLocale); -- TODO: locale
+	local tooltipsub = ("|cffffffff%s, |cff00ff00%s"):format(loc("IN_INNER_S"), typeLocale);
 	tooltipsub = tooltipsub .. "\n\n|cffffff00" .. loc("CM_CLICK") .. ": |cffff9900" .. loc("CM_OPEN");
-	tooltipsub = tooltipsub .. "\n|cffffff00" .. loc("CM_R_CLICK") .. ": |cffff9900" .. loc("IN_INNER_ACTIONS");
+	tooltipsub = tooltipsub .. "\n|cffffff00" .. loc("CM_R_CLICK") .. ": |cffff9900" .. loc("DB_ACTIONS");
 
 	setTooltipForSameFrame(line, "BOTTOMRIGHT", 0, 0, tooltip, tooltipsub);
 end
@@ -137,7 +137,7 @@ editor.refresh = refresh;
 
 local LINE_ACTION_DELETE = 1;
 local LINE_ACTION_ID = 2;
-local LINE_ACTION_DUPLICATE = 3;
+local LINE_ACTION_COPY = 3;
 
 local function onLineAction(action, line)
 	assert(toolFrame.specificDraft.IN[line.objectID]);
@@ -203,13 +203,13 @@ end
 function editor.init(ToolFrame)
 	toolFrame = ToolFrame;
 
-	editor.browser.title:SetText("Inner object list"); -- TODO: local
-	editor.help.title:SetText("What are inner objects?"); -- TODO: local
+	editor.browser.title:SetText(loc("IN_INNER_LIST"));
+	editor.help.title:SetText(loc("IN_INNER_HELP_TITLE"));
 	editor.help.text:SetText(loc("IN_INNER_HELP"));
-	editor.browser.add:SetText("Add"); -- TODO: local
-	editor.browser.addText:SetText("Add inner object"); -- TODO: local
-	editor.browser.id.title:SetText("Enter inner object ID"); -- TODO: local
-	setTooltipForSameFrame(editor.browser.id.help, "RIGHT", 0, 5, "Enter inner object ID", "Inner object ID must be unique within the parent object."); -- TODO: local
+	editor.browser.add:SetText(ADD);
+	editor.browser.addText:SetText(loc("IN_INNER_ADD"));
+	editor.browser.id.title:SetText(loc("IN_INNER_ENTER_ID"));
+	setTooltipForSameFrame(editor.browser.id.help, "RIGHT", 0, 5, loc("IN_INNER_ENTER_ID"), loc("IN_INNER_ENTER_ID_TT"));
 	editor.browser.container.empty:SetText(loc("IN_INNER_EMPTY"));
 
 	handleMouseWheel(editor.browser.container, editor.browser.container.slider);

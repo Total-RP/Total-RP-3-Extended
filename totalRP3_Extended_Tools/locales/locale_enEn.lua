@@ -69,6 +69,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	-- Creation
 	ROOT_TITLE = "Root object",
 	ROOT_ID = "ID",
+	ROOT_GEN_ID = "Generated ID",
 	ROOT_VERSION = "Version",
 	ROOT_CREATED = "Created by %s on %s",
 	ROOT_CREATED_BY = "Created by",
@@ -263,6 +264,12 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 
 	-- Inner objects
 	IN_INNER = "Inner objects",
+	IN_INNER_S = "Inner object",
+	IN_INNER_LIST = "Inner object list",
+	IN_INNER_HELP_TITLE = "What are inner objects?",
+	IN_INNER_ADD = "Add inner object",
+	IN_INNER_ENTER_ID = "Enter inner object ID",
+	IN_INNER_ENTER_ID_TT = "Inner object ID must be unique within the parent object.",
 	IN_INNER_EMPTY = "No inner objects\n\nYou can add one by using the add button below.",
 	IN_INNER_HELP =
 [[Inner objects are objects stored in a parent object.
@@ -288,7 +295,6 @@ We should begin with examples:
 |rSo it's simple: when you want to create an object, always ask yourself if it wouldn't be better to have it as an inner object for another item or a quest.
 
 |cff00ff00Also: document, cutscenes and loot objects can only be inner objects!]],
-	IN_INNER_ACTIONS = "Actions",
 	IN_INNER_DELETE_CONFIRM = "Remove the inner object |cff00ffff\"%s\"|r |cff00ff00[%s]|r from the parent object |cff00ff00[%s]|r?\n\n|cffff9900The inner object will be lost.",
 	IN_INNER_DELETE_TT = "Remove this inner object from the parent object.",
 	IN_INNER_ID_ACTION = "Change ID",
