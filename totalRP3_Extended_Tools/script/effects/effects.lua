@@ -41,7 +41,7 @@ function TRP3_API.extended.tools.getEffectEditorInfo(effectID)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- text: Display text
+-- Commons
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local text_editor = TRP3_EffectEditorText;
@@ -87,7 +87,7 @@ local function text_init()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- dismissMount - dismissCritter: Simple companion effects
+-- Companions
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function companion_dismiss_mount_init()
@@ -115,7 +115,7 @@ local function companion_random_critter_init()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- item_sheath: Item: Toggle weapon sheath
+-- Inventory
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function item_sheath_init()
@@ -126,8 +126,51 @@ local function item_sheath_init()
 	});
 end
 
+local function item_bag_durability_init()
+	local editor = TRP3_EffectEditorItemBagDurability;
+
+	registerEffectEditor("item_bag_durability", {
+		title = loc("EFFECT_ITEM_BAG_DURABILITY"),
+		icon = "ability_repair",
+		description = loc("EFFECT_ITEM_BAG_DURABILITY_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			if args[1] == "HEAL" then
+				scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_ITEM_BAG_DURABILITY_PREVIEW_1"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00") .. "|r");
+			else
+				scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_ITEM_BAG_DURABILITY_PREVIEW_2"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00") .. "|r");
+			end
+		end,
+		getDefaultArgs = function()
+			return {"HEAL", 10};
+		end,
+		editor = editor,
+	});
+
+	-- Method
+	local outputs = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_BAG_DURABILITY_METHOD"), loc("EFFECT_ITEM_BAG_DURABILITY_METHOD_HEAL")), "HEAL", loc("EFFECT_ITEM_BAG_DURABILITY_METHOD_HEAL_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_BAG_DURABILITY_METHOD"), loc("EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE")), "DAMAGE", loc("EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE_TT")},
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.method, outputs, nil, nil, 250, true);
+
+	-- Amount
+	editor.amount.title:SetText(loc("EFFECT_ITEM_BAG_DURABILITY_VALUE"));
+	setTooltipForSameFrame(editor.amount.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_BAG_DURABILITY_VALUE"), loc("EFFECT_ITEM_BAG_DURABILITY_VALUE_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.method:SetSelectedValue(data[1] or "HEAL");
+		editor.amount:SetText(data[2]);
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = editor.method:GetSelectedValue() or "HEAL";
+		scriptData.args[2] = tonumber(strtrim(editor.amount:GetText()));
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- var_set_execenv: Variables set
+-- Workflow expertise
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local varSetEditor = TRP3_EffectEditorVarSet;
@@ -509,6 +552,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	sound_music_local_init();
 
 	item_sheath_init();
+	item_bag_durability_init();
 
 	var_set_execenv_init();
 

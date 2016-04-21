@@ -453,6 +453,7 @@ editor.init = function(ToolFrame)
 		},
 		["Inventory"] = { -- TODO: locals
 			"item_sheath",
+			"item_bag_durability",
 		},
 		["Variables"] = { -- TODO: locals
 			"var_set_execenv",

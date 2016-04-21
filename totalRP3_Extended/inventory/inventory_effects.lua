@@ -17,6 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local tonumber = tonumber;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -29,10 +31,14 @@ TRP3_API.inventory.EFFECTS = {
 		secured = TRP3_API.script.security.HIGH,
 		codeReplacementFunc = function (args)
 			local target = "containerInfo";
-			if args[1] == "self" then
+			if args[3] == "self" then
 				target = "slotInfo";
 			end
-			return ("lastEffectReturn = changeContainerDurability(args.%s, %s);"):format(target, args[2]);
+			local amount = tonumber(args[2]) or 0;
+			if args[1] == "DAMAGE" then
+				amount = - amount;
+			end
+			return ("lastEffectReturn = changeContainerDurability(args.%s, %s);"):format(target, amount);
 		end,
 		env = {
 			changeContainerDurability = "TRP3_API.inventory.changeContainerDurability",

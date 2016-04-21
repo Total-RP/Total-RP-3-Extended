@@ -251,4 +251,29 @@
 
 	</Frame>
 
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--        Inventory        -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorItemBagDurability" hidden="true">
+
+		<Frames>
+
+			<Frame parentKey="method" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="-135" y="-65"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="amount" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.method" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
 </Ui>
