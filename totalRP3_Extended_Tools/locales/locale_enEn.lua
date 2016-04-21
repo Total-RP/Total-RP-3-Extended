@@ -223,6 +223,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_SPEECH_NPC_DEFAULT = "Do you want to build a snowman?",
 	EFFECT_SPEECH_NPC_NAME = "NPC name",
 	EFFECT_SPEECH_NPC_NAME_TT = "The NPC name.",
+	EFFECT_SOUND_PLAY = "Play",
 	EFFECT_SOUND_ID_SELF = "Play sound ID",
 	EFFECT_SOUND_ID_SELF_TT = "Plays a sound in a particular channel. Only the player will hear it.",
 	EFFECT_SOUND_ID_SELF_PREVIEW = "Plays sound ID %s in channel %s.",

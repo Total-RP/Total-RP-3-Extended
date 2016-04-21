@@ -148,6 +148,12 @@
 				</Anchors>
 			</EditBox>
 
+			<Button parentKey="play" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.id" x="5" y="2"/>
+				</Anchors>
+			</Button>
+
 		</Frames>
 
 	</Frame>
@@ -168,6 +174,12 @@
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.channel" x="20" y="-20"/>
 				</Anchors>
 			</EditBox>
+
+			<Button parentKey="play" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.id" x="5" y="2"/>
+				</Anchors>
+			</Button>
 
 			<EditBox parentKey="distance" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
@@ -191,6 +203,18 @@
 				</Anchors>
 			</EditBox>
 
+			<Button parentKey="play" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.path" x="5" y="2"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.path" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
 		</Frames>
 
 	</Frame>
@@ -206,10 +230,22 @@
 				</Anchors>
 			</EditBox>
 
+			<Button parentKey="play" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.path" x="5" y="2"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.path" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
 			<EditBox parentKey="distance" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.path" x="0" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.path" x="0" y="-50"/>
 				</Anchors>
 			</EditBox>
 

@@ -404,6 +404,11 @@ local function sound_id_self_init()
 	SoundIDSelfEditor.id.title:SetText(loc("EFFECT_SOUND_ID_SELF_ID"));
 	setTooltipForSameFrame(SoundIDSelfEditor.id.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_ID_SELF_ID"), loc("EFFECT_SOUND_ID_SELF_ID_TT"));
 
+	SoundIDSelfEditor.play:SetText(loc("EFFECT_SOUND_PLAY"));
+	SoundIDSelfEditor.play:SetScript("OnClick", function(self)
+		Utils.music.playSoundID(tonumber(strtrim(SoundIDSelfEditor.id:GetText())), SoundIDSelfEditor.channel:GetSelectedValue() or "SFX");
+	end);
+
 	function SoundIDSelfEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		SoundIDSelfEditor.channel:SetSelectedValue(data[1] or "SFX");
@@ -435,6 +440,18 @@ local function sound_music_self_init()
 	-- ID
 	soundMusicEditor.path.title:SetText(loc("EFFECT_SOUND_MUSIC_SELF_PATH"));
 	setTooltipForSameFrame(soundMusicEditor.path.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_MUSIC_SELF_PATH"), loc("EFFECT_SOUND_MUSIC_SELF_PATH_TT"));
+
+	-- Browse and play
+	soundMusicEditor.browse:SetText(BROWSE);
+	soundMusicEditor.browse:SetScript("OnClick", function(self)
+		TRP3_API.popup.showPopup(TRP3_API.popup.MUSICS, {parent = soundMusicEditor, point = "RIGHT", parentPoint = "LEFT"}, {function(music)
+			soundMusicEditor.path:SetText(music);
+		end});
+	end);
+	soundMusicEditor.play:SetText(loc("EFFECT_SOUND_PLAY"));
+	soundMusicEditor.play:SetScript("OnClick", function(self)
+		Utils.music.playMusic(soundMusicEditor.path:GetText());
+	end);
 
 	function soundMusicEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -482,6 +499,10 @@ local function sound_id_local_init()
 	-- ID
 	soundLocalEditor.id.title:SetText(loc("EFFECT_SOUND_ID_SELF_ID"));
 	setTooltipForSameFrame(soundLocalEditor.id.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_ID_SELF_ID"), loc("EFFECT_SOUND_ID_SELF_ID_TT"));
+	soundLocalEditor.play:SetText(loc("EFFECT_SOUND_PLAY"));
+	soundLocalEditor.play:SetScript("OnClick", function(self)
+		Utils.music.playSoundID(tonumber(strtrim(soundLocalEditor.id:GetText())), soundLocalEditor.channel:GetSelectedValue() or "SFX");
+	end);
 
 	-- Distance
 	soundLocalEditor.distance.title:SetText(loc("EFFECT_SOUND_LOCAL_DISTANCE"));
@@ -522,6 +543,17 @@ local function sound_music_local_init()
 	-- ID
 	musicLocalEditor.path.title:SetText(loc("EFFECT_SOUND_MUSIC_SELF_PATH"));
 	setTooltipForSameFrame(musicLocalEditor.path.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_MUSIC_SELF_PATH"), loc("EFFECT_SOUND_MUSIC_SELF_PATH_TT"));
+
+	musicLocalEditor.browse:SetText(BROWSE);
+	musicLocalEditor.browse:SetScript("OnClick", function(self)
+		TRP3_API.popup.showPopup(TRP3_API.popup.MUSICS, {parent = musicLocalEditor, point = "RIGHT", parentPoint = "LEFT"}, {function(music)
+			musicLocalEditor.path:SetText(music);
+		end});
+	end);
+	musicLocalEditor.play:SetText(loc("EFFECT_SOUND_PLAY"));
+	musicLocalEditor.play:SetScript("OnClick", function(self)
+		Utils.music.playMusic(musicLocalEditor.path:GetText());
+	end);
 
 	-- Distance
 	musicLocalEditor.distance.title:SetText(loc("EFFECT_SOUND_LOCAL_DISTANCE"));
