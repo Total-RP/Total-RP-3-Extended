@@ -122,6 +122,13 @@
 							<Anchor point="RIGHT" x="-15" y="0"/>
 							<Anchor point="LEFT" x="15" y="0"/>
 						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="empty" text="[empty]" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+									<Color b="0.95" r="0.95" g="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
 						<Frames>
 							<Slider parentKey="slider" name="TRP3_InnerObjectEditorSlider" inherits="OptionsSliderTemplate">
 								<Size x="15" y="0"/>

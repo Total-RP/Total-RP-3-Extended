@@ -262,5 +262,39 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_ITEM_CONSUME_TT = "Consume the item and destroy it.",
 
 	-- Inner objects
-	IN_INNER = "Inner objects"
+	IN_INNER = "Inner objects",
+	IN_INNER_EMPTY = "No inner objects\n\nYou can add one by using the add button below.",
+	IN_INNER_HELP =
+[[Inner objects are objects stored in a parent object.
+
+We should begin with examples:
+|cffff9900
+- You want to create a rifle item with bullets item to charge it. Typically the rifle would be the main object, in which the bullet object would be an inner object for the rifle.
+
+- A mail item opening a document. The document would be an inner object for the mail item.
+
+- Creating quests: any item/document/cutscenes you use in a quest could be inner objects for this quest.
+
+|rThe advantages of using inner objects are multiple:
+|cff00ff00
+- Inner objects data are really stored inside the parent object data. That mean they share the same version number, and their data are exchanged in the same time as the parent object data.
+
+- You can freely determine the inner object ID, as it will use the parent object ID as prefix. You just can't have two inner objects having the same ID inside the same parent object.
+
+- Using inner objects brings better performances.
+
+- It's easier to manager and navigates through your objects if they are stored in parent objects. You can really see a parent object as a folder in which you store files.
+
+|rSo it's simple: when you want to create an object, always ask yourself if it wouldn't be better to have it as an inner object for another item or a quest.
+
+|cff00ff00Also: document, cutscenes and loot objects can only be inner objects!]],
+	IN_INNER_ACTIONS = "Actions",
+	IN_INNER_DELETE_CONFIRM = "Remove the inner object |cff00ffff\"%s\"|r |cff00ff00[%s]|r from the parent object |cff00ff00[%s]|r?\n\n|cffff9900The inner object will be lost.",
+	IN_INNER_DELETE_TT = "Remove this inner object from the parent object.",
+	IN_INNER_ID_ACTION = "Change ID",
+	IN_INNER_ID_COPY = "Copy",
+	IN_INNER_ID_COPY_TT = "You can copy your inner object to paste it in any other parent object.",
+	IN_INNER_ID = "Please enter a new ID for the inner object |cff00ff00[%s]|r.\n\nOld ID: |cff00ffff\"%s\"|r",
+	IN_INNER_NO_AVAILABLE = "This inner ID is not available!",
+
 };

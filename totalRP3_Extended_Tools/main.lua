@@ -23,6 +23,7 @@ local Log = Utils.log;
 local loc = TRP3_API.locale.getText;
 local fireEvent = TRP3_API.events.fireEvent;
 local after  = C_Timer.After;
+local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 
 local toolFrame;
 
@@ -147,7 +148,7 @@ local function getModeLocale(mode)
 end
 TRP3_API.extended.tools.getModeLocale = getModeLocale;
 
-local function openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload)
+local function openObjectAndGetDraft(rootClassID, forceDraftReload)
 	for k, _ in pairs(draftRegister) do
 		draftRegister[k] = nil;
 	end
@@ -155,7 +156,7 @@ local function openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload)
 		Log.log(("Refreshing root draft.\nPrevious: %s\nNex: %s"):format(tostring(toolFrame.rootClassID), tostring(rootClassID)));
 		wipe(draftData);
 		toolFrame.rootClassID = rootClassID;
-		Utils.table.copy(draftData, rootClass);
+		Utils.table.copy(draftData, getClass(rootClassID));
 	end
 	TRP3_API.extended.registerDB({[rootClassID] = draftData}, 0, draftRegister);
 	return draftData;
@@ -212,8 +213,6 @@ end
 -- Pages
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
-
 local function goToListPage(skipButton)
 	if not skipButton then
 		NavBar_Reset(toolFrame.navBar);
@@ -241,31 +240,22 @@ function goToPage(fullClassID, forceDraftReload)
 		toolFrame.currentEditor.onSave();
 	end
 
-	-- Ensure buttons up to the target
-	NavBar_Reset(toolFrame.navBar);
-	local fullId = "";
-	for _, part in pairs(parts) do
-		fullId = getFullID(fullId, part);
-		local reconstruct = fullId;
-		local class = getClass(reconstruct);
-		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part);
-		NavBar_AddButton(toolFrame.navBar, {id = reconstruct, name = text, OnClick = function()
-			goToPage(reconstruct);
-		end});
-	end
-
 	-- Go to page
 	toolFrame.list:Hide();
 	toolFrame.actions:Show();
 	toolFrame.specific:Show();
 	toolFrame.root:Show();
-	local class = getClass(fullClassID);
+
+	-- Load data
+	local rootDraft = openObjectAndGetDraft(rootClassID, forceDraftReload);
+	local specificDraft = draftRegister[fullClassID];
+	assert(specificDraft, "Can't find specific object in draftRegister: " .. fullClassID);
 
 	local selectedPageData, selectedPageFrame;
 	-- Hide all
 	for classType, pageData in pairs(PAGE_BY_TYPE) do
 		local frame = toolFrame[pageData.frame or ""];
-		if class.TY ~= classType then
+		if specificDraft.TY ~= classType then
 			if frame then
 				frame:Hide();
 			end
@@ -275,19 +265,12 @@ function goToPage(fullClassID, forceDraftReload)
 		end
 	end
 
-	setBackground(selectedPageData.background or 1);
-
-	-- Load data
-	local rootClass = getClass(rootClassID);
-	local rootDraft = openObjectAndGetDraft(rootClassID, rootClass, forceDraftReload);
-	local specificDraft = draftRegister[fullClassID];
-	assert(specificDraft, "Can't find object: " .. fullClassID);
-
-	displayRootInfo(rootClassID, rootClass, fullClassID, specificClassID, specificDraft);
+	assert(selectedPageFrame, "No editor for type " .. specificDraft.TY);
+	assert(selectedPageFrame.onLoad, "No load entry for type " .. specificDraft.TY);
 
 	-- Show selected
-	assert(selectedPageFrame, "No editor for type " .. class.TY);
-	assert(selectedPageFrame.onLoad, "No load entry for type " .. class.TY);
+	setBackground(selectedPageData.background or 1);
+	displayRootInfo(rootClassID, rootDraft, fullClassID, specificClassID, specificDraft);
 	toolFrame.currentEditor = selectedPageFrame;
 	toolFrame.fullClassID = fullClassID;
 	toolFrame.specificClassID = specificClassID;
@@ -299,6 +282,19 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.actions.save:SetScript("OnClick", function()
 		onSave(toolFrame.currentEditor);
 	end);
+
+	-- Ensure buttons up to the target
+	NavBar_Reset(toolFrame.navBar);
+	local fullId = "";
+	for _, part in pairs(parts) do
+		fullId = getFullID(fullId, part);
+		local reconstruct = fullId;
+		local class = draftRegister[reconstruct];
+		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part);
+		NavBar_AddButton(toolFrame.navBar, {id = reconstruct, name = text, OnClick = function()
+			goToPage(reconstruct);
+		end});
+	end
 end
 TRP3_API.extended.tools.goToPage = goToPage;
 

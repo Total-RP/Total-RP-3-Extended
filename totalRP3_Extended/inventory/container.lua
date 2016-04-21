@@ -115,14 +115,16 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 		text2 = "";
 
-		if class.US then
-			text2 = text2 .. "\n";
-			text2 = text2 .. Utils.str.color("y") .. loc("CM_R_CLICK") .. ": " .. Utils.str.color("o") .. USE;
-		end
+		if not forceAlt then
+			if isUsableByClass(class) then
+				text2 = text2 .. "\n";
+				text2 = text2 .. Utils.str.color("y") .. loc("CM_R_CLICK") .. ": " .. Utils.str.color("o") .. USE;
+			end
 
-		if isContainerByClass(class) then
-			text2 = text2 .. "\n";
-			text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. loc("IT_CON_OPEN");
+			if isContainerByClass(class) then
+				text2 = text2 .. "\n";
+				text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. loc("IT_CON_OPEN");
+			end
 		end
 
 		if class.missing then
