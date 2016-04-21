@@ -169,6 +169,14 @@ local function item_bag_durability_init()
 	end
 end
 
+local function item_consume_init()
+	registerEffectEditor("item_consume", {
+		title = loc("EFFECT_ITEM_CONSUME"),
+		icon = "inv_misc_potionseta",
+		description = loc("EFFECT_ITEM_CONSUME_TT"),
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Workflow expertise
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -553,6 +561,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 
 	item_sheath_init();
 	item_bag_durability_init();
+	item_consume_init();
 
 	var_set_execenv_init();
 

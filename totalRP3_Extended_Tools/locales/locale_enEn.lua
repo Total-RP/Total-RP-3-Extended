@@ -247,7 +247,6 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_SOUND_MUSIC_LOCAL = "Play local music",
 	EFFECT_SOUND_MUSIC_LOCAL_TT = "Plays a music for players around you.",
 	EFFECT_SOUND_MUSIC_LOCAL_PREVIEW = "Plays music \"%s\" in a %s yards radius.",
-
 	EFFECT_ITEM_BAG_DURABILITY = "Damage/repair container",
 	EFFECT_ITEM_BAG_DURABILITY_TT = "Repair or damage the durability of the item parent container.\n\n|cff00ff00Only works on containers having durability.",
 	EFFECT_ITEM_BAG_DURABILITY_PREVIEW_1 = "|cff00ff00Repair|cffffff00 parent container for %s durability points.",
@@ -259,6 +258,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE_TT = "Damage the parent container. The parent container health can't be damage below 0.",
 	EFFECT_ITEM_BAG_DURABILITY_VALUE = "Durability point",
 	EFFECT_ITEM_BAG_DURABILITY_VALUE_TT = "The amount of durability points to add/substract from the parent container health.",
+	EFFECT_ITEM_CONSUME = "Consume item",
+	EFFECT_ITEM_CONSUME_TT = "Consume the item and destroy it.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects"

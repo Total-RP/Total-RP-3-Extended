@@ -55,10 +55,11 @@ TRP3_API.inventory.EFFECTS = {
 		}
 	},
 
-	["item_consume_item"] = {
+	["item_consume"] = {
 		secured = TRP3_API.script.security.HIGH,
 		codeReplacementFunc = function (args)
-			return ("lastEffectReturn = consumeItem(args.slotInfo, args.containerInfo, %s);"):format(args[1]);
+			local amount = tonumber(args[1]) or 1;
+			return ("lastEffectReturn = consumeItem(args.slotInfo, args.containerInfo, %s);"):format(amount);
 		end,
 		env = {
 			consumeItem = "TRP3_API.inventory.consumeItem",

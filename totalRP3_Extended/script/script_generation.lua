@@ -19,6 +19,7 @@
 
 TRP3_API.script = {};
 
+local EMPTY = TRP3_API.globals.empty;
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
@@ -259,7 +260,7 @@ local function writeEffect(effectStructure)
 				CURRENT_ENVIRONMENT[map] = g;
 			end
 		end
-		effectCode = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args), effectStructure.id);
+		effectCode = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
 --	end
 
 	if effectStructure.cond and #effectStructure.cond > 0 then
