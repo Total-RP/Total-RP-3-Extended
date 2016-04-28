@@ -227,7 +227,11 @@ local function item_add_init()
 	editor.id.title:SetText(loc("EFFECT_ITEM_ADD_ID"));
 	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_ID"), loc("EFFECT_ITEM_ADD_ID_TT"));
 
-	-- ID
+	-- Count
+	editor.count.title:SetText(loc("EFFECT_ITEM_ADD_QT"));
+	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_QT"), loc("EFFECT_ITEM_ADD_QT_TT"));
+
+	-- Crafted
 	editor.crafted.Text:SetText(loc("EFFECT_ITEM_ADD_CRAFTED"));
 	setTooltipForSameFrame(editor.crafted, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_CRAFTED"), loc("EFFECT_ITEM_ADD_CRAFTED_TT"));
 
@@ -242,6 +246,42 @@ local function item_add_init()
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
 		scriptData.args[2] = tonumber(strtrim(editor.count:GetText())) or 1;
 		scriptData.args[3] = editor.crafted:GetChecked();
+	end
+end
+
+local function item_remove_init()
+	local editor = TRP3_EffectEditorItemRemove;
+
+	registerEffectEditor("item_remove", {
+		title = loc("EFFECT_ITEM_REMOVE"),
+		icon = "inv_box_01",
+		description = loc("EFFECT_ITEM_REMOVE_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_REMOVE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
+		end,
+		getDefaultArgs = function()
+			return {"", 1};
+		end,
+		editor = editor;
+	});
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_ITEM_ADD_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_ID"), loc("EFFECT_ITEM_REMOVE_ID_TT"));
+
+	-- Count
+	editor.count.title:SetText(loc("EFFECT_ITEM_ADD_QT"));
+	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_QT"), loc("EFFECT_ITEM_REMOVE_QT_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "");
+		editor.count:SetText(data[2] or "1");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+		scriptData.args[2] = tonumber(strtrim(editor.count:GetText())) or 1;
 	end
 end
 
@@ -645,7 +685,8 @@ function TRP3_API.extended.tools.initBaseEffects()
 	item_bag_durability_init();
 	item_consume_init();
 	document_show_init();
-	item_add_init()
+	item_add_init();
+	item_remove_init();
 
 	var_set_execenv_init();
 

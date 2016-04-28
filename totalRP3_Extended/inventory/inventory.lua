@@ -135,6 +135,22 @@ function TRP3_API.inventory.getItem(container, slotID)
 	return container.content[slotID];
 end
 
+local function searchItem(classID, container)
+
+end
+
+function TRP3_API.inventory.removeItem(classID, amount)
+	for i=0, amount do
+		local container, slotID = searchItem(classID, playerInventory);
+		if container and slotID then
+			print(("found item of class %s in slotID %s"):format(classID, slotID));
+		else
+			print(("can't found item of class %s"):format(classID));
+			break;
+		end
+	end
+end
+
 local function swapContainersSlots(container1, slot1, container2, slot2)
 	assert(container1 and slot1, "Missing 'from' container/slot");
 	assert(container2 and slot2, "Missing 'to' container/slot");
