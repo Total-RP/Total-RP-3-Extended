@@ -334,15 +334,21 @@ end
 
 local ACTION_FLAG_DELETE = "1";
 local ACTION_FLAG_ADD = "2";
+local ACTION_FLAG_COPY_ID = "3";
 
 local function onLineActionSelected(value, button)
 	local action = value:sub(1, 1);
 	local objectID = value:sub(2);
 	if action == ACTION_FLAG_DELETE then
-		TRP3_API.extended.unregisterObject(objectID);
-		onTabChanged(nil, currentTab);
+		local _, name, _ = TRP3_API.extended.tools.getClassDataSafeByType(getClass(objectID));
+		TRP3_API.popup.showConfirmPopup(loc("DB_REMOVE_OBJECT_POPUP"):format(objectID, name or UNKNOWN), function()
+			TRP3_API.extended.removeObject(objectID);
+			onTabChanged(nil, currentTab);
+		end);
 	elseif action == ACTION_FLAG_ADD then
 		TRP3_API.inventory.addItem(nil, objectID);
+	elseif action == ACTION_FLAG_COPY_ID then
+		TRP3_API.popup.showTextInputPopup(loc("EDITOR_ID_COPY_POPUP"), nil, nil, objectID);
 	end
 end
 
@@ -357,6 +363,7 @@ function onLineRightClick(lineWidget, data)
 	if data.type == TRP3_DB.types.ITEM then
 		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID});
 	end
+	tinsert(values, {loc("EDITOR_ID_COPY"), ACTION_FLAG_COPY_ID .. data.fullID});
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
 end
 

@@ -55,6 +55,9 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	LOOT = "Loot",
 	LOOT_CONTAINER = "Loot container",
 
+	-- DOCUMENT
+	DOC_UNKNOWN_ALERT = "Can't open the document. (Missing class)",
+
 	-- Campaign
 	QE_CAMPAIGN = "Campaign",
 	QE_CAMPAIGNS = "Campaigns",
@@ -91,6 +94,9 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	CONF_UNIT = "Units",
 	CONF_UNIT_WEIGHT = "Weight unit",
 	CONF_UNIT_WEIGHT_TT = "Defines how weight values are displayed.",
+	CONF_UNIT_WEIGHT_1 = "Grams",
+	CONF_UNIT_WEIGHT_2 = "Pounds",
+	CONF_UNIT_WEIGHT_3 = "Potatoes",
 	CONF_SOUNDS = "Local sounds / musics",
 	CONF_SOUNDS_ACTIVE = "Play local sounds",
 	CONF_SOUNDS_ACTIVE_TT = "Local sounds are sounds played by other players (for example through an item) to a certain range in yards.\n\nTurn this off if you don't want to hear these sounds at all.\n\n|cff00ff00Note that you will never hear sounds from ignored players.\n\n|cff00ff00Note that all sounds are interruptible via the Sound History in the TRP3 shortcuts bar.",

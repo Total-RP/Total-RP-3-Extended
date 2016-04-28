@@ -71,6 +71,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_ADD_INNER = "Add inner object",
 	DB_CREATE_CAMPAIGN = "Create campaign",
 	DB_CREATE_CAMPAIGN_TT = "Start creating a campaign",
+	DB_REMOVE_OBJECT_POPUP = "Please confirm the removal of the object:\nID: |cff00ffff\"%s\"|r\n|cff00ff00[%s]|r\n\n|cffff9900Warning: This action cannot be reverted!.",
 
 	-- Creation
 	ROOT_TITLE = "Root object",
@@ -94,6 +95,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EDITOR_CONFIRM = "Confirm",
 	EDITOR_SAVE_TT = "Save all changes to the whole object %s (root object and all inner objects) and automatically increments the version number.",
 	EDITOR_CANCEL_TT = "Cancel all changes to the whole object %s (root object and all inner objects).\n\n|cffff9900Unsaved changes will be lost!",
+	EDITOR_ID_COPY = "Copy ID",
+	EDITOR_ID_COPY_POPUP = "You can copy the object ID below if you need to paste it somewhere.",
 
 	-- Item creation
 	IT_NEW_NAME = "New item",
@@ -288,6 +291,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_ITEM_BAG_DURABILITY_VALUE_TT = "The amount of durability points to add/substract from the parent container health.",
 	EFFECT_ITEM_CONSUME = "Consume item",
 	EFFECT_ITEM_CONSUME_TT = "Consume the item and destroy it.",
+	EFFECT_DOC_ID = "Document ID",
+	EFFECT_DOC_ID_TT = "The document to show.\n\n|cffffff00Please enter the full document ID (parents ID and inner ID).\n\n|cff00ff00Hint: copy/paste the full ID to be sure to avoid typos.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",
@@ -296,7 +301,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IN_INNER_HELP_TITLE = "What are inner objects?",
 	IN_INNER_ADD = "Add inner object",
 	IN_INNER_ENTER_ID = "Enter inner object ID",
-	IN_INNER_ENTER_ID_TT = "Inner object ID must be unique within the parent object.",
+	IN_INNER_ENTER_ID_TT = "Inner object ID must be unique within the parent object.\n\n|cffff9900Please only use lower case characters and underscores. Any other character will be converted to underscores.",
 	IN_INNER_EMPTY = "No inner objects\n\nYou can add one by using the add button below.",
 	IN_INNER_HELP =
 [[Inner objects are objects stored in a parent object.

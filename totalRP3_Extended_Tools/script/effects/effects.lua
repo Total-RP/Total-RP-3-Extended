@@ -291,17 +291,33 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function document_show_init()
+	local editor = TRP3_EffectEditorDocumentShow;
+
 	registerEffectEditor("document_show", {
 		title = loc("EFFECT_DOC_DISPLAY"),
 		icon = "inv_icon_mission_complete_order",
 		description = loc("EFFECT_DOC_DISPLAY_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("TYPE_DOCUMENT") .. ":|r " .. tostring(args[1]));
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_DOC_ID") .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {""};
-		end
+		end,
+		editor = editor;
 	});
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_DOC_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_DOC_ID"), loc("EFFECT_DOC_ID_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText((data[1] or ""));
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -50,7 +50,7 @@ TRP3_API.extended.document.BorderType = {
 	PARCHMENT = 1,
 }
 
-local function showDocumentClass(document)
+local function showDocumentClass(document, documentID)
 	documentFrame:Hide();
 
 	local HTML = "";
@@ -105,7 +105,12 @@ end
 TRP3_API.extended.document.showDocumentClass = showDocumentClass;
 
 local function showDocument(documentID)
-	showDocumentClass(getClass(documentID));
+	local document = getClass(documentID);
+	if document == TRP3_DB.missing then
+		Utils.message.displayMessage(loc("DOC_UNKNOWN_ALERT"), Utils.message.type.ALERT_MESSAGE);
+	else
+		showDocumentClass(document, documentID);
+	end
 end
 TRP3_API.extended.document.showDocument = showDocument;
 

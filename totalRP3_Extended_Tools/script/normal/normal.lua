@@ -433,7 +433,6 @@ editor.init = function(ToolFrame)
 	menuData = {
 		[loc("WO_EFFECT_CAT_COMMON")] = {
 			"text",
-			"document_show",
 		},
 		["Sound"] = { -- TODO: locals
 			"sound_id_self",
@@ -455,6 +454,7 @@ editor.init = function(ToolFrame)
 			"item_sheath",
 			"item_bag_durability",
 			"item_consume",
+			"document_show",
 		},
 		["Variables"] = { -- TODO: locals
 			"var_set_execenv",

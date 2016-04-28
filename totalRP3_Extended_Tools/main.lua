@@ -284,6 +284,7 @@ function goToPage(fullClassID, forceDraftReload)
 	-- Show selected
 	setBackground(selectedPageData.background or 1);
 	displayRootInfo(rootClassID, rootDraft, fullClassID, specificClassID, specificDraft);
+	toolFrame.rootClassID = rootClassID;
 	toolFrame.currentEditor = selectedPageFrame;
 	toolFrame.fullClassID = fullClassID;
 	toolFrame.specificClassID = specificClassID;
@@ -292,6 +293,10 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.currentEditor.onLoad();
 	toolFrame.currentEditor:Show();
 
+	toolFrame.actions.save:Disable();
+	if TRP3_Tools_DB[rootClassID] then
+		toolFrame.actions.save:Enable();
+	end
 	setTooltipForSameFrame(toolFrame.actions.save, "TOP", 0, 5, SAVE, loc("EDITOR_SAVE_TT"):format(TRP3_API.inventory.getItemLink(rootDraft)));
 	setTooltipForSameFrame(toolFrame.actions.cancel, "TOP", 0, 5, CANCEL, loc("EDITOR_CANCEL_TT"):format(TRP3_API.inventory.getItemLink(rootDraft)));
 
@@ -358,6 +363,14 @@ local function onStart()
 	end);
 	toolFrame.actions.cancel:SetScript("OnClick", function()
 		goToListPage();
+	end);
+	toolFrame.root.id:SetText(loc("EDITOR_ID_COPY"));
+	toolFrame.root.id:SetScript("OnClick", function()
+		TRP3_API.popup.showTextInputPopup(loc("EDITOR_ID_COPY_POPUP"), nil, nil, toolFrame.rootClassID);
+	end);
+	toolFrame.specific.id:SetText(loc("EDITOR_ID_COPY"));
+	toolFrame.specific.id:SetScript("OnClick", function()
+		TRP3_API.popup.showTextInputPopup(loc("EDITOR_ID_COPY_POPUP"), nil, nil, toolFrame.fullClassID);
 	end);
 
 	PAGE_BY_TYPE[TRP3_DB.types.CAMPAIGN].loc = loc("TYPE_CAMPAIGN");

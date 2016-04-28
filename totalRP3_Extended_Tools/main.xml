@@ -147,6 +147,11 @@
 						</Anchors>
 						<FontString inherits="GameFontNormal"/>
 					</SimpleHTML>
+					<Button parentKey="id" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+						</Anchors>
+					</Button>
 				</Frames>
 			</Frame>
 
@@ -167,6 +172,11 @@
 						</Anchors>
 						<FontString inherits="GameFontNormalSmall"/>
 					</SimpleHTML>
+					<Button parentKey="id" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+						</Anchors>
+					</Button>
 				</Frames>
 			</Frame>
 

@@ -24,3 +24,29 @@ TRP3_DB.inner.main = {
 	},
 	CO = {},
 }
+
+TRP3_DB.inner.bag = {
+	TY = TRP3_DB.types.ITEM,
+	["CO"] = {
+		["SC"] = "4",
+		["MW"] = 0,
+		["DU"] = 50,
+		["SI"] = "5x4",
+		["SR"] = "5",
+	},
+	["BA"] = {
+		["QA"] = 1,
+		["IC"] = "INV_Misc_Bag_01",
+		["NA"] = "Simple bag",
+		["WE"] = 500,
+		["CT"] = true,
+	},
+	["MD"] = {
+		["CD"] = "28/04/16 17:36:38",
+		["CB"] = "Akraluk-KirinTor",
+		["SB"] = "Akraluk-KirinTor",
+		["MO"] = "NO",
+		["SD"] = "28/04/16 17:36:41",
+		["V"] = 2,
+	},
+}

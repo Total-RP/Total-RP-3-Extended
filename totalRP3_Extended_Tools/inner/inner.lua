@@ -69,6 +69,10 @@ local function createInnerObject(innerID, innerType, innerData)
 
 end
 
+local function checkID(ID)
+	return ID:lower():gsub("[^%w%_]", "_");
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Inner object editor: UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -79,7 +83,7 @@ local function idExists(id)
 end
 
 local function onIDChanged(self)
-	local id = self:GetText() or "";
+	local id = checkID(self:GetText()) or "";
 	if id:len() == 0 or idExists(id) then
 		editor.browser.add:Disable();
 	else
@@ -156,6 +160,7 @@ local function onLineAction(action, line)
 		end);
 	elseif action == LINE_ACTION_ID then
 		TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ID"):format(name or UNKNOWN, id), function(newID)
+			newID = checkID(newID);
 			if toolFrame.specificDraft.IN[newID] then
 				Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), Utils.message.type.RAID_ALERT);
 			elseif newID and newID:len() > 0 then
@@ -182,7 +187,7 @@ end
 
 local function addInnerObject(type)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-	local innerID = editor.browser.id:GetText();
+	local innerID = checkID(editor.browser.id:GetText());
 	createInnerObject(innerID, type);
 	refresh();
 end

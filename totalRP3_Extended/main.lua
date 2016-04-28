@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, strjoin, tostring, strtrim = pairs, strjoin, tostring, strtrim;
+local pairs, strjoin, tostring, strtrim, wipe, assert = pairs, strjoin, tostring, strtrim, wipe, assert;
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.locale.getText;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
@@ -61,6 +61,7 @@ local missing = {
 		DE = "The information relative to this object are missing. It's possible the class was deleted or that it relies on a missing module.",
 	}
 }
+TRP3_DB.missing = missing;
 
 local DB = TRP3_DB.global;
 local ID_SEPARATOR = " ";
@@ -130,19 +131,34 @@ local function registerObject(objectFullID, object, count, registerTo)
 end
 TRP3_API.extended.registerObject = registerObject;
 
+---
+-- Unregister all objects and inner objects under the @objectFullID ID.
+--
 local function unregisterObject(objectFullID)
+	assert(not objectFullID:find(ID_SEPARATOR), "Can only unregister a root id: " .. tostring(objectFullID));
 	for id, _ in pairs(TRP3_DB.global) do
 		if id == objectFullID or id:sub(1, objectFullID:len()) == objectFullID then
 			TRP3_DB.global[id] = nil;
+			Log.log("Unregistered: " .. id);
 		end
 	end
-	-- TODO: check this. Why remove in a unregister ???
-	TRP3_DB.exchange[objectFullID] = nil;
-	TRP3_Exchange_DB[objectFullID] = nil;
-	(TRP3_DB.my or EMPTY)[objectFullID] = nil;
-	(TRP3_Tools_DB or EMPTY)[objectFullID] = nil;
 end
 TRP3_API.extended.unregisterObject = unregisterObject;
+
+local function removeObject(objectFullID)
+	unregisterObject(objectFullID);
+	if TRP3_DB.exchange[objectFullID] then
+		wipe(TRP3_DB.exchange[objectFullID]);
+		TRP3_DB.exchange[objectFullID] = nil;
+		TRP3_Exchange_DB[objectFullID] = nil;
+	elseif TRP3_Tools_DB[objectFullID] then
+		wipe(TRP3_Tools_DB[objectFullID]);
+		TRP3_DB.my[objectFullID] = nil;
+		TRP3_Tools_DB[objectFullID] = nil;
+	end
+	Log.log("Removed object: " .. objectFullID);
+end
+TRP3_API.extended.removeObject = removeObject;
 
 local function registerDB(db, count, registerTo)
 	-- Register object
@@ -183,9 +199,9 @@ TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE = "extended_sounds_maxrange";
 
 local function initConfig()
 	local WEIGHT_UNIT_TAB = {
-		{"Grams", TRP3_API.extended.WEIGHT_UNITS.GRAMS}, -- TODO: locals
-		{"Pounds", TRP3_API.extended.WEIGHT_UNITS.POUNDS}, -- TODO: locals
-		{"Potatoes", TRP3_API.extended.WEIGHT_UNITS.POTATOES} -- TODO: locals
+		{loc("CONF_UNIT_WEIGHT_1"), TRP3_API.extended.WEIGHT_UNITS.GRAMS},
+		{loc("CONF_UNIT_WEIGHT_2"), TRP3_API.extended.WEIGHT_UNITS.POUNDS},
+		{loc("CONF_UNIT_WEIGHT_3"), TRP3_API.extended.WEIGHT_UNITS.POTATOES}
 	}
 
 	local SOUND_METHOD_TAB = {

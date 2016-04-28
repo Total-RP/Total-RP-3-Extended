@@ -312,4 +312,19 @@
 
 	</Frame>
 
+	<Frame name="TRP3_EffectEditorDocumentShow" hidden="true">
+
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
 </Ui>
