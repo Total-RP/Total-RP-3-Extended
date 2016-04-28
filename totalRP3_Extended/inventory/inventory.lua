@@ -255,7 +255,8 @@ local function splitSlot(slot, container, quantity)
 
 	container.content[emptySlotID] = {
 		count = quantity,
-		id = slot.id
+		id = slot.id,
+		madeBy = slot.madeBy
 	};
 
 	slot.count = slot.count - quantity;

@@ -177,6 +177,74 @@ local function item_consume_init()
 	});
 end
 
+local function document_show_init()
+	local editor = TRP3_EffectEditorDocumentShow;
+
+	registerEffectEditor("document_show", {
+		title = loc("EFFECT_DOC_DISPLAY"),
+		icon = "inv_icon_mission_complete_order",
+		description = loc("EFFECT_DOC_DISPLAY_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_DOC_ID") .. ":|r " .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {""};
+		end,
+		editor = editor;
+	});
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_DOC_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_DOC_ID"), loc("EFFECT_DOC_ID_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText((data[1] or ""));
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+	end
+end
+
+local function item_add_init()
+	local editor = TRP3_EffectEditorItemAdd;
+
+	registerEffectEditor("item_add", {
+		title = loc("EFFECT_ITEM_ADD"),
+		icon = "inv_box_01",
+		description = loc("EFFECT_ITEM_ADD_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_ADD_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
+		end,
+		getDefaultArgs = function()
+			return {"", 1, false};
+		end,
+		editor = editor;
+	});
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_ITEM_ADD_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_ID"), loc("EFFECT_ITEM_ADD_ID_TT"));
+
+	-- ID
+	editor.crafted.Text:SetText(loc("EFFECT_ITEM_ADD_CRAFTED"));
+	setTooltipForSameFrame(editor.crafted, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_CRAFTED"), loc("EFFECT_ITEM_ADD_CRAFTED_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "");
+		editor.count:SetText(data[2] or "1");
+		editor.crafted:SetChecked(data[3] or false);
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+		scriptData.args[2] = tonumber(strtrim(editor.count:GetText())) or 1;
+		scriptData.args[3] = editor.crafted:GetChecked();
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Workflow expertise
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -284,40 +352,6 @@ local function debugs_init()
 		scriptData.args[1] = stEtN(strtrim(debugDumpTextEditor.text:GetText()));
 	end
 
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- document_show: Display document
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function document_show_init()
-	local editor = TRP3_EffectEditorDocumentShow;
-
-	registerEffectEditor("document_show", {
-		title = loc("EFFECT_DOC_DISPLAY"),
-		icon = "inv_icon_mission_complete_order",
-		description = loc("EFFECT_DOC_DISPLAY_TT"),
-		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_DOC_ID") .. ":|r " .. tostring(args[1]));
-		end,
-		getDefaultArgs = function()
-			return {""};
-		end,
-		editor = editor;
-	});
-
-	-- ID
-	editor.id.title:SetText(loc("EFFECT_DOC_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_DOC_ID"), loc("EFFECT_DOC_ID_TT"));
-
-	function editor.load(scriptData)
-		local data = scriptData.args or Globals.empty;
-		editor.id:SetText((data[1] or ""));
-	end
-
-	function editor.save(scriptData)
-		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
-	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -610,10 +644,10 @@ function TRP3_API.extended.tools.initBaseEffects()
 	item_sheath_init();
 	item_bag_durability_init();
 	item_consume_init();
+	document_show_init();
+	item_add_init()
 
 	var_set_execenv_init();
 
 	debugs_init();
-
-	document_show_init();
 end

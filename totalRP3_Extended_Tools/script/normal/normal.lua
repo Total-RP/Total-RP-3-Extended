@@ -451,6 +451,7 @@ editor.init = function(ToolFrame)
 			"companion_random_critter",
 		},
 		["Inventory"] = { -- TODO: locals
+			"item_add",
 			"item_sheath",
 			"item_bag_durability",
 			"item_consume",

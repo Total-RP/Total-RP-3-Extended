@@ -66,11 +66,12 @@ TRP3_API.inventory.EFFECTS = {
 		}
 	},
 
-	["item_add_item"] = {
+	["item_add"] = {
 		secured = TRP3_API.script.security.HIGH,
 		codeReplacementFunc = function (args)
 			local targetContainer = "args.containerInfo"; -- TODO: selectable or new effect for "add in" ?
-			local count = args[2] or 1;
+			local id = args[1] or "";
+			local count = tonumber(args[2]) or 1;
 			local madeBy = args[3] or false;
 			return ("lastEffectReturn = addItem(%s, \"%s\", {count = %d, madeBy = %s});"):format(targetContainer, args[1], count, tostring(madeBy));
 		end,
