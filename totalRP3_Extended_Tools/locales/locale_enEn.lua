@@ -25,6 +25,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	TB_TOOLS_TT = "Create your own items and quests.",
 
 	-- TYPES
+	ALL = "All",
 	TYPE = "Type",
 	TYPE_CAMPAIGN = "Campaign",
 	TYPE_QUEST = "Quest",
@@ -47,8 +48,11 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_FULL = "Full database (%s)",
 	DB_LIST = "Creations list",
 	DB_FILTERS = "Creations filters",
+	DB_FILTERS_OWNER = "Created by",
+	DB_FILTERS_NAME = "Object name",
 	DB_ACTIONS = "Actions",
 	DB_WARNING = "\n|cffff0000!!! Warning !!!\n\n|cffff9900Don't forget to save your changes before returning to the database list!",
+	DB_FILTERS_CLEAR = "Clear",
 
 	DB_MY_EMPTY = "You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!",
 	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.\nExchange objects with others or import a packageg using the button below!",
@@ -70,7 +74,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 
 	-- Creation
 	ROOT_TITLE = "Root object",
-	ROOT_ID = "ID",
+	ROOT_ID = "Object ID",
 	ROOT_GEN_ID = "Generated ID",
 	ROOT_VERSION = "Version",
 	ROOT_CREATED = "Created by %s on %s",
@@ -148,6 +152,24 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 
 	-- Documents
 	DO_NEW_DOC = "New document",
+	DO_NAME = "Document name",
+	DO_NAME_TT = "This name won't be visible by the user and is meant to be an indication for you, the creator.",
+	DO_PREVIEW = "Click to see a preview",
+	DO_PARAMS_GLOBAL = "Default parameters",
+	DO_PARAMS_GLOBAL_TT = "Change the document default parameters. These parameters will be used for all pages that does not use custom page parameters.",
+	DO_PARAMS_CUSTOM = "Page custom parameters",
+	DO_PAGE_EDITOR = "Pages editor",
+	DO_PAGE_HEIGHT = "Page height",
+	DO_PAGE_HEIGHT_TT = "The page height, in pixel. Please note that certain background support only a certain height/width ratio and can be deformed.",
+	DO_PAGE_WIDTH = "Page width",
+	DO_PAGE_WIDTH_TT = "The page width, in pixel. Please note that certain background support only a certain height/width ratio and can be deformed.",
+	DO_PAGE_FONT = "%s font",
+	DO_PAGE_BORDER = "Border",
+	DO_PAGE_BORDER_1 = "Parchment",
+	DO_PAGE_TILING = "Background tiling",
+	DO_PAGE_TILING_TT = "Sets if the background will tile vertically and horizontally. If not, the texture will be stretched.",
+	DO_PAGE_RESIZE = "Resizable",
+	DO_PAGE_RESIZE_TT = "Allow the user to resize the frame.\n\n|cffff9900Be sure that your layout can be readable and does not depend on height/width ratio.\n\n|cff00ff00Note that the user will never be able to reduce the frame size below the default width and height.",
 
 	-- Workflows
 	WO_WORKFLOW = "Workflows",

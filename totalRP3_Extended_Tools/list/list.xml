@@ -121,6 +121,48 @@
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
 				</Anchors>
+				<Frames>
+
+					<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="30" y="-18"/>
+						</Anchors>
+					</Frame>
+
+					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
+						<Size x="260" y="18"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="23" y="-10"/>
+						</Anchors>
+					</EditBox>
+
+					<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+						<Size x="260" y="18"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.name" x="30" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<EditBox parentKey="owner" inherits="TRP3_TitledHelpEditBox">
+						<Size x="260" y="18"/>
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.id" x="0" y="17"/>
+						</Anchors>
+					</EditBox>
+
+					<Button parentKey="search" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="clear" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.search" x="0" y="5"/>
+						</Anchors>
+					</Button>
+
+				</Frames>
 			</Frame>
 
 			<!-- *_*_*_*_*_*_*_*_*_*  -->

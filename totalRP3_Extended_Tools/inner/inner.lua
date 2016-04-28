@@ -61,6 +61,7 @@ local function createInnerObject(innerID, innerType, innerData)
 			BA = {
 				NA = loc("DO_NEW_DOC"),
 			},
+			BT = true,
 		}
 	elseif innerType == "quick" then
 		toolFrame.specificDraft.IN[innerID] = innerData;

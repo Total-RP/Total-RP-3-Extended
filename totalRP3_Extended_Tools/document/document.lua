@@ -54,6 +54,7 @@ function TRP3_API.extended.tools.getDocumentItemData(id)
 			BA = {
 				NA = loc("DO_NEW_DOC"),
 			},
+			BT = true,
 		}
 	};
 	return data;

@@ -78,6 +78,17 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+
+			<!-- RESIZING BUTTON -->
+			<Button parentKey="Resize" inherits="TRP3_ResizeButton">
+				<KeyValues>
+					<KeyValue key="minWidth" value="768" type="number"/>
+					<KeyValue key="minHeight" value="500" type="number"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="6"/>
+				</Anchors>
+			</Button>
 		</Frames>
 	</Frame>
 

@@ -244,10 +244,17 @@ local function filterList()
 	-- Here we will filter
 	wipe(idList);
 
+	-- Filter
+	local atLeast = false;
+	local typeFilter = ToolFrame.list.filters.type:GetSelectedValue();
+
 	for objectID, object in pairs(getDB(currentTab)) do
 		-- Only take the first level objects
 		if not objectID:find("%s") and not object.hideFromList then
-			tinsert(idList, objectID);
+			atLeast = true;
+			if typeFilter == 0 or typeFilter == object.TY then
+				tinsert(idList, objectID);
+			end
 		end
 	end
 
@@ -395,5 +402,33 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	-- Events
 	Events.listenToEvent(Events.ON_OBJECT_UPDATED, function(objectID, objectType)
 		onTabChanged(nil, currentTab);
+	end);
+
+	-- Filters
+	ToolFrame.list.filters.name.title:SetText(loc("DB_FILTERS_NAME"));
+	ToolFrame.list.filters.id.title:SetText(loc("ROOT_ID"));
+	ToolFrame.list.filters.owner.title:SetText(loc("DB_FILTERS_OWNER"));
+	local types = {
+		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("ALL")), 0},
+		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_CAMPAIGN")), TRP3_DB.types.CAMPAIGN},
+		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_QUEST")), TRP3_DB.types.QUEST},
+		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_QUEST_STEP")), TRP3_DB.types.QUEST_STEP},
+		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_ITEM")), TRP3_DB.types.ITEM},
+		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DOCUMENT")), TRP3_DB.types.DOCUMENT},
+		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_LOOT")), TRP3_DB.types.LOOT},
+		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DIALOG")), TRP3_DB.types.DIALOG},
+	}
+	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, nil, nil, 255, true);
+	ToolFrame.list.filters.type:SetSelectedValue(0);
+	ToolFrame.list.filters.search:Disable(); -- TODO: :)
+	ToolFrame.list.filters.search:SetText(SEARCH);
+	ToolFrame.list.filters.search:SetScript("OnClick", filterList);
+	ToolFrame.list.filters.clear:SetText(loc("DB_FILTERS_CLEAR"));
+	ToolFrame.list.filters.clear:SetScript("OnClick", function()
+		ToolFrame.list.filters.type:SetSelectedValue(0);
+		ToolFrame.list.filters.name:SetText("");
+		ToolFrame.list.filters.id:SetText("");
+		ToolFrame.list.filters.owner:SetText("");
+		filterList();
 	end);
 end

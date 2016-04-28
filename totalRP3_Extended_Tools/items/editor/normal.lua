@@ -246,7 +246,7 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_ScriptEditorNormal:SetAllPoints();
 		TRP3_ScriptEditorNormal:Show();
 	elseif currentTab == TABS.CONTAINER then
-		decorateContainerPreview(storeDataMain({}));
+		decorateContainerPreview(storeDataMain());
 		container:Show();
 	elseif currentTab == TABS.INNER then
 		TRP3_InnerObjectEditor:SetParent(toolFrame.item.normal);
@@ -351,7 +351,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	display.preview.Name:SetText(loc("EDITOR_PREVIEW"));
 	display.preview.InfoText:SetText(loc("EDITOR_ICON_SELECT"));
 	display.preview:SetScript("OnEnter", function(self)
-		TRP3_API.inventory.showItemTooltip(self, {madeBy = Globals.player_id}, storeDataMain({}), true);
+		TRP3_API.inventory.showItemTooltip(self, {madeBy = Globals.player_id}, storeDataMain(), true);
 	end);
 	display.preview:SetScript("OnLeave", function(self)
 		TRP3_ItemTooltip:Hide();

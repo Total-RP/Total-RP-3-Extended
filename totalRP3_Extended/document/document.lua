@@ -46,8 +46,12 @@ end
 -- Document API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function showDocument(documentID)
-	local document = getClass(documentID);
+TRP3_API.extended.document.BorderType = {
+	PARCHMENT = 1,
+}
+
+local function showDocumentClass(document)
+	documentFrame:Hide();
 
 	local HTML = "";
 	if document.PA and document.PA[1] then
@@ -57,10 +61,51 @@ local function showDocument(documentID)
 	documentFrame.ID = documentID;
 	documentFrame.class = document;
 
-	setFrameHTML(HTML);
+	if document.BT == true then
+		documentFrame.bTile:Show();
+		documentFrame.bTile:SetTexture(TRP3_API.ui.frame.getTiledBackground(document.BCK or 8), true, true);
+		documentFrame.bNotTile:Hide();
+	else
+		documentFrame.bNotTile:Show();
+		documentFrame.bNotTile:SetTexture(TRP3_API.ui.frame.getTiledBackground(document.BCK or 8));
+		documentFrame.bTile:Hide();
+	end
+
 	setFrameSize(document.WI or 450, document.HE or 600);
+
+	if document.FR then
+		documentFrame.Resize:Show();
+	else
+		documentFrame.Resize:Hide();
+	end
+	documentFrame.Resize.minWidth = document.WI or 450;
+	documentFrame.Resize.minHeight = document.HE or 600;
+	documentFrame.Resize.onResizeStop = function()
+		setFrameSize(documentFrame:GetWidth(), documentFrame:GetHeight());
+	end;
+
+	HTMLFrame:SetTextColor("p", 0.2824, 0.0157, 0.0157);
+	HTMLFrame:SetShadowOffset("p", 0, 0);
+	HTMLFrame:SetTextColor("h1", 0, 0, 0);
+	HTMLFrame:SetShadowOffset("h1", 0, 0);
+	HTMLFrame:SetTextColor("h2", 0, 0, 0);
+	HTMLFrame:SetShadowOffset("h2", 0, 0);
+	HTMLFrame:SetTextColor("h3", 0, 0, 0);
+	HTMLFrame:SetShadowOffset("h3", 0, 0);
+
+	HTMLFrame:SetFontObject("h1", _G[document.H1_F or "DestinyFontHuge"]);
+	HTMLFrame:SetFontObject("h2", _G[document.H2_F or "QuestFont_Huge"]);
+	HTMLFrame:SetFontObject("h3", _G[document.H3_F or "GameFontNormalLarge"]);
+	HTMLFrame:SetFontObject("p", _G[document.P_F or "GameTooltipHeader"]);
+
+	setFrameHTML(HTML);
+
 	documentFrame:Show();
-	return 0;
+end
+TRP3_API.extended.document.showDocumentClass = showDocumentClass;
+
+local function showDocument(documentID)
+	showDocumentClass(getClass(documentID));
 end
 TRP3_API.extended.document.showDocument = showDocument;
 
@@ -93,16 +138,9 @@ function TRP3_API.extended.document.onStart()
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
 
+	documentFrame.Resize.resizableFrame = documentFrame;
+
 	-- Customize HTML
-	HTMLFrame:SetFontObject("p", GameTooltipHeader);
-	HTMLFrame:SetTextColor("p", 0.2824, 0.0157, 0.0157);
-	HTMLFrame:SetShadowOffset("p", 0, 0)
-	HTMLFrame:SetFontObject("h1", DestinyFontHuge);
-	HTMLFrame:SetTextColor("h1", 0, 0, 0);
-	HTMLFrame:SetFontObject("h2", QuestFont_Huge);
-	HTMLFrame:SetTextColor("h2", 0, 0, 0);
-	HTMLFrame:SetFontObject("h3", GameFontNormalLarge);
-	HTMLFrame:SetTextColor("h3", 1, 1, 1);
 	HTMLFrame:SetScript("OnHyperlinkClick", onLinkClicked);
 
 	-- Effect and operands

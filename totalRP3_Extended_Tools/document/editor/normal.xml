@@ -33,19 +33,134 @@
 
 		<Frames>
 			<Frame parentKey="main" inherits="TRP3_EditorTitledFrame">
+				<Size x="530" y="130"/>
+
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-5"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="0" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="-15"/>
 				</Anchors>
+
+				<Frames>
+
+					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.title"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<Button parentKey="params" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-10"/>
+							<Anchor point="LEFT" relativeKey="$parent.name" x="-5" y="0"/>
+							<Anchor point="RIGHT" relativeKey="$parent.name" x="5" y="0"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="CENTER" x="17" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-17"/>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<Texture parentKey="Quest" file="Interface\ContainerFrame\UI-Icon-QuestBang">
+									<Size x="36" y="36"/>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+					</Button>
+
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="params" inherits="TRP3_EditorTitledFrame">
+				<Size x="530" y="0"/>
+
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.main" x="0" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+
+				<Frames>
+
+					<Frame parentKey="background" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentBackground">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="-10" y="-10"/>
+						</Anchors>
+					</Frame>
+
+					<EditBox parentKey="height" inherits="TRP3_TitledHelpEditBox" numeric="true">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="20" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.background"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<EditBox parentKey="width" inherits="TRP3_TitledHelpEditBox" numeric="true">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="LEFT" x="38" y="0" relativePoint="RIGHT" relativeKey="$parent.height"/>
+							<Anchor point="RIGHT" x="-35" y="-2"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="tile" inherits="TRP3_CheckBox" name="$parentVertile">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="-8" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.width"/>
+						</Anchors>
+					</CheckButton>
+
+					<CheckButton parentKey="resizable" inherits="TRP3_CheckBox" name="$parentHoritile">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-15" relativePoint="BOTTOMLEFT" relativeKey="$parent.tile"/>
+						</Anchors>
+					</CheckButton>
+
+					<Frame parentKey="border" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentBorder">
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.width" x="-20" y="10"/>
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="h1_font" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentH1Font">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.height" x="-20" y="-10"/>
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="h2_font" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentH2Font">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h1_font" x="0" y="-10"/>
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="h3_font" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentH3Font">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h2_font" x="0" y="-10"/>
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="p_font" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentPFont">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h3_font" x="0" y="-10"/>
+						</Anchors>
+					</Frame>
+
+				</Frames>
 			</Frame>
 
 			<Frame parentKey="pages" inherits="TRP3_EditorTitledFrame">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-5"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
-					<Anchor point="LEFT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.main" x="0" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 
