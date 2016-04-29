@@ -135,20 +135,25 @@ function TRP3_API.inventory.getItem(container, slotID)
 	return container.content[slotID];
 end
 
-local function searchItem(classID, container)
-
-end
-
 function TRP3_API.inventory.removeItem(classID, amount)
-	for i=0, amount do
-		local container, slotID = searchItem(classID, playerInventory);
+	while amount > 0 do
+		local container, slotID = TRP3_API.inventory.searchForFirstInstance(playerInventory, classID);
 		if container and slotID then
-			print(("found item of class %s in slotID %s"):format(classID, slotID));
+			local slot = container.content[slotID];
+			local amountFounded = (slot.count or 1);
+			local amountToRemove = math.min(amount, amountFounded);
+			slot.count = (slot.count or 1) - amountToRemove;
+			if slot.count <= 0 then
+				wipe(slot);
+				container.content[slotID] = nil;
+			end
+			amount = amount - amountToRemove;
+			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 		else
-			print(("can't found item of class %s"):format(classID));
 			break;
 		end
 	end
+	TRP3_API.inventory.recomputeAllInventory();
 end
 
 local function swapContainersSlots(container1, slot1, container2, slot2)

@@ -16,6 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local pairs = pairs;
 local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local loc = TRP3_API.locale.getText;
@@ -145,6 +146,20 @@ local function countItemInstances(container, itemID)
 	return count;
 end
 TRP3_API.inventory.countItemInstances = countItemInstances;
+
+local function searchForFirstInstance(container, itemID)
+	for slotIndex, slot in pairs(container.content or EMPTY) do
+		if slot.id == itemID then
+			return container, slotIndex;
+		end
+	end
+	for _, slot in pairs(container.content or EMPTY) do
+		if isContainerByClassID(slot.id) then
+			return searchForFirstInstance(slot, itemID);
+		end
+	end
+end
+TRP3_API.inventory.searchForFirstInstance = searchForFirstInstance;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Units
