@@ -212,7 +212,7 @@ local function item_add_init()
 
 	registerEffectEditor("item_add", {
 		title = loc("EFFECT_ITEM_ADD"),
-		icon = "inv_box_01",
+		icon = "garrison_weaponupgrade",
 		description = loc("EFFECT_ITEM_ADD_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_ADD_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
@@ -254,7 +254,7 @@ local function item_remove_init()
 
 	registerEffectEditor("item_remove", {
 		title = loc("EFFECT_ITEM_REMOVE"),
-		icon = "inv_box_01",
+		icon = "spell_sandexplosion",
 		description = loc("EFFECT_ITEM_REMOVE_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_REMOVE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));

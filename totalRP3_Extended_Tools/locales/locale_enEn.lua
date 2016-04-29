@@ -302,11 +302,11 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_ITEM_ADD_QT_TT = "The number of item to add.\n\n|cff00ff00Note that the addon will do his best to reach this amount but it is possible that not all items will be added: for example if the bag becomes full or if the item has a maximum of units the character can have ('Unique' attribute).",
 	EFFECT_ITEM_ADD_CRAFTED = "Crafted",
 	EFFECT_ITEM_ADD_CRAFTED_TT = "Mark the added items as \"Crafted by xxx\" where xxx will be the player name.",
-	EFFECT_ITEM_REMOVE = "Remove item",
-	EFFECT_ITEM_REMOVE_TT = "Remove items from your inventory.",
-	EFFECT_ITEM_REMOVE_PREVIEW = "Removes %sx %s",
-	EFFECT_ITEM_REMOVE_ID_TT = "The item to add.\n\n|cffffff00Please enter the full item ID (parents ID and inner ID).\n\n|cff00ff00Hint: copy/paste the full ID to be sure to avoid typos.",
-	EFFECT_ITEM_REMOVE_QT_TT = "The number of item to add.\n\n|cff00ff00Note that the addon will do his best to reach this amount but it is possible that not all items will be added: for example if the bag becomes full or if the item has a maximum of units the character can have ('Unique' attribute).",
+	EFFECT_ITEM_REMOVE = "Destroy item",
+	EFFECT_ITEM_REMOVE_TT = "Destroy items from your inventory.",
+	EFFECT_ITEM_REMOVE_PREVIEW = "Destroys %sx %s",
+	EFFECT_ITEM_REMOVE_ID_TT = "The item to remove.\n\n|cffffff00Please enter the full item ID (parents ID and inner ID).\n\n|cff00ff00Hint: copy/paste the full ID to be sure to avoid typos.",
+	EFFECT_ITEM_REMOVE_QT_TT = "The number of item to remove.",
 
 
 	-- Inner objects
