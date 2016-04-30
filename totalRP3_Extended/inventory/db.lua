@@ -263,3 +263,90 @@ TRP3_DB.inner.rifle = {
 	},
 	["TY"] = "IT",
 };
+
+TRP3_DB.inner.letterexample = {
+	["US"] = {
+		["AC"] = "Read the letter",
+		["SC"] = "onUse",
+	},
+	["BA"] = {
+		["QA"] = 8,
+		["ST"] = false,
+		["DE"] = "Sealed with wax that smells like rose.",
+		["SB"] = false,
+		["WA"] = false,
+		["VA"] = 0,
+		["IC"] = "INV_Letter_04",
+		["CR"] = false,
+		["US"] = true,
+		["QE"] = false,
+		["LE"] = "Mysterious mail",
+		["CO"] = false,
+		["UN"] = false,
+		["NA"] = "Anonymous letter",
+		["CT"] = false,
+		["WE"] = 120,
+	},
+	["SC"] = {
+		["onUse"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "document_show",
+							["args"] = {
+								"letterexample letter", -- [1]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+			},
+		},
+	},
+	["CO"] = {
+		["SC"] = "4",
+		["SR"] = "5",
+		["SI"] = "5x4",
+		["DU"] = 0,
+		["MW"] = 0,
+	},
+	["IN"] = {
+		["letter"] = {
+			["BT"] = true,
+			["WI"] = 450,
+			["PA"] = {
+				{
+					["TX"] = "{h1:c}Plate Fetish Night{/h1}\n{img:Interface\\ARCHEOLOGY\\ArchRare-DraeneiRelic:400:200}\n\nDear subscriber,\n\nYou received this letter because your are a precious member of the Plate Fetish Circle (PFC).\n\nIt's with joy that we invite you to our monthly fetish night, where all dreams become true.\n\nIt's on this Friday 10 PM at the Goldshire Inn\n\nKind regards,\n\n{h2:r}The PFC{/h2}",
+				}, -- [1]
+				{
+					["TX"] = "(PS: Please bring your own dishes)",
+				}, -- [2]
+			},
+			["TY"] = "DO",
+			["BCK"] = 8,
+			["HE"] = 600,
+			["BO"] = 1,
+			["BA"] = {
+				["NA"] = "Letter",
+			},
+			["FR"] = false,
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["H1_F"] = "DestinyFontHuge",
+			["H2_F"] = "QuestFont_Huge",
+			["P_F"] = "GameTooltipHeader",
+			["H3_F"] = "GameFontNormalLarge",
+		},
+	},
+	["MD"] = {
+		["CD"] = "29/04/16 20:29:09",
+		["CB"] = "Akraluk-KirinTor",
+		["SB"] = "Akraluk-KirinTor",
+		["MO"] = "NO",
+		["SD"] = "30/04/16 19:27:36",
+		["V"] = 8,
+	},
+	["TY"] = "IT",
+};

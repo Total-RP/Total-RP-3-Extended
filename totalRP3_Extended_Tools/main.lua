@@ -464,13 +464,13 @@ end
 local MODULE_STRUCTURE = {
 	["name"] = "Extended Tools",
 	["description"] = "Total RP 3 extended tools: item, document and campaign creation.",
-	["version"] = 0.11,
+	["version"] = 0.2,
 	["id"] = "trp3_extended_tools",
 	["onStart"] = onStart,
 	["onInit"] = onInit,
-	["minVersion"] = 13,
+	["minVersion"] = 14,
 	["requiredDeps"] = {
-		{"trp3_extended", 0.11},
+		{"trp3_extended", 0.2},
 	}
 };
 

@@ -50,13 +50,26 @@ TRP3_API.extended.document.BorderType = {
 	PARCHMENT = 1,
 }
 
+local function loadPage(page)
+	assert(documentFrame.class, "documentFrame.class is nil");
+	local data = documentFrame.class;
+	local total = #data.PA;
+
+	documentFrame.next:Disable();
+	documentFrame.previous:Disable();
+	if page > 1 then
+		documentFrame.previous:Enable();
+	end
+	if page < total then
+		documentFrame.next:Enable();
+	end
+
+	setFrameHTML(data.PA[page].TX or "");
+	documentFrame.current = page;
+end
+
 local function showDocumentClass(document, documentID)
 	documentFrame:Hide();
-
-	local HTML = "";
-	if document.PA and document.PA[1] then
-		HTML = document.PA[1].TX or "";
-	end
 
 	documentFrame.ID = documentID;
 	documentFrame.class = document;
@@ -98,7 +111,7 @@ local function showDocumentClass(document, documentID)
 	HTMLFrame:SetFontObject("h3", _G[document.H3_F or "GameFontNormalLarge"]);
 	HTMLFrame:SetFontObject("p", _G[document.P_F or "GameTooltipHeader"]);
 
-	setFrameHTML(HTML);
+	loadPage(1);
 
 	documentFrame:Show();
 end
@@ -135,6 +148,8 @@ TRP3_API.extended.document.closeDocument = closeDocument;
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+
 local function onLoaded()
 
 end
@@ -147,6 +162,13 @@ function TRP3_API.extended.document.onStart()
 
 	-- Customize HTML
 	HTMLFrame:SetScript("OnHyperlinkClick", onLinkClicked);
+
+	setTooltipForSameFrame(documentFrame.next, "BOTTOM", 0, -5, loc("DO_PAGE_NEXT"));
+	setTooltipForSameFrame(documentFrame.previous, "BOTTOM", 0, -5, loc("DO_PAGE_PREVIOUS"));
+	documentFrame.next:SetText(">");
+	documentFrame.previous:SetText("<");
+	documentFrame.previous:SetScript("OnClick", function() loadPage(documentFrame.current - 1); end);
+	documentFrame.next:SetScript("OnClick", function() loadPage(documentFrame.current + 1); end);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects({

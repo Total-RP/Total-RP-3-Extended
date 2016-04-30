@@ -17,13 +17,13 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, pairs, tonumber, tinsert, strtrim, assert = wipe, pairs, tonumber, tinsert, strtrim, assert;
+local wipe, max, tonumber, tremove, strtrim, assert = wipe, math.max, tonumber, tremove, strtrim, assert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolFrame, main, pages, params;
+local toolFrame, main, pages, params, manager;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -45,6 +45,69 @@ local function loadCustomPanel(page)
 	params:Show();
 end
 
+local function saveCurrentPage()
+	assert(toolFrame.specificDraft, "specificDraft is nil");
+	local data = toolFrame.specificDraft;
+	data.PA[manager.current].TX = stEtN(strtrim(pages.editor.scroll.text:GetText()));
+end
+
+local function loadPage(page)
+	assert(toolFrame.specificDraft, "specificDraft is nil");
+
+	if manager.current ~= nil then
+		saveCurrentPage();
+	end
+
+	local data = toolFrame.specificDraft;
+
+	if not data.PA[page] then
+		data.PA[page] = {};
+	end
+
+	local total = #data.PA;
+
+	manager.next:Disable();
+	manager.previous:Disable();
+	manager.first:Disable();
+	manager.last:Disable();
+	pages.remove:Disable();
+	if page > 1 then
+		manager.first:Enable();
+		manager.previous:Enable();
+	end
+	if page < total then
+		manager.next:Enable();
+		manager.last:Enable();
+	end
+	if total > 1 then
+		pages.remove:Enable();
+	end
+
+	pages.editor.scroll.text:SetText(data.PA[page].TX or "");
+	pages.title:SetText(loc("DO_PAGE_EDITOR"):format(page));
+	manager.count:SetText(loc("DO_PAGE_COUNT"):format(page, total));
+
+	manager.current = page;
+end
+
+local function addPage()
+	assert(toolFrame.specificDraft, "specificDraft is nil");
+	local data = toolFrame.specificDraft;
+	local total = #data.PA;
+	data.PA[total + 1] = {};
+	loadPage(total + 1);
+end
+
+local function removePage()
+	assert(toolFrame.specificDraft, "specificDraft is nil");
+	local data = toolFrame.specificDraft;
+	local current = manager.current;
+	assert(#data.PA > 1, "Must have at least one page");
+	tremove(data.PA, current);
+	manager.current = nil;
+	loadPage(max(1, current - 1));
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Load ans save
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -59,19 +122,14 @@ local function load()
 	if not data.PA then
 		data.PA = {};
 	end
-	if not data.PA[1] then
-		data.PA[1] = {};
-	end
 	if not data.BA then
 		data.BA = {};
 	end
 
 	main.name:SetText(data.BA.NA or "");
 
-
 	-- Temp
 	params.title:SetText(loc("DO_PARAMS_GLOBAL"));
-	pages.editor.scroll.text:SetText(data.PA[1].TX or "");
 	params.background:SetSelectedValue(data.BCK or 8);
 	params.border:SetSelectedValue(data.BO or TRP3_API.extended.document.BorderType.PARCHMENT);
 	params.height:SetText(data.HE or "600");
@@ -82,6 +140,9 @@ local function load()
 	params.p_font:SetSelectedValue(data.P_F or "GameTooltipHeader");
 	params.tile:SetChecked(data.BT or false);
 	params.resizable:SetChecked(data.FR or false);
+
+	manager.current = nil;
+	loadPage(1);
 end
 
 local function saveToDraft()
@@ -89,7 +150,6 @@ local function saveToDraft()
 
 	local data = toolFrame.specificDraft;
 	data.BA.NA = stEtN(strtrim(main.name:GetText()));
-	data.PA[1].TX = stEtN(strtrim(pages.editor.scroll.text:GetText()));
 	data.BCK = params.background:GetSelectedValue() or 8;
 	data.BO = params.border:GetSelectedValue() or TRP3_API.extended.document.BorderType.PARCHMENT;
 	data.HE = tonumber(params.height:GetText()) or 600;
@@ -100,6 +160,8 @@ local function saveToDraft()
 	data.P_F = params.p_font:GetSelectedValue() or "GameTooltipHeader";
 	data.BT = params.tile:GetChecked();
 	data.FR = params.resizable:GetChecked();
+
+	saveCurrentPage();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -187,10 +249,28 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 
 	-- Pages
 	pages = toolFrame.document.normal.pages;
-	pages.title:SetText(loc("DO_PAGE_EDITOR"));
 	TRP3_API.ui.text.setupToolbar(pages.toolbar, pages.editor.scroll.text, pages, "RIGHT", "LEFT");
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
 		pages.editor.scroll.text:GetScript("OnShow")(pages.editor.scroll.text);
 	end);
+	pages.remove:SetText(loc("DO_PAGE_REMOVE"));
+	pages.remove:SetScript("OnClick", removePage);
 
+	-- Manager
+	manager = toolFrame.document.normal.summary;
+	manager.title:SetText(loc("DO_PAGE_MANAGER"));
+	manager.add:SetText(loc("DO_PAGE_ADD"));
+	setTooltipForSameFrame(manager.next, "BOTTOM", 0, -5, loc("DO_PAGE_NEXT"));
+	setTooltipForSameFrame(manager.previous, "BOTTOM", 0, -5, loc("DO_PAGE_PREVIOUS"));
+	setTooltipForSameFrame(manager.first, "BOTTOM", 0, -5, loc("DO_PAGE_FIRST"));
+	setTooltipForSameFrame(manager.last, "BOTTOM", 0, -5, loc("DO_PAGE_LAST"));
+	manager.next:SetText(">");
+	manager.previous:SetText("<");
+	manager.first:SetText("<<");
+	manager.last:SetText(">>");
+	manager.add:SetScript("OnClick", addPage);
+	manager.first:SetScript("OnClick", function() loadPage(1); end);
+	manager.previous:SetScript("OnClick", function() loadPage(manager.current - 1); end);
+	manager.next:SetScript("OnClick", function() loadPage(manager.current + 1); end);
+	manager.last:SetScript("OnClick", function() loadPage(#toolFrame.specificDraft.PA); end);
 end

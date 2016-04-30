@@ -330,11 +330,11 @@ end
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",
 	["description"] = "Total RP 3 extended features: inventory, quest log, document and more !",
-	["version"] = 0.11,
+	["version"] = 0.2,
 	["id"] = "trp3_extended",
 	["onInit"] = onInit,
 	["onStart"] = onStart,
-	["minVersion"] = 13,
+	["minVersion"] = 14,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);

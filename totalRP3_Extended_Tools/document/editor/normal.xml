@@ -156,9 +156,71 @@
 				</Frames>
 			</Frame>
 
-			<Frame parentKey="pages" inherits="TRP3_EditorTitledFrame">
+			<Frame parentKey="summary" inherits="TRP3_EditorTitledFrame">
+				<Size x="0" y="130"/>
+
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-5"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.main" x="0" y="0"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="count" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE">
+							<Size x="0" y="30"/>
+							<Anchors>
+								<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="0"/>
+								<Anchor point="RIGHT" x="-10" y="0"/>
+								<Anchor point="LEFT" x="10" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<Frames>
+					<Button parentKey="previous" inherits="TRP3_CommonButton">
+						<Size x="40" y="20"/>
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="-10"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="first" inherits="TRP3_CommonButton">
+						<Size x="40" y="20"/>
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.previous" x="-10" y="0"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="next" inherits="TRP3_CommonButton">
+						<Size x="40" y="20"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="-10"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="last" inherits="TRP3_CommonButton">
+						<Size x="40" y="20"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.next" x="10" y="0"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="add" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="CENTER" x="0" y="-25"/>
+						</Anchors>
+					</Button>
+
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="pages" inherits="TRP3_EditorTitledFrame">
+
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.summary" x="0" y="0"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.main" x="0" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
@@ -170,7 +232,7 @@
 						<Size x="0" y="0"/>
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-100"/>
-							<Anchor point="BOTTOM" x="0" y="100"/>
+							<Anchor point="BOTTOM" x="0" y="35"/>
 							<Anchor point="RIGHT" x="-40" y="0"/>
 							<Anchor point="LEFT" x="40" y="0"/>
 						</Anchors>
@@ -184,6 +246,13 @@
 							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 					</Frame>
+
+					<Button parentKey="remove" inherits="TRP3_CommonButton">
+						<Size x="120" y="20"/>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.editor" x="0" y="-1"/>
+						</Anchors>
+					</Button>
 
 				</Frames>
 			</Frame>
