@@ -284,6 +284,8 @@ local function pickUpLoot(slotFrom, container, slotID)
 	lootFrame:Hide();
 end
 
+local UnitExists, CheckInteractDistance = UnitExists, CheckInteractDistance;
+
 local function slotOnDragStop(slotFrom)
 	slotFrom.Icon:SetDesaturated(false);
 	ResetCursor();
@@ -294,13 +296,19 @@ local function slotOnDragStop(slotFrom)
 		container1 = slotFrom:GetParent().info;
 		if slotTo:GetName() == "WorldFrame" then
 			if not slotFrom.loot then
-				local itemClass = getClass(slotFrom.info.id);
-				TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function()
-					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
-				end);
+				if UnitExists("mouseover") and CheckInteractDistance("mouseover", 2) then
+					TRP3_API.inventory.addToExchange(container1, slot1);
+				else
+					local itemClass = getClass(slotFrom.info.id);
+					TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function()
+						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
+					end);
+				end
 			else
 				Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
 			end
+		elseif slotTo:GetName() and slotTo:GetName():sub(1, ("TRP3_ExchangeFrame"):len()) == "TRP3_ExchangeFrame" then
+			TRP3_API.inventory.addToExchange(container1, slot1);
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
 			local container2, slot2;
 			slot2 = slotTo.slotID;

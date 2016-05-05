@@ -30,6 +30,9 @@
 	<Script file="container.lua"/>
 	<Script file="inventory_page.lua"/>
 
+	<Include file="inventory_exchange.xml"/>
+	<Script file="inventory_exchange.lua"/>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Containers      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->

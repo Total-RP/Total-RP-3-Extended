@@ -365,6 +365,9 @@ function TRP3_API.inventory.onStart()
 	-- Inventory page
 	TRP3_API.inventory.initInventoryPage();
 
+	-- Inventory exchange
+	TRP3_ExchangeFrame.init();
+
 	-- UI
 	TRP3_API.inventory.initLootFrame();
 	StackSplitFrame:SetScript("OnMouseWheel",function(_, delta)

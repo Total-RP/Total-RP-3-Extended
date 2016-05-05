@@ -186,7 +186,7 @@ TRP3_DB.inner.rifle = {
 				["AC"] = "Create 10 bullets",
 			},
 			["BA"] = {
-				["DE"] = "An ammo press to make bullet.s.",
+				["DE"] = "An ammo press to make bullets.",
 				["CT"] = false,
 				["QA"] = 3,
 				["SB"] = false,
