@@ -194,9 +194,9 @@ TRP3_API.inventory.showItemTooltip = showItemTooltip;
 local function containerSlotUpdate(self, elapsed)
 	self.Quest:Hide();
 	self.Icon:Hide();
-	self.IconBorder:Hide();
 	self.Quantity:Hide();
-	self.Icon:SetVertexColor(1, 1, 1);
+	self.IconBorder:Hide();
+	self.IconBorder:SetVertexColor(1, 1, 1);
 	if self.info then
 		local class = self.class;
 		local icon, name = getBaseClassDataSafe(class);

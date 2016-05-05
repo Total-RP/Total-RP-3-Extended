@@ -25,6 +25,7 @@ local getItemLink = TRP3_API.inventory.getItemLink;
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local classExists = TRP3_API.extended.classExists;
+local getQualityColorRGB = TRP3_API.inventory.getQualityColorRGB;
 
 local exchangeFrame = TRP3_ExchangeFrame;
 local sendCurrentState, sendAcceptExchange, sendCancel;
@@ -38,67 +39,137 @@ local SEND_DATA_QUERY_PREFIX = "IESD";
 local SEND_DATE_PRIORITY = "BULK";
 local START_EXCHANGE_PRIORITY = "NORMAL";
 
+local currentDownloads = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function reloadDownloads()
+	local yourData = exchangeFrame.yourData;
+	for index, slot in pairs(exchangeFrame.rightSlots) do
+		if yourData[tostring(index)] then
+			local rootClassId = yourData[tostring(index)].id;
+			if currentDownloads[rootClassId] then
+				local percent = currentDownloads[rootClassId] * 100;
+				slot.details:SetFormattedText("Downloading: %0.1f %%", percent); -- TODO: locals
+			else
+				slot.details:SetText("");
+			end
+		end
+	end
+end
+
+local MISSING_CLASS = {
+	BA = {
+		DE = "You don't have the information about this item. But TRP will download it automatically.",
+	}
+}
+
+local function decorateSlot(slot, slotData, count)
+	local class;
+	if classExists(slotData.c.id) then
+		class = getClass(slotData.c.id);
+	else
+		class = MISSING_CLASS;
+	end
+
+	slot.Quest:Hide();
+	slot.Quantity:Hide();
+	slot.IconBorder:Hide();
+
+	if classExists(slotData.c.id) then
+		slot.name:SetText(getItemLink(class));
+	else
+		slot.name:SetText(slotData.n or UNKNOWN);
+	end
+
+	slot.Icon:SetTexture("Interface\\ICONS\\" .. (class.BA.IC or slotData.i or "temp"));
+	if count > 1 then
+		slot.Quantity:Show();
+		slot.Quantity:SetText(count);
+	end
+	if slotData.q or class.BA.QE then
+		slot.Quest:Show();
+	end
+	local quality = slotData.qa or class.BA.QA or 1;
+	if quality ~= 1 then
+		slot.IconBorder:Show();
+		local r, g, b = getQualityColorRGB(quality);
+		slot.IconBorder:SetVertexColor(r, g, b);
+	end
+
+	return class.BA.VA or slotData.v or 0, class.BA.WE or slotData.w or 0;
+end
+
 local function drawUI()
 	local myData = exchangeFrame.myData;
 	local yourData = exchangeFrame.yourData;
 
-	local atLeastOneBad = false;
-	for index, slot in pairs(exchangeFrame.rightSlots) do
-		local dataIndex = tostring(index);
-		slot:Hide();
-		if yourData[dataIndex] then
-			local slotData = yourData[dataIndex];
-			local rootClassId = slotData.id;
-			local rootClassVersion = tonumber(slotData.vn or 0);
-
-			if not classExists(rootClassId) or getClass(rootClassId).MD.V < rootClassVersion then
-				atLeastOneBad = true;
+	do
+		local totalValue, totalWeight = 0, 0;
+		for index, slot in pairs(exchangeFrame.leftSlots) do
+			local dataIndex = tostring(index);
+			slot:Hide();
+			slot.details:SetText("");
+			if myData[dataIndex] then
+				local slotData = myData[dataIndex];
+				local count = slotData.c.count or 1;
+				local value, weight = decorateSlot(slot, slotData, count);
+				totalValue = totalValue + (value * count);
+				totalWeight = totalWeight + (weight * count);
+				slot:Show();
 			end
+		end
 
-			slot.name:SetText(slotData.n or UNKNOWN);
-			TRP3_API.ui.frame.setupIconButton(slot, slotData.i or "temp");
+		exchangeFrame.left.value:SetText(GetCoinTextureString(totalValue));
+		exchangeFrame.left.weight:SetText(Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. TRP3_API.extended.formatWeight(totalWeight));
+	end
 
-			slot:Show();
+	do
+		local totalValue, totalWeight = 0, 0;
+		local atLeastOneBad = false;
+		for index, slot in pairs(exchangeFrame.rightSlots) do
+			local dataIndex = tostring(index);
+			slot:Hide();
+			slot.details:SetText("");
+			if yourData[dataIndex] then
+				local slotData = yourData[dataIndex];
+				local count = slotData.c.count or 1;
+				local rootClassId = slotData.id;
+				local rootClassVersion = tonumber(slotData.vn or 0);
+				if not classExists(rootClassId) or getClass(rootClassId).MD.V < rootClassVersion then
+					atLeastOneBad = true;
+				end
+				local value, weight = decorateSlot(slot, slotData, count);
+				totalValue = totalValue + (value * count);
+				totalWeight = totalWeight + (weight * count);
+				slot:Show();
+			end
+		end
+		exchangeFrame.right.value:SetText(GetCoinTextureString(totalValue));
+		exchangeFrame.right.weight:SetText(Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. TRP3_API.extended.formatWeight(totalWeight));
+
+		exchangeFrame.ok:Enable();
+		if atLeastOneBad then
+			exchangeFrame.ok:Disable();
 		end
 	end
-	exchangeFrame.ok:Enable();
-	if atLeastOneBad then
-		exchangeFrame.ok:Disable();
-	end
-
-	for index, slot in pairs(exchangeFrame.leftSlots) do
-		local dataIndex = tostring(index);
-		slot:Hide();
-		if myData[dataIndex] then
-			local slotData = myData[dataIndex];
-
-			slot.name:SetText(slotData.n or UNKNOWN);
-			TRP3_API.ui.frame.setupIconButton(slot, slotData.i or "temp");
-
-			slot:Show();
-		end
-	end
-
-	-- Deco
-	SetPortraitTexture(exchangeFrame.leftPortrait, "player");
-	SetPortraitToTexture(exchangeFrame.rightPortrait, "Interface\\ICONS\\achievement_reputation_06");
 
 	-- Confirmation overlay
-	exchangeFrame.top.leftConfirm:Hide();
+	exchangeFrame.left.confirm:Hide();
 	if myData.ok then
-		exchangeFrame.top.leftConfirm:Show();
+		exchangeFrame.left.confirm:Show();
 	end
-	exchangeFrame.top.rightConfirm:Hide();
+	exchangeFrame.right.confirm:Hide();
 	if yourData.ok then
-		exchangeFrame.top.rightConfirm:Show();
+		exchangeFrame.right.confirm:Show();
 	end
 
-	-- local formatedValue = GetCoinTextureString(value);
+	exchangeFrame.left.name:SetText(Globals.player_id);
+	exchangeFrame.right.name:SetText(exchangeFrame.targetID);
+
+	reloadDownloads();
 
 	exchangeFrame:Show();
 end
@@ -149,6 +220,9 @@ local function addToExchange(container, slotID)
 				i = itemClass.BA.IC,
 				n = getItemLink(itemClass),
 				v = itemClass.BA.VA,
+				w = itemClass.BA.WE,
+				q = itemClass.BA.QE,
+				qa = itemClass.BA.QA,
 				id = rootClassID,
 				vn = rootClass.MD.V,
 			};
@@ -185,6 +259,8 @@ local function removeItem(index)
 end
 
 local function cancelExchange()
+	wipe(currentDownloads);
+
 	if exchangeFrame.myData then
 		wipe(exchangeFrame.myData);
 	end
@@ -222,8 +298,14 @@ local function sendItemDataRequest(rootClassId, rootClassVersion)
 		mId = reservedMessageID,
 	};
 
-	print("I would like the object " .. rootClassId .. " on the message id " .. reservedMessageID);
-
+	currentDownloads[rootClassId] = 0;
+	Comm.addMessageIDHandler(exchangeFrame.targetID, reservedMessageID, function(_, total, current)
+		currentDownloads[rootClassId] = current / total;
+		reloadDownloads();
+		if current == total then
+			currentDownloads[rootClassId] = nil;
+		end
+	end);
 	Comm.sendObject(DATA_EXCHANGE_QUERY_PREFIX, request, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 end
 
@@ -255,9 +337,13 @@ local function receivedDataResponse(response, sender)
 end
 
 -- Received accept from the other side
-local function receivedAccept()
-	exchangeFrame.yourData.ok = true;
-	drawUI();
+local function receivedAccept(_, sender)
+	if exchangeFrame:IsVisible() and exchangeFrame.targetID == sender then
+		exchangeFrame.yourData.ok = true;
+		drawUI();
+	else
+		sendCancel(sender);
+	end
 end
 
 -- Send accept to the other side
@@ -289,8 +375,6 @@ local function receivedUpdate(data, sender)
 
 			if not classExists(rootClassId) or getClass(rootClassId).MD.V < rootClassVersion then
 				sendItemDataRequest(rootClassId, rootClassVersion);
-			else
-				print("No update needed for " .. rootClassId);
 			end
 		end
 	end
@@ -298,15 +382,17 @@ local function receivedUpdate(data, sender)
 	drawUI();
 end
 
-function sendCancel()
-	if exchangeFrame.targetID then
-		Comm.sendObject(CANCEL_EXCHANGE_QUERY_PREFIX, "", exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+function sendCancel(sender)
+	if sender or exchangeFrame.targetID then
+		Comm.sendObject(CANCEL_EXCHANGE_QUERY_PREFIX, "", sender or exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 	end
 end
 
 local function receivedCancel(_, sender)
-	exchangeFrame.targetID = nil;
-	cancelExchange();
+	if exchangeFrame:IsVisible() and exchangeFrame.targetID == sender then
+		exchangeFrame.targetID = nil;
+		cancelExchange();
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

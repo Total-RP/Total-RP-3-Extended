@@ -19,200 +19,190 @@
 	limitations under the License.
 -->
 
-	<Button name="TRP3_ExchangeFrameSlotTemplate" inherits="TRP3_IconButton" virtual="true">
+	<Button name="TRP3_ExchangeFrameSlotTemplate" inherits="TRP3_ContainerSlotTemplate" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="name" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[name]">
-					<Size x="0" y="0"/>
+				<FontString parentKey="name" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="[name]">
+					<Size x="200" y="10"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="0"/>
-						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="5" y="0"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="details" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[details]">
+					<Size x="200" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.name" x="0" y="-5"/>
 					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
 	</Button>
 
-	<Frame name="TRP3_ExchangeFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
+	<Frame name="TRP3_ExchangeFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
 		<TitleRegion setAllPoints="true"/>
-		<Size x="384" y="256"/>
+
+		<Size x="500" y="320"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
 
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\TradeFrame\ScaledDown\TradeTargetTopL_Normal">
-					<Size x="256" y="256"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="0" y="0"/>
-					</Anchors>
-				</Texture>
-				<Texture file="Interface\TradeFrame\ScaledDown\TradeTargetTopR_Normal">
-					<Size x="128" y="256"/>
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="BORDER">
-				<Texture parentKey="leftPortrait">
-					<Size x="55" y="55"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="10" y="-7"/>
-					</Anchors>
-				</Texture>
-				<Texture parentKey="rightPortrait">
-					<Size x="55" y="55"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="10" y="-7"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK">
-				<Texture file="Interface\TARGETINGFRAME\UI-TargetingFrame-Rare-Elite">
-					<Size x="115" y="128"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="-38" y="8"/>
-					</Anchors>
-					<TexCoords left="1" right="0.55" top="0" bottom="1"/>
-				</Texture>
-				<Texture file="Interface\TARGETINGFRAME\UI-TargetingFrame-Rare-Elite">
-					<Size x="115" y="128"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="58" y="8"/>
-					</Anchors>
-					<TexCoords left="0.55" right="1" top="0" bottom="1"/>
-				</Texture>
-			</Layer>
 			<Layer level="OVERLAY">
-				<FontString parentKey="leftName" inherits="GameFontNormal" justifyH="LEFT">
-					<Size x="0" y="0"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="80" y="-5"/>
-					</Anchors>
-				</FontString>
-				<FontString parentKey="rightName" inherits="GameFontNormal" justifyH="RIGHT">
-					<Size x="0" y="0"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-60" y="-5"/>
-					</Anchors>
-				</FontString>
+
 			</Layer>
 		</Layers>
 
 		<Frames>
-			<Frame parentKey="top">
-				<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-Parchment-Horizontal-Desaturated" edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border" tile="true">
-					<EdgeSize><AbsValue val="16"/></EdgeSize>
-					<TileSize><AbsValue val="117"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
-				<Size x="260" y="50"/>
-				<Anchors>
-					<Anchor point="TOP" x="10" y="-15"/>
-				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<Texture parentKey="leftConfirm" file="Interface\TradeFrame\UI-TradeFrame-Highlight" hidden="true">
-							<Size x="200" y="200"/>
-							<Anchors>
-								<Anchor point="CENTER" x="-27" y="-78"/>
-							</Anchors>
-						</Texture>
-						<Texture parentKey="rightConfirm" file="Interface\TradeFrame\UI-TradeFrame-Highlight" hidden="true">
-							<Size x="200" y="200"/>
-							<Anchors>
-								<Anchor point="CENTER" x="100" y="-78"/>
-							</Anchors>
-						</Texture>
-					</Layer>
-				</Layers>
-			</Frame>
 
 			<Frame parentKey="left">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border" tile="true">
-					<EdgeSize><AbsValue val="16"/></EdgeSize>
-					<TileSize><AbsValue val="32"/></TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5"/>
-					</BackgroundInsets>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="24"/></EdgeSize>
+					<TileSize><AbsValue val="380"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
-				<Size x="125" y="150"/>
+
 				<Anchors>
-					<Anchor point="CENTER" x="-55" y="-15"/>
+					<Anchor point="TOPLEFT" x="20" y="-30"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM" x="-5" y="40"/>
 				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture parentKey="confirm" file="Interface\TradeFrame\UI-TradeFrame-Highlight" hidden="true">
+							<Anchors>
+								<Anchor point="TOPLEFT"/>
+								<Anchor point="BOTTOMRIGHT"/>
+							</Anchors>
+							<TexCoords left="0" right="0.625" top="0" bottom="1"/>
+						</Texture>
+						<FontString parentKey="name" inherits="GameFontNormal" justifyH="CENTER">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="0" y="5"/>
+								<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="0" y="5"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="value" inherits="GameFontNormal" justifyH="RIGHT">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+						<FontString parentKey="weight" inherits="GameFontNormal" justifyH="LEFT">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+
 				<Frames>
 					<Button parentKey="slot1" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-10"/>
+							<Anchor point="TOPLEFT" x="20" y="-20"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot2" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-45"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot1" x="0" y="-15"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot3" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-80"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot2" x="0" y="-15"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot4" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-115"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot3" x="0" y="-15"/>
 						</Anchors>
 					</Button>
 				</Frames>
 			</Frame>
 
 			<Frame parentKey="right">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border" tile="true">
-					<EdgeSize><AbsValue val="16"/></EdgeSize>
-					<TileSize><AbsValue val="32"/></TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5"/>
-					</BackgroundInsets>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="24"/></EdgeSize>
+					<TileSize><AbsValue val="380"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
-				<Size x="125" y="150"/>
+
 				<Anchors>
-					<Anchor point="CENTER" x="75" y="-15"/>
+					<Anchor point="TOPRIGHT" x="-20" y="-30"/>
+					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOM" x="5" y="40"/>
 				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture parentKey="confirm" file="Interface\TradeFrame\UI-TradeFrame-Highlight" hidden="true">
+							<Anchors>
+								<Anchor point="TOPLEFT"/>
+								<Anchor point="BOTTOMRIGHT"/>
+							</Anchors>
+							<TexCoords left="0" right="0.625" top="0" bottom="1"/>
+						</Texture>
+						<FontString parentKey="name" inherits="GameFontNormal" justifyH="CENTER">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="0" y="5"/>
+								<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="0" y="5"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="value" inherits="GameFontNormal" justifyH="RIGHT">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+						<FontString parentKey="weight" inherits="GameFontNormal" justifyH="LEFT">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+
 				<Frames>
 					<Button parentKey="slot1" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-10"/>
+							<Anchor point="TOPLEFT" x="20" y="-20"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot2" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-45"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot1" x="0" y="-15"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot3" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-80"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot2" x="0" y="-15"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot4" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-115"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot3" x="0" y="-15"/>
 						</Anchors>
 					</Button>
 				</Frames>
 			</Frame>
 
-			<Button parentKey="cancel" inherits="TRP3_CommonButton">
-				<Size x="90" y="20"/>
-				<Anchors>
-					<Anchor point="BOTTOM" x="130" y="10"/>
-				</Anchors>
-			</Button>
-
 			<Button parentKey="ok" inherits="TRP3_CommonButton">
 				<Size x="90" y="20"/>
 				<Anchors>
-					<Anchor point="BOTTOM" x="35" y="10"/>
+					<Anchor relativePoint="BOTTOM" point="BOTTOMRIGHT" x="-5" y="10"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="cancel" inherits="TRP3_CommonButton">
+				<Size x="90" y="20"/>
+				<Anchors>
+					<Anchor relativePoint="BOTTOM" point="BOTTOMLEFT" x="5" y="10"/>
 				</Anchors>
 			</Button>
 		</Frames>
