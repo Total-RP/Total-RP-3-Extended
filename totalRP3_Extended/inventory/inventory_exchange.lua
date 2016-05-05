@@ -35,6 +35,7 @@ local CANCEL_EXCHANGE_QUERY_PREFIX = "IECE";
 local ACCEPT_EXCHANGE_QUERY_PREFIX = "IEAE";
 local DATA_EXCHANGE_QUERY_PREFIX = "IEDE";
 local SEND_DATA_QUERY_PREFIX = "IESD";
+local FINISH_EXCHANGE_QUERY_PREFIX = "IEFE";
 
 local SEND_DATE_PRIORITY = "BULK";
 local START_EXCHANGE_PRIORITY = "NORMAL";
@@ -45,8 +46,26 @@ local currentDownloads = {};
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local MISSING_CLASS = {
+	BA = {
+		DE = "You don't have the information about this item. But TRP will download it automatically.",
+	},
+	MD = {
+
+	},
+}
+
+local function getItemClass(id)
+	if classExists(id) then
+		return getClass(id);
+	else
+		return MISSING_CLASS;
+	end
+end
+
 local function reloadDownloads()
 	local yourData = exchangeFrame.yourData;
+	local myData = exchangeFrame.myData;
 	for index, slot in pairs(exchangeFrame.rightSlots) do
 		if yourData[tostring(index)] then
 			local rootClassId = yourData[tostring(index)].id;
@@ -54,26 +73,20 @@ local function reloadDownloads()
 				local percent = currentDownloads[rootClassId] * 100;
 				slot.details:SetFormattedText("Downloading: %0.1f %%", percent); -- TODO: locals
 			else
-				slot.details:SetText("");
+				local class = getItemClass(rootClassId);
+				slot.details:SetText(class.MD.CB or "");
 			end
+		end
+	end
+	for index, slot in pairs(exchangeFrame.leftSlots) do
+		if myData[tostring(index)] then
+			local class = getItemClass(myData[tostring(index)].id);
+			slot.details:SetText(class.MD.CB or "");
 		end
 	end
 end
 
-local MISSING_CLASS = {
-	BA = {
-		DE = "You don't have the information about this item. But TRP will download it automatically.",
-	}
-}
-
-local function decorateSlot(slot, slotData, count)
-	local class;
-	if classExists(slotData.c.id) then
-		class = getClass(slotData.c.id);
-	else
-		class = MISSING_CLASS;
-	end
-
+local function decorateSlot(slot, slotData, count, class)
 	slot.Quest:Hide();
 	slot.Quantity:Hide();
 	slot.IconBorder:Hide();
@@ -108,6 +121,7 @@ local function drawUI()
 
 	do
 		local totalValue, totalWeight = 0, 0;
+		local empty = true;
 		for index, slot in pairs(exchangeFrame.leftSlots) do
 			local dataIndex = tostring(index);
 			slot:Hide();
@@ -115,11 +129,22 @@ local function drawUI()
 			if myData[dataIndex] then
 				local slotData = myData[dataIndex];
 				local count = slotData.c.count or 1;
-				local value, weight = decorateSlot(slot, slotData, count);
+				local class = getItemClass(slotData.c.id);
+				local value, weight = decorateSlot(slot, slotData, count, class);
+
+				slot.slotInfo = slotData.c or EMPTY;
+				slot.itemClass = class;
+
 				totalValue = totalValue + (value * count);
 				totalWeight = totalWeight + (weight * count);
 				slot:Show();
+				empty = false;
 			end
+		end
+
+		exchangeFrame.left.empty:Hide();
+		if empty then
+			exchangeFrame.left.empty:Show();
 		end
 
 		exchangeFrame.left.value:SetText(GetCoinTextureString(totalValue));
@@ -129,6 +154,7 @@ local function drawUI()
 	do
 		local totalValue, totalWeight = 0, 0;
 		local atLeastOneBad = false;
+		local empty = true;
 		for index, slot in pairs(exchangeFrame.rightSlots) do
 			local dataIndex = tostring(index);
 			slot:Hide();
@@ -141,12 +167,24 @@ local function drawUI()
 				if not classExists(rootClassId) or getClass(rootClassId).MD.V < rootClassVersion then
 					atLeastOneBad = true;
 				end
-				local value, weight = decorateSlot(slot, slotData, count);
+				local class = getItemClass(slotData.c.id);
+				local value, weight = decorateSlot(slot, slotData, count, class);
+
+				slot.slotInfo = slotData.c or EMPTY;
+				slot.itemClass = class;
+
 				totalValue = totalValue + (value * count);
 				totalWeight = totalWeight + (weight * count);
 				slot:Show();
+				empty = false;
 			end
 		end
+
+		exchangeFrame.right.empty:Hide();
+		if empty then
+			exchangeFrame.right.empty:Show();
+		end
+
 		exchangeFrame.right.value:SetText(GetCoinTextureString(totalValue));
 		exchangeFrame.right.weight:SetText(Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. TRP3_API.extended.formatWeight(totalWeight));
 
@@ -258,9 +296,8 @@ local function removeItem(index)
 	sendCurrentState();
 end
 
-local function cancelExchange()
+local function closeTransaction()
 	wipe(currentDownloads);
-
 	if exchangeFrame.myData then
 		wipe(exchangeFrame.myData);
 	end
@@ -268,17 +305,38 @@ local function cancelExchange()
 		wipe(exchangeFrame.yourData);
 	end
 	exchangeFrame.myData = nil;
-	exchangeFrame.yourData = {};
+	exchangeFrame.yourData = nil;
+	exchangeFrame.targetID = nil;
+	exchangeFrame:Hide();
+end
 
+local function cancelExchange()
 	if exchangeFrame.targetID then
 		sendCancel();
 	end
-
+	closeTransaction();
 	Utils.message.displayMessage(ERR_TRADE_CANCELLED, Utils.message.type.ALERT_MESSAGE);
+end
 
-	exchangeFrame.targetID = nil;
+local function lootTransaction()
+	-- First remove what you gave
+	for i=1, 4 do
+		local index = tostring(i);
+		if exchangeFrame.myData[index] then
+			local slotData = exchangeFrame.myData[index];
+			TRP3_API.inventory.removeItem(slotData.c.id, slotData.c.count or 1);
+		end
+	end
 
-	exchangeFrame:Hide();
+	-- Then loot what we received
+	for i=1, 4 do
+		local index = tostring(i);
+		if exchangeFrame.yourData[index] then
+			local slotData = exchangeFrame.yourData[index];
+			TRP3_API.inventory.addItem(nil, slotData.c.id, {slotData.c.count or 1, slotData.c.madeBy});
+		end
+	end
+
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -336,11 +394,23 @@ local function receivedDataResponse(response, sender)
 	drawUI();
 end
 
+local function receivedFinish(_, sender)
+	if exchangeFrame:IsVisible() and exchangeFrame.targetID == sender then
+		lootTransaction();
+		exchangeFrame.targetID = nil;
+		closeTransaction();
+	end
+end
+
 -- Received accept from the other side
 local function receivedAccept(_, sender)
 	if exchangeFrame:IsVisible() and exchangeFrame.targetID == sender then
 		exchangeFrame.yourData.ok = true;
 		drawUI();
+		if exchangeFrame.myData.ok then
+			Comm.sendObject(FINISH_EXCHANGE_QUERY_PREFIX, "", exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+			receivedFinish(nil, sender);
+		end
 	else
 		sendCancel(sender);
 	end
@@ -409,8 +479,22 @@ function exchangeFrame.init()
 	}
 
 	for index, slot in pairs(exchangeFrame.leftSlots) do
-		slot:SetScript("OnClick", function() removeItem(index) end)
+		slot:SetScript("OnClick", function()
+			removeItem(index);
+			TRP3_ItemTooltip:Hide();
+		end);
+		slot:SetScript("OnEnter", function(self)
+			TRP3_API.inventory.showItemTooltip(self, self.slotInfo, self.itemClass);
+		end);
 	end
+	for index, slot in pairs(exchangeFrame.rightSlots) do
+		slot:SetScript("OnEnter", function(self)
+			TRP3_API.inventory.showItemTooltip(self, self.slotInfo, self.itemClass);
+		end);
+	end
+
+	exchangeFrame.left.empty:SetText("You can drag and drop items here."); -- TODO: locals
+	exchangeFrame.right.empty:SetText("Vide"); -- TODO: locals
 
 	exchangeFrame.cancel:SetText(CANCEL);
 	exchangeFrame.cancel:SetScript("OnClick", function() cancelExchange() end);
@@ -423,4 +507,5 @@ function exchangeFrame.init()
 	Comm.registerProtocolPrefix(ACCEPT_EXCHANGE_QUERY_PREFIX, receivedAccept);
 	Comm.registerProtocolPrefix(DATA_EXCHANGE_QUERY_PREFIX, receivedDataRequest);
 	Comm.registerProtocolPrefix(SEND_DATA_QUERY_PREFIX, receivedDataResponse);
+	Comm.registerProtocolPrefix(FINISH_EXCHANGE_QUERY_PREFIX, receivedFinish);
 end
