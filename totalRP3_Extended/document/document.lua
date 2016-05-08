@@ -173,6 +173,7 @@ function TRP3_API.extended.document.onStart()
 	-- Effect and operands
 	TRP3_API.script.registerEffects({
 		document_show = {
+			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
 				local documentID = args[1];
 				return ("lastEffectReturn = showDocument(\"%s\");"):format(documentID);
@@ -183,6 +184,7 @@ function TRP3_API.extended.document.onStart()
 		},
 
 		document_close = {
+			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
 				local documentID = args[1];
 				return ("lastEffectReturn = closeDocument(\"%s\");"):format(documentID);

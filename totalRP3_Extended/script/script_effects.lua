@@ -25,12 +25,7 @@ local getSpeechPrefixText = TRP3_API.ui.misc.getSpeechPrefixText;
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local security = {
-	LOW = 1,
-	MEDIUM = 2,
-	HIGH = 3,
-};
-TRP3_API.script.security = security;
+local security = TRP3_API.security.SECURITY_LEVEL;
 
 local EFFECTS = {
 

@@ -26,9 +26,10 @@ local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local classExists = TRP3_API.extended.classExists;
 local getQualityColorRGB = TRP3_API.inventory.getQualityColorRGB;
-
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local SECURITY_LEVEL = TRP3_API.security.SECURITY_LEVEL;
 local exchangeFrame = TRP3_ExchangeFrame;
-local sendCurrentState, sendAcceptExchange, sendCancel;
+local sendCurrentState, sendAcceptExchange, sendCancel, sendItemDataRequest;
 
 local UPDATE_EXCHANGE_QUERY_PREFIX = "IEUE";
 local CANCEL_EXCHANGE_QUERY_PREFIX = "IECE";
@@ -40,6 +41,8 @@ local FINISH_EXCHANGE_QUERY_PREFIX = "IEFE";
 local SEND_DATE_PRIORITY = "BULK";
 local START_EXCHANGE_PRIORITY = "NORMAL";
 
+local MAX_MESSAGES_SIZE = 25;
+
 local currentDownloads = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -48,7 +51,7 @@ local currentDownloads = {};
 
 local MISSING_CLASS = {
 	BA = {
-		DE = "You don't have the information about this item. But TRP will download it automatically.",
+		NA = "Item to download",
 	},
 	MD = {
 
@@ -63,25 +66,41 @@ local function getItemClass(id)
 	end
 end
 
+local function getItemClassSecurityLevel()
+
+end
+
 local function reloadDownloads()
 	local yourData = exchangeFrame.yourData;
 	local myData = exchangeFrame.myData;
 	for index, slot in pairs(exchangeFrame.rightSlots) do
+		slot.security:Hide();
 		if yourData[tostring(index)] then
 			local rootClassId = yourData[tostring(index)].id;
+			local rootClassVersion = yourData[tostring(index)].vn;
 			if currentDownloads[rootClassId] then
 				local percent = currentDownloads[rootClassId] * 100;
-				slot.details:SetFormattedText("Downloading: %0.1f %%", percent); -- TODO: locals
-			else
+				slot.details:SetFormattedText(loc("IT_EX_DOWNLOADING"), percent);
+			elseif classExists(rootClassId) and getClass(rootClassId).MD.V >= rootClassVersion then
 				local class = getItemClass(rootClassId);
-				slot.details:SetText(class.MD.CB or "");
+				local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
+				slot.details:SetText(secLevelText);
+				if class.securityLevel ~= SECURITY_LEVEL.HIGH then
+					slot.security:Show();
+					setTooltipForSameFrame(slot.security, "TOP", 0, 5, secLevelText, TRP3_API.security.getSecurityDetailText(class.securityLevel)
+						.. "\n\n|cffffff00" .. loc("SEC_LEVEL_DETAIL2"));
+				end
 			end
 		end
 	end
 	for index, slot in pairs(exchangeFrame.leftSlots) do
 		if myData[tostring(index)] then
-			local class = getItemClass(myData[tostring(index)].id);
-			slot.details:SetText(class.MD.CB or "");
+			local rootClassId = myData[tostring(index)].id;
+			local class = getItemClass(rootClassId);
+			local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
+			slot.details:SetText(secLevelText);
+			setTooltipForSameFrame(slot.security, "TOP", 0, 5, secLevelText, TRP3_API.security.getSecurityDetailText(class.securityLevel)
+				.. "\n\n|cffffff00" .. loc("SEC_LEVEL_DETAIL"));
 		end
 	end
 end
@@ -113,6 +132,10 @@ local function decorateSlot(slot, slotData, count, class)
 	end
 
 	return class.BA.VA or slotData.v or 0, class.BA.WE or slotData.w or 0;
+end
+
+local function estimateSendingTime(messageCount)
+	return (messageCount - 16) / 3;
 end
 
 local function drawUI()
@@ -159,15 +182,26 @@ local function drawUI()
 			local dataIndex = tostring(index);
 			slot:Hide();
 			slot.details:SetText("");
+			slot.download:Hide();
 			if yourData[dataIndex] then
 				local slotData = yourData[dataIndex];
 				local count = slotData.c.count or 1;
 				local rootClassId = slotData.id;
 				local rootClassVersion = tonumber(slotData.vn or 0);
+				local class = getItemClass(slotData.c.id);
 				if not classExists(rootClassId) or getClass(rootClassId).MD.V < rootClassVersion then
 					atLeastOneBad = true;
+					class.BA.DE = loc("IT_EX_SLOT_DOWNLOAD"):format(exchangeFrame.targetID);
+					if slotData.si >= MAX_MESSAGES_SIZE and not currentDownloads[rootClassId] then
+						slot.download:Show();
+						slot.download:SetScript("OnClick", function()
+							sendItemDataRequest(rootClassId, rootClassVersion);
+							drawUI();
+						end);
+						setTooltipForSameFrame(slot.download, "TOP", 0, 5,
+							loc("IT_EX_DOWNLOAD"), loc("IT_EX_DOWNLOAD_TT"):format(slotData.si, estimateSendingTime(slotData.si), exchangeFrame.targetID));
+					end
 				end
-				local class = getItemClass(slotData.c.id);
 				local value, weight = decorateSlot(slot, slotData, count, class);
 
 				slot.slotInfo = slotData.c or EMPTY;
@@ -263,6 +297,7 @@ local function addToExchange(container, slotID)
 				qa = itemClass.BA.QA,
 				id = rootClassID,
 				vn = rootClass.MD.V,
+				si = Comm.estimateStructureLoad(rootClass);
 			};
 			Utils.table.copy(exchangeFrame.myData[index].c, slot);
 			found = true;
@@ -348,7 +383,12 @@ function sendCurrentState()
 	Comm.sendObject(UPDATE_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 end
 
-local function sendItemDataRequest(rootClassId, rootClassVersion)
+function sendItemDataRequest(rootClassId, rootClassVersion)
+	if currentDownloads[rootClassId] then
+		-- We already ask for data
+		return;
+	end
+
 	local reservedMessageID = Comm.getMessageIDAndIncrement();
 	local request = {
 		id = rootClassId,
@@ -365,6 +405,7 @@ local function sendItemDataRequest(rootClassId, rootClassVersion)
 		end
 	end);
 	Comm.sendObject(DATA_EXCHANGE_QUERY_PREFIX, request, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+	reloadDownloads();
 end
 
 local function receivedDataRequest(request, sender)
@@ -389,7 +430,10 @@ local function receivedDataResponse(response, sender)
 	if not classExists(classID) or getClass(classID).MD.V < class.MD.V then
 		TRP3_DB.exchange[classID] = class;
 		TRP3_API.extended.registerObject(classID, class, 0);
+		TRP3_API.security.computeSecurity(classID, class);
 	end
+
+	currentDownloads[classID] = nil;
 
 	drawUI();
 end
@@ -444,7 +488,9 @@ local function receivedUpdate(data, sender)
 			local rootClassVersion = tonumber(slot.vn) or 0;
 
 			if not classExists(rootClassId) or getClass(rootClassId).MD.V < rootClassVersion then
-				sendItemDataRequest(rootClassId, rootClassVersion);
+				if slot.si < MAX_MESSAGES_SIZE then
+					sendItemDataRequest(rootClassId, rootClassVersion);
+				end
 			end
 		end
 	end
@@ -486,15 +532,17 @@ function exchangeFrame.init()
 		slot:SetScript("OnEnter", function(self)
 			TRP3_API.inventory.showItemTooltip(self, self.slotInfo, self.itemClass);
 		end);
+		slot.download:Hide();
 	end
 	for index, slot in pairs(exchangeFrame.rightSlots) do
 		slot:SetScript("OnEnter", function(self)
 			TRP3_API.inventory.showItemTooltip(self, self.slotInfo, self.itemClass);
 		end);
+		slot.download:SetText(loc("IT_EX_DOWNLOAD"));
 	end
 
-	exchangeFrame.left.empty:SetText("You can drag and drop items here."); -- TODO: locals
-	exchangeFrame.right.empty:SetText("Vide"); -- TODO: locals
+	exchangeFrame.left.empty:SetText(loc("IT_EX_EMPTY_DRAG"));
+	exchangeFrame.right.empty:SetText(loc("IT_EX_EMPTY"));
 
 	exchangeFrame.cancel:SetText(CANCEL);
 	exchangeFrame.cancel:SetScript("OnClick", function() cancelExchange() end);

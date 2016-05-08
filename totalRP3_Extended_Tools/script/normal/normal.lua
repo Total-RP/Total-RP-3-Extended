@@ -24,19 +24,17 @@ local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-
+local getEffectSecurity = TRP3_API.security.getEffectSecurity;
 local editor = TRP3_ScriptEditorNormal;
 local refreshList, toolFrame, unlockElements;
+
+local securityLevel = TRP3_API.security.SECURITY_LEVEL;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- New element
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local ELEMENT_TYPE = {
-	EFFECT = "list",
-	CONDITION = "branch",
-	DELAY = "delay"
-}
+local ELEMENT_TYPE = TRP3_DB.elementTypes;
 
 local function setCurrentElementFrame(frame, title, noConfirm)
 	assert(frame, "Editor is null.")
@@ -224,11 +222,11 @@ local function decorateEffect(scriptStepFrame, effectData)
 	if effect.secured then
 		tooltip = tooltip .. "\n\n|cffffff00" .. loc("WO_SECURITY") .. ":\n";
 		local format = "%s:|r %s";
-		if effect.secured == TRP3_API.script.security.HIGH then
+		if effect.secured == securityLevel.HIGH then
 			tooltip = tooltip .. format:format("|cff00ff00" .. loc("WO_SECURITY_HIGH"), loc("WO_SECURITY_HIGH_DETAILS"));
-		elseif effect.secured == TRP3_API.script.security.MEDIUM then
+		elseif effect.secured == securityLevel.MEDIUM then
 			tooltip = tooltip .. format:format("|cffff9900" .. loc("WO_SECURITY_NORMAL"), loc("WO_SECURITY_NORMAL_DETAILS"));
-		elseif effect.secured == TRP3_API.script.security.LOW then
+		elseif effect.secured == securityLevel.LOW then
 			tooltip = tooltip .. format:format("|cffff0000" .. loc("WO_SECURITY_LOW"), loc("WO_SECURITY_LOW_DETAILS"));
 		end
 	end
@@ -264,14 +262,6 @@ local function decorateElement(scriptStepFrame)
 	end
 end
 
-local function getEffectSecurity(effectID)
-	local effect = TRP3_API.script.getEffect(effectID);
-	if effect then
-		return effect.secured or TRP3_API.script.security.HIGH;
-	end
-	return TRP3_API.script.security.LOW;
-end
-
 function unlockElements()
 	for _, element in pairs(editor.list.listElement) do
 		element.lock = nil;
@@ -290,7 +280,7 @@ function refreshList()
 	unlockElements();
 
 	local stepID = 1;
-	local workflowSecurity = TRP3_API.script.security.HIGH;
+	local workflowSecurity = securityLevel.HIGH;
 	local previous;
 	while data[tostring(stepID)] do
 		local scriptStep = data[tostring(stepID)];
@@ -322,11 +312,7 @@ function refreshList()
 		decorateElement(scriptStepFrame);
 		if scriptStep.t == ELEMENT_TYPE.EFFECT then
 			local effectSecurity = getEffectSecurity(scriptStep.e[1].id);
-			if effectSecurity == TRP3_API.script.security.MEDIUM and workflowSecurity == TRP3_API.script.security.HIGH then
-				workflowSecurity = TRP3_API.script.security.MEDIUM;
-			elseif effectSecurity == TRP3_API.script.security.LOW then
-				workflowSecurity = TRP3_API.script.security.LOW;
-			end
+			workflowSecurity = math.min(workflowSecurity, effectSecurity);
 		end
 
 		scriptStepFrame:SetPoint("LEFT", 0, 0);
@@ -343,9 +329,9 @@ function refreshList()
 		previous = scriptStepFrame;
 	end
 
-	if workflowSecurity == TRP3_API.script.security.HIGH then
+	if workflowSecurity == securityLevel.HIGH then
 		editor.workflow.security:SetText(("%s: %s"):format(loc("WO_WO_SECURITY"), "|cff00ff00" .. loc("WO_SECURITY_HIGH")));
-	elseif workflowSecurity == TRP3_API.script.security.MEDIUM then
+	elseif workflowSecurity == securityLevel.MEDIUM then
 		editor.workflow.security:SetText(("%s: %s"):format(loc("WO_WO_SECURITY"), "|cffff9900" .. loc("WO_SECURITY_NORMAL")));
 	else
 		editor.workflow.security:SetText(("%s: %s"):format(loc("WO_WO_SECURITY"), "|cffff0000" .. loc("WO_SECURITY_LOW")));

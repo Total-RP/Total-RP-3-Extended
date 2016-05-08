@@ -23,19 +23,33 @@
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="name" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="[name]">
-					<Size x="200" y="10"/>
+					<Size x="150" y="10"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-3"/>
 					</Anchors>
 				</FontString>
 				<FontString parentKey="details" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[details]">
-					<Size x="200" y="10"/>
+					<Size x="138" y="10"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.name" x="0" y="-5"/>
 					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
+		<Frames>
+			<Button parentKey="download" inherits="TRP3_CommonButton">
+				<Size x="125" y="20"/>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="LEFT" relativeKey="$parent.details" x="0" y="-4"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="security" inherits="TRP3_CommonButton" text="?">
+				<Size x="20" y="20"/>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.details" x="0" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
 	</Button>
 
 	<Frame name="TRP3_ExchangeFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">

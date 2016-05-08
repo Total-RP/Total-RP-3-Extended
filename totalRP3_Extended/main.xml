@@ -23,12 +23,15 @@
 	
 	<Include file="libs\libs.xml"/>
 
+	<!-- Main -->
+	<Script file="main.lua"/>
+
+	<!-- Security system -->
+	<Script file="security.lua"/>
+
 	<Script file="script\script_generation.lua"/>
 	<Script file="script\script_operands.lua"/>
 	<Script file="script\script_effects.lua"/>
-
-	<!-- Main -->
-	<Script file="main.lua"/>
 	
 	<!-- Locales -->
 	<Script file="locale\locale_enEN.lua"/>

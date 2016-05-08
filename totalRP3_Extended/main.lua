@@ -50,8 +50,15 @@ TRP3_DB = {
 		QUICK = "QU",
 		NORMAL = "NO",
 		EXPERT = "EX",
+	},
+	elementTypes = {
+		EFFECT = "list",
+		CONDITION = "branch",
+		DELAY = "delay"
 	}
 };
+
+
 
 local missing = {
 	missing = true,
@@ -159,6 +166,24 @@ local function removeObject(objectFullID)
 	Log.log("Removed object: " .. objectFullID);
 end
 TRP3_API.extended.removeObject = removeObject;
+
+local function iterateObject(objectID, object, callback)
+	callback(objectID, object);
+
+	-- Inner object
+	for childID, childClass in pairs(object.IN or EMPTY) do
+		iterateObject(childID, childClass, callback)
+	end
+	-- Quest
+	for questID, quest in pairs(object.QE or EMPTY) do
+		iterateObject(questID, quest, callback)
+	end
+	-- Steps
+	for stepID, step in pairs(object.ST or EMPTY) do
+		iterateObject(stepID, step, callback)
+	end
+end
+TRP3_API.extended.iterateObject = iterateObject;
 
 local function registerDB(db, count, registerTo)
 	-- Register object

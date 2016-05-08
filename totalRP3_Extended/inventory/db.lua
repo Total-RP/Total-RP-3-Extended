@@ -18,6 +18,7 @@
 
 TRP3_DB.inner.main = {
 	hideFromList = true,
+	securityLevel = 3,
 	TY = TRP3_DB.types.ITEM,
 	BA = {
 		NA = "Main inventory",
@@ -27,6 +28,7 @@ TRP3_DB.inner.main = {
 
 TRP3_DB.inner.bag = {
 	TY = TRP3_DB.types.ITEM,
+	securityLevel = 3,
 	["CO"] = {
 		["SC"] = "4",
 		["MW"] = 0,
@@ -52,6 +54,7 @@ TRP3_DB.inner.bag = {
 }
 
 TRP3_DB.inner.rifle = {
+	securityLevel = 3,
 	["MD"] = {
 		["CD"] = "28/04/16 17:54:05",
 		["CB"] = "Akraluk-KirinTor",
@@ -265,6 +268,7 @@ TRP3_DB.inner.rifle = {
 };
 
 TRP3_DB.inner.letterexample = {
+	securityLevel = 3,
 	["US"] = {
 		["AC"] = "Read the letter",
 		["SC"] = "onUse",

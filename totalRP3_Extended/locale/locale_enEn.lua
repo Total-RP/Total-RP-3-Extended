@@ -41,6 +41,12 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_INV_ERROR_CANT_HERE = "You can't place items here.",
 	IT_INV_ERROR_CANT_DESTROY_LOOT = "You can't destroy loot items.",
 	IT_CON_TT_MISSING_CLASS = "Missing item class ID",
+	IT_EX_DOWNLOAD = "Download",
+	IT_EX_DOWNLOAD_TT = "|cffff9900This item is %s messages long and would take at minimum %.1f seconds to be downloaded (in the best condition).\n\n|cff00ff00Requests %s to send you all the data about this item.\n\n|cffff9900You can't finish a trade if you don't have all the updated information about all items you would receive.",
+	IT_EX_EMPTY_DRAG = "You can drag and drop items here.",
+	IT_EX_EMPTY = "Nothing to trade",
+	IT_EX_SLOT_DOWNLOAD = "|rYou don't have the information about this item.\n\n|cff00ff00If the item is not too large, TRP3 will download it automatically from %s.\n\n|cffff9900If it is too large, you can manually request its information with the download button, but keep in mind that it could take some time to be downloaded.",
+	IT_EX_DOWNLOADING = "Downloading: %0.1f %%",
 
 	-- INVENTORY PAGE
 	INV_PAGE_CAMERA_CONFIG = "Camera parameters:\nRotation: %.2f\nZoom: %.2f\nPosition: %.2f, %.2f",
@@ -50,6 +56,17 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	INV_PAGE_QUICK_SLOT = "Quick slot",
 	INV_PAGE_QUICK_SLOT_TT = "This slot will be used as primary container.",
 	INV_PAGE_ITEM_LOCATION = "Item location on character",
+
+	-- SEC
+	SEC_LEVEL = "Security level",
+	SEC_LEVEL_DETAIL = "Click to see a detail of the used unsecured scripts.",
+	SEC_LEVEL_DETAIL2 = "Click to see a detail of the used unsecured scripts and configure which one can be executed.",
+	SEC_LOW = "Low",
+	SEC_LOW_TT = "This item, or one of its related object, uses one or more unsecured scripts that can have malicious effects.",
+	SEC_MEDIUM = "Medium",
+	SEC_MEDIUM_TT = "This item, or one of its related object, uses one or more unsecured scripts that can have undesirable effects.",
+	SEC_HIGH = "High",
+	SEC_HIGH_TT = "This item and all of its related object are secured and don't use any malicious or undesirable effects.",
 
 	-- LOOT
 	LOOT = "Loot",
