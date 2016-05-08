@@ -217,6 +217,7 @@ local function onSave(editor)
 	object.MD.SD = date("%d/%m/%y %H:%M:%S");
 	object.MD.SB = Globals.player_id;
 
+	TRP3_API.security.computeSecurity(rootClassID, object);
 	TRP3_API.extended.registerObject(rootClassID, object, 0);
 
 	goToPage(fullClassID, true);

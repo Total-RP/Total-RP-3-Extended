@@ -327,6 +327,13 @@ local function onInit()
 			locale.localeContent[localeKey] = text;
 		end
 	end
+
+	if not TRP3_Security then
+		TRP3_Security = {
+			global = {};
+			specific = {};
+		};
+	end
 end
 
 local function onStart()

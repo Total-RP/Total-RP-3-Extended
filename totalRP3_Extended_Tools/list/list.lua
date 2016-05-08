@@ -31,6 +31,8 @@ local ToolFrame;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
 local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
 
+local SECURITY_LEVEL = TRP3_API.security.SECURITY_LEVEL;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: util methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -118,7 +120,8 @@ end
 local color = "|cffffff00";
 local fieldFormat = "%s: " .. color .. "%s|r";
 
-local function getMetadataTooltipText(rootID, metadata, isRoot, innerID)
+local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID)
+	local metadata = rootClass.MD or EMPTY;
 	local text = ""
 
 	if isRoot then
@@ -126,6 +129,7 @@ local function getMetadataTooltipText(rootID, metadata, isRoot, innerID)
 		text = text .. "\n" .. fieldFormat:format(loc("ROOT_VERSION"), metadata.V or 1);
 		text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
 		text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_ON"), metadata.CD or "?");
+		text = text .. "\n" .. fieldFormat:format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
 	else
 		text = text .. fieldFormat:format(loc("SPECIFIC_INNER_ID"), "|cff00ffff" .. innerID);
 	end
@@ -185,7 +189,7 @@ function refresh()
 			fullID = objectID,
 			isOpen = isOpen,
 			hasChildren = hasChildren,
-			metadataTooltip = getMetadataTooltipText(parts[1], rootClass.MD or EMPTY, objectID == parts[#parts], parts[#parts]),
+			metadataTooltip = getMetadataTooltipText(parts[1], rootClass, objectID == parts[#parts], parts[#parts]),
 		}
 
 	end
