@@ -61,6 +61,13 @@ local EFFECTS = {
 		env = {
 			SendChatMessage = "SendChatMessage",
 		},
+		securedCodeReplacementFunc = function (args)
+			local text = args[1] or "";
+			return ("message(\"%s\", %s); lastEffectReturn = 0;"):format(text, 1);
+		end,
+		securedEnv = {
+			message = "TRP3_API.utils.message.displayMessage",
+		},
 		secured = security.LOW,
 	},
 	["speech_npc"] = {
@@ -72,6 +79,15 @@ local EFFECTS = {
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
+		},
+		securedCodeReplacementFunc = function (args)
+			local name = args[1] or "";
+			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
+			local text = args[3] or "";
+			return ("message(\"%s\", %s); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text), 1);
+		end,
+		securedEnv = {
+			message = "TRP3_API.utils.message.displayMessage",
 		},
 		secured = security.LOW,
 	},
@@ -133,6 +149,15 @@ local EFFECTS = {
 		env = {
 			playLocalSoundID = "TRP3_API.utils.music.playLocalSoundID",
 		},
+		securedCodeReplacementFunc = function (args)
+			local soundID = tonumber(args[2] or 0);
+			local channel = args[1] or "SFX";
+			local source = "Script"; -- TODO: get source
+			return ("lastEffectReturn = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
+		end,
+		securedEnv = {
+			playSoundID = "TRP3_API.utils.music.playSoundID",
+		},
 		secured = security.MEDIUM,
 	},
 
@@ -146,6 +171,13 @@ local EFFECTS = {
 		env = {
 			playLocalMusic = "TRP3_API.utils.music.playLocalMusic",
 		},
+		securedCodeReplacementFunc = function (args)
+			local path = (args[1] or ""):gsub("\\", "\\\\");
+			return ("lastEffectReturn = playMusic(\"%s\");"):format(path);
+		end,
+		securedEnv = {
+			playMusic = "TRP3_API.utils.music.playMusic",
+		},
 		secured = security.MEDIUM,
 	},
 
@@ -158,6 +190,9 @@ local EFFECTS = {
 		env = {
 			DismissCompanion = "DismissCompanion",
 		},
+		securedCodeReplacementFunc = function ()
+			return "lastEffectReturn = 0;";
+		end,
 		secured = security.MEDIUM,
 	},
 

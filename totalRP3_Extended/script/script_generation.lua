@@ -20,7 +20,7 @@
 TRP3_API.script = {};
 
 local EMPTY = TRP3_API.globals.empty;
-local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
+local assert, type, tostring, error, tonumber, pairs, unpack, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, unpack, wipe, strsplit;
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
@@ -66,7 +66,7 @@ end
 -- Writer
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local CURRENT_CODE, CURRENT_INDENT, CURRENT_STRUCTURE, CURRENT_SECURITY_CONTEXT;
+local CURRENT_CODE, CURRENT_INDENT, CURRENT_STRUCTURE, CURRENT_CLASS_ID;
 local CURRENT_ENVIRONMENT = {};
 local INDENT_CHAR = "\t";
 
@@ -247,13 +247,15 @@ local function writeEffect(effectStructure)
 	local effectInfo = getEffectInfo(effectStructure.id);
 	assert(effectInfo, "Unknown effect ID: " .. effectStructure.id);
 
-	local effectCode;
+	local effectCode, secured;
 
---	if effectInfo.secured and effectInfo.secured ~= TRP3_API.script.security.HIGH then
-		-- TODO: security system
---		effectCode = "lastEffectReturn = protected();";
---		CURRENT_ENVIRONMENT["protected"] = "TRP3_API.script.protected";
---	else
+	if effectInfo.secured and effectInfo.secured ~= TRP3_API.security.SECURITY_LEVEL.HIGH then
+		secured = TRP3_API.security.resolveEffectSecurity(CURRENT_CLASS_ID, effectStructure.id);
+	else
+		secured = true;
+	end
+
+	if secured then
 		-- Register operand environment
 		if effectInfo.env then
 			for map, g in pairs(effectInfo.env) do
@@ -261,7 +263,19 @@ local function writeEffect(effectStructure)
 			end
 		end
 		effectCode = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
---	end
+	elseif effectInfo.securedCodeReplacementFunc and effectInfo.securedEnv then
+		-- Register operand environment
+		if effectInfo.securedEnv then
+			for map, g in pairs(effectInfo.securedEnv) do
+				CURRENT_ENVIRONMENT[map] = g;
+			end
+		end
+		effectCode = effectInfo.securedCodeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
+	else
+		-- TODO: better than that
+		effectCode = "print('Effect blocked: " .. effectStructure.id  .. "')";
+		CURRENT_ENVIRONMENT["print"] = "print";
+	end
 
 	if effectStructure.cond and #effectStructure.cond > 0 then
 		startIf(writeCondition(effectStructure.cond, effectStructure.condID));
@@ -281,7 +295,7 @@ end
 local function writeEffectList(listStructure)
 	assert(type(listStructure.e) == "table", "listStructure.e is not a table");
 
-	for index, effect in pairs(listStructure.e) do
+	for _, effect in pairs(listStructure.e) do
 		writeEffect(effect);
 	end
 
@@ -293,8 +307,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LEVEL 4  : Branching
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local BRANCHING_COND = "if %s then";
 
 local function writeBranching(branchStructure)
 	assert(type(branchStructure.b) == "table", "branchStructure.b is not a table");
@@ -379,7 +391,6 @@ end
 
 local BASE_ENV = { ["tostring, EMPTY, delayed, eval"] = "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval" };
 local IMPORT_PATTERN = "local %s = %s;";
-local EMPTY = TRP3_API.globals.empty;
 
 local function writeImports()
 	for alias, global in pairs(CURRENT_ENVIRONMENT) do
@@ -390,7 +401,8 @@ local function writeImports()
 	end
 end
 
-local function generateCode(effectStructure, securityContext)
+local function generateCode(effectStructure, classID)
+	CURRENT_CLASS_ID = classID;
 	CURRENT_CODE = "";
 	CURRENT_INDENT = "";
 
@@ -398,7 +410,6 @@ local function generateCode(effectStructure, securityContext)
 	tableCopy(CURRENT_ENVIRONMENT, BASE_ENV);
 
 	CURRENT_STRUCTURE = effectStructure;
-	CURRENT_SECURITY_CONTEXT = securityContext or EMPTY;
 
 	writeLine("local func = function(args)");
 	addIndent();
@@ -416,9 +427,9 @@ local function generateCode(effectStructure, securityContext)
 	return CURRENT_CODE;
 end
 
-local function generate(effectStructure, securityContext)
+local function generate(effectStructure, classID)
 	log("Generate FX", logLevel.DEBUG);
-	local code = generateCode(effectStructure, securityContext);
+	local code = generateCode(effectStructure, classID);
 
 	-- Generating factory
 	local func, errorMessage = loadstring(code, "Generated code");
@@ -464,8 +475,8 @@ local MOCK_STRUCTURE = {
 	},
 }
 
-local function getFunction(structure, securityContext)
-	local functionFactory, code = generate(structure, securityContext);
+local function getFunction(structure, classID)
+	local functionFactory, code = generate(structure, classID);
 
 	if DEBUG then
 		TRP3_DEBUG_CODE_FRAME:Show();
@@ -477,10 +488,9 @@ local function getFunction(structure, securityContext)
 	end
 end
 
-TRP3_API.script.getFunction = getFunction;
-
+local pcall = pcall;
 local function executeFunction(func, args)
-	local status, ret, conditions = pcall(func, args);
+	local status, ret, _ = pcall(func, args);
 	if status then
 		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
@@ -489,21 +499,49 @@ local function executeFunction(func, args)
 		log(tostring(ret), logLevel.WARN);
 	end
 end
-
 TRP3_API.script.executeFunction = executeFunction;
 
-local function executeClassScript(scriptID, classScripts, args)
-	if scriptID and classScripts then
-		assert(classScripts[scriptID], "Unknown script: " .. tostring(scriptID));
-		local class = classScripts[scriptID];
-		if not class.c then -- Not compiled yet
-			class.c = getFunction(class.ST);
+local compiledScript = {}
+
+local function executeClassScript(scriptID, classScripts, args, innerClassID)
+	assert(scriptID and classScripts, "Missing arguments.");
+	assert(innerClassID, "ClassID is needed for security purpose.");
+	assert(classScripts[scriptID], "Unknown script: " .. tostring(scriptID));
+
+	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, innerClassID)};
+	local classID = parts[1];
+	local class = classScripts[scriptID];
+
+	-- Not compiled yet
+	if not compiledScript[innerClassID] or not compiledScript[innerClassID][scriptID] then
+		if not compiledScript[innerClassID] then
+			compiledScript[innerClassID] = {};
 		end
-		return executeFunction(class.c, args);
+		compiledScript[innerClassID][scriptID] = getFunction(class.ST, classID);
+	end
+	return executeFunction(compiledScript[innerClassID][scriptID], args);
+end
+TRP3_API.script.executeClassScript = executeClassScript;
+
+function TRP3_API.script.clearCompilation(classID)
+	if compiledScript[classID] then
+		wipe(compiledScript[classID]);
+	end
+	compiledScript[classID] = nil;
+end
+
+function TRP3_API.script.clearRootCompilation(rootClassID)
+	for classID, compilations in pairs(compiledScript) do
+		if classID:sub(1, rootClassID:len()) == rootClassID then
+			wipe(compiledScript[classID]);
+			compiledScript[classID] = nil;
+		end
 	end
 end
 
-TRP3_API.script.executeClassScript = executeClassScript;
+function TRP3_API.script.clearAllCompilations()
+	wipe(compiledScript);
+end
 
 function TRP3_Generate()
 	print(tostring(executeFunction(getFunction(MOCK_STRUCTURE))));

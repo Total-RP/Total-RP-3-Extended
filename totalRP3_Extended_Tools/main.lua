@@ -208,8 +208,6 @@ local function onSave(editor)
 
 	local rootDraft = toolFrame.rootDraft;
 
-	-- TODO: Optimize data
-
 	local object = getClass(rootClassID);
 	wipe(object);
 	Utils.table.copy(object, rootDraft);
@@ -219,6 +217,8 @@ local function onSave(editor)
 
 	TRP3_API.security.computeSecurity(rootClassID, object);
 	TRP3_API.extended.registerObject(rootClassID, object, 0);
+	TRP3_API.script.clearRootCompilation(rootClassID);
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 
 	goToPage(fullClassID, true);
 end

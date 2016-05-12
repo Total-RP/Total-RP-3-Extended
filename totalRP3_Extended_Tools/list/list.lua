@@ -176,13 +176,14 @@ function refresh()
 		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len()) == objectID;
 		local hasChildren = isOpen or objectHasChildren(class);
 		local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
+		local link = TRP3_API.inventory.getItemLink(class);
 
 		-- idData is wipe frequently: DO NOT STORE PERSISTENT DATA IN IT !!!
 		idData[index] = {
 			type = class.TY,
 			mode = (class.MD and class.MD.MO) or TRP3_DB.modes.NORMAL,
 			icon = icon,
-			text = name,
+			text = link,
 			text2 = description,
 			depth = depth,
 			ID = parts[#parts],
@@ -207,7 +208,7 @@ function refresh()
 			tinsert(linesWidget, lineWidget);
 		end
 
-		local tt = ("|cff00ff00%s: |r\"%s|r\""):format(getTypeLocale(idData.type) or UNKNOWN, idData.text or UNKNOWN);
+		local tt = ("|cff00ff00%s: %s|r"):format(getTypeLocale(idData.type) or UNKNOWN, idData.text or UNKNOWN);
 		lineWidget.Text:SetText(tt);
 
 		local IDType = idData.ID == idData.fullID and loc("ROOT_GEN_ID") or loc("SPECIFIC_INNER_ID");
@@ -339,6 +340,7 @@ end
 local ACTION_FLAG_DELETE = "1";
 local ACTION_FLAG_ADD = "2";
 local ACTION_FLAG_COPY_ID = "3";
+local ACTION_FLAG_SECURITY = "4";
 
 local function onLineActionSelected(value, button)
 	local action = value:sub(1, 1);
@@ -353,6 +355,8 @@ local function onLineActionSelected(value, button)
 		TRP3_API.inventory.addItem(nil, objectID);
 	elseif action == ACTION_FLAG_COPY_ID then
 		TRP3_API.popup.showTextInputPopup(loc("EDITOR_ID_COPY_POPUP"), nil, nil, objectID);
+	elseif action == ACTION_FLAG_SECURITY then
+		TRP3_API.security.showSecurityDetailFrame(objectID);
 	end
 end
 
@@ -368,6 +372,11 @@ function onLineRightClick(lineWidget, data)
 		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID});
 	end
 	tinsert(values, {loc("EDITOR_ID_COPY"), ACTION_FLAG_COPY_ID .. data.fullID});
+
+	if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+		tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.fullID});
+	end
+
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
 end
 

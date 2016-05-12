@@ -386,9 +386,6 @@ editor.refresh = refresh;
 function editor.storeData()
 	assert(editor.scriptID, "No scriptID for storeData.");
 
-	-- Remove precedent compiled script
-	toolFrame.specificDraft.SC[editor.scriptID].c = nil; -- TODO: in optimization
-
 	-- Make connection between elements
 	for i = 1, editor.list.size, 1 do
 		local frame = editor.list.listElement[i];

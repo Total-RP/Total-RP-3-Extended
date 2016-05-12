@@ -330,8 +330,10 @@ local function onInit()
 
 	if not TRP3_Security then
 		TRP3_Security = {
-			global = {};
-			specific = {};
+			global = {}; -- Effect group: keys are effectgroupID, value boolean
+			specific = {}; -- Specific effect for a specific classID
+			sender = {}; -- keys are classID, values are senderID
+			whitelist = {}; -- Keys are senderID, value boolean
 		};
 	end
 end
@@ -349,6 +351,7 @@ local function onStart()
 	Log.log(("Registred %s total ceations"):format(countInner + countExchange + countMy));
 
 	-- Start other systems
+	TRP3_API.security.initSecurity();
 	TRP3_SoundsHistoryFrame.initSound();
 	TRP3_API.inventory.onStart();
 	TRP3_API.quest.onStart();

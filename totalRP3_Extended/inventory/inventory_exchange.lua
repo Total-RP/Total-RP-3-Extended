@@ -75,6 +75,7 @@ local function reloadDownloads()
 	local myData = exchangeFrame.myData;
 	for index, slot in pairs(exchangeFrame.rightSlots) do
 		slot.security:Hide();
+		slot.details:SetText("");
 		if yourData[tostring(index)] then
 			local rootClassId = yourData[tostring(index)].id;
 			local rootClassVersion = yourData[tostring(index)].vn;
@@ -83,24 +84,46 @@ local function reloadDownloads()
 				slot.details:SetFormattedText(loc("IT_EX_DOWNLOADING"), percent);
 			elseif classExists(rootClassId) and getClass(rootClassId).MD.V >= rootClassVersion then
 				local class = getItemClass(rootClassId);
-				local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
-				slot.details:SetText(secLevelText);
 				if class.securityLevel ~= SECURITY_LEVEL.HIGH then
-					slot.security:Show();
-					setTooltipForSameFrame(slot.security, "TOP", 0, 5, secLevelText, TRP3_API.security.getSecurityDetailText(class.securityLevel)
-						.. "\n\n|cffffff00" .. loc("SEC_LEVEL_DETAIL2"));
+					-- Determine if there is at least one blocked effect
+					local secDetails = TRP3_API.security.computeSecurity(rootClassId);
+					local atLeastOneBlock = false;
+					for effectGroupID, _ in pairs(secDetails) do
+						if not TRP3_API.security.resolveEffectGroupSecurity(rootClassId, effectGroupID) then
+							atLeastOneBlock = true;
+							break;
+						end
+					end
+
+					-- If at least one effectgroup is blocked, only then we bother the user
+					if atLeastOneBlock then
+						local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
+						slot.details:SetText("|cffff0000" .. loc("SEC_EFFECT_BLOCKED"));
+						slot.security:Show();
+						setTooltipForSameFrame(slot.security, "TOP", 0, 5, loc("SEC_EFFECT_BLOCKED"), loc("SEC_EFFECT_BLOCKED_TT"));
+						slot.security:SetScript("OnClick", function()
+							TRP3_API.security.showSecurityDetailFrame(rootClassId, exchangeFrame);
+						end);
+					end
+
 				end
 			end
 		end
 	end
 	for index, slot in pairs(exchangeFrame.leftSlots) do
 		if myData[tostring(index)] then
-			local rootClassId = myData[tostring(index)].id;
-			local class = getItemClass(rootClassId);
-			local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
-			slot.details:SetText(secLevelText);
-			setTooltipForSameFrame(slot.security, "TOP", 0, 5, secLevelText, TRP3_API.security.getSecurityDetailText(class.securityLevel)
-				.. "\n\n|cffffff00" .. loc("SEC_LEVEL_DETAIL"));
+			slot.details:SetText("");
+			slot.security:Hide();
+
+--			local rootClassId = myData[tostring(index)].id;
+--			local class = getItemClass(rootClassId);
+--			local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
+--			slot.details:SetText(secLevelText);
+--			setTooltipForSameFrame(slot.security, "TOP", 0, 5, secLevelText, TRP3_API.security.getSecurityDetailText(class.securityLevel)
+--				.. "\n\n|cffffff00" .. loc("SEC_LEVEL_DETAIL"));
+--			slot.security:SetScript("OnClick", function()
+--				TRP3_API.security.showSecurityDetailFrame(rootClassId, exchangeFrame);
+--			end);
 		end
 	end
 end
@@ -429,8 +452,11 @@ local function receivedDataResponse(response, sender)
 	-- Last check that we don't got it in the meantime
 	if not classExists(classID) or getClass(classID).MD.V < class.MD.V then
 		TRP3_DB.exchange[classID] = class;
-		TRP3_API.extended.registerObject(classID, class, 0);
 		TRP3_API.security.computeSecurity(classID, class);
+		TRP3_API.extended.registerObject(classID, class, 0);
+		TRP3_API.script.clearRootCompilation(classID);
+		TRP3_API.security.registerSender(classID, sender);
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 	end
 
 	currentDownloads[classID] = nil;
@@ -556,4 +582,10 @@ function exchangeFrame.init()
 	Comm.registerProtocolPrefix(DATA_EXCHANGE_QUERY_PREFIX, receivedDataRequest);
 	Comm.registerProtocolPrefix(SEND_DATA_QUERY_PREFIX, receivedDataResponse);
 	Comm.registerProtocolPrefix(FINISH_EXCHANGE_QUERY_PREFIX, receivedFinish);
+
+	TRP3_API.events.listenToEvent(TRP3_API.security.EVENT_SECURITY_CHANGED, function(arg)
+		if exchangeFrame:IsVisible() then
+			reloadDownloads();
+		end
+	end);
 end

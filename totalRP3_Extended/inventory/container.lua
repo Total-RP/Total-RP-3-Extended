@@ -415,7 +415,7 @@ function loadContainerPageSlots(containerFrame)
 		slot.slotID = tostring(slotCounter);
 		if containerContent[slot.slotID] then
 			slot.info = containerContent[slot.slotID];
-			slot.class = getClass(containerContent[slot.slotID].id);
+			slot.class = getClass(slot.info.id);
 		else
 			slot.info = nil;
 			slot.class = nil;
@@ -425,12 +425,6 @@ function loadContainerPageSlots(containerFrame)
 	end
 end
 TRP3_API.inventory.loadContainerPageSlots = loadContainerPageSlots;
-
-local function refreshContainers()
-	for _, containerFrame in pairs(containerInstances) do
-		loadContainerPageSlots(containerFrame);
-	end
-end
 
 local function containerFrameUpdate(self, elapsed)
 	if not self.info or not self.class then
@@ -573,7 +567,7 @@ local function initContainerInstance(containerFrame, size)
 	containerFrame.containerSize = size;
 	-- Listen to refresh event
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, function(containerInfo)
-		if containerFrame:IsVisible() and containerFrame.info == containerInfo then
+		if containerFrame:IsVisible() and (containerInfo == nil or containerFrame.info == containerInfo) then
 			loadContainerPageSlots(containerFrame);
 		end
 	end);

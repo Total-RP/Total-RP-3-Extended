@@ -27,6 +27,7 @@
 	<Script file="main.lua"/>
 
 	<!-- Security system -->
+	<Include file="security.xml"/>
 	<Script file="security.lua"/>
 
 	<Script file="script\script_generation.lua"/>

@@ -206,7 +206,7 @@ local function useContainerSlot(slotButton, containerFrame)
 			end
 			containerFrame.info.content[slotButton.slotID] = nil;
 		elseif slotButton.class and isUsableByClass(slotButton.class) then
-			local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, slotInfo = slotButton.info, containerInfo = containerFrame.info});
+			local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, slotInfo = slotButton.info, containerInfo = containerFrame.info}, slotButton.info.id);
 		end
 	end
 end
@@ -367,9 +367,6 @@ function TRP3_API.inventory.onStart()
 
 	-- Inventory exchange
 	TRP3_ExchangeFrame.init();
-
-	-- Security
-	TRP3_API.inventory.initSecurity();
 
 	-- UI
 	TRP3_API.inventory.initLootFrame();
