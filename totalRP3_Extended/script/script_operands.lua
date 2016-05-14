@@ -20,10 +20,13 @@
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 
 local OPERANDS = {
-	["tar_name"] = {
-		codeReplacement= "tostring(name(\"target\"))",
+	["unit_name"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("tostring(UnitName(\"%s\"))"):format(unitID);
+		end,
 		env = {
-			["name"] = "UnitName",
+			["UnitName"] = "UnitName",
 		},
 	},
 
@@ -36,7 +39,7 @@ local OPERANDS = {
 	},
 
 	-- Let you test the return value from the last effect
-	["lastReturn"] = {
+	["last_return"] = {
 		codeReplacement= "tostring(lastEffectReturn)",
 	},
 };

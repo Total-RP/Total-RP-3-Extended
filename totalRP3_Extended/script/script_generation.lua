@@ -135,7 +135,7 @@ local function writeOperand(testStructure, comparatorType)
 		if operandInfo.args then -- has arguments
 			assert(args, "Missing arguments for operand: " .. testStructure.i);
 			assert(#args == operandInfo.args, ("Incomplete arguments for %s: %s / %s"):format(testStructure.i, #args, operandInfo.args));
-			codeReplacement = codeReplacement:format(unpack(escapeArguments(args)));
+			codeReplacement = codeReplacement(escapeArguments(args));
 		end
 		code = codeReplacement;
 

@@ -35,12 +35,27 @@
 		</Layers>
 	</Frame>
 
+	<Frame name="TRP3_EditorEffectTemplate" inherits="TRP3_EditorTitledFrame" virtual="true">
+		<Frames>
+			<Button parentKey="confirm" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="15"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--    Display text      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorText" hidden="true">
-
+	<Frame name="TRP3_EffectEditorText" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
@@ -64,8 +79,8 @@
 	<!--  Set env variable    -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorVarSet" hidden="true">
-
+	<Frame name="TRP3_EffectEditorVarSet" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
@@ -90,8 +105,8 @@
 	<!--       Speechs        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorSpeechEnv" hidden="true">
-
+	<Frame name="TRP3_EffectEditorSpeechEnv" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
@@ -105,8 +120,8 @@
 
 	</Frame>
 
-	<Frame name="TRP3_EffectEditorSpeechNPC" hidden="true">
-
+	<Frame name="TRP3_EffectEditorSpeechNPC" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
@@ -131,8 +146,8 @@
 	<!--        Sounds        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorSoundIDSelf" hidden="true">
-
+	<Frame name="TRP3_EffectEditorSoundIDSelf" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
@@ -158,8 +173,8 @@
 
 	</Frame>
 
-	<Frame name="TRP3_EffectEditorSoundIDLocal" hidden="true">
-
+	<Frame name="TRP3_EffectEditorSoundIDLocal" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
@@ -192,8 +207,8 @@
 
 	</Frame>
 
-	<Frame name="TRP3_EffectEditorSoundMusicSelf" hidden="true">
-
+	<Frame name="TRP3_EffectEditorSoundMusicSelf" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="path" inherits="TRP3_TitledHelpEditBox">
@@ -219,8 +234,8 @@
 
 	</Frame>
 
-	<Frame name="TRP3_EffectEditorMusicLocal" hidden="true">
-
+	<Frame name="TRP3_EffectEditorMusicLocal" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="path" inherits="TRP3_TitledHelpEditBox">
@@ -257,8 +272,8 @@
 	<!--         Debug        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorDebugDumpArg" hidden="true">
-
+	<Frame name="TRP3_EffectEditorDebugDumpArg" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
@@ -272,8 +287,8 @@
 
 	</Frame>
 
-	<Frame name="TRP3_EffectEditorDebugDumpText" hidden="true">
-
+	<Frame name="TRP3_EffectEditorDebugDumpText" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
@@ -291,8 +306,8 @@
 	<!--        Inventory        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorItemBagDurability" hidden="true">
-
+	<Frame name="TRP3_EffectEditorItemBagDurability" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<Frame parentKey="method" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
@@ -312,8 +327,8 @@
 
 	</Frame>
 
-	<Frame name="TRP3_EffectEditorDocumentShow" hidden="true">
-
+	<Frame name="TRP3_EffectEditorDocumentShow" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
@@ -327,8 +342,8 @@
 
 	</Frame>
 
-	<Frame name="TRP3_EffectEditorItemRemove" hidden="true">
-
+	<Frame name="TRP3_EffectEditorItemRemove" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
@@ -349,8 +364,8 @@
 
 	</Frame>
 
-	<Frame name="TRP3_EffectEditorItemAdd" hidden="true">
-
+	<Frame name="TRP3_EffectEditorItemAdd" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
 		<Frames>
 
 			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">

@@ -17,20 +17,41 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, error, assert, date = wipe, pairs, error, assert, date;
-local tsize = Utils.table.size;
+local tonumber, tostring, type, tinsert, wipe, assert = tonumber, tostring, type, tinsert, wipe, assert;
+local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
-local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
+local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
-local toolFrame;
+local initList = TRP3_API.ui.list.initList;
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+
+local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
+local getUnitText = TRP3_API.extended.tools.getUnitText;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Operands structure
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function unit_name_init()
+	registerOperandEditor("unit_name", {
+		title = "Unit name", -- TODO: loc
+		description = "The name of the unit, as returned by the first argument of UnitName.", -- TODO: loc
+		getText = function(args)
+			return "Unit name (" .. getUnitText(tostring(args[1])) .. ")"; -- TODO: locals
+		end,
+		getDefaultArgs = function()
+			return {"target"};
+		end,
+	});
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.initScript(ToolFrame)
-	TRP3_ScriptEditorNormal.init(ToolFrame);
-	TRP3_ScriptEditorDelay.init(ToolFrame);
-	TRP3_ConditionEditor.init(ToolFrame);
-	TRP3_ConditionEditor.initOperands(ToolFrame);
+function TRP3_ConditionEditor.initOperands()
+
+	unit_name_init();
+
 end

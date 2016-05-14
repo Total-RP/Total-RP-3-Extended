@@ -26,7 +26,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local getEffectSecurity = TRP3_API.security.getEffectSecurity;
 local editor = TRP3_ScriptEditorNormal;
-local refreshList, toolFrame, unlockElements;
+local refreshList, toolFrame, unlockElements, onElementConfirm;
 
 local securityLevel = TRP3_API.security.SECURITY_LEVEL;
 
@@ -39,18 +39,38 @@ local ELEMENT_TYPE = TRP3_DB.elementTypes;
 local function setCurrentElementFrame(frame, title, noConfirm)
 	assert(frame, "Editor is null.")
 	unlockElements();
-	editor.element.title:SetText(title);
 	if editor.element.current then
 		editor.element.current:Hide();
 	end
 	editor.element.current = frame;
 	editor.element.current:SetParent(editor.element);
-	editor.element.current:SetAllPoints(editor.element);
+	editor.element.current:ClearAllPoints();
+	editor.element.current:SetPoint("CENTER", 0, 0);
 	editor.element.current:Show();
-	editor.element.confirm:Show();
-	if noConfirm then
-		editor.element.confirm:Hide();
+
+	if frame.title then
+		frame.title:SetText(title);
 	end
+
+	if frame.close then
+		frame.close:SetScript("OnClick", function()
+			editor.element:Hide();
+			unlockElements();
+		end);
+	end
+
+	if frame.confirm then
+		if noConfirm then
+			frame.confirm:Hide();
+		else
+			frame.confirm:Show();
+			frame.confirm:SetScript("OnClick", function()
+				onElementConfirm();
+			end);
+			frame.confirm:SetText(loc("EDITOR_CONFIRM"));
+		end
+	end
+
 	editor.element:Show();
 end
 
@@ -68,10 +88,10 @@ local function addConditionElement()
 	data[tostring(editor.list.size + 1)] =  {
 		t = ELEMENT_TYPE.CONDITION,
 		b = {
---			{
---				cond = { { { i = "tar_name" }, "==", { v = "Kyle Radue" } } },
---				n = "2"
---			}
+			{
+				cond = { { { i = "unit_name", args = {"target"} }, "==", { v = "Elsa" } } },
+				n = "2"
+			}
 		},
 	};
 	refreshList();
@@ -174,6 +194,10 @@ local function onElementClick(self)
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 		setCurrentElementFrame(TRP3_ScriptEditorDelay, loc("WO_DELAY"));
 		TRP3_ScriptEditorDelay.load(scriptStep);
+	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
+		local scriptData = scriptStep.b[1].cond;
+		setCurrentElementFrame(TRP3_ConditionEditor, loc("WO_CONDITION"));
+		TRP3_ConditionEditor.load(scriptData);
 	end
 
 	self.highlight:Show();
@@ -195,7 +219,7 @@ local function onMoveDownClick(self)
 	moveDownElement(self:GetParent().scriptStepID);
 end
 
-local function onElementConfirm(self)
+function onElementConfirm(self)
 	assert(editor.element.scriptStep, "No stepData in editor.element");
 	if editor.element.current and editor.element.current.save then
 		if editor.element.scriptStep.t == ELEMENT_TYPE.EFFECT then
@@ -470,8 +494,6 @@ editor.init = function(ToolFrame)
 	editor.workflow.container.scroll.list.endofworkflow:SetText(loc("WO_END"));
 
 	-- Element edition
-	editor.element.confirm:SetText(loc("EDITOR_CONFIRM"));
-	editor.element.title:SetText(loc("WO_ELEMENT"));
 	editor.element.selector.effect.Name:SetText(loc("WO_EFFECT"));
 	editor.element.selector.effect.InfoText:SetText(loc("WO_EFFECT_TT"));
 	TRP3_API.ui.frame.setupIconButton(editor.element.selector.effect, ELEMENT_EFFECT_ICON);
@@ -482,14 +504,6 @@ editor.init = function(ToolFrame)
 	editor.element.selector.delay.InfoText:SetText(loc("WO_DELAY_TT"));
 	TRP3_API.ui.frame.setupIconButton(editor.element.selector.delay, ELEMENT_DELAY_ICON);
 	editor.element.selector.condition:SetScript("OnClick", addConditionElement);
-	editor.element.selector.condition:Disable(); -- TODO: remove
 	editor.element.selector.delay:SetScript("OnClick", addDelayElement);
 	editor.element.selector.effect:SetScript("OnClick", displayEffectDropdown);
-	editor.element.close:SetScript("OnClick", function()
-		editor.element:Hide();
-		unlockElements();
-	end);
-	editor.element.confirm:SetScript("OnClick", function()
-		onElementConfirm();
-	end);
 end

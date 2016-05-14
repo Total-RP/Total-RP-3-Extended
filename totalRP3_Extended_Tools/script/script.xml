@@ -31,6 +31,10 @@
 	<Include file="script/element/element.xml"/>
 	<Script file="script/element/element.lua"/>
 
+	<Include file="script/conditions/conditions.xml"/>
+	<Script file="script/conditions/conditions.lua"/>
+	<Script file="script/conditions/operands.lua"/>
+
 	<Include file="script/normal/normal.xml"/>
 	<Script file="script/normal/normal.lua"/>
 
