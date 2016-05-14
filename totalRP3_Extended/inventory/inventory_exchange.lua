@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local Comm = TRP3_API.communication;
-local tonumber, assert, strsplit, tostring, wipe, pairs = tonumber, assert, strsplit, tostring, wipe, pairs;
+local tonumber, assert, strsplit, tostring, wipe, pairs, type = tonumber, assert, strsplit, tostring, wipe, pairs, type;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
@@ -114,16 +114,6 @@ local function reloadDownloads()
 		if myData[tostring(index)] then
 			slot.details:SetText("");
 			slot.security:Hide();
-
---			local rootClassId = myData[tostring(index)].id;
---			local class = getItemClass(rootClassId);
---			local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
---			slot.details:SetText(secLevelText);
---			setTooltipForSameFrame(slot.security, "TOP", 0, 5, secLevelText, TRP3_API.security.getSecurityDetailText(class.securityLevel)
---				.. "\n\n|cffffff00" .. loc("SEC_LEVEL_DETAIL"));
---			slot.security:SetScript("OnClick", function()
---				TRP3_API.security.showSecurityDetailFrame(rootClassId, exchangeFrame);
---			end);
 		end
 	end
 end
@@ -279,17 +269,30 @@ end
 -- BUISINESS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function isInTransaction(slotInfo)
+	for _, exchangeSlot in pairs(exchangeFrame.myData or EMPTY) do
+		if type(exchangeSlot) == "table" and exchangeSlot.c == slotInfo then
+			return true;
+		end
+	end
+	return false;
+end
+TRP3_API.inventory.isInTransaction = isInTransaction;
+
+local slotMapping = {};
+
 local function addToExchange(container, slotID)
 	assert(container and slotID, "No container or slotID");
 	assert(container.content[slotID], "Can't find slot in container.");
 
-	local slot = container.content[slotID];
-	local itemClass = getClass(slot.id);
-	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, slot.id)};
+	local slotInfo = container.content[slotID];
+	local itemClass = getClass(slotInfo.id);
+	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, slotInfo.id)};
 	local rootClassID = parts[1];
 	local rootClass = getClass(rootClassID);
 
-	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slot.content or EMPTY) > 0 then
+	-- Can't exchange an non-empty bag for now
+	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slotInfo.content or EMPTY) > 0 then
 		Utils.message.displayMessage(ERR_TRADE_BAG, Utils.message.type.ALERT_MESSAGE);
 		return;
 	end
@@ -305,13 +308,17 @@ local function addToExchange(container, slotID)
 		exchangeFrame.yourData = {};
 	end
 
+	if isInTransaction(slotInfo) then
+		return;
+	end
+
 	-- Add item end of list
 	local found = false;
 	for i=1, 4 do
 		local index = tostring(i);
 		if not exchangeFrame.myData[index] then
 			exchangeFrame.myData[index] = {
-				c = {},
+				c = slotInfo,
 				i = itemClass.BA.IC,
 				n = getItemLink(itemClass),
 				v = itemClass.BA.VA,
@@ -322,11 +329,12 @@ local function addToExchange(container, slotID)
 				vn = rootClass.MD.V,
 				si = Comm.estimateStructureLoad(rootClass);
 			};
-			Utils.table.copy(exchangeFrame.myData[index].c, slot);
+			slotMapping[slotInfo] = {container, slotID};
 			found = true;
 			break;
 		end
 	end
+	-- Already used the 4 exchange slots
 	if not found then
 		return;
 	end
@@ -344,6 +352,8 @@ local function removeItem(index)
 	assert(exchangeFrame.myData, "No exchangeFrame.myData");
 	assert(exchangeFrame.myData[tostring(index)], "Slot is already empty");
 
+	slotMapping[exchangeFrame.myData[tostring(index)].c] = nil;
+	exchangeFrame.myData[tostring(index)].c = nil;
 	wipe(exchangeFrame.myData[tostring(index)]);
 	exchangeFrame.myData[tostring(index)] = nil;
 
@@ -357,6 +367,12 @@ end
 local function closeTransaction()
 	wipe(currentDownloads);
 	if exchangeFrame.myData then
+		for _, exchangeSlot in pairs(exchangeFrame.myData) do
+			if type(exchangeSlot) == "table" and exchangeSlot.c then
+				slotMapping[exchangeSlot.c] = nil;
+				exchangeSlot.c = nil;
+			end
+		end
 		wipe(exchangeFrame.myData);
 	end
 	if exchangeFrame.yourData then
@@ -381,8 +397,10 @@ local function lootTransaction()
 	for i=1, 4 do
 		local index = tostring(i);
 		if exchangeFrame.myData[index] then
-			local slotData = exchangeFrame.myData[index];
-			TRP3_API.inventory.removeItem(slotData.c.id, slotData.c.count or 1);
+			local slotData = exchangeFrame.myData[index].c;
+			if slotMapping[slotData] then
+				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, slotMapping[slotData][1], slotMapping[slotData][2], slotData);
+			end
 		end
 	end
 
@@ -391,7 +409,7 @@ local function lootTransaction()
 		local index = tostring(i);
 		if exchangeFrame.yourData[index] then
 			local slotData = exchangeFrame.yourData[index];
-			TRP3_API.inventory.addItem(nil, slotData.c.id, {slotData.c.count or 1, slotData.c.madeBy});
+			TRP3_API.inventory.addItem(nil, slotData.c.id, slotData.c);
 		end
 	end
 

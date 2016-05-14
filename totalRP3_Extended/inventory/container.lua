@@ -197,6 +197,7 @@ local function containerSlotUpdate(self, elapsed)
 	self.Quantity:Hide();
 	self.IconBorder:Hide();
 	self.IconBorder:SetVertexColor(1, 1, 1);
+	self.Icon:SetDesaturated(false);
 	if self.info then
 		local class = self.class;
 		local icon, name = getBaseClassDataSafe(class);
@@ -222,6 +223,9 @@ local function containerSlotUpdate(self, elapsed)
 		end
 		if self.additionalOnUpdateHandler then
 			self.additionalOnUpdateHandler(self, elapsed);
+		end
+		if self:IsDragging() or TRP3_API.inventory.isInTransaction(self.info) then
+			self.Icon:SetDesaturated(true);
 		end
 	end
 end
@@ -249,9 +253,8 @@ local function slotOnLeave(self)
 end
 
 local function slotOnDragStart(self)
-	if self.info then
+	if self.info and not TRP3_API.inventory.isInTransaction(self.info) then
 		StackSplitFrame:Hide();
-		self.Icon:SetDesaturated(true);
 		SetCursor("Interface\\ICONS\\" .. ((self.class and self.class.BA.IC) or "inv_misc_questionmark")) ;
 		if self.additionalOnDragHandler then
 			self.additionalOnDragHandler(self);
@@ -287,9 +290,8 @@ end
 local UnitExists, CheckInteractDistance = UnitExists, CheckInteractDistance;
 
 local function slotOnDragStop(slotFrom)
-	slotFrom.Icon:SetDesaturated(false);
 	ResetCursor();
-	if slotFrom.info then
+	if slotFrom.info and not TRP3_API.inventory.isInTransaction(slotFrom.info) then
 		local slotTo = GetMouseFocus();
 		local container1, slot1;
 		slot1 = slotFrom.slotID;
@@ -310,6 +312,9 @@ local function slotOnDragStop(slotFrom)
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, ("TRP3_ExchangeFrame"):len()) == "TRP3_ExchangeFrame" then
 			TRP3_API.inventory.addToExchange(container1, slot1);
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
+			if TRP3_API.inventory.isInTransaction(slotTo.info or EMPTY) then
+				return;
+			end
 			local container2, slot2;
 			slot2 = slotTo.slotID;
 			container2 = slotTo:GetParent().info;
@@ -349,7 +354,7 @@ local function initContainerSlot(slot, simpleLeftClick)
 	slot:SetScript("OnEnter", slotOnEnter);
 	slot:SetScript("OnLeave", slotOnLeave);
 	slot:SetScript("OnClick", function(self, button)
-		if not self.loot and self.info then
+		if not self.loot and self.info and not TRP3_API.inventory.isInTransaction(self.info) then
 			if button == "LeftButton" then
 				if IsShiftKeyDown() and (self.info.count or 1) > 1 then
 					OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
@@ -371,6 +376,7 @@ local function initContainerSlot(slot, simpleLeftClick)
 		end
 	end);
 	slot.SplitStack = splitStack;
+
 	-- Listen to refresh event
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
 		if slot.info == slotInfo then

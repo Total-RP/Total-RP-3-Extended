@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
+local _G, assert, tostring, tinsert, wipe, pairs, type = _G, assert, tostring, tinsert, wipe, pairs, type;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
@@ -66,6 +66,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	local slot;
 	local ret;
 	local toAdd = itemData.count or 1;
+	local canStack = (itemClass.BA.ST or 0) > 0;
 
 	for count = 0, toAdd - 1 do
 		local freeSlot, stackSlot;
@@ -84,11 +85,13 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 			local slotID = tostring(i);
 			if not freeSlot and not container.content[slotID] then
 				freeSlot = slotID;
-			elseif container.content[slotID] and (itemClass.BA.ST or 0) > 0 and classID == container.content[slotID].id then
-				local expectedCount = (container.content[slotID].count or 1) + 1;
-				if expectedCount <= (itemClass.BA.ST) then
-					stackSlot = slotID;
-					break;
+			elseif canStack and container.content[slotID] and classID == container.content[slotID].id then
+				if not TRP3_API.inventory.isInTransaction(container.content[slotID]) then
+					local expectedCount = (container.content[slotID].count or 1) + 1;
+					if expectedCount <= (itemClass.BA.ST) then
+						stackSlot = slotID;
+						break;
+					end
 				end
 			end
 		end
@@ -115,7 +118,12 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 				Utils.table.copy(container.content[slot].content, itemClass.CO.IT);
 			end
 			if itemData.madeBy then
-				container.content[slot].madeBy = Globals.player_id;
+				if type(itemData.madeBy) == "string" then
+					container.content[slot].madeBy = itemData.madeBy;
+				else
+					container.content[slot].madeBy = Globals.player_id;
+				end
+
 			end
 		end
 		if stackSlot then
