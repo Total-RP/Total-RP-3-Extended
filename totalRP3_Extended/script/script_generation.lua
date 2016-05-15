@@ -26,7 +26,7 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = false;
+local DEBUG = true;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -114,30 +114,23 @@ local function writeOperand(testStructure, comparatorType)
 	assert(testStructure.v or testStructure.i, "No operand info");
 	if testStructure.v then
 		if comparatorType == "number" then
-			assert(tonumber(testStructure.v) ~= nil, "Cannot parse operand value: " .. testStructure.v);
+			assert(tonumber(testStructure.v) ~= nil, "Cannot parse operand numeric value: " .. testStructure.v);
 			code = testStructure.v;
 		else
-			if type(testStructure.v) == "string" then
+			if type(testStructure.v) == "string" or type(testStructure.v) == "number" then
 				code = "\"" .. testStructure.v .. "\"";
 			elseif type(testStructure.v) == "boolean" then
 				code = tostring(testStructure.v);
 			else
-				error("Unknown operand value type: " .. type(testStructure.v));
+				error("Unknown operand value type for string comparison: " .. type(testStructure.v));
 			end
 		end
 	else
-		local args = testStructure.a;
 		local operandInfo = getTestOperande(testStructure.i);
 		assert(operandInfo, "Unknown operand ID: " .. testStructure.i);
 		assert(comparatorType ~= "number" or operandInfo.numeric, "Operand ID is not numeric: " .. testStructure.i);
 
-		local codeReplacement = operandInfo.codeReplacement;
-		if operandInfo.args then -- has arguments
-			assert(args, "Missing arguments for operand: " .. testStructure.i);
-			assert(#args == operandInfo.args, ("Incomplete arguments for %s: %s / %s"):format(testStructure.i, #args, operandInfo.args));
-			codeReplacement = codeReplacement(escapeArguments(args));
-		end
-		code = codeReplacement;
+		code = operandInfo.codeReplacement(escapeArguments(testStructure.a));
 
 		-- Register operand environment
 		if operandInfo.env then
@@ -319,7 +312,9 @@ local function writeBranching(branchStructure)
 		if branch.cond and #branch.cond > 0 then
 			startIf(writeCondition(branch.cond, branch.condID));
 		end
-		writeElement(branch.n);
+		if branch.n then
+			writeElement(branch.n);
+		end
 		if DEBUG then
 			writeLine("");
 		end

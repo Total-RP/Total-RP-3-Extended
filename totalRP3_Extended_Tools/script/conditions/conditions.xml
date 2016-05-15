@@ -60,7 +60,7 @@
 	</Frame>
 
 	<Frame name="TRP3_ConditionEditor" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="700" y="450"/>
+		<Size x="850" y="450"/>
 
 		<Layers>
 			<Layer level="OVERLAY">
@@ -99,7 +99,7 @@
 			<Frame parentKey="line1" inherits="TRP3_ConditionEditorLine">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.listheader" x="0" y="-10"/>
-					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="LEFT" x="40" y="0"/>
 					<Anchor point="RIGHT" x="-40" y="0"/>
 				</Anchors>
 			</Frame>
@@ -178,6 +178,136 @@
 					<Anchor point="TOP" relativeKey="$parent.line8" relativePoint="BOTTOM" x="0" y="-10"/>
 				</Anchors>
 			</Button>
+
+			<Frame parentKey="operand" hidden="true" toplevel="true" setAllPoints="true" enableMouse="true">
+
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="24" />
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="418" />
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+				</Backdrop>
+
+				<Frames>
+
+					<Frame parentKey="editor" inherits="TRP3_EditorEffectTemplate" toplevel="true">
+						<Size x="750" y="250"/>
+						<Anchors>
+							<Anchor point="CENTER"/>
+						</Anchors>
+
+						<Frames>
+
+							<Frame parentKey="comparator" inherits="UIDropDownMenuTemplate" name="$parentComparator">
+								<Anchors>
+									<Anchor point="TOP" x="-95" y="-60"/>
+								</Anchors>
+							</Frame>
+
+							<Frame parentKey="left" inherits="UIDropDownMenuTemplate" name="$parentLeft">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="10" y="-60"/>
+								</Anchors>
+								<Frames>
+									<Frame parentKey="args" inherits="TRP3_HoveredFrame" hidden="true" name="$parentArgs">
+										<Size x="230" y="100"/>
+										<Layers>
+											<Layer level="OVERLAY">
+												<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[Line text]">
+													<Size x="0" y="10" />
+													<Anchors>
+														<Anchor point="LEFT" x="15" y="0" />
+														<Anchor point="RIGHT" x="-15" y="0" />
+														<Anchor point="TOP" x="0" y="-10" />
+													</Anchors>
+													<Color r="0.95" g="0.95" b="0.95" />
+												</FontString>
+											</Layer>
+										</Layers>
+										<Frames>
+											<Button parentKey="confirm" inherits="TRP3_CommonButton">
+												<Size x="120" y="20"/>
+												<Anchors>
+													<Anchor point="BOTTOM" x="0" y="10"/>
+												</Anchors>
+											</Button>
+										</Frames>
+									</Frame>
+
+									<Button parentKey="edit" inherits="TRP3_CommonButton">
+										<Size x="150" y="20"/>
+										<Anchors>
+											<Anchor point="TOP" relativePoint="BOTTOM" x="115" y="-10"/>
+										</Anchors>
+									</Button>
+
+									<Button parentKey="preview" inherits="TRP3_CommonButton">
+										<Size x="150" y="20"/>
+										<Anchors>
+											<Anchor point="TOP" relativePoint="BOTTOM" x="115" y="-35"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Frame>
+
+							<Frame parentKey="right" inherits="UIDropDownMenuTemplate" name="$parentRight">
+								<Anchors>
+									<Anchor point="TOP" x="110" y="-60"/>
+								</Anchors>
+								<Frames>
+									<Frame parentKey="args" inherits="TRP3_HoveredFrame" hidden="true" name="$parentArgs">
+										<Size x="230" y="100"/>
+										<Layers>
+											<Layer level="OVERLAY">
+												<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[Line text]">
+													<Size x="0" y="10" />
+													<Anchors>
+														<Anchor point="LEFT" x="15" y="0" />
+														<Anchor point="RIGHT" x="-15" y="0" />
+														<Anchor point="TOP" x="0" y="-10" />
+													</Anchors>
+													<Color r="0.95" g="0.95" b="0.95" />
+												</FontString>
+											</Layer>
+										</Layers>
+										<Frames>
+											<Button parentKey="confirm" inherits="TRP3_CommonButton">
+												<Size x="120" y="20"/>
+												<Anchors>
+													<Anchor point="BOTTOM" x="0" y="10"/>
+												</Anchors>
+											</Button>
+										</Frames>
+									</Frame>
+
+									<Button parentKey="edit" inherits="TRP3_CommonButton">
+										<Size x="150" y="20"/>
+										<Anchors>
+											<Anchor point="TOP" relativePoint="BOTTOM" x="115" y="-10"/>
+										</Anchors>
+									</Button>
+
+									<Button parentKey="preview" inherits="TRP3_CommonButton">
+										<Size x="150" y="20"/>
+										<Anchors>
+											<Anchor point="TOP" relativePoint="BOTTOM" x="115" y="-35"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Frame>
+
+						</Frames>
+
+					</Frame>
+
+				</Frames>
+
+			</Frame>
 
 		</Frames>
 

@@ -89,8 +89,7 @@ local function addConditionElement()
 		t = ELEMENT_TYPE.CONDITION,
 		b = {
 			{
-				cond = { { { i = "unit_name", args = {"target"} }, "==", { v = "Elsa" } } },
-				n = "2"
+				cond = { { { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } } }
 			}
 		},
 	};
@@ -196,7 +195,7 @@ local function onElementClick(self)
 		TRP3_ScriptEditorDelay.load(scriptStep);
 	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
 		local scriptData = scriptStep.b[1].cond;
-		setCurrentElementFrame(TRP3_ConditionEditor, loc("WO_CONDITION"));
+		setCurrentElementFrame(TRP3_ConditionEditor, "Condition editor"); -- TODO: locals
 		TRP3_ConditionEditor.load(scriptData);
 	end
 
@@ -225,6 +224,9 @@ function onElementConfirm(self)
 		if editor.element.scriptStep.t == ELEMENT_TYPE.EFFECT then
 			local scriptData = editor.element.scriptStep.e[1];
 			if not scriptData.args then scriptData.args = {} end
+			editor.element.current.save(scriptData);
+		elseif editor.element.scriptStep.t == ELEMENT_TYPE.CONDITION then
+			local scriptData = editor.element.scriptStep.b[1].cond;
 			editor.element.current.save(scriptData);
 		else
 			editor.element.current.save(editor.element.scriptStep);
@@ -412,11 +414,15 @@ function editor.storeData()
 
 	-- Make connection between elements
 	for i = 1, editor.list.size, 1 do
-		local frame = editor.list.listElement[i];
-		if i < editor.list.size and frame.scriptStepData.t ~= ELEMENT_TYPE.CONDITION then
-			frame.scriptStepData.n = tostring(i + 1);
+		local data = editor.list.listElement[i].scriptStepData;
+		if i < editor.list.size then
+			if data.t ~= ELEMENT_TYPE.CONDITION then
+				data.n = tostring(i + 1);
+			else
+				data.b[1].n = tostring(i + 1);
+			end
 		else
-			frame.scriptStepData.n = nil;
+			data.n = nil;
 		end
 	end
 end

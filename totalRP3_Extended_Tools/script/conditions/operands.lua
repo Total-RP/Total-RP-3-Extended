@@ -29,20 +29,52 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
 local getUnitText = TRP3_API.extended.tools.getUnitText;
 
+local unitTypeEditor = TRP3_OperandEditorUnitType;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Shared editors
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function initEnitTypeEditor()
+	local unitType = {
+		{TRP3_API.formats.dropDownElements:format("Unit type", "Player"), "player"}, -- TODO: locals
+		{TRP3_API.formats.dropDownElements:format("Unit type", "Target"), "target"}, -- TODO: locals
+	}
+	TRP3_API.ui.listbox.setupListBox(unitTypeEditor.type, unitType, nil, nil, 180, true);
+
+	function unitTypeEditor.load(args)
+		unitTypeEditor.type:SetSelectedValue((args or EMPTY)[1] or "target");
+	end
+
+	function unitTypeEditor.save()
+		return {unitTypeEditor.type:GetSelectedValue() or "target"};
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Operands structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function string_init()
+	registerOperandEditor("string", {
+		title = "String value", -- TODO: loc
+		description = "A litteral value.", -- TODO: loc
+		getText = function(args)
+			local value = tostring(args or "");
+			return "String value: \"" .. value .. "\""; -- TODO: locals
+		end,
+	});
+end
 
 local function unit_name_init()
 	registerOperandEditor("unit_name", {
 		title = "Unit name", -- TODO: loc
 		description = "The name of the unit, as returned by the first argument of UnitName.", -- TODO: loc
 		getText = function(args)
-			return "Unit name (" .. getUnitText(tostring(args[1])) .. ")"; -- TODO: locals
+			local unitID = (args or EMPTY)[1] or "target";
+			return "Unit name (" .. getUnitText(unitID) .. ")"; -- TODO: locals
 		end,
-		getDefaultArgs = function()
-			return {"target"};
-		end,
+		editor = unitTypeEditor,
 	});
 end
 
@@ -51,6 +83,10 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_ConditionEditor.initOperands()
+
+	initEnitTypeEditor();
+
+	string_init();
 
 	unit_name_init();
 

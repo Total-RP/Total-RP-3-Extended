@@ -19,24 +19,14 @@
 	limitations under the License.
 -->
 
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--     Imports      -->
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-
-	<Script file="script/script.lua"/>
-
-	<Include file="script/effects/effects.xml"/>
-	<Script file="script/effects/effects.lua"/>
-
-	<Include file="script/element/element.xml"/>
-	<Script file="script/element/element.lua"/>
-
-	<Include file="script/conditions/conditions.xml"/>
-	<Script file="script/conditions/conditions.lua"/>
-	<Include file="script/conditions/operands.xml"/>
-	<Script file="script/conditions/operands.lua"/>
-
-	<Include file="script/normal/normal.xml"/>
-	<Script file="script/normal/normal.lua"/>
+	<Frame name="TRP3_OperandEditorUnitType" hidden="true">
+		<Frames>
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="LEFT" x="0" y="0"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
 
 </Ui>
