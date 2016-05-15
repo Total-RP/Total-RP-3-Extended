@@ -29,7 +29,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
 local getUnitText = TRP3_API.extended.tools.getUnitText;
 
-local unitTypeEditor = TRP3_OperandEditorUnitType;
+local unitTypeEditor, stringEditor, numericEditor = TRP3_OperandEditorUnitType, TRP3_OperandEditorString, TRP3_OperandEditorNumeric;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Shared editors
@@ -37,8 +37,8 @@ local unitTypeEditor = TRP3_OperandEditorUnitType;
 
 local function initEnitTypeEditor()
 	local unitType = {
-		{TRP3_API.formats.dropDownElements:format("Unit type", "Player"), "player"}, -- TODO: locals
-		{TRP3_API.formats.dropDownElements:format("Unit type", "Target"), "target"}, -- TODO: locals
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_PLAYER")), "player"},
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_TARGET")), "target"},
 	}
 	TRP3_API.ui.listbox.setupListBox(unitTypeEditor.type, unitType, nil, nil, 180, true);
 
@@ -57,19 +57,60 @@ end
 
 local function string_init()
 	registerOperandEditor("string", {
-		title = "String value", -- TODO: loc
-		description = "A litteral value.", -- TODO: loc
+		title = loc("OP_STRING"),
 		getText = function(args)
 			local value = tostring(args or "");
-			return "String value: \"" .. value .. "\""; -- TODO: locals
+			return loc("OP_STRING") .. ": \"" .. value .. "\"";
 		end,
+		editor = stringEditor,
+	});
+
+	-- Text
+	stringEditor.input.title:SetText(loc("OP_STRING"));
+
+	function stringEditor.load(value)
+		stringEditor.input:SetText(value or "");
+	end
+
+	function stringEditor.save()
+		return stringEditor.input:GetText();
+	end
+end
+
+local function numeric_init()
+	registerOperandEditor("numeric", {
+		title = loc("OP_NUMERIC"),
+		getText = function(args)
+			local value = tonumber(args or 0) or 0;
+			return loc("OP_NUMERIC") .. ": " .. value .. "";
+		end,
+		editor = numericEditor,
+	});
+
+	-- Text
+	numericEditor.input.title:SetText(loc("OP_NUMERIC"));
+
+	function numericEditor.load(value)
+		numericEditor.input:SetText(tonumber(value or 0) or 0);
+	end
+
+	function numericEditor.save()
+		return tonumber(numericEditor.input:GetText()) or 0;
+	end
+end
+
+local function boolean_init()
+	registerOperandEditor("boolean_true", {
+		title = loc("OP_BOOL") .. ": TRUE",
+	});
+	registerOperandEditor("boolean_false", {
+		title = loc("OP_BOOL") .. ": FALSE",
 	});
 end
 
 local function unit_name_init()
 	registerOperandEditor("unit_name", {
 		title = "Unit name", -- TODO: loc
-		description = "The name of the unit, as returned by the first argument of UnitName.", -- TODO: loc
 		getText = function(args)
 			local unitID = (args or EMPTY)[1] or "target";
 			return "Unit name (" .. getUnitText(unitID) .. ")"; -- TODO: locals
@@ -87,6 +128,8 @@ function TRP3_ConditionEditor.initOperands()
 	initEnitTypeEditor();
 
 	string_init();
+	boolean_init();
+	numeric_init();
 
 	unit_name_init();
 

@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, _G, type, tinsert, wipe, assert = pairs, _G, type, tinsert, wipe, assert;
+local pairs, _G, type, tinsert, wipe, assert, tostring = pairs, _G, type, tinsert, wipe, assert, tostring;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -36,6 +36,7 @@ local listCondition;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local OPERANDS = {}
+local leftListStructure, rightListStructure = {}, {};
 
 local function registerOperandEditor(operandID, operandStructure)
 	assert(not OPERANDS[operandID], "Already have an operand editor for " .. operandID);
@@ -50,17 +51,17 @@ TRP3_API.extended.tools.getOperandEditorInfo = getOperandEditorInfo;
 
 local function getComparatorText(comparator)
 	if comparator == "==" then
-		return "is equal to"; -- TODO: locals
+		return loc("OP_COMP_EQUALS");
 	elseif comparator == "~=" then
-		return "is not equal to"; -- TODO: locals
+		return loc("OP_COMP_NEQUALS");
 	elseif comparator == "<" then
-		return "is lesser than"; -- TODO: locals
+		return loc("OP_COMP_LESSER");
 	elseif comparator == "<=" then
-		return "is lesser than or equal to"; -- TODO: locals
+		return loc("OP_COMP_LESSER_OR_EQUALS");
 	elseif comparator == ">" then
-		return "is greater than"; -- TODO: locals
+		return loc("OP_COMP_GREATER");
 	elseif comparator == ">=" then
-		return "is greater than or equal to"; -- TODO: locals
+		return loc("OP_COMP_GREATER_OR_EQUALS");
 	end
 	return comparator;
 end
@@ -68,9 +69,9 @@ TRP3_API.extended.tools.getComparatorText = getComparatorText;
 
 local function getUnitText(unit)
 	if unit == "player" then
-		return "Player"; -- TODO: locals
+		return loc("OP_UNIT_PLAYER");
 	elseif unit == "target" then
-		return "Target"; -- TODO: locals
+		return loc("OP_UNIT_TARGET");
 	end
 	return unit;
 end
@@ -79,6 +80,8 @@ TRP3_API.extended.tools.getUnitText = getUnitText;
 local function getValueString(value)
 	if type(value) == "string" then
 		return "\"" .. value .. "\"";
+	elseif type(value) == "boolean" then
+		return tostring(value):upper();
 	else
 		return tostring(value);
 	end
@@ -93,8 +96,12 @@ local function saveOperand()
 
 	operandEditor.expression[1] = {i = operandEditor.left.operandID, a = operandEditor.left.argsData};
 	operandEditor.expression[2] = operandEditor.comparator:GetSelectedValue();
-	if operandEditor.right.operandID == "string" then
+	if operandEditor.right.operandID == "string" or operandEditor.right.operandID == "numeric" then
 		operandEditor.expression[3] = {v = operandEditor.right.argsData};
+	elseif operandEditor.right.operandID == "boolean_true" then
+		operandEditor.expression[3] = {v = true};
+	elseif operandEditor.right.operandID == "boolean_false" then
+		operandEditor.expression[3] = {v = false};
 	else
 		operandEditor.expression[3] = {i = operandEditor.right.operandID, a = operandEditor.right.argsData};
 	end
@@ -124,6 +131,9 @@ local function onOperandSelected(operandID, list, loadEditor)
 	local fullText = operandID;
 
 	list.args:Hide();
+	if list.args.currentEditor then
+		list.args.currentEditor:Hide();
+	end
 	list.args.currentEditor = nil;
 	list.edit:Disable();
 
@@ -151,9 +161,6 @@ local function onOperandConfirmClick(button)
 	local argsFrame = button:GetParent();
 	local list = argsFrame:GetParent();
 
-	print(argsFrame:GetName());
-	print(list:GetName());
-
 	if argsFrame.currentEditor then
 		list.argsData = argsFrame.currentEditor.save();
 		onOperandSelected(list.operandID, list)
@@ -176,11 +183,11 @@ local function openOperandEditor(expressionIndex)
 	onOperandSelected(leftOperand.i, operandEditor.left);
 
 	if rightOperand.v then
-		operandEditor.right.argsData = leftOperand.v;
+		operandEditor.right.argsData = rightOperand.v;
 		if type(rightOperand.v) == "string" then
-			onOperandSelected("string", operandEditor.right, rightOperand.v);
+			onOperandSelected("string", operandEditor.right);
 		elseif type(rightOperand.v) == "number" then
-			onOperandSelected("numeric", operandEditor.right, rightOperand.v);
+			onOperandSelected("numeric", operandEditor.right);
 		elseif type(rightOperand.v) == "boolean" and rightOperand.v then
 			onOperandSelected("boolean_true", operandEditor.right);
 		elseif type(rightOperand.v) == "boolean" and not rightOperand.v then
@@ -207,11 +214,9 @@ local function computeLogicalExpression()
 	for index, element in pairs(editor.scriptData) do
 		if type(element) == "string" then
 			if element == "+" then
-				text = text .. "|cff00ff00and" .. " "; -- TODO: locals
+				text = text .. "|cff00ff00" .. loc("OP_AND") .. " ";
 			elseif element == "*" then
-				text = text .. "|cff00ff00or" .. " "; -- TODO: locals
-			else
-				text = text .. "|cff00ff00?" .. " ";
+				text = text .. "|cff00ff00" .. loc("OP_OR") .. " ";
 			end
 		elseif type(element) == "table" then
 			local realIndex = (index + 1) / 2;
@@ -275,11 +280,11 @@ local function onTestLineClick(line, button)
 	local values = {};
 
 	if type(expression) == "string" then
-		tinsert(values, {"Comparator selection", nil});
+		tinsert(values, {loc("OP_COMPA_SEL"), nil});
 		if expression == "+" then
-			tinsert(values, {"Switch to OR", "*"}); -- TODO: locals
+			tinsert(values, {loc("OP_AND_SWITCH"), "*"});
 		else
-			tinsert(values, {"Switch to AND", "+"}); -- TODO: locals
+			tinsert(values, {loc("OP_OR_SWITCH"), "+"});
 		end
 		TRP3_API.ui.listbox.displayDropDown(line, values, onComparatorAction, 0, true);
 	elseif type(expression) == "table" then
@@ -288,7 +293,7 @@ local function onTestLineClick(line, button)
 		else
 			tinsert(values, {"Test", nil});
 			if #editor.scriptData > 1 then
-				tinsert(values, {"Remove test", TEST_ACTION_REMOVE}); -- TODO: locals
+				tinsert(values, {loc("OP_REMOVE_TEST"), TEST_ACTION_REMOVE});
 			end
 			TRP3_API.ui.listbox.displayDropDown(line, values, onTestAction, 0, true);
 		end
@@ -302,9 +307,9 @@ local function decorateConditionLine(line, index)
 	if type(expression) == "string" then
 		line.text:SetText("?");
 		if expression == "+" then
-			line.text:SetText("And"); -- TODO: locals
+			line.text:SetText(loc("OP_AND"));
 		elseif expression == "*" then
-			line.text:SetText("Or"); -- TODO: locals
+			line.text:SetText(loc("OP_OR"));
 		end
 	elseif type(expression) == "table" then
 		assert(tsize(expression) == 3, "Table expression must be in 3 parts.");
@@ -312,8 +317,8 @@ local function decorateConditionLine(line, index)
 		local comparator = getComparatorText(expression[2]);
 		local rightOperand = expression[3];
 
-		local leftText = leftOperand.i and getOperandEditorInfo(leftOperand.i).getText(leftOperand.a or EMPTY) or getValueString(leftOperand.v);
-		local rightText = rightOperand.i and getOperandEditorInfo(rightOperand.i).getText(rightOperand.a or EMPTY) or getValueString(rightOperand.v);
+		local leftText = leftOperand.i and getOperandEditorInfo(leftOperand.i).getText(leftOperand.a) or getValueString(leftOperand.v);
+		local rightText = rightOperand.i and getOperandEditorInfo(rightOperand.i).getText(rightOperand.a) or getValueString(rightOperand.v);
 		line.text:SetText("|cffff9900" .. ((index + 1) / 2) .. ".  |cffffff00" .. leftText .. "  |cff00ff00" .. comparator .. "  |cffffff00" .. rightText);
 	end
 end
@@ -340,8 +345,8 @@ end
 function editor.init()
 	editor.scriptData = {};
 
-	editor.listheader:SetText("Condition tests:"); -- TODO: locals
-	editor.fullheader:SetText("Complete logical expression:"); -- TODO: locals
+	editor.listheader:SetText(loc("COND_TESTS"));
+	editor.fullheader:SetText(loc("COND_COMPLETE"));
 	editor.add:SetText("Add test");
 
 	editor.add:SetScript("OnClick", addExpression);
@@ -364,13 +369,13 @@ function editor.init()
 		saveOperand();
 	end);
 	operandEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
-	operandEditor.title:SetText("Test editor"); -- TODO: locals
+	operandEditor.title:SetText(loc("COND_TEST_EDITOR"));
 
 	local comparatorStructure = {
-		{"Litteral and numeric comparison"}, -- TODO: locals
+		{loc("COND_LITT_COMP")},
 		{getComparatorText("=="), "=="},
 		{getComparatorText("~="), "~="},
-		{"Numeric comparison only"}, -- TODO: locals
+		{loc("COND_NUM_COMP")},
 		{getComparatorText("<"), "<"},
 		{getComparatorText("<="), "<="},
 		{getComparatorText(">"), ">"},
@@ -378,69 +383,97 @@ function editor.init()
 	}
 	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, nil, nil, 175, true);
 
-	local leftStructure = {
-		{"Evaluated value"}, -- TODO: locals
-		{"Unit value", { -- TODO: locals
-			{"Unit name", "unit_name"}, -- TODO: locals
-			{"Unit guild", "unit_guild"}, -- TODO: locals
-			{"Unit type", "unit_type"}, -- TODO: locals
-			{"Unit classification", "unit_classification"}, -- TODO: locals
-			{"Unit sex", "unit_sex"}, -- TODO: locals
-			{"Unit class", "unit_class"}, -- TODO: locals
-			{"Unit race", "unit_race"}, -- TODO: locals
-		}},
-		{"Unit test", { -- TODO: locals
-			{"Unit in range", "unit_range"}, -- TODO: locals
-			{"Unit exists", "unit_exists"}, -- TODO: locals
-			{"Unit is dead", "unit_dead"}, -- TODO: locals
-			{"Unit is mounted", "unit_mounted"}, -- TODO: locals
-			{"Unit is flying", "unit_flying"}, -- TODO: locals
+	local evaluatedOperands = {
+		[loc("OP_UNIT_VALUE")] = {
+			"unit_name",
+--			"unit_guild",
+--			"unit_type",
+--			"unit_classification",
+--			"unit_sex",
+--			"unit_class",
+--			"unit_race",
+		},
+--		["Unit test"] = { -- TODO: locals
+--			"unit_range",
+--			"unit_exists",
+--			"unit_dead",
+--			"unit_mounted",
+--			"unit_flying",
+--		},
+--		["Character"] = { -- TODO: locals
+--			"char_falling",
+--			"char_stealth",
+--			"char_swimming",
+--			"char_can_fly",
+--			"char_coord",
+--			"char_zone",
+--			"char_subzone",
+--			"char_facing",
+--		},
+--		["Pets and companions"] = { -- TODO: locals
+--			"pet_battle_name",
+--			"pet_pet_name",
+--			"pet_mount_name",
+--		},
+--		["Campaign and quests"] = { -- TODO: locals
+--			"campaign_started",
+--			"campaign_quest_started",
+--		},
+--		["Inventory"] = {-- TODO: locals
+--			"inv_durability",
+--			"inv_weight",
+--			"inv_empty_slot",
+--		},
+--		["Others"] = {-- TODO: locals
+--			"random",
+--		},
+	}
 
-		}},
-		{"Character", { -- TODO: locals
-			{"Character is falling", "char_falling"}, -- TODO: locals
-			{"Character is stealth", "char_stealth"}, -- TODO: locals
-			{"Character is swimming", "char_swimming"}, -- TODO: locals
-			{"Character can fly", "char_can_fly"}, -- TODO: locals
-			{"Character coordinates", "char_coord"}, -- TODO: locals
-			{"Character zone", "char_zone"}, -- TODO: locals
-			{"Character subzone", "char_subzone"}, -- TODO: locals
-			{"Character facing", "char_facing"}, -- TODO: locals
-		}},
-		{"Pets and companions", { -- TODO: locals
-			{"Summoned battle pet name", "pet_battle_name"}, -- TODO: locals
-			{"Summoned pet name", "pet_pet_name"}, -- TODO: locals
-			{"Summoned mount name", "pet_mount_name"}, -- TODO: locals
-		}},
-		{"Campaign and quests", { -- TODO: locals
-			{"Campaign is started", "campaign_started"}, -- TODO: locals
-			{"Quest is started", "campaign_quest_started"}, -- TODO: locals
-		}},
-		{"Inventory", { -- TODO: locals
-			{"Container durability", "inv_durability"}, -- TODO: locals
-			{"Container total weight", "inv_weight"}, -- TODO: locals
-			{"Container empty slot", "inv_empty_slot"}, -- TODO: locals
-		}},
-		{"Random", "random"}, -- TODO: locals
-	};
-	TRP3_API.ui.listbox.setupListBox(operandEditor.left, leftStructure, function(operandID, list)
+	local evaluatedOrder = {
+		loc("OP_UNIT_VALUE"),
+--		"Unit test", -- TODO: locals
+--		"Character", -- TODO: locals
+--		"Pets and companions", -- TODO: locals
+--		"Campaign and quests", -- TODO: locals
+--		"Inventory", -- TODO: locals
+--		"Others", -- TODO: locals
+	}
+
+	local getEvaluatedOperands = function(structure)
+		wipe(structure);
+		tinsert(structure, {loc("OP_EVAL_VALUE")});
+		for _, group in pairs(evaluatedOrder) do
+			local subStructure = {};
+			tinsert(subStructure, {group});
+
+			for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
+				local operandInfo = getOperandEditorInfo(operandID);
+				tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
+			end
+
+			tinsert(structure, {group, subStructure});
+		end
+		return structure;
+	end
+
+	TRP3_API.ui.listbox.setupListBox(operandEditor.left, getEvaluatedOperands(leftListStructure), function(operandID, list)
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 115, 5, false, operandEditor.left);
-	operandEditor.left.preview:SetText("Preview value"); -- TODO: locals
-	operandEditor.left.edit:SetText(loc("CM_EDIT"));
+	operandEditor.left.preview:SetText(loc("OP_PREVIEW"));
+	operandEditor.left.edit:SetText(loc("OP_CONFIGURE"));
 	operandEditor.left.args.confirm:SetText(loc("EDITOR_CONFIRM"));
 	operandEditor.left.args.confirm:SetScript("OnClick", onOperandConfirmClick);
 	operandEditor.left.edit:SetScript("OnClick", onOperandEditClick);
 
 	local rightStructure = {
-		{"Evaluated value", leftStructure}, -- TODO: locals
-		{"Direct value", { -- TODO: locals
-			{"Direct value"}, -- TODO: locals
-			{"String", "string"}, -- TODO: locals
-			{"Numeric", "numeric"}, -- TODO: locals
-			{"Boolean", { -- TODO: locals
+		{loc("OP_EVAL_VALUE"), getEvaluatedOperands({})},
+		{loc("OP_DIRECT_VALUE"), {
+			{loc("OP_DIRECT_VALUE")},
+			{loc("OP_STRING"), "string"},
+			{loc("OP_NUMERIC"), "numeric"}, -- TODO: locals
+			{loc("OP_BOOL"), { -- TODO: locals
 				{"True", "boolean_true"}, -- TODO: locals
 				{"False", "boolean_false"}, -- TODO: locals
 			}},
@@ -451,8 +484,8 @@ function editor.init()
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 115, 5, false, operandEditor.right);
-	operandEditor.right.preview:SetText("Preview value"); -- TODO: locals
-	operandEditor.right.edit:SetText(loc("CM_EDIT"));
+	operandEditor.right.preview:SetText(loc("OP_PREVIEW"));
+	operandEditor.right.edit:SetText(loc("OP_CONFIGURE"));
 	operandEditor.right.args.confirm:SetText(loc("EDITOR_CONFIRM"));
 	operandEditor.right.args.confirm:SetScript("OnClick", onOperandConfirmClick);
 	operandEditor.right.edit:SetScript("OnClick", onOperandEditClick);

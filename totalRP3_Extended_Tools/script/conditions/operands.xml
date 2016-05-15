@@ -29,4 +29,26 @@
 		</Frames>
 	</Frame>
 
+	<Frame name="TRP3_OperandEditorString" hidden="true">
+		<Frames>
+			<EditBox parentKey="input" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorNumeric" hidden="true">
+		<Frames>
+			<EditBox parentKey="input" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
 </Ui>
