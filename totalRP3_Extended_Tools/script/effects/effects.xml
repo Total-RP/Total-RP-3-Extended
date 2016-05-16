@@ -60,7 +60,7 @@
 
 			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="-135" y="-65"/>
+					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
 			</Frame>
 
@@ -152,7 +152,7 @@
 
 			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="-135" y="-65"/>
+					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
 			</Frame>
 
@@ -179,7 +179,7 @@
 
 			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="-135" y="-65"/>
+					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
 			</Frame>
 
@@ -312,7 +312,7 @@
 
 			<Frame parentKey="method" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="-135" y="-65"/>
+					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
 			</Frame>
 
@@ -338,6 +338,12 @@
 				</Anchors>
 			</EditBox>
 
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
 		</Frames>
 
 	</Frame>
@@ -353,10 +359,16 @@
 				</Anchors>
 			</EditBox>
 
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
 			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox" numeric="true">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-50"/>
 				</Anchors>
 			</EditBox>
 
@@ -375,10 +387,16 @@
 				</Anchors>
 			</EditBox>
 
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
 			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox" numeric="true">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-50"/>
 				</Anchors>
 			</EditBox>
 

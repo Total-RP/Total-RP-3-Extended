@@ -25,6 +25,7 @@ local loc = TRP3_API.locale.getText;
 local initList = TRP3_API.ui.list.initList;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
 local editor = TRP3_ConditionEditor;
 local operandEditor = editor.operand.editor;
@@ -72,6 +73,8 @@ local function getUnitText(unit)
 		return loc("OP_UNIT_PLAYER");
 	elseif unit == "target" then
 		return loc("OP_UNIT_TARGET");
+	elseif unit == "npc" then
+		return loc("OP_UNIT_NPC");
 	end
 	return unit;
 end
@@ -91,21 +94,25 @@ end
 -- Level 2: Operands level
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function saveOperand()
-	wipe(operandEditor.expression);
+local function fillExpression(tab)
+	wipe(tab);
 
-	operandEditor.expression[1] = {i = operandEditor.left.operandID, a = operandEditor.left.argsData};
-	operandEditor.expression[2] = operandEditor.comparator:GetSelectedValue();
+	tab[1] = {i = operandEditor.left.operandID, a = operandEditor.left.argsData};
+	tab[2] = operandEditor.comparator:GetSelectedValue();
 	if operandEditor.right.operandID == "string" or operandEditor.right.operandID == "numeric" then
-		operandEditor.expression[3] = {v = operandEditor.right.argsData};
+		tab[3] = {v = operandEditor.right.argsData};
 	elseif operandEditor.right.operandID == "boolean_true" then
-		operandEditor.expression[3] = {v = true};
+		tab[3] = {v = true};
 	elseif operandEditor.right.operandID == "boolean_false" then
-		operandEditor.expression[3] = {v = false};
+		tab[3] = {v = false};
 	else
-		operandEditor.expression[3] = {i = operandEditor.right.operandID, a = operandEditor.right.argsData};
+		tab[3] = {i = operandEditor.right.operandID, a = operandEditor.right.argsData};
 	end
+	return tab;
+end
 
+local function saveOperand()
+	fillExpression(operandEditor.expression);
 	listCondition();
 end
 
@@ -126,6 +133,22 @@ local function loadOperandEditor(operandInfo, list)
 	end
 end
 
+local function checkNumeric(value)
+	local leftOperand = TRP3_API.script.getOperand(operandEditor.left.operandID or "") or EMPTY;
+	local rightOperand = TRP3_API.script.getOperand(operandEditor.right.operandID or "") or EMPTY;
+	local compa = value or operandEditor.comparator:GetSelectedValue();
+	operandEditor.confirm:Enable();
+	operandEditor.preview:Enable();
+	operandEditor.numeric:Hide();
+	if compa ~= "==" and compa ~= "~=" then
+		if not leftOperand.numeric or (not rightOperand.numeric and operandEditor.right.operandID ~= "numeric") then
+			operandEditor.confirm:Disable();
+			operandEditor.preview:Disable();
+			operandEditor.numeric:Show();
+		end
+	end
+end
+
 local function onOperandSelected(operandID, list, loadEditor)
 	list.operandID = operandID;
 	local fullText = operandID;
@@ -136,6 +159,9 @@ local function onOperandSelected(operandID, list, loadEditor)
 	end
 	list.args.currentEditor = nil;
 	list.edit:Disable();
+	list.preview:Disable();
+
+	setTooltipForSameFrame(list, "TOP", 0, 0);
 
 	local operandInfo = getOperandEditorInfo(operandID);
 	if operandInfo ~= EMPTY then
@@ -146,15 +172,48 @@ local function onOperandSelected(operandID, list, loadEditor)
 				loadOperandEditor(operandInfo, list);
 			end
 		end
+		if not operandInfo.noPreview then
+			list.preview:Enable();
+		end
+		local returnType = type(operandInfo.returnType);
+		local returnTypeText;
+		if returnType == "boolean" then
+			returnTypeText = "|cffffff00" .. loc("OP_BOOL") .. "|r\n";
+		elseif returnType == "string" then
+			returnTypeText = "|cffffff00" .. loc("OP_STRING") .. "|r\n";
+		elseif returnType == "number" then
+			returnTypeText = "|cffffff00" .. loc("OP_NUMERIC") .. "|r\n";
+		end
+		if operandInfo.description and returnTypeText then
+			setTooltipForSameFrame(list, "TOP", 0, 0, operandInfo.title, returnTypeText .. operandInfo.description);
+		else
+			setTooltipForSameFrame(list, "TOP", 0, 0, operandInfo.title);
+		end
 	end
 
 	_G[list:GetName() .. "Text"]:SetText(fullText);
+	checkNumeric();
 end
 
 local function onOperandEditClick(button)
 	local list = button:GetParent();
 	local operandInfo = getOperandEditorInfo(list.operandID);
 	loadOperandEditor(operandInfo, list);
+end
+
+local function onPreviewClick(button)
+	local list = button:GetParent();
+	local operandInfo = TRP3_API.script.getOperand(list.operandID);
+	if operandInfo and operandInfo.codeReplacement then
+		local code = ("TRP3_API.utils.message.displayMessage(\"|cffff9900" .. loc("OP_PREVIEW") .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo.codeReplacement(list.argsData));
+		TRP3_API.script.generateAndRun(code);
+	end
+end
+
+local function onTestPreview()
+	local code = TRP3_API.script.getTestCode(fillExpression({}));
+	code = ("TRP3_API.utils.message.displayMessage(\"|cffff9900" .. loc("COND_PREVIEW_TEST") .. ":|cffffffff \" .. tostring(%s));"):format(code);
+	TRP3_API.script.generateAndRun(code);
 end
 
 local function onOperandConfirmClick(button)
@@ -182,7 +241,7 @@ local function openOperandEditor(expressionIndex)
 	operandEditor.left.argsData = leftOperand.a;
 	onOperandSelected(leftOperand.i, operandEditor.left);
 
-	if rightOperand.v then
+	if rightOperand.v ~= nil then
 		operandEditor.right.argsData = rightOperand.v;
 		if type(rightOperand.v) == "string" then
 			onOperandSelected("string", operandEditor.right);
@@ -370,6 +429,10 @@ function editor.init()
 	end);
 	operandEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
 	operandEditor.title:SetText(loc("COND_TEST_EDITOR"));
+	operandEditor.numeric:SetText(loc("COND_NUM_FAIL"));
+	operandEditor.preview:SetText(loc("COND_PREVIEW_TEST"));
+	setTooltipForSameFrame(operandEditor.preview, "TOP", 0, 0, loc("COND_PREVIEW_TEST"), loc("COND_PREVIEW_TEST_TT"));
+	operandEditor.preview:SetScript("OnClick", onTestPreview);
 
 	local comparatorStructure = {
 		{loc("COND_LITT_COMP")},
@@ -381,25 +444,31 @@ function editor.init()
 		{getComparatorText(">"), ">"},
 		{getComparatorText(">="), ">="},
 	}
-	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, nil, nil, 175, true);
+	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, checkNumeric, nil, 175, true);
 
 	local evaluatedOperands = {
 		[loc("OP_UNIT_VALUE")] = {
 			"unit_name",
+--			"unit_id",
+--			"unit_npc_id",
 --			"unit_guild",
 --			"unit_type",
 --			"unit_classification",
 --			"unit_sex",
 --			"unit_class",
 --			"unit_race",
+--			"unit_faction",
+			"unit_health",
+--			"unit_level",
 		},
---		["Unit test"] = { -- TODO: locals
+		[loc("OP_UNIT_TEST")] = {
+--			"unit_is_player",
 --			"unit_range",
---			"unit_exists",
+			"unit_exists",
 --			"unit_dead",
 --			"unit_mounted",
 --			"unit_flying",
---		},
+		},
 --		["Character"] = { -- TODO: locals
 --			"char_falling",
 --			"char_stealth",
@@ -431,7 +500,7 @@ function editor.init()
 
 	local evaluatedOrder = {
 		loc("OP_UNIT_VALUE"),
---		"Unit test", -- TODO: locals
+		loc("OP_UNIT_TEST"),
 --		"Character", -- TODO: locals
 --		"Pets and companions", -- TODO: locals
 --		"Campaign and quests", -- TODO: locals
@@ -460,22 +529,25 @@ function editor.init()
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
-	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 115, 5, false, operandEditor.left);
+	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, false, operandEditor.left);
 	operandEditor.left.preview:SetText(loc("OP_PREVIEW"));
 	operandEditor.left.edit:SetText(loc("OP_CONFIGURE"));
 	operandEditor.left.args.confirm:SetText(loc("EDITOR_CONFIRM"));
 	operandEditor.left.args.confirm:SetScript("OnClick", onOperandConfirmClick);
 	operandEditor.left.edit:SetScript("OnClick", onOperandEditClick);
+	operandEditor.left.preview:SetScript("OnClick", onPreviewClick);
+	setTooltipForSameFrame(operandEditor.left.preview, "TOP", 0, 0, loc("OP_PREVIEW"), loc("OP_CURRENT_TT"));
+	setTooltipAll(operandEditor.left, "TOP", 0, 0);
 
 	local rightStructure = {
 		{loc("OP_EVAL_VALUE"), getEvaluatedOperands({})},
 		{loc("OP_DIRECT_VALUE"), {
 			{loc("OP_DIRECT_VALUE")},
 			{loc("OP_STRING"), "string"},
-			{loc("OP_NUMERIC"), "numeric"}, -- TODO: locals
-			{loc("OP_BOOL"), { -- TODO: locals
-				{"True", "boolean_true"}, -- TODO: locals
-				{"False", "boolean_false"}, -- TODO: locals
+			{loc("OP_NUMERIC"), "numeric"},
+			{loc("OP_BOOL"), {
+				{loc("OP_BOOL_TRUE"), "boolean_true"},
+				{loc("OP_BOOL_FALSE"), "boolean_false"},
 			}},
 		}},
 	}
@@ -483,11 +555,14 @@ function editor.init()
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
-	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 115, 5, false, operandEditor.right);
+	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, false, operandEditor.right);
 	operandEditor.right.preview:SetText(loc("OP_PREVIEW"));
 	operandEditor.right.edit:SetText(loc("OP_CONFIGURE"));
 	operandEditor.right.args.confirm:SetText(loc("EDITOR_CONFIRM"));
 	operandEditor.right.args.confirm:SetScript("OnClick", onOperandConfirmClick);
 	operandEditor.right.edit:SetScript("OnClick", onOperandEditClick);
+	operandEditor.right.preview:SetScript("OnClick", onPreviewClick);
+	setTooltipForSameFrame(operandEditor.right.preview, "TOP", 0, 0, loc("OP_PREVIEW"), loc("OP_CURRENT_TT"));
+	setTooltipAll(operandEditor.right, "TOP", 0, 0);
 
 end

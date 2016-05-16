@@ -47,4 +47,112 @@
 
 	</Frame>
 
+	<!-- Icon browser  -->
+	<Frame name="TRP3_ObjectBrowser" hidden="true">
+		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+
+		<Size x="420" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+
+		<Scripts>
+			<OnHide>
+				self:Hide();
+			</OnHide>
+		</Scripts>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" text="[placeholder]" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+			</Button>
+
+			<Frame parentKey="content">
+				<Size x="390" y="295"/>
+
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-35"/>
+				</Anchors>
+
+				<Frames>
+					<Slider parentKey="slider" inherits="OptionsSliderTemplate" name="$parentSlider">
+						<Size x="15" y="0"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="RIGHT" x="0" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="5"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TRP3_ObjectBrowserSliderText:SetText("");
+								TRP3_ObjectBrowserSliderHigh:SetText("");
+								TRP3_ObjectBrowserSliderLow:SetText("");
+								self:SetMinMaxValues(0, 6);
+								self:SetValueStep(1);
+								self:SetOrientation("VERTICAL");
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+			</Frame>
+
+			<!-- Filter section -->
+			<Frame parentKey="filter">
+				<Size x="0" y="60"/>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="total" text="[placeholder total]" inherits="GameFontNormal">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-12"/>
+								<Anchor point="TOPRIGHT" x="0" y="-12"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+
+					<EditBox parentKey="box" inherits="TRP3_TitledEditBox">
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</EditBox>
+
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
 </Ui>

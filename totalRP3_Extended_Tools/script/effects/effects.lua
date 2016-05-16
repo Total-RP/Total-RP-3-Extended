@@ -185,13 +185,25 @@ local function document_show_init()
 		icon = "inv_icon_mission_complete_order",
 		description = loc("EFFECT_DOC_DISPLAY_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_DOC_ID") .. ":|r " .. tostring(args[1]));
+			local class = getClass(tostring(args[1]));
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_DOC_ID") .. ":|r " .. (link or tostring(args[1])));
 		end,
 		getDefaultArgs = function()
 			return {""};
 		end,
 		editor = editor;
 	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(music)
+			editor.id:SetText(music);
+		end, TRP3_DB.types.DOCUMENT});
+	end);
 
 	-- ID
 	editor.id.title:SetText(loc("EFFECT_DOC_ID"));
@@ -215,13 +227,25 @@ local function item_add_init()
 		icon = "garrison_weaponupgrade",
 		description = loc("EFFECT_ITEM_ADD_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_ADD_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
+			local class = getClass(tostring(args[1]));
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_ADD_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {"", 1, false};
 		end,
 		editor = editor;
 	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(music)
+			editor.id:SetText(music);
+		end, TRP3_DB.types.ITEM});
+	end);
 
 	-- ID
 	editor.id.title:SetText(loc("EFFECT_ITEM_ADD_ID"));
@@ -257,13 +281,25 @@ local function item_remove_init()
 		icon = "spell_sandexplosion",
 		description = loc("EFFECT_ITEM_REMOVE_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_REMOVE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
+			local class = getClass(tostring(args[1]));
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_REMOVE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {"", 1};
 		end,
 		editor = editor;
 	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(music)
+			editor.id:SetText(music);
+		end, TRP3_DB.types.ITEM});
+	end);
 
 	-- ID
 	editor.id.title:SetText(loc("EFFECT_ITEM_ADD_ID"));

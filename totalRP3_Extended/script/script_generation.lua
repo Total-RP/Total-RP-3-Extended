@@ -20,7 +20,7 @@
 TRP3_API.script = {};
 
 local EMPTY = TRP3_API.globals.empty;
-local assert, type, tostring, error, tonumber, pairs, unpack, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, unpack, wipe, strsplit;
+local assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit;
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
@@ -32,13 +32,17 @@ local DEBUG = true;
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function escapeString(value)
+	return value:gsub("\"", "\\\"");
+end
+
 -- Escape " in string argument, to avoid script injection
 local function escapeArguments(args)
 	if not args then return end
 	local escaped = {};
 	for index, arg in pairs(args) do
 		if type(arg) == "string" then
-			escaped[index] = arg:gsub("\"", "\\\"");
+			escaped[index] = escapeString(arg);
 		else
 			escaped[index] = arg;
 		end
@@ -112,25 +116,25 @@ local function writeOperand(testStructure, comparatorType)
 	local code;
 	assert(type(testStructure) == "table", "testStructure is not a table");
 	assert(testStructure.v or testStructure.i, "No operand info");
+
 	if testStructure.v then
 		if comparatorType == "number" then
 			assert(tonumber(testStructure.v) ~= nil, "Cannot parse operand numeric value: " .. testStructure.v);
 			code = testStructure.v;
 		else
-			if type(testStructure.v) == "string" or type(testStructure.v) == "number" then
-				code = "\"" .. testStructure.v .. "\"";
-			elseif type(testStructure.v) == "boolean" then
-				code = tostring(testStructure.v);
-			else
-				error("Unknown operand value type for string comparison: " .. type(testStructure.v));
-			end
+			code = "\"" .. escapeString(tostring(testStructure.v)) .. "\"";
 		end
 	else
 		local operandInfo = getTestOperande(testStructure.i);
 		assert(operandInfo, "Unknown operand ID: " .. testStructure.i);
 		assert(comparatorType ~= "number" or operandInfo.numeric, "Operand ID is not numeric: " .. testStructure.i);
 
-		code = operandInfo.codeReplacement(escapeArguments(testStructure.a));
+		if comparatorType == "number" then
+			code = ("(tonumber(%s) or -1)"):format(operandInfo.codeReplacement(escapeArguments(testStructure.a)));
+		else
+			code = ("tostring(%s)"):format(operandInfo.codeReplacement(escapeArguments(testStructure.a)));
+		end
+
 
 		-- Register operand environment
 		if operandInfo.env then
@@ -167,6 +171,7 @@ local function writeTest(testStructure)
 	-- Write code
 	return ("%s %s %s"):format(left, comparator, right);
 end
+TRP3_API.script.getTestCode = writeTest;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LEVEL 2 : Condition
@@ -384,7 +389,7 @@ end
 -- Main
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local BASE_ENV = { ["tostring, EMPTY, delayed, eval"] = "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval" };
+local BASE_ENV = { ["tostring, EMPTY, delayed, eval, tonumber"] = "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval, tonumber" };
 local IMPORT_PATTERN = "local %s = %s;";
 
 local function writeImports()
@@ -429,46 +434,12 @@ local function generate(effectStructure, classID)
 	-- Generating factory
 	local func, errorMessage = loadstring(code, "Generated code");
 	if not func then
-		print(errorMessage);
+		print(errorMessage); -- TODO: could happens if syntax error, make a proper message
 		return nil, code;
 	end
 
 	return func, code;
 end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MOCKUP
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local MOCK_STRUCTURE = {
-	-- EFFECT LIST 1
-	["1"] = {
-		t = "list",
-		e = {
-			-- EFFECT 1
-			{
-				id = "text",
-				condID = 1,
-				cond = {
-					{ l = { v = "Telkostrasz", }, c = "==", r = { i = "tar_name", } },
-				},
-				args = {
-					"La cible est Telkostrasz",
-				}
-			},
-			-- EFFECT 1
-			{
-				id = "text",
-				cond = {
-					{ l = { v = true, }, c = "~=", r = { i = "cond", a = { 1 } } },
-				},
-				args = {
-					"La cible\");print(\"you just got hacked\");print(\"",
-				}
-			}
-		}
-	},
-}
 
 local function getFunction(structure, classID)
 	local functionFactory, code = generate(structure, classID);
@@ -538,6 +509,14 @@ function TRP3_API.script.clearAllCompilations()
 	wipe(compiledScript);
 end
 
-function TRP3_Generate()
-	print(tostring(executeFunction(getFunction(MOCK_STRUCTURE))));
+function TRP3_API.script.generateAndRun(code, args)
+	-- Generating factory
+	local func, errorMessage = loadstring(code, "Generated code");
+	if not func then
+		print(errorMessage);
+		return nil, code;
+	end
+
+	-- Execute
+	func(args);
 end

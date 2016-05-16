@@ -39,6 +39,7 @@ local function initEnitTypeEditor()
 	local unitType = {
 		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_PLAYER")), "player"},
 		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_TARGET")), "target"},
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_NPC")), "npc"},
 	}
 	TRP3_API.ui.listbox.setupListBox(unitTypeEditor.type, unitType, nil, nil, 180, true);
 
@@ -58,6 +59,7 @@ end
 local function string_init()
 	registerOperandEditor("string", {
 		title = loc("OP_STRING"),
+		noPreview = true,
 		getText = function(args)
 			local value = tostring(args or "");
 			return loc("OP_STRING") .. ": \"" .. value .. "\"";
@@ -80,6 +82,7 @@ end
 local function numeric_init()
 	registerOperandEditor("numeric", {
 		title = loc("OP_NUMERIC"),
+		noPreview = true,
 		getText = function(args)
 			local value = tonumber(args or 0) or 0;
 			return loc("OP_NUMERIC") .. ": " .. value .. "";
@@ -101,19 +104,49 @@ end
 
 local function boolean_init()
 	registerOperandEditor("boolean_true", {
-		title = loc("OP_BOOL") .. ": TRUE",
+		title = loc("OP_BOOL") .. ": " .. loc("OP_BOOL_TRUE"),
+		noPreview = true,
 	});
 	registerOperandEditor("boolean_false", {
-		title = loc("OP_BOOL") .. ": FALSE",
+		title = loc("OP_BOOL") .. ": " .. loc("OP_BOOL_FALSE"),
+		noPreview = true,
 	});
 end
 
 local function unit_name_init()
 	registerOperandEditor("unit_name", {
-		title = "Unit name", -- TODO: loc
+		title = loc("OP_OP_UNIT_NAME"),
+		description = loc("OP_OP_UNIT_NAME_TT"),
+		returnType = "",
 		getText = function(args)
 			local unitID = (args or EMPTY)[1] or "target";
-			return "Unit name (" .. getUnitText(unitID) .. ")"; -- TODO: locals
+			return loc("OP_OP_UNIT_NAME") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_health_init()
+	registerOperandEditor("unit_health", {
+		title = loc("OP_OP_UNIT_HEALTH"),
+		description = loc("OP_OP_UNIT_HEALTH_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_HEALTH") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_exists_init()
+	registerOperandEditor("unit_exists", {
+		title = loc("OP_OP_UNIT_EXISTS"),
+		description = loc("OP_OP_UNIT_EXISTS_TT"),
+		returnType = true,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_EXISTS") .. " (" .. getUnitText(unitID) .. ")";
 		end,
 		editor = unitTypeEditor,
 	});
@@ -132,5 +165,7 @@ function TRP3_ConditionEditor.initOperands()
 	numeric_init();
 
 	unit_name_init();
+	unit_health_init();
+	unit_exists_init();
 
 end

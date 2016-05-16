@@ -59,3 +59,112 @@ function delayEditor.init()
 	}
 	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, type, nil, nil, 200, true);
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Object browser
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local objectBrowser = TRP3_ObjectBrowser;
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local CreateFrame = CreateFrame;
+local initList = TRP3_API.ui.list.initList;
+local safeMatch = TRP3_API.utils.str.safeMatch;
+local filteredObjectList = {};
+
+local function onBrowserClose()
+	TRP3_API.popup.hidePopups();
+	objectBrowser:Hide();
+end
+
+local function onBrowserIconClick(frame)
+	onBrowserClose();
+	if objectBrowser.onSelectCallback then
+		objectBrowser.onSelectCallback(frame.objectID);
+	end
+end
+
+local function decorateBrowserIcon(frame, index)
+	local objectID = filteredObjectList[index];
+	local class = getClass(objectID);
+	local icon, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
+	local link = TRP3_API.inventory.getItemLink(class);
+
+	frame:SetNormalTexture("Interface\\ICONS\\" .. icon);
+	frame:SetPushedTexture("Interface\\ICONS\\" .. icon);
+	setTooltipForSameFrame(frame, "TOP", 0, 5, link, objectID);
+	frame.objectID = objectID;
+end
+
+local function filterMatch(filter, value)
+	-- No filter or bad filter
+	if filter == nil or filter:len() == 0 then
+		return true;
+	end
+	return safeMatch(value:lower(), filter:lower());
+end
+
+local function filteredObjectBrowser()
+	local filter = objectBrowser.filter.box:GetText();
+	wipe(filteredObjectList);
+
+	local total, count = 0, 0;
+	for objectFullID, class in pairs(TRP3_DB.global) do
+		if not class.hideFromList and class.TY == objectBrowser.type then
+			local _, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
+			if filterMatch(filter, objectFullID) or filterMatch(filter, name) then
+				tinsert(filteredObjectList, objectFullID);
+				count = count + 1;
+			end
+			total = total + 1;
+		end
+	end
+	objectBrowser.filter.total:SetText( (#filteredObjectList) .. " / " .. total );
+
+	initList(
+		{
+			widgetTab = objectBrowser.widgetTab,
+			decorate = decorateBrowserIcon
+		},
+		filteredObjectList,
+		objectBrowser.content.slider
+	);
+end
+
+local function showObjectBrowser(onSelectCallback, type)
+	objectBrowser.title:SetText(loc("DB_BROWSER") .. " (" .. TRP3_API.extended.tools.getTypeLocale(type) .. ")")
+	objectBrowser.onSelectCallback = onSelectCallback;
+	objectBrowser.type = type;
+	objectBrowser.filter.box:SetText("");
+	objectBrowser.filter.box:SetFocus();
+	filteredObjectBrowser();
+end
+
+function objectBrowser.init()
+	handleMouseWheel(objectBrowser.content, objectBrowser.content.slider);
+	objectBrowser.content.slider:SetValue(0);
+
+	-- Create icons
+	local row, column;
+	objectBrowser.widgetTab = {};
+
+	for row = 0, 5 do
+		for column = 0, 7 do
+			local button = CreateFrame("Button", "TRP3_ObjectBrowserButton_"..row.."_"..column, objectBrowser.content, "TRP3_IconBrowserButton");
+			button:ClearAllPoints();
+			button:SetPoint("TOPLEFT", objectBrowser.content, "TOPLEFT", 15 + (column * 45), -15 + (row * (-45)));
+			button:SetScript("OnClick", onBrowserIconClick);
+			tinsert(objectBrowser.widgetTab, button);
+		end
+	end
+
+	objectBrowser.filter.box:SetScript("OnTextChanged", filteredObjectBrowser);
+	objectBrowser.close:SetScript("OnClick", onBrowserClose);
+
+	objectBrowser.filter.box.title:SetText(loc("UI_FILTER"));
+
+	TRP3_API.popup.OBJECTS = "objects";
+	TRP3_API.popup.POPUPS[TRP3_API.popup.OBJECTS] = {
+		frame = objectBrowser,
+		showMethod = showObjectBrowser,
+	};
+end

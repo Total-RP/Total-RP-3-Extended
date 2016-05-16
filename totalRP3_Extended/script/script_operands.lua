@@ -20,22 +20,53 @@
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 
 local OPERANDS = {
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- UNIT VALUE
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 	["unit_name"] = {
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
-			return ("tostring(UnitName(\"%s\"))"):format(unitID);
+			return ("UnitName(\"%s\")"):format(unitID);
 		end,
 		env = {
 			["UnitName"] = "UnitName",
 		},
 	},
 
-	-- Workflow operands
+	["unit_health"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitHealth(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitHealth"] = "UnitHealth",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- UNIT CHECK
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["unit_exists"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitExists(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitExists"] = "UnitExists",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- OTHERS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	-- Let you test a previous test results
 	["cond"] = {
 		codeReplacement= "tostring(conditionStorage[\"%s\"])",
-		args = 1,
 	},
 
 	-- Let you test the return value from the last effect
