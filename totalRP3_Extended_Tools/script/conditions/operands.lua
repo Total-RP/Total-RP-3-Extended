@@ -53,7 +53,7 @@ local function initEnitTypeEditor()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Operands structure
+-- Operands basic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function string_init()
@@ -113,6 +113,10 @@ local function boolean_init()
 	});
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Unit value operands
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 local function unit_name_init()
 	registerOperandEditor("unit_name", {
 		title = loc("OP_OP_UNIT_NAME"),
@@ -121,6 +125,32 @@ local function unit_name_init()
 		getText = function(args)
 			local unitID = (args or EMPTY)[1] or "target";
 			return loc("OP_OP_UNIT_NAME") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_id_init()
+	registerOperandEditor("unit_id", {
+		title = loc("OP_OP_UNIT_ID"),
+		description = loc("OP_OP_UNIT_ID_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_ID") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_npc_id_init()
+	registerOperandEditor("unit_npc_id", {
+		title = loc("OP_OP_UNIT_NPC_ID"),
+		description = loc("OP_OP_UNIT_NPC_ID_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_NPC_ID") .. " (" .. getUnitText(unitID) .. ")";
 		end,
 		editor = unitTypeEditor,
 	});
@@ -138,6 +168,10 @@ local function unit_health_init()
 		editor = unitTypeEditor,
 	});
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Unit checks operands
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function unit_exists_init()
 	registerOperandEditor("unit_exists", {
@@ -165,6 +199,9 @@ function TRP3_ConditionEditor.initOperands()
 	numeric_init();
 
 	unit_name_init();
+	unit_id_init();
+	unit_npc_id_init();
+
 	unit_health_init();
 	unit_exists_init();
 

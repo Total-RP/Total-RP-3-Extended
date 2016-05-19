@@ -112,7 +112,7 @@ local function getTestOperande(id)
 	return TRP3_API.script.getOperand(id);
 end
 
-local function writeOperand(testStructure, comparatorType)
+local function writeOperand(testStructure, comparatorType, env)
 	local code;
 	assert(type(testStructure) == "table", "testStructure is not a table");
 	assert(testStructure.v or testStructure.i, "No operand info");
@@ -139,14 +139,14 @@ local function writeOperand(testStructure, comparatorType)
 		-- Register operand environment
 		if operandInfo.env then
 			for map, g in pairs(operandInfo.env) do
-				CURRENT_ENVIRONMENT[map] = g;
+				(env or CURRENT_ENVIRONMENT)[map] = g;
 			end
 		end
 	end
 	return code;
 end
 
-local function writeTest(testStructure)
+local function writeTest(testStructure, env)
 	assert(testStructure, "testStructure is nil");
 	assert(#testStructure == 3, "testStructure should have three components");
 	local comparator, comparatorType;
@@ -163,10 +163,10 @@ local function writeTest(testStructure)
 	end
 
 	-- Left operande
-	local left = writeOperand(testStructure[1], comparatorType);
+	local left = writeOperand(testStructure[1], comparatorType, env);
 
 	-- Right operand
-	local right = writeOperand(testStructure[3], comparatorType)
+	local right = writeOperand(testStructure[3], comparatorType, env)
 
 	-- Write code
 	return ("%s %s %s"):format(left, comparator, right);
@@ -510,7 +510,13 @@ function TRP3_API.script.clearAllCompilations()
 	wipe(compiledScript);
 end
 
-function TRP3_API.script.generateAndRun(code, args)
+function TRP3_API.script.generateAndRun(code, args, env)
+	code = "local func = function(args) " .. code .. " end setfenv(func, {}); return func;";
+
+	for alias, global in pairs(env or EMPTY) do
+		code = "\n" .. IMPORT_PATTERN:format(alias, global) .. code;
+	end
+
 	-- Generating factory
 	local func, errorMessage = loadstring(code, "Generated code");
 	if not func then
@@ -519,7 +525,7 @@ function TRP3_API.script.generateAndRun(code, args)
 	end
 
 	-- Execute
-	func(args);
+	func()(args);
 end
 
 function TRP3_API.script.parseArgs(text, args)

@@ -201,19 +201,29 @@ local function onOperandEditClick(button)
 	loadOperandEditor(operandInfo, list);
 end
 
+local previewEnv = {
+	["displayMessage"] = "TRP3_API.utils.message.displayMessage",
+	tostring = "tostring",
+}
+
 local function onPreviewClick(button)
 	local list = button:GetParent();
 	local operandInfo = TRP3_API.script.getOperand(list.operandID);
 	if operandInfo and operandInfo.codeReplacement then
-		local code = ("TRP3_API.utils.message.displayMessage(\"|cffff9900" .. loc("OP_PREVIEW") .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo.codeReplacement(list.argsData));
-		TRP3_API.script.generateAndRun(code);
+		local code = ("displayMessage(\"|cffff9900" .. loc("OP_PREVIEW") .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo.codeReplacement(list.argsData));
+		local env = {};
+		Utils.table.copy(env, previewEnv);
+		Utils.table.copy(env, operandInfo.env);
+		TRP3_API.script.generateAndRun(code, nil, env);
 	end
 end
 
 local function onTestPreview()
-	local code = TRP3_API.script.getTestCode(fillExpression({}));
-	code = ("TRP3_API.utils.message.displayMessage(\"|cffff9900" .. loc("COND_PREVIEW_TEST") .. ":|cffffffff \" .. tostring(%s));"):format(code);
-	TRP3_API.script.generateAndRun(code);
+	local env = {};
+	local code = TRP3_API.script.getTestCode(fillExpression({}), env);
+	code = ("displayMessage(\"|cffff9900" .. loc("COND_PREVIEW_TEST") .. ":|cffffffff \" .. tostring(%s));"):format(code);
+	Utils.table.copy(env, previewEnv);
+	TRP3_API.script.generateAndRun(code, nil, env);
 end
 
 local function onOperandConfirmClick(button)
@@ -449,8 +459,8 @@ function editor.init()
 	local evaluatedOperands = {
 		[loc("OP_UNIT_VALUE")] = {
 			"unit_name",
---			"unit_id",
---			"unit_npc_id",
+			"unit_id",
+			"unit_npc_id",
 --			"unit_guild",
 --			"unit_type",
 --			"unit_classification",

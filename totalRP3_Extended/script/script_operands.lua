@@ -17,7 +17,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
+local assert, type = assert, type;
 
 local OPERANDS = {
 
@@ -32,6 +32,26 @@ local OPERANDS = {
 		end,
 		env = {
 			["UnitName"] = "UnitName",
+		},
+	},
+
+	["unit_id"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitID(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitID"] = "TRP3_API.utils.str.getUnitID",
+		},
+	},
+
+	["unit_npc_id"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("getUnitNPCID(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["getUnitNPCID"] = "TRP3_API.utils.str.getUnitNPCID",
 		},
 	},
 

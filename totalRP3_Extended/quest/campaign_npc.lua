@@ -69,10 +69,7 @@ TRP3_API.quest.registerNPCs = registerNPCs;
 -- On target
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function getUnitDataFromGUID(unitID)
-	local unitType, _, _, _, _, npcID = strsplit("-", UnitGUID(unitID) or "");
-	return unitType, npcID;
-end
+local getUnitDataFromGUID = Utils.str.getUnitDataFromGUID;
 
 local function onTargetChanged()
 	local unitType, npcID = getUnitDataFromGUID("target");
