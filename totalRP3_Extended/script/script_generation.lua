@@ -388,8 +388,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+local BASE_ENV = { ["tostring, EMPTY, delayed, eval, tonumber, var"]
+	= "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval, tonumber, TRP3_API.script.parseArgs" };
 
-local BASE_ENV = { ["tostring, EMPTY, delayed, eval, tonumber"] = "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval, tonumber" };
 local IMPORT_PATTERN = "local %s = %s;";
 
 local function writeImports()
@@ -519,4 +520,35 @@ function TRP3_API.script.generateAndRun(code, args)
 
 	-- Execute
 	func(args);
+end
+
+function TRP3_API.script.parseArgs(text, args)
+	text = text:gsub("%$%{(.-)%}", function(capture)
+		return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture];
+	end);
+	return text;
+end
+
+function TRP3_API.script.parseObjectArgs(text, vars)
+	text = text:gsub("%$%{(.-)%}", function(capture)
+		return (vars or EMPTY)[capture];
+	end);
+	return text;
+end
+
+function TRP3_API.script.setWorkflowVar(workflowVars, varName, varValue, initOnly)
+	if workflowVars then
+		if not initOnly or not workflowVars[varName] then
+			workflowVars[varName] = varValue;
+		end
+	end
+end
+
+function TRP3_API.script.setObjectVar(object, varName, varValue, initOnly)
+	if object then
+		if not object.vars then object.vars = {} end
+		if not initOnly or not object.vars[varName] then
+			object.vars[varName] = varValue;
+		end
+	end
 end

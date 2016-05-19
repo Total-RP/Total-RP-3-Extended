@@ -349,16 +349,35 @@ local function var_set_execenv_init()
 	varSetEditor.value.title:SetText(loc("EFFECT_VAR_VALUE"));
 	setTooltipForSameFrame(varSetEditor.value.help, "RIGHT", 0, 5, loc("EFFECT_VAR_VALUE"), "");
 
+	-- Init only
+	varSetEditor.initOnly.Text:SetText(loc("EFFECT_VAR_INIT_ONLY"));
+	setTooltipForSameFrame(varSetEditor.initOnly, "RIGHT", 0, 5, loc("EFFECT_VAR_INIT_ONLY"), loc("EFFECT_VAR_INIT_ONLY_TT"));
+
 	function varSetEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		varSetEditor.var:SetText(data[1] or "");
 		varSetEditor.value:SetText(data[2] or "");
+		varSetEditor.initOnly:SetChecked(data[3] or false);
 	end
 
 	function varSetEditor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(varSetEditor.var:GetText()));
 		scriptData.args[2] = stEtN(strtrim(varSetEditor.value:GetText()));
+		scriptData.args[3] = varSetEditor.initOnly:GetChecked();
 	end
+
+	registerEffectEditor("var_set_object", {
+		title = loc("EFFECT_VAR_OBJECT"),
+		icon = "inv_inscription_minorglyph01",
+		description = loc("EFFECT_VAR_OBJECT_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {"varName", loc("EFFECT_VAR_VALUE")};
+		end,
+		editor = varSetEditor
+	});
 
 end
 
@@ -375,32 +394,6 @@ local function debugs_init()
 		icon = "temp",
 		description = loc("EFFECT_DEBUG_DUMP_ARGS_TT"),
 	});
-
-	registerEffectEditor("debug_dump_arg", {
-		title = loc("EFFECT_DEBUG_DUMP_ARG"),
-		icon = "temp",
-		description = loc("EFFECT_DEBUG_DUMP_ARG_TT"),
-		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. tostring(args[1]));
-		end,
-		getDefaultArgs = function()
-			return {"varName"};
-		end,
-		editor = debugDumpArgEditor
-	});
-
-	-- Var name
-	debugDumpArgEditor.var.title:SetText(loc("EFFECT_VAR"));
-	setTooltipForSameFrame(debugDumpArgEditor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
-
-	function debugDumpArgEditor.load(scriptData)
-		local data = scriptData.args or Globals.empty;
-		debugDumpArgEditor.var:SetText(data[1] or "");
-	end
-
-	function debugDumpArgEditor.save(scriptData)
-		scriptData.args[1] = stEtN(strtrim(debugDumpArgEditor.var:GetText()));
-	end
 
 	registerEffectEditor("debug_dump_text", {
 		title = loc("EFFECT_DEBUG_DUMP_TEXT"),

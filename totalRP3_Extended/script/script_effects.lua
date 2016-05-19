@@ -44,7 +44,7 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local text = args[1] or "";
 			local type = tonumber(args[2]) or 1;
-			return ("message(\"%s\", %s); lastEffectReturn = 0;"):format(text, type);
+			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(text, type);
 		end,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -56,14 +56,14 @@ local EFFECTS = {
 	["speech_env"] = {
 		codeReplacementFunc = function (args)
 			local text = args[1] or "";
-			return ("SendChatMessage(\"|| %s\", 'EMOTE'); lastEffectReturn = 0;"):format(text);
+			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); lastEffectReturn = 0;"):format(text);
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
 		},
 		securedCodeReplacementFunc = function (args)
 			local text = args[1] or "";
-			return ("message(\"%s\", %s); lastEffectReturn = 0;"):format(text, 1);
+			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(text, 1);
 		end,
 		securedEnv = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -75,7 +75,7 @@ local EFFECTS = {
 			local name = args[1] or "";
 			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
-			return ("SendChatMessage(\"|| %s\", 'EMOTE'); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text));
+			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text));
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
@@ -84,7 +84,7 @@ local EFFECTS = {
 			local name = args[1] or "";
 			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
-			return ("message(\"%s\", %s); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text), 1);
+			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text), 1);
 		end,
 		securedEnv = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -97,9 +97,25 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local varName = args[1] or "var";
 			local varValue = args[2] or "";
-			return ("args.custom[\"%s\"] = \"%s\"; lastEffectReturn = 0;"):format(varName, varValue);
+			local initOnly = tostring(args[3] or false);
+			return ("setWorkflowVar(args.custom, \"%s\", var(\"%s\", args), %s); lastEffectReturn = 0;"):format(varName, varValue, initOnly);
 		end,
-		env = {},
+		env = {
+			setWorkflowVar = "TRP3_API.script.setWorkflowVar",
+		},
+		secured = security.HIGH,
+	},
+
+	["var_set_object"] = {
+		codeReplacementFunc = function (args)
+			local varName = args[1] or "var";
+			local varValue = args[2] or "";
+			local initOnly = tostring(args[3] or false);
+			return ("setObjectVar(args.object, \"%s\", var(\"%s\", args), %s); lastEffectReturn = 0;"):format(varName, varValue, initOnly);
+		end,
+		env = {
+			setObjectVar = "TRP3_API.script.setObjectVar",
+		},
 		secured = security.HIGH,
 	},
 
@@ -220,22 +236,9 @@ local EFFECTS = {
 	["debug_dump_text"] = {
 		codeReplacementFunc = function (args)
 			local value = tostring(args[1]);
-			return ("debug(\"%s\", DEBUG);"):format(value);
+			return ("debug(var(\"%s\", args), DEBUG);"):format(value);
 		end,
 		env = {
-			debug = "TRP3_API.utils.log.log",
-			DEBUG = "TRP3_API.utils.log.level.DEBUG",
-		},
-		secured = security.HIGH,
-	},
-
-	["debug_dump_arg"] = {
-		codeReplacementFunc = function (args)
-			local value = tostring(args[1]);
-			return ("debug(\"Dumping args.custom['%s']\", DEBUG); dump(args.custom[\"%s\"]);"):format(value, value);
-		end,
-		env = {
-			dump = "TRP3_API.utils.table.dump",
 			debug = "TRP3_API.utils.log.log",
 			DEBUG = "TRP3_API.utils.log.level.DEBUG",
 		},

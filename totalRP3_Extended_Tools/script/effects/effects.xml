@@ -97,6 +97,12 @@
 				</Anchors>
 			</EditBox>
 
+			<CheckButton parentKey="initOnly" inherits="TRP3_CheckBox" name="$parentInitOnly">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="-8" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.value"/>
+				</Anchors>
+			</CheckButton>
+
 		</Frames>
 
 	</Frame>
@@ -272,21 +278,6 @@
 	<!--         Debug        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorDebugDumpArg" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
-		<Frames>
-
-			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
-				</Anchors>
-			</EditBox>
-
-		</Frames>
-
-	</Frame>
-
 	<Frame name="TRP3_EffectEditorDebugDumpText" hidden="true" inherits="TRP3_EditorEffectTemplate">
 		<Size x="500" y="250"/>
 		<Frames>
@@ -400,7 +391,7 @@
 				</Anchors>
 			</EditBox>
 
-			<CheckButton parentKey="crafted" inherits="TRP3_CheckBox" name="$parentVertile">
+			<CheckButton parentKey="crafted" inherits="TRP3_CheckBox" name="$parentCrafted">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="-8" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.count"/>
 				</Anchors>

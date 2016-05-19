@@ -114,8 +114,12 @@ end
 TRP3_API.extended.tools.getTypeLocale = getTypeLocale;
 
 local function getClassDataSafeByType(class)
-	if class.TY == TRP3_DB.types.CAMPAIGN or class.TY == TRP3_DB.types.QUEST or class.TY == TRP3_DB.types.ITEM or class.TY == TRP3_DB.types.DOCUMENT then
+	if class.TY == TRP3_DB.types.CAMPAIGN or class.TY == TRP3_DB.types.QUEST or class.TY == TRP3_DB.types.ITEM then
 		return TRP3_API.extended.getClassDataSafe(class);
+	end
+	if class.TY == TRP3_DB.types.DOCUMENT then
+		local _, name = TRP3_API.extended.getClassDataSafe(class);
+		return "inv_scroll_12", name;
 	end
 	if class.TY == TRP3_DB.types.QUEST_STEP then
 		return "inv_inscription_scroll", (class.TX or ""):gsub("\n", ""):sub(1, 70) .. "...";

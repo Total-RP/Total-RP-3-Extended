@@ -473,10 +473,10 @@ editor.init = function(ToolFrame)
 		},
 		["Variables"] = { -- TODO: locals
 			"var_set_execenv",
+			"var_set_object",
 		},
 		["Debug"] = { -- TODO: locals
 			"debug_dump_args",
-			"debug_dump_arg",
 			"debug_dump_text",
 		},
 		order = {

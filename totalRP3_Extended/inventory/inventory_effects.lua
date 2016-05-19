@@ -30,9 +30,9 @@ TRP3_API.inventory.EFFECTS = {
 	["item_bag_durability"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
-			local target = "containerInfo";
+			local target = "container";
 			if args[3] == "self" then
-				target = "slotInfo";
+				target = "object";
 			end
 			local amount = tonumber(args[2]) or 0;
 			if args[1] == "DAMAGE" then
@@ -59,7 +59,7 @@ TRP3_API.inventory.EFFECTS = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
 			local amount = tonumber(args[1]) or 1;
-			return ("lastEffectReturn = consumeItem(args.slotInfo, args.containerInfo, %s);"):format(amount);
+			return ("lastEffectReturn = consumeItem(args.object, args.container, %s);"):format(amount);
 		end,
 		env = {
 			consumeItem = "TRP3_API.inventory.consumeItem",

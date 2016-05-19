@@ -23,6 +23,7 @@ local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkConta
 local getItemLink = TRP3_API.inventory.getItemLink;
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
+local tcopy = Utils.table.copy;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INVENTORY MANAGEMENT API
@@ -113,17 +114,23 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 			container.content[slot] = {
 				id = classID,
 			};
+			local slot = container.content[slot];
 			if itemClass.CO and itemClass.CO.IT then
-				container.content[slot].content = {};
-				Utils.table.copy(container.content[slot].content, itemClass.CO.IT);
+				slot.content = {};
+				Utils.table.copy(slot.content, itemClass.CO.IT);
 			end
 			if itemData.madeBy then
 				if type(itemData.madeBy) == "string" then
-					container.content[slot].madeBy = itemData.madeBy;
+					slot.madeBy = itemData.madeBy;
 				else
-					container.content[slot].madeBy = Globals.player_id;
+					slot.madeBy = Globals.player_id;
 				end
-
+			end
+			if itemData.vars then
+				if not slot.vars then
+					slot.vars = {};
+				end
+				tcopy(slot.vars, itemData.vars);
 			end
 		end
 		if stackSlot then
@@ -214,7 +221,7 @@ local function useContainerSlot(slotButton, containerFrame)
 			end
 			containerFrame.info.content[slotButton.slotID] = nil;
 		elseif slotButton.class and isUsableByClass(slotButton.class) then
-			local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, slotInfo = slotButton.info, containerInfo = containerFrame.info}, slotButton.info.id);
+			local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, object = slotButton.info, container = containerFrame.info}, slotButton.info.id);
 		end
 	end
 end

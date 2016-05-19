@@ -25,6 +25,7 @@ local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inven
 local getClass, isContainerByClassID = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID;
 local getQualityColorRGB, getQualityColorText = TRP3_API.inventory.getQualityColorRGB, TRP3_API.inventory.getQualityColorText;
 local EMPTY = TRP3_API.globals.empty;
+local parseObjectArgs = TRP3_API.script.parseObjectArgs;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Slot management
@@ -56,10 +57,10 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 	title = getQualityColorText(class.BA.QA) .. name;
 
 	if class.BA.LE then
-		left = Utils.str.color("w") .. class.BA.LE;
+		left = Utils.str.color("w") .. parseObjectArgs(class.BA.LE, slotInfo.vars);
 	end
 	if class.BA.RI then
-		right = Utils.str.color("w") .. class.BA.RI;
+		right = Utils.str.color("w") .. parseObjectArgs(class.BA.RI, slotInfo.vars);
 	end
 
 	text1 = "";
@@ -81,12 +82,12 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("o") .. "\"" .. class.BA.DE .. "\"";
+		text1 = text1 .. Utils.str.color("o") .. "\"" .. parseObjectArgs(class.BA.DE, slotInfo.vars) .. "\"";
 	end
 
 	if class.US and class.US.AC then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("g") .. USE .. ": " .. class.US.AC;
+		text1 = text1 .. Utils.str.color("g") .. USE .. ": " .. parseObjectArgs(class.US.AC, slotInfo.vars);
 	end
 
 	if class.BA.CO then
