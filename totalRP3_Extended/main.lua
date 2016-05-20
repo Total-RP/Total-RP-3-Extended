@@ -340,6 +340,16 @@ end
 
 local function onStart()
 
+	-- Signal
+	TRP3_API.extended.SIGNAL_PREFIX = "EXSI";
+	TRP3_API.communication.registerProtocolPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
+		Log.log(("Received signal from %s"):format(sender));
+		Utils.table.dump(arg);
+	end);
+	function TRP3_API.extended.sendSignal(id, value)
+		TRP3_API.communication.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
+	end
+
 	-- Calculate global environement with all ids
 	local countInner, countExchange, countMy;
 	countInner = registerDB(TRP3_DB.inner, 0);

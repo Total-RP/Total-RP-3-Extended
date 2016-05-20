@@ -196,27 +196,26 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function loadDataScript()
-	TRP3_ScriptEditorNormal.scriptTitle = loc("IT_ON_USE");
-	TRP3_ScriptEditorNormal.scriptDescription = loc("IT_ON_USE_TT");
-	TRP3_ScriptEditorNormal.scriptID = "onUse";
-
 	-- Load workflows
 	if not toolFrame.specificDraft.SC then
 		toolFrame.specificDraft.SC = {};
 	end
-	TRP3_ScriptEditorNormal.refresh();
+	TRP3_ScriptEditorNormal.refreshWorkflowList();
+end
 
+local function storeDataScript()
+	-- TODO: compute all workflow order
+	for workflowID, workflow in pairs(toolFrame.specificDraft.SC) do
+		TRP3_ScriptEditorNormal.linkElements(workflow);
+	end
+end
+
+local function loadDataInner()
 	-- Load inners
 	if not toolFrame.specificDraft.IN then
 		toolFrame.specificDraft.IN = {};
 	end
 	TRP3_InnerObjectEditor.refresh();
-end
-
-local function storeDataScript()
-	TRP3_ScriptEditorNormal.mode = TRP3_DB.modes.NORMAL;
-	TRP3_ScriptEditorNormal.scriptID = "onUse";
-	TRP3_ScriptEditorNormal.storeData();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -265,7 +264,7 @@ local function createTabBar()
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
 			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
-			{ loc("IT_ON_USE"), TABS.EFFECTS, 150 },
+			{ loc("WO_WORKFLOW"), TABS.EFFECTS, 150 },
 			{ loc("IT_CON"), TABS.CONTAINER, 150 },
 			{ loc("IN_INNER"), TABS.INNER, 150 },
 		},
@@ -289,6 +288,7 @@ local function loadItem()
 	loadDataMain();
 	loadDataScript();
 	loadDataContainer();
+	loadDataInner();
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
 end
 

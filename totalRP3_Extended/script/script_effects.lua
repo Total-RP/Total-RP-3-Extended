@@ -92,7 +92,7 @@ local EFFECTS = {
 		secured = security.LOW,
 	},
 
-	-- Programmic
+	-- Expert
 	["var_set_execenv"] = {
 		codeReplacementFunc = function (args)
 			local varName = args[1] or "var";
@@ -115,6 +115,18 @@ local EFFECTS = {
 		end,
 		env = {
 			setObjectVar = "TRP3_API.script.setObjectVar",
+		},
+		secured = security.HIGH,
+	},
+
+	["signal_send"] = {
+		codeReplacementFunc = function (args)
+			local varName = args[1] or "";
+			local varValue = args[2] or "";
+			return ("sendSignal(\"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(varName, varValue);
+		end,
+		env = {
+			sendSignal = "TRP3_API.extended.sendSignal",
 		},
 		secured = security.HIGH,
 	},

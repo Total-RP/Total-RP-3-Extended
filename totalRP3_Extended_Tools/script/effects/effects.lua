@@ -381,6 +381,44 @@ local function var_set_execenv_init()
 
 end
 
+local function signal_send_init()
+
+	local editor = TRP3_EffectEditorSignalSend;
+
+	registerEffectEditor("signal_send", {
+		title = "Send signal (WIP)", -- TODO: locals
+		icon = "Inv_gizmo_goblingtonkcontroller",
+		description = "Send a signal with an ID and a value to the player target.", -- TODO: locals
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" .. "Send signal ID" .. ":|r " .. tostring(args[1]) .. "|cffffff00" .. " with value" .. ":|r " .. tostring(args[2]));
+		end,
+		getDefaultArgs = function()
+			return {"id", "value"};
+		end,
+		editor = editor
+	});
+
+	-- Var name
+	editor.id.title:SetText("Signal ID"); -- TODO: locals
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, "Signal ID", ""); -- TODO: locals
+
+	-- Var value
+	editor.value.title:SetText("Signal value"); -- TODO: locals
+	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, "Signal value", ""); -- TODO: locals
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "");
+		editor.value:SetText(data[2] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+		scriptData.args[2] = stEtN(strtrim(editor.value:GetText()));
+	end
+
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DEBUGS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -718,6 +756,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	item_remove_init();
 
 	var_set_execenv_init();
+	signal_send_init();
 
 	debugs_init();
 end

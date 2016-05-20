@@ -26,7 +26,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local getEffectSecurity = TRP3_API.security.getEffectSecurity;
 local editor = TRP3_ScriptEditorNormal;
-local refreshList, toolFrame, unlockElements, onElementConfirm;
+local refreshElementList, toolFrame, unlockElements, onElementConfirm;
 
 local securityLevel = TRP3_API.security.SECURITY_LEVEL;
 
@@ -80,7 +80,7 @@ local function addDelayElement()
 		t = ELEMENT_TYPE.DELAY,
 		d = 1,
 	};
-	refreshList();
+	refreshElementList();
 end
 
 local function addConditionElement()
@@ -93,7 +93,7 @@ local function addConditionElement()
 			}
 		},
 	};
-	refreshList();
+	refreshElementList();
 end
 
 local function addEffectElement(effectID)
@@ -108,7 +108,7 @@ local function addEffectElement(effectID)
 			},
 		}
 	};
-	refreshList();
+	refreshElementList();
 end
 
 local menuData;
@@ -141,7 +141,7 @@ local function removeElement(elementID)
 			i = i + 1;
 		end
 	end
-	refreshList();
+	refreshElementList();
 end
 
 local function moveUpElement(elementID)
@@ -152,7 +152,7 @@ local function moveUpElement(elementID)
 		data[tostring(index - 1)] = data[tostring(index)];
 		data[tostring(index)] = previous;
 	end
-	refreshList();
+	refreshElementList();
 end
 
 local function moveDownElement(elementID)
@@ -163,7 +163,7 @@ local function moveDownElement(elementID)
 		data[tostring(index + 1)] = data[tostring(index)];
 		data[tostring(index)] = next;
 	end
-	refreshList();
+	refreshElementList();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -231,7 +231,7 @@ function onElementConfirm(self)
 		else
 			editor.element.current.save(editor.element.scriptStep);
 		end
-		refreshList();
+		refreshElementList();
 	end
 end
 
@@ -295,8 +295,8 @@ function unlockElements()
 	end
 end
 
-function refreshList()
-	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+function refreshElementList()
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 
 	editor.element:Hide();
 	for _, element in pairs(editor.list.listElement) do
@@ -379,43 +379,65 @@ function refreshList()
 
 	editor.list.size = stepID - 1;
 end
-editor.list.refreshList = refreshList;
+editor.list.refreshElementList = refreshElementList;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Workflow list
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function refresh()
+local function openWorkflow(workflowID)
 	assert(toolFrame.specificDraft.SC, "No toolFrame.specificDraft.SC for refresh.");
-	assert(editor.scriptID, "No editor.scriptID for refresh.");
+
+	editor.list.script:SetText(editor.scriptTitle or "");
+	editor.list.description:SetText(editor.scriptDescription or "");
+
+	local data = toolFrame.specificDraft.SC;
+
+	if not data[workflowID] then
+		data[workflowID] = {};
+	end
+
+	if not data[workflowID].ST then
+		data[workflowID].ST = {};
+	end
+
+	editor.workflowID = workflowID;
+	editor.workflow:Show();
+	editor.list.arrow:Show();
+	refreshElementList();
+end
+
+local function onWorkflowLineClick(lineClick, button)
+	local line = lineClick:GetParent();
+	openWorkflow(line.workflowID);
+end
+
+local function decorateWorkflowLine(line, workflowID)
+	line.text:SetText(workflowID);
+	line.workflowID = workflowID;
+end
+
+local function refreshWorkflowList()
+	assert(toolFrame.specificDraft.SC, "No toolFrame.specificDraft.SC for refreshWorkflowList.");
+
+	editor.workflowID = nil;
+	editor.workflow:Hide();
+	editor.list.arrow:Hide();
 
 	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
-		editor.list.script:SetText(editor.scriptTitle or "");
-		editor.list.description:SetText(editor.scriptDescription or "");
-
-		local data = toolFrame.specificDraft.SC;
-
-		if not data[editor.scriptID] then
-			data[editor.scriptID] = {};
-		end
-
-		if not data[editor.scriptID].ST then
-			data[editor.scriptID].ST = {};
-		end
-
-		refreshList();
+		-- List
+		TRP3_API.ui.list.initList(editor.list, toolFrame.specificDraft.SC, editor.list.slider);
 	end
 
 end
-editor.refresh = refresh;
+editor.refreshWorkflowList = refreshWorkflowList;
 
-function editor.storeData()
-	assert(editor.scriptID, "No scriptID for storeData.");
-
+function editor.linkElements(workflow)
+	local size = tsize(workflow.ST);
 	-- Make connection between elements
-	for i = 1, editor.list.size, 1 do
-		local data = editor.list.listElement[i].scriptStepData;
-		if i < editor.list.size then
+	for i = 1, size, 1 do
+		local data = workflow.ST[tostring(i)];
+		if i < size then
 			if data.t ~= ELEMENT_TYPE.CONDITION then
 				data.n = tostring(i + 1);
 			else
@@ -441,6 +463,16 @@ editor.init = function(ToolFrame)
 
 	-- List
 	editor.list.title:SetText(loc("WO_WORKFLOW"));
+	editor.list.widgetTab = {};
+	for i=1, 8 do
+		local line = editor.list["line" .. i];
+		tinsert(editor.list.widgetTab, line);
+		line.click:SetScript("OnClick", onWorkflowLineClick);
+		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	end
+	editor.list.decorate = decorateWorkflowLine;
+	TRP3_API.ui.list.handleMouseWheel(editor, editor.list.slider);
+	editor.list.slider:SetValue(0);
 
 	-- Effect selector
 	menuData = {
@@ -471,9 +503,10 @@ editor.init = function(ToolFrame)
 			"item_consume",
 			"document_show",
 		},
-		["Variables"] = { -- TODO: locals
+		["Expert"] = { -- TODO: locals
 			"var_set_execenv",
 			"var_set_object",
+			"signal_send",
 		},
 		["Debug"] = { -- TODO: locals
 			"debug_dump_args",
@@ -485,7 +518,7 @@ editor.init = function(ToolFrame)
 			"Sound",
 			loc("REG_COMPANIONS"),
 			"Inventory",
-			"Variables",
+			"Expert",
 			"Debug"
 		}
 	}

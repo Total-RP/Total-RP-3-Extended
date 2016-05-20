@@ -108,6 +108,32 @@
 	</Frame>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--    Send signal       -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorSignalSend" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="value" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--       Speechs        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
