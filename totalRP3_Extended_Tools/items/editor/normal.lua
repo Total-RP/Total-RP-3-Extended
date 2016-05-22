@@ -203,7 +203,7 @@ local function loadDataScript()
 	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
 		TRP3_ScriptEditorNormal.scriptTitle = loc("IT_ON_USE");
 		TRP3_ScriptEditorNormal.scriptDescription = loc("IT_ON_USE_TT");
-		TRP3_ScriptEditorNormal.scriptID = "onUse";
+		TRP3_ScriptEditorNormal.workflowIDToLoad = "onUse";
 	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
 
 	end

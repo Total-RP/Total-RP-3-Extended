@@ -189,7 +189,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_WORKFLOW = "Workflows",
 	WO_EXECUTION = "Workflow execution",
 	WO_EMPTY = "You can start by adding an element to your workflow.\nThis can be an effect, a condition or a delay.",
-	WO_ADD = "Add element to workflow",
+	WO_ELEMENT_ADD = "Add element to workflow",
 	WO_END = "End of workflow",
 	WO_ELEMENT = "Element edition",
 	WO_ELEMENT_EDIT = "Click to edit element",
@@ -213,6 +213,13 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_SECURITY_NORMAL_DETAILS = "This effect is secured but could cause inconveniences. It will prompt security warning, based on the user security settings.",
 	WO_SECURITY_LOW = "Low",
 	WO_SECURITY_LOW_DETAILS = "This effect is not secured and could be malicious. It will prompt security warning and will ask for confirmation, based on the user security settings.",
+	WO_EXPERT = "Expert mode",
+	WO_EXPERT_TT = "A workflow is a set of instructions that can make your object dynamic.\n\nHere you can define all your workflows for this object, then you can link them to an action in the expert tab.",
+	WO_EXPERT_DONE = "Switched %s to expert mode. Now unleash your creativity!",
+	WO_ADD = "Create workflow",
+	WO_ADD_ID = "|cff00ff00Enter the workflow ID.|r\n\nIt's an internal ID to help you manage your workflows and won't be visible by the user.\n\nPlease note that you can't have two workflows with the same ID within the same object.",
+	WO_ADD_ID_NO_AVAILABLE = "This workflow ID is not available.",
+	WO_REMOVE_POPUP = "Delete the workflow %s?",
 
 	-- Delay editor
 	WO_DELAY_DURATION = "Duration",
@@ -221,10 +228,6 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_DELAY_TYPE_1 = "Regular delay",
 	WO_DELAY_INTERRUPT = "Interruption",
 	WO_DELAY_INTERRUPT_1 = "No interruption",
-	WO_EXPERT = "Expert mode",
-	WO_EXPERT_TT = "A workflow is a set of instructions that can make your object dynamic.\nHere you can define all your workflows for this object, then you can link them in the expert tab.",
-	WO_EXPERT_DONE = "Switched %s to expert mode. Now unleash your creativity!",
-	WO_ADD = "Create workflow",
 
 	-- Effects editors
 	EFFECT_TEXT = "Display text",

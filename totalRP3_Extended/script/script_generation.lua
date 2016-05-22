@@ -456,13 +456,13 @@ local function getFunction(structure, classID)
 end
 
 local pcall = pcall;
-local function executeFunction(func, args)
+local function executeFunction(func, args, scriptID)
 	local status, ret, _ = pcall(func, args);
 	if status then
 		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
 	else
-		TRP3_API.utils.message.displayMessage(loc("SCRIPT_ERROR"));
+		TRP3_API.utils.message.displayMessage(loc("SEC_SCRIPT_ERROR"):format(scriptID or "preview"), 4);
 		log(tostring(ret), logLevel.WARN);
 	end
 end
@@ -473,7 +473,12 @@ local compiledScript = {}
 local function executeClassScript(scriptID, classScripts, args, innerClassID)
 	assert(scriptID and classScripts, "Missing arguments.");
 	assert(innerClassID, "ClassID is needed for security purpose.");
-	assert(classScripts[scriptID], "Unknown script: " .. tostring(scriptID));
+
+
+	if not classScripts[scriptID] then
+		TRP3_API.utils.message.displayMessage("|cffff0000" .. loc("SEC_MISSING_SCRIPT"):format(scriptID), 4);
+		return;
+	end
 
 	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, innerClassID)};
 	local classID = parts[1];
@@ -486,7 +491,7 @@ local function executeClassScript(scriptID, classScripts, args, innerClassID)
 		end
 		compiledScript[innerClassID][scriptID] = getFunction(class.ST, classID);
 	end
-	return executeFunction(compiledScript[innerClassID][scriptID], args);
+	return executeFunction(compiledScript[innerClassID][scriptID], args, scriptID);
 end
 TRP3_API.script.executeClassScript = executeClassScript;
 

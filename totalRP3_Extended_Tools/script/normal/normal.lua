@@ -75,7 +75,7 @@ local function setCurrentElementFrame(frame, title, noConfirm)
 end
 
 local function addDelayElement()
-	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 	data[tostring(editor.list.size + 1)] =  {
 		t = ELEMENT_TYPE.DELAY,
 		d = 1,
@@ -84,7 +84,7 @@ local function addDelayElement()
 end
 
 local function addConditionElement()
-	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 	data[tostring(editor.list.size + 1)] =  {
 		t = ELEMENT_TYPE.CONDITION,
 		b = {
@@ -98,7 +98,7 @@ end
 
 local function addEffectElement(effectID)
 	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
-	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 	data[tostring(editor.list.size + 1)] =  {
 		t = ELEMENT_TYPE.EFFECT,
 		e = {
@@ -130,7 +130,7 @@ local function displayEffectDropdown(self)
 end
 
 local function removeElement(elementID)
-	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 	if data[elementID] then
 		wipe(data[elementID]);
 		data[elementID] = nil;
@@ -145,7 +145,7 @@ local function removeElement(elementID)
 end
 
 local function moveUpElement(elementID)
-	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 	local index = tonumber(elementID);
 	if data[tostring(index)] and data[tostring(index - 1)] then
 		local previous = data[tostring(index - 1)];
@@ -156,7 +156,7 @@ local function moveUpElement(elementID)
 end
 
 local function moveDownElement(elementID)
-	local data = toolFrame.specificDraft.SC[editor.scriptID].ST;
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 	local index = tonumber(elementID);
 	if data[tostring(index)] and data[tostring(index + 1)] then
 		local next = data[tostring(index + 1)];
@@ -385,6 +385,15 @@ editor.list.refreshElementList = refreshElementList;
 -- Workflow list
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function refreshLines()
+	for _, line in pairs(editor.list.widgetTab) do
+		line.click:UnlockHighlight();
+		if line.workflowID == editor.workflowID then
+			line.click:LockHighlight();
+		end
+	end
+end
+
 local function openWorkflow(workflowID)
 	assert(toolFrame.specificDraft.SC, "No toolFrame.specificDraft.SC for refresh.");
 
@@ -402,11 +411,53 @@ local function openWorkflow(workflowID)
 	editor.workflow:Show();
 	editor.list.arrow:Show();
 	refreshElementList();
+	refreshLines();
+
+	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
+		editor.workflow.title:SetText(loc("WO_EXECUTION"));
+	else
+		editor.workflow.title:SetText(loc("WO_EXECUTION") .. ": |cff00ff00" .. editor.workflowID);
+	end
+end
+
+local WORKFLOW_LINE_ACTION_DELETE = 1;
+local WORKFLOW_LINE_ACTION_ID = 2;
+
+local function onWorkflowLineAction(action, line)
+	assert(toolFrame.specificDraft.SC[line.workflowID]);
+	local workflowID = line.workflowID;
+	local workflow = toolFrame.specificDraft.SC[workflowID];
+
+	if action == WORKFLOW_LINE_ACTION_DELETE then
+		TRP3_API.popup.showConfirmPopup(loc("WO_REMOVE_POPUP"):format(workflowID), function()
+			wipe(toolFrame.specificDraft.SC[workflowID]);
+			toolFrame.specificDraft.SC[workflowID] = nil;
+			editor.refreshWorkflowList();
+		end);
+	elseif action == WORKFLOW_LINE_ACTION_ID then
+		TRP3_API.popup.showTextInputPopup(loc("WO_ADD_ID"):format(workflowID), function(newID)
+			if toolFrame.specificDraft.SC[newID] then
+				Utils.message.displayMessage(loc("WO_ADD_ID_NO_AVAILABLE"), 4);
+			elseif newID and newID:len() > 0 then
+				toolFrame.specificDraft.SC[newID] = toolFrame.specificDraft.SC[workflowID];
+				toolFrame.specificDraft.SC[workflowID] = nil;
+				editor.refreshWorkflowList();
+			end
+		end, nil, workflowID);
+	end
 end
 
 local function onWorkflowLineClick(lineClick, button)
 	local line = lineClick:GetParent();
-	openWorkflow(line.workflowID);
+	if button == "LeftButton" then
+		openWorkflow(line.workflowID);
+	else
+		local values = {};
+		tinsert(values, {line.text:GetText(), nil});
+		tinsert(values, {DELETE, WORKFLOW_LINE_ACTION_DELETE});
+		tinsert(values, {loc("IN_INNER_ID_ACTION"), WORKFLOW_LINE_ACTION_ID});
+		TRP3_API.ui.listbox.displayDropDown(line, values, onWorkflowLineAction, 0, true);
+	end
 end
 
 local function decorateWorkflowLine(line, workflowID)
@@ -423,11 +474,11 @@ local function refreshWorkflowList()
 	editor.list.add:Hide();
 
 	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
-		assert(editor.scriptID, "No editor.scriptID for refresh.");
+		assert(editor.workflowIDToLoad, "No editor.workflowIDToLoad for refresh.");
 		editor.list.script:SetText(editor.scriptTitle or "");
 		editor.list.description:SetText(editor.scriptDescription or "");
 		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.slider);
-		openWorkflow(editor.scriptID);
+		openWorkflow(editor.workflowIDToLoad);
 
 	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
 		editor.list.script:SetText(loc("WO_EXPERT"));
@@ -436,6 +487,7 @@ local function refreshWorkflowList()
 
 		-- List
 		TRP3_API.ui.list.initList(editor.list, toolFrame.specificDraft.SC, editor.list.slider);
+		refreshLines();
 	end
 
 end
@@ -458,6 +510,18 @@ function editor.linkElements(workflow)
 	end
 end
 
+local function onAddWorkflow()
+	TRP3_API.popup.showTextInputPopup(loc("WO_ADD_ID"), function(newID)
+		if toolFrame.specificDraft.SC[newID] then
+			Utils.message.displayMessage(loc("WO_ADD_ID_NO_AVAILABLE"), 4);
+		elseif newID and newID:len() > 0 then
+			toolFrame.specificDraft.SC[newID] = {};
+			refreshWorkflowList();
+			openWorkflow(newID);
+		end
+	end, nil, "workflow" .. tsize(toolFrame.specificDraft.SC) + 1);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -467,7 +531,7 @@ editor.init = function(ToolFrame)
 
 	-- Resize
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
-		editor.workflow.container.scroll.list:SetWidth( (containerwidth/2) - 135 );
+		editor.workflow.container.scroll.list:SetWidth( containerwidth - 580 );
 	end);
 
 	-- List
@@ -483,6 +547,7 @@ editor.init = function(ToolFrame)
 	TRP3_API.ui.list.handleMouseWheel(editor, editor.list.slider);
 	editor.list.slider:SetValue(0);
 	editor.list.add:SetText(loc("WO_ADD"));
+	editor.list.add:SetScript("OnClick", onAddWorkflow);
 
 	-- Effect selector
 	menuData = {
@@ -534,9 +599,8 @@ editor.init = function(ToolFrame)
 	}
 
 	-- Workflow edition
-	editor.workflow.title:SetText(loc("WO_EXECUTION"));
 	editor.workflow.container.empty:SetText(loc("WO_EMPTY"));
-	editor.workflow.container.add:SetText(loc("WO_ADD"));
+	editor.workflow.container.add:SetText(loc("WO_ELEMENT_ADD"));
 	editor.workflow.container.add:SetScript("OnClick", function(self)
 		setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
 	end);

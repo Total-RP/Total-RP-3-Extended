@@ -162,7 +162,7 @@ local function onLineAction(action, line)
 		TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ID"):format(name or UNKNOWN, id), function(newID)
 			newID = checkID(newID);
 			if toolFrame.specificDraft.IN[newID] then
-				Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), Utils.message.type.RAID_ALERT);
+				Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), 4);
 			elseif newID and newID:len() > 0 then
 				toolFrame.specificDraft.IN[newID] = toolFrame.specificDraft.IN[id];
 				toolFrame.specificDraft.IN[id] = nil;
@@ -180,7 +180,6 @@ local function onLineClicked(line, button)
 		tinsert(values, {line.text:GetText(), nil});
 		tinsert(values, {DELETE, LINE_ACTION_DELETE, loc("IN_INNER_DELETE_TT")});
 		tinsert(values, {loc("IN_INNER_ID_ACTION"), LINE_ACTION_ID});
-		tinsert(values, {loc("IN_INNER_ID_COPY") .. " [WIP]", nil, loc("IN_INNER_ID_COPY_TT")}); -- TODO: copy
 		TRP3_API.ui.listbox.displayDropDown(line, values, onLineAction, 0, true);
 	end
 end

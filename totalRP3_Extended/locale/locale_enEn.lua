@@ -87,6 +87,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	SEC_LEVEL_DETAILS_FROM = "Always accept when received from %s",
 	SEC_EFFECT_BLOCKED = "Effect(s) blocked",
 	SEC_EFFECT_BLOCKED_TT = "Due to your corrent security settings, at least one of this item (or sub-item) effects is blocked.",
+	SEC_MISSING_SCRIPT = "Cannot find script \"%s\"",
 
 	-- LOOT
 	LOOT = "Loot",

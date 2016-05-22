@@ -183,9 +183,10 @@
 
 			<Frame parentKey="list" inherits="TRP3_EditorTitledFrame">
 
+				<Size x="400" y="0"/>
+
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-5"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="0" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
@@ -203,7 +204,7 @@
 						</FontString>
 
 						<FontString parentKey="description" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="50"/>
+							<Size x="0" y="75"/>
 							<Anchors>
 								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.script" x="0" y="-20"/>
 								<Anchor point="RIGHT" x="-20" y="0"/>
@@ -299,7 +300,7 @@
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-5"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
-					<Anchor point="LEFT" relativePoint="CENTER" x="0" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.list" x="0" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 
@@ -356,7 +357,7 @@
 							</ScrollFrame>
 
 							<Button parentKey="add" inherits="TRP3_CommonButton">
-								<Size x="250" y="20"/>
+								<Size x="200" y="20"/>
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="-5"/>
 								</Anchors>
