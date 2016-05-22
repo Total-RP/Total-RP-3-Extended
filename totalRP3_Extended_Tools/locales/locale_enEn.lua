@@ -70,6 +70,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT = "A container template.\nContainer can hold other items.",
 	DB_ADD_ITEM = "Add one unit to main inventory",
 	DB_ADD_INNER = "Add inner object",
+	DB_TO_EXPERT = "Convert to expert mode",
 	DB_CREATE_CAMPAIGN = "Create campaign",
 	DB_CREATE_CAMPAIGN_TT = "Start creating a campaign",
 	DB_REMOVE_OBJECT_POPUP = "Please confirm the removal of the object:\nID: |cff00ffff\"%s\"|r\n|cff00ff00[%s]|r\n\n|cffff9900Warning: This action cannot be reverted!.",
@@ -220,6 +221,10 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_DELAY_TYPE_1 = "Regular delay",
 	WO_DELAY_INTERRUPT = "Interruption",
 	WO_DELAY_INTERRUPT_1 = "No interruption",
+	WO_EXPERT = "Expert mode",
+	WO_EXPERT_TT = "A workflow is a set of instructions that can make your object dynamic.\nHere you can define all your workflows for this object, then you can link them in the expert tab.",
+	WO_EXPERT_DONE = "Switched %s to expert mode. Now unleash your creativity!",
+	WO_ADD = "Create workflow",
 
 	-- Effects editors
 	EFFECT_TEXT = "Display text",

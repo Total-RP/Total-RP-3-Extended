@@ -384,6 +384,10 @@ local function initContainerSlot(slot, simpleLeftClick)
 			slot.info = nil;
 			slot.class = nil;
 			containerSlotUpdate(slot);
+			if TRP3_ItemTooltip.ref == slot then
+				TRP3_ItemTooltip.ref = nil;
+				TRP3_ItemTooltip:Hide();
+			end
 		end
 	end);
 end

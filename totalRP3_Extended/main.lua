@@ -164,6 +164,7 @@ local function removeObject(objectFullID)
 		TRP3_Tools_DB[objectFullID] = nil;
 	end
 	Log.log("Removed object: " .. objectFullID);
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 end
 TRP3_API.extended.removeObject = removeObject;
 

@@ -203,7 +203,7 @@
 						</FontString>
 
 						<FontString parentKey="description" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="0"/>
+							<Size x="0" y="50"/>
 							<Anchors>
 								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.script" x="0" y="-20"/>
 								<Anchor point="RIGHT" x="-20" y="0"/>
@@ -265,20 +265,12 @@
 							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line5"/>
 						</Anchors>
 					</Frame>
-					<Frame parentKey="line7" inherits="TRP3_ConditionEditorLine">
+					<Button parentKey="add" inherits="TRP3_CommonButton">
+						<Size x="150" y="20"/>
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line6" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line6"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line6"/>
+							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" x="0" y="-10"/>
 						</Anchors>
-					</Frame>
-					<Frame parentKey="line8" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line7" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line7"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line7"/>
-						</Anchors>
-					</Frame>
+					</Button>
 					<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
 						<Size x="15" y="0" />
 						<Anchors>

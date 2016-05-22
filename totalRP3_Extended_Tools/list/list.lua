@@ -341,6 +341,7 @@ local ACTION_FLAG_DELETE = "1";
 local ACTION_FLAG_ADD = "2";
 local ACTION_FLAG_COPY_ID = "3";
 local ACTION_FLAG_SECURITY = "4";
+local ACTION_FLAG_EXPERT = "5";
 
 local function onLineActionSelected(value, button)
 	local action = value:sub(1, 1);
@@ -357,6 +358,12 @@ local function onLineActionSelected(value, button)
 		TRP3_API.popup.showTextInputPopup(loc("EDITOR_ID_COPY_POPUP"), nil, nil, objectID);
 	elseif action == ACTION_FLAG_SECURITY then
 		TRP3_API.security.showSecurityDetailFrame(objectID);
+	elseif action == ACTION_FLAG_EXPERT then
+		local class = getClass(objectID);
+		class.MD.MO = TRP3_DB.modes.EXPERT;
+		local link = TRP3_API.inventory.getItemLink(class);
+		Utils.message.displayMessage(loc("WO_EXPERT_DONE"):format(link));
+		onTabChanged(nil, currentTab);
 	end
 end
 
@@ -366,6 +373,9 @@ function onLineRightClick(lineWidget, data)
 	if currentTab == TABS.MY_DB or currentTab == TABS.OTHERS_DB then
 		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
 			tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID});
+		end
+		if data.mode == TRP3_DB.modes.NORMAL then
+			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID});
 		end
 	end
 	if data.type == TRP3_DB.types.ITEM then

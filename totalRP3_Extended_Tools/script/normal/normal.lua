@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local wipe, pairs, tostring, tinsert, assert, tonumber = wipe, pairs, tostring, tinsert, assert, tonumber;
-local tsize = Utils.table.size;
+local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
@@ -388,9 +388,6 @@ editor.list.refreshElementList = refreshElementList;
 local function openWorkflow(workflowID)
 	assert(toolFrame.specificDraft.SC, "No toolFrame.specificDraft.SC for refresh.");
 
-	editor.list.script:SetText(editor.scriptTitle or "");
-	editor.list.description:SetText(editor.scriptDescription or "");
-
 	local data = toolFrame.specificDraft.SC;
 
 	if not data[workflowID] then
@@ -423,8 +420,20 @@ local function refreshWorkflowList()
 	editor.workflowID = nil;
 	editor.workflow:Hide();
 	editor.list.arrow:Hide();
+	editor.list.add:Hide();
 
 	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
+		assert(editor.scriptID, "No editor.scriptID for refresh.");
+		editor.list.script:SetText(editor.scriptTitle or "");
+		editor.list.description:SetText(editor.scriptDescription or "");
+		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.slider);
+		openWorkflow(editor.scriptID);
+
+	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
+		editor.list.script:SetText(loc("WO_EXPERT"));
+		editor.list.description:SetText(loc("WO_EXPERT_TT"));
+		editor.list.add:Show();
+
 		-- List
 		TRP3_API.ui.list.initList(editor.list, toolFrame.specificDraft.SC, editor.list.slider);
 	end
@@ -464,7 +473,7 @@ editor.init = function(ToolFrame)
 	-- List
 	editor.list.title:SetText(loc("WO_WORKFLOW"));
 	editor.list.widgetTab = {};
-	for i=1, 8 do
+	for i=1, 6 do
 		local line = editor.list["line" .. i];
 		tinsert(editor.list.widgetTab, line);
 		line.click:SetScript("OnClick", onWorkflowLineClick);
@@ -473,6 +482,7 @@ editor.init = function(ToolFrame)
 	editor.list.decorate = decorateWorkflowLine;
 	TRP3_API.ui.list.handleMouseWheel(editor, editor.list.slider);
 	editor.list.slider:SetValue(0);
+	editor.list.add:SetText(loc("WO_ADD"));
 
 	-- Effect selector
 	menuData = {
