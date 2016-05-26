@@ -242,8 +242,8 @@ local function item_add_init()
 
 	editor.browse:SetText(BROWSE);
 	editor.browse:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(music)
-			editor.id:SetText(music);
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
 		end, TRP3_DB.types.ITEM});
 	end);
 
@@ -296,8 +296,8 @@ local function item_remove_init()
 
 	editor.browse:SetText(BROWSE);
 	editor.browse:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(music)
-			editor.id:SetText(music);
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
 		end, TRP3_DB.types.ITEM});
 	end);
 

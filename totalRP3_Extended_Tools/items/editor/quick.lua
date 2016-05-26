@@ -213,11 +213,14 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame.list.bottom.item.templates.blank.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK_TT"));
 	toolFrame.list.bottom.item.templates.container.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER"));
 	toolFrame.list.bottom.item.templates.container.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT"));
+	toolFrame.list.bottom.item.templates.from.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_FROM"));
+	toolFrame.list.bottom.item.templates.from.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_FROM_TT"));
 
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.container, "inv_misc_bag_36");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.blank, "inv_inscription_scroll");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.document, "inv_misc_book_16");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.quick, "petbattle_speed");
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.from, "spell_nature_mirrorimage");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item, "inv_garrison_blueprints1");
 
 	toolFrame.list.bottom.item:SetScript("OnClick", function(self)
@@ -230,28 +233,50 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		end
 	end);
 
-	toolFrame.list.bottom.item.templates.quick:SetScript("OnClick", function(self)
+	toolFrame.list.bottom.item.templates.quick:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
 		TRP3_API.extended.tools.openItemQuickEditor(toolFrame.list.bottom.item, onQuickCreatedFromList);
 	end);
 
-	toolFrame.list.bottom.item.templates.blank:SetScript("OnClick", function(self)
+	toolFrame.list.bottom.item.templates.blank:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
 		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL));
 		TRP3_API.extended.tools.goToPage(ID);
 	end);
 
-	toolFrame.list.bottom.item.templates.container:SetScript("OnClick", function(self)
+	toolFrame.list.bottom.item.templates.container:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
 		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getContainerItemData());
 		TRP3_API.extended.tools.goToPage(ID);
 	end);
 
-	toolFrame.list.bottom.item.templates.document:SetScript("OnClick", function(self)
+	toolFrame.list.bottom.item.templates.document:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
 		local id = Utils.str.id();
 		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getDocumentItemData(id), id);
 		TRP3_API.extended.tools.goToPage(ID);
+	end);
+
+	toolFrame.list.bottom.item.templates.from:SetScript("OnClick", function()
+
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = toolFrame.list.bottom.item.templates, point = "LEFT", parentPoint = "RIGHT"}, {function(fromID)
+			toolFrame.list.bottom.item.templates:Hide();
+			local fromClass = getClass(fromID);
+			local copiedData = {};
+			local id = Utils.str.id();
+			Utils.table.copy(copiedData, fromClass);
+			copiedData.MD = {
+				MO = copiedData.MD.MO,
+				V = 1,
+				CD = date("%d/%m/%y %H:%M:%S");
+				CB = Globals.player_id,
+				SD = date("%d/%m/%y %H:%M:%S");
+				SB = Globals.player_id,
+			};
+			local ID, _ = TRP3_API.extended.tools.createItem(copiedData, id);
+			TRP3_API.extended.tools.goToPage(ID);
+		end, TRP3_DB.types.ITEM});
+
 	end);
 
 end

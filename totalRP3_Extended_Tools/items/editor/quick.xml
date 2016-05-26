@@ -24,7 +24,7 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Frame name="TRP3_ItemTemplates" inherits="TRP3_AltHoveredFrame" enableMouse="true" virtual="true">
-		<Size x="450" y="380"/>
+		<Size x="450" y="450"/>
 		<Frames>
 			<Button parentKey="quick" inherits="TRP3_QuestButtonTemplate">
 				<Anchors>
@@ -44,6 +44,11 @@
 			<Button parentKey="container" inherits="TRP3_QuestButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="50" y="-285"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="from" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="-355"/>
 				</Anchors>
 			</Button>
 		</Frames>

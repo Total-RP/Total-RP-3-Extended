@@ -453,11 +453,6 @@ end
 local function onInit()
 	toolFrame = TRP3_ToolFrame;
 
-	if not TRP3_Tools_DB then
-		TRP3_Tools_DB = {};
-	end
-	TRP3_DB.my = TRP3_Tools_DB;
-
 	if not TRP3_Tools_Parameters then
 		TRP3_Tools_Parameters = {};
 	end

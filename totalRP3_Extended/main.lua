@@ -316,6 +316,11 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onInit()
+	if not TRP3_Tools_DB then
+		TRP3_Tools_DB = {};
+	end
+	TRP3_DB.my = TRP3_Tools_DB;
+
 	if not TRP3_Exchange_DB then
 		TRP3_Exchange_DB = {};
 	end

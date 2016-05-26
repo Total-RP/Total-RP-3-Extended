@@ -377,15 +377,14 @@ function onLineRightClick(lineWidget, data)
 		if data.mode == TRP3_DB.modes.NORMAL then
 			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID});
 		end
+		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+			tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.fullID});
+		end
 	end
 	if data.type == TRP3_DB.types.ITEM then
 		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID});
 	end
 	tinsert(values, {loc("EDITOR_ID_COPY"), ACTION_FLAG_COPY_ID .. data.fullID});
-
-	if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-		tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.fullID});
-	end
 
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
 end

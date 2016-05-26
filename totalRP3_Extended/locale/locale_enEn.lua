@@ -95,6 +95,10 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 
 	-- DOCUMENT
 	DOC_UNKNOWN_ALERT = "Can't open the document. (Missing class)",
+	DO_PAGE_FIRST = "First page",
+	DO_PAGE_NEXT = "Next page",
+	DO_PAGE_LAST = "Last page",
+	DO_PAGE_PREVIOUS = "Previous page",
 
 	-- Campaign
 	QE_CAMPAIGN = "Campaign",
