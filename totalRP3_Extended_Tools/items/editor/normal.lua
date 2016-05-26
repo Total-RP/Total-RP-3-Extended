@@ -31,6 +31,7 @@ local TABS = {
 	EFFECTS = 2,
 	CONTAINER = 3,
 	INNER = 4,
+	EXPERT = 5
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -49,6 +50,7 @@ local function refreshCheck()
 	display.preview.Quest:Hide();
 	tabGroup:SetTabVisible(2, false);
 	tabGroup:SetTabVisible(3, false);
+	tabGroup:SetTabVisible(5, false);
 	if gameplay.unique:GetChecked() then
 		gameplay.uniquecount:Show();
 	end
@@ -66,6 +68,10 @@ local function refreshCheck()
 	end
 	if gameplay.container:GetChecked() then
 		tabGroup:SetTabVisible(3, true);
+	end
+	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
+		tabGroup:SetTabVisible(2, true);
+		tabGroup:SetTabVisible(5, true);
 	end
 end
 
@@ -274,6 +280,7 @@ local function createTabBar()
 			{ loc("WO_WORKFLOW"), TABS.EFFECTS, 150 },
 			{ loc("IT_CON"), TABS.CONTAINER, 150 },
 			{ loc("IN_INNER"), TABS.INNER, 150 },
+			{ loc("WO_EXPERT"), TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);

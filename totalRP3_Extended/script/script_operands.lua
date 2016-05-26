@@ -55,6 +55,81 @@ local OPERANDS = {
 		},
 	},
 
+	["unit_guild"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("GetGuildName(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["GetGuildName"] = "TRP3_API.utils.str.GetGuildName",
+		},
+	},
+
+	["unit_guild_rank"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("GetGuildRank(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["GetGuildRank"] = "TRP3_API.utils.str.GetGuildRank",
+		},
+	},
+
+	["unit_class"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("(GetClass(\"%s\") or \"\"):lower()"):format(unitID);
+		end,
+		env = {
+			["GetClass"] = "TRP3_API.utils.str.GetClass",
+		},
+	},
+
+	["unit_race"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("(GetRace(\"%s\") or \"\"):lower()"):format(unitID);
+		end,
+		env = {
+			["GetRace"] = "TRP3_API.utils.str.GetRace",
+		},
+	},
+
+	["unit_sex"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitSex(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitSex"] = "UnitSex",
+		},
+	},
+
+	["unit_faction"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("(GetFaction(\"%s\") or \"\"):lower()"):format(unitID);
+		end,
+		env = {
+			["GetFaction"] = "TRP3_API.utils.str.GetFaction",
+		},
+	},
+
+	["unit_classification"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitClassification(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitClassification"] = "UnitClassification",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- UNIT NUMERIC
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 	["unit_health"] = {
 		numeric = true,
 		codeReplacement = function(args)
@@ -63,6 +138,28 @@ local OPERANDS = {
 		end,
 		env = {
 			["UnitHealth"] = "UnitHealth",
+		},
+	},
+
+	["unit_level"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitLevel(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitLevel"] = "UnitLevel",
+		},
+	},
+
+	["unit_speed"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("GetUnitSpeed(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["GetUnitSpeed"] = "GetUnitSpeed",
 		},
 	},
 
@@ -77,6 +174,26 @@ local OPERANDS = {
 		end,
 		env = {
 			["UnitExists"] = "UnitExists",
+		},
+	},
+
+	["unit_is_player"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitIsPlayer(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitIsPlayer"] = "UnitIsPlayer",
+		},
+	},
+
+	["unit_is_dead"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitIsDeadOrGhost(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitIsDeadOrGhost"] = "UnitIsDeadOrGhost",
 		},
 	},
 

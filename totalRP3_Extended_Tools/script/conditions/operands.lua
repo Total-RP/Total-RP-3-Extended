@@ -156,6 +156,97 @@ local function unit_npc_id_init()
 	});
 end
 
+local function unit_guild_init()
+	registerOperandEditor("unit_guild", {
+		title = loc("OP_OP_UNIT_GUILD"),
+		description = loc("OP_OP_UNIT_GUILD_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_GUILD") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_guild_rank_init()
+	registerOperandEditor("unit_guild_rank", {
+		title = loc("OP_OP_UNIT_GUILD_RANK"),
+		description = loc("OP_OP_UNIT_GUILD_RANK_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_GUILD_RANK") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_race_init()
+	registerOperandEditor("unit_race", {
+		title = loc("OP_OP_UNIT_RACE"),
+		description = loc("OP_OP_UNIT_RACE_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_RACE") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_class_init()
+	registerOperandEditor("unit_class", {
+		title = loc("OP_OP_UNIT_CLASS"),
+		description = loc("OP_OP_UNIT_CLASS_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_CLASS") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_sex_init()
+	registerOperandEditor("unit_sex", {
+		title = loc("OP_OP_UNIT_SEX"),
+		description = loc("OP_OP_UNIT_SEX_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_SEX") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_faction_init()
+	registerOperandEditor("unit_faction", {
+		title = loc("OP_OP_UNIT_FACTION"),
+		description = loc("OP_OP_UNIT_FACTION_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_FACTION") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_classification_init()
+	registerOperandEditor("unit_classification", {
+		title = loc("OP_OP_UNIT_CLASSIFICATION"),
+		description = loc("OP_OP_UNIT_CLASSIFICATION_TT"),
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_CLASSIFICATION") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
 local function unit_health_init()
 	registerOperandEditor("unit_health", {
 		title = loc("OP_OP_UNIT_HEALTH"),
@@ -164,6 +255,32 @@ local function unit_health_init()
 		getText = function(args)
 			local unitID = (args or EMPTY)[1] or "target";
 			return loc("OP_OP_UNIT_HEALTH") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_level_init()
+	registerOperandEditor("unit_level", {
+		title = loc("OP_OP_UNIT_LEVEL"),
+		description = loc("OP_OP_UNIT_LEVEL_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_LEVEL") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_speed_init()
+	registerOperandEditor("unit_speed", {
+		title = loc("OP_OP_UNIT_SPEED"),
+		description = loc("OP_OP_UNIT_SPEED_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_SPEED") .. " (" .. getUnitText(unitID) .. ")";
 		end,
 		editor = unitTypeEditor,
 	});
@@ -186,6 +303,32 @@ local function unit_exists_init()
 	});
 end
 
+local function unit_is_player_init()
+	registerOperandEditor("unit_is_player", {
+		title = loc("OP_OP_UNIT_ISPLAYER"),
+		description = loc("OP_OP_UNIT_ISPLAYER_TT"),
+		returnType = true,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_ISPLAYER") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_is_dead_init()
+	registerOperandEditor("unit_is_dead", {
+		title = loc("OP_OP_UNIT_DEAD"),
+		description = loc("OP_OP_UNIT_DEAD_TT"),
+		returnType = true,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_DEAD") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -198,11 +341,25 @@ function TRP3_ConditionEditor.initOperands()
 	boolean_init();
 	numeric_init();
 
+	-- Unit string
 	unit_name_init();
 	unit_id_init();
 	unit_npc_id_init();
+	unit_guild_init();
+	unit_guild_rank_init();
+	unit_race_init();
+	unit_class_init();
+	unit_sex_init();
+	unit_faction_init();
+	unit_classification_init();
 
+	-- Unit numeric
 	unit_health_init();
-	unit_exists_init();
+	unit_level_init();
+	unit_speed_init();
 
+	-- Unit checks
+	unit_exists_init();
+	unit_is_player_init();
+	unit_is_dead_init();
 end
