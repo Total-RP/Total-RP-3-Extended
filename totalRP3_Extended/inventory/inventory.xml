@@ -59,6 +59,11 @@
 						<Anchor point="BOTTOMRIGHT" x="-5" y="2"/>
 					</Anchors>
 				</FontString>
+				<FontString parentKey="Cooldown" inherits="NumberFontNormal" justifyH="LEFT" hidden="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="5" y="-2"/>
+					</Anchors>
+				</FontString>
 				<Texture parentKey="IconBorder" file="Interface\Common\WhiteIconFrame" hidden="false" setAllPoints="true"/>
 			</Layer>
 		</Layers>

@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs, type = _G, assert, tostring, tinsert, wipe, pairs, type;
+local _G, assert, tostring, tinsert, wipe, pairs, type, time = _G, assert, tostring, tinsert, wipe, pairs, type, time;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
@@ -41,11 +41,21 @@ local function onItemAddEnd(container, ...)
 	return ...;
 end
 
+local function getItemCount(classID, container)
+	if container and isContainerByClassID(container.id) then
+		return countItemInstances(container, classID);
+	else
+		return countItemInstances(playerInventory, classID);
+	end
+end
+TRP3_API.inventory.getItemCount = getItemCount;
+
 --- Add an item to a container.
 -- Returns:
 -- 0 if OK
 -- 1 if container full
 -- 2 if too many item already possessed (unique)
+-- 3 if not a container
 function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	-- Get the best container
 	local container = givenContainer or playerInventory;
@@ -57,8 +67,10 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	end
 
 	-- Check data
+	if not isContainerByClassID(container.id) then
+		return 3;
+	end
 	local containerClass = getClass(container.id);
-	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
 	local itemClass = getClass(classID);
 
 	checkContainerInstance(container);
@@ -74,7 +86,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 
 		-- Check unicity
 		if itemClass.UN then
-			local currentCount = countItemInstances(playerInventory, classID);
+			local currentCount = getItemCount(classID);
 			if currentCount + 1 > itemClass.UN then
 				Utils.message.displayMessage(loc("IT_INV_ERROR_MAX"):format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
 				return onItemAddEnd(2, count);
@@ -150,9 +162,12 @@ function TRP3_API.inventory.getItem(container, slotID)
 	return container.content[slotID];
 end
 
-function TRP3_API.inventory.removeItem(classID, amount)
+function TRP3_API.inventory.removeItem(classID, amount, container)
+	if not container or not isContainerByClassID(container.id) then
+		container = playerInventory;
+	end
 	while amount > 0 do
-		local container, slotID = TRP3_API.inventory.searchForFirstInstance(playerInventory, classID);
+		local container, slotID = TRP3_API.inventory.searchForFirstInstance(container, classID);
 		if container and slotID then
 			local slot = container.content[slotID];
 			local amountFounded = (slot.count or 1);
@@ -221,7 +236,11 @@ local function useContainerSlot(slotButton, containerFrame)
 			end
 			containerFrame.info.content[slotButton.slotID] = nil;
 		elseif slotButton.class and isUsableByClass(slotButton.class) then
-			local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, object = slotButton.info, container = containerFrame.info}, slotButton.info.id);
+			if slotButton.info.cooldown then
+				Utils.message.displayMessage(ERR_ITEM_COOLDOWN, Utils.message.type.ALERT_MESSAGE);
+			else
+				local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, object = slotButton.info, container = containerFrame.info}, slotButton.info.id);
+			end
 		end
 	end
 end
@@ -257,6 +276,19 @@ function TRP3_API.inventory.changeContainerDurability(containerInfo, durabilityC
 				return 1;
 			end
 			return 0;
+		end
+	end
+end
+
+function TRP3_API.inventory.startCooldown(slotInfo, duration, container)
+	if slotInfo and duration then
+		if duration == 0 then
+			slotInfo.cooldown = nil;
+		else
+			slotInfo.cooldown = time() + duration;
+		end
+		if container then
+			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 		end
 	end
 end

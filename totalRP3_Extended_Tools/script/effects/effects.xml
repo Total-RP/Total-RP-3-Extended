@@ -389,12 +389,18 @@
 				</Anchors>
 			</EditBox>
 
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-20" y="-10"/>
+				</Anchors>
+			</Frame>
+
 		</Frames>
 
 	</Frame>
 
 	<Frame name="TRP3_EffectEditorItemAdd" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
+		<Size x="500" y="275"/>
 		<Frames>
 
 			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
@@ -417,11 +423,32 @@
 				</Anchors>
 			</EditBox>
 
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-20" y="-10"/>
+				</Anchors>
+			</Frame>
+
 			<CheckButton parentKey="crafted" inherits="TRP3_CheckBox" name="$parentCrafted">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="-8" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.count"/>
+					<Anchor point="TOPLEFT" x="20" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.source"/>
 				</Anchors>
 			</CheckButton>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorItemCooldown" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<EditBox parentKey="time" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
 
 		</Frames>
 

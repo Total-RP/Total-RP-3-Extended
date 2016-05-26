@@ -204,6 +204,7 @@ end
 local previewEnv = {
 	["displayMessage"] = "TRP3_API.utils.message.displayMessage",
 	tostring = "tostring",
+	tonumber = "tonumber",
 }
 
 local function onPreviewClick(button)
@@ -277,10 +278,10 @@ end
 -- Level 1: Condition level
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function computeLogicalExpression()
+local function computeLogicalExpression(scriptData)
 	local text = "";
 	local isInParenthesis = false;
-	for index, element in pairs(editor.scriptData) do
+	for index, element in pairs(scriptData) do
 		if type(element) == "string" then
 			if element == "+" then
 				text = text .. "|cff00ff00" .. loc("OP_AND") .. " ";
@@ -289,14 +290,14 @@ local function computeLogicalExpression()
 			end
 		elseif type(element) == "table" then
 			local realIndex = (index + 1) / 2;
-			if index == #editor.scriptData and isInParenthesis then -- End of condition
+			if index == #scriptData and isInParenthesis then -- End of condition
 			text = text .. "|cffff9900" .. realIndex .. " |cffffffff) ";
 			isInParenthesis = false;
-			elseif index < #editor.scriptData then
-				if editor.scriptData[index + 1] == "+" and isInParenthesis then
+			elseif index < #scriptData then
+				if scriptData[index + 1] == "+" and isInParenthesis then
 					text = text .. "|cffff9900" .. realIndex .. " |cffffffff) ";
 					isInParenthesis = false;
-				elseif editor.scriptData[index + 1] == "*" and not isInParenthesis then
+				elseif scriptData[index + 1] == "*" and not isInParenthesis then
 					text = text .. "|cffffffff( " .. "|cffff9900" .. realIndex .. " ";
 					isInParenthesis = true;
 				else
@@ -307,13 +308,13 @@ local function computeLogicalExpression()
 			end
 		end
 	end
-	editor.full:SetText(text);
+	return text;
 end
 
 listCondition = function()
 	editor.operand:Hide();
 	initList(editor, editor.scriptData, editor.slider);
-	computeLogicalExpression();
+	editor.full:SetText(computeLogicalExpression(editor.scriptData));
 end
 
 local function addExpression()
@@ -369,6 +370,17 @@ local function onTestLineClick(line, button)
 	end
 end
 
+local function getExpressionText(expression)
+	assert(tsize(expression) == 3, "Table expression must be in 3 parts.");
+	local leftOperand = expression[1];
+	local comparator = getComparatorText(expression[2]);
+	local rightOperand = expression[3];
+
+	local leftText = leftOperand.i and getOperandEditorInfo(leftOperand.i).getText(leftOperand.a) or getValueString(leftOperand.v);
+	local rightText = rightOperand.i and getOperandEditorInfo(rightOperand.i).getText(rightOperand.a) or getValueString(rightOperand.v);
+	return "|cffffff00" .. leftText .. "  |cff00ff00" .. comparator .. "  |cffffff00" .. rightText;
+end
+
 local function decorateConditionLine(line, index)
 	local expression = editor.scriptData[index];
 	line.index = index;
@@ -381,14 +393,16 @@ local function decorateConditionLine(line, index)
 			line.text:SetText(loc("OP_OR"));
 		end
 	elseif type(expression) == "table" then
-		assert(tsize(expression) == 3, "Table expression must be in 3 parts.");
-		local leftOperand = expression[1];
-		local comparator = getComparatorText(expression[2]);
-		local rightOperand = expression[3];
+		line.text:SetText("|cffff9900" .. ((index + 1) / 2) .. ".  " .. getExpressionText(expression));
+	end
+end
 
-		local leftText = leftOperand.i and getOperandEditorInfo(leftOperand.i).getText(leftOperand.a) or getValueString(leftOperand.v);
-		local rightText = rightOperand.i and getOperandEditorInfo(rightOperand.i).getText(rightOperand.a) or getValueString(rightOperand.v);
-		line.text:SetText("|cffff9900" .. ((index + 1) / 2) .. ".  |cffffff00" .. leftText .. "  |cff00ff00" .. comparator .. "  |cffffff00" .. rightText);
+function editor.getConditionPreview(scriptData)
+	local size = tsize(scriptData);
+	if size == 1 then
+		return getExpressionText(scriptData[1]);
+	else
+		return computeLogicalExpression(scriptData);
 	end
 end
 
@@ -499,11 +513,13 @@ function editor.init()
 --			"campaign_started",
 --			"campaign_quest_started",
 --		},
---		["Inventory"] = {-- TODO: locals
+		[loc("INV_PAGE_CHARACTER_INV")] = {
+			"inv_item_count",
+			"inv_item_count_con",
 --			"inv_durability",
 --			"inv_weight",
 --			"inv_empty_slot",
---		},
+		},
 --		["Expert"] = {-- TODO: locals
 --			"var_workflow",
 --			"var_object",
@@ -519,7 +535,7 @@ function editor.init()
 --		"Character", -- TODO: locals
 --		"Pets and companions", -- TODO: locals
 --		"Campaign and quests", -- TODO: locals
---		"Inventory", -- TODO: locals
+		loc("INV_PAGE_CHARACTER_INV"),
 --		"Others", -- TODO: locals
 	}
 

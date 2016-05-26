@@ -69,7 +69,14 @@ TRP3_API.inventory.EFFECTS = {
 	["item_add"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
-			local targetContainer = "args.containerInfo"; -- TODO: selectable or new effect for "add in" ?
+			local targetContainer = args[4] or "parent";
+			if targetContainer == "parent" then
+				targetContainer = "args.container";
+			elseif targetContainer == "self" then
+				targetContainer = "args.object";
+			else
+				targetContainer = "nil";
+			end
 			local id = args[1] or "";
 			local count = tonumber(args[2]) or 1;
 			local madeBy = args[3] or false;
@@ -85,10 +92,29 @@ TRP3_API.inventory.EFFECTS = {
 		codeReplacementFunc = function (args)
 			local id = args[1] or "";
 			local count = tonumber(args[2]) or 1;
-			return ("lastEffectReturn = removeItem(\"%s\", %d);"):format(id, count);
+			local source = args[3] or "inventory";
+			if source == "parent" then
+				source = "args.container";
+			elseif source == "self" then
+				source = "args.object";
+			else
+				source = "nil";
+			end
+			return ("lastEffectReturn = removeItem(\"%s\", %d, %s);"):format(id, count, source);
 		end,
 		env = {
 			removeItem = "TRP3_API.inventory.removeItem",
+		}
+	},
+
+	["item_cooldown"] = {
+		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
+		codeReplacementFunc = function (args)
+			local duration = tonumber(args[1]) or 1;
+			return ("lastEffectReturn = startCooldown(args.object, %d, args.container);"):format(duration);
+		end,
+		env = {
+			startCooldown = "TRP3_API.inventory.startCooldown",
 		}
 	},
 

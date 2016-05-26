@@ -90,6 +90,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	SPECIFIC_PATH = "Root path",
 	SPECIFIC_MODE = "Mode",
 	SPECIFIC = "Specific object",
+	ITEM_ID = "Item ID",
 
 	-- Editor common
 	EDITOR_PREVIEW = "preview",
@@ -228,6 +229,9 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_DELAY_INTERRUPT_1 = "No interruption",
 
 	-- Effects editors
+	EFFECT_CAT_SOUND = "Sound and music",
+	EFFECT_CAT_SPEECH = "Speech and emotes",
+	EFFECT_CAT_DEBUG = "Debug",
 	EFFECT_TEXT = "Display text",
 	EFFECT_TEXT_TT = "Displays a text.\nDifferent outputs are possible.",
 	EFFECT_TEXT_PREVIEW = "Displayed text",
@@ -325,7 +329,26 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_ITEM_REMOVE_PREVIEW = "Destroys %sx %s",
 	EFFECT_ITEM_REMOVE_ID_TT = "The item to remove.\n\n|cffffff00Please enter the full item ID (parents ID and inner ID).\n\n|cff00ff00Hint: copy/paste the full ID to be sure to avoid typos.",
 	EFFECT_ITEM_REMOVE_QT_TT = "The number of item to remove.",
+	EFFECT_ITEM_COOLDOWN = "Start cooldown",
+	EFFECT_ITEM_COOLDOWN_TT = "Start a wooldown for this item.",
+	EFFECT_COOLDOWN_DURATION = "Cooldown duration",
+	EFFECT_ITEM_COOLDOWN_PREVIEW = "Duration: %s second(s)",
+	EFFECT_COOLDOWN_DURATION_TT = "The cooldown duration, in seconds.",
+	EFFECT_ITEM_SOURCE = "Search from",
+	EFFECT_ITEM_SOURCE_1 = "All inventory",
+	EFFECT_ITEM_SOURCE_2 = "Parent container",
+	EFFECT_ITEM_SOURCE_3 = "Inside the item",
+	EFFECT_ITEM_SOURCE_1_TT = "Search for the item(s) inside the entire character inventory.",
+	EFFECT_ITEM_SOURCE_2_TT = "Search for the item(s) only inside this item parent container (and any sub-container).",
+	EFFECT_ITEM_SOURCE_3_TT = "Search for the item(s) only inside this item (and any sub-container). Only works if this item is a container.",
 
+	EFFECT_ITEM_TO = "Add in",
+	EFFECT_ITEM_TO_1 = "Inventory",
+	EFFECT_ITEM_TO_2 = "Parent container",
+	EFFECT_ITEM_TO_3 = "Inside the item",
+	EFFECT_ITEM_TO_1_TT = "Add the item(s) inside the inventory primary container. If no primary container, it will be added 'on' the character",
+	EFFECT_ITEM_TO_2_TT = "Add the item(s) inside this item parent container.",
+	EFFECT_ITEM_TO_3_TT = "Add the item(s) inside this item. Only works if this item is a container.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",
@@ -430,9 +453,15 @@ We should begin with examples:
 	OP_OP_UNIT_ISPLAYER_TT = "|cff00ff00Returns whether the unit is a player.",
 	OP_OP_UNIT_DEAD = "Unit is dead",
 	OP_OP_UNIT_DEAD_TT = "|cff00ff00Returns whether a unit is either dead or a ghost.",
-
+	OP_OP_INV_COUNT = "Item units count",
+	OP_OP_INV_COUNT_TT = "|cff00ff00The number of units of an item the player possesses in his inventory.",
+	OP_OP_INV_COUNT_PREVIEW = "%s units count",
+	OP_OP_INV_COUNT_CON = "Item units count (container)",
+	OP_OP_INV_COUNT_CON_TT = "|cff00ff00The number of units of an item the player possesses in this container.\n\n|cffff9900Can only be used on a container.",
+	OP_OP_INV_COUNT_CON_PREVIEW = "%s units count (container)",
 
 	-- Test
+	COND_EDITOR = "Condition editor",
 	COND_PREVIEW_TEST = "Preview test",
 	COND_PREVIEW_TEST_TT = "Prints in the chat frame the evaluation of this test based on the current situation.",
 	COND_TESTS = "Condition tests",

@@ -235,7 +235,7 @@ local function item_add_init()
 			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_ADD_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
-			return {"", 1, false};
+			return {"", 1, false, "parent"};
 		end,
 		editor = editor;
 	});
@@ -259,17 +259,27 @@ local function item_add_init()
 	editor.crafted.Text:SetText(loc("EFFECT_ITEM_ADD_CRAFTED"));
 	setTooltipForSameFrame(editor.crafted, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_CRAFTED"), loc("EFFECT_ITEM_ADD_CRAFTED_TT"));
 
+	-- Source
+	local sources = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_TO"), loc("EFFECT_ITEM_TO_1")), "inventory", loc("EFFECT_ITEM_TO_1_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_TO"), loc("EFFECT_ITEM_TO_2")), "parent", loc("EFFECT_ITEM_TO_2_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_TO"), loc("EFFECT_ITEM_TO_3")), "self", loc("EFFECT_ITEM_TO_3_TT")},
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		editor.id:SetText(data[1] or "");
 		editor.count:SetText(data[2] or "1");
 		editor.crafted:SetChecked(data[3] or false);
+		editor.source:SetSelectedValue(data[4] or "parent");
 	end
 
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
 		scriptData.args[2] = tonumber(strtrim(editor.count:GetText())) or 1;
 		scriptData.args[3] = editor.crafted:GetChecked();
+		scriptData.args[4] = editor.source:GetSelectedValue() or "parent";
 	end
 end
 
@@ -289,7 +299,7 @@ local function item_remove_init()
 			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_REMOVE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
-			return {"", 1};
+			return {"", 1, "inventory"};
 		end,
 		editor = editor;
 	});
@@ -309,15 +319,55 @@ local function item_remove_init()
 	editor.count.title:SetText(loc("EFFECT_ITEM_ADD_QT"));
 	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_QT"), loc("EFFECT_ITEM_REMOVE_QT_TT"));
 
+	-- Source
+	local sources = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_1")), "inventory", loc("EFFECT_ITEM_SOURCE_1_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_2")), "parent", loc("EFFECT_ITEM_SOURCE_2_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_3")), "self", loc("EFFECT_ITEM_SOURCE_3_TT")},
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		editor.id:SetText(data[1] or "");
 		editor.count:SetText(data[2] or "1");
+		editor.source:SetSelectedValue(data[3] or "inventory");
 	end
 
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
 		scriptData.args[2] = tonumber(strtrim(editor.count:GetText())) or 1;
+		scriptData.args[3] = editor.source:GetSelectedValue() or "inventory";
+	end
+end
+
+local function item_cooldown_init()
+	local editor = TRP3_EffectEditorItemCooldown;
+
+	registerEffectEditor("item_cooldown", {
+		title = loc("EFFECT_ITEM_COOLDOWN"),
+		icon = "ability_mage_timewarp",
+		description = loc("EFFECT_ITEM_COOLDOWN_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_COOLDOWN_PREVIEW"):format("|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
+		end,
+		getDefaultArgs = function()
+			return {1};
+		end,
+		editor = editor;
+	});
+
+	-- Time
+	editor.time.title:SetText(loc("EFFECT_COOLDOWN_DURATION"));
+	setTooltipForSameFrame(editor.time.help, "RIGHT", 0, 5, loc("EFFECT_COOLDOWN_DURATION"), loc("EFFECT_COOLDOWN_DURATION_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.time:SetText(data[1] or "1");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = tonumber(strtrim(editor.time:GetText())) or 0;
 	end
 end
 
@@ -754,6 +804,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	document_show_init();
 	item_add_init();
 	item_remove_init();
+	item_cooldown_init();
 
 	var_set_execenv_init();
 	signal_send_init();

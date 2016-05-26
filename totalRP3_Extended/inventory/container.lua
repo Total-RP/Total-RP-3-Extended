@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
+local _G, assert, tostring, tinsert, wipe, pairs, time = _G, assert, tostring, tinsert, wipe, pairs, time;
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local loc = TRP3_API.locale.getText;
@@ -196,7 +196,9 @@ local function containerSlotUpdate(self, elapsed)
 	self.Quest:Hide();
 	self.Icon:Hide();
 	self.Quantity:Hide();
+	self.Cooldown:Hide();
 	self.IconBorder:Hide();
+	self.Icon:SetVertexColor(1, 1, 1);
 	self.IconBorder:SetVertexColor(1, 1, 1);
 	self.Icon:SetDesaturated(false);
 	if self.info then
@@ -227,6 +229,15 @@ local function containerSlotUpdate(self, elapsed)
 		end
 		if self:IsDragging() or TRP3_API.inventory.isInTransaction(self.info) then
 			self.Icon:SetDesaturated(true);
+		end
+		if self.info.cooldown then
+			if time() >= self.info.cooldown then
+				self.info.cooldown = nil;
+			else
+				self.Cooldown:Show();
+				self.Cooldown:SetText(self.info.cooldown - time());
+				self.Icon:SetVertexColor(1, 0, 0);
+			end
 		end
 	end
 end

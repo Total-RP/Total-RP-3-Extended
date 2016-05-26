@@ -198,6 +198,32 @@ local OPERANDS = {
 	},
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Inventory
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["inv_item_count"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local id = args[1] or "";
+			return ("getItemCount(\"%s\")"):format(id);
+		end,
+		env = {
+			["getItemCount"] = "TRP3_API.inventory.getItemCount",
+		},
+	},
+
+	["inv_item_count_con"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local id = args[1] or "";
+			return ("getItemCount(\"%s\", args.object)"):format(id);
+		end,
+		env = {
+			["getItemCount"] = "TRP3_API.inventory.getItemCount",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- OTHERS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

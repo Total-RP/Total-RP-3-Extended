@@ -195,7 +195,7 @@ local function onElementClick(self)
 		TRP3_ScriptEditorDelay.load(scriptStep);
 	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
 		local scriptData = scriptStep.b[1].cond;
-		setCurrentElementFrame(TRP3_ConditionEditor, "Condition editor"); -- TODO: locals
+		setCurrentElementFrame(TRP3_ConditionEditor, loc("COND_EDITOR"));
 		TRP3_ConditionEditor.load(scriptData);
 	end
 
@@ -238,7 +238,7 @@ end
 local function decorateEffect(scriptStepFrame, effectData)
 	local effect = TRP3_API.script.getEffect(effectData.id);
 	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectData.id);
-	local title = ("%s: %s"):format(loc("WO_EFFECT"), effectInfo.title or UNKNOWN);
+	local title = ("%s: |cffff9900%s"):format(loc("WO_EFFECT"), effectInfo.title or UNKNOWN);
 
 	TRP3_API.ui.frame.setupIconButton(scriptStepFrame, effectInfo.icon or ELEMENT_EFFECT_ICON);
 
@@ -279,7 +279,7 @@ local function decorateElement(scriptStepFrame)
 	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_CONDITION_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_CONDITION")));
-		scriptStepFrame.description:SetText("");
+		scriptStepFrame.description:SetText(TRP3_ConditionEditor.getConditionPreview(scriptStep.b[1].cond));
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_DELAY_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_DELAY")));
@@ -554,14 +554,14 @@ editor.init = function(ToolFrame)
 		[loc("WO_EFFECT_CAT_COMMON")] = {
 			"text",
 		},
-		["Sound"] = { -- TODO: locals
+		[loc("EFFECT_CAT_SOUND")] = {
 			"sound_id_self",
 			"sound_music_self",
 			"sound_music_stop",
 			"sound_id_local",
 			"sound_music_local",
 		},
-		["Speech"] = { -- TODO: locals
+		[loc("EFFECT_CAT_SPEECH")] = {
 			"speech_env",
 			"speech_npc",
 		},
@@ -570,31 +570,32 @@ editor.init = function(ToolFrame)
 			"companion_dismiss_critter",
 			"companion_random_critter",
 		},
-		["Inventory"] = { -- TODO: locals
+		[loc("INV_PAGE_CHARACTER_INV")] = {
 			"item_add",
 			"item_remove",
 			"item_sheath",
 			"item_bag_durability",
 			"item_consume",
+			"item_cooldown",
 			"document_show",
 		},
-		["Expert"] = { -- TODO: locals
+		[loc("MODE_EXPERT")] = {
 			"var_set_execenv",
 			"var_set_object",
 			"signal_send",
 		},
-		["Debug"] = { -- TODO: locals
+		[loc("EFFECT_CAT_DEBUG")] = {
 			"debug_dump_args",
 			"debug_dump_text",
 		},
 		order = {
 			loc("WO_EFFECT_CAT_COMMON"),
-			"Speech",
-			"Sound",
+			loc("EFFECT_CAT_SPEECH"),
+			loc("EFFECT_CAT_SOUND"),
 			loc("REG_COMPANIONS"),
-			"Inventory",
-			"Expert",
-			"Debug"
+			loc("INV_PAGE_CHARACTER_INV"),
+			loc("MODE_EXPERT"),
+			loc("EFFECT_CAT_DEBUG")
 		}
 	}
 
