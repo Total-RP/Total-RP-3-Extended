@@ -96,6 +96,11 @@ local function classExists(...)
 end
 TRP3_API.extended.classExists = classExists;
 
+local function getRootClassID(classID)
+	return classID:sub(1, classID:find(ID_SEPARATOR));
+end
+TRP3_API.extended.getRootClassID = getRootClassID;
+
 local function objectsAreRelated(classID1, classID2)
 	local rootClassID1 = ({strsplit(TRP3_API.extended.ID_SEPARATOR, classID1)})[1];
 	local rootClassID2 = ({strsplit(TRP3_API.extended.ID_SEPARATOR, classID2)})[1];

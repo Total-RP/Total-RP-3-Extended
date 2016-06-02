@@ -26,6 +26,7 @@ local getClass, isContainerByClassID = TRP3_API.extended.getClass, TRP3_API.inve
 local getQualityColorRGB, getQualityColorText = TRP3_API.inventory.getQualityColorRGB, TRP3_API.inventory.getQualityColorText;
 local EMPTY = TRP3_API.globals.empty;
 local parseObjectArgs = TRP3_API.script.parseObjectArgs;
+local color = Utils.str.color;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Slot management
@@ -54,42 +55,43 @@ end
 local function getItemTooltipLines(slotInfo, class, forceAlt)
 	local title, left, right, text1, text2,  extension1, extension2;
 	local icon, name = getBaseClassDataSafe(class);
+	local rootClass = TRP3_API.extended.getRootClassID(slotInfo.id);
 	title = getQualityColorText(class.BA.QA) .. name;
 
 	if class.BA.LE then
-		left = Utils.str.color("w") .. parseObjectArgs(class.BA.LE, slotInfo.vars);
+		left = color("w") .. parseObjectArgs(class.BA.LE, slotInfo.vars);
 	end
 	if class.BA.RI then
-		right = Utils.str.color("w") .. parseObjectArgs(class.BA.RI, slotInfo.vars);
+		right = color("w") .. parseObjectArgs(class.BA.RI, slotInfo.vars);
 	end
 
 	text1 = "";
 	if class.BA.QE then
-		text1 = Utils.str.color("w") .. ITEM_BIND_QUEST;
+		text1 = color("w") .. ITEM_BIND_QUEST;
 	end
 	if class.BA.SB then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. ITEM_SOULBOUND;
+		text1 = text1 .. color("w") .. ITEM_SOULBOUND;
 	end
 	if isContainerByClass(class) then
 		local slotCount = (class.CO.SR or 5) * (class.CO.SC or 4);
 		local slotUsed = TRP3_API.inventory.countUsedSlot(class, slotInfo);
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. loc("IT_CON_TT"):format(slotUsed, slotCount);
+		text1 = text1 .. color("w") .. loc("IT_CON_TT"):format(slotUsed, slotCount);
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. class.BA.UN .. ")";
+		text1 = text1 .. color("w") .. ITEM_UNIQUE .. " (" .. class.BA.UN .. ")";
 	end
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("o") .. "\"" .. parseObjectArgs(class.BA.DE, slotInfo.vars) .. "\"";
+		text1 = text1 .. color("o") .. "\"" .. parseObjectArgs(class.BA.DE, slotInfo.vars) .. "\"";
 	end
 
 	if class.US and class.US.AC then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("g") .. USE .. ": " .. parseObjectArgs(class.US.AC, slotInfo.vars);
+		text1 = text1 .. color("g") .. USE .. ": " .. parseObjectArgs(class.US.AC, slotInfo.vars);
 	end
 
 	if class.BA.CO then
@@ -107,13 +109,13 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		extension1 = "";
 		local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * (class.BA.WE or 0));
 		local formatedWeight = TRP3_API.extended.formatWeight(weight);
-		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. formatedWeight;
+		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. color("w") .. " " .. formatedWeight;
 
 		if (class.BA.VA or 0) > 0 then
 			extension2 = "";
 			local value = class.BA.VA or 0;
 			local formatedValue = GetCoinTextureString(value);
-			extension2 = extension2 .. Utils.str.color("w") .. formatedValue;
+			extension2 = extension2 .. color("w") .. formatedValue;
 		end
 
 		text2 = "";
@@ -121,18 +123,27 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		if not forceAlt then
 			if isUsableByClass(class) then
 				text2 = text2 .. "\n";
-				text2 = text2 .. Utils.str.color("y") .. loc("CM_R_CLICK") .. ": " .. Utils.str.color("o") .. USE;
+				text2 = text2 .. color("y") .. loc("CM_R_CLICK") .. ":|cffff9900 " .. USE;
 			end
 
 			if isContainerByClass(class) then
 				text2 = text2 .. "\n";
-				text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. loc("IT_CON_OPEN");
+				text2 = text2 .. color("y") .. loc("CM_DOUBLECLICK") .. ":|cffff9900 " .. loc("IT_CON_OPEN");
 			end
 		end
 
 		if class.missing then
 			text2 = text2 .. "\n";
-			text2 = text2 .. Utils.str.color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ": " .. Utils.str.color("o") .. slotInfo.id;
+			text2 = text2 .. color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ":|cffff9900 " .. slotInfo.id;
+		else
+			if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
+				text2 = text2 .. "\n";
+				text2 = text2 .. color("y") .. loc("SEC_TT_COMBO");
+			end
+			if TRP3_API.security.atLeastOneBlocked(rootClass) then
+				text2 = text2 .. "\n\n";
+				text2 = text2 .. color("y") .. loc("SET_TT_SECURED");
+			end
 		end
 
 	end
@@ -355,6 +366,7 @@ local function splitStack(slot, quantity)
 	end
 end
 
+local IsShiftKeyDown, IsControlKeyDown, OpenStackSplitFrame = IsShiftKeyDown, IsControlKeyDown, OpenStackSplitFrame;
 local COLUMN_SPACING = 43;
 local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
@@ -378,7 +390,14 @@ local function initContainerSlot(slot, simpleLeftClick)
 					simpleLeftClick(self);
 				end
 			elseif button == "RightButton" then
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+				if IsControlKeyDown() then
+					local rootClass = TRP3_API.extended.getRootClassID(self.info.id);
+					if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
+						TRP3_API.security.showSecurityDetailFrame(rootClass);
+					end
+				else
+					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+				end
 			end
 		end
 	end);

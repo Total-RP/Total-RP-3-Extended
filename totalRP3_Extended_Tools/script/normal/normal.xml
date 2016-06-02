@@ -111,22 +111,22 @@
 					<Anchor point="TOPRIGHT" x="0" y="0"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="moveup">
-				<Size x="32" y="32"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="15" relativePoint="BOTTOM" relativeKey="$parent.remove"/>
-				</Anchors>
-				<NormalTexture file="Interface\Buttons\UI-Panel-CollapseButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
-			</Button>
 			<Button parentKey="movedown">
 				<Size x="32" y="32"/>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="15" relativePoint="BOTTOM" relativeKey="$parent.moveup"/>
+					<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeKey="$parent.remove"/>
 				</Anchors>
 				<NormalTexture file="Interface\Buttons\UI-Panel-ExpandButton-Up"/>
 				<PushedTexture file="Interface\Buttons\UI-Panel-ExpandButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+			<Button parentKey="moveup">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeKey="$parent.movedown"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-CollapseButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 		</Frames>

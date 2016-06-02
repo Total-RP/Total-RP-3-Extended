@@ -85,18 +85,8 @@ local function reloadDownloads()
 			elseif classExists(rootClassId) and getClass(rootClassId).MD.V >= rootClassVersion then
 				local class = getItemClass(rootClassId);
 				if class.securityLevel ~= SECURITY_LEVEL.HIGH then
-					-- Determine if there is at least one blocked effect
-					local secDetails = TRP3_API.security.computeSecurity(rootClassId);
-					local atLeastOneBlock = false;
-					for effectGroupID, _ in pairs(secDetails) do
-						if not TRP3_API.security.resolveEffectGroupSecurity(rootClassId, effectGroupID) then
-							atLeastOneBlock = true;
-							break;
-						end
-					end
-
 					-- If at least one effectgroup is blocked, only then we bother the user
-					if atLeastOneBlock then
+					if TRP3_API.security.atLeastOneBlocked(rootClassId) then
 						local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
 						slot.details:SetText("|cffff0000" .. loc("SEC_EFFECT_BLOCKED"));
 						slot.security:Show();

@@ -253,11 +253,9 @@ function showSecurityDetailFrame(classID, frameFrom)
 	securityFrame.subtitle:SetText(loc("SEC_LEVEL_DETAILS_TT"):format(TRP3_API.inventory.getItemLink(class)));
 
 	securityFrame:SetHeight(height);
+	securityFrame:ClearAllPoints();
+	securityFrame:SetPoint("CENTER", frameFrom or UIParent, "CENTER", 0, 0);
 	securityFrame:Show();
-	if frameFrom then
-		securityFrame:ClearAllPoints();
-		securityFrame:SetPoint("CENTER", frameFrom, "CENTER", 0, 0);
-	end
 end
 TRP3_API.security.showSecurityDetailFrame = showSecurityDetailFrame;
 
@@ -270,6 +268,17 @@ local function getSecurityDetailText(level)
 	return securityLevelDetailText[level or SECURITY_LEVEL.LOW] or "?";
 end
 TRP3_API.security.getSecurityDetailText = getSecurityDetailText;
+
+local function atLeastOneBlocked(rootClassID)
+	local secDetails = TRP3_API.security.computeSecurity(rootClassID);
+	for effectGroupID, _ in pairs(secDetails) do
+		if not TRP3_API.security.resolveEffectGroupSecurity(rootClassID, effectGroupID) then
+			return true;
+		end
+	end
+	return false;
+end
+TRP3_API.security.atLeastOneBlocked = atLeastOneBlocked;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
