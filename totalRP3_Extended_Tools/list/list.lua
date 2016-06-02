@@ -140,11 +140,13 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID)
 	return text;
 end
 
+local LINE_SLOT = {};
 local function onLineEnter(self)
 	refreshTooltipForFrame(self);
 	if self:GetParent().idData.type == TRP3_DB.types.ITEM then
 		local class = getClass(self:GetParent().idData.fullID);
-		showItemTooltip(self:GetParent(), Globals.empty, class, true, "ANCHOR_RIGHT");
+		LINE_SLOT.id = self:GetParent().idData.fullID;
+		showItemTooltip(self:GetParent(), LINE_SLOT, class, true, "ANCHOR_RIGHT");
 	end
 end
 
