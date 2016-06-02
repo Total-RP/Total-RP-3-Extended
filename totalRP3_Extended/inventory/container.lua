@@ -72,8 +72,10 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		text1 = text1 .. Utils.str.color("w") .. ITEM_SOULBOUND;
 	end
 	if isContainerByClass(class) then
+		local slotCount = (class.CO.SR or 5) * (class.CO.SC or 4);
+		local slotUsed = TRP3_API.inventory.countUsedSlot(class, slotInfo);
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. CONTAINER_SLOTS:format((class.CO.SR or 5) * (class.CO.SC or 4), BAGSLOT);
+		text1 = text1 .. Utils.str.color("w") .. loc("IT_CON_TT"):format(slotUsed, slotCount);
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);

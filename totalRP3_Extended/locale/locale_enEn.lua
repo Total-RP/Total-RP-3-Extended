@@ -32,6 +32,9 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 
 	-- INVENTORY
 	IT_CON = "Container",
+	IT_CON_TT = "Container (%d/%d slots used)",
+	IT_CON_ERROR_TYPE = "This container can't contain this kind of items.",
+	IT_CON_ERROR_TRADE = "You can't trade this container if it's not empty.",
 	IT_CON_OPEN = "Open/Close container",
 	IT_CON_CAN_INNER = "Can't place a container inside itself!",
 	IT_INV_SHOW_ALL = "Show all inventory",
@@ -47,7 +50,6 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_EX_EMPTY = "Nothing to trade",
 	IT_EX_SLOT_DOWNLOAD = "|rYou don't have the information about this item.\n\n|cff00ff00If the item is not too large, TRP3 will download it automatically from %s.\n\n|cffff9900If it is too large, you can manually request its information with the download button, but keep in mind that it could take some time to be downloaded.",
 	IT_EX_DOWNLOADING = "Downloading: %0.1f %%",
-	IT_CON_ERROR_TYPE = "This container can't contain this kind of items.",
 
 	-- INVENTORY PAGE
 	INV_PAGE_CAMERA_CONFIG = "Camera parameters:\nRotation: %.2f\nZoom: %.2f\nPosition: %.2f, %.2f",

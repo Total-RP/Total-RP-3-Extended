@@ -292,8 +292,10 @@ local function addToExchange(container, slotID)
 
 	-- Can't exchange an non-empty bag for now
 	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slotInfo.content or EMPTY) > 0 then
-		Utils.message.displayMessage(ERR_TRADE_BAG, Utils.message.type.ALERT_MESSAGE);
-		return;
+		if not itemClass.CO.OI then
+			Utils.message.displayMessage(loc("IT_CON_ERROR_TRADE"), Utils.message.type.ALERT_MESSAGE);
+			return;
+		end
 	end
 
 	if not exchangeFrame.targetID then

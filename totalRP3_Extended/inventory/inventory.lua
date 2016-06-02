@@ -150,6 +150,12 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 				end
 				tcopy(slot.vars, itemData.vars);
 			end
+			if itemData.content then
+				if not slot.content then
+					slot.content = {};
+				end
+				tcopy(slot.content, itemData.content);
+			end
 		end
 		if stackSlot then
 			container.content[slot].count = (container.content[slot].count or 1) + 1;

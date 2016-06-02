@@ -161,6 +161,19 @@ local function searchForFirstInstance(container, itemID)
 end
 TRP3_API.inventory.searchForFirstInstance = searchForFirstInstance;
 
+local function countUsedSlot(containerClass, container)
+	local slotCount = (containerClass.CO.SR or 5) * (containerClass.CO.SC or 4);
+	local total = 0;
+	for i=1, slotCount do
+		local index = tostring(i);
+		if (container.content or EMPTY)[index] then
+			total = total + 1;
+		end
+	end
+	return total;
+end
+TRP3_API.inventory.countUsedSlot = countUsedSlot;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Units
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
