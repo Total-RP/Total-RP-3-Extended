@@ -183,6 +183,7 @@ local function loadDataContainer()
 	container.type:SetSelectedValue(containerData.SI or "5x4");
 	container.durability:SetText(containerData.DU or "0");
 	container.maxweight:SetText(containerData.MW or "0");
+	container.onlyinner:SetChecked(containerData.OI or false);
 
 	onContainerResize(container.type:GetSelectedValue() or "5x4");
 end
@@ -195,6 +196,7 @@ local function storeDataContainer()
 	data.CO.SC = column;
 	data.CO.DU = tonumber(container.durability:GetText());
 	data.CO.MW = tonumber(container.maxweight:GetText());
+	data.CO.OI = container.onlyinner:GetChecked() or false;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -463,9 +465,13 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	container.durability.title:SetText(loc("IT_CO_DURABILITY"));
 	setTooltipForSameFrame(container.durability.help, "RIGHT", 0, 5, loc("IT_CO_DURABILITY"), loc("IT_CO_DURABILITY_TT"));
 
-	-- Unique count
+	-- Max weight
 	container.maxweight.title:SetText(loc("IT_CO_MAX"));
 	setTooltipForSameFrame(container.maxweight.help, "RIGHT", 0, 5, loc("IT_CO_MAX"), loc("IT_CO_MAX_TT"));
+
+	-- Component
+	container.onlyinner.Text:SetText(loc("IT_CO_ONLY_INNER"));
+	setTooltipForSameFrame(container.onlyinner, "RIGHT", 0, 5, loc("IT_CO_ONLY_INNER"), loc("IT_CO_ONLY_INNER_TT"));
 
 	-- Preview
 	for _, size in pairs({"5x4", "2x4", "1x4"}) do

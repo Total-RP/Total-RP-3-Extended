@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, strjoin, tostring, strtrim, wipe, assert = pairs, strjoin, tostring, strtrim, wipe, assert;
+local pairs, strjoin, tostring, strtrim, wipe, assert, strsplit = pairs, strjoin, tostring, strtrim, wipe, assert, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.locale.getText;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
@@ -95,6 +95,13 @@ local function classExists(...)
 	return class ~= nil;
 end
 TRP3_API.extended.classExists = classExists;
+
+local function objectsAreRelated(classID1, classID2)
+	local rootClassID1 = ({strsplit(TRP3_API.extended.ID_SEPARATOR, classID1)})[1];
+	local rootClassID2 = ({strsplit(TRP3_API.extended.ID_SEPARATOR, classID2)})[1];
+	return rootClassID1 == rootClassID2;
+end
+TRP3_API.extended.objectsAreRelated = objectsAreRelated;
 
 local function getClassesByType(classType)
 	local classes = {};

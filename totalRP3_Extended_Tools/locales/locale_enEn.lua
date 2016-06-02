@@ -160,6 +160,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_DOC_ACTION = "Read document",
 	IT_WARNING_1 = "Shouldn't make an item both stackable and craftable. (%s)",
 	IT_WARNING_2 = "Shouldn't make a stackable container. (%s)",
+	IT_CO_ONLY_INNER = "Can only contain inner items",
+	IT_CO_ONLY_INNER_TT = "Marks this container to be able to contain only children items from the same root object.\n\nAs for now, only container with this option enabled can be traded while containing items.",
 
 	-- Documents
 	DO_NEW_DOC = "New document",

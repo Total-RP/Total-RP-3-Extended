@@ -238,6 +238,12 @@
 				</Anchors>
 			</EditBox>
 
+			<CheckButton parentKey="onlyinner" inherits="TRP3_CheckBox" name="$parentContainer">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-15" relativePoint="BOTTOMLEFT" relativeKey="$parent.maxweight"/>
+				</Anchors>
+			</CheckButton>
+
 
 			<Frame parentKey="bag5x4" inherits="TRP3_Container5x4Template" name="$parent5x4" hidden="false" toplevel="false" movable="false">
 				<Anchors>

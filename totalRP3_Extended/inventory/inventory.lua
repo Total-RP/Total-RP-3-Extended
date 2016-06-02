@@ -56,6 +56,7 @@ TRP3_API.inventory.getItemCount = getItemCount;
 -- 1 if container full
 -- 2 if too many item already possessed (unique)
 -- 3 if givenContainer is not a container
+-- 4 if container can't contain the item
 function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	-- Get the best container
 	local container = givenContainer or playerInventory;
@@ -72,6 +73,11 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	end
 	local containerClass = getClass(container.id);
 	local itemClass = getClass(classID);
+
+	if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container.id, classID) then
+		Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.ALERT_MESSAGE);
+		return 4;
+	end
 
 	checkContainerInstance(container);
 	itemData = itemData or EMPTY;
@@ -214,6 +220,22 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 		if TRP3_API.inventory.isItemInContainer(container2, slot1Data) or TRP3_API.inventory.isItemInContainer(container1, slot2Data) then
 			Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.ALERT_MESSAGE);
 			return;
+		end
+
+		-- Check if containers can contain this type of item
+		if slot1Data and slot1Data.id then
+			local containerClass = getClass(container2.id);
+			if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container2.id, slot1Data.id) then
+				Utils.message.displayMessage(loc("IT_CON_ERROR_TYPE"), Utils.message.type.ALERT_MESSAGE);
+				return;
+			end
+		end
+		if slot2Data and slot2Data.id then
+			local containerClass = getClass(container1.id);
+			if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container1.id, slot2Data.id) then
+				Utils.message.displayMessage(loc("IT_CON_ERROR_TYPE"), Utils.message.type.ALERT_MESSAGE);
+				return;
+			end
 		end
 
 		container2.content[slot2] = slot1Data;
