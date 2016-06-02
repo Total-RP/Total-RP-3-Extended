@@ -393,7 +393,7 @@ end
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",
 	["description"] = "Total RP 3 extended features: inventory, quest log, document and more !",
-	["version"] = 0.3,
+	["version"] = 0.4,
 	["id"] = "trp3_extended",
 	["onInit"] = onInit,
 	["onStart"] = onStart,
