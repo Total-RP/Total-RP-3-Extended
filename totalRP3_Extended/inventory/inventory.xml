@@ -65,6 +65,12 @@
 					</Anchors>
 				</FontString>
 				<Texture parentKey="IconBorder" file="Interface\Common\WhiteIconFrame" hidden="false" setAllPoints="true"/>
+				<Texture parentKey="Container" file="Interface\ContainerFrame\UI-Icon-QuestBorder" alpha="0.7">
+					<Size x="36" y="36"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
 			</Layer>
 		</Layers>
 		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>

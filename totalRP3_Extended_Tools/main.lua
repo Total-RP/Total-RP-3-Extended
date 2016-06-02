@@ -200,18 +200,23 @@ end
 local getClass = TRP3_API.extended.getClass;
 local goToPage;
 
-local function onSave(editor)
-	assert(editor, "No editor.");
-	assert(editor.onSave, "No save method in editor.");
+local function checkCreation(classID, data)
+	local warnings = {};
+	TRP3_API.extended.iterateObject(classID, data, function(classID, class)
+		local frame = toolFrame[PAGE_BY_TYPE[class.TY].frame or ""];
+		if frame  and frame.validator then
+			frame.validator(classID, class, warnings);
+		end
+	end);
+	return warnings;
+end
+
+local function doSave()
 	assert(toolFrame.rootClassID, "No rootClassID in editor.");
 	assert(toolFrame.fullClassID, "No fullClassID in editor.");
 	local rootClassID, fullClassID = toolFrame.rootClassID, toolFrame.fullClassID;
 
-	-- Force save the current view in draft
-	editor.onSave();
-
 	local rootDraft = toolFrame.rootDraft;
-
 	local object = getClass(rootClassID);
 	wipe(object);
 	Utils.table.copy(object, rootDraft);
@@ -225,6 +230,26 @@ local function onSave(editor)
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 
 	goToPage(fullClassID, true);
+end
+
+local function onSave(editor)
+	assert(editor, "No editor.");
+	assert(editor.onSave, "No save method in editor.");
+	assert(toolFrame.rootClassID, "No rootClassID in editor.");
+	assert(toolFrame.fullClassID, "No fullClassID in editor.");
+	local rootClassID, fullClassID = toolFrame.rootClassID, toolFrame.fullClassID;
+
+	-- Force save the current view in draft
+	editor.onSave();
+	local warnings = checkCreation(toolFrame.rootClassID, toolFrame.rootDraft);
+	if #warnings > 0 then
+		local joinedString = strjoin("\n\n", unpack(warnings));
+		TRP3_API.popup.showConfirmPopup(loc("EDITOR_WARNINGS"):format(#warnings, joinedString), function()
+			doSave();
+		end);
+	else
+		doSave();
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -452,6 +477,7 @@ end
 
 local function onInit()
 	toolFrame = TRP3_ToolFrame;
+	toolFrame.warnings = {};
 
 	if not TRP3_Tools_Parameters then
 		TRP3_Tools_Parameters = {};

@@ -194,6 +194,7 @@ TRP3_API.inventory.showItemTooltip = showItemTooltip;
 
 local function containerSlotUpdate(self, elapsed)
 	self.Quest:Hide();
+	self.Container:Hide();
 	self.Icon:Hide();
 	self.Quantity:Hide();
 	self.Cooldown:Hide();
@@ -222,7 +223,8 @@ local function containerSlotUpdate(self, elapsed)
 			showItemTooltip(self, self.info, self.class);
 		end
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
-			self.Icon:SetVertexColor(0.5, 0.5, 0.5);
+			self.Icon:SetVertexColor(0.85, 0.85, 0.85);
+			self.Container:Show();
 		end
 		if self.additionalOnUpdateHandler then
 			self.additionalOnUpdateHandler(self, elapsed);

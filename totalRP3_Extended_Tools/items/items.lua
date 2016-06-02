@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, tostring, error, assert, date = wipe, tostring, error, assert, date;
+local wipe, tinsert, error, assert, date = wipe, tinsert, error, assert, date;
 local tsize = Utils.table.size;
 local getClass, classExists = TRP3_API.extended.getClass, TRP3_API.extended.classExists;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
@@ -72,6 +72,15 @@ function TRP3_API.extended.tools.getContainerItemData()
 	return data;
 end
 
+local function validator(classID, class, warnings)
+	if class.BA.ST and class.BA.ST > 1 and class.BA.CR then
+		tinsert(warnings, loc("IT_WARNING_1"):format(classID));
+	end
+	if class.BA.ST and class.BA.ST > 1 and class.BA.CT then
+		tinsert(warnings, loc("IT_WARNING_2"):format(classID));
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Item base frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -104,6 +113,7 @@ function TRP3_API.extended.tools.initItems(ToolFrame)
 	toolFrame = ToolFrame;
 	toolFrame.item.onLoad = onLoad;
 	toolFrame.item.onSave = onSave;
+	toolFrame.item.validator = validator;
 
 	TRP3_API.extended.tools.initItemQuickEditor(toolFrame);
 	TRP3_API.extended.tools.initItemEditorNormal(toolFrame);

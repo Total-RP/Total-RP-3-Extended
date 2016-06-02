@@ -102,6 +102,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EDITOR_CANCEL_TT = "Cancel all changes to the whole object %s (root object and all inner objects).\n\n|cffff9900Unsaved changes will be lost!",
 	EDITOR_ID_COPY = "Copy ID",
 	EDITOR_ID_COPY_POPUP = "You can copy the object ID below if you need to paste it somewhere.",
+	EDITOR_WARNINGS = "There are %s warnings.\n\n|cffff9900%s|r\n\nSave anyway?",
 
 	-- Item creation
 	IT_NEW_NAME = "New item",
@@ -157,6 +158,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_CO_SIZE = "Container size",
 	IT_CO_SIZE_COLROW = "%s |1row;rows; by %s columns",
 	IT_DOC_ACTION = "Read document",
+	IT_WARNING_1 = "Shouldn't make an item both stackable and craftable. (%s)",
+	IT_WARNING_2 = "Shouldn't make a stackable container. (%s)",
 
 	-- Documents
 	DO_NEW_DOC = "New document",

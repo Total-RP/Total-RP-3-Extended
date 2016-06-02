@@ -55,7 +55,7 @@ TRP3_API.inventory.getItemCount = getItemCount;
 -- 0 if OK
 -- 1 if container full
 -- 2 if too many item already possessed (unique)
--- 3 if not a container
+-- 3 if givenContainer is not a container
 function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	-- Get the best container
 	local container = givenContainer or playerInventory;
