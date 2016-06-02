@@ -251,8 +251,7 @@ local function drawUI()
 		exchangeFrame.right.confirm:Show();
 	end
 
-	exchangeFrame.left.name:SetText(Globals.player_id);
-	exchangeFrame.right.name:SetText(exchangeFrame.targetID);
+	exchangeFrame.target:SetText(TRP3_API.register.getUnitRPNameWithID(exchangeFrame.targetID));
 
 	reloadDownloads();
 
@@ -587,11 +586,14 @@ function exchangeFrame.init()
 
 	exchangeFrame.left.empty:SetText(loc("IT_EX_EMPTY_DRAG"));
 	exchangeFrame.right.empty:SetText(loc("IT_EX_EMPTY"));
+	exchangeFrame.title:SetText(TRADE);
 
 	exchangeFrame.cancel:SetText(CANCEL);
 	exchangeFrame.cancel:SetScript("OnClick", function() cancelExchange() end);
 	exchangeFrame.ok:SetText(TRADE);
 	exchangeFrame.ok:SetScript("OnClick", function() confirmExchangeAction() end);
+
+	exchangeFrame.Background:SetTexture("Interface\\BankFrame\\Bank-Background", true, true);
 
 	-- Register prefix for data exchange
 	Comm.registerProtocolPrefix(UPDATE_EXCHANGE_QUERY_PREFIX, receivedUpdate);

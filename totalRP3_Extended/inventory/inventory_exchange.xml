@@ -60,6 +60,33 @@
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
 
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Alert-Background-Mini">
+					<Size x="256" y="64"/>
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="TOP" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER">
+					<Size x="0" y="0"/>
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="TOP" x="0" y="8"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+				<FontString parentKey="target" inherits="GameFontNormal" justifyH="CENTER">
+					<Size x="0" y="0"/>
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="TOP" x="0" y="-8"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
 		<Frames>
 
 			<Frame parentKey="left">
@@ -83,13 +110,6 @@
 							</Anchors>
 							<TexCoords left="0" right="0.625" top="0" bottom="1"/>
 						</Texture>
-						<FontString parentKey="name" inherits="GameFontNormal" justifyH="CENTER">
-							<Size x="0" y="0"/>
-							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="0" y="5"/>
-								<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="0" y="5"/>
-							</Anchors>
-						</FontString>
 						<FontString parentKey="value" inherits="GameFontNormal" justifyH="RIGHT">
 							<Size x="0" y="0"/>
 							<Anchors>
@@ -122,17 +142,17 @@
 					</Button>
 					<Button parentKey="slot2" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot1" x="0" y="-15"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot1" x="0" y="-20"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot3" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot2" x="0" y="-15"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot2" x="0" y="-20"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot4" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot3" x="0" y="-15"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot3" x="0" y="-20"/>
 						</Anchors>
 					</Button>
 				</Frames>
@@ -159,13 +179,6 @@
 							</Anchors>
 							<TexCoords left="0" right="0.625" top="0" bottom="1"/>
 						</Texture>
-						<FontString parentKey="name" inherits="GameFontNormal" justifyH="CENTER">
-							<Size x="0" y="0"/>
-							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="0" y="5"/>
-								<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="0" y="5"/>
-							</Anchors>
-						</FontString>
 						<FontString parentKey="value" inherits="GameFontNormal" justifyH="RIGHT">
 							<Size x="0" y="0"/>
 							<Anchors>
@@ -198,17 +211,17 @@
 					</Button>
 					<Button parentKey="slot2" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot1" x="0" y="-15"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot1" x="0" y="-20"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot3" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot2" x="0" y="-15"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot2" x="0" y="-20"/>
 						</Anchors>
 					</Button>
 					<Button parentKey="slot4" inherits="TRP3_ExchangeFrameSlotTemplate">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot3" x="0" y="-15"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot3" x="0" y="-20"/>
 						</Anchors>
 					</Button>
 				</Frames>

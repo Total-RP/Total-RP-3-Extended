@@ -65,7 +65,7 @@
 					</Anchors>
 				</FontString>
 				<Texture parentKey="IconBorder" file="Interface\Common\WhiteIconFrame" hidden="false" setAllPoints="true"/>
-				<Texture parentKey="Container" file="Interface\ContainerFrame\UI-Icon-QuestBorder" alpha="0.7">
+				<Texture parentKey="Container" file="Interface\ContainerFrame\UI-Icon-QuestBorder" alpha="0.7" hidden="true">
 					<Size x="36" y="36"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
