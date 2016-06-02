@@ -130,19 +130,19 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 				text2 = text2 .. "\n";
 				text2 = text2 .. color("y") .. loc("CM_DOUBLECLICK") .. ":|cffff9900 " .. loc("IT_CON_OPEN");
 			end
-		end
 
-		if class.missing then
-			text2 = text2 .. "\n";
-			text2 = text2 .. color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ":|cffff9900 " .. slotInfo.id;
-		else
-			if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
+			if class.missing then
 				text2 = text2 .. "\n";
-				text2 = text2 .. color("y") .. loc("SEC_TT_COMBO");
-			end
-			if TRP3_API.security.atLeastOneBlocked(rootClass) then
-				text2 = text2 .. "\n\n";
-				text2 = text2 .. color("y") .. loc("SET_TT_SECURED");
+				text2 = text2 .. color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ":|cffff9900 " .. slotInfo.id;
+			else
+				if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
+					text2 = text2 .. "\n";
+					text2 = text2 .. color("y") .. loc("SEC_TT_COMBO");
+				end
+				if TRP3_API.security.atLeastOneBlocked(rootClass) then
+					text2 = text2 .. "\n\n";
+					text2 = text2 .. color("y") .. loc("SET_TT_SECURED");
+				end
 			end
 		end
 

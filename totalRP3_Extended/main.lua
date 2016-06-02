@@ -97,6 +97,7 @@ end
 TRP3_API.extended.classExists = classExists;
 
 local function getRootClassID(classID)
+	classID = classID or "";
 	return classID:sub(1, classID:find(ID_SEPARATOR));
 end
 TRP3_API.extended.getRootClassID = getRootClassID;
