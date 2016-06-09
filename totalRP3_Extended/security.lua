@@ -222,7 +222,7 @@ end
 function showSecurityDetailFrame(classID, frameFrom)
 	local class = getClass(classID);
 
-	securityFrame.securityDetails = class.details;
+	securityFrame.securityDetails = class.details or computeSecurity(classID, class);
 
 	local height = NORMAL_HEIGHT;
 

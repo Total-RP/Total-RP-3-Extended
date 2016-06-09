@@ -189,6 +189,7 @@ function refresh()
 			text2 = description,
 			depth = depth,
 			ID = parts[#parts],
+			rootID = parts[1],
 			fullID = objectID,
 			isOpen = isOpen,
 			hasChildren = hasChildren,
@@ -380,7 +381,7 @@ function onLineRightClick(lineWidget, data)
 			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID});
 		end
 		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-			tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.fullID});
+			tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID});
 		end
 	end
 	if data.type == TRP3_DB.types.ITEM then
