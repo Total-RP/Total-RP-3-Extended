@@ -33,7 +33,7 @@ local DEBUG = false;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function escapeString(value)
-	return value:gsub("\"", "\\\"");
+	return value:gsub("\"", "\\\""):gsub("\n", "\\n");
 end
 
 -- Escape " in string argument, to avoid script injection
