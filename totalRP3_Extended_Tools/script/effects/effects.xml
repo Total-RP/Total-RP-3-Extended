@@ -60,16 +60,17 @@
 
 			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
+					<Anchor point="TOP" x="0" y="-45"/>
 				</Anchors>
 			</Frame>
 
-			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
+			<Frame parentKey="text" inherits="TRP3_TextArea">
+				<Size x="260" y="0"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-10"/>
+					<Anchor point="BOTTOM" x="0" y="40"/>
 				</Anchors>
-			</EditBox>
+			</Frame>
 
 		</Frames>
 

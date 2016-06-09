@@ -49,8 +49,8 @@ local text_editor = TRP3_EffectEditorText;
 local function text_init()
 
 	-- Text
-	text_editor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
-	setTooltipForSameFrame(text_editor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_TEXT_TEXT_TT"));
+	setTooltipForSameFrame(text_editor.text, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_TEXT_TEXT_TT"));
+
 
 	-- Type
 	local outputs = {
@@ -76,12 +76,12 @@ local function text_init()
 
 	function text_editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
-		text_editor.text:SetText(data[1] or "");
+		text_editor.text.scroll.text:SetText(data[1] or "");
 		text_editor.type:SetSelectedValue(data[2] or Utils.message.type.CHAT_FRAME);
 	end
 
 	function text_editor.save(scriptData)
-		scriptData.args[1] = stEtN(strtrim(text_editor.text:GetText()));
+		scriptData.args[1] = stEtN(strtrim(text_editor.text.scroll.text:GetText()));
 		scriptData.args[2] = text_editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
 	end
 end
