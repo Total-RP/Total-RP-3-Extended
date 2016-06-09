@@ -19,7 +19,46 @@
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local loc = TRP3_API.locale.getText;
-local getSpeechPrefixText = TRP3_API.ui.misc.getSpeechPrefixText;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- NPC speech
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local SPEECH_PREFIX = {
+	SAYS = "/s",
+	YELLS = "/y",
+	WHISPERS = "/w",
+	EMOTES = "/e"
+}
+TRP3_API.ui.misc.SPEECH_PREFIX = SPEECH_PREFIX;
+
+local function getSpeechPrefixText(speechPrefix, npcName, text)
+	if speechPrefix == SPEECH_PREFIX.SAYS then
+		return ("%s %s: %s"):format(npcName, loc("NPC_SAYS"), text);
+	elseif speechPrefix == SPEECH_PREFIX.YELLS then
+		return ("%s %s: %s"):format(npcName, loc("NPC_YELLS"), text);
+	elseif speechPrefix == SPEECH_PREFIX.WHISPERS then
+		return ("%s %s: %s"):format(npcName, loc("NPC_WHISPERS"), text);
+	elseif speechPrefix == SPEECH_PREFIX.EMOTES then
+		return ("%s %s"):format(npcName, text);
+	end
+	return "...";
+end
+TRP3_API.ui.misc.getSpeechPrefixText = getSpeechPrefixText;
+
+local SPEECH_CHANNEL = {
+	[SPEECH_PREFIX.SAYS] = "SAY",
+	[SPEECH_PREFIX.YELLS] = "YELL",
+	[SPEECH_PREFIX.EMOTES] = "EMOTE",
+}
+local function getSpeechChannel(mode)
+	return SPEECH_CHANNEL[mode] or "SAY";
+end
+
+local function getSpeech(text, mode)
+	return getSpeechPrefixText(mode, UnitName("player"), text);
+end
+TRP3_API.ui.misc.getSpeech = getSpeech;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effetc structure
@@ -85,6 +124,25 @@ local EFFECTS = {
 			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
 			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text), 1);
+		end,
+		securedEnv = {
+			message = "TRP3_API.utils.message.displayMessage",
+		},
+		secured = security.LOW,
+	},
+	["speech_player"] = {
+		codeReplacementFunc = function (args)
+			local mode = getSpeechChannel(args[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS);
+			local text = args[2] or "";
+			return ("SendChatMessage(var(\"%s\", args), \"%s\"); lastEffectReturn = 0;"):format(text, mode);
+		end,
+		env = {
+			SendChatMessage = "SendChatMessage",
+		},
+		securedCodeReplacementFunc = function (args)
+			local mode = getSpeechChannel(args[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS);
+			local text = getSpeech(args[2] or "", mode);
+			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(text, 1);
 		end,
 		securedEnv = {
 			message = "TRP3_API.utils.message.displayMessage",

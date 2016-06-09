@@ -160,4 +160,14 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	CONF_MUSIC_METHOD_TT = "Determine how you will hear a local music when you are in range.",
 	CONF_SOUNDS_MAXRANGE = "Playback maximum range",
 	CONF_SOUNDS_MAXRANGE_TT = "Set the maximum range (in yards) within which you will hear local sounds/musics.\n\n|cff00ff00Usefull to avoid people playing sounds through the whole contient.\n\n|cffff9900Zero means no limit!",
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- SPEECH
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	NPC_SAYS = "says",
+	NPC_YELLS = "yells",
+	NPC_WHISPERS = "whispers",
+	NPC_EMOTES = "emotes",
+
 };

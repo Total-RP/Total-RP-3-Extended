@@ -564,6 +564,7 @@ editor.init = function(ToolFrame)
 		[loc("EFFECT_CAT_SPEECH")] = {
 			"speech_env",
 			"speech_npc",
+			"speech_player",
 		},
 		[loc("REG_COMPANIONS")] = {
 			"companion_dismiss_mount",

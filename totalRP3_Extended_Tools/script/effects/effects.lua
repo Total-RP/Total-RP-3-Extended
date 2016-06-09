@@ -524,7 +524,7 @@ local function speech_env_init()
 		icon = "inv_misc_book_07",
 		description = loc("EFFECT_SPEECH_NAR_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_TEXT") .. ":|r " .. tostring(args[1]));
+			scriptStepFrame.description:SetText(tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {loc("EFFECT_SPEECH_NAR_DEFAULT")};
@@ -552,7 +552,7 @@ local function speech_npc_init()
 		icon = "ability_warrior_rallyingcry",
 		description = loc("EFFECT_SPEECH_NPC_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_PREVIEW") .. ":|r " .. TRP3_API.ui.misc.getSpeechPrefixText(args[2], args[1], args[3]));
+			scriptStepFrame.description:SetText(TRP3_API.ui.misc.getSpeechPrefixText(args[2], args[1], args[3]));
 		end,
 		getDefaultArgs = function()
 			return {"Tish", TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc("EFFECT_SPEECH_NPC_DEFAULT")};
@@ -587,6 +587,46 @@ local function speech_npc_init()
 		scriptData.args[1] = stEtN(strtrim(speechNPCEditor.name:GetText()));
 		scriptData.args[2] = speechNPCEditor.type:GetSelectedValue() or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 		scriptData.args[3] = stEtN(strtrim(speechNPCEditor.text:GetText()));
+	end
+end
+
+local function speech_player_init()
+	local editor = TRP3_EffectEditorSpeechPlayer;
+
+	registerEffectEditor("speech_player", {
+		title = loc("EFFECT_SPEECH_PLAYER"),
+		icon = "ability_warrior_warcry",
+		description = loc("EFFECT_SPEECH_PLAYER_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(TRP3_API.ui.misc.getSpeech(args[2], args[1]));
+		end,
+		getDefaultArgs = function()
+			return {TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc("EFFECT_SPEECH_PLAYER_DEFAULT")};
+		end,
+		editor = editor,
+	});
+
+	-- Type
+	local types = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_SAYS")), TRP3_API.ui.misc.SPEECH_PREFIX.SAYS},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_YELLS")), TRP3_API.ui.misc.SPEECH_PREFIX.YELLS},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_EMOTES")), TRP3_API.ui.misc.SPEECH_PREFIX.EMOTES},
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 250, true);
+
+	-- Narrative text
+	editor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
+	setTooltipForSameFrame(editor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT", loc("EFFECT_SPEECH_NAR_TEXT_TT")));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.type:SetSelectedValue(data[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS);
+		editor.text:SetText(data[2] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = editor.type:GetSelectedValue() or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
+		scriptData.args[2] = stEtN(strtrim(editor.text:GetText()));
 	end
 end
 
@@ -801,6 +841,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 
 	speech_env_init();
 	speech_npc_init();
+	speech_player_init();
 
 	sound_id_self_init();
 	sound_music_self_init();

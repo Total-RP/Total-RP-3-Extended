@@ -181,6 +181,27 @@
 
 	</Frame>
 
+	<Frame name="TRP3_EffectEditorSpeechPlayer" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--        Sounds        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
