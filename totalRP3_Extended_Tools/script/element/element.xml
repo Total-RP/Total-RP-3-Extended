@@ -19,13 +19,15 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_ScriptEditorDelay" hidden="true">
+	<Frame name="TRP3_ScriptEditorDelay" hidden="true" inherits="TRP3_EditorEffectTemplate">
+
+		<Size x="400" y="250"/>
 
 		<Frames>
 
 			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="-110" y="-65"/>
+					<Anchor point="TOP" x="-5" y="-65"/>
 				</Anchors>
 			</Frame>
 
