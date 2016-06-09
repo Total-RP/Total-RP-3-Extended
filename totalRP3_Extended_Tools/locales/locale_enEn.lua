@@ -367,7 +367,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IN_INNER_HELP =
 [[Inner objects are objects stored in a parent object.
 
-We should begin with examples:
+We should begin with some examples:
 |cffff9900
 - You want to create a rifle item with bullets item to charge it. Typically the rifle would be the main object, in which the bullet object would be an inner object for the rifle.
 
@@ -383,7 +383,7 @@ We should begin with examples:
 
 - Using inner objects brings better performances.
 
-- It's easier to manager and navigates through your objects if they are stored in parent objects. You can really see a parent object as a folder in which you store files.
+- It's easier to manage and navigate through your objects if they are stored in parent objects. You can really see a parent object as a folder in which you store files.
 
 |rSo it's simple: when you want to create an object, always ask yourself if it wouldn't be better to have it as an inner object for another item or a quest.
 
