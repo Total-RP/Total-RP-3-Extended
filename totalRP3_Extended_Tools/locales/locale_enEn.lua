@@ -274,6 +274,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_SPEECH_NAR_TT = "Plays a narration as a formated emote.\n\n|cff00ff00Has the same effect as playing an emote starting with a || (pipe character). It will be formated in chat for other TRP users.",
 	EFFECT_SPEECH_NAR_DEFAULT = "The snow blows white on the mountain tonight ...",
 	EFFECT_SPEECH_NAR_TEXT_TT = "Please do not include the leading pipe || character.",
+	EFFECT_SPEECH_TYPE = "Speech type",
 	EFFECT_SPEECH_NPC = "Speech: NPC",
 	EFFECT_SPEECH_NPC_TT = "Plays a npc speech as a formated emote.\n\n|cff00ff00Has the same effect as playing an emote starting with a || (pipe character) with a npc name and a text. It will be formated in chat for other TRP users.",
 	EFFECT_SPEECH_NPC_DEFAULT = "Do you want to build a snowman?",

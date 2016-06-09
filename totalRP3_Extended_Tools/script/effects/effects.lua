@@ -564,6 +564,14 @@ local function speech_npc_init()
 	speechNPCEditor.name.title:SetText(loc("EFFECT_SPEECH_NPC_NAME"));
 	setTooltipForSameFrame(speechNPCEditor.name.help, "RIGHT", 0, 5, loc("EFFECT_SPEECH_NPC_NAME"), loc("EFFECT_SPEECH_NPC_NAME_TT"));
 
+	-- Type
+	local types = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_SAYS")), TRP3_API.ui.misc.SPEECH_PREFIX.SAYS},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_YELLS")), TRP3_API.ui.misc.SPEECH_PREFIX.YELLS},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_WHISPERS")), TRP3_API.ui.misc.SPEECH_PREFIX.WHISPERS},
+	}
+	TRP3_API.ui.listbox.setupListBox(speechNPCEditor.type, types, nil, nil, 250, true);
+
 	-- Narrative text
 	speechNPCEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
 	setTooltipForSameFrame(speechNPCEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT", loc("EFFECT_SPEECH_NAR_TEXT_TT")));
@@ -571,11 +579,13 @@ local function speech_npc_init()
 	function speechNPCEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		speechNPCEditor.name:SetText(data[1] or "");
+		speechNPCEditor.type:SetSelectedValue(data[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS);
 		speechNPCEditor.text:SetText(data[3] or "");
 	end
 
 	function speechNPCEditor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(speechNPCEditor.name:GetText()));
+		scriptData.args[2] = speechNPCEditor.type:GetSelectedValue() or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 		scriptData.args[3] = stEtN(strtrim(speechNPCEditor.text:GetText()));
 	end
 end

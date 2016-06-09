@@ -537,9 +537,22 @@ function TRP3_API.script.generateAndRun(code, args, env)
 	func()(args or EMPTY);
 end
 
+local directReplacement = {
+	target = function()
+		return UnitName("target");
+	end,
+	player = function()
+		return UnitName("player");
+	end
+}
+
 function TRP3_API.script.parseArgs(text, args)
 	text = text:gsub("%$%{(.-)%}", function(capture)
-		return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture];
+		if directReplacement[capture] then
+			return directReplacement[capture]();
+		else
+			return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture];
+		end
 	end);
 	return text;
 end
