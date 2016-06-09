@@ -522,6 +522,10 @@ function TRP3_API.script.generateAndRun(code, args, env)
 		code = "\n" .. IMPORT_PATTERN:format(alias, global) .. code;
 	end
 
+	if DEBUG then
+		print(code);
+	end
+
 	-- Generating factory
 	local func, errorMessage = loadstring(code, "Generated code");
 	if not func then
@@ -530,7 +534,7 @@ function TRP3_API.script.generateAndRun(code, args, env)
 	end
 
 	-- Execute
-	func()(args);
+	func()(args or EMPTY);
 end
 
 function TRP3_API.script.parseArgs(text, args)

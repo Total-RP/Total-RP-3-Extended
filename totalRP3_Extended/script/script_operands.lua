@@ -98,7 +98,7 @@ local OPERANDS = {
 	["unit_sex"] = {
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
-			return ("UnitSex(\"%s\")"):format(unitID);
+			return ("UnitSex(\"%s\") or 1"):format(unitID);
 		end,
 		env = {
 			["UnitSex"] = "UnitSex",
