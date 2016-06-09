@@ -264,7 +264,7 @@ local function openOperandEditor(expressionIndex)
 			onOperandSelected("boolean_false", operandEditor.right);
 		end
 	else
-		operandEditor.right.argsData = leftOperand.a;
+		operandEditor.right.argsData = rightOperand.a;
 		onOperandSelected(rightOperand.i, operandEditor.right, rightOperand.a);
 	end
 
