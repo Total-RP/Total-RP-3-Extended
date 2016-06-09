@@ -170,4 +170,9 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	NPC_WHISPERS = "whispers",
 	NPC_EMOTES = "emotes",
 
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- DROP SYSTEM
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	DR_POPUP = "Do you want to drop %s x%d on the ground?",
 };

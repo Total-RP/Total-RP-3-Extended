@@ -329,9 +329,16 @@ local function slotOnDragStop(slotFrom)
 					TRP3_API.inventory.addToExchange(container1, slot1);
 				else
 					local itemClass = getClass(slotFrom.info.id);
-					TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function()
-						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
-					end);
+					local itemLink = TRP3_API.inventory.getItemLink(itemClass);
+					if IsControlKeyDown() then
+						TRP3_API.popup.showConfirmPopup(loc("DR_POPUP"):format(itemLink, slotFrom.info.count or 1), function()
+							TRP3_API.inventory.dropItem(container1, slot1, slotFrom.info);
+						end);
+					else
+						TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(itemLink), function()
+							TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
+						end);
+					end
 				end
 			else
 				Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);

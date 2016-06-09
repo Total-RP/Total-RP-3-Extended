@@ -345,4 +345,7 @@
 	<Include file="inventory_exchange.xml"/>
 	<Script file="inventory_exchange.lua"/>
 
+	<Include file="inventory_drop.xml"/>
+	<Script file="inventory_drop.lua"/>
+
 </Ui>
