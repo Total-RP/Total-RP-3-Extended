@@ -416,7 +416,7 @@ function onLineRightClick(lineWidget, data)
 			tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID});
 		end
 		if data.mode == TRP3_DB.modes.NORMAL then
-			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID});
+--			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID});
 		end
 		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
 			tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID});
