@@ -17,12 +17,17 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local Comm = TRP3_API.communication;
-local tinsert, assert, strsplit, tostring, wipe, pairs, type = tinsert, assert, strsplit, tostring, wipe, pairs, type;
+local tinsert, assert, strsplit, tostring, wipe, pairs, sqrt = tinsert, assert, strsplit, tostring, wipe, pairs, sqrt;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local UnitPosition, SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition = UnitPosition, SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition;
+local loc = TRP3_API.locale.getText;
 
 local dropFrame = TRP3_DropSearchFrame;
 local dropData;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Drop
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.inventory.dropItem(container, slotID, initialSlotInfo)
 	if slotID and container and isContainerByClassID(container.id) and container.content[slotID] then
@@ -59,7 +64,7 @@ function TRP3_API.inventory.dropItem(container, slotID, initialSlotInfo)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Scan system
+-- Scan
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function initScans()
@@ -87,6 +92,62 @@ local function initScans()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Loot
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local MAX_SEARCH_DISTANCE = 15;
+local searchForItems;
+
+local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
+	local distance = sqrt((posY - myPosY) ^ 2 + (posX - myPosX) ^ 2);
+	return distance <= maxDistance, distance;
+end
+
+local function onLooted(itemData, count)
+	for index, drop in pairs(dropData) do
+		if drop.item == itemData then
+			drop.item.count = (drop.item.count or 1) - count;
+			if drop.item.count <= 0 then
+				wipe(dropData[index]);
+				dropData[index] = nil;
+			end
+		end
+	end
+end
+
+function searchForItems()
+	-- Proper coordinates
+	local posY, posX, _, instanceID = UnitPosition("player");
+
+	local searchResults = {};
+	for _, drop in pairs(dropData) do
+		if instanceID == drop.instanceID then
+			local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, drop.posY or 0, drop.posX or 0);
+			if isInRadius then
+				-- Show loot
+				tinsert(searchResults, drop);
+			end
+		end
+	end
+
+	if #searchResults > 0 then
+		local loot = {
+			IT = {},
+			BA = {
+				IC = "icon_treasuremap",
+				NA = loc("DR_SEARCH_BUTTON")
+			}
+		}
+		for index, result in pairs(searchResults) do
+			loot.IT[tostring(index)] = result.item;
+		end
+		TRP3_API.inventory.presentLoot(loot, onLooted);
+	else
+		Utils.message.displayMessage(loc("DR_NOTHING"));
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -100,5 +161,22 @@ function dropFrame.init()
 	initScans();
 
 	-- UI
+	-- Button on toolbar
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+		if TRP3_API.toolbar then
+			local toolbarButton = {
+				id = "bb_extended_drop",
+				icon = "icon_treasuremap",
+				configText = loc("DR_SEARCH_BUTTON"),
+				tooltip = loc("DR_SEARCH_BUTTON"),
+				tooltipSub = loc("DR_SEARCH_BUTTON_TT"),
+				onClick = function()
+					searchForItems();
+				end,
+				visible = 1
+			};
+			TRP3_API.toolbar.toolbarAddButton(toolbarButton);
+		end
+	end);
 
 end

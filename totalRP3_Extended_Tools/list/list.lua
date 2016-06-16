@@ -446,7 +446,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		ToolFrame.list.container.scroll.child:SetWidth(containerwidth - 100);
 	end);
 
-	-- Button on target bar
+	-- Button on toolbar
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if TRP3_API.toolbar then
 			local toolbarButton = {
