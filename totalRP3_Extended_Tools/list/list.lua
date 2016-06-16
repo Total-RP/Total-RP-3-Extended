@@ -17,7 +17,8 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, pairs, strsplit, tinsert, table = wipe, pairs, strsplit, tinsert, table;
+local wipe, pairs, strsplit, tinsert, table, strtrim = wipe, pairs, strsplit, tinsert, table, strtrim;
+local stEtN = Utils.str.emptyToNil;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
@@ -214,11 +215,15 @@ function refresh()
 		local tt = ("|cff00ff00%s: %s|r"):format(getTypeLocale(idData.type) or UNKNOWN, idData.text or UNKNOWN);
 		lineWidget.Text:SetText(tt);
 
-		local IDType = idData.ID == idData.fullID and loc("ROOT_GEN_ID") or loc("SPECIFIC_INNER_ID");
-		lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and IDType or idData.ID));
+		if ToolFrame.list.hasSearch then
+			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.fullID));
+		else
+			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and loc("ROOT_GEN_ID") or idData.ID));
+		end
+
 
 		lineWidget.Expand:Hide();
-		if idData.hasChildren then
+		if idData.hasChildren and not ToolFrame.list.hasSearch then
 			lineWidget.Expand:Show();
 			lineWidget.Expand.isOpen = idData.isOpen;
 			if idData.isOpen then
@@ -233,7 +238,8 @@ function refresh()
 		setTooltipForSameFrame(lineWidget.Click, "BOTTOMRIGHT", 0, 0, tt, idData.metadataTooltip);
 
 		lineWidget:ClearAllPoints();
-		lineWidget:SetPoint("LEFT", LEFT_DEPTH_STEP_MARGIN * (idData.depth - 1), 0);
+		local depth = ToolFrame.list.hasSearch and 1 or idData.depth;
+		lineWidget:SetPoint("LEFT", LEFT_DEPTH_STEP_MARGIN * (depth - 1), 0);
 		lineWidget:SetPoint("RIGHT", -15, 0);
 		lineWidget:SetPoint("TOP", 0, (-LINE_TOP_MARGIN) * (index - 1));
 
@@ -248,24 +254,56 @@ function refresh()
 	end
 end
 
-local function filterList()
+local function checkOwner(owner, rootClass)
+	return not owner or (rootClass.MD.CB and rootClass.MD.CB:lower():find(owner:lower()));
+end
+
+local function checkName(name, class)
+	return not name or (class.BA.NA and class.BA.NA:lower():find(name:lower()));
+end
+
+local function checkID(id, classFullID)
+	return not id or (classFullID:lower():find(id:lower()));
+end
+
+local function checkType(type, class)
+	return type == 0 or type == class.TY;
+end
+
+local function filterList(search)
 	-- Here we will filter
 	wipe(idList);
 
 	-- Filter
-	local atLeast = false;
 	local typeFilter = ToolFrame.list.filters.type:GetSelectedValue();
+	local createdFilter = stEtN(strtrim(ToolFrame.list.filters.owner:GetText()));
+	local nameFilter = stEtN(strtrim(ToolFrame.list.filters.name:GetText()));
+	local idFilter = stEtN(strtrim(ToolFrame.list.filters.id:GetText()));
+	local hasSearch = createdFilter or nameFilter or idFilter or typeFilter ~= 0;
 
-	for objectID, object in pairs(getDB(currentTab)) do
-		-- Only take the first level objects
-		if not objectID:find("%s") and not object.hideFromList then
-			atLeast = true;
-			if typeFilter == 0 or typeFilter == object.TY then
+	if hasSearch then
+		for objectID, object in pairs(TRP3_DB.global) do
+			if not object.hideFromList then
+				local rootID = TRP3_API.extended.getRootClassID(objectID);
+				local rootClass = getDB(currentTab)[rootID];
+				if rootClass then
+					local rootClass = getDB(currentTab)[rootID]
+					if checkType(typeFilter, object) and checkOwner(createdFilter, rootClass) and checkName(nameFilter, object) and checkID(idFilter, objectID) then
+						tinsert(idList, objectID);
+					end
+				end
+			end
+		end
+	else
+		for objectID, object in pairs(getDB(currentTab)) do
+			-- Only take the first level objects
+			if not objectID:find("%s") and not object.hideFromList then
 				tinsert(idList, objectID);
 			end
 		end
 	end
 
+	ToolFrame.list.hasSearch = hasSearch;
 	ToolFrame.list:Show();
 	refresh();
 end
@@ -452,9 +490,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	}
 	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, nil, nil, 255, true);
 	ToolFrame.list.filters.type:SetSelectedValue(0);
-	ToolFrame.list.filters.search:Disable(); -- TODO: :)
 	ToolFrame.list.filters.search:SetText(SEARCH);
-	ToolFrame.list.filters.search:SetScript("OnClick", filterList);
+	ToolFrame.list.filters.search:SetScript("OnClick", function() filterList(true) end);
 	ToolFrame.list.filters.clear:SetText(loc("DB_FILTERS_CLEAR"));
 	ToolFrame.list.filters.clear:SetScript("OnClick", function()
 		ToolFrame.list.filters.type:SetSelectedValue(0);
