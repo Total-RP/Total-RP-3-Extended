@@ -442,7 +442,7 @@ local function init()
 					end
 				end,
 				tooltip = QUEST_LOG,
-				tooltipSub = loc("IT_INV_SHOW_CONTENT"),
+				tooltipSub = loc("QE_BUTTON"),
 				icon = "achievement_quests_completed_06"
 			});
 		end

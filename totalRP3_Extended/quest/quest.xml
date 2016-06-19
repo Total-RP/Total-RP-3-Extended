@@ -106,7 +106,7 @@
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" parentKey="empty" text="No campaign yet, patience ! ;)" setAllPoints="true"/>
+						<FontString inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" parentKey="empty" text="The quest system will come in July-August. :)" setAllPoints="true"/>
 					</Layer>
 				</Layers>
 				<Frames>

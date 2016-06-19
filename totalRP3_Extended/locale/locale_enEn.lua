@@ -38,7 +38,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_CON_OPEN = "Open/Close container",
 	IT_CON_CAN_INNER = "Can't place a container inside itself!",
 	IT_INV_SHOW_ALL = "Show all inventory",
-	IT_INV_SHOW_CONTENT = "Click: Show content",
+	IT_INV_SHOW_CONTENT = "|cffffff00Click:|r Open main container (if exists)\n|cffffff00Right-click:|r Open inventory",
 	IT_INV_ERROR_MAX = "You can't carry any more of %s.",
 	IT_INV_ERROR_FULL = "%s is full.",
 	IT_INV_ERROR_CANT_HERE = "You can't place items here.",
@@ -131,6 +131,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_STEP_LIST_CURRENT = "Current quests",
 	QE_STEP_LIST_FINISHED = "Finished quests",
 	QE_STEP_MISSING = "Missing step information.",
+	QE_BUTTON = "Open quest log",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",
