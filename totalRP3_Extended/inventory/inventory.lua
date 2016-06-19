@@ -412,6 +412,16 @@ function TRP3_API.inventory.onStart()
 	local refreshInventory = function()
 		playerInventory = TRP3_API.inventory.getInventory();
 		TRP3_API.inventory.closeBags();
+		-- Check if init
+		if not playerInventory.init then
+			if not playerInventory.content["17"] then
+				playerInventory.content["17"] = {
+					["content"] = {},
+					["id"] = "bag",
+				};
+			end
+			playerInventory.init = true;
+		end
 		-- Recompute weight
 		recomputeContainerWeight(playerInventory);
 	end
