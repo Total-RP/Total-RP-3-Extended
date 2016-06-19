@@ -39,14 +39,14 @@ TRP3_DB.inner.bag = {
 	["BA"] = {
 		["QA"] = 1,
 		["IC"] = "INV_Misc_Bag_01",
-		["NA"] = "Simple bag",
+		["NA"] = "Default bag",
 		["WE"] = 500,
 		["CT"] = true,
 	},
 	["MD"] = {
 		["CD"] = "28/04/16 17:36:38",
-		["CB"] = "Akraluk-KirinTor",
-		["SB"] = "Akraluk-KirinTor",
+		["CB"] = "TRP3 Team",
+		["SB"] = "TRP3 Team",
 		["MO"] = "NO",
 		["SD"] = "28/04/16 17:36:41",
 		["V"] = 2,
@@ -55,33 +55,53 @@ TRP3_DB.inner.bag = {
 
 TRP3_DB.inner.rifle = {
 	securityLevel = 3,
-	["MD"] = {
-		["CD"] = "28/04/16 17:54:05",
-		["CB"] = "Akraluk-KirinTor",
-		["SB"] = "Akraluk-KirinTor",
-		["MO"] = "NO",
-		["SD"] = "29/04/16 20:15:01",
-		["V"] = 26,
+	["IN"] = {
+		["bullet"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "Made to be charged in a [Simple rifle] ammo clip.",
+				["IC"] = "INV_Misc_Ammo_Bullet_02",
+				["LE"] = "Ammunition",
+				["CO"] = false,
+				["NA"] = "Simple bullet",
+				["ST"] = false,
+				["QA"] = 1,
+				["SB"] = false,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = true,
+				["RI"] = "12mm",
+				["US"] = false,
+				["UN"] = false,
+				["QE"] = false,
+				["CT"] = false,
+				["WE"] = 100,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["MW"] = 0,
+				["DU"] = 0,
+				["SC"] = "4",
+				["SI"] = "5x4",
+				["SR"] = "5",
+			},
+			["IN"] = {
+			},
+			["MD"] = {
+				["MO"] = "EX",
+			},
+			["TY"] = "IT",
+		},
 	},
-	["BA"] = {
-		["DE"] = "When you pull the trigger, it shoots. Simple.",
-		["IC"] = "INV_Weapon_Rifle_23",
-		["LE"] = "Weapon",
-		["CO"] = false,
-		["NA"] = "Rifle",
-		["ST"] = false,
-		["QA"] = 4,
-		["SB"] = false,
-		["UN"] = 1,
-		["VA"] = 50000,
-		["CR"] = true,
-		["RI"] = "Gun",
-		["US"] = true,
-		["QE"] = false,
-		["WA"] = false,
-		["CT"] = false,
-		["WE"] = 5000,
-	},
+	["TY"] = "IT",
 	["SC"] = {
 		["onUse"] = {
 			["ST"] = {
@@ -98,7 +118,36 @@ TRP3_DB.inner.rifle = {
 					["t"] = "list",
 					["n"] = "2",
 				},
-				["4"] = {
+				["3"] = {
+					["i"] = 1,
+					["c"] = 1,
+					["d"] = 0.8,
+					["t"] = "delay",
+					["n"] = "4",
+				},
+				["2"] = {
+					["b"] = {
+						{
+							["n"] = "3",
+							["cond"] = {
+								{
+									{
+										["i"] = "inv_item_count_con",
+										["a"] = {
+											"rifle bullet", -- [1]
+										},
+									}, -- [1]
+									">", -- [2]
+									{
+										["v"] = 0,
+									}, -- [3]
+								}, -- [1]
+							},
+						}, -- [1]
+					},
+					["t"] = "branch",
+				},
+				["5"] = {
 					["e"] = {
 						{
 							["id"] = "sound_id_self",
@@ -109,154 +158,75 @@ TRP3_DB.inner.rifle = {
 						}, -- [1]
 					},
 					["t"] = "list",
+					["n"] = "6",
 				},
-				["3"] = {
+				["4"] = {
 					["e"] = {
 						{
 							["id"] = "item_remove",
 							["args"] = {
 								"rifle bullet", -- [1]
 								1, -- [2]
+								"self", -- [3]
 							},
 						}, -- [1]
 					},
 					["t"] = "list",
-					["n"] = "4",
+					["n"] = "5",
 				},
-				["2"] = {
+				["7"] = {
+					["b"] = {
+						{
+							["n"] = "8",
+							["cond"] = {
+								{
+									{
+										["i"] = "unit_exists",
+										["a"] = {
+											"target", -- [1]
+										},
+									}, -- [1]
+									"==", -- [2]
+									{
+										["v"] = true,
+									}, -- [3]
+								}, -- [1]
+							},
+						}, -- [1]
+					},
+					["t"] = "branch",
+				},
+				["6"] = {
+					["e"] = {
+						{
+							["id"] = "item_cooldown",
+							["args"] = {
+								3, -- [1]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "7",
+				},
+				["9"] = {
+					["e"] = {
+						{
+							["id"] = "text",
+							["args"] = {
+								"Stop shooting people!", -- [1]
+								1, -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+				["8"] = {
 					["i"] = 1,
 					["c"] = 1,
+					["d"] = 0.5,
 					["t"] = "delay",
-					["d"] = 0.8,
-					["n"] = "3",
+					["n"] = "9",
 				},
-			},
-		},
-	},
-	["CO"] = {
-		["SC"] = "4",
-		["MW"] = 0,
-		["DU"] = 0,
-		["SI"] = "5x4",
-		["SR"] = "5",
-	},
-	["IN"] = {
-		["bullet"] = {
-			["US"] = {
-				["SC"] = "onUse",
-			},
-			["BA"] = {
-				["WE"] = 100,
-				["ST"] = 20,
-				["QA"] = 2,
-				["SB"] = false,
-				["WA"] = false,
-				["VA"] = 100,
-				["IC"] = "INV_Misc_Ammo_Bullet_04",
-				["CR"] = true,
-				["US"] = false,
-				["UN"] = false,
-				["LE"] = "Ammunition",
-				["CO"] = false,
-				["QE"] = false,
-				["NA"] = "Bullet",
-				["CT"] = false,
-				["RI"] = "6mm",
-			},
-			["SC"] = {
-				["onUse"] = {
-					["ST"] = {
-					},
-				},
-			},
-			["CO"] = {
-				["SC"] = "4",
-				["MW"] = 0,
-				["DU"] = 0,
-				["SI"] = "5x4",
-				["SR"] = "5",
-			},
-			["IN"] = {
-			},
-			["MD"] = {
-				["MO"] = "NO",
-			},
-			["TY"] = "IT",
-		},
-		["press"] = {
-			["US"] = {
-				["SC"] = "onUse",
-				["AC"] = "Create 10 bullets",
-			},
-			["BA"] = {
-				["DE"] = "An ammo press to make bullets.",
-				["CT"] = false,
-				["QA"] = 3,
-				["SB"] = false,
-				["WA"] = false,
-				["VA"] = 4000,
-				["IC"] = "INV_Misc_Ammo_Gunpowder_02",
-				["CR"] = false,
-				["US"] = true,
-				["QE"] = false,
-				["LE"] = "Tool",
-				["CO"] = false,
-				["UN"] = false,
-				["NA"] = "Bullet press",
-				["ST"] = false,
-				["WE"] = 4000,
-			},
-			["SC"] = {
-				["onUse"] = {
-					["ST"] = {
-						["1"] = {
-							["e"] = {
-								{
-									["id"] = "sound_id_self",
-									["args"] = {
-										"SFX", -- [1]
-										17935, -- [2]
-									},
-								}, -- [1]
-							},
-							["t"] = "list",
-							["n"] = "2",
-						},
-						["3"] = {
-							["e"] = {
-								{
-									["id"] = "item_add",
-									["args"] = {
-										"rifle bullet", -- [1]
-										10, -- [2]
-										true, -- [3]
-									},
-								}, -- [1]
-							},
-							["t"] = "list",
-						},
-						["2"] = {
-							["i"] = 1,
-							["c"] = 1,
-							["d"] = 1.5,
-							["t"] = "delay",
-							["n"] = "3",
-						},
-					},
-				},
-			},
-			["CO"] = {
-				["SC"] = "4",
-				["SR"] = "5",
-				["SI"] = "5x4",
-				["DU"] = 0,
-				["MW"] = 0,
-			},
-			["TY"] = "IT",
-			["MD"] = {
-				["MO"] = "NO",
-			},
-			["IN"] = {
 			},
 		},
 	},
@@ -264,7 +234,41 @@ TRP3_DB.inner.rifle = {
 		["SC"] = "onUse",
 		["AC"] = "Pull the trigger",
 	},
-	["TY"] = "IT",
+	["CO"] = {
+		["OI"] = true,
+		["MW"] = 0,
+		["DU"] = 25,
+		["SC"] = "4",
+		["SI"] = "1x4",
+		["SR"] = "1",
+	},
+	["MD"] = {
+		["CD"] = "26/05/16 11:42:07",
+		["CB"] = "TRP3 Team",
+		["SB"] = "TRP3 Team",
+		["MO"] = "NO",
+		["SD"] = "19/06/16 16:14:15",
+		["V"] = 44,
+	},
+	["BA"] = {
+		["DE"] = "A rifle with a 4 slots clip. Double click on the rifle to open the ammo clip. Example item from TRP3 authors.",
+		["US"] = true,
+		["LE"] = "Weapon",
+		["CO"] = false,
+		["NA"] = "Simple rifle",
+		["ST"] = false,
+		["QA"] = 2,
+		["SB"] = false,
+		["UN"] = 1,
+		["QE"] = false,
+		["CR"] = false,
+		["RI"] = "Gun",
+		["IC"] = "INV_Firearm_2h_Rifle_DraenorCrafted_D_01_B_alliance",
+		["VA"] = 50000,
+		["WA"] = false,
+		["CT"] = true,
+		["WE"] = 5000,
+	},
 };
 
 TRP3_DB.inner.letterexample = {
@@ -346,8 +350,8 @@ TRP3_DB.inner.letterexample = {
 	},
 	["MD"] = {
 		["CD"] = "29/04/16 20:29:09",
-		["CB"] = "Akraluk-KirinTor",
-		["SB"] = "Akraluk-KirinTor",
+		["CB"] = "TRP3 Team",
+		["SB"] = "TRP3 Team",
 		["MO"] = "NO",
 		["SD"] = "30/04/16 19:27:36",
 		["V"] = 8,

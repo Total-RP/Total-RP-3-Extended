@@ -56,7 +56,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_BROWSER = "Object browser",
 
 	DB_MY_EMPTY = "You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!",
-	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.\nExchange objects with others or import a packageg using the button below!",
+	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.",
 	DB_CREATE_ITEM = "Create item",
 	DB_CREATE_ITEM_TT = "Select a template for a new item",
 	DB_CREATE_ITEM_TEMPLATES = "Or select a template",
