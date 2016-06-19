@@ -170,4 +170,12 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	NPC_WHISPERS = "whispers",
 	NPC_EMOTES = "emotes",
 
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- DROP SYSTEM
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	DR_POPUP = "Do you want to drop %s x%d on the ground?",
+	DR_SEARCH_BUTTON = "Search for items",
+	DR_SEARCH_BUTTON_TT = "Search for items in this area within 15 yards.",
+	DR_NOTHING = "No items found in this area.",
 };

@@ -122,10 +122,10 @@ TRP3_API.inventory.EFFECTS = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
 			local lootID = args[1];
-			return ("lastEffectReturn = presentLoot(\"%s\");"):format(lootID);
+			return ("lastEffectReturn = presentLootID(\"%s\");"):format(lootID);
 		end,
 		env = {
-			presentLoot = "TRP3_API.inventory.presentLoot",
+			presentLootID = "TRP3_API.inventory.presentLootID",
 		}
 	},
 

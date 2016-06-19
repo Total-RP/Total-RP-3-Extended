@@ -294,14 +294,17 @@ local function pickUpLoot(slotFrom, container, slotID)
 	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
 	local lootInfo = slotFrom.info;
 	local itemID = lootInfo.id;
-	local count = lootInfo.count;
 
-	local returnCode, count = TRP3_API.inventory.addItem(container, itemID, {count = count});
+	local returnCode, count = TRP3_API.inventory.addItem(container, itemID, lootInfo);
 	if returnCode == 0 then
 		slotFrom.info = nil;
 		slotFrom.class = nil;
 	else
 		slotFrom.info.count = (slotFrom.info.count or 1) - count;
+	end
+
+	if lootFrame.onLootCallback then
+		lootFrame.onLootCallback(lootInfo, count);
 	end
 
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
@@ -329,9 +332,16 @@ local function slotOnDragStop(slotFrom)
 					TRP3_API.inventory.addToExchange(container1, slot1);
 				else
 					local itemClass = getClass(slotFrom.info.id);
-					TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function()
-						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
-					end);
+					local itemLink = TRP3_API.inventory.getItemLink(itemClass);
+					if IsControlKeyDown() then
+						TRP3_API.popup.showConfirmPopup(loc("DR_POPUP"):format(itemLink, slotFrom.info.count or 1), function()
+							TRP3_API.inventory.dropItem(container1, slot1, slotFrom.info);
+						end);
+					else
+						TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(itemLink), function()
+							TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
+						end);
+					end
 				end
 			else
 				Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
@@ -706,19 +716,18 @@ end
 -- Loot
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function presentLoot(lootID)
-	local loot = getClass(lootID);
-	if loot and loot.IT then
-		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
-		lootFrame.Title:SetText((loot.NA or loc("LOOT")));
+local function presentLoot(loot, onLootCallback)
+	if loot then
+		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.BA.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
+		lootFrame.Title:SetText((loot.BA.NA or loc("LOOT")));
 
 		local slotCounter = 1;
-		lootFrame.info.content = loot.IT;
+		lootFrame.info.content = loot.IT or EMPTY;
 		for index, slot in pairs(lootFrame.slots) do
 			slot.slotID = tostring(slotCounter);
-			if loot.IT[slot.slotID] then
-				slot.info = loot.IT[slot.slotID];
-				slot.class = getClass(loot.IT[slot.slotID].id);
+			if lootFrame.info.content[slot.slotID] then
+				slot.info = lootFrame.info.content[slot.slotID];
+				slot.class = getClass(lootFrame.info.content[slot.slotID].id);
 			else
 				slot.info = nil;
 				slot.class = nil;
@@ -736,12 +745,16 @@ local function presentLoot(lootID)
 		end
 
 		lootFrame:Raise();
+		lootFrame.onLootCallback = onLootCallback;
 		return 0;
-	else
-		Log.log("Cannot find lootID: " .. tostring(lootID));
 	end
 end
 TRP3_API.inventory.presentLoot = presentLoot;
+
+local function presentLootID(lootID)
+	presentLoot(getClass(lootID));
+end
+TRP3_API.inventory.presentLootID = presentLootID;
 
 function TRP3_API.inventory.initLootFrame()
 	lootFrame = CreateFrame("Frame", "TRP3_LootFrame", UIParent, "TRP3_Container5x4Template");

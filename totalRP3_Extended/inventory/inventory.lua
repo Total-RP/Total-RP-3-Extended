@@ -330,6 +330,7 @@ local function removeSlotContent(container, slotID, slotInfo)
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	end
 end
+TRP3_API.inventory.removeSlotContent = removeSlotContent;
 
 local function splitSlot(slot, container, quantity)
 	local containerClass = getClass(container.id);
@@ -442,6 +443,9 @@ function TRP3_API.inventory.onStart()
 
 	-- Inventory exchange
 	TRP3_ExchangeFrame.init();
+
+	-- Drop system
+	TRP3_DropSearchFrame.init();
 
 	-- UI
 	TRP3_API.inventory.initLootFrame();
