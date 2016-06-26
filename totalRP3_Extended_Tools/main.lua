@@ -55,7 +55,7 @@ local setBackground = TRP3_API.extended.tools.setBackground;
 
 local PAGE_BY_TYPE = {
 	[TRP3_DB.types.CAMPAIGN] = {
-		frame = nil,
+		frame = "campaign",
 		tabTextGetter = function(id)
 			return loc("TYPE_CAMPAIGN") .. ": " .. id;
 		end,
@@ -467,6 +467,7 @@ local function onStart()
 	TRP3_API.extended.tools.initScript(toolFrame);
 	TRP3_InnerObjectEditor.init(toolFrame);
 	TRP3_API.extended.tools.initDocument(toolFrame);
+	TRP3_API.extended.tools.initCampaign(toolFrame);
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 

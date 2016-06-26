@@ -271,6 +271,15 @@ local demoCampaign = {
 local myFirstCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,
 
+	MD = {
+		["CD"] = "26/05/16 11:42:07",
+		["CB"] = "TRP3 Team",
+		["SB"] = "TRP3 Team",
+		["MO"] = "EX",
+		["SD"] = "19/06/16 16:14:15",
+		["V"] = 44,
+	},
+
 	-- Base information, common to the whole campaign
 	BA = {
 		IC = "achievement_reputation_05",
@@ -595,4 +604,4 @@ local myFirstCampaign = {
 	-- OnStart inner handler
 	OS = "CAMPAIGN_START",
 };
---TRP3_DB.inner.myFirstCampaign = myFirstCampaign;
+TRP3_DB.inner.myFirstCampaign = myFirstCampaign;
