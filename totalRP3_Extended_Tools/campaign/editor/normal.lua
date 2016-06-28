@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, max, tonumber, tremove, pairs, assert = wipe, math.max, tonumber, tremove, pairs, assert;
+local wipe, max, tonumber, strtrim, pairs, assert = wipe, math.max, tonumber, strtrim, pairs, assert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -29,8 +29,9 @@ local TABS = {
 	MAIN = 1,
 	WORKFLOWS = 2,
 	QUESTS = 3,
-	INNER = 4,
-	EXPERT = 5
+	NPC = 4,
+	INNER = 5,
+	EXPERT = 6
 }
 
 local tabGroup, currentTab;
@@ -76,9 +77,13 @@ local function load()
 	assert(toolFrame.rootDraft, "rootDraft is nil");
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
-	if not toolFrame.specificDraft.BA then
-		toolFrame.specificDraft.BA = {};
+	local data = toolFrame.specificDraft;
+	if not data.BA then
+		data.BA = {};
 	end
+
+	main.name:SetText(data.BA.NA or "");
+	main.description:SetText(data.BA.DE or "");
 
 	loadDataScript();
 	loadDataInner();
@@ -88,6 +93,10 @@ end
 
 local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
+
+	local data = toolFrame.specificDraft;
+	data.BA.NA = stEtN(strtrim(main.name:GetText()));
+	data.BA.DE = stEtN(strtrim(main.description:GetText()));
 
 	storeDataScript();
 
@@ -134,6 +143,7 @@ local function createTabBar()
 		{
 			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
 			{ loc("QE_QUESTS"), TABS.QUESTS, 150 },
+			{ loc("QE_NPC"), TABS.NPC, 150 },
 			{ loc("IN_INNER"), TABS.INNER, 150 },
 			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
 			{ loc("WO_EXPERT"), TABS.EXPERT, 150 },
@@ -155,5 +165,14 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 
 	-- Main
 	main = toolFrame.campaign.normal.main;
+	main.title:SetText(loc("TYPE_CAMPAIGN"));
+
+	-- Name
+	main.name.title:SetText(loc("CA_NAME"));
+	setTooltipForSameFrame(main.name.help, "RIGHT", 0, 5, loc("CA_NAME"), loc("CA_NAME_TT"));
+
+	-- Description
+	main.description.title:SetText(loc("CA_DESCRIPTION"));
+	setTooltipForSameFrame(main.description.help, "RIGHT", 0, 5, loc("CA_DESCRIPTION"), loc("CA_DESCRIPTION_TT"));
 
 end

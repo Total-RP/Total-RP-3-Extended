@@ -480,4 +480,11 @@ We should begin with some examples:
 	COND_NUM_COMP = "Numeric comparison only",
 	COND_NUM_FAIL = "You must have two numeric operands if you uses a numeric comparator.",
 
+	-- Campaign and quests
+	QE_NPC = "Custom NPC",
+	CA_NAME = "Campaign name",
+	CA_NAME_TT = "This is the name of your campaign. It appears on the quest log.",
+	CA_DESCRIPTION = "Campaign summary",
+	CA_DESCRIPTION_TT = "This brief summary will be visible on the campaign page, in the quest log.",
+
 };

@@ -266,7 +266,7 @@ local demoCampaign = {
 	-- OnStart inner handler
 	OS = "CAMPAIGN_START",
 };
---TRP3_DB.inner.demoCampaign = demoCampaign;
+TRP3_DB.inner.demoCampaign = demoCampaign;
 
 local myFirstCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,

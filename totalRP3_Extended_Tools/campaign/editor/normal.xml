@@ -33,7 +33,7 @@
 
 		<Frames>
 			<Frame parentKey="main" inherits="TRP3_EditorTitledFrame">
-				<Size x="530" y="130"/>
+				<Size x="530" y="250"/>
 
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-5"/>
@@ -42,7 +42,27 @@
 
 				<Frames>
 
+					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.title"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+						</Anchors>
+					</EditBox>
 
+					<EditBox parentKey="description" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<Button parentKey="vignette" inherits="TRP3_CampaignButtonTemplate">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="0" y="-20" relativePoint="BOTTOMRIGHT" relativeKey="$parent.description"/>
+						</Anchors>
+					</Button>
 
 				</Frames>
 			</Frame>
