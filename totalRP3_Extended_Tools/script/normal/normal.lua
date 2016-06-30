@@ -18,6 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local wipe, pairs, tostring, tinsert, assert, tonumber = wipe, pairs, tostring, tinsert, assert, tonumber;
+local tContains, strjoin, unpack = tContains, strjoin, unpack;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -113,18 +114,37 @@ local function addEffectElement(effectID)
 end
 
 local menuData;
+local contextTemplate = "|cff00ff00%s: %s|r\n\n";
+
+local function getContext(context)
+	if not context then
+		return contextTemplate:format(loc("WO_CONTEXT"), loc("ALL"));
+	else
+		local contexts = {};
+		for _, c in pairs(context) do
+			tinsert(contexts, getTypeLocale(c));
+		end
+		return contextTemplate:format(loc("WO_CONTEXT"), strjoin(", ", unpack(contexts)));
+	end
+end
 
 local function displayEffectDropdown(self)
 	local values = {};
-	tinsert(values, {loc("WO_EFFECT_SELECT"), nil});
+	tinsert(values, {loc("WO_COMMON_EFFECT"), nil});
 	for _, sectionID in pairs(menuData.order) do
-		local section = menuData[sectionID];
-		local sectionTab = {};
-		for _, effectID in pairs(section) do
-			local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
-			tinsert(sectionTab, {effectInfo.title or effectID, effectID, effectInfo.description});
+		if sectionID == "" then
+			tinsert(values, {loc("WO_EXPERT_EFFECT")});
+		else
+			local section = menuData[sectionID];
+			local sectionTab = {};
+			for _, effectID in pairs(section) do
+				local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
+				if not effectInfo.context or tContains(effectInfo.context, editor.currentContext) then
+					tinsert(sectionTab, {effectInfo.title or effectID, effectID, getContext(effectInfo.context) .. effectInfo.description});
+				end
+			end
+			tinsert(values, {sectionID, sectionTab});
 		end
-		tinsert(values, {sectionID, sectionTab});
 	end
 
 	TRP3_API.ui.listbox.displayDropDown(self, values, addEffectElement, 0, true);
@@ -583,7 +603,10 @@ editor.init = function(ToolFrame)
 			"item_bag_durability",
 			"item_consume",
 			"item_cooldown",
+		},
+		[loc("TYPE_DOCUMENT")] = {
 			"document_show",
+			"document_close",
 		},
 		[loc("MODE_EXPERT")] = {
 			"var_set_execenv",
@@ -597,9 +620,11 @@ editor.init = function(ToolFrame)
 		order = {
 			loc("WO_EFFECT_CAT_COMMON"),
 			loc("EFFECT_CAT_SPEECH"),
+			loc("INV_PAGE_CHARACTER_INV"),
+			loc("TYPE_DOCUMENT"),
 			loc("EFFECT_CAT_SOUND"),
 			loc("REG_COMPANIONS"),
-			loc("INV_PAGE_CHARACTER_INV"),
+			"",
 			loc("MODE_EXPERT"),
 			loc("EFFECT_CAT_DEBUG")
 		}

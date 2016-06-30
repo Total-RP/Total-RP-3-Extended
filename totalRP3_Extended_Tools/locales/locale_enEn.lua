@@ -238,6 +238,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_LINKS_TO = "Linked to workflow",
 	WO_CONTEXT = "Context",
 	WO_CONTEXT_TT = "The workflow context determines which effects can be used in the workflow.",
+	WO_COMMON_EFFECT = "Common effects",
+	WO_EXPERT_EFFECT = "Expert effects",
 
 	-- Delay editor
 	WO_DELAY_DURATION = "Duration",
@@ -283,7 +285,9 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_DEBUG_DUMP_TEXT = "Debug dump text",
 	EFFECT_DEBUG_DUMP_TEXT_TT = "Display a text in debug chat frame. It's simple as that.",
 	EFFECT_DOC_DISPLAY = "Display document",
-	EFFECT_DOC_DISPLAY_TT = "Display a document to the player.",
+	EFFECT_DOC_DISPLAY_TT = "Display a document to the player. If there is already a shown document, it will be replaced.",
+	EFFECT_DOC_CLOSE = "Close document",
+	EFFECT_DOC_CLOSE_TT = "Close the currently opened document. Do nothing if there is no shown document.",
 	EFFECT_SPEECH_NAR = "Speech: Narration",
 	EFFECT_SPEECH_NAR_TT = "Plays a narration as a formated emote.\n\n|cff00ff00Has the same effect as playing an emote starting with a || (pipe character). It will be formated in chat for other TRP users.",
 	EFFECT_SPEECH_NAR_DEFAULT = "The snow blows white on the mountain tonight ...",
@@ -364,7 +368,6 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_ITEM_SOURCE_1_TT = "Search for the item(s) inside the entire character inventory.",
 	EFFECT_ITEM_SOURCE_2_TT = "Search for the item(s) only inside this item parent container (and any sub-container).",
 	EFFECT_ITEM_SOURCE_3_TT = "Search for the item(s) only inside this item (and any sub-container). Only works if this item is a container.",
-
 	EFFECT_ITEM_TO = "Add in",
 	EFFECT_ITEM_TO_1 = "Inventory",
 	EFFECT_ITEM_TO_2 = "Parent container",
