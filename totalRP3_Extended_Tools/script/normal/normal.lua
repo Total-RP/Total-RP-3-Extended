@@ -18,6 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local wipe, pairs, tostring, tinsert, assert, tonumber = wipe, pairs, tostring, tinsert, assert, tonumber;
+local tContains, strjoin, unpack = tContains, strjoin, unpack;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -27,6 +28,7 @@ local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local getEffectSecurity = TRP3_API.security.getEffectSecurity;
 local editor = TRP3_ScriptEditorNormal;
 local refreshElementList, toolFrame, unlockElements, onElementConfirm;
+local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 
 local securityLevel = TRP3_API.security.SECURITY_LEVEL;
 
@@ -112,18 +114,37 @@ local function addEffectElement(effectID)
 end
 
 local menuData;
+local contextTemplate = "|cff00ff00%s: %s|r\n\n";
+
+local function getContext(context)
+	if not context then
+		return contextTemplate:format(loc("WO_CONTEXT"), loc("ALL"));
+	else
+		local contexts = {};
+		for _, c in pairs(context) do
+			tinsert(contexts, getTypeLocale(c));
+		end
+		return contextTemplate:format(loc("WO_CONTEXT"), strjoin(", ", unpack(contexts)));
+	end
+end
 
 local function displayEffectDropdown(self)
 	local values = {};
-	tinsert(values, {loc("WO_EFFECT_SELECT"), nil});
+	tinsert(values, {loc("WO_COMMON_EFFECT"), nil});
 	for _, sectionID in pairs(menuData.order) do
-		local section = menuData[sectionID];
-		local sectionTab = {};
-		for _, effectID in pairs(section) do
-			local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
-			tinsert(sectionTab, {effectInfo.title or effectID, effectID, effectInfo.description});
+		if sectionID == "" then
+			tinsert(values, {loc("WO_EXPERT_EFFECT")});
+		else
+			local section = menuData[sectionID];
+			local sectionTab = {};
+			for _, effectID in pairs(section) do
+				local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
+				if not effectInfo.context or tContains(effectInfo.context, editor.currentContext) then
+					tinsert(sectionTab, {effectInfo.title or effectID, effectID, getContext(effectInfo.context) .. effectInfo.description});
+				end
+			end
+			tinsert(values, {sectionID, sectionTab});
 		end
-		tinsert(values, {sectionID, sectionTab});
 	end
 
 	TRP3_API.ui.listbox.displayDropDown(self, values, addEffectElement, 0, true);
@@ -473,15 +494,14 @@ local function refreshWorkflowList()
 	editor.list.arrow:Hide();
 	editor.list.add:Hide();
 
-	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
+	if toolFrame.specificDraft.TY == TRP3_DB.types.ITEM and toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
 		assert(editor.workflowIDToLoad, "No editor.workflowIDToLoad for refresh.");
 		editor.list.script:SetText(editor.scriptTitle or "");
 		editor.list.description:SetText(editor.scriptDescription or "");
 		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.slider);
 		openWorkflow(editor.workflowIDToLoad);
-
-	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
-		editor.list.script:SetText(loc("WO_EXPERT"));
+	else
+		editor.list.script:SetText(loc("WO_CONTEXT") .. ": " .. getTypeLocale(editor.currentContext));
 		editor.list.description:SetText(loc("WO_EXPERT_TT"));
 		editor.list.add:Show();
 
@@ -492,6 +512,11 @@ local function refreshWorkflowList()
 
 end
 editor.refreshWorkflowList = refreshWorkflowList;
+
+function editor.loadList(context)
+	editor.currentContext = context;
+	refreshWorkflowList();
+end
 
 function editor.linkElements(workflow)
 	local size = tsize(workflow.ST);
@@ -578,7 +603,10 @@ editor.init = function(ToolFrame)
 			"item_bag_durability",
 			"item_consume",
 			"item_cooldown",
+		},
+		[loc("TYPE_DOCUMENT")] = {
 			"document_show",
+			"document_close",
 		},
 		[loc("MODE_EXPERT")] = {
 			"var_set_execenv",
@@ -592,9 +620,11 @@ editor.init = function(ToolFrame)
 		order = {
 			loc("WO_EFFECT_CAT_COMMON"),
 			loc("EFFECT_CAT_SPEECH"),
+			loc("INV_PAGE_CHARACTER_INV"),
+			loc("TYPE_DOCUMENT"),
 			loc("EFFECT_CAT_SOUND"),
 			loc("REG_COMPANIONS"),
-			loc("INV_PAGE_CHARACTER_INV"),
+			"",
 			loc("MODE_EXPERT"),
 			loc("EFFECT_CAT_DEBUG")
 		}

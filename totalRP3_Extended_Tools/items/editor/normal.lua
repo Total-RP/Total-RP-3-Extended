@@ -215,7 +215,7 @@ local function loadDataScript()
 	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
 
 	end
-	TRP3_ScriptEditorNormal.refreshWorkflowList();
+	TRP3_ScriptEditorNormal.loadList(TRP3_DB.types.ITEM);
 end
 
 local function storeDataScript()

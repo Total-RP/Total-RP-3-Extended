@@ -144,6 +144,7 @@ local function item_bag_durability_init()
 			return {"HEAL", 10};
 		end,
 		editor = editor,
+		context = {TRP3_DB.types.ITEM},
 	});
 
 	-- Method
@@ -174,6 +175,7 @@ local function item_consume_init()
 		title = loc("EFFECT_ITEM_CONSUME"),
 		icon = "inv_misc_potionseta",
 		description = loc("EFFECT_ITEM_CONSUME_TT"),
+		context = {TRP3_DB.types.ITEM},
 	});
 end
 
@@ -217,6 +219,17 @@ local function document_show_init()
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
 	end
+end
+
+local function document_close_init()
+	local editor = TRP3_EffectEditorDocumentShow;
+
+	registerEffectEditor("document_close", {
+		title = loc("EFFECT_DOC_CLOSE"),
+		icon = "trade_archaeology_silverscrollcase",
+		description = loc("EFFECT_DOC_CLOSE_TT"),
+	});
+
 end
 
 local function item_add_init()
@@ -355,6 +368,7 @@ local function item_cooldown_init()
 			return {1};
 		end,
 		editor = editor;
+		context = {TRP3_DB.types.ITEM},
 	});
 
 	-- Time
@@ -426,7 +440,8 @@ local function var_set_execenv_init()
 		getDefaultArgs = function()
 			return {"varName", loc("EFFECT_VAR_VALUE")};
 		end,
-		editor = varSetEditor
+		editor = varSetEditor,
+		context = {TRP3_DB.types.ITEM, TRP3_DB.types.CAMPAIGN, TRP3_DB.types.QUEST},
 	});
 
 end
@@ -852,10 +867,12 @@ function TRP3_API.extended.tools.initBaseEffects()
 	item_sheath_init();
 	item_bag_durability_init();
 	item_consume_init();
-	document_show_init();
 	item_add_init();
 	item_remove_init();
 	item_cooldown_init();
+
+	document_show_init();
+	document_close_init();
 
 	var_set_execenv_init();
 	signal_send_init();
