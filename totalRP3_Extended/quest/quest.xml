@@ -104,11 +104,6 @@
 					<Anchor point="LEFT" x="10" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" parentKey="empty" text="The quest system will come in July-August. :)" setAllPoints="true"/>
-					</Layer>
-				</Layers>
 				<Frames>
 					<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
 						<Anchors>
@@ -131,7 +126,7 @@
 						<Frames>
 							<Button name="$parentSlot1" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot1">
 								<Anchors>
-									<Anchor point="TOPLEFT" x="12" y="-10"/>
+									<Anchor point="TOPLEFT" x="45" y="-15"/>
 								</Anchors>
 							</Button>
 						</Frames>

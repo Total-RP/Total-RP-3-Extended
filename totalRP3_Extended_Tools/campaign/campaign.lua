@@ -25,8 +25,37 @@ local toolFrame;
 -- Campaign management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.getCampaignData(id)
-	local data = {}
+local function createCampaign(data, ID)
+	ID = ID or Utils.str.id();
+
+	if TRP3_DB.global[ID] then
+		error("This ID already exists. This shoudn't happen: " .. ID);
+	end
+
+	TRP3_DB.my[ID] = data;
+	TRP3_API.extended.registerObject(ID, data, 0);
+
+	return ID, data;
+end
+TRP3_API.extended.tools.createCampaign = createCampaign;
+
+function TRP3_API.extended.tools.getCampaignData()
+	local data = {
+		TY = TRP3_DB.types.CAMPAIGN,
+		MD = {
+			MO = TRP3_DB.modes.NORMAL,
+			V = 1,
+			CD = date("%d/%m/%y %H:%M:%S");
+			CB = Globals.player_id,
+			SD = date("%d/%m/%y %H:%M:%S");
+			SB = Globals.player_id,
+		},
+		BA = {
+			NA = loc("CA_NAME_NEW"),
+			RA = "1 - 100",
+			IC = "achievement_quests_completed_06"
+		},
+	}
 	return data;
 end
 

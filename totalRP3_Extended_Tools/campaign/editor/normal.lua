@@ -23,7 +23,7 @@ local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolFrame, main, pages, params, manager;
+local toolFrame, main, pages, params, manager, notes;
 
 local TABS = {
 	MAIN = 1,
@@ -37,8 +37,13 @@ local TABS = {
 local tabGroup, currentTab;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Logic
+-- Main tab
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function onIconSelected(icon)
+	main.vignette.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
+	main.vignette.selectedIcon = icon;
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script & inner tabs
@@ -49,7 +54,7 @@ local function loadDataScript()
 	if not toolFrame.specificDraft.SC then
 		toolFrame.specificDraft.SC = {};
 	end
-	TRP3_ScriptEditorNormal.refreshWorkflowList();
+	TRP3_ScriptEditorNormal.loadList(TRP3_DB.types.CAMPAIGN);
 end
 
 local function storeDataScript()
@@ -84,6 +89,13 @@ local function load()
 
 	main.name:SetText(data.BA.NA or "");
 	main.description:SetText(data.BA.DE or "");
+	main.range:SetText(data.BA.RA or "");
+	onIconSelected(data.BA.IC);
+
+	main.vignette.name:SetText(data.BA.NA or "");
+	main.vignette.range:SetText(data.BA.RA or "");
+
+	notes.frame.scroll.text:SetText(data.NT or "");
 
 	loadDataScript();
 	loadDataInner();
@@ -97,7 +109,9 @@ local function saveToDraft()
 	local data = toolFrame.specificDraft;
 	data.BA.NA = stEtN(strtrim(main.name:GetText()));
 	data.BA.DE = stEtN(strtrim(main.description:GetText()));
-
+	data.BA.RA = stEtN(strtrim(main.range:GetText()));
+	data.BA.IC = main.vignette.selectedIcon;
+	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
 	storeDataScript();
 
 end
@@ -112,13 +126,14 @@ local function onTabChanged(tabWidget, tab)
 	-- Hide all
 	currentTab = tab or TABS.MAIN;
 	main:Hide();
+	notes:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
 		main:Show();
-
+		notes:Show();
 	elseif currentTab == TABS.WORKFLOWS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.campaign.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
@@ -163,6 +178,10 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 
 	createTabBar();
 
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- MAIN
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 	-- Main
 	main = toolFrame.campaign.normal.main;
 	main.title:SetText(loc("TYPE_CAMPAIGN"));
@@ -175,4 +194,23 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	main.description.title:SetText(loc("CA_DESCRIPTION"));
 	setTooltipForSameFrame(main.description.help, "RIGHT", 0, 5, loc("CA_DESCRIPTION"), loc("CA_DESCRIPTION_TT"));
 
+	-- Range
+	main.range.title:SetText(loc("CA_RANGE"));
+	setTooltipForSameFrame(main.range.help, "RIGHT", 0, 5, loc("CA_RANGE"), loc("CA_RANGE_TT"));
+
+	-- Vignette
+	main.vignette.current:Hide();
+	main.vignette.bgImage:SetTexture("Interface\\Garrison\\GarrisonUIBackground");
+	main.vignette.Icon:SetVertexColor(0.7, 0.7, 0.7);
+	main.vignette:SetScript("OnClick", function(self)
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
+	end);
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- NOTES
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	-- Notes
+	notes = toolFrame.campaign.normal.notes;
+	notes.title:SetText(loc("EDITOR_NOTES"));
 end

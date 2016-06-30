@@ -45,7 +45,7 @@ local demoCampaign = {
 		IC = "achievement_zone_elwynnForest",
 		NA = "Save Northshire Valley",
 		DE = "Take the arms and defend the abbey.",
-		RA = { 1, 5 },
+		RA = "1 - 5",
 	},
 
 	QE = {

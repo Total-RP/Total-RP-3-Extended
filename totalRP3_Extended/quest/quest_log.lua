@@ -78,7 +78,7 @@ local function decorateCampaignButton(button, campaignID, campaignClass, onCampa
 
 	if range then
 		button.range:Show();
-		button.range:SetText(range[1] .. "-" .. range[2]);
+		button.range:SetText(range);
 	else
 		button.range:Hide();
 	end
@@ -98,12 +98,16 @@ local function decorateCampaignButton(button, campaignID, campaignClass, onCampa
 	button.current:SetText(loc("QE_CAMPAIGN_CURRENT"));
 end
 
-local function reattachCaimpacnButtons()
+local function reattachCaimpaignButtons()
 	local previous = TRP3_QuestLogPage.Campaign.slots[1];
 	for index, slot in pairs(TRP3_QuestLogPage.Campaign.slots) do
 		if index ~= 1 then
 			slot:ClearAllPoints();
-			slot:SetPoint("TOPLEFT", previous, "TOPRIGHT", 15, 0);
+			if math.fmod(index, 2) == 0 then
+				slot:SetPoint("TOPLEFT", previous, "TOPRIGHT", 30, 0);
+			else
+				slot:SetPoint("TOPRIGHT", previous, "BOTTOMLEFT", -30, -20);
+			end
 			previous = slot;
 		end
 	end
@@ -126,7 +130,7 @@ local function refreshCampaignList()
 		index = index + 1;
 	end
 
-	reattachCaimpacnButtons();
+	reattachCaimpaignButtons();
 end
 
 local function swapCampaignActivation(campaignID)

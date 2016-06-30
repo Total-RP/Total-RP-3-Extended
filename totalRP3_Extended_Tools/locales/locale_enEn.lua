@@ -497,9 +497,11 @@ We should begin with some examples:
 
 	-- Campaign and quests
 	QE_NPC = "Custom NPC",
+	CA_NAME_NEW = "New campaign",
 	CA_NAME = "Campaign name",
 	CA_NAME_TT = "This is the name of your campaign. It appears on the quest log.",
 	CA_DESCRIPTION = "Campaign summary",
 	CA_DESCRIPTION_TT = "This brief summary will be visible on the campaign page, in the quest log.",
-
+	CA_RANGE = "Level range",
+	CA_RANGE_TT = "Indicates in the campaign vignette the level range required to be able to perform this campaign. This is purely informational and is optional.",
 };
