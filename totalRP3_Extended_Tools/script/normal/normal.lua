@@ -27,6 +27,7 @@ local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local getEffectSecurity = TRP3_API.security.getEffectSecurity;
 local editor = TRP3_ScriptEditorNormal;
 local refreshElementList, toolFrame, unlockElements, onElementConfirm;
+local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 
 local securityLevel = TRP3_API.security.SECURITY_LEVEL;
 
@@ -480,7 +481,7 @@ local function refreshWorkflowList()
 		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.slider);
 		openWorkflow(editor.workflowIDToLoad);
 	else
-		editor.list.script:SetText(loc("WO_EXPERT"));
+		editor.list.script:SetText(loc("WO_CONTEXT") .. ": " .. getTypeLocale(editor.currentContext));
 		editor.list.description:SetText(loc("WO_EXPERT_TT"));
 		editor.list.add:Show();
 
@@ -491,6 +492,11 @@ local function refreshWorkflowList()
 
 end
 editor.refreshWorkflowList = refreshWorkflowList;
+
+function editor.loadList(context)
+	editor.currentContext = context;
+	refreshWorkflowList();
+end
 
 function editor.linkElements(workflow)
 	local size = tsize(workflow.ST);

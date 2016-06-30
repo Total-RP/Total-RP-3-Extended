@@ -172,7 +172,7 @@ local function loadDataScript()
 	if not toolFrame.specificDraft.SC then
 		toolFrame.specificDraft.SC = {};
 	end
-	TRP3_ScriptEditorNormal.refreshWorkflowList();
+	TRP3_ScriptEditorNormal.loadList(TRP3_DB.types.DOCUMENT);
 end
 
 local function storeDataScript()

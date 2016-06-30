@@ -236,6 +236,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_LINKS_NO_LINKS_TT = "Does not link this action/event to a workflow.",
 	WO_LINKS_SELECT = "Select a workflow to link",
 	WO_LINKS_TO = "Linked to workflow",
+	WO_CONTEXT = "Context",
+	WO_CONTEXT_TT = "The workflow context determines which effects can be used in the workflow.",
 
 	-- Delay editor
 	WO_DELAY_DURATION = "Duration",

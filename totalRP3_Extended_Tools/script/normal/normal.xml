@@ -277,7 +277,7 @@
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.line1"/>
 							<Anchor point="TOP" x="0" y="0" relativeKey="$parent.line1"/>
-							<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line8"/>
+							<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line6"/>
 						</Anchors>
 						<Scripts>
 							<OnLoad>
