@@ -188,6 +188,12 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DO_PAGE_REMOVE_POPUP = "Remove the page %s ?",
 	DO_PAGE_ADD = "Add page",
 	DO_PAGE_COUNT = "Page %s / %s",
+	DO_LINKS_ONOPEN = "On open",
+	DO_LINKS_ONOPEN_TT = "Triggered when the document is shown to the player.",
+	DO_LINKS_ONCLOSE = "On close",
+	DO_LINKS_ONCLOSE_TT = "Triggered when the document is closed by the player or another event (e.g. through a workflow effect)",
+	DO_URLS = "Document links",
+	DO_URLS_TT = "Here you can links workflows to link tags in your document.\nYour link in the document is in the form of |cffff9900{link*|cff00ff00link_id|cffff9900*link_text}|r.\nHere you can link a link_id to a workflow ID.",
 
 	-- Workflows
 	WO_WORKFLOW = "Workflows",
@@ -224,6 +230,12 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_ADD_ID = "|cff00ff00Enter the workflow ID.|r\n\nIt's an internal ID to help you manage your workflows and won't be visible by the user.\n\nPlease note that you can't have two workflows with the same ID within the same object.",
 	WO_ADD_ID_NO_AVAILABLE = "This workflow ID is not available.",
 	WO_REMOVE_POPUP = "Delete the workflow %s?",
+	WO_LINKS = "Action/event links",
+	WO_LINKS_TRIGGERS = "Here you can links your workflows to actions or events specifics for this object.",
+	WO_LINKS_NO_LINKS = "No link",
+	WO_LINKS_NO_LINKS_TT = "Does not link this action/event to a workflow.",
+	WO_LINKS_SELECT = "Select a workflow to link",
+	WO_LINKS_TO = "Linked to workflow",
 
 	-- Delay editor
 	WO_DELAY_DURATION = "Duration",

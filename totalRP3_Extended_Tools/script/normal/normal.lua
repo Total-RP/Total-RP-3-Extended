@@ -473,14 +473,13 @@ local function refreshWorkflowList()
 	editor.list.arrow:Hide();
 	editor.list.add:Hide();
 
-	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
+	if toolFrame.specificDraft.TY == TRP3_DB.types.ITEM and toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
 		assert(editor.workflowIDToLoad, "No editor.workflowIDToLoad for refresh.");
 		editor.list.script:SetText(editor.scriptTitle or "");
 		editor.list.description:SetText(editor.scriptDescription or "");
 		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.slider);
 		openWorkflow(editor.workflowIDToLoad);
-
-	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
+	else
 		editor.list.script:SetText(loc("WO_EXPERT"));
 		editor.list.description:SetText(loc("WO_EXPERT_TT"));
 		editor.list.add:Show();

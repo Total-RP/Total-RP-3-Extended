@@ -114,6 +114,13 @@ local function showDocumentClass(document, documentID)
 	loadPage(1);
 
 	documentFrame:Show();
+
+	if document.LI and document.LI.OO and document.SC and document.SC[document.LI.OO] then
+		local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC,
+			{
+				documentID = documentFrame.ID, documentClass = documentFrame.class
+			}, documentFrame.ID);
+	end
 end
 TRP3_API.extended.document.showDocumentClass = showDocumentClass;
 
@@ -128,18 +135,31 @@ end
 TRP3_API.extended.document.showDocument = showDocument;
 
 local function onLinkClicked(self, url)
-	if documentFrame.class and documentFrame.class.AC and documentFrame.class.AC[url] and documentFrame.class.SC then
+	if documentFrame.class and documentFrame.class.AC and documentFrame.class.AC[url] and documentFrame.class.SC
+		and documentFrame.class.SC[documentFrame.class.AC[url]]
+	then
 		local scriptID = documentFrame.class.AC[url];
 		local retCode = TRP3_API.script.executeClassScript(scriptID, documentFrame.class.SC,
 			{
 				documentID = documentFrame.ID, documentClass = documentFrame.class
-			});
+			}, documentFrame.ID);
+	end
+end
+
+local function closeDocumentFrame()
+	documentFrame:Hide();
+	local document = documentFrame.class;
+	if document.LI and document.LI.OC and document.SC and document.SC[document.LI.OC] then
+		local retCode = TRP3_API.script.executeClassScript(document.LI.OC, documentFrame.class.SC,
+			{
+				documentID = documentFrame.ID, documentClass = documentFrame.class
+			}, documentFrame.ID);
 	end
 end
 
 local function closeDocument(documentID)
 	if documentFrame:IsVisible() and documentFrame.ID == documentID then
-		documentFrame:Hide();
+		closeDocumentFrame();
 	end
 end
 TRP3_API.extended.document.closeDocument = closeDocument;
@@ -169,6 +189,7 @@ function TRP3_API.extended.document.onStart()
 	documentFrame.previous:SetText("<");
 	documentFrame.previous:SetScript("OnClick", function() loadPage(documentFrame.current - 1); end);
 	documentFrame.next:SetScript("OnClick", function() loadPage(documentFrame.current + 1); end);
+	documentFrame.Close:SetScript("OnClick", function() closeDocumentFrame(); end);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects({

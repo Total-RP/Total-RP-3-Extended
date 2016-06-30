@@ -19,6 +19,16 @@
 	limitations under the License.
 -->
 
+	<Button inherits="TRP3_QuestButtonTemplate" name="TRP3_WorkflowLinkButton" virtual="true">
+		<Frames>
+			<Frame parentKey="select" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSelect">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Name" x="-20" y="-5"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Button>
+
 	<Frame name="TRP3_ScriptEditorDelay" hidden="true" inherits="TRP3_EditorEffectTemplate">
 
 		<Size x="400" y="250"/>
