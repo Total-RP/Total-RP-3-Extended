@@ -192,8 +192,6 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DO_LINKS_ONOPEN_TT = "Triggered when the document is shown to the player.",
 	DO_LINKS_ONCLOSE = "On close",
 	DO_LINKS_ONCLOSE_TT = "Triggered when the document is closed by the player or another event (e.g. through a workflow effect)",
-	DO_URLS = "Document links",
-	DO_URLS_TT = "Here you can links workflows to link tags in your document.\nYour link in the document is in the form of |cffff9900{link*|cff00ff00link_id|cffff9900*link_text}|r.\nHere you can link a link_id to a workflow ID.",
 
 	-- Workflows
 	WO_WORKFLOW = "Workflows",

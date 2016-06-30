@@ -115,11 +115,13 @@ local function showDocumentClass(document, documentID)
 
 	documentFrame:Show();
 
-	if document.LI and document.LI.OO and document.SC and document.SC[document.LI.OO] then
-		local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC,
-			{
-				documentID = documentFrame.ID, documentClass = documentFrame.class
-			}, documentFrame.ID);
+	if documentFrame.ID then
+		if document.LI and document.LI.OO and document.SC and document.SC[document.LI.OO] then
+			local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC,
+				{
+					documentID = documentFrame.ID, documentClass = documentFrame.class
+				}, documentFrame.ID);
+		end
 	end
 end
 TRP3_API.extended.document.showDocumentClass = showDocumentClass;
@@ -135,30 +137,32 @@ end
 TRP3_API.extended.document.showDocument = showDocument;
 
 local function onLinkClicked(self, url)
-	if documentFrame.class and documentFrame.class.AC and documentFrame.class.AC[url] and documentFrame.class.SC
-		and documentFrame.class.SC[documentFrame.class.AC[url]]
-	then
-		local scriptID = documentFrame.class.AC[url];
-		local retCode = TRP3_API.script.executeClassScript(scriptID, documentFrame.class.SC,
-			{
-				documentID = documentFrame.ID, documentClass = documentFrame.class
-			}, documentFrame.ID);
+	if documentFrame.ID and documentFrame.class then
+		local document = documentFrame.class;
+		if document.SC and document.SC[url] then
+			local retCode = TRP3_API.script.executeClassScript(url, document.SC,
+				{
+					documentID = documentFrame.ID, documentClass = document
+				}, documentFrame.ID);
+		end
 	end
 end
 
 local function closeDocumentFrame()
 	documentFrame:Hide();
-	local document = documentFrame.class;
-	if document.LI and document.LI.OC and document.SC and document.SC[document.LI.OC] then
-		local retCode = TRP3_API.script.executeClassScript(document.LI.OC, documentFrame.class.SC,
-			{
-				documentID = documentFrame.ID, documentClass = documentFrame.class
-			}, documentFrame.ID);
+	if documentFrame.ID and documentFrame.class then
+		local document = documentFrame.class;
+		if document.LI and document.LI.OC and document.SC and document.SC[document.LI.OC] then
+			local retCode = TRP3_API.script.executeClassScript(document.LI.OC, document.SC,
+				{
+					documentID = documentFrame.ID, documentClass = document
+				}, documentFrame.ID);
+		end
 	end
 end
 
-local function closeDocument(documentID)
-	if documentFrame:IsVisible() and documentFrame.ID == documentID then
+local function closeDocument()
+	if documentFrame:IsVisible() then
 		closeDocumentFrame();
 	end
 end
@@ -207,8 +211,7 @@ function TRP3_API.extended.document.onStart()
 		document_close = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
-				local documentID = args[1];
-				return ("lastEffectReturn = closeDocument(\"%s\");"):format(documentID);
+				return "lastEffectReturn = closeDocument();";
 			end,
 			env = {
 				closeDocument = "TRP3_API.extended.document.closeDocument",

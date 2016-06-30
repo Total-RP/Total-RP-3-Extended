@@ -24,7 +24,7 @@ local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolFrame, main, pages, params, manager, links, urls;
+local toolFrame, main, pages, params, manager, links;
 
 local TABS = {
 	MAIN = 1,
@@ -199,7 +199,6 @@ local function onTabChanged(tabWidget, tab)
 	pages:Hide();
 	manager:Hide();
 	links:Hide();
-	urls:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 
 	-- Show tab
@@ -214,7 +213,6 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_ScriptEditorNormal:Show();
 	elseif currentTab == TABS.EXPERT then
 		links:Show();
-		urls:Show();
 		loadExpertTab();
 	end
 
@@ -230,7 +228,7 @@ local function createTabBar()
 		{
 			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
 			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
-			{ loc("WO_EXPERT"), TABS.EXPERT, 150 },
+			{ loc("MODE_EXPERT"), TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -332,7 +330,7 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	main.preview.Icon:SetTexture("Interface\\ICONS\\inv_darkmoon_eye");
 	main.preview:SetScript("OnClick", function(self)
 		saveToDraft();
-		TRP3_API.extended.document.showDocumentClass(toolFrame.specificDraft);
+		TRP3_API.extended.document.showDocumentClass(toolFrame.specificDraft, nil);
 	end);
 
 	-- Params
@@ -423,8 +421,4 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	links.on_close.Icon:SetTexture("Interface\\ICONS\\ability_warlock_soullink");
 	setTooltipForSameFrame(links.on_close, "TOP", 0, -5, loc("DO_LINKS_ONCLOSE"), loc("DO_LINKS_ONCLOSE_TT"));
 
-	-- Workflows to document urls
-	urls = toolFrame.document.normal.urls;
-	urls.title:SetText(loc("DO_URLS"));
-	urls.help:SetText(loc("DO_URLS_TT"));
 end
