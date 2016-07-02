@@ -62,6 +62,8 @@ local BASE_BKG = "Interface\\Garrison\\GarrisonUIBackground";
 
 local function decorateCampaignButton(button, campaignID, campaignClass, onCampaignClick)
 	local campaignIcon, campaignName, campaignDescription = getClassDataSafe(campaignClass);
+	local author = campaignClass.MD.CB;
+
 	local image = (campaignClass.BA or EMPTY).IM;
 	local range = (campaignClass.BA or EMPTY).RA;
 
@@ -90,6 +92,10 @@ local function decorateCampaignButton(button, campaignID, campaignClass, onCampa
 		button.current:Hide();
 		button:GetNormalTexture():SetVertexColor(1, 1, 1);
 	end
+
+	local createdBy = "|cff00ff00%s: %s|r\n\n";
+	TRP3_API.ui.tooltip.setTooltipForSameFrame(button, "TOP", 0, 5, campaignName,
+		createdBy:format(loc("DB_FILTERS_OWNER"), author) .. campaignDescription);
 
 	button.campaignID = campaignID;
 	button:RegisterForClicks("LeftButtonUp", "RightButtonUp");

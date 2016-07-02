@@ -40,6 +40,15 @@ Marshal McBride
 local demoCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,
 
+	MD = {
+		["CD"] = "26/05/16 11:42:07",
+		["CB"] = "TRP3 Team",
+		["SB"] = "TRP3 Team",
+		["MO"] = "EX",
+		["SD"] = "19/06/16 16:14:15",
+		["V"] = 44,
+	},
+
 	-- Base information, common to the whole campaign
 	BA = {
 		IC = "achievement_zone_elwynnForest",

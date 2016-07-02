@@ -23,15 +23,16 @@ local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolFrame, main, pages, params, manager, notes;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
+local color = Utils.str.color;
+local toolFrame, main, pages, params, manager, notes, npc;
 
 local TABS = {
 	MAIN = 1,
 	WORKFLOWS = 2,
 	QUESTS = 3,
-	NPC = 4,
-	INNER = 5,
-	EXPERT = 6
+	INNER = 4,
+	EXPERT = 5
 }
 
 local tabGroup, currentTab;
@@ -88,7 +89,7 @@ local function load()
 	end
 
 	main.name:SetText(data.BA.NA or "");
-	main.description:SetText(data.BA.DE or "");
+	main.description.scroll.text:SetText(data.BA.DE or "");
 	main.range:SetText(data.BA.RA or "");
 	onIconSelected(data.BA.IC);
 
@@ -108,7 +109,7 @@ local function saveToDraft()
 
 	local data = toolFrame.specificDraft;
 	data.BA.NA = stEtN(strtrim(main.name:GetText()));
-	data.BA.DE = stEtN(strtrim(main.description:GetText()));
+	data.BA.DE = stEtN(strtrim(main.description.scroll.text:GetText()));
 	data.BA.RA = stEtN(strtrim(main.range:GetText()));
 	data.BA.IC = main.vignette.selectedIcon;
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
@@ -126,6 +127,7 @@ local function onTabChanged(tabWidget, tab)
 	-- Hide all
 	currentTab = tab or TABS.MAIN;
 	main:Hide();
+	npc:Hide();
 	notes:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
@@ -134,6 +136,7 @@ local function onTabChanged(tabWidget, tab)
 	if currentTab == TABS.MAIN then
 		main:Show();
 		notes:Show();
+		npc:Show();
 	elseif currentTab == TABS.WORKFLOWS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.campaign.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
@@ -158,7 +161,6 @@ local function createTabBar()
 		{
 			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
 			{ loc("QE_QUESTS"), TABS.QUESTS, 150 },
-			{ loc("QE_NPC"), TABS.NPC, 150 },
 			{ loc("IN_INNER"), TABS.INNER, 150 },
 			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
 			{ loc("WO_EXPERT"), TABS.EXPERT, 150 },
@@ -192,7 +194,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 
 	-- Description
 	main.description.title:SetText(loc("CA_DESCRIPTION"));
-	setTooltipForSameFrame(main.description.help, "RIGHT", 0, 5, loc("CA_DESCRIPTION"), loc("CA_DESCRIPTION_TT"));
+	setTooltipAll(main.description.dummy, "RIGHT", 0, 5, loc("CA_DESCRIPTION"), loc("CA_DESCRIPTION_TT"));
 
 	-- Range
 	main.range.title:SetText(loc("CA_RANGE"));
@@ -205,6 +207,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	main.vignette:SetScript("OnClick", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
 	end);
+	setTooltipAll(main.vignette, "RIGHT", 0, 5, loc("CA_ICON"), color("y") .. loc("CM_CLICK") .. ":|cffff9900 " .. loc("CA_ICON_TT"));
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NOTES
@@ -213,4 +216,12 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	-- Notes
 	notes = toolFrame.campaign.normal.notes;
 	notes.title:SetText(loc("EDITOR_NOTES"));
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- NPC
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	npc = toolFrame.campaign.normal.npc;
+	npc.title:SetText(loc("CA_NPC"));
+	npc.help:SetText(loc("CA_NPC_TT"));
 end

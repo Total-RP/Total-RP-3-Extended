@@ -496,12 +496,15 @@ We should begin with some examples:
 	COND_NUM_FAIL = "You must have two numeric operands if you uses a numeric comparator.",
 
 	-- Campaign and quests
-	QE_NPC = "Custom NPC",
+	CA_NPC = "Campaign NPC list",
+	CA_NPC_TT = "You can customize NPCs to give them a name, an icon and a description.\nThis customization will be visible when the player has your campaign as active.",
 	CA_NAME_NEW = "New campaign",
 	CA_NAME = "Campaign name",
 	CA_NAME_TT = "This is the name of your campaign. It appears on the quest log.",
+	CA_ICON = "Campaign icon",
+	CA_ICON_TT = "Select campaign icon",
 	CA_DESCRIPTION = "Campaign summary",
 	CA_DESCRIPTION_TT = "This brief summary will be visible on the campaign page, in the quest log.",
 	CA_RANGE = "Level range",
-	CA_RANGE_TT = "Indicates in the campaign vignette the level range required to be able to perform this campaign. This is purely informational and is optional.",
+	CA_RANGE_TT = "Indicates in the campaign vignette the level range required to be able to perform this campaign.\n\nThis is an optional information. If you don't fill it there will be no indication on the campaign vignette.",
 };
