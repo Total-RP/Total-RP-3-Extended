@@ -146,7 +146,9 @@ local function containerFrameUpdate(self, elapsed)
 	-- Weight
 	local current = self.info.totalWeight or 0;
 	local weight = TRP3_API.extended.formatWeight(current) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
+	local formatedValue = ("%s: %s"):format(loc("INV_PAGE_TOTAL_VALUE"), GetCoinTextureString(self.info.totalValue or 0));
 	TRP3_InventoryPage.Main.Model.WeightText:SetText(weight);
+	TRP3_InventoryPage.Main.Model.ValueText:SetText(formatedValue);
 end
 
 local function onToolbarButtonClicked(buttonType)

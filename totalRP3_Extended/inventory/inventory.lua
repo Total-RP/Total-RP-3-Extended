@@ -375,33 +375,38 @@ function TRP3_API.inventory.getInventory()
 	return playerInventory;
 end
 
-local function recomputeContainerWeight(container)
+local function recomputeContainerWeightValue(container)
 	assert(container, "Nil container");
-	local weight = 0;
+	local weight, value = 0, 0;
 
 	-- Add container own weight
 	local containerClass = getClass(container.id);
 	if containerClass and containerClass.BA then
 		weight = weight + (containerClass.BA.WE or 0);
+		value = value + (containerClass.BA.VA or 0);
 	end
 
 	-- Add content weight
 	for slotID, slotInfo in pairs(container.content or EMPTY) do
 		if isContainerByClassID(slotInfo.id) then
-			weight = weight + recomputeContainerWeight(slotInfo);
+			local subWeight, subValue = recomputeContainerWeightValue(slotInfo);
+			weight = weight + subWeight;
+			value = value + subValue;
 		else
 			local class = getClass(slotInfo.id);
 			if class and class.BA then
 				weight = weight + ((class.BA.WE or 0) * (slotInfo.count or 1));
+				value = value + ((class.BA.VA or 0) * (slotInfo.count or 1));
 			end
 		end
 	end
+	container.totalValue = value;
 	container.totalWeight = weight;
-	return weight;
+	return weight, value;
 end
 
 function TRP3_API.inventory.recomputeAllInventory()
-	recomputeContainerWeight(playerInventory);
+	recomputeContainerWeightValue(playerInventory);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -422,8 +427,8 @@ function TRP3_API.inventory.onStart()
 			end
 			playerInventory.init = true;
 		end
-		-- Recompute weight
-		recomputeContainerWeight(playerInventory);
+		-- Recompute weight and value
+		recomputeContainerWeightValue(playerInventory);
 	end
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
 	refreshInventory();

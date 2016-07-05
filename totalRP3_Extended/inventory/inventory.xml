@@ -302,6 +302,14 @@
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95"/>
 								</FontString>
+								<FontString parentKey="ValueText" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" x="13" y="10"/>
+										<Anchor point="BOTTOMRIGHT" x="-12" y="10"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
 								<Texture parentKey="Marker" file="Interface\MINIMAP\TempleofKotmogu_ball_green" hidden="true">
 									<Size x="16" y="16"/>
 									<Anchors>
