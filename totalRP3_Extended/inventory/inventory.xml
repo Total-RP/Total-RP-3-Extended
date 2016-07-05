@@ -305,7 +305,7 @@
 								<FontString parentKey="ValueText" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
 									<Size x="0" y="20"/>
 									<Anchors>
-										<Anchor point="BOTTOMLEFT" x="13" y="10"/>
+										<Anchor point="BOTTOMLEFT" x="25" y="10"/>
 										<Anchor point="BOTTOMRIGHT" x="-12" y="10"/>
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95"/>
@@ -319,7 +319,15 @@
 							</Layer>
 						</Layers>
 						<Frames>
-							<Button parentKey="Blocker" inherits="TRP3_InvisibleButton" setAllPoints="true"/>
+							<Button parentKey="Blocker" inherits="TRP3_InvisibleButton" setAllPoints="true">
+								<Frames>
+									<Button parentKey="ValueHelp" inherits="TRP3_HelpButton">
+										<Anchors>
+											<Anchor point="BOTTOMLEFT" x="6" y="13"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Button>
 						</Frames>
 					</PlayerModel>
 				</Frames>

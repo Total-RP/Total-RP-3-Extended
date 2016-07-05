@@ -21,6 +21,7 @@ local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
 local TRP3_ItemTooltip = TRP3_ItemTooltip;
 local loc = TRP3_API.locale.getText;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local EMPTY = TRP3_API.globals.empty;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -272,4 +273,5 @@ function TRP3_API.inventory.initInventoryPage()
 	TRP3_InventoryPage.Main.Equip:SetScript("OnHide", function() TRP3_InventoryPage.Main.Model.Blocker:Show() end);
 	TRP3_InventoryPage.Main.Model.Blocker:EnableMouseWheel(true);
 	TRP3_InventoryPage.Main.Model.Blocker:SetScript("OnMouseWheel", function() end); -- Block behind scroll
+	setTooltipForSameFrame(TRP3_InventoryPage.Main.Model.Blocker.ValueHelp, "RIGHT", 0, 0, loc("INV_PAGE_TOTAL_VALUE"), loc("INV_PAGE_TOTAL_VALUE_TT"));
 end

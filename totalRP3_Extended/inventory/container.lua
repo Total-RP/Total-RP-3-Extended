@@ -111,11 +111,17 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		local formatedWeight = TRP3_API.extended.formatWeight(weight);
 		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. color("w") .. " " .. formatedWeight;
 
-		if (class.BA.VA or 0) > 0 then
+		if (class.BA.VA or 0) > 0 or (isContainerByClass(class) and (slotInfo.totalValue or 0) > 0) then
 			extension2 = "";
-			local value = class.BA.VA or 0;
-			local formatedValue = GetCoinTextureString(value);
-			extension2 = extension2 .. color("w") .. formatedValue;
+			local value;
+			if isContainerByClass(class) and slotInfo.totalValue then
+				value = slotInfo.totalValue;
+			else
+				value = (class.BA.VA or 0) * (slotInfo.count or 1);
+			end
+			value = GetCoinTextureString(value);
+			extension2 = extension2 .. color("w") .. value;
+
 		end
 
 		text2 = "";

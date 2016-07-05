@@ -60,6 +60,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	INV_PAGE_QUICK_SLOT_TT = "This slot will be used as primary container.",
 	INV_PAGE_ITEM_LOCATION = "Item location on character",
 	INV_PAGE_TOTAL_VALUE = "Total items value",
+	INV_PAGE_TOTAL_VALUE_TT = "This is the value of your inventory.\n\nThis is not the amount of \"coins\" but the estimated total value of all items in the inventory.",
 
 	-- SEC
 	SEC_LEVEL = "Security level",
