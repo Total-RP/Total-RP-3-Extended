@@ -40,12 +40,21 @@ Marshal McBride
 local demoCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,
 
+	MD = {
+		["CD"] = "26/05/16 11:42:07",
+		["CB"] = "TRP3 Team",
+		["SB"] = "TRP3 Team",
+		["MO"] = "EX",
+		["SD"] = "19/06/16 16:14:15",
+		["V"] = 44,
+	},
+
 	-- Base information, common to the whole campaign
 	BA = {
 		IC = "achievement_zone_elwynnForest",
 		NA = "Save Northshire Valley",
 		DE = "Take the arms and defend the abbey.",
-		RA = { 1, 5 },
+		RA = "1 - 5",
 	},
 
 	QE = {
@@ -266,10 +275,19 @@ local demoCampaign = {
 	-- OnStart inner handler
 	OS = "CAMPAIGN_START",
 };
---TRP3_DB.inner.demoCampaign = demoCampaign;
+TRP3_DB.inner.demoCampaign = demoCampaign;
 
 local myFirstCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,
+
+	MD = {
+		["CD"] = "26/05/16 11:42:07",
+		["CB"] = "TRP3 Team",
+		["SB"] = "TRP3 Team",
+		["MO"] = "EX",
+		["SD"] = "19/06/16 16:14:15",
+		["V"] = 44,
+	},
 
 	-- Base information, common to the whole campaign
 	BA = {
@@ -595,4 +613,4 @@ local myFirstCampaign = {
 	-- OnStart inner handler
 	OS = "CAMPAIGN_START",
 };
---TRP3_DB.inner.myFirstCampaign = myFirstCampaign;
+TRP3_DB.inner.myFirstCampaign = myFirstCampaign;

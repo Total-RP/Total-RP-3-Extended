@@ -55,16 +55,16 @@ local setBackground = TRP3_API.extended.tools.setBackground;
 
 local PAGE_BY_TYPE = {
 	[TRP3_DB.types.CAMPAIGN] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_CAMPAIGN") .. ": " .. id;
+		frame = "campaign",
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_CAMPAIGN"),  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 2,
 	},
 	[TRP3_DB.types.QUEST] = {
 		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_QUEST") .. ": " .. id;
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_QUEST"),  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 2,
 	},
@@ -84,8 +84,8 @@ local PAGE_BY_TYPE = {
 	},
 	[TRP3_DB.types.DOCUMENT] = {
 		frame = "document",
-		tabTextGetter = function(id)
-			return loc("TYPE_DOCUMENT") .. ": " .. id;
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_DOCUMENT"),  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 4,
 	},
@@ -467,6 +467,7 @@ local function onStart()
 	TRP3_API.extended.tools.initScript(toolFrame);
 	TRP3_InnerObjectEditor.init(toolFrame);
 	TRP3_API.extended.tools.initDocument(toolFrame);
+	TRP3_API.extended.tools.initCampaign(toolFrame);
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 
