@@ -130,11 +130,6 @@ local function activateCampaign(campaignID, force)
 
 	if init then
 
-		-- Register NPC
-		if campaignClass.ND then
-			TRP3_API.quest.registerNPCs(campaignClass.ND);
-		end
-
 		-- Initial script
 		if campaignClass.OS then
 			local retCode = TRP3_API.script.executeClassScript(campaignClass.OS, campaignClass.SC,
@@ -157,6 +152,13 @@ local function resetCampaign(campaignID)
 end
 
 TRP3_API.quest.resetCampaign = resetCampaign;
+
+local function getCurrentCampaignClass()
+	if playerQuestLog and playerQuestLog.currentCampaign then
+		return getClass(playerQuestLog.currentCampaign);
+	end
+end
+TRP3_API.quest.getCurrentCampaignClass = getCurrentCampaignClass;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT

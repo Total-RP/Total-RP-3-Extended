@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, max, tinsert, strtrim, pairs, assert = wipe, math.max, tinsert, strtrim, pairs, assert;
+local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -46,6 +46,11 @@ local function onIconSelected(icon)
 	main.vignette.selectedIcon = icon;
 end
 
+local function onNPCIconSelected(icon)
+	TRP3_API.ui.frame.setupIconButton(npc.editor.icon, icon);
+	npc.editor.icon.selectedIcon = icon;
+end
+
 local function decorateNPCLine(line, npcID)
 	local data = toolFrame.specificDraft;
 	local npcData = data.ND[npcID];
@@ -54,12 +59,71 @@ local function decorateNPCLine(line, npcID)
 	line.Name:SetText(npcData.NA or UNKNOWN);
 	line.Description:SetText(npcData.DE or "");
 	line.ID:SetText(loc("CA_NPC_ID") .. ": " .. npcID);
-	line.npcID = npcID;
+	line.click.npcID = npcID;
 end
 
 local function refreshNPCList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(npc.list, data.ND, npc.list.slider);
+end
+
+local function newNPC()
+	npc.editor.oldID = nil;
+	npc.editor.id:SetText("");
+	npc.editor.name:SetText("");
+	npc.editor.description.scroll.text:SetText("");
+	onNPCIconSelected(Globals.icons.profile_default);
+	TRP3_API.ui.frame.configureHoverFrame(npc.editor, npc.list.add, "TOP", 0, 5, false);
+end
+
+local function openNPC(npcID, frame)
+	if not npcID then
+		newNPC();
+	else
+		local npcData = toolFrame.specificDraft.ND[npcID];
+		if npcData then
+			npc.editor.oldID = npcID;
+			npc.editor.id:SetText(npcID);
+			npc.editor.name:SetText(npcData.NA or UNKNOWN);
+			npc.editor.description.scroll.text:SetText(npcData.DE or "");
+			onNPCIconSelected(npcData.IC or Globals.icons.profile_default);
+			TRP3_API.ui.frame.configureHoverFrame(npc.editor, frame, "RIGHT", 0, 5, false);
+		else
+			newNPC();
+		end
+	end
+end
+
+local function onNPCSaved()
+	local oldID = npc.editor.oldID;
+	local ID = tostring(tonumber(strtrim(npc.editor.id:GetText())) or 0);
+	local data = {
+		NA = stEtN(strtrim(npc.editor.name:GetText())),
+		DE = stEtN(strtrim(npc.editor.description.scroll.text:GetText())),
+		IC = npc.editor.icon.selectedIcon or Globals.icons.profile_default
+	}
+	if ID then
+		local structure = toolFrame.specificDraft.ND;
+		if oldID and structure[oldID] then
+			wipe(structure[oldID]);
+			structure[oldID] = nil;
+		end
+		structure[ID] = data;
+	end
+
+	refreshNPCList();
+	npc.editor:Hide();
+end
+
+local function removeNPC(id)
+	TRP3_API.popup.showConfirmPopup(loc("CA_NPC_REMOVE"), function()
+		if toolFrame.specificDraft.ND[id] then
+			wipe(toolFrame.specificDraft.ND[id]);
+			toolFrame.specificDraft.ND[id] = nil;
+		end
+		refreshNPCList();
+		npc.editor:Hide();
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -249,12 +313,41 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	for i=1, 4 do
 		local line = npc.list["line" .. i];
 		tinsert(npc.list.widgetTab, line);
-		line.click:SetScript("OnClick", onNPCButtonClick);
+		line.click:SetScript("OnClick", function(self, button)
+			if button == "RightButton" then
+				removeNPC(self.npcID);
+			else
+				openNPC(self.npcID, self);
+			end
+		end);
+		line.click:SetScript("OnEnter", function(self)
+			TRP3_RefreshTooltipForFrame(self);
+			self:GetParent().Highlight:Show();
+		end);
+		line.click:SetScript("OnLeave", function(self)
+			TRP3_MainTooltip:Hide();
+			self:GetParent().Highlight:Hide();
+		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_NPC_UNIT"),
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
 	end
 	npc.list.decorate = decorateNPCLine;
 	TRP3_API.ui.list.handleMouseWheel(npc.list, npc.list.slider);
 	npc.list.slider:SetValue(0);
 	npc.list.add:SetText(loc("CA_NPC_ADD"));
-	npc.list.add:SetScript("OnClick", onAddNPC);
+	npc.list.add:SetScript("OnClick", function() openNPC() end);
+
+	-- Editor
+	npc.editor.title:SetText(loc("CA_NPC_EDITOR"));
+	npc.editor.id.title:SetText(loc("CA_NPC_ID"));
+	setTooltipForSameFrame(npc.editor.id.help, "RIGHT", 0, 5, loc("CA_NPC_ID"), loc("CA_NPC_ID_TT"));
+	npc.editor.name.title:SetText(loc("CA_NPC_EDITOR_NAME"));
+	npc.editor.description.title:SetText(loc("CA_NPC_EDITOR_DESC"));
+	npc.editor.icon:SetScript("OnClick", function(self)
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected});
+	end);
+	npc.editor.save:SetScript("OnClick", function(self)
+		onNPCSaved();
+	end);
 end

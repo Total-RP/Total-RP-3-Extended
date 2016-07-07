@@ -101,11 +101,6 @@ local function startQuest(campaignID, questID)
 
 		activateQuestHandlers(campaignID, campaignClass, questID, questClass);
 
-		-- Register NPC
-		if questClass.ND then
-			TRP3_API.quest.registerNPCs(questClass.ND);
-		end
-
 		-- Initial script
 		if questClass.OS then
 			local retCode = TRP3_API.script.executeClassScript(questClass.OS, questClass.SC,
@@ -153,11 +148,6 @@ local function goToStep(campaignID, questID, stepID)
 	local stepClass = getClass(campaignID, questID, stepID);
 
 	if stepClass then
-
-		-- Register NPC
-		if stepClass.ND then
-			TRP3_API.quest.registerNPCs(stepClass.ND);
-		end
 
 		-- Initial script
 		if stepClass.OS then

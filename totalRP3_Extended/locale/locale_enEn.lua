@@ -135,6 +135,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_STEP_LIST_FINISHED = "Finished quests",
 	QE_STEP_MISSING = "Missing step information.",
 	QE_BUTTON = "Open quest log",
+	QE_NPC = "Campaign NPC",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",
