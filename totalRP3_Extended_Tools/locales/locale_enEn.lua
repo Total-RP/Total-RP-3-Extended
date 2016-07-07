@@ -498,6 +498,8 @@ We should begin with some examples:
 	-- Campaign and quests
 	CA_NPC = "Campaign NPC list",
 	CA_NPC_TT = "You can customize NPCs to give them a name, an icon and a description.\nThis customization will be visible when the player has your campaign as active.",
+	CA_NPC_ADD = "Add custom NPC",
+	CA_NPC_ID = "NPC ID",
 	CA_NAME_NEW = "New campaign",
 	CA_NAME = "Campaign name",
 	CA_NAME_TT = "This is the name of your campaign. It appears on the quest log.",

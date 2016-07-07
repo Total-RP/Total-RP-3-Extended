@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, max, tonumber, strtrim, pairs, assert = wipe, math.max, tonumber, strtrim, pairs, assert;
+local wipe, max, tinsert, strtrim, pairs, assert = wipe, math.max, tinsert, strtrim, pairs, assert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -44,6 +44,22 @@ local tabGroup, currentTab;
 local function onIconSelected(icon)
 	main.vignette.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
 	main.vignette.selectedIcon = icon;
+end
+
+local function decorateNPCLine(line, npcID)
+	local data = toolFrame.specificDraft;
+	local npcData = data.ND[npcID];
+
+	TRP3_API.ui.frame.setupIconButton(line.Icon, npcData.IC or Globals.icons.profile_default);
+	line.Name:SetText(npcData.NA or UNKNOWN);
+	line.Description:SetText(npcData.DE or "");
+	line.ID:SetText(loc("CA_NPC_ID") .. ": " .. npcID);
+	line.npcID = npcID;
+end
+
+local function refreshNPCList()
+	local data = toolFrame.specificDraft;
+	TRP3_API.ui.list.initList(npc.list, data.ND, npc.list.slider);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -87,6 +103,9 @@ local function load()
 	if not data.BA then
 		data.BA = {};
 	end
+	if not data.ND then
+		data.ND = {};
+	end
 
 	main.name:SetText(data.BA.NA or "");
 	main.description.scroll.text:SetText(data.BA.DE or "");
@@ -114,7 +133,6 @@ local function saveToDraft()
 	data.BA.IC = main.vignette.selectedIcon;
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
 	storeDataScript();
-
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -137,6 +155,7 @@ local function onTabChanged(tabWidget, tab)
 		main:Show();
 		notes:Show();
 		npc:Show();
+		refreshNPCList();
 	elseif currentTab == TABS.WORKFLOWS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.campaign.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
@@ -224,4 +243,18 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	npc = toolFrame.campaign.normal.npc;
 	npc.title:SetText(loc("CA_NPC"));
 	npc.help:SetText(loc("CA_NPC_TT"));
+
+	-- List
+	npc.list.widgetTab = {};
+	for i=1, 4 do
+		local line = npc.list["line" .. i];
+		tinsert(npc.list.widgetTab, line);
+		line.click:SetScript("OnClick", onNPCButtonClick);
+		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	end
+	npc.list.decorate = decorateNPCLine;
+	TRP3_API.ui.list.handleMouseWheel(npc.list, npc.list.slider);
+	npc.list.slider:SetValue(0);
+	npc.list.add:SetText(loc("CA_NPC_ADD"));
+	npc.list.add:SetScript("OnClick", onAddNPC);
 end

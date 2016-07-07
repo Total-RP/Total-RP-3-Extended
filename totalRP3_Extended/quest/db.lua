@@ -57,6 +57,15 @@ local demoCampaign = {
 		RA = "1 - 5",
 	},
 
+	-- Initial campaign NPC declaration
+	ND = {
+		["196"] = {
+			IC = "inv_misc_1h_lumberaxe_a_01",
+			NA = "Mysterious lumberjack",
+			DE = "Who could be this guy ?"
+		}
+	},
+
 	QE = {
 		["quest1"] = {
 			TY = TRP3_DB.types.QUEST,
@@ -66,15 +75,6 @@ local demoCampaign = {
 				IC = "ability_warrior_strengthofarms",
 				NA = "To arms!",
 				DE = "Succeed the registration test.",
-			},
-
-			-- Initial campaign NPC declaration
-			ND = {
-				["196"] = {
-					IC = "inv_misc_1h_lumberaxe_a_01",
-					NA = "Mysterious lumberjack",
-					DE = "Who could be this guy ?"
-				}
 			},
 
 			-- Objectives
