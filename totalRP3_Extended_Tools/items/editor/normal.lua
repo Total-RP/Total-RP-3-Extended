@@ -23,7 +23,7 @@ local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local toolFrame, currentTab, display, gameplay, notes, container, tabGroup;
 
 local TABS = {
@@ -85,7 +85,7 @@ local function loadDataMain()
 	end
 
 	display.name:SetText(data.BA.NA or "");
-	display.description:SetText(data.BA.DE or "");
+	display.description.scroll.text:SetText(data.BA.DE or "");
 	display.quality:SetSelectedValue(data.BA.QA or LE_ITEM_QUALITY_COMMON);
 	display.left:SetText(data.BA.LE or "");
 	display.right:SetText(data.BA.RI or "");
@@ -114,7 +114,7 @@ end
 local function storeDataMain()
 	local data = toolFrame.specificDraft;
 	data.BA.NA = stEtN(strtrim(display.name:GetText()));
-	data.BA.DE = stEtN(strtrim(display.description:GetText()));
+	data.BA.DE = stEtN(strtrim(display.description.scroll.text:GetText()));
 	data.BA.LE = stEtN(strtrim(display.left:GetText()));
 	data.BA.RI = stEtN(strtrim(display.right:GetText()));
 	data.BA.QA = display.quality:GetSelectedValue() or LE_ITEM_QUALITY_COMMON;
@@ -349,7 +349,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 
 	-- Description
 	display.description.title:SetText(loc("IT_TT_DESCRIPTION"));
-	setTooltipForSameFrame(display.description.help, "RIGHT", 0, 5, loc("IT_TT_DESCRIPTION"), loc("IT_TT_DESCRIPTION_TT"));
+	setTooltipAll(display.description.dummy, "RIGHT", 0, 5, loc("IT_TT_DESCRIPTION"), loc("IT_TT_DESCRIPTION_TT"));
 
 	-- Component
 	display.component.Text:SetText(loc("IT_TT_REAGENT"));

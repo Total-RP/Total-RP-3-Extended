@@ -56,30 +56,40 @@
 				</Anchors>
 			</EditBox>
 
-			<EditBox parentKey="description" inherits="TRP3_TitledHelpEditBox">
-				<Size x="0" y="18"/>
+			<Frame parentKey="description" inherits="TRP3_TextArea">
+				<Size x="0" y="75"/>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="10" y="12"/>
+								<Anchor point="TOPRIGHT" x="0" y="12"/>
+							</Anchors>
+							<Color r="0.95" g="0.75" b="0.1"/>
+						</FontString>
+					</Layer>
+				</Layers>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.left"/>
-					<Anchor point="RIGHT" x="-35" y="0"/>
+					<Anchor point="TOPLEFT" x="-8" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.left"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
 				</Anchors>
-			</EditBox>
+			</Frame>
 
 			<CheckButton parentKey="component" inherits="TRP3_CheckBox" name="$parentComponent">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="-8" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.description"/>
+					<Anchor point="TOPLEFT" x="8" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.description"/>
 				</Anchors>
 			</CheckButton>
 
 			<CheckButton parentKey="quest" inherits="TRP3_CheckBox" name="$parentQuest">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.component"/>
+					<Anchor point="TOPLEFT" x="-8" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.right"/>
 				</Anchors>
 			</CheckButton>
 
 			<CheckButton parentKey="crafted" inherits="TRP3_CheckBox" name="$parentCrafted">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="0" relativePoint="TOP" relativeKey="$parent.component"/>
-					<Anchor point="LEFT" relativePoint="CENTER" x="7" y="0"/>
+					<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.quest"/>
 				</Anchors>
 			</CheckButton>
 
