@@ -19,13 +19,13 @@
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
 local tsize = Utils.table.size;
-local getClass = TRP3_API.extended.getClass;
+local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color = Utils.str.color;
-local toolFrame, main, pages, params, manager, notes, npc;
+local toolFrame, main, pages, params, manager, notes, npc, quests;
 
 local TABS = {
 	MAIN = 1,
@@ -38,7 +38,7 @@ local TABS = {
 local tabGroup, currentTab;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Main tab
+-- NPC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onIconSelected(icon)
@@ -65,6 +65,10 @@ end
 local function refreshNPCList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(npc.list, data.ND, npc.list.slider);
+	npc.list.empty:Hide();
+	if tsize(data.ND) == 0 then
+		npc.list.empty:Show();
+	end
 end
 
 local function newNPC()
@@ -127,6 +131,55 @@ local function removeNPC(id)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- QUESTS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function decorateQuestLine(line, questID)
+	local data = toolFrame.specificDraft;
+	local questData = data.QE[questID];
+
+	TRP3_API.ui.frame.setupIconButton(line.Icon, questData.BA.IC or Globals.icons.default);
+	line.Name:SetText(questData.BA.NA or UNKNOWN);
+	line.Description:SetText(questData.BA.DE or "");
+	line.ID:SetText(questID);
+	line.click.questID = questID;
+end
+
+local function refreshQuestsList()
+	local data = toolFrame.specificDraft;
+	TRP3_API.ui.list.initList(quests.list, data.QE or EMPTY, quests.list.slider);
+	quests.list.empty:Hide();
+	if tsize(data.QE) == 0 then
+		quests.list.empty:Show();
+	end
+end
+
+local function removeQuest(questID)
+	TRP3_API.popup.showConfirmPopup(loc("CA_QUEST_REMOVE"), function()
+		if toolFrame.specificDraft.QE[questID] then
+			wipe(toolFrame.specificDraft.QE[questID]);
+			toolFrame.specificDraft.QE[questID] = nil;
+		end
+		refreshQuestsList();
+	end);
+end
+
+local function openQuest(questID)
+	TRP3_API.extended.tools.goToPage(getFullID(toolFrame.fullClassID, questID));
+end
+
+local function createQuest()
+	TRP3_API.popup.showTextInputPopup(loc("CA_QUEST_CREATE"), function(value)
+		if not toolFrame.specificDraft.QE[value] then
+			toolFrame.specificDraft.QE[value] = TRP3_API.extended.tools.getQuestData();
+			refreshQuestsList();
+		else
+			Utils.message.displayMessage(loc("CA_QUEST_EXIST"):format(value), 4);
+		end
+	end);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script & inner tabs
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -170,6 +223,9 @@ local function load()
 	if not data.ND then
 		data.ND = {};
 	end
+	if not data.QE then
+		data.QE = {};
+	end
 
 	main.name:SetText(data.BA.NA or "");
 	main.description.scroll.text:SetText(data.BA.DE or "");
@@ -211,6 +267,7 @@ local function onTabChanged(tabWidget, tab)
 	main:Hide();
 	npc:Hide();
 	notes:Hide();
+	quests:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
 
@@ -225,7 +282,8 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_ScriptEditorNormal:SetAllPoints();
 		TRP3_ScriptEditorNormal:Show();
 	elseif currentTab == TABS.QUESTS then
-
+		quests:Show();
+		refreshQuestsList();
 	elseif currentTab == TABS.INNER then
 		TRP3_InnerObjectEditor:SetParent(toolFrame.campaign.normal);
 		TRP3_InnerObjectEditor:SetAllPoints();
@@ -337,6 +395,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	npc.list.slider:SetValue(0);
 	npc.list.add:SetText(loc("CA_NPC_ADD"));
 	npc.list.add:SetScript("OnClick", function() openNPC() end);
+	npc.list.empty:SetText(loc("CA_NO_NPC"));
 
 	-- Editor
 	npc.editor.title:SetText(loc("CA_NPC_EDITOR"));
@@ -350,4 +409,44 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	npc.editor.save:SetScript("OnClick", function(self)
 		onNPCSaved();
 	end);
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- QUEST
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	quests = toolFrame.campaign.normal.quests;
+	quests.title:SetText(loc("QE_QUESTS"));
+	quests.help:SetText(loc("QE_QUESTS_HELP"));
+
+	-- List
+	quests.list.widgetTab = {};
+	for i=1, 4 do
+		local line = quests.list["line" .. i];
+		tinsert(quests.list.widgetTab, line);
+		line.click:SetScript("OnClick", function(self, button)
+			if button == "RightButton" then
+				removeQuest(self.questID);
+			else
+				openQuest(self.questID);
+			end
+		end);
+		line.click:SetScript("OnEnter", function(self)
+			TRP3_RefreshTooltipForFrame(self);
+			self:GetParent().Highlight:Show();
+		end);
+		line.click:SetScript("OnLeave", function(self)
+			TRP3_MainTooltip:Hide();
+			self:GetParent().Highlight:Hide();
+		end);
+		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("TYPE_QUEST"),
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+	end
+	quests.list.decorate = decorateQuestLine;
+	TRP3_API.ui.list.handleMouseWheel(quests.list, quests.list.slider);
+	quests.list.slider:SetValue(0);
+	quests.list.add:SetText(loc("CA_QUEST_ADD"));
+	quests.list.add:SetScript("OnClick", function() createQuest() end);
+	quests.list.empty:SetText(loc("CA_QUEST_NO"));
+
 end

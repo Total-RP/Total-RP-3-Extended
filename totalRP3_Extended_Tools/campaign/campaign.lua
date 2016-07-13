@@ -59,6 +59,18 @@ function TRP3_API.extended.tools.getCampaignData()
 	return data;
 end
 
+function TRP3_API.extended.tools.getQuestData()
+	local data = {
+		TY = TRP3_DB.types.QUEST,
+		BA = {
+			NA = loc("QE_NAME_NEW"),
+			IC = "achievement_quests_completed_07"
+		},
+		ST = {},
+		OB = {}
+	}
+	return data;
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Campaign base frame
