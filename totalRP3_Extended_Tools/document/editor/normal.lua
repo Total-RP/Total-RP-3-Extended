@@ -24,7 +24,7 @@ local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolFrame, main, pages, params, manager, links;
+local toolFrame, main, pages, params, manager, linksStructure;
 
 local TABS = {
 	MAIN = 1,
@@ -116,54 +116,6 @@ local function removePage()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Expert tab
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local LINK_LIST_WIDTH = 300
-
-local function safeLoadList(list, keys, key)
-	if tContains(keys, key) then
-		list:SetSelectedValue(key);
-	else
-		list:SetSelectedValue("");
-	end
-end
-
-local function loadExpertTab()
-
-	local workflowListStructure = {
-		{loc("WO_LINKS_SELECT")},
-		{loc("WO_LINKS_NO_LINKS"), "", loc("WO_LINKS_NO_LINKS_TT")},
-	}
-
-	local workflowIDs = {};
-	for workflowID, _ in pairs(toolFrame.specificDraft.SC) do
-		tinsert(workflowIDs, workflowID);
-	end
-	table.sort(workflowIDs);
-
-	for _, workflowID in pairs(workflowIDs) do
-		tinsert(workflowListStructure, {TRP3_API.formats.dropDownElements:format(loc("WO_LINKS_TO"), workflowID), workflowID});
-	end
-
-	local data = toolFrame.specificDraft;
-	if not data.LI then
-		data.LI = {};
-	end
-
-	TRP3_API.ui.listbox.setupListBox(links.on_open.select, workflowListStructure, function(value)
-		data.LI.OO = value;
-	end, nil, LINK_LIST_WIDTH, true);
-	safeLoadList(links.on_open.select, workflowIDs, data.LI.OO or "");
-
-	TRP3_API.ui.listbox.setupListBox(links.on_close.select, workflowListStructure, function(value)
-		data.LI.OC = value;
-	end, nil, LINK_LIST_WIDTH, true);
-	safeLoadList(links.on_close.select, workflowIDs, data.LI.OC or "");
-
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script tab
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -198,8 +150,8 @@ local function onTabChanged(tabWidget, tab)
 	params:Hide();
 	pages:Hide();
 	manager:Hide();
-	links:Hide();
 	TRP3_ScriptEditorNormal:Hide();
+	TRP3_LinksEditor:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
@@ -212,8 +164,10 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_ScriptEditorNormal:SetAllPoints();
 		TRP3_ScriptEditorNormal:Show();
 	elseif currentTab == TABS.EXPERT then
-		links:Show();
-		loadExpertTab();
+		TRP3_LinksEditor:SetParent(toolFrame.document.normal);
+		TRP3_LinksEditor:SetAllPoints();
+		TRP3_LinksEditor:Show();
+		TRP3_LinksEditor.load(linksStructure);
 	end
 
 	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
@@ -228,7 +182,7 @@ local function createTabBar()
 		{
 			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
 			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
-			{ loc("MODE_EXPERT"), TABS.EXPERT, 150 },
+			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -271,7 +225,7 @@ local function load()
 	loadPage(1);
 
 	loadDataScript();
-	loadExpertTab();
+	TRP3_LinksEditor.load(linksStructure);
 
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
 end
@@ -409,16 +363,19 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	manager.last:SetScript("OnClick", function() loadPage(#toolFrame.specificDraft.PA); end);
 
 	-- Workflows links
-	links = toolFrame.document.normal.links;
-	links.title:SetText(loc("WO_LINKS"));
-	links.triggers:SetText(loc("WO_LINKS_TRIGGERS"));
-
-	links.on_open.Name:SetText(loc("DO_LINKS_ONOPEN"));
-	links.on_open.Icon:SetTexture("Interface\\ICONS\\ability_warlock_soullink");
-	setTooltipForSameFrame(links.on_open, "TOP", 0, -5, loc("DO_LINKS_ONOPEN"), loc("DO_LINKS_ONOPEN_TT"));
-
-	links.on_close.Name:SetText(loc("DO_LINKS_ONCLOSE"));
-	links.on_close.Icon:SetTexture("Interface\\ICONS\\ability_warlock_soullink");
-	setTooltipForSameFrame(links.on_close, "TOP", 0, -5, loc("DO_LINKS_ONCLOSE"), loc("DO_LINKS_ONCLOSE_TT"));
+	linksStructure = {
+		{
+			text = loc("DO_LINKS_ONOPEN"),
+			tt = loc("DO_LINKS_ONOPEN_TT"),
+			icon = "Interface\\ICONS\\ability_warlock_soullink",
+			field = "OO",
+		},
+		{
+			text = loc("DO_LINKS_ONCLOSE"),
+			tt = loc("DO_LINKS_ONCLOSE_TT"),
+			icon = "Interface\\ICONS\\ability_warlock_soullink",
+			field = "OC",
+		}
+	}
 
 end

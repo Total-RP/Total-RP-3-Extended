@@ -469,7 +469,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.bottom.campaign.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TT"));
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.campaign, "achievement_quests_completed_07");
 	ToolFrame.list.bottom.campaign:SetScript("OnClick", function()
-		local ID, _ = TRP3_API.extended.tools.createCampaign(TRP3_API.extended.tools.getCampaignData());
+		local ID = Utils.str.id();
+		local ID, _ = TRP3_API.extended.tools.createCampaign(TRP3_API.extended.tools.getCampaignData(ID), ID);
 		TRP3_API.extended.tools.goToPage(ID);
 	end);
 

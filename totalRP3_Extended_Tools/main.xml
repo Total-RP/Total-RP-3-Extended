@@ -22,6 +22,7 @@
 
 	<Include file="script/script.xml"/>
 	<Include file="inner/inner.xml"/>
+	<Include file="links/links.xml"/>
 	<Include file="items/items.xml"/>
 	<Include file="document/document.xml"/>
 	<Include file="campaign/campaign.xml"/>

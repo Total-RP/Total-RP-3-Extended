@@ -523,4 +523,7 @@ We should begin with some examples:
 	CA_QUEST_EXIST = "There is already a quest with the ID %s.",
 	QE_NAME_NEW = "New quest",
 	CA_QUEST_CREATE = "Please enter the quest ID. You can't have two quests with the same ID within the same campaign.",
+	CA_LINKS_ON_START = "On start",
+	CA_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your campaign, so activating your campaign for the first time, or reset it in the quest log.\n\n|cff00ff00This is a good place to activate your first quest.",
+
 };

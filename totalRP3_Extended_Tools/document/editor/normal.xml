@@ -247,47 +247,6 @@
 				</Frames>
 			</Frame>
 
-			<Frame parentKey="links" inherits="TRP3_EditorTitledFrame">
-
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-5"/>
-					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="0" y="0"/>
-					<Anchor point="BOTTOM" x="0" y="5"/>
-				</Anchors>
-
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="triggers" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE">
-							<Size x="0" y="30"/>
-							<Anchors>
-								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
-								<Anchor point="RIGHT" x="-10" y="0"/>
-								<Anchor point="LEFT" x="10" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-					</Layer>
-				</Layers>
-
-				<Frames>
-					<Button parentKey="on_open" inherits="TRP3_WorkflowLinkButton" name="$parentOnOpen">
-						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.triggers" x="0" y="-17"/>
-							<Anchor point="LEFT" x="50" y="0"/>
-						</Anchors>
-					</Button>
-
-					<Button parentKey="on_close" inherits="TRP3_WorkflowLinkButton">
-						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.on_open" x="0" y="-40"/>
-							<Anchor point="LEFT" x="50" y="0"/>
-						</Anchors>
-					</Button>
-				</Frames>
-
-			</Frame>
-
 		</Frames>
 
 	</Frame>

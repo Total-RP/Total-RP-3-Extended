@@ -35,7 +35,7 @@ local TABS = {
 	EXPERT = 5
 }
 
-local tabGroup, currentTab;
+local tabGroup, currentTab, linksStructure;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC
@@ -180,7 +180,7 @@ local function createQuest()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Script & inner tabs
+-- Script & inner & links tabs
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function loadDataScript()
@@ -239,6 +239,7 @@ local function load()
 
 	loadDataScript();
 	loadDataInner();
+	TRP3_LinksEditor.load(linksStructure);
 
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
 end
@@ -270,6 +271,7 @@ local function onTabChanged(tabWidget, tab)
 	quests:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
+	TRP3_LinksEditor:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
@@ -288,6 +290,11 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_InnerObjectEditor:SetParent(toolFrame.campaign.normal);
 		TRP3_InnerObjectEditor:SetAllPoints();
 		TRP3_InnerObjectEditor:Show();
+	elseif currentTab == TABS.EXPERT then
+		TRP3_LinksEditor:SetParent(toolFrame.campaign.normal);
+		TRP3_LinksEditor:SetAllPoints();
+		TRP3_LinksEditor:Show();
+		TRP3_LinksEditor.load(linksStructure);
 	end
 
 	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
@@ -304,7 +311,7 @@ local function createTabBar()
 			{ loc("QE_QUESTS"), TABS.QUESTS, 150 },
 			{ loc("IN_INNER"), TABS.INNER, 150 },
 			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
-			{ loc("WO_EXPERT"), TABS.EXPERT, 150 },
+			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -448,5 +455,15 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	quests.list.add:SetText(loc("CA_QUEST_ADD"));
 	quests.list.add:SetScript("OnClick", function() createQuest() end);
 	quests.list.empty:SetText(loc("CA_QUEST_NO"));
+
+	-- Links
+	linksStructure = {
+		{
+			text = loc("CA_LINKS_ON_START"),
+			tt = loc("CA_LINKS_ON_START_TT"),
+			icon = "Interface\\ICONS\\achievement_quests_completed_08",
+			field = "OS",
+		}
+	}
 
 end

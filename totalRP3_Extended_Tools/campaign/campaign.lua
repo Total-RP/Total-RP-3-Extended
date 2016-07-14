@@ -39,7 +39,20 @@ local function createCampaign(data, ID)
 end
 TRP3_API.extended.tools.createCampaign = createCampaign;
 
-function TRP3_API.extended.tools.getCampaignData()
+function TRP3_API.extended.tools.getQuestData()
+	local data = {
+		TY = TRP3_DB.types.QUEST,
+		BA = {
+			NA = loc("QE_NAME_NEW"),
+			IC = "achievement_quests_completed_07"
+		},
+		ST = {},
+		OB = {}
+	}
+	return data;
+end
+
+function TRP3_API.extended.tools.getCampaignData(campaignID)
 	local data = {
 		TY = TRP3_DB.types.CAMPAIGN,
 		MD = {
@@ -55,19 +68,27 @@ function TRP3_API.extended.tools.getCampaignData()
 			RA = "1 - 100",
 			IC = "achievement_quests_completed_06"
 		},
-	}
-	return data;
-end
-
-function TRP3_API.extended.tools.getQuestData()
-	local data = {
-		TY = TRP3_DB.types.QUEST,
-		BA = {
-			NA = loc("QE_NAME_NEW"),
-			IC = "achievement_quests_completed_07"
+		QE = {
+			first_quest = TRP3_API.extended.tools.getQuestData(),
 		},
-		ST = {},
-		OB = {}
+		LI = {
+			OS = "on_start"
+		},
+		SC = {
+			on_start = {
+				ST = {
+					["1"] = {
+						t = "list",
+						e = {
+							{
+								id = "quest_start",
+								args = { campaignID, "first_quest" }
+							},
+						}
+					},
+				},
+			}
+		}
 	}
 	return data;
 end
