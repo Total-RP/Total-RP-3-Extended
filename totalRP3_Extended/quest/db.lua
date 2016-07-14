@@ -273,7 +273,9 @@ local demoCampaign = {
 	},
 
 	-- OnStart inner handler
-	OS = "CAMPAIGN_START",
+	LI = {
+		OS = "CAMPAIGN_START"
+	}
 };
 TRP3_DB.inner.demoCampaign = demoCampaign;
 
@@ -611,6 +613,8 @@ local myFirstCampaign = {
 	},
 
 	-- OnStart inner handler
-	OS = "CAMPAIGN_START",
+	LI = {
+		OS = "CAMPAIGN_START"
+	}
 };
 TRP3_DB.inner.myFirstCampaign = myFirstCampaign;

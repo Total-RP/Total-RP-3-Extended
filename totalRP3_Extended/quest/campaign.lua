@@ -131,9 +131,9 @@ local function activateCampaign(campaignID, force)
 	if init then
 
 		-- Initial script
-		if campaignClass.OS then
-			local retCode = TRP3_API.script.executeClassScript(campaignClass.OS, campaignClass.SC,
-				{ campaignID = campaignID, campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID] });
+		if campaignClass.LI and campaignClass.LI.OS then
+			local retCode = TRP3_API.script.executeClassScript(campaignClass.LI.OS, campaignClass.SC,
+				{ classID = campaignID, class = campaignClass, object = playerQuestLog[campaignID] }, campaignID);
 		end
 
 	end

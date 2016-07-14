@@ -136,6 +136,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_STEP_MISSING = "Missing step information.",
 	QE_BUTTON = "Open quest log",
 	QE_NPC = "Campaign NPC",
+	QE_RESET_CONFIRM = "Reset this campaign?\n\nThis will lose all your progression for ALL the quests in this campaign.\n\nNote that you will keep all items you gained through this campaign.",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",

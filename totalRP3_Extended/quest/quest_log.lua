@@ -38,7 +38,9 @@ local TAB_STEPS = "steps";
 local function onCampaignActionSelected(value, button)
 	assert(button.campaignID, "No campaign ID in button");
 	if value == 1 then
-		TRP3_API.quest.resetCampaign(button.campaignID);
+		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
+			TRP3_API.quest.resetCampaign(button.campaignID);
+		end);
 	elseif value == 2 then
 		TRP3_API.quest.activateCampaign(button.campaignID);
 	end
@@ -52,6 +54,7 @@ local function onCampaignButtonClick(button, mouseButton)
 		goToPage(false, TAB_QUESTS, campaignID, campaignName);
 	else
 		local values = {};
+		tinsert(values, {campaignName});
 		tinsert(values, {loc("QE_CAMPAIGN_RESET"), 1});
 		tinsert(values, {loc("QE_CAMPAIGN_START_BUTTON"), 2});
 		TRP3_API.ui.listbox.displayDropDown(button, values, onCampaignActionSelected, 0, true);
@@ -95,7 +98,9 @@ local function decorateCampaignButton(button, campaignID, campaignClass, onCampa
 
 	local createdBy = "|cff00ff00%s: %s|r\n\n";
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(button, "TOP", 0, 5, campaignName,
-		createdBy:format(loc("DB_FILTERS_OWNER"), author) .. campaignDescription);
+		createdBy:format(loc("DB_FILTERS_OWNER"), author) .. campaignDescription .. "\n\n"
+		.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_OPEN")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS"))
+	);
 
 	button.campaignID = campaignID;
 	button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
