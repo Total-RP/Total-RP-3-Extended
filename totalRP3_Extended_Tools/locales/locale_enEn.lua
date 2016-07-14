@@ -145,7 +145,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_USE = "Usable",
 	IT_ON_USE = "On use",
 	IT_ON_USE_TT = "This workflow will be triggered when the player uses this item.",
-	IT_USE_TT = "Allow this item to be usable.\n\n|cff00ff00You can configure the item use effect in the 'On use' tab of this editor.",
+	IT_USE_TT = "Allow this item to be usable.\n\n|cff00ff00You can configure the item use effect in the 'Workflow' tab of this editor.",
 	IT_USE_TEXT = "Usage text",
 	IT_USE_TEXT_TT = "This text, explaining the effect for using this item, will appears in the tooltip.",
 	IT_WEARABLE = "Wearable",
@@ -162,6 +162,8 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	IT_WARNING_2 = "Shouldn't make a stackable container. (%s)",
 	IT_CO_ONLY_INNER = "Can only contain inner items",
 	IT_CO_ONLY_INNER_TT = "Marks this container to be able to contain only children items from the same root object.\n\nAs for now, only container with this option enabled can be traded while containing items.",
+	IT_TRIGGER_ON_USE = "On use",
+	IT_TRIGGER_ON_USE_TT = "Triggered each time the player use this item.\n\n|cff00ff00Don't forget to make your item usable in the main tab.",
 
 	-- Documents
 	DO_NEW_DOC = "New document",

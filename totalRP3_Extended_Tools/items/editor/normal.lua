@@ -24,7 +24,7 @@ local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
-local toolFrame, currentTab, display, gameplay, notes, container, tabGroup;
+local toolFrame, currentTab, display, gameplay, notes, container, tabGroup, linksStructure;
 
 local TABS = {
 	MAIN = 1,
@@ -249,6 +249,7 @@ local function onTabChanged(tabWidget, tab)
 	container:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
+	TRP3_LinksEditor:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
@@ -266,6 +267,11 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_InnerObjectEditor:SetParent(toolFrame.item.normal);
 		TRP3_InnerObjectEditor:SetAllPoints();
 		TRP3_InnerObjectEditor:Show();
+	elseif currentTab == TABS.EXPERT then
+		TRP3_LinksEditor:SetParent(toolFrame.item.normal);
+		TRP3_LinksEditor:SetAllPoints();
+		TRP3_LinksEditor:Show();
+		TRP3_LinksEditor.load(linksStructure);
 	end
 
 	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
@@ -282,7 +288,7 @@ local function createTabBar()
 			{ loc("WO_WORKFLOW"), TABS.EFFECTS, 150 },
 			{ loc("IT_CON"), TABS.CONTAINER, 150 },
 			{ loc("IN_INNER"), TABS.INNER, 150 },
-			{ loc("WO_EXPERT"), TABS.EXPERT, 150 },
+			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -481,5 +487,27 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 		preview.LockIcon:Hide();
 		TRP3_API.ui.frame.createRefreshOnFrame(preview, 0.25, onContainerFrameUpdate);
 	end
+
+	-- Expert
+	linksStructure = {
+		{
+			text = loc("IT_TRIGGER_ON_USE"),
+			tt = loc("IT_TRIGGER_ON_USE_TT"),
+			icon = "Interface\\ICONS\\achievement_quests_completed_08",
+			field = "OU",
+		},
+		{
+			text = "On destroy",
+			tt = "",
+			icon = "Interface\\ICONS\\achievement_quests_completed_08",
+			field = "OD",
+		},
+		{
+			text = "On give/drop",
+			tt = "",
+			icon = "Interface\\ICONS\\achievement_quests_completed_08",
+			field = "OG",
+		},
+	}
 
 end
