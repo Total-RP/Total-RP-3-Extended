@@ -462,8 +462,12 @@ local function onStart()
 	setTooltipForSameFrame(toolFrame.navBar.home, "TOP", 0, 5, loc("DB"), loc("DB_WARNING"));
 	NavBar_Initialize(toolFrame.navBar, "NavButtonTemplate", homeData, toolFrame.navBar.home, toolFrame.navBar.overflow);
 
-	-- Init tabs
+	-- Init effects and operands
 	TRP3_API.extended.tools.initBaseEffects();
+	TRP3_API.extended.tools.initCampaignEffects();
+	TRP3_API.extended.tools.initItemEffects();
+
+	-- Init editors
 	TRP3_API.extended.tools.initScript(toolFrame);
 	TRP3_InnerObjectEditor.init(toolFrame);
 	TRP3_LinksEditor.init(toolFrame);

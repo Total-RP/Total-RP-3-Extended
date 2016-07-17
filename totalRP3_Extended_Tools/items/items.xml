@@ -41,4 +41,158 @@
 		</Frames>
 	</Frame>
 
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--     EFFECTS AND OPERANDS     -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorItemBagDurability" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="method" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="amount" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.method" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorDocumentShow" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorItemRemove" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
+			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox" numeric="true">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-50"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-20" y="-10"/>
+				</Anchors>
+			</Frame>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorItemAdd" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="275"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
+			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox" numeric="true">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-50"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-20" y="-10"/>
+				</Anchors>
+			</Frame>
+
+			<CheckButton parentKey="crafted" inherits="TRP3_CheckBox" name="$parentCrafted">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="20" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.source"/>
+				</Anchors>
+			</CheckButton>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorItemCooldown" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<EditBox parentKey="time" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorItemSelection" hidden="true">
+		<Frames>
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-40"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Script file="items/effects.lua"/>
+
 </Ui>

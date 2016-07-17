@@ -30,7 +30,6 @@ local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
 local getUnitText = TRP3_API.extended.tools.getUnitText;
 
 local unitTypeEditor, stringEditor, numericEditor = TRP3_OperandEditorUnitType, TRP3_OperandEditorString, TRP3_OperandEditorNumeric;
-local itemSelectionEditor = TRP3_OperandEditorItemSelection;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Shared editors
@@ -50,27 +49,6 @@ local function initEnitTypeEditor()
 
 	function unitTypeEditor.save()
 		return {unitTypeEditor.type:GetSelectedValue() or "target"};
-	end
-end
-
-local function initItemSelectionEditor()
-
-	itemSelectionEditor.browse:SetText(BROWSE);
-	itemSelectionEditor.browse:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = itemSelectionEditor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
-			itemSelectionEditor.id:SetText(id);
-		end, TRP3_DB.types.ITEM});
-	end);
-
-	-- Text
-	itemSelectionEditor.id.title:SetText(loc("ITEM_ID"));
-
-	function itemSelectionEditor.load(args)
-		itemSelectionEditor.id:SetText((args or EMPTY)[1] or "");
-	end
-
-	function itemSelectionEditor.save()
-		return {strtrim(itemSelectionEditor.id:GetText()) or ""};
 	end
 end
 
@@ -352,43 +330,12 @@ local function unit_is_dead_init()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Inventory
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function inv_item_count_init()
-	registerOperandEditor("inv_item_count", {
-		title = loc("OP_OP_INV_COUNT"),
-		description = loc("OP_OP_INV_COUNT_TT"),
-		returnType = 0,
-		getText = function(args)
-			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_INV_COUNT_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id)) .. "|cffffff00");
-		end,
-		editor = itemSelectionEditor,
-	});
-end
-
-local function inv_item_count_con_init()
-	registerOperandEditor("inv_item_count_con", {
-		title = loc("OP_OP_INV_COUNT_CON"),
-		description = loc("OP_OP_INV_COUNT_CON_TT"),
-		returnType = 0,
-		getText = function(args)
-			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_INV_COUNT_CON_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id)) .. "|cffffff00");
-		end,
-		editor = itemSelectionEditor,
-	});
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_ConditionEditor.initOperands()
 
 	initEnitTypeEditor();
-	initItemSelectionEditor();
 
 	string_init();
 	boolean_init();
@@ -416,7 +363,4 @@ function TRP3_ConditionEditor.initOperands()
 	unit_is_player_init();
 	unit_is_dead_init();
 
-	-- Inventory
-	inv_item_count_init();
-	inv_item_count_con_init();
 end
