@@ -151,6 +151,16 @@ local function registerObject(objectFullID, object, count, registerTo)
 		count = registerObject(getFullID(objectFullID, childID), childClass, count, registerTo);
 	end
 
+	-- Quest
+	for childID, childClass in pairs(object.QE or EMPTY) do
+		count = registerObject(getFullID(objectFullID, childID), childClass, count, registerTo);
+	end
+
+	-- Quest step
+	for childID, childClass in pairs(object.ST or EMPTY) do
+		count = registerObject(getFullID(objectFullID, childID), childClass, count, registerTo);
+	end
+
 	return count + 1;
 end
 TRP3_API.extended.registerObject = registerObject;
@@ -207,14 +217,6 @@ local function registerDB(db, count, registerTo)
 	-- Register object
 	for id, object in pairs(db or EMPTY) do
 		count = registerObject(id, object, count, registerTo);
-		-- Quests
-		for questID, quest in pairs(object.QE or EMPTY) do
-			count = registerObject(getFullID(id, questID), quest, count, registerTo);
-			-- Steps
-			for stepID, step in pairs(quest.ST or EMPTY) do
-				count = registerObject(getFullID(id, questID, stepID), step, count, registerTo);
-			end
-		end
 	end
 	return count;
 end

@@ -253,6 +253,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_CAT_SOUND = "Sound and music",
 	EFFECT_CAT_SPEECH = "Speech and emotes",
 	EFFECT_CAT_DEBUG = "Debug",
+	EFFECT_CAT_CAMPAIGN = "Campaign and quest",
 	EFFECT_TEXT = "Display text",
 	EFFECT_TEXT_TT = "Displays a text.\nDifferent outputs are possible.",
 	EFFECT_TEXT_PREVIEW = "Displayed text",
@@ -375,6 +376,11 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_ITEM_TO_1_TT = "Add the item(s) inside the inventory primary container. If no primary container, it will be added 'on' the character",
 	EFFECT_ITEM_TO_2_TT = "Add the item(s) inside this item parent container.",
 	EFFECT_ITEM_TO_3_TT = "Add the item(s) inside this item. Only works if this item is a container.",
+	EFFECT_QUEST_START = "Start quest",
+	EFFECT_QUEST_START_TT = "Start a quest.\n\n|cffff9900Only works if the quest is part of the current active acampaign.",
+	EFFECT_QUEST_START_PREVIEW = "Starts quest %s.",
+	EFFECT_QUEST_START_ID = "Quest ID",
+	EFFECT_QUEST_START_ID_TT = "Use the browser to select your quest (the quest must exist before linking it to this effect).\n\nIf your quest does not appear in the browser, save your campaign and try again.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",
@@ -525,7 +531,16 @@ We should begin with some examples:
 	CA_QUEST_EXIST = "There is already a quest with the ID %s.",
 	QE_NAME_NEW = "New quest",
 	CA_QUEST_CREATE = "Please enter the quest ID. You can't have two quests with the same ID within the same campaign.",
-	CA_LINKS_ON_START = "On start",
+	CA_LINKS_ON_START = "On campaign start",
 	CA_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your campaign, so activating your campaign for the first time, or reset it in the quest log.\n\n|cff00ff00This is a good place to activate your first quest.",
+	QE_STEPS = "Quest steps",
+	QE_OBJ = "Quest objectives",
+	QE_NAME = "Quest name",
+	QE_NAME_TT = "It's your quest name, as it will appear on the quest log.",
+	QE_DESCRIPTION = "Quest summary",
+	QE_DESCRIPTION_TT = "This brief summary will be visible on the quest page, in the quest log.",
+	QE_LINKS_ON_START = "On quest start",
+	QE_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your quest, by unlocking it in the quest log.\n\n|cff00ff00This is a good place to go to the first quest step.",
+
 
 };

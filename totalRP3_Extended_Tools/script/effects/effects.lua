@@ -843,6 +843,49 @@ local function sound_music_local_init()
 	end
 end
 
+local function quest_start_init()
+	local editor = TRP3_EffectEditorQuestStart;
+
+	registerEffectEditor("quest_start", {
+		title = loc("EFFECT_QUEST_START"),
+		icon = "achievement_quests_completed_01",
+		description = loc("EFFECT_QUEST_START_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local class = getClass(tostring(args[1]));
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_START_PREVIEW"):format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+		end,
+		getDefaultArgs = function()
+			return {""};
+		end,
+		editor = editor;
+	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
+		end, TRP3_DB.types.QUEST});
+	end);
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_QUEST_START_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_START_ID"), loc("EFFECT_QUEST_START_ID_TT"));
+
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -873,6 +916,8 @@ function TRP3_API.extended.tools.initBaseEffects()
 
 	document_show_init();
 	document_close_init();
+
+	quest_start_init();
 
 	var_set_execenv_init();
 	signal_send_init();

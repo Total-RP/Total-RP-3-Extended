@@ -28,6 +28,9 @@
 	<Include file="campaign/editor/normal.xml"/>
 	<Script file="campaign/editor/normal.lua"/>
 
+	<Include file="campaign/editor/quest.xml"/>
+	<Script file="campaign/editor/quest.lua"/>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Base frame      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -35,6 +38,12 @@
 	<Frame name="TRP3_Tools_CampaignTemplate" virtual="true">
 		<Frames>
 			<Frame inherits="TRP3_Tools_CampaignEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_QuestTemplate" virtual="true">
+		<Frames>
+			<Frame inherits="TRP3_Tools_QuestEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
 		</Frames>
 	</Frame>
 

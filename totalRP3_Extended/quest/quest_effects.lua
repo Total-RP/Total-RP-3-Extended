@@ -27,6 +27,7 @@ TRP3_API.quest.EFFECTS = {
 
 	["quest_start"] = {
 		codeReplacementFunc = function (args)
+			-- TODO: separate
 			local campaignID = args[1];
 			local questID = args[2];
 			return ("lastEffectReturn = startQuest(\"%s\", \"%s\");"):format(campaignID, questID);

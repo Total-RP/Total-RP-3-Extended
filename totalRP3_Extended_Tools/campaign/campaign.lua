@@ -47,7 +47,10 @@ function TRP3_API.extended.tools.getQuestData()
 			IC = "achievement_quests_completed_07"
 		},
 		ST = {},
-		OB = {}
+		OB = {},
+		MD = {
+			MO = TRP3_DB.modes.NORMAL,
+		}
 	}
 	return data;
 end

@@ -206,6 +206,14 @@
 				</Anchors>
 			</Frame>
 
+			<Frame name="$parentQuest" inherits="TRP3_Tools_QuestTemplate" parentKey="quest">
+				<Anchors>
+					<Anchor point="TOP" relativeTo="$parentNavBar" relativePoint="BOTTOM" x="0" y="-35"/>
+					<Anchor point="LEFT" x="24" y="0"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeKey="$parent.root" x="0" y="15"/>
+				</Anchors>
+			</Frame>
+
 		</Frames>
 		<Scripts>
 			<OnLoad>

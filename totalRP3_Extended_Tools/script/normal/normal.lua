@@ -608,6 +608,9 @@ editor.init = function(ToolFrame)
 			"document_show",
 			"document_close",
 		},
+		[loc("EFFECT_CAT_CAMPAIGN")] = {
+			"quest_start",
+		},
 		[loc("MODE_EXPERT")] = {
 			"var_set_execenv",
 			"var_set_object",
@@ -622,6 +625,7 @@ editor.init = function(ToolFrame)
 			loc("EFFECT_CAT_SPEECH"),
 			loc("INV_PAGE_CHARACTER_INV"),
 			loc("TYPE_DOCUMENT"),
+			loc("EFFECT_CAT_CAMPAIGN"),
 			loc("EFFECT_CAT_SOUND"),
 			loc("REG_COMPANIONS"),
 			"",
