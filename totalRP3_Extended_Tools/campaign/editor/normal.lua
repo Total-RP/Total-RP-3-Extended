@@ -241,6 +241,8 @@ local function load()
 	loadDataInner();
 	TRP3_LinksEditor.load(linksStructure);
 
+	TRP3_ActionsEditorFrame.load();
+
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
 end
 
@@ -269,6 +271,7 @@ local function onTabChanged(tabWidget, tab)
 	npc:Hide();
 	notes:Hide();
 	quests:Hide();
+	TRP3_ActionsEditorFrame:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
 	TRP3_LinksEditor:Hide();
@@ -295,6 +298,7 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_LinksEditor:SetAllPoints();
 		TRP3_LinksEditor:Show();
 		TRP3_LinksEditor.load(linksStructure);
+		TRP3_ActionsEditorFrame:Show();
 	end
 
 	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;

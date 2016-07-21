@@ -102,12 +102,9 @@ local function startQuest(campaignID, questID)
 		activateQuestHandlers(campaignID, campaignClass, questID, questClass);
 
 		-- Initial script
-		if questClass.OS then
-			local retCode = TRP3_API.script.executeClassScript(questClass.OS, questClass.SC,
-				{
-					campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-					questID = questID, questClass = questClass, questLog = campaignLog.QUEST[questID],
-				});
+		if questClass.LI and questClass.LI.OS then
+			local retCode = TRP3_API.script.executeClassScript(questClass.LI.OS, questClass.SC,
+				{classID = questID, class = questClass, object = campaignLog.QUEST[questID]}, campaignID);
 		end
 
 		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
@@ -254,6 +251,31 @@ local ACTION_TYPES = {
 	TALK = "TALK",
 	ACTION = "ACTION",
 };
+TRP3_API.quest.ACTION_TYPES = ACTION_TYPES;
+
+function TRP3_API.quest.getActionTypeLocale(type)
+	if type == ACTION_TYPES.LOOK then
+		return loc("QE_ACTIONS_TYPE_LOOK");
+	elseif type == ACTION_TYPES.LISTEN then
+		return loc("QE_ACTIONS_TYPE_LISTEN");
+	elseif type == ACTION_TYPES.ACTION then
+		return loc("QE_ACTIONS_TYPE_INTERRACT");
+	elseif type == ACTION_TYPES.TALK then
+		return loc("QE_ACTIONS_TYPE_TALK");
+	end
+end
+
+function TRP3_API.quest.getActionTypeIcon(type)
+	if type == ACTION_TYPES.LOOK then
+		return "ability_eyeoftheowl";
+	elseif type == ACTION_TYPES.LISTEN then
+		return "inv_misc_ear_human_01";
+	elseif type == ACTION_TYPES.ACTION then
+		return "ability_warrior_disarm";
+	elseif type == ACTION_TYPES.TALK then
+		return "warrior_disruptingshout";
+	end
+end
 
 local function performAction(actionType)
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
@@ -268,6 +290,7 @@ local function performAction(actionType)
 
 			-- First check all the available quests
 			for questID, questLog in pairs(campaignLog.QUEST) do
+				-- If the quest is not done (DO)
 				if not questLog.DO then
 					local questClass = getClass(campaignID, questID);
 
@@ -278,26 +301,32 @@ local function performAction(actionType)
 						local stepID = questLog.CS;
 						if stepID then
 							local stepClass = getClass(campaignID, questID, stepID);
-							if stepClass and stepClass.AC and stepClass.AC[actionType] then
-								for _, scriptID in pairs(stepClass.AC[actionType]) do
-									local retCode = TRP3_API.script.executeClassScript(scriptID, stepClass.SC,
-										{
-											campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-											questID = questID, questClass = questClass, questLog = questLog,
-											stepID = stepID, stepClass = stepClass,
-										});
+							if stepClass and stepClass.AC then
+								for _, action in pairs(stepClass.AC) do
+									if action.TY == actionType then
+										local retCode = TRP3_API.script.executeClassScript(action.SC, stepClass.SC,
+											{
+												campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
+												questID = questID, questClass = questClass, questLog = questLog,
+												stepID = stepID, stepClass = stepClass,
+											}, campaignID);
+										return;
+									end
 								end
 							end
 						end
 
 						-- Then check quest
-						if questClass.AC and questClass.AC[actionType] then
-							for _, scriptID in pairs(questClass.AC[actionType]) do
-								local retCode = TRP3_API.script.executeClassScript(scriptID, questClass.SC,
-									{
-										campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-										questID = questID, questClass = questClass, questLog = questLog,
-									});
+						if questClass.AC then
+							for _, action in pairs(questClass.AC) do
+								if action.TY == actionType then
+									local retCode = TRP3_API.script.executeClassScript(action.SC, questClass.SC,
+										{
+											campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
+											questID = questID, questClass = questClass, questLog = questLog,
+										}, campaignID);
+									return;
+								end
 							end
 						end
 					end
@@ -305,16 +334,46 @@ local function performAction(actionType)
 			end
 
 			-- Then check the campaign
-			if campaignClass.AC and campaignClass.AC[actionType] then
-				for _, scriptID in pairs(campaignClass.AC[actionType]) do
-					local retCode = TRP3_API.script.executeClassScript(scriptID, campaignClass.SC,
-						{campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog});
+			if campaignClass.AC then
+				for _, action in pairs(campaignClass.AC) do
+					if action.TY == actionType then
+						local retCode = TRP3_API.script.executeClassScript(action.SC, campaignClass.SC,
+							{campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog}, campaignID);
+						return;
+					end
 				end
 			end
 		end
 	end
+
+	-- If we get here: no action have been found
+	if actionType == ACTION_TYPES.LOOK then
+		Utils.message.displayMessage(loc("QE_NOACTION_LOOK"), 4);
+	elseif actionType == ACTION_TYPES.LISTEN then
+		Utils.message.displayMessage(loc("QE_NOACTION_LISTEN"), 4);
+	elseif actionType == ACTION_TYPES.ACTION then
+		Utils.message.displayMessage(loc("QE_NOACTION_ACTION"), 4);
+	elseif actionType == ACTION_TYPES.TALK then
+		Utils.message.displayMessage(loc("QE_NOACTION_TALK"), 4);
+	end
 end
 TRP3_API.quest.performAction = performAction;
+
+function TRP3_API.quest.inspect()
+	performAction(ACTION_TYPES.LOOK);
+end
+
+function TRP3_API.quest.listen()
+	performAction(ACTION_TYPES.LISTEN);
+end
+
+function TRP3_API.quest.interract()
+	performAction(ACTION_TYPES.ACTION);
+end
+
+function TRP3_API.quest.talk()
+	performAction(ACTION_TYPES.TALK);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT

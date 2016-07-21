@@ -25,6 +25,9 @@
 
 	<Script file="campaign/campaign.lua"/>
 
+	<Include file="campaign/editor/actions.xml"/>
+	<Script file="campaign/editor/actions.lua"/>
+
 	<Include file="campaign/editor/normal.xml"/>
 	<Script file="campaign/editor/normal.lua"/>
 

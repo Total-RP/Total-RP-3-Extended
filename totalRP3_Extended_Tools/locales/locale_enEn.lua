@@ -231,7 +231,10 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	WO_ADD_ID_NO_AVAILABLE = "This workflow ID is not available.",
 	WO_REMOVE_POPUP = "Delete the workflow %s?",
 	WO_LINKS = "Action/event links",
-	WO_LINKS_TRIGGERS = "Here you can links your workflows to actions or events specifics for this object.",
+	WO_EVENT_LINKS = "Event links",
+	WO_ACTIONS_LINKS = "Action links",
+	WO_ACTIONS_LINKS_TT = "Here you can link your workflows to player quest actions.\nThese actions are: |cff00ff00Interract, listen, talk and inspect.|r\nEach link can be conditioned.",
+	WO_LINKS_TRIGGERS = "Here you can link your workflows to specifics events for this object.",
 	WO_LINKS_NO_LINKS = "No link",
 	WO_LINKS_NO_LINKS_TT = "Does not link this action/event to a workflow.",
 	WO_LINKS_SELECT = "Select a workflow to link",
@@ -541,6 +544,10 @@ We should begin with some examples:
 	QE_DESCRIPTION_TT = "This brief summary will be visible on the quest page, in the quest log.",
 	QE_LINKS_ON_START = "On quest start",
 	QE_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your quest, by unlocking it in the quest log.\n\n|cff00ff00This is a good place to go to the first quest step.",
-
-
+	CA_ACTIONS_ADD = "Add action",
+	CA_ACTIONS_NO = "No action",
+	CA_ACTIONS = "Action",
+	CA_ACTION_REMOVE = "Remove this action?",
+	CA_ACTIONS_SELECT = "Select action type",
+	CA_ACTIONS_COND = "Edit condition",
 };

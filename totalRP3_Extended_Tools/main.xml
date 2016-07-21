@@ -29,6 +29,7 @@
 	<Include file="list/list.xml"/>
 
 	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
+		<TitleRegion setAllPoints="true"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>

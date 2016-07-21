@@ -382,7 +382,7 @@
 
 			</Frame>
 
-			<Frame parentKey="element" hidden="true" toplevel="true" setAllPoints="true" enableMouse="true">
+			<Frame parentKey="element" hidden="true" setAllPoints="true" enableMouse="true" frameStrata="HIGH">
 
 				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize>

@@ -17,9 +17,10 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local tostring, tonumber, tinsert, table, pairs, assert, wipe = tostring, tonumber, tinsert, table, pairs, assert, wipe;
+local tostring, strtrim, tinsert, table, pairs, assert, wipe = tostring, strtrim, tinsert, table, pairs, assert, wipe;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local stEtN = Utils.str.emptyToNil;
 
 local editor = TRP3_LinksEditor;
 local toolFrame;
@@ -28,15 +29,7 @@ local toolFrame;
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local LINK_LIST_WIDTH = 300
-
-local function safeLoadList(list, keys, key)
-	if tContains(keys, key) then
-		list:SetSelectedValue(key);
-	else
-		list:SetSelectedValue("");
-	end
-end
+local LINK_LIST_WIDTH = 300;
 
 local function decorateLinkElement(frame, index)
 	local structureInfo = editor.structure[index];
@@ -46,36 +39,22 @@ local function decorateLinkElement(frame, index)
 	setTooltipForSameFrame(frame, "TOP", 0, -5, structureInfo.text, structureInfo.tt);
 
 	TRP3_API.ui.listbox.setupListBox(frame.select, editor.workflowListStructure, function(value)
-		toolFrame.specificDraft.LI[structureInfo.field] = value;
+		toolFrame.specificDraft.LI[structureInfo.field] = stEtN(value);
 	end, nil, LINK_LIST_WIDTH, true);
-	safeLoadList(frame.select, editor.workflowIDs, toolFrame.specificDraft.LI[structureInfo.field] or "");
+	TRP3_ScriptEditorNormal.safeLoadList(frame.select, editor.workflowIDs, toolFrame.specificDraft.LI[structureInfo.field] or "");
 end
 
 function editor.load(structure)
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 	assert(toolFrame.specificDraft.SC, "specificDraft is nil");
 
-	local workflowListStructure = {
-		{loc("WO_LINKS_SELECT")},
-		{loc("WO_LINKS_NO_LINKS"), "", loc("WO_LINKS_NO_LINKS_TT")},
-	}
-
-	wipe(editor.workflowIDs);
-	for workflowID, _ in pairs(toolFrame.specificDraft.SC) do
-		tinsert(editor.workflowIDs, workflowID);
-	end
-	table.sort(editor.workflowIDs);
-
-	for _, workflowID in pairs(editor.workflowIDs) do
-		tinsert(workflowListStructure, {TRP3_API.formats.dropDownElements:format(loc("WO_LINKS_TO"), workflowID), workflowID});
-	end
-
 	local data = toolFrame.specificDraft;
 	if not data.LI then
 		data.LI = {};
 	end
 
-	editor.workflowListStructure = workflowListStructure;
+	editor.workflowIDs = {};
+	editor.workflowListStructure = TRP3_ScriptEditorNormal.reloadWorkflowlist(editor.workflowIDs);
 	editor.structure = structure;
 
 	TRP3_API.ui.list.initList(editor.links, editor.structure, editor.links.slider);
@@ -88,7 +67,7 @@ end
 function editor.init(ToolFrame)
 	toolFrame = ToolFrame;
 
-	editor.links.title:SetText(loc("WO_LINKS"));
+	editor.links.title:SetText(loc("WO_EVENT_LINKS"));
 	editor.links.triggers:SetText(loc("WO_LINKS_TRIGGERS"));
 
 	-- List

@@ -1,0 +1,236 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+	<!--
+		Total RP 3
+		Copyright 2014-2016 Sylvain Cossement (telkostrasz@totalrp3.info)
+
+		Licensed under the Apache License, Version 2.0 (the "License");
+		you may not use this file except in compliance with the License.
+		You may obtain a copy of the License at
+
+			http://www.apache.org/licenses/LICENSE-2.0
+
+		Unless required by applicable law or agreed to in writing, software
+		distributed under the License is distributed on an "AS IS" BASIS,
+		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		See the License for the specific language governing permissions and
+		limitations under the License.
+	-->
+
+	<Frame name="TRP3_Tools_CampaignEditorActionLine" virtual="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="24" /></EdgeSize>
+			<TileSize><AbsValue val="418" /></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5" /></BackgroundInsets>
+		</Backdrop>
+
+		<Size x="0" y="65" />
+		<Frames>
+			<Frame parentKey="Icon" inherits="TRP3_SimpleIcon">
+				<Size x="40" y="40" />
+				<Anchors>
+					<Anchor point="LEFT" x="15" y="0" />
+				</Anchors>
+			</Frame>
+			<Button parentKey="click" inherits="TRP3_InvisibleButton" setAllPoints="true"/>
+		</Frames>
+
+		<Layers>
+			<Layer level="BORDER">
+				<FontString parentKey="ID" inherits="GameFontNormalSmall" justifyH="RIGHT" text="[ID]">
+					<Size x="100" y="10" />
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-10" y="-10" />
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10" />
+				</FontString>
+				<FontString parentKey="Name" inherits="GameFontNormalLarge" justifyH="LEFT" text="[ACTION]">
+					<Size x="0" y="20" />
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.Icon" x="5" y="0" />
+						<Anchor point="RIGHT" relativeKey="$perent.ID" relativePoint="LEFT" x="-5" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+				<FontString parentKey="Description" inherits="GameFontNormalSmall" justifyH="LEFT" text="[DESCRIPTION]">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Icon" x="5" y="5" />
+						<Anchor point="RIGHT" x="-5" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10" />
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture alphaMode="ADD" alpha="0.3" parentKey="Highlight" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow" hidden="true">
+					<Size x="150" y="60"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="50" y="0" />
+					</Anchors>
+					<TexCoords left="0.8" right="1" top="0.1" bottom="0.22" />
+				</Texture>
+			</Layer>
+		</Layers>
+
+	</Frame>
+
+	<Frame name="TRP3_ActionsEditorFrame" inherits="TRP3_EditorTitledFrame" hidden="true">
+
+		<Layers>
+			<Layer level="OVERLAY">
+
+				<FontString parentKey="help" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="0" y="75"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="0"/>
+						<Anchor point="RIGHT" x="-20" y="0"/>
+						<Anchor point="LEFT" x="20" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<Frame parentKey="editor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
+				<Size x="300" y="250"/>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+							<Size x="0" y="30"/>
+							<Anchors>
+								<Anchor point="TOP" y="-10"/>
+								<Anchor point="RIGHT" x="-10" y="0"/>
+								<Anchor point="LEFT" x="10" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<Frames>
+
+					<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-15"/>
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="workflow" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentWorkflow">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-15"/>
+						</Anchors>
+					</Frame>
+
+					<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="Close" inherits="UIPanelCloseButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="0" y="0"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								self:GetParent():Hide();
+							</OnClick>
+						</Scripts>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="list" name="$parentList">
+
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize>
+					<TileSize><AbsValue val="380"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.help" x="0" y="-25"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="20"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="empty" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<Frames>
+
+					<Button parentKey="add" inherits="TRP3_CommonButton">
+						<Size x="150" y="20" />
+						<Anchors>
+							<Anchor point="BOTTOM" relativePoint="TOP" x="0" y="15"/>
+						</Anchors>
+					</Button>
+
+					<Frame parentKey="line1" inherits="TRP3_Tools_CampaignEditorActionLine">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-15"/>
+							<Anchor point="LEFT" x="10" y="0" />
+							<Anchor point="RIGHT" x="-25" y="0" />
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="line2" inherits="TRP3_Tools_CampaignEditorActionLine">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line1" x="0" y="-10"/>
+							<Anchor point="LEFT" x="10" y="0" />
+							<Anchor point="RIGHT" x="-25" y="0" />
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="line3" inherits="TRP3_Tools_CampaignEditorActionLine">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line2" x="0" y="-10"/>
+							<Anchor point="LEFT" x="10" y="0" />
+							<Anchor point="RIGHT" x="-25" y="0" />
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="line4" inherits="TRP3_Tools_CampaignEditorActionLine">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line3" x="0" y="-10"/>
+							<Anchor point="LEFT" x="10" y="0" />
+							<Anchor point="RIGHT" x="-25" y="0" />
+						</Anchors>
+					</Frame>
+
+					<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
+						<Size x="15" y="0" />
+						<Anchors>
+							<Anchor point="RIGHT" x="-7" y="0"/>
+							<Anchor point="TOP" x="0" y="-2"/>
+							<Anchor point="BOTTOM" x="0" y="6"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								local name = self:GetName();
+								_G[name .. "Text"]:SetText("");
+								_G[name .. "High"]:SetText("");
+								_G[name .. "Low"]:SetText("");
+								self:SetMinMaxValues(0, 6);
+								self:SetValueStep(1);
+								self:SetOrientation("VERTICAL");
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+
+			</Frame>
+		</Frames>
+	</Frame>
+
+</Ui>

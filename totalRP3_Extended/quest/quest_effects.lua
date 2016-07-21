@@ -21,15 +21,14 @@
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tostring = tostring;
+local tostring, strtrim = tostring, strtrim;
 
 TRP3_API.quest.EFFECTS = {
 
 	["quest_start"] = {
 		codeReplacementFunc = function (args)
-			-- TODO: separate
-			local campaignID = args[1];
-			local questID = args[2];
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			campaignID = strtrim(campaignID); questID = strtrim(questID);
 			return ("lastEffectReturn = startQuest(\"%s\", \"%s\");"):format(campaignID, questID);
 		end,
 		env = {

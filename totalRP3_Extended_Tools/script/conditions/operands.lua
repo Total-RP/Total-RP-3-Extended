@@ -19,12 +19,7 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local tonumber, tostring, type, tinsert, wipe, strtrim = tonumber, tostring, type, tinsert, wipe, strtrim;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
-local getClass = TRP3_API.extended.getClass;
-local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
-local initList = TRP3_API.ui.list.initList;
-local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
 local getUnitText = TRP3_API.extended.tools.getUnitText;

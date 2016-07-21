@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tostring, tinsert, assert, tonumber = wipe, pairs, tostring, tinsert, assert, tonumber;
+local wipe, pairs, tostring, tinsert, assert, tonumber, sort = wipe, pairs, tostring, tinsert, assert, tonumber, table.sort;
 local tContains, strjoin, unpack = tContains, strjoin, unpack;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
@@ -27,10 +27,10 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local getEffectSecurity = TRP3_API.security.getEffectSecurity;
 local editor = TRP3_ScriptEditorNormal;
-local refreshElementList, toolFrame, unlockElements, onElementConfirm;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
-
 local securityLevel = TRP3_API.security.SECURITY_LEVEL;
+
+local refreshElementList, toolFrame, unlockElements, onElementConfirm, openLastEffect;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- New element
@@ -83,6 +83,7 @@ local function addDelayElement()
 		d = 1,
 	};
 	refreshElementList();
+	openLastEffect();
 end
 
 local function addConditionElement()
@@ -96,6 +97,7 @@ local function addConditionElement()
 		},
 	};
 	refreshElementList();
+	openLastEffect();
 end
 
 local function addEffectElement(effectID)
@@ -111,6 +113,7 @@ local function addEffectElement(effectID)
 		}
 	};
 	refreshElementList();
+	openLastEffect();
 end
 
 local menuData;
@@ -316,6 +319,14 @@ function unlockElements()
 	end
 end
 
+function openLastEffect()
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
+	local scriptStepFrame = editor.list.listElement[tsize(data)];
+	if scriptStepFrame then
+		onElementClick(scriptStepFrame);
+	end
+end
+
 function refreshElementList()
 	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 
@@ -434,7 +445,7 @@ local function openWorkflow(workflowID)
 	refreshElementList();
 	refreshLines();
 
-	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
+	if toolFrame.specificDraft.TY == TRP3_DB.types.ITEM and toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
 		editor.workflow.title:SetText(loc("WO_EXECUTION"));
 	else
 		editor.workflow.title:SetText(loc("WO_EXECUTION") .. ": |cff00ff00" .. editor.workflowID);
@@ -516,6 +527,11 @@ editor.refreshWorkflowList = refreshWorkflowList;
 function editor.loadList(context)
 	editor.currentContext = context;
 	refreshWorkflowList();
+	-- Select first
+	for id, _ in pairs(toolFrame.specificDraft.SC) do
+		openWorkflow(id);
+		break;
+	end
 end
 
 function editor.linkElements(workflow)
@@ -545,6 +561,37 @@ local function onAddWorkflow()
 			openWorkflow(newID);
 		end
 	end, nil, "workflow" .. tsize(toolFrame.specificDraft.SC) + 1);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UTILS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function editor.safeLoadList(list, keys, key)
+	if keys and key and tContains(keys, key) then
+		list:SetSelectedValue(key);
+	else
+		list:SetSelectedValue("");
+	end
+end
+
+function editor.reloadWorkflowlist(workflowIDs)
+	local workflowListStructure = {
+		{loc("WO_LINKS_SELECT")},
+		{loc("WO_LINKS_NO_LINKS"), "", loc("WO_LINKS_NO_LINKS_TT")},
+	}
+
+	wipe(workflowIDs);
+	for workflowID, _ in pairs(toolFrame.specificDraft.SC) do
+		tinsert(workflowIDs, workflowID);
+	end
+	sort(workflowIDs);
+
+	for _, workflowID in pairs(workflowIDs) do
+		tinsert(workflowListStructure, {TRP3_API.formats.dropDownElements:format(loc("WO_LINKS_TO"), workflowID), workflowID});
+	end
+
+	return workflowListStructure;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

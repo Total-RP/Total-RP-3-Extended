@@ -137,6 +137,14 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_BUTTON = "Open quest log",
 	QE_NPC = "Campaign NPC",
 	QE_RESET_CONFIRM = "Reset this campaign?\n\nThis will lose all your progression for ALL the quests in this campaign.\n\nNote that you will keep all items you gained through this campaign.",
+	QE_ACTIONS_TYPE_LOOK = "Inspect",
+	QE_ACTIONS_TYPE_TALK = "Talk",
+	QE_ACTIONS_TYPE_LISTEN = "Listen",
+	QE_ACTIONS_TYPE_INTERRACT = "Interract",
+	QE_NOACTION_LOOK = "You don't see anything special.",
+	QE_NOACTION_LISTEN = "You don't hear anything special.",
+	QE_NOACTION_ACTION = "There is nothing to do.",
+	QE_NOACTION_TALK = "There is nothing to say.",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",

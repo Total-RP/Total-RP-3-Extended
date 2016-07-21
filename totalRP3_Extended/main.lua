@@ -79,6 +79,11 @@ local function getFullID(...)
 end
 TRP3_API.extended.getFullID = getFullID;
 
+local function splitID(fullID)
+	return strsplit(TRP3_API.extended.ID_SEPARATOR, fullID);
+end
+TRP3_API.extended.splitID = splitID;
+
 local function getClass(...)
 	local id = getFullID(...);
 	local class = DB[id];
