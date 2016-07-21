@@ -702,4 +702,6 @@ editor.init = function(ToolFrame)
 	editor.element.selector.condition:SetScript("OnClick", addConditionElement);
 	editor.element.selector.delay:SetScript("OnClick", addDelayElement);
 	editor.element.selector.effect:SetScript("OnClick", displayEffectDropdown);
+
+	editor:SetScript("OnHide", function() editor.element:Hide(); unlockElements(); end);
 end

@@ -124,6 +124,7 @@ local function loadOperandEditor(operandInfo, list)
 
 	if operandInfo.editor then
 		list.args:Show();
+		list.args:SetFrameLevel(operandEditor:GetFrameLevel() + 20);
 		list.args.title:SetText(operandInfo.title);
 		operandInfo.editor:SetParent(list.args);
 		operandInfo.editor:SetAllPoints(list.args);
@@ -272,6 +273,7 @@ local function openOperandEditor(expressionIndex)
 	operandEditor.right.args:Hide();
 
 	editor.operand:Show();
+	editor.operand:SetFrameLevel(editor:GetFrameLevel() + 10);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -352,9 +354,9 @@ local function onTestLineClick(line, button)
 	if type(expression) == "string" then
 		tinsert(values, {loc("OP_COMPA_SEL"), nil});
 		if expression == "+" then
-			tinsert(values, {loc("OP_AND_SWITCH"), "*"});
+			tinsert(values, {loc("OP_OR_SWITCH"), "*"});
 		else
-			tinsert(values, {loc("OP_OR_SWITCH"), "+"});
+			tinsert(values, {loc("OP_AND_SWITCH"), "+"});
 		end
 		TRP3_API.ui.listbox.displayDropDown(line, values, onComparatorAction, 0, true);
 	elseif type(expression) == "table" then
@@ -560,7 +562,7 @@ function editor.init()
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
-	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, false, operandEditor.left);
+	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, true, operandEditor.left);
 	operandEditor.left.preview:SetText(loc("OP_PREVIEW"));
 	operandEditor.left.edit:SetText(loc("OP_CONFIGURE"));
 	operandEditor.left.args.confirm:SetText(loc("EDITOR_CONFIRM"));
@@ -586,7 +588,7 @@ function editor.init()
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
-	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, false, operandEditor.right);
+	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, true, operandEditor.right);
 	operandEditor.right.preview:SetText(loc("OP_PREVIEW"));
 	operandEditor.right.edit:SetText(loc("OP_CONFIGURE"));
 	operandEditor.right.args.confirm:SetText(loc("EDITOR_CONFIRM"));

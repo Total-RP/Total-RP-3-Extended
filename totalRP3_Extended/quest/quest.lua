@@ -104,7 +104,7 @@ local function startQuest(campaignID, questID)
 		-- Initial script
 		if questClass.LI and questClass.LI.OS then
 			local retCode = TRP3_API.script.executeClassScript(questClass.LI.OS, questClass.SC,
-				{classID = questID, class = questClass, object = campaignLog.QUEST[questID]}, campaignID);
+				{classID = questID, class = questClass, object = campaignLog.QUEST[questID]}, TRP3_API.extended.getFullID(campaignID, questID));
 		end
 
 		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
@@ -153,7 +153,7 @@ local function goToStep(campaignID, questID, stepID)
 					campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
 					questID = questID, questClass = questClass, questLog = questLog,
 					stepID = stepID, stepClass = stepClass,
-				});
+				}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
 		end
 
 	else
@@ -277,6 +277,14 @@ function TRP3_API.quest.getActionTypeIcon(type)
 	end
 end
 
+local function isConditionChecked(conditionStructure, args)
+	if not conditionStructure then
+		return true;
+	end
+	local response = TRP3_API.script.generateAndRunCondition(conditionStructure, args);
+	return response;
+end
+
 local function performAction(actionType)
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
 	if playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign] then
@@ -304,13 +312,15 @@ local function performAction(actionType)
 							if stepClass and stepClass.AC then
 								for _, action in pairs(stepClass.AC) do
 									if action.TY == actionType then
-										local retCode = TRP3_API.script.executeClassScript(action.SC, stepClass.SC,
-											{
-												campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-												questID = questID, questClass = questClass, questLog = questLog,
-												stepID = stepID, stepClass = stepClass,
-											}, campaignID);
-										return;
+										if isConditionChecked(action.CO) then
+											local retCode = TRP3_API.script.executeClassScript(action.SC, stepClass.SC,
+												{
+													campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
+													questID = questID, questClass = questClass, questLog = questLog,
+													stepID = stepID, stepClass = stepClass,
+												}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
+											return;
+										end
 									end
 								end
 							end
@@ -320,12 +330,14 @@ local function performAction(actionType)
 						if questClass.AC then
 							for _, action in pairs(questClass.AC) do
 								if action.TY == actionType then
-									local retCode = TRP3_API.script.executeClassScript(action.SC, questClass.SC,
-										{
-											campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-											questID = questID, questClass = questClass, questLog = questLog,
-										}, campaignID);
-									return;
+									if isConditionChecked(action.CO) then
+										local retCode = TRP3_API.script.executeClassScript(action.SC, questClass.SC,
+											{
+												campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
+												questID = questID, questClass = questClass, questLog = questLog,
+											}, TRP3_API.extended.getFullID(campaignID, questID));
+										return;
+									end
 								end
 							end
 						end
@@ -337,9 +349,11 @@ local function performAction(actionType)
 			if campaignClass.AC then
 				for _, action in pairs(campaignClass.AC) do
 					if action.TY == actionType then
-						local retCode = TRP3_API.script.executeClassScript(action.SC, campaignClass.SC,
-							{campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog}, campaignID);
-						return;
+						if isConditionChecked(action.CO) then
+							local retCode = TRP3_API.script.executeClassScript(action.SC, campaignClass.SC,
+								{campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog}, campaignID);
+							return;
+						end
 					end
 				end
 			end

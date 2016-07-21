@@ -550,4 +550,7 @@ We should begin with some examples:
 	CA_ACTION_REMOVE = "Remove this action?",
 	CA_ACTIONS_SELECT = "Select action type",
 	CA_ACTIONS_COND = "Edit condition",
+	CA_ACTIONS_COND_REMOVE = "Remove condition",
+	CA_ACTIONS_COND_ON = "This action is conditioned.",
+	CA_ACTIONS_COND_OFF = "This action is not conditioned.",
 };

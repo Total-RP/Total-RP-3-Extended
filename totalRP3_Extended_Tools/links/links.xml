@@ -21,6 +21,23 @@
 
 	<Frame name="TRP3_LinksEditor" hidden="true">
 		<Frames>
+
+			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true">
+
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="24" />
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="418" />
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+				</Backdrop>
+
+			</Frame>
+
 			<Frame parentKey="links" inherits="TRP3_EditorTitledFrame">
 
 				<Anchors>

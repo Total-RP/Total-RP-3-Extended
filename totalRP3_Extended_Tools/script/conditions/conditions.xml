@@ -179,7 +179,7 @@
 				</Anchors>
 			</Button>
 
-			<Frame parentKey="operand" hidden="true" toplevel="true" setAllPoints="true" enableMouse="true">
+			<Frame parentKey="operand" hidden="true" setAllPoints="true" enableMouse="true">
 
 				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize>
@@ -195,7 +195,7 @@
 
 				<Frames>
 
-					<Frame parentKey="editor" inherits="TRP3_EditorEffectTemplate" toplevel="true">
+					<Frame parentKey="editor" inherits="TRP3_EditorEffectTemplate">
 						<Size x="750" y="250"/>
 						<Anchors>
 							<Anchor point="CENTER"/>

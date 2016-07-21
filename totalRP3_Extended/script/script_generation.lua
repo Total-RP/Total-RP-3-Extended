@@ -115,9 +115,9 @@ end
 local function writeOperand(testStructure, comparatorType, env)
 	local code;
 	assert(type(testStructure) == "table", "testStructure is not a table");
-	assert(testStructure.v or testStructure.i, "No operand info");
+	assert(testStructure.v ~= nil or testStructure.i ~= nil, "No operand info");
 
-	if testStructure.v then
+	if testStructure.v ~= nil then
 		if comparatorType == "number" then
 			assert(tonumber(testStructure.v) ~= nil, "Cannot parse operand numeric value: " .. testStructure.v);
 			code = testStructure.v;
@@ -177,7 +177,7 @@ TRP3_API.script.getTestCode = writeTest;
 -- LEVEL 2 : Condition
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function writeCondition(conditionStructure, conditionID)
+local function writeCondition(conditionStructure, conditionID, env)
 	assert(type(conditionStructure) == "table", "conditionStructure is not a table");
 	local code = "";
 	local previousType;
@@ -196,20 +196,20 @@ local function writeCondition(conditionStructure, conditionID)
 		elseif type(element) == "table" then
 			assert(previousType ~= "table", "Can't have two successive tests");
 			if index == #conditionStructure and isInParenthesis then -- End of condition
-				code = code .. writeTest(element) .. " ) ";
+				code = code .. writeTest(element, env) .. " ) ";
 				isInParenthesis = false;
 			elseif index < #conditionStructure then
 				if conditionStructure[index + 1] == "+" and isInParenthesis then
-					code = code .. writeTest(element) .. " ) ";
+					code = code .. writeTest(element, env) .. " ) ";
 					isInParenthesis = false;
 				elseif conditionStructure[index + 1] == "*" and not isInParenthesis then
-					code = code .. "( " .. writeTest(element) .. " ";
+					code = code .. "( " .. writeTest(element, env) .. " ";
 					isInParenthesis = true;
 				else
-					code = code .. writeTest(element) .. " ";
+					code = code .. writeTest(element, env) .. " ";
 				end
 			else
-				code = code .. writeTest(element) .. " ";
+				code = code .. writeTest(element, env) .. " ";
 			end
 		else
 			error("Unknown condition element: " .. element);
@@ -223,6 +223,7 @@ local function writeCondition(conditionStructure, conditionID)
 
 	return code;
 end
+TRP3_API.script.getConditionCode = writeCondition;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LEVEL 3 : Effect
@@ -393,6 +394,17 @@ local BASE_ENV = { ["tostring, EMPTY, delayed, eval, tonumber, var"]
 
 local IMPORT_PATTERN = "local %s = %s;";
 
+local function generateFromCode(code)
+	-- Generating factory
+	local func, errorMessage = loadstring(code, "Generated code");
+	if not func then
+		print(errorMessage); -- TODO: could happens if syntax error, make a proper message
+		return nil, code;
+	end
+
+	return func, code;
+end
+
 local function writeImports()
 	for alias, global in pairs(CURRENT_ENVIRONMENT) do
 		writeLine(IMPORT_PATTERN:format(alias, global), true);
@@ -402,8 +414,8 @@ local function writeImports()
 	end
 end
 
-local function generateCode(effectStructure, classID)
-	CURRENT_CLASS_ID = classID;
+local function generateCode(effectStructure, rootClassID)
+	CURRENT_CLASS_ID = rootClassID;
 	CURRENT_CODE = "";
 	CURRENT_INDENT = "";
 
@@ -428,22 +440,14 @@ local function generateCode(effectStructure, classID)
 	return CURRENT_CODE;
 end
 
-local function generate(effectStructure, classID)
+local function generate(effectStructure, rootClassID)
 	log("Generate FX", logLevel.DEBUG);
-	local code = generateCode(effectStructure, classID);
-
-	-- Generating factory
-	local func, errorMessage = loadstring(code, "Generated code");
-	if not func then
-		print(errorMessage); -- TODO: could happens if syntax error, make a proper message
-		return nil, code;
-	end
-
-	return func, code;
+	local code = generateCode(effectStructure, rootClassID);
+	return generateFromCode(code);
 end
 
-local function getFunction(structure, classID)
-	local functionFactory, code = generate(structure, classID);
+local function getFunction(structure, rootClassID)
+	local functionFactory, code = generate(structure, rootClassID);
 
 	if DEBUG then
 		TRP3_DEBUG_CODE_FRAME:Show();
@@ -534,8 +538,19 @@ function TRP3_API.script.generateAndRun(code, args, env)
 	end
 
 	-- Execute
-	func()(args or EMPTY);
+	return func()(args or EMPTY);
 end
+
+local directConditionTemplate = [[return %s;]]
+
+local function generateAndRunCondition(conditionStructure, args)
+	local env = {};
+	tableCopy(env, BASE_ENV);
+	local code = directConditionTemplate:format(writeCondition(conditionStructure, nil, env));
+
+	return TRP3_API.script.generateAndRun(code, args, env);
+end
+TRP3_API.script.generateAndRunCondition = generateAndRunCondition;
 
 local directReplacement = {
 	target = function()

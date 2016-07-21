@@ -96,7 +96,7 @@
 
 		<Frames>
 			<Frame parentKey="editor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
-				<Size x="300" y="250"/>
+				<Size x="300" y="175"/>
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
@@ -115,13 +115,13 @@
 
 					<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-15"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
 						</Anchors>
 					</Frame>
 
 					<Frame parentKey="workflow" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentWorkflow">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-15"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-10"/>
 						</Anchors>
 					</Frame>
 

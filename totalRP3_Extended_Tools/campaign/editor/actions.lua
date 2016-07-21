@@ -40,7 +40,11 @@ local function decorateActionLine(line, actionIndex)
 
 	TRP3_API.ui.frame.setupIconButton(line.Icon, TRP3_API.quest.getActionTypeIcon(actionData.TY) or Globals.icons.default);
 	line.Name:SetText(TRP3_API.quest.getActionTypeLocale(actionData.TY or UNKNOWN));
-	line.Description:SetText("");
+	if actionData.CO then
+		line.Description:SetText("|cff00ff00" .. loc("CA_ACTIONS_COND_ON"));
+	else
+		line.Description:SetText("|cffffff00" .. loc("CA_ACTIONS_COND_OFF"));
+	end
 	line.ID:SetText("|cff00ff00" .. (stEtN(actionData.SC) or "|cffff9900" .. loc("WO_LINKS_NO_LINKS")));
 	line.click.actionIndex = actionIndex;
 end
@@ -135,7 +139,36 @@ local function onActionSaved()
 end
 
 local function openActionCondition(actionIndex)
+	local scriptData = toolFrame.specificDraft.AC[actionIndex].CO or {
+		{ { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } }
+	};
 
+	TRP3_LinksEditor.overlay:Show();
+	TRP3_LinksEditor.overlay:SetFrameLevel(TRP3_LinksEditor:GetFrameLevel() + 30);
+
+	TRP3_ConditionEditor:SetParent(TRP3_LinksEditor.overlay);
+	TRP3_ConditionEditor:ClearAllPoints();
+	TRP3_ConditionEditor:SetPoint("CENTER", 0, 0);
+	TRP3_ConditionEditor:SetFrameLevel(TRP3_LinksEditor.overlay:GetFrameLevel() + 10);
+	TRP3_ConditionEditor:Show();
+	TRP3_ConditionEditor.load(scriptData);
+	TRP3_ConditionEditor:SetScript("OnHide", function() TRP3_LinksEditor.overlay:Hide() end);
+	TRP3_ConditionEditor.confirm:SetScript("OnClick", function()
+		TRP3_ConditionEditor.save(scriptData);
+		toolFrame.specificDraft.AC[actionIndex].CO = scriptData;
+		TRP3_ConditionEditor:Hide();
+		refreshList();
+	end);
+	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
+	TRP3_ConditionEditor.title:SetText("Action condition editor");
+end
+
+local function removeCondition(actionIndex)
+	if toolFrame.specificDraft.AC[actionIndex].CO then
+		wipe(toolFrame.specificDraft.AC[actionIndex].CO);
+	end
+	toolFrame.specificDraft.AC[actionIndex].CO = nil;
+	refreshList();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -155,7 +188,11 @@ function editor.init(ToolFrame)
 		tinsert(editor.list.widgetTab, line);
 		line.click:SetScript("OnClick", function(self, button)
 			if button == "RightButton" then
-				removeAction(self.actionIndex);
+				if IsControlKeyDown() then
+					removeCondition(self.actionIndex);
+				else
+					removeAction(self.actionIndex);
+				end
 			else
 				if IsControlKeyDown() then
 					openActionCondition(self.actionIndex);
@@ -176,6 +213,7 @@ function editor.init(ToolFrame)
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_ACTIONS"),
 			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
 					.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc("CM_CTRL"), loc("CM_CLICK"), loc("CA_ACTIONS_COND"))
+					.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc("CM_CTRL"), loc("CM_R_CLICK"), loc("CA_ACTIONS_COND_REMOVE"))
 					.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
 	end
 	editor.list.decorate = decorateActionLine;
@@ -199,4 +237,6 @@ function editor.init(ToolFrame)
 			{TRP3_API.formats.dropDownElements:format(loc("CA_ACTIONS"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)), TRP3_API.quest.ACTION_TYPES.ACTION},
 		},
 		nil, nil, ACTION_LIST_WIDTH, true);
+
+	editor:SetScript("OnHide", function() editor.editor:Hide() end);
 end
