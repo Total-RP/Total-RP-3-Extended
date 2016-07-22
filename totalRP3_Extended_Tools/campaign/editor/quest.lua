@@ -41,6 +41,88 @@ local tabGroup, currentTab, linksStructure;
 -- Quest specifics
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function onIconSelected(icon)
+	main.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
+	main.preview.selectedIcon = icon;
+end
+
+local function decorateObjectiveLine(line, objectiveID)
+	local data = toolFrame.specificDraft;
+	local objectiveData = data.OB[objectiveID];
+
+	line.Name:SetText(objectiveID);
+	line.Description:SetText(objectiveData.TX or "");
+	line.ID:SetText("");
+	if objectiveData.AA then
+		line.ID:SetText("|cff00ff00" .. loc("QE_OBJ_AUTO"));
+	end
+	line.click.objectiveID = objectiveID;
+end
+
+local function refreshObjectiveList()
+	local data = toolFrame.specificDraft;
+	TRP3_API.ui.list.initList(objectives.list, data.OB, objectives.list.slider);
+	objectives.list.empty:Hide();
+	if tsize(data.OB) == 0 then
+		objectives.list.empty:Show();
+	end
+end
+
+local function newObjective()
+	objectives.editor.oldID = nil;
+	objectives.editor.id:SetText("");
+	objectives.editor.text:SetText("");
+	objectives.editor.auto:SetChecked(false);
+	TRP3_API.ui.frame.configureHoverFrame(objectives.editor, objectives.list.add, "TOP", 0, 5, false);
+end
+
+local function editObjective(objectivesID, frame)
+	if not objectivesID then
+		newObjective();
+	else
+		local objectivesData = toolFrame.specificDraft.OB[objectivesID];
+		if objectivesData then
+			objectives.editor.oldID = objectivesID;
+			objectives.editor.id:SetText(objectivesID);
+			objectives.editor.text:SetText(objectivesData.TX or "");
+			objectives.editor.auto:SetChecked(objectivesData.AA);
+			TRP3_API.ui.frame.configureHoverFrame(objectives.editor, frame, "RIGHT", 0, 5, false);
+		else
+			newObjective();
+		end
+	end
+end
+
+local function onObjectiveSaved()
+	local oldID = objectives.editor.oldID;
+	local ID = strtrim(objectives.editor.id:GetText());
+	local data = {
+		TX = stEtN(strtrim(objectives.editor.text:GetText())),
+		AA = objectives.editor.auto:GetChecked();
+	}
+	if ID then
+		local structure = toolFrame.specificDraft.OB;
+		if oldID and structure[oldID] then
+			wipe(structure[oldID]);
+			structure[oldID] = nil;
+		end
+		structure[ID] = data;
+	end
+
+	refreshObjectiveList();
+	objectives.editor:Hide();
+end
+
+local function removeObjective(id)
+	TRP3_API.popup.showConfirmPopup(loc("QE_OBJ_REMOVE"), function()
+		if toolFrame.specificDraft.OB[id] then
+			wipe(toolFrame.specificDraft.OB[id]);
+			toolFrame.specificDraft.OB[id] = nil;
+		end
+		refreshObjectiveList();
+		objectives.editor:Hide();
+	end);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script & inner & links tabs
@@ -95,6 +177,8 @@ local function load()
 	notes.frame.scroll.text:SetText(data.NT or "");
 	main.name:SetText(data.BA.NA or "");
 	main.description.scroll.text:SetText(data.BA.DE or "");
+	onIconSelected(data.BA.IC);
+	refreshObjectiveList();
 
 	loadDataScript();
 	loadDataInner();
@@ -112,6 +196,7 @@ local function saveToDraft()
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
 	data.BA.NA = stEtN(strtrim(main.name:GetText()));
 	data.BA.DE = stEtN(strtrim(main.description.scroll.text:GetText()));
+	data.BA.IC = main.preview.selectedIcon;
 
 	storeDataScript();
 end
@@ -203,6 +288,13 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 	main.description.title:SetText(loc("QE_DESCRIPTION"));
 	setTooltipAll(main.description.dummy, "RIGHT", 0, 5, loc("QE_DESCRIPTION"), loc("QE_DESCRIPTION_TT"));
 
+	-- Preview
+	main.preview.Name:SetText(loc("EDITOR_PREVIEW"));
+	main.preview.InfoText:SetText(loc("EDITOR_ICON_SELECT"));
+	main.preview:SetScript("OnClick", function(self)
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
+	end);
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NOTES
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -219,6 +311,53 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 	objectives = toolFrame.quest.objectives;
 	objectives.title:SetText(loc("QE_OBJ"));
 
+	objectives.help:SetText(loc("WO_ACTIONS_LINKS_TT"));
+
+	-- List
+	objectives.list.widgetTab = {};
+	for i=1, 4 do
+		local line = objectives.list["line" .. i];
+		tinsert(objectives.list.widgetTab, line);
+		line.click:SetScript("OnClick", function(self, button)
+			if button == "RightButton" then
+				removeObjective(self.objectiveID);
+			else
+				editObjective(self.objectiveID, self);
+			end
+		end);
+		line.click:SetScript("OnEnter", function(self)
+			TRP3_RefreshTooltipForFrame(self);
+			self:GetParent().Highlight:Show();
+		end);
+		line.click:SetScript("OnLeave", function(self)
+			TRP3_MainTooltip:Hide();
+			self:GetParent().Highlight:Hide();
+		end);
+		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_ACTIONS"),
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
+					.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+	end
+	objectives.list.decorate = decorateObjectiveLine;
+	TRP3_API.ui.list.handleMouseWheel(objectives.list, objectives.list.slider);
+	objectives.list.slider:SetValue(0);
+	objectives.list.add:SetText(loc("QE_OBJ_ADD"));
+	objectives.list.add:SetScript("OnClick", function() editObjective() end);
+	objectives.list.empty:SetText(loc("QE_OBJ_NO"));
+
+	-- Editor
+	objectives.editor.title:SetText(loc("QE_OBJ_SINGULAR"));
+	objectives.editor.save:SetScript("OnClick", function(self)
+		onObjectiveSaved();
+	end);
+	objectives:SetScript("OnHide", function() objectives.editor:Hide() end);
+	objectives.editor.id.title:SetText(loc("QE_OBJ_ID"));
+	setTooltipForSameFrame(objectives.editor.id.help, "RIGHT", 0, 5, loc("QE_OBJ_ID"), loc("QE_OBJ_ID_TT"));
+	objectives.editor.text.title:SetText(loc("QE_OBJ_TEXT"));
+
+	-- Auto add
+	objectives.editor.auto.Text:SetText(loc("QE_OBJ_AUTO"));
+	setTooltipForSameFrame(objectives.editor.auto, "RIGHT", 0, 5, loc("QE_OBJ_AUTO"), loc("QE_OBJ_AUTO_TT"));
 
 	-- Links
 	linksStructure = {

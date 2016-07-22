@@ -537,7 +537,6 @@ We should begin with some examples:
 	CA_LINKS_ON_START = "On campaign start",
 	CA_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your campaign, so activating your campaign for the first time, or reset it in the quest log.\n\n|cff00ff00This is a good place to activate your first quest.",
 	QE_STEPS = "Quest steps",
-	QE_OBJ = "Quest objectives",
 	QE_NAME = "Quest name",
 	QE_NAME_TT = "It's your quest name, as it will appear on the quest log.",
 	QE_DESCRIPTION = "Quest summary",
@@ -553,4 +552,17 @@ We should begin with some examples:
 	CA_ACTIONS_COND_REMOVE = "Remove condition",
 	CA_ACTIONS_COND_ON = "This action is conditioned.",
 	CA_ACTIONS_COND_OFF = "This action is not conditioned.",
+	QE_OBJ = "Quest objectives",
+	QE_OBJ_SINGULAR = "Quest objective",
+	QE_OBJ_TT = "Quest objectives are hints for the player. Accomplishing all objectives does not automatically complete the quest. You decide when objectives are shown so you can have secret objective in your quest.",
+	QE_OBJ_ADD = "Add objective",
+	QE_OBJ_REMOVE = "Remove this quest objective?",
+	QE_OBJ_NO = "No quest objective",
+	QE_OBJ_ID = "Objective ID",
+	QE_OBJ_ID_TT = "This is your objective ID. You can't have two objectives with the same ID in a same quest.",
+	QE_OBJ_TEXT = "Objective text",
+	QE_OBJ_AUTO = "Auto reveal",
+	QE_OBJ_AUTO_TT = "Automatically reveal this objective when the quest is unlocked in the quest log.",
+
+
 };
