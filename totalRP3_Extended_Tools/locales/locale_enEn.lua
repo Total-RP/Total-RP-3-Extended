@@ -563,6 +563,16 @@ We should begin with some examples:
 	QE_OBJ_TEXT = "Objective text",
 	QE_OBJ_AUTO = "Auto reveal",
 	QE_OBJ_AUTO_TT = "Automatically reveal this objective when the quest is unlocked in the quest log.",
-
-
+	QE_STEP = "Quest steps",
+	QE_STEP_TT = "Quest are cut down into a list of steps.\nEach step can add a text entry to the quest log once reached and another history text once completed.",
+	QE_STEP_ADD = "Add quest step",
+	QE_STEP_NO = "No quest step",
+	QE_STEP_REMOVE = "Remove this step?",
+	QE_STEP_CREATE = "Please enter the step ID. You can't have two steps with the same ID within the same quest.",
+	QE_STEP_EXIST = "There is already a step with the ID %s.",
+	QE_STEP_NAME_NEW = "New quest step",
+	QE_ST_LINKS_ON_START = "On quest step start",
+	QE_ST_LINKS_ON_START_TT = "Triggered |cff00ff00everytime|r the player reachs this step.",
+	QE_ST_LINKS_ON_LEAVE = "On quest step leave",
+	QE_ST_LINKS_ON_LEAVE_TT = "Triggered |cff00ff00everytime|r the player leave this step for another one. This will be triggered before the next step \"On quest step start\" trigger occurs.",
 };

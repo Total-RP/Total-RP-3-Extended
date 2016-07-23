@@ -69,15 +69,15 @@ local PAGE_BY_TYPE = {
 		background = 2,
 	},
 	[TRP3_DB.types.QUEST_STEP] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_QUEST_STEP") .. ": " .. id;
+		frame = "step",
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_QUEST_STEP"),  id);
 		end,
 		background = 2,
 	},
 	[TRP3_DB.types.ITEM] = {
 		frame = "item",
-		tabTextGetter = function(id, class, isRoot)
+		tabTextGetter = function(id, class)
 			return ("%s: %s"):format(loc("TYPE_ITEM"),  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 3,
@@ -474,6 +474,7 @@ local function onStart()
 	TRP3_API.extended.tools.initDocument(toolFrame);
 	TRP3_API.extended.tools.initCampaign(toolFrame);
 	TRP3_API.extended.tools.initQuest(toolFrame);
+	TRP3_API.extended.tools.initStep(toolFrame)
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 

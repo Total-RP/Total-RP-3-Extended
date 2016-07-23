@@ -34,6 +34,9 @@
 	<Include file="campaign/editor/quest.xml"/>
 	<Script file="campaign/editor/quest.lua"/>
 
+	<Include file="campaign/editor/step.xml"/>
+	<Script file="campaign/editor/step.lua"/>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Base frame      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->

@@ -136,6 +136,12 @@ local function activateCampaign(campaignID, force)
 				{ classID = campaignID, class = campaignClass, object = playerQuestLog[campaignID] }, campaignID);
 		end
 
+		for questID, quest in pairs(campaignClass.QE or EMPTY) do
+			if quest.BA.IN then
+				TRP3_API.quest.startQuest(campaignID, questID);
+			end
+		end
+
 	end
 end
 

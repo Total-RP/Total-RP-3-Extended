@@ -107,6 +107,19 @@ local function startQuest(campaignID, questID)
 				{classID = questID, class = questClass, object = campaignLog.QUEST[questID]}, TRP3_API.extended.getFullID(campaignID, questID));
 		end
 
+		for stepID, step in pairs(questClass.ST or EMPTY) do
+			if step.BA.IN then
+				TRP3_API.quest.goToStep(campaignID, questID, stepID);
+				break;
+			end
+		end
+
+		for objectiveID, objective in pairs(questClass.OB or EMPTY) do
+			if objective.AA then
+				TRP3_API.quest.revealObjective(campaignID, questID, objectiveID);
+			end
+		end
+
 		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 		return 1;
 	else

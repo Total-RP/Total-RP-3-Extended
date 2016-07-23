@@ -25,7 +25,7 @@ local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color = Utils.str.color;
-local toolFrame, main, notes, objectives;
+local toolFrame, main, notes, objectives, steps;
 
 local TABS = {
 	MAIN = 1,
@@ -125,6 +125,53 @@ local function removeObjective(id)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Quest steps
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function decorateQuestStepLine(line, stepID)
+	local data = toolFrame.specificDraft;
+	local stepData = data.ST[stepID];
+
+	line.Name:SetText(stepID);
+	line.Description:SetText(stepData.TX or "");
+	line.ID:SetText("");
+	line.click.stepID = stepID;
+end
+
+local function refreshQuestStepList()
+	local data = toolFrame.specificDraft;
+	TRP3_API.ui.list.initList(steps.list, data.ST, steps.list.slider);
+	steps.list.empty:Hide();
+	if tsize(data.ST) == 0 then
+		steps.list.empty:Show();
+	end
+end
+
+local function removeQuestStep(stepID)
+	TRP3_API.popup.showConfirmPopup(loc("QE_STEP_REMOVE"), function()
+		if toolFrame.specificDraft.ST[stepID] then
+			wipe(toolFrame.specificDraft.ST[stepID]);
+			toolFrame.specificDraft.ST[stepID] = nil;
+		end
+		refreshQuestStepList();
+	end);
+end
+
+local function openQuestStep(stepID)
+	TRP3_API.extended.tools.goToPage(getFullID(toolFrame.fullClassID, stepID));
+end
+
+local function createQuestStep()
+	TRP3_API.popup.showTextInputPopup(loc("QE_STEP_CREATE"), function(value)
+		if not toolFrame.specificDraft.ST[value] then
+			toolFrame.specificDraft.ST[value] = TRP3_API.extended.tools.getQuestStepData();
+			refreshQuestStepList();
+		else
+			Utils.message.displayMessage(loc("QE_STEP_EXIST"):format(value), 4);
+		end
+	end);
+end
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script & inner & links tabs
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -180,6 +227,8 @@ local function load()
 	onIconSelected(data.BA.IC);
 	refreshObjectiveList();
 
+	refreshQuestStepList();
+
 	loadDataScript();
 	loadDataInner();
 	TRP3_LinksEditor.load(linksStructure);
@@ -213,6 +262,7 @@ local function onTabChanged(tabWidget, tab)
 	main:Hide();
 	notes:Hide();
 	objectives:Hide();
+	steps:Hide();
 	TRP3_ActionsEditorFrame:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
@@ -228,7 +278,7 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_ScriptEditorNormal:SetAllPoints();
 		TRP3_ScriptEditorNormal:Show();
 	elseif currentTab == TABS.STEPS then
-
+		steps:Show();
 	elseif currentTab == TABS.INNER then
 		TRP3_InnerObjectEditor:SetParent(toolFrame.quest);
 		TRP3_InnerObjectEditor:SetAllPoints();
@@ -310,8 +360,7 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 	-- Objectives
 	objectives = toolFrame.quest.objectives;
 	objectives.title:SetText(loc("QE_OBJ"));
-
-	objectives.help:SetText(loc("WO_ACTIONS_LINKS_TT"));
+	objectives.help:SetText(loc("QE_OBJ_TT"));
 
 	-- List
 	objectives.list.widgetTab = {};
@@ -368,5 +417,46 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 			field = "OS",
 		}
 	}
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- STEP
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	-- Steps
+	steps = toolFrame.quest.step;
+	steps.title:SetText(loc("QE_STEP"));
+	steps.help:SetText(loc("QE_STEP_TT"));
+
+	-- List
+	steps.list.widgetTab = {};
+	for i=1, 4 do
+		local line = steps.list["line" .. i];
+		tinsert(steps.list.widgetTab, line);
+		line.click:SetScript("OnClick", function(self, button)
+			if button == "RightButton" then
+				removeQuestStep(self.stepID);
+			else
+				openQuestStep(self.stepID);
+			end
+		end);
+		line.click:SetScript("OnEnter", function(self)
+			TRP3_RefreshTooltipForFrame(self);
+			self:GetParent().Highlight:Show();
+		end);
+		line.click:SetScript("OnLeave", function(self)
+			TRP3_MainTooltip:Hide();
+			self:GetParent().Highlight:Hide();
+		end);
+		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_ACTIONS"),
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
+					.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+	end
+	steps.list.decorate = decorateQuestStepLine;
+	TRP3_API.ui.list.handleMouseWheel(steps.list, steps.list.slider);
+	steps.list.slider:SetValue(0);
+	steps.list.add:SetText(loc("QE_STEP_ADD"));
+	steps.list.add:SetScript("OnClick", function() createQuestStep() end);
+	steps.list.empty:SetText(loc("QE_STEP_NO"));
 
 end

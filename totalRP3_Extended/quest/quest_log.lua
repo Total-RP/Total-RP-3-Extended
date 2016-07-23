@@ -442,24 +442,22 @@ local function init()
 
 	-- Quest log button on target bar
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-		if TRP3_API.target then
-			TRP3_API.target.registerButton({
-				id = "aa_player_e_quest",
-				onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+		if TRP3_API.toolbar then
+			local toolbarButton = {
+				id = "hh_player_e_quest",
+				icon = "achievement_quests_completed_06",
 				configText = QUEST_LOG,
-				condition = function(_, unitID)
-					return unitID == Globals.player_id;
-				end,
+				tooltip = QUEST_LOG,
+				tooltipSub = loc("QE_BUTTON"),
 				onClick = function(_, _, button, _)
 					if button == "LeftButton" then
 						TRP3_API.navigation.openMainFrame();
 						TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
 					end
 				end,
-				tooltip = QUEST_LOG,
-				tooltipSub = loc("QE_BUTTON"),
-				icon = "achievement_quests_completed_06"
-			});
+				visible = 1
+			};
+			TRP3_API.toolbar.toolbarAddButton(toolbarButton);
 		end
 	end);
 
