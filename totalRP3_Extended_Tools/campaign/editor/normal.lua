@@ -29,9 +29,9 @@ local toolFrame, main, pages, params, manager, notes, npc, quests;
 
 local TABS = {
 	MAIN = 1,
-	WORKFLOWS = 2,
-	QUESTS = 3,
-	INNER = 4,
+	QUESTS = 2,
+	INNER = 3,
+	WORKFLOWS = 4,
 	EXPERT = 5
 }
 
@@ -140,8 +140,12 @@ local function decorateQuestLine(line, questID)
 
 	TRP3_API.ui.frame.setupIconButton(line.Icon, questData.BA.IC or Globals.icons.default);
 	line.Name:SetText(questData.BA.NA or UNKNOWN);
+	if questData.BA.IN then
+		line.ID:SetText(questID .. "\n|cff00ff00" .. loc("QE_AUTO_REVEAL"));
+	else
+		line.ID:SetText(questID);
+	end
 	line.Description:SetText(questData.BA.DE or "");
-	line.ID:SetText(questID);
 	line.click.questID = questID;
 end
 

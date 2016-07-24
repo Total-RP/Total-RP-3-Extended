@@ -58,7 +58,8 @@ function TRP3_API.extended.tools.getQuestData()
 		TY = TRP3_DB.types.QUEST,
 		BA = {
 			NA = loc("QE_NAME_NEW"),
-			IC = "achievement_quests_completed_07"
+			IC = "achievement_quests_completed_07",
+			DE = loc("QE_DESCRIPTION_TT"),
 		},
 		ST = {
 			first_quest_step = TRP3_API.extended.tools.getQuestStepData()
@@ -86,6 +87,7 @@ function TRP3_API.extended.tools.getCampaignData(campaignID)
 		BA = {
 			NA = loc("CA_NAME_NEW"),
 			RA = "1 - 100",
+			DE = loc("CA_DESCRIPTION_TT"),
 			IC = "achievement_quests_completed_06"
 		},
 		QE = {

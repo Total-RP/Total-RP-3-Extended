@@ -39,7 +39,7 @@
 
 		<Frames>
 			<Frame parentKey="main" inherits="TRP3_EditorTitledFrame">
-				<Size x="530" y="250"/>
+				<Size x="530" y="300"/>
 
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-5"/>
@@ -48,13 +48,51 @@
 
 				<Frames>
 
-					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
-						<Size x="0" y="18"/>
+					<Frame parentKey="pre" inherits="TRP3_TextArea">
+						<Size x="0" y="70"/>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="10" y="12"/>
+										<Anchor point="TOPRIGHT" x="0" y="12"/>
+									</Anchors>
+									<Color r="0.95" g="0.75" b="0.1"/>
+								</FontString>
+							</Layer>
+						</Layers>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.title"/>
-							<Anchor point="RIGHT" x="-35" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
-					</EditBox>
+					</Frame>
+
+					<Frame parentKey="post" inherits="TRP3_TextArea">
+						<Size x="0" y="70"/>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="10" y="12"/>
+										<Anchor point="TOPRIGHT" x="0" y="12"/>
+									</Anchors>
+									<Color r="0.95" g="0.75" b="0.1"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.pre" x="0" y="-21"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</Frame>
+
+					<CheckButton parentKey="auto" inherits="TRP3_CheckBox" name="$parentAuto">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="25" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.post"/>
+						</Anchors>
+					</CheckButton>
 
 				</Frames>
 			</Frame>

@@ -128,9 +128,15 @@
 						</Anchors>
 					</Frame>
 
+					<CheckButton parentKey="auto" inherits="TRP3_CheckBox" name="$parentAuto">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="20" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.description"/>
+						</Anchors>
+					</CheckButton>
+
 					<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
-							<Anchor point="LEFT" x="100" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.description" x="0" y="-15"/>
 						</Anchors>
 					</Button>

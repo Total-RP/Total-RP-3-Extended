@@ -171,7 +171,7 @@ local function onQuestButtonEnter(button)
 
 	if currentStep then
 		if questClass.ST and questClass.ST[currentStep] then
-			stepText = questClass.ST[currentStep].TX;
+			stepText = questClass.ST[currentStep].BA.TX or "";
 		else
 			stepText = "|cffff0000" .. loc("QE_STEP_MISSING") .. "|r";
 		end
@@ -303,7 +303,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 	if currentStep then
 		local currentStepText;
 		if questClass.ST and questClass.ST[currentStep] then
-			currentStepText = questClass.ST[currentStep].TX;
+			currentStepText = questClass.ST[currentStep].BA.TX or "";
 		else
 			currentStepText = "|cffff0000" .. loc("QE_STEP_MISSING") .. "|r";
 		end

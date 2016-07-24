@@ -40,7 +40,7 @@
 		<Layers>
 			<Layer level="BORDER">
 				<FontString parentKey="ID" inherits="GameFontNormalSmall" justifyH="RIGHT" text="[ID]">
-					<Size x="100" y="10" />
+					<Size x="100" y="0" />
 					<Anchors>
 						<Anchor point="TOPRIGHT" x="-10" y="-10" />
 					</Anchors>

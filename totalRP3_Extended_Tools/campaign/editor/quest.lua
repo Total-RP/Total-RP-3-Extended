@@ -29,9 +29,9 @@ local toolFrame, main, notes, objectives, steps;
 
 local TABS = {
 	MAIN = 1,
-	WORKFLOWS = 2,
-	STEPS = 3,
-	INNER = 4,
+	STEPS = 2,
+	INNER = 3,
+	WORKFLOWS = 4,
 	EXPERT = 5
 }
 
@@ -133,8 +133,11 @@ local function decorateQuestStepLine(line, stepID)
 	local stepData = data.ST[stepID];
 
 	line.Name:SetText(stepID);
-	line.Description:SetText(stepData.TX or "");
+	line.Description:SetText(stepData.BA.TX or "");
 	line.ID:SetText("");
+	if stepData.BA.IN then
+		line.ID:SetText("|cff00ff00" .. loc("QE_AUTO_REVEAL"));
+	end
 	line.click.stepID = stepID;
 end
 
@@ -224,6 +227,7 @@ local function load()
 	notes.frame.scroll.text:SetText(data.NT or "");
 	main.name:SetText(data.BA.NA or "");
 	main.description.scroll.text:SetText(data.BA.DE or "");
+	main.auto:SetChecked(data.BA.IN or false);
 	onIconSelected(data.BA.IC);
 	refreshObjectiveList();
 
@@ -246,6 +250,7 @@ local function saveToDraft()
 	data.BA.NA = stEtN(strtrim(main.name:GetText()));
 	data.BA.DE = stEtN(strtrim(main.description.scroll.text:GetText()));
 	data.BA.IC = main.preview.selectedIcon;
+	data.BA.IN = main.auto:GetChecked();
 
 	storeDataScript();
 end
@@ -344,6 +349,10 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 	main.preview:SetScript("OnClick", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
 	end);
+
+	-- Auto reveal
+	main.auto.Text:SetText(loc("QE_AUTO_REVEAL"));
+	setTooltipForSameFrame(main.auto, "RIGHT", 0, 5, loc("QE_AUTO_REVEAL"), loc("QE_AUTO_REVEAL_TT"));
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NOTES

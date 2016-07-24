@@ -77,7 +77,13 @@ local function load()
 
 	local data = toolFrame.specificDraft;
 
-	main.name:SetText(data.DX or "");
+	if not data.BA then
+		data.BA = {};
+	end
+
+	main.pre.scroll.text:SetText(data.BA.TX or "");
+	main.post.scroll.text:SetText(data.BA.DX or "");
+	main.auto:SetChecked(data.BA.IN or false);
 
 	loadDataScript();
 	loadDataInner();
@@ -91,7 +97,9 @@ end
 local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 	local data = toolFrame.specificDraft;
-	data.DX = stEtN(strtrim(main.name:GetText()));
+	data.BA.TX = stEtN(strtrim(main.pre.scroll.text:GetText()));
+	data.BA.DX = stEtN(strtrim(main.post.scroll.text:GetText()));
+	data.BA.IN = main.auto:GetChecked();
 	storeDataScript();
 end
 
@@ -167,9 +175,15 @@ function TRP3_API.extended.tools.initStep(ToolFrame)
 	main = toolFrame.step.main;
 	main.title:SetText(loc("TYPE_QUEST_STEP"));
 
-	-- Name
-	main.name.title:SetText(loc("QE_NAME"));
-	setTooltipForSameFrame(main.name.help, "RIGHT", 0, 5, loc("QE_NAME"), loc("QE_NAME_TT"));
+	-- Pre
+	main.pre.title:SetText(loc("QE_ST_PRE"));
+
+	-- Post
+	main.post.title:SetText(loc("QE_ST_POST"));
+
+	-- Auto reveal
+	main.auto.Text:SetText(loc("QE_ST_AUTO_REVEAL"));
+	setTooltipForSameFrame(main.auto, "RIGHT", 0, 5, loc("QE_ST_AUTO_REVEAL"), loc("QE_ST_AUTO_REVEAL_TT"));
 
 	-- Links
 	linksStructure = {
