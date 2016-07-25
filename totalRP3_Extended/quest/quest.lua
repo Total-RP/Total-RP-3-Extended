@@ -160,12 +160,10 @@ local function goToStep(campaignID, questID, stepID)
 	if stepClass then
 
 		-- Initial script
-		if stepClass.OS then
-			local retCode = TRP3_API.script.executeClassScript(stepClass.OS, stepClass.SC,
+		if stepClass.LI and stepClass.LI.OS then
+			local retCode = TRP3_API.script.executeClassScript(stepClass.LI.OS, stepClass.SC,
 				{
-					campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-					questID = questID, questClass = questClass, questLog = questLog,
-					stepID = stepID, stepClass = stepClass,
+					object = questLog, classID = stepID, class = stepClass,
 				}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
 		end
 
@@ -329,7 +327,7 @@ local function performAction(actionType)
 											local retCode = TRP3_API.script.executeClassScript(action.SC, stepClass.SC,
 												{
 													campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-													questID = questID, questClass = questClass, questLog = questLog,
+													questID = questID, questClass = questClass, object = questLog,
 													stepID = stepID, stepClass = stepClass,
 												}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
 											return;
@@ -347,7 +345,7 @@ local function performAction(actionType)
 										local retCode = TRP3_API.script.executeClassScript(action.SC, questClass.SC,
 											{
 												campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-												questID = questID, questClass = questClass, questLog = questLog,
+												questID = questID, questClass = questClass, object = questLog,
 											}, TRP3_API.extended.getFullID(campaignID, questID));
 										return;
 									end
@@ -364,7 +362,7 @@ local function performAction(actionType)
 					if action.TY == actionType then
 						if isConditionChecked(action.CO) then
 							local retCode = TRP3_API.script.executeClassScript(action.SC, campaignClass.SC,
-								{campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog}, campaignID);
+								{campaignID = campaignID, campaignClass = campaignClass, object = campaignLog}, campaignID);
 							return;
 						end
 					end

@@ -71,7 +71,7 @@ local PAGE_BY_TYPE = {
 	[TRP3_DB.types.QUEST_STEP] = {
 		frame = "step",
 		tabTextGetter = function(id, class)
-			return ("%s: %s"):format(loc("TYPE_QUEST_STEP"),  id);
+			return ("%s: %s"):format(loc("TYPE_QUEST_STEP"),  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 2,
 	},

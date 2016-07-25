@@ -97,6 +97,7 @@ end
 local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 	local data = toolFrame.specificDraft;
+	data.BA.NA = toolFrame.specificClassID;
 	data.BA.TX = stEtN(strtrim(main.pre.scroll.text:GetText()));
 	data.BA.DX = stEtN(strtrim(main.post.scroll.text:GetText()));
 	data.BA.IN = main.auto:GetChecked();

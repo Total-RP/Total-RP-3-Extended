@@ -40,10 +40,11 @@ end
 TRP3_API.extended.tools.createCampaign = createCampaign;
 
 
-function TRP3_API.extended.tools.getQuestStepData()
+function TRP3_API.extended.tools.getQuestStepData(id)
 	local data = {
 		TY = TRP3_DB.types.QUEST_STEP,
 		BA = {
+			NA = id or "first_quest_step",
 			TX = loc("QE_STEP_NAME_NEW"),
 		},
 		MD = {

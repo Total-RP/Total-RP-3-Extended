@@ -70,6 +70,118 @@ local function quest_start_init()
 	end
 end
 
+local function quest_goToStep_init()
+	local editor = TRP3_EffectEditorGoToStep;
+
+	registerEffectEditor("quest_goToStep", {
+		title = loc("EFFECT_QUEST_GOTOSTEP"),
+		icon = "achievement_quests_completed_02",
+		description = loc("EFFECT_QUEST_GOTOSTEP_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local class = getClass(tostring(args[1]));
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_GOTOSTEP_PREVIEW"):format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+		end,
+		getDefaultArgs = function()
+			return {""};
+		end,
+		editor = editor;
+	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
+		end, TRP3_DB.types.QUEST_STEP});
+	end);
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_QUEST_GOTOSTEP_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_GOTOSTEP_ID"), loc("EFFECT_QUEST_GOTOSTEP_ID_TT"));
+
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+	end
+end
+
+local function quest_revealObjective_init()
+	local editor = TRP3_EffectEditorQuestObjReveal;
+
+	registerEffectEditor("quest_revealObjective", {
+		title = loc("EFFECT_QUEST_REVEAL_OBJ"),
+		icon = "icon_treasuremap",
+		description = loc("EFFECT_QUEST_REVEAL_OBJ_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local class = getClass(tostring(args[1]));
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_REVEAL_OBJ_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+		end,
+		getDefaultArgs = function()
+			return {""};
+		end,
+		editor = editor;
+	});
+
+	registerEffectEditor("quest_markObjDone", {
+		title = loc("EFFECT_QUEST_REVEAL_OBJ_DONE"),
+		icon = "inv_misc_map_01",
+		description = loc("EFFECT_QUEST_REVEAL_OBJ_DONE_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local class = getClass(tostring(args[1]));
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_REVEAL_OBJ_DONE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+		end,
+		getDefaultArgs = function()
+			return {""};
+		end,
+		editor = editor;
+	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
+		end, TRP3_DB.types.QUEST});
+	end);
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_QUEST_START_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_START_ID"), loc("EFFECT_QUEST_START_ID_TT"));
+
+	-- Obj
+	editor.obj.title:SetText(loc("EFFECT_QUEST_OBJ_ID"));
+	setTooltipForSameFrame(editor.obj.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_OBJ_ID"), loc("EFFECT_QUEST_OBJ_ID_TT"));
+
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "");
+		editor.obj:SetText(data[2] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+		scriptData.args[2] = stEtN(strtrim(editor.obj:GetText()));
+	end
+end
+
 function TRP3_API.extended.tools.initCampaignEffects()
 	quest_start_init();
+	quest_goToStep_init();
+	quest_revealObjective_init();
 end

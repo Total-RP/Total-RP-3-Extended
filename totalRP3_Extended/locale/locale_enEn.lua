@@ -145,6 +145,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_NOACTION_LISTEN = "You don't hear anything special.",
 	QE_NOACTION_ACTION = "There is nothing to do.",
 	QE_NOACTION_TALK = "There is nothing to say.",
+	QE_PREVIOUS_STEP = "Previously",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",

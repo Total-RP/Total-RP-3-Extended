@@ -657,6 +657,9 @@ editor.init = function(ToolFrame)
 		},
 		[loc("EFFECT_CAT_CAMPAIGN")] = {
 			"quest_start",
+			"quest_goToStep",
+			"quest_revealObjective",
+			"quest_markObjDone",
 		},
 		[loc("MODE_EXPERT")] = {
 			"var_set_execenv",

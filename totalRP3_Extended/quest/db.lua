@@ -277,7 +277,7 @@ local demoCampaign = {
 		OS = "CAMPAIGN_START"
 	}
 };
-TRP3_DB.inner.demoCampaign = demoCampaign;
+--TRP3_DB.inner.demoCampaign = demoCampaign;
 
 local myFirstCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,
@@ -617,4 +617,4 @@ local myFirstCampaign = {
 		OS = "CAMPAIGN_START"
 	}
 };
-TRP3_DB.inner.myFirstCampaign = myFirstCampaign;
+--TRP3_DB.inner.myFirstCampaign = myFirstCampaign;

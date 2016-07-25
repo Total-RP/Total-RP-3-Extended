@@ -167,7 +167,7 @@ end
 local function createQuestStep()
 	TRP3_API.popup.showTextInputPopup(loc("QE_STEP_CREATE"), function(value)
 		if not toolFrame.specificDraft.ST[value] then
-			toolFrame.specificDraft.ST[value] = TRP3_API.extended.tools.getQuestStepData();
+			toolFrame.specificDraft.ST[value] = TRP3_API.extended.tools.getQuestStepData(value);
 			refreshQuestStepList();
 		else
 			Utils.message.displayMessage(loc("QE_STEP_EXIST"):format(value), 4);

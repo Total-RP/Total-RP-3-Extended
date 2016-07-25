@@ -129,7 +129,7 @@ local function onActionSaved()
 
 	local structure = toolFrame.specificDraft.AC;
 	if structure[index] then
-		wipe(structure[index]);
+		data.CO = structure[index].CO;
 		structure[index] = nil;
 	end
 	structure[index] = data;

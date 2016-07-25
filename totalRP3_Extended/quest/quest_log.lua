@@ -329,18 +329,18 @@ local function refreshStepContent(campaignID, questID, questInfo)
 		html = html .. ("\n%s"):format(objectivesText);
 	end
 
-	if questInfo.PS and Utils.table.size(questInfo.PS) > 0 then
+	if Utils.table.size(questInfo.PS or EMPTY) > 0 then
 		html = html .. ("\n{img:%s:256:32}\n"):format("Interface\\QUESTFRAME\\UI-HorizontalBreak");
 
 		local previousStepText = "";
 		for _, stepID in pairs(questInfo.PS) do
 			local stepClass = getClass(campaignID, questID, stepID);
-			if stepClass and stepClass.DX then
-				previousStepText = previousStepText .. stepClass.DX;
+			if stepClass and stepClass.BA.DX then
+				previousStepText = previousStepText .. stepClass.BA.DX;
 			end
 		end
 
-		html = html .. ("{h2}%s{/h2}"):format("Previous steps");
+		html = html .. ("{h2}%s{/h2}"):format(loc("QE_PREVIOUS_STEP"));
 		html = html .. ("\n%s\n"):format(previousStepText);
 	end
 
