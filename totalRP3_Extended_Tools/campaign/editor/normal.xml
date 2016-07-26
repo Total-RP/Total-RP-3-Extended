@@ -114,9 +114,28 @@
 						</Anchors>
 					</EditBox>
 
-					<Button parentKey="vignette" inherits="TRP3_CampaignButtonTemplate">
+					<Button parentKey="vignette">
+						<Size x="150" y="75"/>
+						<Layers>
+							<Layer level="ARTWORK" textureSubLevel="2">
+								<Texture parentKey="IconBorder" file="Interface\ExtraButton\GarrZoneAbility-BarracksAlliance">
+									<Size x="175" y="85"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="15"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+							<Layer level="ARTWORK" textureSubLevel="1">
+								<Texture name="$parentIcon" parentKey="Icon">
+									<Size x="35" y="35"/>
+									<Anchors>
+										<Anchor point="CENTER" relativeKey="$parent.IconBorder" x="1" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
 						<Anchors>
-							<Anchor point="TOPRIGHT" x="5" y="-20" relativePoint="BOTTOMRIGHT" relativeKey="$parent.range"/>
+							<Anchor point="TOPRIGHT" x="5" y="-30" relativePoint="BOTTOMRIGHT" relativeKey="$parent.range"/>
 						</Anchors>
 					</Button>
 

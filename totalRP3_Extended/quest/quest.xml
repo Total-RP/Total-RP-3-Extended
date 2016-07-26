@@ -32,59 +32,70 @@
 	<!--     CAMPAIGNS TAB    -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Button name="TRP3_CampaignButtonTemplate" virtual="true">
-		<Size x="174" y="96"/>
+	<Button name="TRP3_CampaignButtonTemplate" virtual="true" inherits="TRP3_SmallerStandardParchmentFrame">
+		<Size x="0" y="158"/>
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentbgImage" parentKey="bgImage">
+			<Layer level="ARTWORK" textureSubLevel="2">
+				<Texture parentKey="IconBorder" file="Interface\ExtraButton\GarrZoneAbility-BarracksAlliance">
+					<Size x="175" y="85"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="3" y="-3"/>
-						<Anchor point="BOTTOMRIGHT" x="-3" y="3"/>
+						<Anchor point="TOP" x="0" y="15"/>
 					</Anchors>
 				</Texture>
 			</Layer>
-			<Layer level="BORDER">
+			<Layer level="ARTWORK" textureSubLevel="1">
 				<Texture name="$parentIcon" parentKey="Icon">
-					<Size x="60" y="60"/>
+					<Size x="35" y="35"/>
 					<Anchors>
-						<Anchor point="CENTER" x="0" y="0"/>
+						<Anchor point="CENTER" relativeKey="$parent.IconBorder" x="1" y="0"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="$parentName" inherits="QuestTitleFontBlackShadow" parentKey="name" text="TEXT">
+				<Texture parentKey="banner" file="Interface\QuestionFrame\TitleBanner" alpha="0.85">
+					<Size x="256" y="64"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.IconBorder" x="1" y="-60"/>
+					</Anchors>
+				</Texture>
+				<FontString name="$parentName" inherits="SystemFont_Med1" parentKey="name" text="TEXT">
 					<Size x="150" y="0"/>
 					<Anchors>
-						<Anchor point="TOP" x="0" y="-15"/>
+						<Anchor point="CENTER" relativeKey="$parent.banner" x="0" y="18"/>
 					</Anchors>
+					<Color r="0.2824" g="0.0157" b="0.0157"/>
 				</FontString>
+
 				<FontString name="$parentRange" inherits="GameFontNormal" justifyH="LEFT" parentKey="range" text="[LVL]">
 					<Size x="100" y="12"/>
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="7" y="7"/>
+						<Anchor point="TOPLEFT" x="20" y="-21"/>
 					</Anchors>
 				</FontString>
-				<FontString name="$parentCurrent" inherits="GameFontNormal" justifyH="RIGHT" parentKey="current" text="[CURRENT]">
-					<Size x="125" y="12"/>
+
+				<FontString font="SystemFont_Med1" justifyH="LEFT" justifyV="TOP" wordwrap="true" parentKey="Desc">
+					<Size x="0" y="55"/>
 					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="-7" y="7"/>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.banner" x="0" y="15"/>
+						<Anchor point="RIGHT" x="-30" y="0"/>
+						<Anchor point="LEFT" x="30" y="0"/>
 					</Anchors>
-					<Color r="0" g="0.95" b="0"/>
+					<Color r="0.2824" g="0.0157" b="0.0157"/>
 				</FontString>
 			</Layer>
 		</Layers>
-		<NormalTexture file="Interface\EncounterJournal\UI-EncounterJournalTextures">
-			<Size x="174" y="96"/>
-			<TexCoords left="0.00195313" right="0.34179688" top="0.42871094" bottom="0.52246094"/>
-		</NormalTexture>
-		<PushedTexture file="Interface\EncounterJournal\UI-EncounterJournalTextures" virtual="true" >
-			<Size x="174" y="96"/>
-			<TexCoords left="0.00195313" right="0.34179688" top="0.33300781" bottom="0.42675781"/>
-		</PushedTexture>
-		<HighlightTexture file="Interface\EncounterJournal\UI-EncounterJournalTextures" virtual="true" >
-			<Size x="174" y="96"/>
-			<TexCoords left="0.34570313" right="0.68554688" top="0.33300781" bottom="0.42675781"/>
-		</HighlightTexture>
+		<Frames>
+
+			<Button parentKey="switchButton">
+				<Size x="25" y="25"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
+				</Anchors>
+				<NormalTexture file="Interface\TIMEMANAGER\PauseButton"/>
+				<HighlightTexture file="Interface\Buttons\CheckButtonGlow"/>
+			</Button>
+
+		</Frames>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -97,42 +108,41 @@
 
 	<Frame name="TRP3_CampaignPageTemplate" inherits="TRP3_FieldSetFrame" virtual="true">
 		<Frames>
-			<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
+			<Button name="$parentSlot1" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot1">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-10"/>
-					<Anchor point="RIGHT" x="-10" y="0"/>
-					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="TOP" x="0" y="-15"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+					<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="-5"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot2" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot2">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="CENTER" x="0" y="-5"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
-				<Frames>
-					<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
-						<Anchors>
-							<Anchor point="TOPRIGHT" x="0" y="-17"/>
-							<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
-							</OnLoad>
-						</Scripts>
-					</Slider>
-				</Frames>
-				<ScrollChild>
-					<Frame name="$parentScrollChild" parentKey="child">
-						<Size x="10" y="10"/>
-						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="0"/>
-						</Anchors>
-						<Frames>
-							<Button name="$parentSlot1" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot1">
-								<Anchors>
-									<Anchor point="TOPLEFT" x="45" y="-15"/>
-								</Anchors>
-							</Button>
-						</Frames>
-					</Frame>
-				</ScrollChild>
-			</ScrollFrame>
+			</Button>
+			<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
+				<Size x="15" y="0" />
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" x="-2" y="0" relativeKey="$parent.Slot1"/>
+					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.Slot1"/>
+					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.Slot2"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						local name = self:GetName();
+						_G[name .. "Text"]:SetText("");
+						_G[name .. "High"]:SetText("");
+						_G[name .. "Low"]:SetText("");
+						self:SetMinMaxValues(0, 6);
+						self:SetValueStep(1);
+						self:SetOrientation("VERTICAL");
+					</OnLoad>
+				</Scripts>
+			</Slider>
 		</Frames>
 	</Frame>
 
@@ -189,177 +199,97 @@
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
-				self.Name:SetTextColor(0.95, 0.65, 0);
+				self.Name:SetTextColor(0.95, 0.95, 0.95);
 			</OnEnter>
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
-				self.Name:SetTextColor(0.95, 0.95, 0.95);
+				self.Name:SetTextColor(0.3824, 0.1157, 0.1157);
 			</OnLeave>
 		</Scripts>
 		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
 		<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD" parentKey="highlightTexture"/>
 	</Button>
 
-	<Frame name="TRP3_QuestPageTemplate" virtual="true">
+	<Frame name="TRP3_QuestPageTemplate" inherits="TRP3_CampaignButtonTemplate" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="break" file="Interface\QUESTFRAME\UI-HorizontalBreak">
+					<Size x="256" y="32"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Desc" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+
 		<Frames>
 
-			<Frame name="$parentCampaign" parentKey="Campaign" inherits="TRP3_FieldSetFrame">
-				<Size x="0" y="120"/>
+			<Button parentKey="PassButton">
+				<Size x="20" y="20"/>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="0"/>
-					<Anchor point="RIGHT" x="0" y="0"/>
-					<Anchor point="LEFT" x="0" y="0"/>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.switchButton" x="-5" y="0"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-GroupLoot-Pass-Up"/>
+				<HighlightTexture file="Interface\Buttons\UI-GroupLoot-Pass-Highlight" alphaMode="ADD"/>
+				<PushedTexture file="Interface\Buttons\UI-GroupLoot-Pass-Down"/>
+			</Button>
+
+			<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.break" x="0" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 				<Frames>
-					<Button name="$parentVignette" parentKey="Vignette" inherits="TRP3_CampaignButtonTemplate">
+					<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
 						<Anchors>
-							<Anchor point="LEFT" x="10" y="0"/>
+							<Anchor point="TOPRIGHT" x="0" y="-17"/>
+							<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
 						</Anchors>
-					</Button>
-
-					<Frame parentKey="Text" name="$parentText" virtual="true">
-						<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Vignette" x="5" y="0"/>
-							<Anchor point="TOP" x="0" y="-10"/>
-							<Anchor point="RIGHT" x="-40" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="10"/>
-						</Anchors>
-						<Layers>
-							<Layer level="BACKGROUND">
-								<Texture parentKey="bg" atlas="adventureguide-pane-small"/>
-							</Layer>
-						</Layers>
-						<Frames>
-							<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-15"/>
-									<Anchor point="RIGHT" x="25" y="0"/>
-									<Anchor point="LEFT" x="30" y="0"/>
-									<Anchor point="BOTTOM" x="0" y="10"/>
-								</Anchors>
-								<Frames>
-									<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
-										<Anchors>
-											<Anchor point="TOPRIGHT" x="0" y="-17"/>
-											<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
-										</Anchors>
-										<Scripts>
-											<OnLoad>
-												self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
-											</OnLoad>
-										</Scripts>
-									</Slider>
-								</Frames>
-								<ScrollChild>
-									<Frame name="$parentScrollChild" parentKey="child">
-										<Size x="10" y="10"/>
-										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="0"/>
-										</Anchors>
-										<Frames>
-											<Frame parentKey="Desc" name="$parentDesc">
-												<Size x="10" y="10"/>
-												<Anchors>
-													<Anchor point="TOPLEFT" x="0" y="0"/>
-												</Anchors>
-												<Layers>
-													<Layer level="OVERLAY">
-														<FontString name="$parentText" font="SystemFont_Med1" justifyH="CENTER" justifyV="TOP" wordwrap="true" parentKey="Text">
-															<Size x="230" y="0"/>
-															<Anchors>
-																<Anchor point="TOPLEFT" x="0" y="0"/>
-															</Anchors>
-															<Color r="0.2824" g="0.0157" b="0.0157"/>
-														</FontString>
-													</Layer>
-												</Layers>
-											</Frame>
-										</Frames>
-									</Frame>
-								</ScrollChild>
-							</ScrollFrame>
-						</Frames>
-					</Frame>
-
+						<Scripts>
+							<OnLoad>
+								self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
+							</OnLoad>
+						</Scripts>
+					</Slider>
 				</Frames>
-			</Frame>
-
-			<Frame name="$parentList" parentKey="List" inherits="TRP3_FieldSetFrame">
-				<Size x="0" y="120"/>
-				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Campaign" x="0" y="-5"/>
-					<Anchor point="RIGHT" x="0" y="0"/>
-					<Anchor point="LEFT" x="0" y="0"/>
-					<Anchor point="BOTTOM" x="0" y="0"/>
-				</Anchors>
-				<Layers>
-					<Layer>
-						<FontString parentKey="Empty" inherits="SystemFont_Med1" justifyH="CENTER" justifyV="MIDDLE" text="[EMPTY]" setAllPoints="true">
-							<Anchors>
-								<Anchor point="CENTER" x="0" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Frames>
-					<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
+				<ScrollChild>
+					<Frame name="$parentScrollChild" parentKey="child">
+						<Size x="10" y="10"/>
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-10"/>
-							<Anchor point="RIGHT" x="-10" y="0"/>
-							<Anchor point="LEFT" x="10" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
 						</Anchors>
 						<Frames>
-							<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
-								<Anchors>
-									<Anchor point="TOPRIGHT" x="0" y="-17"/>
-									<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
-								</Anchors>
-								<Scripts>
-									<OnLoad>
-										self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
-									</OnLoad>
-								</Scripts>
-							</Slider>
-						</Frames>
-						<ScrollChild>
-							<Frame name="$parentScrollChild" parentKey="child">
+							<Frame parentKey="Content" name="$parentContent">
 								<Size x="10" y="10"/>
 								<Anchors>
 									<Anchor point="TOPLEFT" x="0" y="0"/>
 								</Anchors>
-								<Frames>
-									<Frame parentKey="Content" name="$parentContent">
-										<Size x="10" y="10"/>
-										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="0"/>
-										</Anchors>
-										<Layers>
-											<Layer level="OVERLAY">
-												<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Current">
-													<Size x="0" y="50"/>
-													<Anchors>
-														<Anchor point="TOPLEFT" x="30" y="0"/>
-													</Anchors>
-													<Color r="0.95" g="0.95" b="0.95"/>
-												</FontString>
-												<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Finished">
-													<Size x="0" y="50"/>
-													<Anchors>
-														<Anchor point="TOPLEFT" x="30" y="0"/>
-													</Anchors>
-													<Color r="0.95" g="0.95" b="0.95"/>
-												</FontString>
-											</Layer>
-										</Layers>
-									</Frame>
-								</Frames>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Current">
+											<Size x="0" y="50"/>
+											<Anchors>
+												<Anchor point="TOPLEFT" x="30" y="0"/>
+											</Anchors>
+											<Color r="0.2824" g="0.0157" b="0.0157"/>
+										</FontString>
+										<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Finished">
+											<Size x="0" y="50"/>
+											<Anchors>
+												<Anchor point="TOPLEFT" x="30" y="0"/>
+											</Anchors>
+											<Color r="0.2824" g="0.0157" b="0.0157"/>
+										</FontString>
+									</Layer>
+								</Layers>
 							</Frame>
-						</ScrollChild>
-					</ScrollFrame>
-				</Frames>
-			</Frame>
+						</Frames>
+					</Frame>
+				</ScrollChild>
+			</ScrollFrame>
+
 		</Frames>
 	</Frame>
 
@@ -367,77 +297,52 @@
 	<!--      STEPS TAB       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_StepPageTemplate" virtual="true">
+	<Frame name="TRP3_StepPageTemplate" virtual="true" inherits="TRP3_SmallerStandardParchmentFrame">
 		<Frames>
 
 			<Button name="$parentTitle" parentKey="Title" inherits="TRP3_QuestButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="50" y="5"/>
+					<Anchor point="TOPLEFT" x="50" y="-35"/>
 				</Anchors>
 			</Button>
 
-			<Frame name="$parentObjectives" parentKey="Objectives" inherits="TRP3_FieldSetFrame">
+			<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
 				<Anchors>
-					<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" x="0" y="-30"/>
-					<Anchor point="RIGHT" x="0" y="0"/>
-					<Anchor point="LEFT" x="0" y="0"/>
-					<Anchor point="BOTTOM" x="0" y="0"/>
+					<Anchor point="TOP" x="0" relativePoint="BOTTOM" relativeKey="$parent.Title" y="-25"/>
+					<Anchor point="RIGHT" x="-25" y="0"/>
+					<Anchor point="LEFT" x="30" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="30"/>
 				</Anchors>
 				<Frames>
-					<Frame parentKey="Text" name="$parentText" virtual="true">
+					<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
 						<Anchors>
-							<Anchor point="LEFT" x="10" y="0"/>
-							<Anchor point="TOP" x="0" y="-10"/>
-							<Anchor point="RIGHT" x="-40" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="TOPRIGHT" x="0" y="-17"/>
+							<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
 						</Anchors>
-						<Layers>
-							<Layer level="BACKGROUND">
-								<Texture parentKey="bg" atlas="adventureguide-pane-small"/>
-							</Layer>
-						</Layers>
+						<Scripts>
+							<OnLoad>
+								self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+				<ScrollChild>
+					<Frame name="$parentScrollChild" parentKey="child">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+						</Anchors>
 						<Frames>
-							<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
+							<SimpleHTML name="$parentHTML" parentKey="HTML">
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-35"/>
-									<Anchor point="RIGHT" x="25" y="0"/>
-									<Anchor point="LEFT" x="40" y="0"/>
-									<Anchor point="BOTTOM" x="0" y="35"/>
+									<Anchor point="TOPLEFT" x="5" y="-5"/>
 								</Anchors>
-								<Frames>
-									<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
-										<Anchors>
-											<Anchor point="TOPRIGHT" x="0" y="-17"/>
-											<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
-										</Anchors>
-										<Scripts>
-											<OnLoad>
-												self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
-											</OnLoad>
-										</Scripts>
-									</Slider>
-								</Frames>
-								<ScrollChild>
-									<Frame name="$parentScrollChild" parentKey="child">
-										<Size x="10" y="10"/>
-										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="0"/>
-										</Anchors>
-										<Frames>
-											<SimpleHTML name="$parentHTML" parentKey="HTML">
-												<Anchors>
-													<Anchor point="TOPLEFT" x="5" y="-5"/>
-												</Anchors>
-												<FontString inherits="GameFontNormalSmall"/>
-											</SimpleHTML>
-										</Frames>
-									</Frame>
-								</ScrollChild>
-							</ScrollFrame>
+								<FontString inherits="GameFontNormalSmall"/>
+							</SimpleHTML>
 						</Frames>
 					</Frame>
-				</Frames>
-			</Frame>
+				</ScrollChild>
+			</ScrollFrame>
 		</Frames>
 	</Frame>
 
@@ -517,7 +422,7 @@
 
 			<Frame parentKey="Quest" name="$parentQuest" inherits="TRP3_QuestPageTemplate">
 				<Anchors>
-					<Anchor point="TOP" relativeKey="$parent.navBar" relativePoint="BOTTOM" x="0" y="-18"/>
+					<Anchor point="TOP" relativeKey="$parent.navBar" relativePoint="BOTTOM" x="0" y="-5"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
@@ -526,7 +431,7 @@
 
 			<Frame parentKey="Step" name="$parentStep" inherits="TRP3_StepPageTemplate">
 				<Anchors>
-					<Anchor point="TOP" relativeKey="$parent.navBar" relativePoint="BOTTOM" x="0" y="-18"/>
+					<Anchor point="TOP" relativeKey="$parent.navBar" relativePoint="BOTTOM" x="0" y="-5"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>

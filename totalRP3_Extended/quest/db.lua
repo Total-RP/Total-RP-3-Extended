@@ -51,10 +51,11 @@ local demoCampaign = {
 
 	-- Base information, common to the whole campaign
 	BA = {
-		IC = "achievement_zone_elwynnForest",
+		IC = "spell_arcane_arcaneresilience",
 		NA = "Save Northshire Valley",
-		DE = "Take the arms and defend the abbey.",
+		DE = "Take the arms and defend the abbey. Take the arms and defend the abbey. Take the arms and defend the abbey. Take the arms and defend the abbey. Take the arms and defend the abbey. Take the arms and defend the abbey. Take the arms and defend the abbey. Take the arms and defend the abbey. Take the arms and defend the abbey.",
 		RA = "1 - 5",
+		IM = "GarrZoneAbility-MageTower",
 	},
 
 	-- Initial campaign NPC declaration
@@ -277,7 +278,7 @@ local demoCampaign = {
 		OS = "CAMPAIGN_START"
 	}
 };
---TRP3_DB.inner.demoCampaign = demoCampaign;
+TRP3_DB.inner.demoCampaign = demoCampaign;
 
 local myFirstCampaign = {
 	TY = TRP3_DB.types.CAMPAIGN,
@@ -296,6 +297,7 @@ local myFirstCampaign = {
 		IC = "achievement_reputation_05",
 		NA = "A dangerous friendship",
 		DE = "Looking for some easy money?\Be careful, some friendship can became dangerous...",
+		IM = "GreenstoneKeg",
 	},
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -617,4 +619,4 @@ local myFirstCampaign = {
 		OS = "CAMPAIGN_START"
 	}
 };
---TRP3_DB.inner.myFirstCampaign = myFirstCampaign;
+TRP3_DB.inner.myFirstCampaign = myFirstCampaign;

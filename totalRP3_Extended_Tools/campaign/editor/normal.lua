@@ -46,6 +46,11 @@ local function onIconSelected(icon)
 	main.vignette.selectedIcon = icon;
 end
 
+local function onCampaignPortraitSelected(portrait)
+	main.vignette.IconBorder:SetTexture("Interface\\ExtraButton\\" .. (portrait or "GarrZoneAbility-Stables"));
+	main.vignette.selectedPortrait = portrait or "GarrZoneAbility-Stables";
+end
+
 local function onNPCIconSelected(icon)
 	TRP3_API.ui.frame.setupIconButton(npc.editor.icon, icon);
 	npc.editor.icon.selectedIcon = icon;
@@ -235,9 +240,7 @@ local function load()
 	main.description.scroll.text:SetText(data.BA.DE or "");
 	main.range:SetText(data.BA.RA or "");
 	onIconSelected(data.BA.IC);
-
-	main.vignette.name:SetText(data.BA.NA or "");
-	main.vignette.range:SetText(data.BA.RA or "");
+	onCampaignPortraitSelected(data.BA.IM)
 
 	notes.frame.scroll.text:SetText(data.NT or "");
 
@@ -258,6 +261,7 @@ local function saveToDraft()
 	data.BA.DE = stEtN(strtrim(main.description.scroll.text:GetText()));
 	data.BA.RA = stEtN(strtrim(main.range:GetText()));
 	data.BA.IC = main.vignette.selectedIcon;
+	data.BA.IM = main.vignette.selectedPortrait;
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
 	storeDataScript();
 end
@@ -356,14 +360,53 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	main.range.title:SetText(loc("CA_RANGE"));
 	setTooltipForSameFrame(main.range.help, "RIGHT", 0, 5, loc("CA_RANGE"), loc("CA_RANGE_TT"));
 
+	local CAMPAIGN_PORTRAITS = {
+		"AirStrike",
+		"Amber",
+		"BrewmoonKeg",
+		"ChampionLight",
+		"Default",
+		"Engineering",
+		"EyeofTerrok",
+		"Fel",
+		"FengBarrier",
+		"FengShroud",
+		"GarrZoneAbility-Armory",
+		"GarrZoneAbility-BarracksAlliance",
+		"GarrZoneAbility-BarracksHorde",
+		"GarrZoneAbility-Inn",
+		"GarrZoneAbility-LumberMill",
+		"GarrZoneAbility-MageTower",
+		"GarrZoneAbility-Stables",
+		"GarrZoneAbility-TradingPost",
+		"GarrZoneAbility-TrainingPit",
+		"GarrZoneAbility-Workshop",
+		"GreenstoneKeg",
+		"HozuBar",
+		"LightningKeg",
+		"Smash",
+		"SoulSwap",
+		"Ultraxion",
+		"Ysera",
+	}
+
 	-- Vignette
-	main.vignette.current:Hide();
-	main.vignette.bgImage:SetTexture("Interface\\Garrison\\GarrisonUIBackground");
 	main.vignette.Icon:SetVertexColor(0.7, 0.7, 0.7);
-	main.vignette:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
+	main.vignette:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	main.vignette:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
+		else
+			local values = {};
+			tinsert(values, {loc("CA_IMAGE_TT")});
+			for index, portrait in pairs(CAMPAIGN_PORTRAITS) do
+				tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("CA_IMAGE"), portrait), portrait, ("|TInterface\\ExtraButton\\%s:96:192|t"):format(portrait)});
+			end
+			TRP3_API.ui.listbox.displayDropDown(self, values, onCampaignPortraitSelected, 0, true);
+		end
 	end);
-	setTooltipAll(main.vignette, "RIGHT", 0, 5, loc("CA_ICON"), color("y") .. loc("CM_CLICK") .. ":|cffff9900 " .. loc("CA_ICON_TT"));
+	setTooltipAll(main.vignette, "RIGHT", 0, 5, loc("CA_ICON"),
+		("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CA_ICON_TT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CA_IMAGE_TT")));
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NOTES

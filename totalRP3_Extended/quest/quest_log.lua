@@ -26,7 +26,7 @@ local getQuestLog = TRP3_API.quest.getQuestLog;
 
 local TRP3_QuestLogPage = TRP3_QuestLogPage;
 
-local goToPage;
+local goToPage, refreshCampaignList;
 local TAB_CAMPAIGNS = "campaigns";
 local TAB_QUESTS = "quests";
 local TAB_STEPS = "steps";
@@ -43,6 +43,7 @@ local function onCampaignActionSelected(value, button)
 		end);
 	elseif value == 2 then
 		TRP3_API.quest.activateCampaign(button.campaignID);
+		refreshCampaignList();
 	end
 end
 
@@ -61,91 +62,60 @@ local function onCampaignButtonClick(button, mouseButton)
 	end
 end
 
-local BASE_BKG = "Interface\\Garrison\\GarrisonUIBackground";
+local BASE_BKG = "Interface\\QuestionFrame\\question-background";
+local DEFAULT_CAMPAIGN_IMAGE = "GarrZoneAbility-Stables";
 
-local function decorateCampaignButton(button, campaignID, campaignClass, onCampaignClick)
+local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
+	local campaignClass = getClass(campaignID);
 	local campaignIcon, campaignName, campaignDescription = getClassDataSafe(campaignClass);
 	local author = campaignClass.MD.CB;
 
-	local image = (campaignClass.BA or EMPTY).IM;
+	local image = (campaignClass.BA or EMPTY).IM or DEFAULT_CAMPAIGN_IMAGE;
 	local range = (campaignClass.BA or EMPTY).RA;
+	local description = (campaignClass.BA or EMPTY).DE;
 
-	button:Show();
-	button.name:SetText(campaignName);
-	if image then
-		button.bgImage:SetTexture(image);
-		button.Icon:Hide();
-	else
-		button.bgImage:SetTexture(BASE_BKG);
-		button.Icon:Show();
-		TRP3_API.ui.frame.setupIconButton(button, campaignIcon);
-	end
+	campaignButton:Show();
+	campaignButton.name:SetText(campaignName);
+
+	campaignButton.IconBorder:SetTexture("Interface\\ExtraButton\\" .. image);
+
+	campaignButton.bTile:SetTexture(BASE_BKG, true, true);
+	TRP3_API.ui.frame.setupIconButton(campaignButton, campaignIcon);
+
+	campaignButton.Desc:SetText(description or "");
 
 	if range then
-		button.range:Show();
-		button.range:SetText(range);
+		campaignButton.range:Show();
+		campaignButton.range:SetText(range);
 	else
-		button.range:Hide();
+		campaignButton.range:Hide();
 	end
 
 	if getQuestLog().currentCampaign == campaignID then
-		button.current:Show();
-		button:GetNormalTexture():SetVertexColor(0, 0.95, 0);
+		campaignButton.switchButton:SetNormalTexture("Interface\\TIMEMANAGER\\PauseButton");
+		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc("QE_CAMPAIGN_PAUSE"));
 	else
-		button.current:Hide();
-		button:GetNormalTexture():SetVertexColor(1, 1, 1);
+		campaignButton.switchButton:SetNormalTexture("Interface\\TIMEMANAGER\\FFButton");
+		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc("QE_CAMPAIGN_START_BUTTON"));
 	end
 
-	local createdBy = "|cff00ff00%s: %s|r\n\n";
-	TRP3_API.ui.tooltip.setTooltipForSameFrame(button, "TOP", 0, 5, campaignName,
-		createdBy:format(loc("DB_FILTERS_OWNER"), author) .. campaignDescription .. "\n\n"
-		.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_OPEN")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS"))
-	);
+	if not noTooltip then
+		local createdBy = "|cff00ff00%s: %s|r\n\n";
+		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton, "TOPRIGHT", 0, 5, campaignName,
+			createdBy:format(loc("DB_FILTERS_OWNER"), author)
+			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_OPEN")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS"))
+		);
+	else
+		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton);
+	end
 
-	button.campaignID = campaignID;
-	button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-	button:SetScript("OnClick", onCampaignClick);
-	button.Icon:SetVertexColor(0.7, 0.7, 0.7);
-	button.current:SetText(loc("QE_CAMPAIGN_CURRENT"));
+	campaignButton.campaignID = campaignID;
 end
 
-local function reattachCaimpaignButtons()
-	local previous = TRP3_QuestLogPage.Campaign.slots[1];
-	for index, slot in pairs(TRP3_QuestLogPage.Campaign.slots) do
-		if index ~= 1 then
-			slot:ClearAllPoints();
-			if math.fmod(index, 2) == 0 then
-				slot:SetPoint("TOPLEFT", previous, "TOPRIGHT", 30, 0);
-			else
-				slot:SetPoint("TOPRIGHT", previous, "BOTTOMLEFT", -30, -20);
-			end
-			previous = slot;
-		end
-	end
-end
-
-local function refreshCampaignList()
-	for _, slot in pairs(TRP3_QuestLogPage.Campaign.slots) do
-		slot:Hide();
-	end
-
-	local index = 1;
-	for campaignID, campaign in pairs(getClassesByType(TRP3_DB.types.CAMPAIGN) or EMPTY) do
-		local button = TRP3_QuestLogPage.Campaign.slots[index];
-		if not button then
-			button = CreateFrame("Button", TRP3_QuestLogPage.Campaign:GetName() .. "Slot" .. index, TRP3_QuestLogPage.Campaign, "TRP3_CampaignButtonTemplate");
-			tinsert(TRP3_QuestLogPage.Campaign.slots, button);
-		end
-
-		decorateCampaignButton(button, campaignID, campaign, onCampaignButtonClick);
-		index = index + 1;
-	end
-
-	reattachCaimpaignButtons();
-end
-
-local function swapCampaignActivation(campaignID)
-	TRP3_API.quest.activateCampaign(campaignID);
+function refreshCampaignList()
+	local campaigns = getClassesByType(TRP3_DB.types.CAMPAIGN) or EMPTY;
+	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Campaign, loc("QE_CAMPAIGN_LIST"):format(Utils.table.size(campaigns)), 200);
+	TRP3_API.ui.list.initList(TRP3_QuestLogPage.Campaign, campaigns, TRP3_QuestLogPage.Campaign.slider);
 end
 
 local function goToCampaignPage(skipButton)
@@ -198,6 +168,8 @@ local function onQuestButtonEnter(button)
 
 	setTooltipForSameFrame(button, "RIGHT", 0, 5, questName, finalText);
 	TRP3_RefreshTooltipForFrame(button);
+
+	button.Name:SetTextColor(0.95, 0.95, 0.95);
 end
 
 local function decorateQuestButton(questFrame, campaignID, questID, questInfo, questClick)
@@ -206,7 +178,9 @@ local function decorateQuestButton(questFrame, campaignID, questID, questInfo, q
 
 	TRP3_API.ui.frame.setupIconButton(questFrame, questIcon);
 	questFrame.Name:SetText(questName);
+	questFrame.Name:SetTextColor(0.2824, 0.0157, 0.0157);
 	questFrame.InfoText:SetText(questDescription);
+	questFrame.InfoText:SetTextColor(0.3824, 0.1157, 0.1157);
 	questFrame:SetScript("OnClick", questClick);
 	questFrame:SetScript("OnEnter", onQuestButtonEnter);
 	questFrame.campaignID = campaignID;
@@ -215,12 +189,12 @@ local function decorateQuestButton(questFrame, campaignID, questID, questInfo, q
 end
 
 local function refreshQuestList(campaignID)
-	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Current:Hide();
-	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Finished:Hide();
-	TRP3_QuestLogPage.Quest.List.Empty:Show();
-	local questFrames = TRP3_QuestLogPage.Quest.List.scroll.child.Content.frames;
+	TRP3_QuestLogPage.Quest.scroll.child.Content.Current:Hide();
+	TRP3_QuestLogPage.Quest.scroll.child.Content.Finished:Hide();
+--	TRP3_QuestLogPage.Quest.Empty:Show();
+	local questFrames = TRP3_QuestLogPage.Quest.scroll.child.Content.frames;
 
-	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Finished:Hide();
+	TRP3_QuestLogPage.Quest.scroll.child.Content.Finished:Hide();
 	for _, questFrame in pairs(questFrames) do
 		questFrame:Hide();
 		questFrame:ClearAllPoints();
@@ -234,8 +208,8 @@ local function refreshQuestList(campaignID)
 		for questID, questInfo in pairs(campaignLog.QUEST) do
 			local questFrame = questFrames[index];
 			if not questFrame then
-				questFrame = CreateFrame("Button", TRP3_QuestLogPage.Quest.List:GetName() .. "Slot" .. index,
-					TRP3_QuestLogPage.Quest.List.scroll.child.Content, "TRP3_QuestButtonTemplate");
+				questFrame = CreateFrame("Button", TRP3_QuestLogPage.Quest:GetName() .. "Slot" .. index,
+					TRP3_QuestLogPage.Quest.scroll.child.Content, "TRP3_QuestButtonTemplate");
 				tinsert(questFrames, questFrame);
 			end
 
@@ -243,7 +217,7 @@ local function refreshQuestList(campaignID)
 			decorateQuestButton(questFrame, campaignID, questID, questInfo, function()
 				goToPage(false, TAB_STEPS, campaignID, questID, questName);
 			end);
-			questFrame:SetPoint("TOPLEFT", 50, y);
+			questFrame:SetPoint("TOPLEFT", 40, y);
 			questFrame:Show();
 
 			index = index + 1;
@@ -251,24 +225,25 @@ local function refreshQuestList(campaignID)
 		end
 
 		if index > 1 then
-			TRP3_QuestLogPage.Quest.List.Empty:Hide();
-			TRP3_QuestLogPage.Quest.List.scroll.child.Content.Current:Show();
+--			TRP3_QuestLogPage.Quest.Empty:Hide();
+			TRP3_QuestLogPage.Quest.scroll.child.Content.Current:Show();
 		else
-			TRP3_QuestLogPage.Quest.List.Empty:SetText(loc("QE_CAMPAIGN_NOQUEST"));
+--			TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_NOQUEST"));
 		end
 	else
-		TRP3_QuestLogPage.Quest.List.Empty:SetText(loc("QE_CAMPAIGN_UNSTARTED"));
+--		TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_UNSTARTED"));
 	end
 end
 
 local function refreshQuestVignette(campaignID)
 	local campaignClass = getClass(campaignID);
-	decorateCampaignButton(TRP3_QuestLogPage.Quest.Campaign.Vignette, campaignID, campaignClass, function()
-		swapCampaignActivation(campaignID);
-		refreshQuestVignette(campaignID);
-		refreshQuestList(campaignID);
-	end);
-	TRP3_QuestLogPage.Quest.Campaign.Text.scroll.child.Desc.Text:SetText((campaignClass.BA or EMPTY).DE or "");
+	decorateCampaignButton(TRP3_QuestLogPage.Quest, campaignID, true);
+end
+
+local function swapCampaignActivation(button)
+	onCampaignActionSelected(2, button);
+	refreshQuestVignette(button.campaignID);
+	refreshQuestList(button.campaignID);
 end
 
 local function goToQuestPage(skipButton, campaignID, campaignName)
@@ -287,7 +262,7 @@ end
 -- STEPS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local stepHTML = TRP3_QuestLogPage.Step.Objectives.Text.scroll.child.HTML;
+local stepHTML = TRP3_QuestLogPage.Step.scroll.child.HTML;
 
 local function refreshStepVignette(campaignID, questID, questInfo)
 	decorateQuestButton(TRP3_QuestLogPage.Step.Title, campaignID, questID, questInfo);
@@ -307,7 +282,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 		else
 			currentStepText = "|cffff0000" .. loc("QE_STEP_MISSING") .. "|r";
 		end
-		html = html .. ("{h2}%s{/h2}"):format(OVERVIEW);
+		html = html .. ("{h2}%s{/h2}"):format(loc("QE_OVERVIEW"));
 		html = html .. ("\n%s\n\n"):format(currentStepText);
 	end
 
@@ -363,9 +338,8 @@ end
 local function initStepFrame()
 	TRP3_QuestLogPage.Step.Title.Name:SetTextColor(0.1, 0.1, 0.1);
 	TRP3_QuestLogPage.Step.Title.InfoText:SetTextColor(0.1, 0.1, 0.1);
-	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Step.Objectives, loc("QE_QUEST_OBJ_AND_HIST"), 200);
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-		stepHTML:SetSize(containerwidth - 150, 5);
+		stepHTML:SetSize(containerwidth - 130, 5);
 		stepHTML:SetText(stepHTML.html);
 	end);
 
@@ -472,16 +446,28 @@ local function init()
 	NavBar_Initialize(TRP3_QuestLogPage.navBar, "NavButtonTemplate", homeData, TRP3_QuestLogPage.navBar.home, TRP3_QuestLogPage.navBar.overflow);
 
 	-- Campaign page init
-	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Campaign, loc("QE_CAMPAIGN_LIST"), 200);
-	TRP3_QuestLogPage.Campaign.slots = {};
-	tinsert(TRP3_QuestLogPage.Campaign.slots, TRP3_QuestLogPage.Campaign.scroll.child.Slot1);
+	TRP3_QuestLogPage.Campaign.widgetTab = {};
+	for i=1, 2 do
+		local line = TRP3_QuestLogPage.Campaign["Slot" .. i];
+		line.switchButton:SetScript("OnClick", function(self) onCampaignActionSelected(2, self:GetParent()) end);
+		line:SetScript("OnClick", onCampaignButtonClick);
+		line:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+		tinsert(TRP3_QuestLogPage.Campaign.widgetTab, line);
+	end
+	TRP3_QuestLogPage.Campaign.decorate = decorateCampaignButton;
+	TRP3_API.ui.list.handleMouseWheel(TRP3_QuestLogPage.Campaign, TRP3_QuestLogPage.Campaign.slider);
+	TRP3_QuestLogPage.Campaign.slider:SetValue(0);
 
 	-- Quest page init
-	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Quest.Campaign, loc("QE_CAMPAIGN"), 150);
-	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Quest.List, loc("QE_QUEST_LIST"), 200);
-	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Current:SetText(loc("QE_STEP_LIST_CURRENT"));
-	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Finished:SetText(loc("QE_STEP_LIST_FINISHED"));
-	TRP3_QuestLogPage.Quest.List.scroll.child.Content.frames = {};
+	TRP3_QuestLogPage.Quest.scroll.child.Content.Current:SetText(loc("QE_STEP_LIST_CURRENT"));
+	TRP3_QuestLogPage.Quest.scroll.child.Content.Finished:SetText(loc("QE_STEP_LIST_FINISHED"));
+	TRP3_QuestLogPage.Quest.scroll.child.Content.frames = {};
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_QuestLogPage.Quest.PassButton, "TOP", 0, 0, loc("QE_CAMPAIGN_RESET"));
+	TRP3_QuestLogPage.Quest.PassButton:SetScript("OnClick", function(self)
+		onCampaignActionSelected(1, self:GetParent());
+		refreshQuestList(self:GetParent().campaignID);
+		refreshQuestVignette(self:GetParent().campaignID);
+	end);
 
 	-- Step page init
 	initStepFrame();

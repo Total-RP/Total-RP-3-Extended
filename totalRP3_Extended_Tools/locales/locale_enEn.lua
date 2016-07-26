@@ -549,6 +549,8 @@ We should begin with some examples:
 	CA_QUEST_CREATE = "Please enter the quest ID. You can't have two quests with the same ID within the same campaign.",
 	CA_LINKS_ON_START = "On campaign start",
 	CA_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your campaign, so activating your campaign for the first time, or reset it in the quest log.\n\n|cff00ff00This is a good place to activate your first quest.",
+	CA_IMAGE = "Campaign portrait",
+	CA_IMAGE_TT = "Select campaign portrait",
 	QE_STEPS = "Quest steps",
 	QE_NAME = "Quest name",
 	QE_NAME_TT = "It's your quest name, as it will appear on the quest log.",

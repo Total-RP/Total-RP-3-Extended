@@ -111,7 +111,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	-- Campaign
 	QE_CAMPAIGN = "Campaign",
 	QE_CAMPAIGNS = "Campaigns",
-	QE_CAMPAIGN_LIST = "Available campaigns",
+	QE_CAMPAIGN_LIST = "%s available campaigns",
 	QE_CAMPAIGN_START = "Starting campaign |cff00ff00[%s]|r.",
 	QE_CAMPAIGN_START_BUTTON = "Start or resume campaign",
 	QE_CAMPAIGN_RESUME = "Resuming campaign |cff00ff00[%s]|r.",
@@ -131,7 +131,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_QUEST_LIST = "Quests for this campaign",
 	QE_STEP = "Step",
 	QE_STEP_LIST = "Steps for this quest",
-	QE_STEP_LIST_CURRENT = "Current quests",
+	QE_STEP_LIST_CURRENT = "Available quests",
 	QE_STEP_LIST_FINISHED = "Finished quests",
 	QE_STEP_MISSING = "Missing step information.",
 	QE_BUTTON = "Open quest log",
@@ -146,6 +146,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_NOACTION_ACTION = "There is nothing to do.",
 	QE_NOACTION_TALK = "There is nothing to say.",
 	QE_PREVIOUS_STEP = "Previously",
+	QE_OVERVIEW = "Quest overview",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",
