@@ -169,6 +169,14 @@
 					</Anchors>
 				</Texture>
 			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture file="Interface\ContainerFrame\UI-Icon-QuestBorder" alpha="0.85">
+					<Size x="38" y="38"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
 			<Layer level="OVERLAY">
 				<Texture parentKey="ActiveTexture" inherits="Spellbook-SlotFrame">
 					<Anchors>
@@ -199,11 +207,9 @@
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
-				self.Name:SetTextColor(0.95, 0.95, 0.95);
 			</OnEnter>
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
-				self.Name:SetTextColor(0.3824, 0.1157, 0.1157);
 			</OnLeave>
 		</Scripts>
 		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>

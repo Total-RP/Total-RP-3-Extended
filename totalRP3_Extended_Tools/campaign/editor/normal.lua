@@ -391,11 +391,10 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	}
 
 	-- Vignette
-	main.vignette.Icon:SetVertexColor(0.7, 0.7, 0.7);
 	main.vignette:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	main.vignette:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
-			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "TOP", parentPoint = "BOTTOM"}, {onIconSelected});
 		else
 			local values = {};
 			tinsert(values, {loc("CA_IMAGE_TT")});

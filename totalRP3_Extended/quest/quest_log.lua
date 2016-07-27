@@ -152,10 +152,11 @@ local function onQuestButtonEnter(button)
 		for objectiveID, state in pairs(objectives) do
 			local objectiveClass = questClass.OB[objectiveID];
 			if objectiveClass and state == false then
+				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", {object = button.questInfo});
 				if not objectivesText then
-					objectivesText = "|cff00ff00- " .. objectiveClass.TX;
+					objectivesText = "|cff00ff00- " .. obectiveText;
 				else
-					objectivesText = objectivesText .. "\n- " .. objectiveClass.TX;
+					objectivesText = objectivesText .. "\n- " .. obectiveText;
 				end
 			end
 		end
@@ -168,8 +169,6 @@ local function onQuestButtonEnter(button)
 
 	setTooltipForSameFrame(button, "RIGHT", 0, 5, questName, finalText);
 	TRP3_RefreshTooltipForFrame(button);
-
-	button.Name:SetTextColor(0.95, 0.95, 0.95);
 end
 
 local function decorateQuestButton(questFrame, campaignID, questID, questInfo, questClick)
@@ -292,10 +291,11 @@ local function refreshStepContent(campaignID, questID, questInfo)
 			local objectiveClass = questClass.OB[objectiveID];
 			local objText = UNKNOWN;
 			if objectiveClass then
+				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", {object = questInfo});
 				if state == true then
-					objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. objectiveClass.TX;
+					objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. obectiveText;
 				else
-					objText = "|TInterface\\GossipFrame\\IncompleteQuestIcon:12:12|t " .. objectiveClass.TX;
+					objText = "|TInterface\\GossipFrame\\IncompleteQuestIcon:12:12|t " .. obectiveText;
 				end
 			end
 			objectivesText = objectivesText .. "{p}" .. objText .. "{/p}";
@@ -468,6 +468,7 @@ local function init()
 		refreshQuestList(self:GetParent().campaignID);
 		refreshQuestVignette(self:GetParent().campaignID);
 	end);
+	TRP3_QuestLogPage.Quest.switchButton:SetScript("OnClick", function(self) swapCampaignActivation(self:GetParent()) end);
 
 	-- Step page init
 	initStepFrame();

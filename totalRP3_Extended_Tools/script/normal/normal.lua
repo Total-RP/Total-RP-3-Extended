@@ -660,6 +660,8 @@ editor.init = function(ToolFrame)
 			"quest_goToStep",
 			"quest_revealObjective",
 			"quest_markObjDone",
+			"quest_var_set_object",
+			"quest_var_inc_object",
 		},
 		[loc("MODE_EXPERT")] = {
 			"var_set_execenv",

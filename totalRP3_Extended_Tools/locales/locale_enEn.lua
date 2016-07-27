@@ -397,6 +397,10 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_QUEST_REVEAL_OBJ_DONE = "Complete objective",
 	EFFECT_QUEST_REVEAL_OBJ_DONE_TT = "Marks an objective as completed.\n\n|cffff9900Only works if the quest is part of the current active campaign, if the quest has already been revealed in the quest log and if the objective has already been revealed.",
 	EFFECT_QUEST_REVEAL_OBJ_DONE_PREVIEW = "Complete objective: %s for %s",
+	EFFECT_QUEST_VAR_WORK = "Quest variable",
+	EFFECT_QUEST_VAR_WORK_TT = "Sets a variable for a quest. The variable will be stored in the quest log and so would be reset if the campaign is reset. Note that the variable will persist even if the quest is completed.",
+	EFFECT_QUEST_VAR_INC = "Quest variable increment",
+	EFFECT_QUEST_VAR_INC_TT = "Increments a quest variable. If the variable does not exist, it will be initialized to 0.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",

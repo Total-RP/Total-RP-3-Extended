@@ -22,10 +22,12 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tostring, strtrim = tostring, strtrim;
+local security = TRP3_API.security.SECURITY_LEVEL;
 
 TRP3_API.quest.EFFECTS = {
 
 	["quest_start"] = {
+		secured = security.HIGH,
 		codeReplacementFunc = function (args)
 			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
 			return ("lastEffectReturn = startQuest(\"%s\", \"%s\");"):format(campaignID, questID);
@@ -36,6 +38,7 @@ TRP3_API.quest.EFFECTS = {
 	},
 
 	["quest_goToStep"] = {
+		secured = security.HIGH,
 		codeReplacementFunc = function (args)
 			local campaignID, questID, stepID = TRP3_API.extended.splitID(args[1] or "");
 			return ("lastEffectReturn = goToStep(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, stepID);
@@ -45,7 +48,33 @@ TRP3_API.quest.EFFECTS = {
 		}
 	},
 
+	["quest_var_set_object"] = {
+		secured = security.HIGH,
+		codeReplacementFunc = function (args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local varName = args[2] or "var";
+			local varValue = args[3] or "";
+			return ("setQuestVar(\"%s\", \"%s\", \"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(campaignID, questID, varName, varValue);
+		end,
+		env = {
+			setQuestVar = "TRP3_API.quest.setQuestVar",
+		},
+	},
+
+	["quest_var_inc_object"] = {
+		secured = security.HIGH,
+		codeReplacementFunc = function (args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local varName = args[2] or "var";
+			return ("incQuestVar(\"%s\", \"%s\", \"%s\"); lastEffectReturn = 0;"):format(campaignID, questID, varName);
+		end,
+		env = {
+			incQuestVar = "TRP3_API.quest.incQuestVar",
+		},
+	},
+
 	["quest_revealObjective"] = {
+		secured = security.HIGH,
 		codeReplacementFunc = function (args)
 			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
 			local objectiveID = args[2];
@@ -57,6 +86,7 @@ TRP3_API.quest.EFFECTS = {
 	},
 
 	["quest_markObjDone"] = {
+		secured = security.HIGH,
 		codeReplacementFunc = function (args)
 			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
 			local objectiveID = args[2];

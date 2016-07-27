@@ -180,8 +180,118 @@ local function quest_revealObjective_init()
 	end
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Quest var
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function quest_var_set_object_init()
+	local editor = TRP3_EffectEditorQuestVarSet;
+
+	registerEffectEditor("quest_var_set_object", {
+		title = loc("EFFECT_QUEST_VAR_WORK"),
+		icon = "inv_inscription_minorglyph01",
+		description = loc("EFFECT_QUEST_VAR_WORK_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local ID = tostring(args[1]);
+			local class = getClass(ID);
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText((link or ID) .. " - " .. tostring(args[2]) .. " - " .. tostring(args[3]));
+		end,
+		getDefaultArgs = function()
+			return {"", "varName", loc("EFFECT_VAR_VALUE")};
+		end,
+		editor = editor
+	});
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_QUEST_START_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_START_ID"), loc("EFFECT_QUEST_START_ID_TT"));
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
+		end, TRP3_DB.types.QUEST});
+	end);
+
+	-- Var name
+	editor.var.title:SetText(loc("EFFECT_VAR"))
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+
+	-- Var value
+	editor.value.title:SetText(loc("EFFECT_VAR_VALUE"));
+	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, loc("EFFECT_VAR_VALUE"), "");
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "");
+		editor.var:SetText(data[2] or "");
+		editor.value:SetText(data[3] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+		scriptData.args[2] = stEtN(strtrim(editor.var:GetText()));
+		scriptData.args[3] = stEtN(strtrim(editor.value:GetText()));
+	end
+end
+
+local function quest_var_inc_object_init()
+	local editor = TRP3_EffectEditorQuestVarInc;
+
+	registerEffectEditor("quest_var_inc_object", {
+		title = loc("EFFECT_QUEST_VAR_INC"),
+		icon = "inv_inscription_minorglyph02",
+		description = loc("EFFECT_QUEST_VAR_INC_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local ID = tostring(args[1]);
+			local class = getClass(ID);
+			local link;
+			if class ~= TRP3_DB.missing then
+				link = TRP3_API.inventory.getItemLink(class);
+			end
+			scriptStepFrame.description:SetText((link or ID) .. " - " .. tostring(args[2]));
+		end,
+		getDefaultArgs = function()
+			return {"", "varName"};
+		end,
+		editor = editor
+	});
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_QUEST_START_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_START_ID"), loc("EFFECT_QUEST_START_ID_TT"));
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
+		end, TRP3_DB.types.QUEST});
+	end);
+
+	-- Var name
+	editor.var.title:SetText(loc("EFFECT_VAR"))
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "");
+		editor.var:SetText(data[2] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
+		scriptData.args[2] = stEtN(strtrim(editor.var:GetText()));
+	end
+end
+
 function TRP3_API.extended.tools.initCampaignEffects()
 	quest_start_init();
 	quest_goToStep_init();
 	quest_revealObjective_init();
+	quest_var_set_object_init();
+	quest_var_inc_object_init();
 end
