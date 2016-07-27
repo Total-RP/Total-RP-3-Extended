@@ -304,6 +304,7 @@ local function decorateElement(scriptStepFrame)
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_CONDITION_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_CONDITION")));
 		scriptStepFrame.description:SetText(TRP3_ConditionEditor.getConditionPreview(scriptStep.b[1].cond));
+		setTooltipForSameFrame(scriptStepFrame, "TOP", 0, 5, loc("WO_CONDITION"), loc("WO_CONDITION_TT") .. "\n\n|cffffff00" .. loc("WO_ELEMENT_EDIT"));
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_DELAY_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_DELAY")));

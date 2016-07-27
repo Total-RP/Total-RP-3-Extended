@@ -515,6 +515,9 @@ We should begin with some examples:
 	OP_OP_QUEST_VAR = "Quest numeric variable",
 	OP_OP_QUEST_VAR_TT = "The numeric value of a quest variable. If the variable does not exist or is not a numeric value, 0 will be used.",
 	OP_OP_QUEST_VAR_PREVIEW = "%s from %s",
+	OP_OP_QUEST_STEP = "Quest current step",
+	OP_OP_QUEST_STEP_TT = "Return the current quest step ID. If the quest is not revealed or has no current step, returns nil.",
+	OP_OP_QUEST_STEP_PREVIEW = "%s current step",
 
 	-- Test
 	COND_EDITOR = "Condition editor",

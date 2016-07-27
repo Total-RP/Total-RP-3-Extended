@@ -331,6 +331,39 @@ local function quest_var_init()
 	end
 end
 
+local function quest_is_step_init()
+	local editor = TRP3_OperandEditorQuestSelection;
+
+	registerOperandEditor("quest_is_step", {
+		title = loc("OP_OP_QUEST_STEP"),
+		description = loc("OP_OP_QUEST_STEP_TT"),
+		returnType = 0,
+		getText = function(args)
+			local id = (args or EMPTY)[1] or "";
+			return loc("OP_OP_QUEST_STEP_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id)));
+		end,
+		editor = editor,
+	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
+		end, TRP3_DB.types.QUEST});
+	end);
+
+	-- Text & var
+	editor.id.title:SetText(loc("QUEST_ID"));
+
+	function editor.load(args)
+		editor.id:SetText((args or EMPTY)[1] or "");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or ""};
+	end
+end
+
 function TRP3_API.extended.tools.initCampaignEffects()
 
 	-- Effect
@@ -342,4 +375,5 @@ function TRP3_API.extended.tools.initCampaignEffects()
 
 	-- Operands
 	quest_var_init();
+	quest_is_step_init();
 end

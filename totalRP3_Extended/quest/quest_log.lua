@@ -287,7 +287,14 @@ local function refreshStepContent(campaignID, questID, questInfo)
 
 	if objectives and Utils.table.size(objectives) > 0 then
 		local objectivesText = "";
-		for objectiveID, state in pairs(objectives) do
+		local sortedID = {};
+		for objectiveID, _ in pairs(objectives) do
+			tinsert(sortedID, objectiveID);
+		end
+		table.sort(sortedID);
+
+		for _, objectiveID in pairs(sortedID) do
+			local state = objectives[objectiveID];
 			local objectiveClass = questClass.OB[objectiveID];
 			local objText = UNKNOWN;
 			if objectiveClass then
@@ -308,10 +315,12 @@ local function refreshStepContent(campaignID, questID, questInfo)
 		html = html .. ("\n{img:%s:256:32}\n"):format("Interface\\QUESTFRAME\\UI-HorizontalBreak");
 
 		local previousStepText = "";
+		local index = 1;
 		for _, stepID in pairs(questInfo.PS) do
 			local stepClass = getClass(campaignID, questID, stepID);
 			if stepClass and stepClass.BA.DX then
-				previousStepText = previousStepText .. stepClass.BA.DX;
+				previousStepText = previousStepText .. index .. ") " .. stepClass.BA.DX .. "\n\n";
+				index = index + 1;
 			end
 		end
 

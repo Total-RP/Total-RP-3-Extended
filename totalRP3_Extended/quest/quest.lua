@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
+local _G, assert, tostring, tinsert, wipe, pairs, tonumber = _G, assert, tostring, tinsert, wipe, pairs, tonumber;
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
@@ -157,15 +157,26 @@ end
 
 function TRP3_API.quest.getQuestVar(campaignID, questID, varName)
 	assert(campaignID and questID, "Illegal args");
-	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign == campaignID, "Can't setQuestVar because current campaign is not " .. campaignID);
-	local campaignLog = playerQuestLog[campaignID];
-	assert(campaignLog, "Trying to setQuestVar from an unstarted campaign: " .. campaignID);
-	local questLog = campaignLog.QUEST[questID];
-	assert(questLog, "Trying to setQuestVar from an unstarted quest: " .. campaignID .. " " .. questID);
+	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
+	if campaignLog then
+		local questLog = campaignLog.QUEST[questID];
+		if questLog then
+			return tonumber((questLog.vars or EMPTY)[varName] or "") or 0;
+		end
+	end
+	return 0;
+end
 
-	local current = tonumber((questLog.vars or EMPTY)[varName] or "") or 0;
-	return current;
+function TRP3_API.quest.isQuestStep(campaignID, questID)
+	assert(campaignID and questID, "Illegal args");
+	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
+	if campaignLog then
+		local questLog = campaignLog.QUEST[questID];
+		if questLog then
+			return questLog.CS;
+		end
+	end
+	return "nil";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
