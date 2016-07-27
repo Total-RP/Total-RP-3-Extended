@@ -91,6 +91,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	SPECIFIC_MODE = "Mode",
 	SPECIFIC = "Specific object",
 	ITEM_ID = "Item ID",
+	QUEST_ID = "Quest ID",
 
 	-- Editor common
 	EDITOR_PREVIEW = "preview",
@@ -511,6 +512,9 @@ We should begin with some examples:
 	OP_OP_INV_COUNT_CON = "Item units count (container)",
 	OP_OP_INV_COUNT_CON_TT = "|cff00ff00The number of units of an item the player possesses in this container.\n\n|cffff9900Can only be used on a container.",
 	OP_OP_INV_COUNT_CON_PREVIEW = "%s units count (container)",
+	OP_OP_QUEST_VAR = "Quest numeric variable",
+	OP_OP_QUEST_VAR_TT = "The numeric value of a quest variable. If the variable does not exist or is not a numeric value, 0 will be used.",
+	OP_OP_QUEST_VAR_PREVIEW = "%s from %s",
 
 	-- Test
 	COND_EDITOR = "Condition editor",

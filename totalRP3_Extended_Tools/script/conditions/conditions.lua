@@ -522,6 +522,9 @@ function editor.init()
 --			"inv_weight",
 --			"inv_empty_slot",
 		},
+		[loc("EFFECT_CAT_CAMPAIGN")] = {
+			"quest_var",
+		},
 --		["Expert"] = {-- TODO: locals
 --			"var_workflow",
 --			"var_object",
@@ -538,6 +541,7 @@ function editor.init()
 --		"Pets and companions", -- TODO: locals
 --		"Campaign and quests", -- TODO: locals
 		loc("INV_PAGE_CHARACTER_INV"),
+		loc("EFFECT_CAT_CAMPAIGN"),
 --		"Others", -- TODO: locals
 	}
 

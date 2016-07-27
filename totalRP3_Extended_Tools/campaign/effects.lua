@@ -17,7 +17,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
@@ -26,6 +26,10 @@ local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Effect
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function quest_start_init()
 	local editor = TRP3_EffectEditorQuestStart;
@@ -180,10 +184,6 @@ local function quest_revealObjective_init()
 	end
 end
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Quest var
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
 local function quest_var_set_object_init()
 	local editor = TRP3_EffectEditorQuestVarSet;
 
@@ -288,10 +288,58 @@ local function quest_var_inc_object_init()
 	end
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Operands
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
+
+local function quest_var_init()
+	local editor = TRP3_OperandEditorQuestVar;
+
+	registerOperandEditor("quest_var", {
+		title = loc("OP_OP_QUEST_VAR"),
+		description = loc("OP_OP_QUEST_VAR_TT"),
+		returnType = 0,
+		getText = function(args)
+			local id = (args or EMPTY)[1] or "";
+			local var = (args or EMPTY)[2] or "";
+			return loc("OP_OP_QUEST_VAR_PREVIEW"):format("|cffff9900" .. var .. "|cffffff00", TRP3_API.inventory.getItemLink(getClass(id)));
+		end,
+		editor = editor,
+	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
+		end, TRP3_DB.types.QUEST});
+	end);
+
+	-- Text & var
+	editor.id.title:SetText(loc("QUEST_ID"));
+	editor.var.title:SetText(loc("EFFECT_VAR"))
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+
+	function editor.load(args)
+		editor.id:SetText((args or EMPTY)[1] or "");
+		editor.var:SetText((args or EMPTY)[2] or "");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or "", strtrim(editor.var:GetText()) or ""};
+	end
+end
+
 function TRP3_API.extended.tools.initCampaignEffects()
+
+	-- Effect
 	quest_start_init();
 	quest_goToStep_init();
 	quest_revealObjective_init();
 	quest_var_set_object_init();
 	quest_var_inc_object_init();
+
+	-- Operands
+	quest_var_init();
 end

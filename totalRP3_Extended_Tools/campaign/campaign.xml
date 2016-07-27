@@ -190,5 +190,29 @@
 
 	</Frame>
 
+	<Frame name="TRP3_OperandEditorQuestVar" hidden="true">
+		<Frames>
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-40"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-10"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
 	<Script file="campaign/effects.lua"/>
 </Ui>

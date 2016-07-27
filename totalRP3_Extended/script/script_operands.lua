@@ -224,17 +224,33 @@ local OPERANDS = {
 	},
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- QUEST
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["quest_var"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local var = args[2] or "";
+			return ("getQuestVar(\"%s\", \"%s\", \"%s\")"):format(campaignID, questID, var);
+		end,
+		env = {
+			["getQuestVar"] = "TRP3_API.quest.getQuestVar",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- OTHERS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	-- Let you test a previous test results
 	["cond"] = {
-		codeReplacement= "tostring(conditionStorage[\"%s\"])",
+		codeReplacement = "tostring(conditionStorage[\"%s\"])",
 	},
 
 	-- Let you test the return value from the last effect
 	["last_return"] = {
-		codeReplacement= "tostring(lastEffectReturn)",
+		codeReplacement = "tostring(lastEffectReturn)",
 	},
 };
 

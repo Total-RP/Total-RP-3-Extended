@@ -155,6 +155,19 @@ function TRP3_API.quest.incQuestVar(campaignID, questID, varName)
 	TRP3_API.script.setObjectVar(questLog, varName, current + 1, false);
 end
 
+function TRP3_API.quest.getQuestVar(campaignID, questID, varName)
+	assert(campaignID and questID, "Illegal args");
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	assert(playerQuestLog.currentCampaign == campaignID, "Can't setQuestVar because current campaign is not " .. campaignID);
+	local campaignLog = playerQuestLog[campaignID];
+	assert(campaignLog, "Trying to setQuestVar from an unstarted campaign: " .. campaignID);
+	local questLog = campaignLog.QUEST[questID];
+	assert(questLog, "Trying to setQuestVar from an unstarted quest: " .. campaignID .. " " .. questID);
+
+	local current = tonumber((questLog.vars or EMPTY)[varName] or "") or 0;
+	return current;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- STEP API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

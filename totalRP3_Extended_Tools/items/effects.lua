@@ -17,7 +17,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
