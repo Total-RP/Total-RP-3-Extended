@@ -331,6 +331,43 @@ local function quest_var_init()
 	end
 end
 
+local function quest_obj_init()
+	local editor = TRP3_OperandEditorQuestObj;
+
+	registerOperandEditor("quest_obj", {
+		title = loc("OP_OP_QUEST_OBJ"),
+		description = loc("OP_OP_QUEST_OBJ_TT"),
+		returnType = true,
+		getText = function(args)
+			local id = (args or EMPTY)[1] or "";
+			local obj = (args or EMPTY)[2] or "";
+			return loc("OP_OP_QUEST_OBJ_PREVIEW"):format("|cffff9900" .. obj .. "|cffffff00", TRP3_API.inventory.getItemLink(getClass(id)));
+		end,
+		editor = editor,
+	});
+
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
+		end, TRP3_DB.types.QUEST});
+	end);
+
+	-- Text & obj
+	editor.id.title:SetText(loc("QUEST_ID"));
+	editor.obj.title:SetText(loc("QE_OBJ_ID"))
+	setTooltipForSameFrame(editor.obj.help, "RIGHT", 0, 5, loc("QE_OBJ_ID"), "");
+
+	function editor.load(args)
+		editor.id:SetText((args or EMPTY)[1] or "");
+		editor.obj:SetText((args or EMPTY)[2] or "");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or "", strtrim(editor.obj:GetText()) or ""};
+	end
+end
+
 local function quest_is_step_init()
 	local editor = TRP3_OperandEditorQuestSelection;
 
@@ -376,4 +413,5 @@ function TRP3_API.extended.tools.initCampaignEffects()
 	-- Operands
 	quest_var_init();
 	quest_is_step_init();
+	quest_obj_init();
 end

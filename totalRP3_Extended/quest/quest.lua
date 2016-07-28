@@ -179,6 +179,18 @@ function TRP3_API.quest.isQuestStep(campaignID, questID)
 	return "nil";
 end
 
+function TRP3_API.quest.isQuestObjectiveDone(campaignID, questID, objectiveID)
+	assert(campaignID and questID and objectiveID, "Illegal args");
+	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
+	if campaignLog then
+		local questLog = campaignLog.QUEST[questID];
+		if questLog and (questLog.OB or EMPTY)[objectiveID] ~= nil then
+			return (questLog.OB or EMPTY)[objectiveID];
+		end
+	end
+	return false;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- STEP API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

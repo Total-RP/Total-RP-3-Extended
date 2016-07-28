@@ -250,6 +250,17 @@ local OPERANDS = {
 		},
 	},
 
+	["quest_obj"] = {
+		codeReplacement = function(args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local objectiveID = args[2] or "";
+			return ("isQuestObjectiveDone(\"%s\", \"%s\", \"%s\")"):format(campaignID, questID, objectiveID);
+		end,
+		env = {
+			["isQuestObjectiveDone"] = "TRP3_API.quest.isQuestObjectiveDone",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- OTHERS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

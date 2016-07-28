@@ -525,6 +525,7 @@ function editor.init()
 		[loc("EFFECT_CAT_CAMPAIGN")] = {
 			"quest_var",
 			"quest_is_step",
+			"quest_obj",
 		},
 --		["Expert"] = {-- TODO: locals
 --			"var_workflow",

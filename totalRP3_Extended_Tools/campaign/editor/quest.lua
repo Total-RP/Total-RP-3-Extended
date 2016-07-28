@@ -164,6 +164,19 @@ local function openQuestStep(stepID)
 	TRP3_API.extended.tools.goToPage(getFullID(toolFrame.fullClassID, stepID));
 end
 
+local function renameQuestStep(stepID)
+	TRP3_API.popup.showTextInputPopup(loc("QE_STEP_CREATE"), function(newID)
+		if stepID ~= newID and not toolFrame.specificDraft.ST[newID] then
+			toolFrame.specificDraft.ST[newID] = toolFrame.specificDraft.ST[stepID];
+			toolFrame.specificDraft.ST[newID].BA.NA = newID;
+			toolFrame.specificDraft.ST[stepID] = nil;
+			refreshQuestStepList();
+		else
+			Utils.message.displayMessage(loc("QE_STEP_EXIST"):format(newID), 4);
+		end
+	end, nil, stepID);
+end
+
 local function createQuestStep()
 	TRP3_API.popup.showTextInputPopup(loc("QE_STEP_CREATE"), function(value)
 		if not toolFrame.specificDraft.ST[value] then
@@ -445,7 +458,11 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 			if button == "RightButton" then
 				removeQuestStep(self.stepID);
 			else
-				openQuestStep(self.stepID);
+				if IsControlKeyDown() then
+					renameQuestStep(self.stepID);
+				else
+					openQuestStep(self.stepID);
+				end
 			end
 		end);
 		line.click:SetScript("OnEnter", function(self)
@@ -459,7 +476,8 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_ACTIONS"),
 			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
-					.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CTRL") .. " + " .. loc("CM_CLICK"), loc("CA_QE_ST_ID"))
+			.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
 	end
 	steps.list.decorate = decorateQuestStepLine;
 	TRP3_API.ui.list.handleMouseWheel(steps.list, steps.list.slider);

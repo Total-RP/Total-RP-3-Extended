@@ -518,6 +518,9 @@ We should begin with some examples:
 	OP_OP_QUEST_STEP = "Quest current step",
 	OP_OP_QUEST_STEP_TT = "Return the current quest step ID. If the quest is not revealed or has no current step, returns nil.",
 	OP_OP_QUEST_STEP_PREVIEW = "%s current step",
+	OP_OP_QUEST_OBJ = "Quest objective",
+	OP_OP_QUEST_OBJ_TT = "Return the completion (true or false) for a quest objective. If the campaign, quest or the objective is not yet revealed, returns false.",
+	OP_OP_QUEST_OBJ_PREVIEW = "Objective %s from %s",
 
 	-- Test
 	COND_EDITOR = "Condition editor",
@@ -557,6 +560,7 @@ We should begin with some examples:
 	CA_QUEST_NO = "No quest",
 	CA_QUEST_EXIST = "There is already a quest with the ID %s.",
 	QE_NAME_NEW = "New quest",
+	CA_QE_ID = "Change quest ID",
 	CA_QUEST_CREATE = "Please enter the quest ID. You can't have two quests with the same ID within the same campaign.",
 	CA_LINKS_ON_START = "On campaign start",
 	CA_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your campaign, so activating your campaign for the first time, or reset it in the quest log.\n\n|cff00ff00This is a good place to activate your first quest.",
@@ -597,6 +601,7 @@ We should begin with some examples:
 	QE_STEP_NO = "No quest step",
 	QE_STEP_REMOVE = "Remove this step?",
 	QE_STEP_CREATE = "Please enter the step ID. You can't have two steps with the same ID within the same quest.",
+	CA_QE_ST_ID = "Change quest step ID",
 	QE_STEP_EXIST = "There is already a step with the ID %s.",
 	QE_STEP_NAME_NEW = "New quest step",
 	QE_ST_PRE = "Quest log entry",
