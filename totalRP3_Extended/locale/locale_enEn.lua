@@ -119,7 +119,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_CAMPAIGN_PAUSE = "Pausing current campaign.",
 	QE_CAMPAIGN_CURRENT = "Current campaign",
 	QE_CAMPAIGN_CURRENT_NO = "No active campaign.",
-	QE_CAMPAIGN_UNSTARTED = "You haven't started this campaign yet.\nClick on the campaign button to start it.",
+	QE_CAMPAIGN_UNSTARTED = "You haven't started this campaign yet.\nClick on the top right \"Start\" button to start it.",
 	QE_CAMPAIGN_NOQUEST = "No quest revealed yet for this campaign.\nTake a look at the campaign description to unlock your first quest.",
 	QE_QUEST_START = "Starting quest |cff00ff00[%s]|r.",
 	QE_QUEST_TT_STEP = "|cffffff00Currently:|r\n\"%s\"",
@@ -149,6 +149,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_OVERVIEW = "Quest overview",
 	QE_COMPLETED = "Completed",
 	QE_FAILED = "Failed",
+	QE_NEW = "New quest revealed",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",

@@ -28,6 +28,87 @@
 		</Scripts>
 	</GameTooltip>
 
+	<SimpleHTML name="TRP3_QuestObjectives" parent="ObjectiveTrackerBlocksFrame" hidden="true">
+		<Size x="0" y="100"/>
+		<Anchors>
+			<Anchor point="BOTTOM"/>
+			<Anchor point="LEFT"/>
+			<Anchor point="RIGHT"/>
+		</Anchors>
+	</SimpleHTML>
+
+	<Button name="TRP3_QuestToast" parent="UIParent" frameStrata="DIALOG" hidden="true">
+		<Size x="325" y="70"/>
+		<Anchors>
+			<Anchor point="BOTTOM" y="200"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" atlas="Garr_MissionToast" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="quest" inherits="Spellbook-SlotFrame">
+					<Anchors>
+						<Anchor point="LEFT" x="20" y="2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Icon" file="Interface\ICONS\temp">
+					<Size x="35" y="35"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.quest" x="-2" y="-1"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString inherits="GameFontNormalSmall" justifyH="CENTER" parentKey="title" text="[New Quest]">
+					<Anchors>
+						<Anchor point="TOP" x="25" y="-10"/>
+					</Anchors>
+				</FontString>
+				<FontString inherits="GameFontNormal" justifyH="CENTER" parentKey="name" text="[Quest Name Quest Name Quest Name]">
+					<Size x="210" y="10"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-14"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Animations>
+			<AnimationGroup parentKey="fadeOut" setToFinalAlpha="true">
+				<Alpha duration="0.5" fromAlpha="1" toAlpha="0"/>
+				<Scripts>
+					<OnFinished>
+						TRP3_QuestToast:Hide();
+					</OnFinished>
+				</Scripts>
+			</AnimationGroup>
+			<AnimationGroup parentKey="fadeIn" setToFinalAlpha="true">
+				<Alpha duration="0.25" fromAlpha="0" toAlpha="1"/>
+			</AnimationGroup>
+		</Animations>
+		<Scripts>
+			<OnShow>
+				self:SetAlpha(0);
+				self.fadeIn:Play();
+				C_Timer.After(4, function()
+					self.fadeOut:Play();
+				end);
+			</OnShow>
+			<OnEnter>
+				self.Background:SetVertexColor(0.8, 1, 0.8);
+			</OnEnter>
+			<OnLeave>
+				self.Background:SetVertexColor(1, 1, 1);
+			</OnLeave>
+		</Scripts>
+	</Button>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--     CAMPAIGNS TAB    -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -226,6 +307,15 @@
 						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Desc" x="0" y="0"/>
 					</Anchors>
 				</Texture>
+				<FontString inherits="SystemFont_Large" justifyH="CENTER" justifyV="MIDDLE" parentKey="Empty" text="[Quest Name Quest Name Quest Name]">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.break" x="0" y="0"/>
+						<Anchor point="RIGHT" x="-10" y="0"/>
+						<Anchor point="LEFT" x="10" y="0"/>
+						<Anchor point="BOTTOM" x="0" y="10"/>
+					</Anchors>
+					<Color r="0.2824" g="0.0157" b="0.0157"/>
+				</FontString>
 			</Layer>
 		</Layers>
 
@@ -276,13 +366,6 @@
 								<Layers>
 									<Layer level="OVERLAY">
 										<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Current">
-											<Size x="0" y="50"/>
-											<Anchors>
-												<Anchor point="TOPLEFT" x="30" y="0"/>
-											</Anchors>
-											<Color r="0.2824" g="0.0157" b="0.0157"/>
-										</FontString>
-										<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Finished">
 											<Size x="0" y="50"/>
 											<Anchors>
 												<Anchor point="TOPLEFT" x="30" y="0"/>
@@ -454,5 +537,6 @@
 	<Script file="campaign.lua"/>
 	<Script file="quest.lua"/>
 	<Script file="quest_log.lua"/>
+	<Script file="quest_objective.lua"/>
 
 </Ui>

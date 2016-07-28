@@ -20,7 +20,7 @@ local _G, assert, tostring, tinsert, wipe, pairs, tonumber = _G, assert, tostrin
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
-local getClass = TRP3_API.extended.getClass;
+local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- QUEST API
@@ -96,7 +96,7 @@ local function startQuest(campaignID, questID)
 			OB = {},
 		};
 
-		local questName = (questClass.BA or EMPTY).NA or UNKNOWN;
+		local questIcon, questName, questDescription = getClassDataSafe(questClass);
 		Utils.message.displayMessage(loc("QE_QUEST_START"):format(questName), Utils.message.type.CHAT_FRAME);
 
 		activateQuestHandlers(campaignID, campaignClass, questID, questClass);
@@ -119,6 +119,13 @@ local function startQuest(campaignID, questID)
 				TRP3_API.quest.revealObjective(campaignID, questID, objectiveID);
 			end
 		end
+
+		TRP3_API.ui.frame.setupIconButton(TRP3_QuestToast, questIcon);
+		TRP3_QuestToast.name:SetText(questName);
+		TRP3_QuestToast.campaignID = campaignID;
+		TRP3_QuestToast.questID = questID;
+		TRP3_QuestToast.questName = questName;
+		TRP3_QuestToast:Show();
 
 		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 		return 1;
@@ -466,6 +473,8 @@ end
 function TRP3_API.quest.onStart()
 	Events.CAMPAIGN_REFRESH_LOG = "CAMPAIGN_REFRESH_LOG";
 	Events.registerEvent(Events.CAMPAIGN_REFRESH_LOG);
+
+	TRP3_QuestToast.title:SetText(loc("QE_NEW"));
 
 	TRP3_API.quest.npcInit();
 	TRP3_API.quest.campaignInit();

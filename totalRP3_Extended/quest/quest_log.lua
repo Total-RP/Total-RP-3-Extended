@@ -197,11 +197,9 @@ end
 
 local function refreshQuestList(campaignID)
 	TRP3_QuestLogPage.Quest.scroll.child.Content.Current:Hide();
-	TRP3_QuestLogPage.Quest.scroll.child.Content.Finished:Hide();
---	TRP3_QuestLogPage.Quest.Empty:Show();
+	TRP3_QuestLogPage.Quest.Empty:Show();
 	local questFrames = TRP3_QuestLogPage.Quest.scroll.child.Content.frames;
 
-	TRP3_QuestLogPage.Quest.scroll.child.Content.Finished:Hide();
 	for _, questFrame in pairs(questFrames) do
 		questFrame:Hide();
 		questFrame:ClearAllPoints();
@@ -232,13 +230,13 @@ local function refreshQuestList(campaignID)
 		end
 
 		if index > 1 then
---			TRP3_QuestLogPage.Quest.Empty:Hide();
+			TRP3_QuestLogPage.Quest.Empty:Hide();
 			TRP3_QuestLogPage.Quest.scroll.child.Content.Current:Show();
 		else
---			TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_NOQUEST"));
+			TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_NOQUEST"));
 		end
 	else
---		TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_UNSTARTED"));
+		TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_UNSTARTED"));
 	end
 end
 
@@ -477,17 +475,25 @@ local function init()
 
 	-- Quest page init
 	TRP3_QuestLogPage.Quest.scroll.child.Content.Current:SetText(loc("QE_STEP_LIST_CURRENT"));
-	TRP3_QuestLogPage.Quest.scroll.child.Content.Finished:SetText(loc("QE_STEP_LIST_FINISHED"));
 	TRP3_QuestLogPage.Quest.scroll.child.Content.frames = {};
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_QuestLogPage.Quest.PassButton, "TOP", 0, 0, loc("QE_CAMPAIGN_RESET"));
 	TRP3_QuestLogPage.Quest.PassButton:SetScript("OnClick", function(self)
-		onCampaignActionSelected(1, self:GetParent());
-		refreshQuestList(self:GetParent().campaignID);
-		refreshQuestVignette(self:GetParent().campaignID);
+		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
+			TRP3_API.quest.resetCampaign(self:GetParent().campaignID);
+			refreshQuestList(self:GetParent().campaignID);
+			refreshQuestVignette(self:GetParent().campaignID);
+		end);
 	end);
 	TRP3_QuestLogPage.Quest.switchButton:SetScript("OnClick", function(self) swapCampaignActivation(self:GetParent()) end);
 
 	-- Step page init
 	initStepFrame();
+
+	-- Quest toast
+	TRP3_QuestToast:SetScript("OnClick", function(self)
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
+		goToPage(false, TAB_STEPS, self.campaignID, self.questID, self.questName);
+	end);
 end
 TRP3_API.quest.questLogInit = init;
