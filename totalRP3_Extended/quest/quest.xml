@@ -183,9 +183,10 @@
 						<Anchor point="CENTER" x="1.5"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="FutureTexture" inherits="Spellbook-UnlearnedSlot" hidden="true">
+				<Texture parentKey="Completed" file="Interface\RAIDFRAME\ReadyCheck-Ready" hidden="true">
+					<Size x="38" y="38"/>
 					<Anchors>
-						<Anchor point="CENTER" x="1.5" y="-3"/>
+						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
 				</Texture>
 				<FontString parentKey="Name" inherits="SystemFont_Large" justifyH="LEFT" text="[TEXT_NAME]">

@@ -84,6 +84,7 @@ local function load()
 	main.pre.scroll.text:SetText(data.BA.TX or "");
 	main.post.scroll.text:SetText(data.BA.DX or "");
 	main.auto:SetChecked(data.BA.IN or false);
+	main.final:SetChecked(data.BA.FI or false);
 
 	loadDataScript();
 	loadDataInner();
@@ -101,6 +102,7 @@ local function saveToDraft()
 	data.BA.TX = stEtN(strtrim(main.pre.scroll.text:GetText()));
 	data.BA.DX = stEtN(strtrim(main.post.scroll.text:GetText()));
 	data.BA.IN = main.auto:GetChecked();
+	data.BA.FI = main.final:GetChecked();
 	storeDataScript();
 end
 
@@ -185,6 +187,10 @@ function TRP3_API.extended.tools.initStep(ToolFrame)
 	-- Auto reveal
 	main.auto.Text:SetText(loc("QE_ST_AUTO_REVEAL"));
 	setTooltipForSameFrame(main.auto, "RIGHT", 0, 5, loc("QE_ST_AUTO_REVEAL"), loc("QE_ST_AUTO_REVEAL_TT"));
+
+	-- Auto reveal
+	main.final.Text:SetText(loc("QE_ST_END"));
+	setTooltipForSameFrame(main.final, "RIGHT", 0, 5, loc("QE_ST_END"), loc("QE_ST_END_TT"));
 
 	-- Links
 	linksStructure = {

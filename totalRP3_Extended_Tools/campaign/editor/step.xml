@@ -94,6 +94,13 @@
 						</Anchors>
 					</CheckButton>
 
+					<CheckButton parentKey="final" inherits="TRP3_CheckBox" name="$parentFinal">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-7" relativePoint="BOTTOM" relativeKey="$parent.post"/>
+							<Anchor point="LEFT" x="25" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</CheckButton>
+
 				</Frames>
 			</Frame>
 		</Frames>

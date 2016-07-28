@@ -147,6 +147,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_NOACTION_TALK = "There is nothing to say.",
 	QE_PREVIOUS_STEP = "Previously",
 	QE_OVERVIEW = "Quest overview",
+	QE_COMPLETED = "Completed",
+	QE_FAILED = "Failed",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",

@@ -137,6 +137,8 @@ local function decorateQuestStepLine(line, stepID)
 	line.ID:SetText("");
 	if stepData.BA.IN then
 		line.ID:SetText("|cff00ff00" .. loc("QE_AUTO_REVEAL"));
+	elseif stepData.BA.FI then
+		line.ID:SetText("|cff00ff00" .. loc("QE_ST_END"));
 	end
 	line.click.stepID = stepID;
 end

@@ -180,6 +180,14 @@ local function decorateQuestButton(questFrame, campaignID, questID, questInfo, q
 	questFrame.Name:SetTextColor(0.2824, 0.0157, 0.0157);
 	questFrame.InfoText:SetText(questDescription);
 	questFrame.InfoText:SetTextColor(0.3824, 0.1157, 0.1157);
+	questFrame.Completed:Hide();
+	if questInfo.FI == true then
+		questFrame.Completed:Show();
+		questFrame.Name:SetText(("%s |cff55ff55(%s)"):format(questName, loc("QE_COMPLETED")));
+	elseif questInfo.FI == false then
+		questFrame.Completed:Show();
+		questFrame.Name:SetText(("%s |cff55ff55(%s)"):format(questName, loc("QE_FAILED")));
+	end
 	questFrame:SetScript("OnClick", questClick);
 	questFrame:SetScript("OnEnter", onQuestButtonEnter);
 	questFrame.campaignID = campaignID;

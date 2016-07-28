@@ -232,6 +232,10 @@ local function goToStep(campaignID, questID, stepID)
 		Log.log("Unknown step class (" .. campaignID .. ") (" .. questID .. ") (" .. stepID .. ")");
 	end
 
+	if stepClass.BA.FI then
+		questLog.FI = true;
+	end
+
 	return 1;
 end
 TRP3_API.quest.goToStep = goToStep;

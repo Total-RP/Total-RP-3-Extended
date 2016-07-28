@@ -612,4 +612,7 @@ We should begin with some examples:
 	QE_ST_LINKS_ON_START_TT = "Triggered |cff00ff00everytime|r the player reachs this step.",
 	QE_ST_LINKS_ON_LEAVE = "On quest step leave",
 	QE_ST_LINKS_ON_LEAVE_TT = "Triggered |cff00ff00everytime|r the player leave this step for another one. This will be triggered before the next step \"On quest step start\" trigger occurs.",
+	QE_ST_END = "Final step",
+	QE_ST_END_TT = "Marks this step as the final step for this quest. When the step is reached, the quest will automatically be marked as completed in the quest log.",
+
 };
