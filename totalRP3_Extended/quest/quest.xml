@@ -499,6 +499,13 @@
 						</Texture>
 					</Layer>
 				</Layers>
+				<Frames>
+					<Button parentKey="action" name="$parentAction" inherits="TRP3_ActionButton">
+						<Anchors>
+							<Anchor point="RIGHT" x="0" y="0" />
+						</Anchors>
+					</Button>
+				</Frames>
 			</Frame>
 
 			<Frame parentKey="Campaign" name="$parentCampaign" inherits="TRP3_CampaignPageTemplate">

@@ -91,9 +91,9 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 		local freeSlot, stackSlot;
 
 		-- Check unicity
-		if itemClass.UN then
+		if itemClass.BA.UN then
 			local currentCount = getItemCount(classID);
-			if currentCount + 1 > itemClass.UN then
+			if currentCount + 1 > itemClass.BA.UN then
 				Utils.message.displayMessage(loc("IT_INV_ERROR_MAX"):format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
 				return onItemAddEnd(2, count);
 			end

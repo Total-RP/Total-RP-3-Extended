@@ -444,11 +444,21 @@ local function init()
 				icon = "achievement_quests_completed_06",
 				configText = QUEST_LOG,
 				tooltip = QUEST_LOG,
-				tooltipSub = loc("QE_BUTTON"),
-				onClick = function(_, _, button, _)
-					if button == "LeftButton" then
+				tooltipSub = ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("QE_BUTTON")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS")),
+				onClick = function(self, _, buttonType, _)
+					if buttonType == "LeftButton" then
 						TRP3_API.navigation.openMainFrame();
 						TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
+					else
+						local values = {};
+						tinsert(values, {loc("CM_ACTIONS")});
+						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)), TRP3_API.quest.ACTION_TYPES.LOOK});
+						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)), TRP3_API.quest.ACTION_TYPES.LISTEN});
+						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)), TRP3_API.quest.ACTION_TYPES.ACTION});
+						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)), TRP3_API.quest.ACTION_TYPES.TALK});
+						TRP3_API.ui.listbox.displayDropDown(self, values, function(action)
+							TRP3_API.quest.performAction(action);
+						end, 0, true);
 					end
 				end,
 				visible = 1
@@ -502,5 +512,45 @@ local function init()
 		TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
 		goToPage(false, TAB_STEPS, self.campaignID, self.questID, self.questName);
 	end);
+
+	-- Navbar action
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_QuestLogPage.navBar.action, "TOP", 0, 0, loc("CM_ACTIONS"));
+	TRP3_QuestLogPage.navBar.action:SetScript("OnClick", function(button)
+		local values = {};
+		tinsert(values, {loc("CM_ACTIONS")});
+		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_MACRO"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)),
+			TRP3_API.quest.ACTION_TYPES.LOOK, loc("QE_MACRO_TT")});
+		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_MACRO"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)),
+			TRP3_API.quest.ACTION_TYPES.LISTEN, loc("QE_MACRO_TT")});
+		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_MACRO"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)),
+			TRP3_API.quest.ACTION_TYPES.ACTION, loc("QE_MACRO_TT")});
+		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_MACRO"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)),
+			TRP3_API.quest.ACTION_TYPES.TALK, loc("QE_MACRO_TT")});
+
+		TRP3_API.ui.listbox.displayDropDown(button, values, function(action)
+			if action == TRP3_API.quest.ACTION_TYPES.LISTEN then
+				if GetMacroIndexByName("TRP3_Listen") == 0 then
+					CreateMacro("TRP3_Listen", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.LISTEN), "/script TRP3_API.quest.listen();", 1);
+				end
+				PickupMacro("TRP3_Listen");
+			elseif action == TRP3_API.quest.ACTION_TYPES.LOOK then
+				if GetMacroIndexByName("TRP3_Look") == 0 then
+					CreateMacro("TRP3_Look", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.LOOK), "/script TRP3_API.quest.inspect();", 1);
+				end
+				PickupMacro("TRP3_Look");
+			elseif action == TRP3_API.quest.ACTION_TYPES.ACTION then
+				if GetMacroIndexByName("TRP3_Interract") == 0 then
+					CreateMacro("TRP3_Interract", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.ACTION), "/script TRP3_API.quest.interract();", 1);
+				end
+				PickupMacro("TRP3_Interract");
+			elseif action == TRP3_API.quest.ACTION_TYPES.TALK then
+				if GetMacroIndexByName("TRP3_Talk") == 0 then
+					CreateMacro("TRP3_Talk", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.TALK), "/script TRP3_API.quest.talk();", 1);
+				end
+				PickupMacro("TRP3_Talk");
+			end
+		end, 0, true);
+	end);
+
 end
 TRP3_API.quest.questLogInit = init;
