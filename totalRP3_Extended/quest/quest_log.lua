@@ -30,6 +30,8 @@ local goToPage, refreshCampaignList;
 local TAB_CAMPAIGNS = "campaigns";
 local TAB_QUESTS = "quests";
 local TAB_STEPS = "steps";
+TRP3_QuestLogPage.TAB_QUESTS = TAB_QUESTS;
+TRP3_QuestLogPage.TAB_STEPS = TAB_STEPS;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CAMPAIGN
@@ -402,6 +404,7 @@ function goToPage(skipButton, page,  ...)
 		goToStepPage(skipButton, ...)
 	end
 end
+TRP3_QuestLogPage.goToPage = goToPage;
 
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local function refreshLog()
@@ -510,6 +513,7 @@ local function init()
 	TRP3_QuestToast:SetScript("OnClick", function(self)
 		TRP3_API.navigation.openMainFrame();
 		TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
+		goToPage(false, TAB_QUESTS, self.campaignID, self.campaignName);
 		goToPage(false, TAB_STEPS, self.campaignID, self.questID, self.questName);
 	end);
 

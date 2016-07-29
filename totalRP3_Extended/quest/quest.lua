@@ -125,6 +125,7 @@ local function startQuest(campaignID, questID)
 		TRP3_QuestToast.campaignID = campaignID;
 		TRP3_QuestToast.questID = questID;
 		TRP3_QuestToast.questName = questName;
+		TRP3_QuestToast.campaignName = campaignClass.BA.NA;
 		TRP3_QuestToast:Show();
 
 		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
@@ -479,4 +480,5 @@ function TRP3_API.quest.onStart()
 	TRP3_API.quest.npcInit();
 	TRP3_API.quest.campaignInit();
 	TRP3_API.quest.questLogInit();
+	TRP3_QuestObjectives.init();
 end
