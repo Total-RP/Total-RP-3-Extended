@@ -168,8 +168,6 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 
 	-- Documents
 	DO_NEW_DOC = "New document",
-	DO_NAME = "Document name",
-	DO_NAME_TT = "This name won't be visible by the user and is meant to be an indication for you, the creator.",
 	DO_PREVIEW = "Click to see a preview",
 	DO_PARAMS_GLOBAL = "Default parameters",
 	DO_PARAMS_GLOBAL_TT = "Change the document default parameters. These parameters will be used for all pages that does not use custom page parameters.",
@@ -561,7 +559,7 @@ We should begin with some examples:
 	CA_QUEST_EXIST = "There is already a quest with the ID %s.",
 	QE_NAME_NEW = "New quest",
 	CA_QE_ID = "Change quest ID",
-	CA_QUEST_CREATE = "Please enter the quest ID. You can't have two quests with the same ID within the same campaign.",
+	CA_QUEST_CREATE = "Please enter the quest ID. You can't have two quests with the same ID within the same campaign.\n\n|cffff9900Please note that the quests will be listed in alphabetical order of IDs in the quest log.\n\n|cff00ff00So it's a good practice to always start your ID by quest_# where # is the quest number in the campaign.",
 	CA_LINKS_ON_START = "On campaign start",
 	CA_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your campaign, so activating your campaign for the first time, or reset it in the quest log.\n\n|cff00ff00This is a good place to activate your first quest.",
 	CA_IMAGE = "Campaign portrait",
@@ -600,7 +598,7 @@ We should begin with some examples:
 	QE_STEP_ADD = "Add quest step",
 	QE_STEP_NO = "No quest step",
 	QE_STEP_REMOVE = "Remove this step?",
-	QE_STEP_CREATE = "Please enter the step ID. You can't have two steps with the same ID within the same quest.",
+	QE_STEP_CREATE = "Please enter the step ID. You can't have two steps with the same ID within the same quest.\n\n|cffff9900Please note that the steps will be listed in alphabetical order of IDs here and on the database.\n\n|cff00ff00So it's a good practice to always start your ID by step_# where # is the step number in the quest.",
 	CA_QE_ST_ID = "Change quest step ID",
 	QE_STEP_EXIST = "There is already a step with the ID %s.",
 	QE_STEP_NAME_NEW = "New quest step",

@@ -35,8 +35,6 @@ local function isContainerByClassID(itemID)
 end
 TRP3_API.inventory.isContainerByClassID = isContainerByClassID;
 
-
-
 local function isUsableByClass(item)
 	return item and item.BA and item.BA.US;
 end
@@ -105,9 +103,13 @@ local function getQualityColorRGB(quality)
 end
 TRP3_API.inventory.getQualityColorRGB = getQualityColorRGB;
 
-local function getItemLink(itemClass)
-	local _, name, qa = getBaseClassDataSafe(itemClass);
-	return getQualityColorText(qa) .. "[" .. name .. "]|r";
+local function getItemLink(itemClass, id)
+	if itemClass.TY == TRP3_DB.types.DOCUMENT or itemClass.TY == TRP3_DB.types.QUEST_STEP then
+		return "|cffffffff[" .. (id or "???") .. "]|r";
+	else
+		local _, name, qa = getBaseClassDataSafe(itemClass);
+		return getQualityColorText(qa) .. "[" .. name .. "]|r";
+	end
 end
 TRP3_API.inventory.getItemLink = getItemLink;
 

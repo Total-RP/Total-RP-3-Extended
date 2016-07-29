@@ -196,7 +196,6 @@ local function onAddClicked(self)
 	tinsert(values, {"Select inner object type", nil});
 	tinsert(values, {loc("TYPE_ITEM"), TRP3_DB.types.ITEM});
 	tinsert(values, {loc("TYPE_DOCUMENT"), TRP3_DB.types.DOCUMENT});
-	tinsert(values, {loc("TYPE_LOOT") .. " [WIP]", nil}); --TRP3_DB.types.LOOT});
 	tinsert(values, {loc("TYPE_DIALOG") .. " [WIP]", nil}); --TRP3_DB.types.DIALOG});
 	TRP3_API.ui.listbox.displayDropDown(self, values, addInnerObject, 0, true);
 end

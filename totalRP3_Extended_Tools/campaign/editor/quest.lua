@@ -187,7 +187,7 @@ local function createQuestStep()
 		else
 			Utils.message.displayMessage(loc("QE_STEP_EXIST"):format(value), 4);
 		end
-	end);
+	end, nil, "step_" .. (Utils.table.size(toolFrame.specificDraft.ST) + 1) .. "_");
 end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script & inner & links tabs

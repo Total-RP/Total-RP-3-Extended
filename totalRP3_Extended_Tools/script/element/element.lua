@@ -87,7 +87,7 @@ local function decorateBrowserIcon(frame, index)
 	local objectID = filteredObjectList[index];
 	local class = getClass(objectID);
 	local icon, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
-	local link = TRP3_API.inventory.getItemLink(class);
+	local link = TRP3_API.inventory.getItemLink(class, objectID);
 
 	frame:SetNormalTexture("Interface\\ICONS\\" .. icon);
 	frame:SetPushedTexture("Interface\\ICONS\\" .. icon);

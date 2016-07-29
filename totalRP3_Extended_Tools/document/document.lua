@@ -28,7 +28,6 @@ local toolFrame;
 function TRP3_API.extended.tools.getDocumentItemData(id)
 	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
 	data.BA.IC = "inv_misc_book_16";
-	data.BA.NA = loc("DO_NEW_DOC");
 	data.BA.US = true;
 	data.US = {
 		AC = loc("IT_DOC_ACTION"),

@@ -179,7 +179,7 @@ function refresh()
 		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len()) == objectID;
 		local hasChildren = isOpen or objectHasChildren(class);
 		local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
-		local link = TRP3_API.inventory.getItemLink(class);
+		local link = TRP3_API.inventory.getItemLink(class, parts[#parts]);
 
 		-- idData is wipe frequently: DO NOT STORE PERSISTENT DATA IN IT !!!
 		idData[index] = {
@@ -402,7 +402,7 @@ local function onLineActionSelected(value, button)
 	elseif action == ACTION_FLAG_EXPERT then
 		local class = getClass(objectID);
 		class.MD.MO = TRP3_DB.modes.EXPERT;
-		local link = TRP3_API.inventory.getItemLink(class);
+		local link = TRP3_API.inventory.getItemLink(class, objectID);
 		Utils.message.displayMessage(loc("WO_EXPERT_DONE"):format(link));
 		onTabChanged(nil, currentTab);
 	end
@@ -490,7 +490,6 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_QUEST_STEP")), TRP3_DB.types.QUEST_STEP},
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_ITEM")), TRP3_DB.types.ITEM},
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DOCUMENT")), TRP3_DB.types.DOCUMENT},
-		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_LOOT")), TRP3_DB.types.LOOT},
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DIALOG")), TRP3_DB.types.DIALOG},
 	}
 	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, nil, nil, 255, true);

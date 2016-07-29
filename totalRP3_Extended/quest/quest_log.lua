@@ -209,8 +209,15 @@ local function refreshQuestList(campaignID)
 	local y = -50;
 	if campaignLog then
 
+		local questIDs = {};
+		for questID, _ in pairs(campaignLog.QUEST) do
+			tinsert(questIDs, questID);
+		end
+		table.sort(questIDs);
+
 		local index = 1;
-		for questID, questInfo in pairs(campaignLog.QUEST) do
+		for _, questID in pairs(questIDs) do
+			local questInfo = campaignLog.QUEST[questID];
 			local questFrame = questFrames[index];
 			if not questFrame then
 				questFrame = CreateFrame("Button", TRP3_QuestLogPage.Quest:GetName() .. "Slot" .. index,

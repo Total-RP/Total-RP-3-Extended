@@ -206,8 +206,6 @@ local function load()
 		data.BA = {};
 	end
 
-	main.name:SetText(data.BA.NA or "");
-
 	-- Temp
 	params.title:SetText(loc("DO_PARAMS_GLOBAL"));
 	params.background:SetSelectedValue(data.BCK or 8);
@@ -234,7 +232,6 @@ local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
 	local data = toolFrame.specificDraft;
-	data.BA.NA = stEtN(strtrim(main.name:GetText()));
 	data.BCK = params.background:GetSelectedValue() or 8;
 	data.BO = params.border:GetSelectedValue() or TRP3_API.extended.document.BorderType.PARCHMENT;
 	data.HE = tonumber(params.height:GetText()) or 600;
@@ -265,10 +262,6 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	-- Main
 	main = toolFrame.document.normal.main;
 	main.title:SetText(loc("TYPE_DOCUMENT"));
-
-	-- Name
-	main.name.title:SetText(loc("DO_NAME"));
-	setTooltipForSameFrame(main.name.help, "RIGHT", 0, 5, loc("DO_NAME"), loc("DO_NAME_TT"));
 
 	-- Default params button
 	main.params:SetText(loc("DO_PARAMS_GLOBAL"));

@@ -44,7 +44,6 @@ function TRP3_API.extended.tools.getQuestStepData(id)
 	local data = {
 		TY = TRP3_DB.types.QUEST_STEP,
 		BA = {
-			NA = id or "first_quest_step",
 			TX = loc("QE_STEP_NAME_NEW"),
 		},
 		MD = {
@@ -63,14 +62,14 @@ function TRP3_API.extended.tools.getQuestData()
 			DE = loc("QE_DESCRIPTION_TT"),
 		},
 		ST = {
-			first_quest_step = TRP3_API.extended.tools.getQuestStepData()
+			step_1_first = TRP3_API.extended.tools.getQuestStepData()
 		},
 		OB = {},
 		MD = {
 			MO = TRP3_DB.modes.NORMAL,
 		}
 	}
-	data.ST.first_quest_step.BA.IN = true;
+	data.ST.step_1_first.BA.IN = true;
 	return data;
 end
 
@@ -92,10 +91,10 @@ function TRP3_API.extended.tools.getCampaignData(campaignID)
 			IC = "achievement_quests_completed_06"
 		},
 		QE = {
-			first_quest = TRP3_API.extended.tools.getQuestData(),
+			quest_1_first = TRP3_API.extended.tools.getQuestData(),
 		},
 	}
-	data.QE.first_quest.BA.IN = true;
+	data.QE.quest_1_first.BA.IN = true;
 	return data;
 end
 

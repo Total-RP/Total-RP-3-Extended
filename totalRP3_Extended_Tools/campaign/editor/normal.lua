@@ -197,7 +197,7 @@ local function createQuest()
 		else
 			Utils.message.displayMessage(loc("CA_QUEST_EXIST"):format(value), 4);
 		end
-	end);
+	end, nil, "quest_" .. (Utils.table.size(toolFrame.specificDraft.QE) + 1) .. "_");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

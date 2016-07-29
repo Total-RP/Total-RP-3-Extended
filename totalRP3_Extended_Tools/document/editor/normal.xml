@@ -42,28 +42,19 @@
 
 				<Frames>
 
-					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
-						<Size x="0" y="18"/>
+					<Button parentKey="params" inherits="TRP3_CommonButton">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.title"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
-						</Anchors>
-					</EditBox>
-
-					<Button parentKey="params" inherits="TRP3_CommonButton">
-						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-10"/>
-							<Anchor point="LEFT" relativeKey="$parent.name" x="-5" y="0"/>
-							<Anchor point="RIGHT" relativeKey="$parent.name" x="5" y="0"/>
 						</Anchors>
 					</Button>
 
 					<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
-							<Anchor point="LEFT" relativePoint="CENTER" x="17" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="-20" y="0"/>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-17"/>
 						</Anchors>
-					</Button>
+					</Button>9
 
 				</Frames>
 			</Frame>

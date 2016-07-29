@@ -71,7 +71,7 @@ local PAGE_BY_TYPE = {
 	[TRP3_DB.types.QUEST_STEP] = {
 		frame = "step",
 		tabTextGetter = function(id, class)
-			return ("%s: %s"):format(loc("TYPE_QUEST_STEP"),  TRP3_API.inventory.getItemLink(class));
+			return ("%s: %s"):format(loc("TYPE_QUEST_STEP"),  TRP3_API.inventory.getItemLink(class, id));
 		end,
 		background = 2,
 	},
@@ -85,23 +85,16 @@ local PAGE_BY_TYPE = {
 	[TRP3_DB.types.DOCUMENT] = {
 		frame = "document",
 		tabTextGetter = function(id, class)
-			return ("%s: %s"):format(loc("TYPE_DOCUMENT"),  TRP3_API.inventory.getItemLink(class));
+			return ("%s: %s"):format(loc("TYPE_DOCUMENT"),  TRP3_API.inventory.getItemLink(class, id));
 		end,
 		background = 4,
 	},
 	[TRP3_DB.types.DIALOG] = {
 		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_DIALOG") .. ": " .. id;
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_DIALOG"),  TRP3_API.inventory.getItemLink(class, id));
 		end,
 		background = 5,
-	},
-	[TRP3_DB.types.LOOT] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_LOOT") .. ": " .. id;
-		end,
-		background = 6,
 	},
 }
 
@@ -126,9 +119,6 @@ local function getClassDataSafeByType(class)
 	end
 	if class.TY == TRP3_DB.types.DIALOG then
 		return "ability_warrior_rallyingcry", (class.ST[1].TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
-	end
-	if class.TY == TRP3_DB.types.LOOT then
-		return "inv_misc_coinbag_special", class.NA or "";
 	end
 end
 TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
@@ -175,7 +165,7 @@ local function displayRootInfo(rootClassID, rootClass, classFullID, classID, spe
 	local color = "|cffffff00";
 	local fieldFormat = "|cffff9900%s: " .. color .. "%s";
 
-	local objectText = ("%s (%s: |cff00ffff%s|r)"):format(TRP3_API.inventory.getItemLink(rootClass), loc("ROOT_GEN_ID"), rootClassID);
+	local objectText = ("%s (%s: |cff00ffff%s|r)"):format(TRP3_API.inventory.getItemLink(rootClass, rootClassID), loc("ROOT_GEN_ID"), rootClassID);
 	objectText = objectText .. "\n\n" .. fieldFormat:format(loc("ROOT_VERSION"), rootClass.MD.V or 0);
 	objectText = objectText .. "\n\n|cffff9900" .. loc("ROOT_CREATED"):format(color .. (rootClass.MD.CB or "?") .. "|cffff9900", color .. (rootClass.MD.CD or "?"));
 	objectText = objectText .. "\n\n|cffff9900" .. loc("ROOT_SAVED"):format(color .. (rootClass.MD.SB or "?") .. "|cffff9900", color .. (rootClass.MD.SD or "?"));
@@ -328,8 +318,8 @@ function goToPage(fullClassID, forceDraftReload)
 	if TRP3_Tools_DB[rootClassID] then
 		toolFrame.actions.save:Enable();
 	end
-	setTooltipForSameFrame(toolFrame.actions.save, "TOP", 0, 5, SAVE, loc("EDITOR_SAVE_TT"):format(TRP3_API.inventory.getItemLink(rootDraft)));
-	setTooltipForSameFrame(toolFrame.actions.cancel, "TOP", 0, 5, CANCEL, loc("EDITOR_CANCEL_TT"):format(TRP3_API.inventory.getItemLink(rootDraft)));
+	setTooltipForSameFrame(toolFrame.actions.save, "TOP", 0, 5, SAVE, loc("EDITOR_SAVE_TT"):format(TRP3_API.inventory.getItemLink(rootDraft, rootClassID)));
+	setTooltipForSameFrame(toolFrame.actions.cancel, "TOP", 0, 5, CANCEL, loc("EDITOR_CANCEL_TT"):format(TRP3_API.inventory.getItemLink(rootDraft, rootClassID)));
 
 	-- Create buttons up to the target
 	NavBar_Reset(toolFrame.navBar);
@@ -410,7 +400,6 @@ local function onStart()
 	PAGE_BY_TYPE[TRP3_DB.types.ITEM].loc = loc("TYPE_ITEM");
 	PAGE_BY_TYPE[TRP3_DB.types.DOCUMENT].loc = loc("TYPE_DOCUMENT");
 	PAGE_BY_TYPE[TRP3_DB.types.DIALOG].loc = loc("TYPE_DIALOG");
-	PAGE_BY_TYPE[TRP3_DB.types.LOOT].loc = loc("TYPE_LOOT");
 
 	toolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
 

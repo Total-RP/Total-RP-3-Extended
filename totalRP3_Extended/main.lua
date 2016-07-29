@@ -44,7 +44,6 @@ TRP3_DB = {
 		ITEM = "IT",
 		DOCUMENT = "DO",
 		DIALOG = "DI",
-		LOOT = "LO",
 	},
 	modes = {
 		QUICK = "QU",

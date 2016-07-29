@@ -84,8 +84,6 @@ local function showDocumentClass(document, documentID)
 		documentFrame.bTile:Hide();
 	end
 
-	setFrameSize(document.WI or 450, document.HE or 600);
-
 	if document.FR then
 		documentFrame.Resize:Show();
 	else
@@ -114,6 +112,8 @@ local function showDocumentClass(document, documentID)
 	loadPage(1);
 
 	documentFrame:Show();
+
+	setFrameSize(document.WI or 450, document.HE or 600);
 
 	if documentFrame.ID then
 		if document.LI and document.LI.OO and document.SC and document.SC[document.LI.OO] then
@@ -174,14 +174,7 @@ TRP3_API.extended.document.closeDocument = closeDocument;
 
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
-local function onLoaded()
-
-end
-
 function TRP3_API.extended.document.onStart()
-
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
-
 	documentFrame.Resize.resizableFrame = documentFrame;
 
 	-- Customize HTML
