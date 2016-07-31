@@ -90,7 +90,7 @@ local PAGE_BY_TYPE = {
 		background = 4,
 	},
 	[TRP3_DB.types.DIALOG] = {
-		frame = nil,
+		frame = "cutscene",
 		tabTextGetter = function(id, class)
 			return ("%s: %s"):format(loc("TYPE_DIALOG"),  TRP3_API.inventory.getItemLink(class, id));
 		end,
@@ -115,10 +115,10 @@ local function getClassDataSafeByType(class)
 		return "inv_scroll_12", name;
 	end
 	if class.TY == TRP3_DB.types.QUEST_STEP then
-		return "inv_inscription_scroll", (class.TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
+		return "inv_inscription_scroll", (class.BA.TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
 	end
 	if class.TY == TRP3_DB.types.DIALOG then
-		return "ability_warrior_rallyingcry", (class.ST[1].TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
+		return "ability_warrior_rallyingcry", (class.DS[1].TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
 	end
 end
 TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
@@ -466,6 +466,7 @@ local function onStart()
 	TRP3_API.extended.tools.initQuest(toolFrame);
 	TRP3_API.extended.tools.initStep(toolFrame)
 	TRP3_API.extended.tools.initItems(toolFrame);
+	TRP3_API.extended.tools.initCutscene(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 
 	goToListPage();

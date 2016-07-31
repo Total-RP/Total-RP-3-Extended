@@ -400,6 +400,10 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_QUEST_VAR_WORK_TT = "Sets a variable for a quest. The variable will be stored in the quest log and so would be reset if the campaign is reset. Note that the variable will persist even if the quest is completed.",
 	EFFECT_QUEST_VAR_INC = "Quest variable increment",
 	EFFECT_QUEST_VAR_INC_TT = "Increments a quest variable. If the variable does not exist, it will be initialized to 0.",
+	EFFECT_DIALOG_START = "Start cutscene",
+	EFFECT_DIALOG_START_TT = "Start a cutscene. If a cutscene is already played, it will be interrupted and replace by this one.",
+	EFFECT_DIALOG_START_PREVIEW = "Start cutscene %s.",
+	EFFECT_DIALOG_ID = "Cutscene ID",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",
@@ -612,5 +616,12 @@ We should begin with some examples:
 	QE_ST_LINKS_ON_LEAVE_TT = "Triggered |cff00ff00everytime|r the player leave this step for another one. This will be triggered before the next step \"On quest step start\" trigger occurs.",
 	QE_ST_END = "Final step",
 	QE_ST_END_TT = "Marks this step as the final step for this quest. When the step is reached, the quest will automatically be marked as completed in the quest log.",
+
+	-- Cutscene
+	DI_STEPS = "Cutscene steps",
+	DI_STEP = "Cutscene step",
+	DI_STEP_ADD = "Add step",
+	DI_STEP_EDIT = "Cutscene step edition",
+	DI_STEP_TEXT = "Step text",
 
 };

@@ -104,7 +104,7 @@ end
 TRP3_API.inventory.getQualityColorRGB = getQualityColorRGB;
 
 local function getItemLink(itemClass, id)
-	if itemClass.TY == TRP3_DB.types.DOCUMENT or itemClass.TY == TRP3_DB.types.QUEST_STEP then
+	if itemClass.TY == TRP3_DB.types.DOCUMENT or itemClass.TY == TRP3_DB.types.QUEST_STEP or itemClass.TY == TRP3_DB.types.DIALOG then
 		return "|cffffffff[" .. (id or "???") .. "]|r";
 	else
 		local _, name, qa = getBaseClassDataSafe(itemClass);

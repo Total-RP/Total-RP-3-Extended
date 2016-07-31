@@ -26,6 +26,7 @@
 	<Include file="items/items.xml"/>
 	<Include file="document/document.xml"/>
 	<Include file="campaign/campaign.xml"/>
+	<Include file="cutscene/cutscene.xml"/>
 	<Include file="list/list.xml"/>
 
 	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
@@ -216,6 +217,14 @@
 			</Frame>
 
 			<Frame name="$parentStep" inherits="TRP3_Tools_StepTemplate" parentKey="step">
+				<Anchors>
+					<Anchor point="TOP" relativeTo="$parentNavBar" relativePoint="BOTTOM" x="0" y="-35"/>
+					<Anchor point="LEFT" x="24" y="0"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeKey="$parent.root" x="0" y="15"/>
+				</Anchors>
+			</Frame>
+
+			<Frame name="$parentCutscene" inherits="TRP3_Tools_CutsceneTemplate" parentKey="cutscene">
 				<Anchors>
 					<Anchor point="TOP" relativeTo="$parentNavBar" relativePoint="BOTTOM" x="0" y="-35"/>
 					<Anchor point="LEFT" x="24" y="0"/>

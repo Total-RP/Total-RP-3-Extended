@@ -233,7 +233,7 @@ local function playDialogStep()
 			-- Next step
 			dialogFrame.stepIndex = data.next or (dialogFrame.stepIndex + 1);
 
-			if (dialogClass.ST or EMPTY)[dialogFrame.stepIndex] then
+			if (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] then
 				-- Next
 				dialogFrame.Chat.NextButton:SetScript("OnClick", function()
 					processDialogStep();
@@ -250,7 +250,7 @@ end
 function processDialogStep()
 	wipe(dialogFrame.stepTab);
 	local dialogClass = dialogFrame.class;
-	local dialogStepClass  = (dialogClass.ST or EMPTY)[dialogFrame.stepIndex] or EMPTY;
+	local dialogStepClass  = (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] or EMPTY;
 	local meUnitStep = dialogStepClass.MM or dialogClass.MM or "player";
 	local youUnitStep = dialogStepClass.MY or dialogClass.MY or "target";
 	local meNameStep = dialogStepClass.NM or dialogClass.NM or "player";
@@ -308,7 +308,7 @@ local function startDialog(dialogID)
 	-- By default, launch the step 1
 	image.previous = nil;
 	dialogFrame.class = dialogClass;
-	dialogFrame.stepIndex = dialogClass.FS or 1;
+	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
 	processDialogStep(dialogClass);
 	dialogFrame:Show();
 end
