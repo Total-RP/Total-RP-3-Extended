@@ -63,10 +63,10 @@
 
 	<Frame name="TRP3_DialogFrame" inherits="TRP3_StandardParchmentFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
 		<TitleRegion setAllPoints="true"/>
-
+		<Size x="100" y="100" />
 		<Layers>
 			<Layer level="BORDER">
-				<Texture parentKey="BG" alpha="0.5">
+				<Texture parentKey="background" alpha="0.5">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="20" y="-20"/>
 						<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>

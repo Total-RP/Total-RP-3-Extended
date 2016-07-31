@@ -22,6 +22,7 @@ local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass = TRP3_API.extended.getClass;
+local UnitExists = UnitExists;
 
 local dialogFrame = TRP3_DialogFrame;
 local CHAT_MARGIN = 70;
@@ -37,45 +38,60 @@ local animationLib = LibStub:GetLibrary("TRP-Dialog-Animation-DB");
 -- Models and animations
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local modelMe, modelYou, image = dialogFrame.Models.Me, dialogFrame.Models.You, dialogFrame.Image;
+local modelLeft, modelRight, image = dialogFrame.Models.Me, dialogFrame.Models.You, dialogFrame.Image;
 local generateID = Utils.str.id;
 
+local function loadScalingParameters(data, model, facing)
+	scalingLib:SetModelHeight(data.scale, model);
+	scalingLib:SetModelFeet(data.feet, model);
+	scalingLib:SetModelOffset(data.offset, model, facing);
+	scalingLib:SetModelFacing(data.facing, model, facing);
+end
+
+local function playTextAnim(context)
+	if not dialogFrame.textLineToken then
+		return;
+	end
+	Log.log("AnimWithToken: " .. context);
+
+	-- Animations
+	local targetModel = dialogFrame.ND == "LEFT" and modelLeft or modelRight;
+	local animTab = targetModel.animTab;
+	local delay = 0;
+	for _, sequence in pairs(animTab) do
+		delay = animationLib:PlayAnimationDelay(targetModel, sequence, animationLib:GetAnimationDuration(targetModel.model, sequence), delay, dialogFrame.textLineToken);
+	end
+	dialogFrame.textLineToken = nil;
+end
+
 local function modelsLoaded()
-	if modelMe.modelLoaded and modelYou.modelLoaded then
+	if modelRight.modelLoaded and modelLeft.modelLoaded then
 
-		local modelMePath = modelMe:GetModel();
-		local modelYouPath = modelYou:GetModel();
-		local modelScalingMe, modelScalingYou, isInverted = scalingLib:GetModelScaling(modelMePath, modelYouPath);
+		dialogFrame.loaded = true;
 
-		modelMe.model = modelMePath;
-		if modelMePath:len() > 0 then
-			scalingLib:SetModelHeight(modelScalingMe.scale, modelMe);
-			scalingLib:SetModelFeet(modelScalingMe.feet, modelMe);
-			scalingLib:SetModelOffset(modelScalingMe.offset, modelMe, true);
-			scalingLib:SetModelFacing(modelScalingMe.facing, modelMe, true);
-
-			-- Play animations
-			local delay = 0;
-			local textLineToken = generateID();
-			for _, sequence in pairs(modelMe.animTab) do
-				delay = animationLib:PlayAnimationDelay(modelMe, sequence, animationLib:GetAnimationDuration(modelMe.model, sequence), delay, textLineToken);
-			end
+		modelLeft.model = modelLeft:GetModelFileID();
+		if modelLeft.model then
+			modelLeft.model = tostring(modelLeft.model);
 		end
 
-		modelYou.model = modelYouPath;
-		if modelYouPath:len() > 0 then
-			scalingLib:SetModelHeight(modelScalingYou.scale, modelYou);
-			scalingLib:SetModelFeet(modelScalingYou.feet, modelYou);
-			scalingLib:SetModelOffset(modelScalingYou.offset, modelYou, false);
-			scalingLib:SetModelFacing(modelScalingYou.facing, modelYou, false);
-
-			-- Play animations
-			local delay = 0;
-			local textLineToken = generateID();
-			for _, sequence in pairs(modelYou.animTab) do
-				delay = animationLib:PlayAnimationDelay(modelYou, sequence, animationLib:GetAnimationDuration(modelYou.model, sequence), delay, textLineToken);
-			end
+		modelRight.model = modelRight:GetModelFileID();
+		if modelRight.model then
+			modelRight.model = tostring(modelRight.model);
 		end
+
+		local dataLeft, dataRight = scalingLib:GetModelCoupleProperties(modelLeft.model, modelRight.model);
+
+		-- Configuration for model left.
+		if modelLeft.model then
+			loadScalingParameters(dataLeft, modelLeft, true);
+		end
+
+		-- Configuration for model right
+		if modelRight.model then
+			loadScalingParameters(dataRight, modelRight, false);
+		end
+
+		playTextAnim("On model loaded");
 	end
 end
 
@@ -95,7 +111,7 @@ end
 -- TEXT ANIMATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local ANIMATION_TEXT_SPEED = 80;
+local ANIMATION_TEXT_SPEED = 160;
 
 local function onUpdateChatText(self, elapsed)
 	if self.start and dialogFrame.Chat.Text:GetText() and dialogFrame.Chat.Text:GetText():len() > 0 then
@@ -126,7 +142,7 @@ end
 
 local function setupChoices(choices)
 	for choiceIndex, choiceData in pairs(choices) do
-		local choiceButton = modelMe.choices[choiceIndex];
+		local choiceButton = modelLeft.choices[choiceIndex];
 		choiceButton.Text:SetText(choiceData.TX);
 		choiceButton.Click:SetScript("OnClick", function()
 			dialogFrame.stepIndex = choiceData.N;
@@ -138,169 +154,184 @@ end
 
 -- Called to play one text
 local function playDialogStep()
-	local data = dialogFrame.stepTab[dialogFrame.stepDialogIndex];
 	local dialogClass = dialogFrame.class;
+	local dialogStepClass = dialogFrame.dialogStepClass;
+	local text = dialogFrame.texts[dialogFrame.stepDialogIndex];
+	wipe(modelLeft.animTab);
+	wipe(modelRight.animTab);
+	modelLeft.token = nil;
+	modelRight.token = nil;
 
 	-- Choices
-	for _, choiceButton in pairs(modelMe.choices) do
+	for _, choiceButton in pairs(modelLeft.choices) do
 		choiceButton:Hide();
 	end
 
-	-- Names
-	dialogFrame.Chat.Right:Hide();
-	dialogFrame.Chat.Left:Hide();
-	if data.nameDirection == "RIGHT" then
-		dialogFrame.Chat.Right:Show();
-		dialogFrame.Chat.Right.Name:SetText(data.youName);
-		dialogFrame.Chat.Right:SetWidth(dialogFrame.Chat.Right.Name:GetStringWidth() + 20);
-	else
-		dialogFrame.Chat.Left:Show();
-		dialogFrame.Chat.Left.Name:SetText(data.meName);
-		dialogFrame.Chat.Left:SetWidth(dialogFrame.Chat.Left.Name:GetStringWidth() + 20);
-	end
+	-- Animations
+	local targetModel = dialogFrame.ND == "LEFT" and modelLeft or modelRight;
+	local animTab = targetModel.animTab;
 
-	-- Texts
-	local text = data.text;
+	-- Text color (emote)
 	if text:byte() == 60 then
 		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
 		text = text:gsub("<", color):gsub(">", "|r");
-	end
-	dialogFrame.Chat.Text:SetText(text);
-
-	-- Background
-	dialogFrame.BG:SetTexture(data.BG);
-
-	-- Display
-	modelYou:Hide();
-	modelMe:Hide();
-	image:Hide();
-	if data.image then
-		image:Show();
-
-		if not image.previous then
-			image:SetTexture(data.image.UR);
-			image:SetSize(data.image.WI, data.image.HE);
-			image:SetAlpha(0);
-			TRP3_API.ui.misc.playAnimation(image.FadeIn);
-		elseif image.previous and image.previous ~= data.image.UR then
-			image:SetAlpha(1);
-			TRP3_API.ui.misc.playAnimation(image.FadeOut);
-			after(1, function()
-				image:SetTexture(data.image.UR);
-				image:SetSize(data.image.WI, data.image.HE);
-				image:SetAlpha(0);
-				TRP3_API.ui.misc.playAnimation(image.FadeIn);
-			end)
-		end
-		image.previous = data.image.UR;
 	else
-		image.previous = nil;
-		modelYou:Show();
-		modelMe:Show();
-		-- Animation cut
-		wipe(modelYou.animTab);
-		wipe(modelMe.animTab);
-		local targetModel = data.nameDirection == "RIGHT" and modelYou or modelMe;
-		local animTab = targetModel.animTab;
-		data.text:gsub("[%.%?%!]+", function(finder)
+		text:gsub("[%.%?%!]+", function(finder)
 			animTab[#animTab + 1] = animationLib:GetDialogAnimation(targetModel.model, finder:sub(1, 1));
 			animTab[#animTab + 1] = 0;
 		end);
-		if #animTab == 0 then
-			animTab[1] = 0;
-		end
+	end
 
-		-- Load models
-		loadModel(modelMe, data.meUnit);
-		loadModel(modelYou, data.youUnit);
+	-- Animation
+	if #animTab == 0 then
+		animTab[1] = 0;
+	end
+	dialogFrame.textLineToken = Utils.str.id();
+	if dialogFrame.loaded then
+		playTextAnim("On step");
 	end
 
 	-- Play text
-	dialogFrame.Chat.start = 0;
+	dialogFrame.Chat.Text:SetText(text);
+	dialogFrame.Chat.start = 0; -- Automatically starts the fade-in animation for text
 
 	-- What to do next
-	if dialogFrame.stepTab[dialogFrame.stepDialogIndex + 1] then -- Next in same step
+	if dialogFrame.texts[dialogFrame.stepDialogIndex + 1] then
+		-- If there is a text next in the same step
 		dialogFrame.Chat.NextButton:SetScript("OnClick", function()
 			dialogFrame.stepDialogIndex = dialogFrame.stepDialogIndex + 1;
 			playDialogStep();
 		end);
 	else
-		-- Choice
-		if data.choices then
-			setupChoices(data.choices);
+		-- If there is a choice to make
+		if dialogStepClass.CH then
+			setupChoices(dialogStepClass.CH);
 			dialogFrame.Chat.NextButton:SetScript("OnClick", nil);
 		else
-			-- Next step
-			dialogFrame.stepIndex = data.next or (dialogFrame.stepIndex + 1);
+			dialogFrame.stepIndex = dialogStepClass.N or (dialogFrame.stepIndex + 1);
 
+			-- Else go to the next step if exists
 			if (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] then
-				-- Next
 				dialogFrame.Chat.NextButton:SetScript("OnClick", function()
 					processDialogStep();
 				end);
 			else
-				-- Finish
+				-- Or finish the cutscene
 				dialogFrame.Chat.NextButton:SetScript("OnClick", finishDialog);
 			end
 		end
 	end
+
+	-- Display
+	image:Hide();
+	if dialogStepClass.IM then
+--		image:Show();
+--
+--		if not image.previous then
+--			image:SetTexture(data.image.UR);
+--			image:SetSize(data.image.WI, data.image.HE);
+--			image:SetAlpha(0);
+--			TRP3_API.ui.misc.playAnimation(image.FadeIn);
+--		elseif image.previous and image.previous ~= data.image.UR then
+--			image:SetAlpha(1);
+--			TRP3_API.ui.misc.playAnimation(image.FadeOut);
+--			after(1, function()
+--				image:SetTexture(data.image.UR);
+--				image:SetSize(data.image.WI, data.image.HE);
+--				image:SetAlpha(0);
+--				TRP3_API.ui.misc.playAnimation(image.FadeIn);
+--			end)
+--		end
+--		image.previous = data.image.UR;
+	end
+
 end
 
 -- Prepare all the texts for a step
 function processDialogStep()
-	wipe(dialogFrame.stepTab);
+	wipe(dialogFrame.texts);
 	local dialogClass = dialogFrame.class;
 	local dialogStepClass  = (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] or EMPTY;
-	local meUnitStep = dialogStepClass.MM or dialogClass.MM or "player";
-	local youUnitStep = dialogStepClass.MY or dialogClass.MY or "target";
-	local meNameStep = dialogStepClass.NM or dialogClass.NM or "player";
-	local youNameStep = dialogStepClass.NY or dialogClass.NY or "target";
-	local BG = dialogStepClass.BG or dialogClass.BG or DEFAULT_BG;
-	if youNameStep == "player" or youNameStep == "target" then
-		youNameStep = UnitName(youNameStep);
+
+	-- Names
+	dialogFrame.ND = dialogStepClass.ND or dialogFrame.ND or "NONE";
+	dialogFrame.NA = dialogStepClass.NA or dialogFrame.NA or "player";
+	if dialogFrame.NA == "player" or dialogFrame.NA == "target" then
+		dialogFrame.NA = UnitName(dialogFrame.NA);
 	end
-	if meNameStep == "player" or meNameStep == "target" then
-		meNameStep = UnitName(meNameStep);
+	dialogFrame.Chat.Right:Hide();
+	dialogFrame.Chat.Left:Hide();
+	if dialogFrame.ND == "RIGHT" then
+		dialogFrame.Chat.Right:Show();
+		dialogFrame.Chat.Right.Name:SetText(dialogFrame.NA);
+		dialogFrame.Chat.Right:SetWidth(dialogFrame.Chat.Right.Name:GetStringWidth() + 20);
+	elseif dialogFrame.ND == "LEFT" then
+		dialogFrame.Chat.Left:Show();
+		dialogFrame.Chat.Left.Name:SetText(dialogFrame.NA);
+		dialogFrame.Chat.Left:SetWidth(dialogFrame.Chat.Left.Name:GetStringWidth() + 20);
 	end
-	local nameDirectionStep = dialogStepClass.ND or dialogClass.ND or "RIGHT";
 
-	-- Process text
-	if dialogStepClass.TX then
-		if type(dialogStepClass.TX) == "string" then
-			local fullText = dialogStepClass.TX;
+	-- Background
+	dialogFrame.BG = dialogStepClass.BG or dialogFrame.BG or DEFAULT_BG;
+	dialogFrame.background:SetTexture(dialogFrame.BG);
 
-			fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
-			fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
+	-- Models
+	dialogFrame.loaded = false;
 
-			local texts = { strsplit("\n", fullText) };
-			-- If last is empty, remove last
-			if texts[#texts]:len() == 0 then
-				texts[#texts] = nil;
-			end
-
-			for _, text in pairs(texts) do
-				tinsert(dialogFrame.stepTab, {
-					meUnit = meUnitStep,
-					youUnit = youUnitStep,
-					meName = meNameStep,
-					youName = youNameStep,
-					nameDirection = nameDirectionStep,
-					text = text,
-					next = dialogStepClass.N,
-					choices = dialogStepClass.CH,
-					image = dialogStepClass.IM,
-					BG = BG,
-				});
-			end
-
-
-		elseif type(dialogStepClass.TX) == "table" then
-			-- Complex dialog step
+	modelLeft.modelLoaded = false;
+	modelLeft:Hide();
+	modelLeft.model = "";
+	dialogFrame.LU = dialogStepClass.LU or dialogFrame.LU or "player";
+	if dialogFrame.LU:len() == 0 then
+		modelLeft.modelLoaded = true;
+	elseif dialogFrame.LU ~= "target" or UnitExists("target") then
+		modelLeft:Show();
+		if dialogFrame.LU == "target" or dialogFrame.LU == "player" then
+			modelLeft:SetUnit(dialogFrame.LU, true);
+		else
+			modelLeft:SetDisplayInfo(tonumber(dialogFrame.LU) or 0);
 		end
 	end
 
+	modelRight.modelLoaded = false;
+	modelRight:Hide();
+	modelRight.model = "";
+	dialogFrame.RU = dialogStepClass.RU or dialogFrame.RU or "player";
+	if dialogFrame.RU:len() == 0 then
+		modelRight.modelLoaded = true;
+	elseif dialogFrame.RU ~= "target" or UnitExists("target") then
+		modelRight:Show();
+		if dialogFrame.RU == "target" or dialogFrame.RU == "player" then
+			modelRight:SetUnit(dialogFrame.RU, false);
+		else
+			modelRight:SetDisplayInfo(tonumber(dialogFrame.RU) or 0);
+		end
+	end
+
+	-- Process text
+	if dialogStepClass.TX then
+		local fullText = dialogStepClass.TX;
+		fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
+		fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
+
+		local texts = { strsplit("\n", fullText) };
+		-- If last is empty, remove last
+		if texts[#texts]:len() == 0 then
+			texts[#texts] = nil;
+		end
+
+		dialogFrame.texts = texts;
+	end
+
 	dialogFrame.stepDialogIndex = 1;
+	dialogFrame.dialogStepClass = dialogStepClass;
+
 	playDialogStep();
+end
+
+local resizeChat = function()
+	dialogFrame.Chat.Text:SetWidth(dialogFrame:GetWidth() - 150);
+	dialogFrame.Chat:SetHeight(dialogFrame.Chat.Text:GetHeight() + CHAT_MARGIN + 5);
 end
 
 local function startDialog(dialogID)
@@ -309,8 +340,11 @@ local function startDialog(dialogID)
 	image.previous = nil;
 	dialogFrame.class = dialogClass;
 	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
-	processDialogStep(dialogClass);
+	processDialogStep();
 	dialogFrame:Show();
+
+	dialogFrame:SetSize(dialogFrame.width or 950, dialogFrame.height or 670);
+	resizeChat();
 end
 
 TRP3_API.extended.dialog.startDialog = startDialog;
@@ -340,39 +374,32 @@ function TRP3_API.extended.dialog.onStart()
 		},
 	});
 
-	modelMe.animTab = {};
-	modelYou.animTab = {};
-	dialogFrame.stepTab = {};
+	modelLeft.animTab = {};
+	modelRight.animTab = {};
+	dialogFrame.texts = {};
 	dialogFrame.Chat:SetScript("OnUpdate", onUpdateChatText);
 	dialogFrame:SetScript("OnHide", function()
-		reinitModel(modelMe);
-		reinitModel(modelYou);
+		reinitModel(modelLeft);
+		reinitModel(modelRight);
 	end);
 
 	-- 3D models loaded
-	modelMe:SetScript("OnModelLoaded", function()
-		modelMe.modelLoaded = true;
+	modelLeft:SetScript("OnModelLoaded", function()
+		modelLeft.modelLoaded = true;
 		modelsLoaded();
 	end);
-	modelYou:SetScript("OnModelLoaded", function()
-		modelYou.modelLoaded = true;
+	modelRight:SetScript("OnModelLoaded", function()
+		modelRight.modelLoaded = true;
 		modelsLoaded();
 	end);
 
 	-- Resizing
-	local resizeChat = function()
-		dialogFrame.Chat.Text:SetWidth(dialogFrame:GetWidth() - 150);
-		dialogFrame.Chat:SetHeight(dialogFrame.Chat.Text:GetHeight() + CHAT_MARGIN + 5);
---		Storyline_NPCFrameGossipChoices:SetWidth(Storyline_NPCFrame:GetWidth() - 400);
-	end
 	dialogFrame.Chat.Text:SetWidth(550);
 	dialogFrame.Resize.onResizeStop = function(width, height)
 		resizeChat();
 		dialogFrame.width = width;
 		dialogFrame.height = height;
 	end;
-	dialogFrame:SetSize(dialogFrame.width or 950, dialogFrame.height or 670);
-	resizeChat();
 
 	-- Choices
 	local setupButton = function(button, iconIndex)
@@ -382,11 +409,11 @@ function TRP3_API.extended.dialog.onStart()
 		local xOffset = mod(iconIndex, QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
 		button.Number:SetTexCoord(xOffset, xOffset + QUEST_POI_ICON_SIZE, yOffset, yOffset + QUEST_POI_ICON_SIZE);
 	end
-	setupButton(modelMe.Choice1.Num, 0);
-	setupButton(modelMe.Choice2.Num, 1);
-	setupButton(modelMe.Choice3.Num, 2);
-	setupButton(modelMe.Choice4.Num, 3);
-	setupButton(modelMe.Choice5.Num, 4);
-	modelMe.choices = {modelMe.Choice1, modelMe.Choice2, modelMe.Choice3, modelMe.Choice4, modelMe.Choice5}
+	setupButton(modelLeft.Choice1.Num, 0);
+	setupButton(modelLeft.Choice2.Num, 1);
+	setupButton(modelLeft.Choice3.Num, 2);
+	setupButton(modelLeft.Choice4.Num, 3);
+	setupButton(modelLeft.Choice5.Num, 4);
+	modelLeft.choices = { modelLeft.Choice1, modelLeft.Choice2, modelLeft.Choice3, modelLeft.Choice4, modelLeft.Choice5}
 
 end

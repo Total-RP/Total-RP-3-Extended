@@ -45,6 +45,14 @@ local function editStep(stepID)
 
 	-- Load
 	editor.text.scroll.text:SetText(data.TX or "");
+	editor.direction:SetChecked(data.ND ~= nil);
+	editor.directionValue:SetSelectedValue(data.ND or "NONE");
+	editor.name:SetChecked(data.NA ~= nil);
+	editor.nameValue:SetText(data.NA or "player");
+	editor.leftUnit:SetChecked(data.LU ~= nil);
+	editor.leftUnitValue:SetText(data.LU or "player");
+	editor.rightUnit:SetChecked(data.RU ~= nil);
+	editor.rightUnitValue:SetText(data.RU or "target");
 
 	editor.stepID = stepID;
 end
@@ -73,10 +81,22 @@ local function addStep()
 	editStep(#data.DS);
 end
 
+local function setAttribute(data, key, checked, value)
+	if checked then
+		data[key] = value;
+	else
+		data[key] = nil;
+	end
+end
+
 local function saveStep(stepID)
 	local data = toolFrame.specificDraft.DS[stepID];
 
 	data.TX = stEtN(strtrim(editor.text.scroll.text:GetText()));
+	setAttribute(data, "ND", editor.direction:GetChecked(), editor.directionValue:GetSelectedValue());
+	setAttribute(data, "NA", editor.name:GetChecked(), editor.nameValue:GetText());
+	setAttribute(data, "LU", editor.leftUnit:GetChecked(), editor.leftUnitValue:GetText());
+	setAttribute(data, "RU", editor.rightUnit:GetChecked(), editor.rightUnitValue:GetText());
 
 	refreshStepList();
 end
@@ -227,9 +247,32 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	editor = toolFrame.cutscene.normal.editor;
-	editor.text.title:SetText(loc("DI_STEP_TEXT"));
 	editor.save:SetScript("OnClick", function(self)
 		saveStep(self:GetParent().stepID);
 	end);
 
+	-- Text
+	editor.text.title:SetText(loc("DI_STEP_TEXT"));
+
+	-- Vertical tiling
+	editor.direction.Text:SetText(loc("DI_NAME_DIRECTION"));
+	setTooltipForSameFrame(editor.direction, "RIGHT", 0, 5, loc("DI_NAME_DIRECTION"), loc("DI_NAME_DIRECTION_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+	TRP3_API.ui.listbox.setupListBox(editor.directionValue, {
+		{loc("DI_NAME_DIRECTION")},
+		{loc("CM_LEFT"), "LEFT"},
+		{loc("CM_RIGHT"), "RIGHT"},
+		{loc("REG_RELATION_NONE"), "NONE"}
+	}, nil, nil, 205, true);
+
+	-- Name
+	editor.name.Text:SetText(loc("DI_NAME"));
+	setTooltipForSameFrame(editor.name, "RIGHT", 0, 5, loc("DI_NAME"), loc("DI_NAME_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+
+	-- Left unit
+	editor.leftUnit.Text:SetText(loc("DI_LEFT_UNIT"));
+	setTooltipForSameFrame(editor.leftUnit, "RIGHT", 0, 5, loc("DI_LEFT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+
+	-- Right unit
+	editor.rightUnit.Text:SetText(loc("DI_RIGHT_UNIT"));
+	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc("DI_RIGHT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 end

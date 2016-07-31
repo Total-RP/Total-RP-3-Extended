@@ -54,7 +54,7 @@
 							<Anchor point="LEFT" relativePoint="CENTER" x="-20" y="0"/>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-17"/>
 						</Anchors>
-					</Button>9
+					</Button>
 
 				</Frames>
 			</Frame>

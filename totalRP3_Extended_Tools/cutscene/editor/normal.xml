@@ -34,7 +34,7 @@
 		<Frames>
 
 			<Frame parentKey="step" inherits="TRP3_EditorTitledFrame">
-				<Size x="530" y="250"/>
+				<Size x="530" y="0"/>
 
 				<Anchors>
 					<Anchor point="TOPLEFT" x="10" y="-5"/>
@@ -134,8 +134,9 @@
 			</Frame>
 
 			<Frame parentKey="editor" inherits="TRP3_EditorTitledFrame" name="$parentEditor">
+				<Size x="530" y="0"/>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-10" y="-5"/>
+					<Anchor point="TOP" x="0" y="-5"/>
 					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.step" x="0" y="0"/>
 				</Anchors>
 
@@ -165,6 +166,58 @@
 							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
 					</Frame>
+
+					<CheckButton parentKey="direction" inherits="TRP3_CheckBox" name="$parentDirection">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="15" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.text"/>
+						</Anchors>
+					</CheckButton>
+					<Frame parentKey="directionValue" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentDirectionValue">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.direction" x="200" y="0"/>
+						</Anchors>
+					</Frame>
+
+					<CheckButton parentKey="name" inherits="TRP3_CheckBox" name="$parentName">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-4" relativePoint="BOTTOMLEFT" relativeKey="$parent.direction"/>
+						</Anchors>
+					</CheckButton>
+					<EditBox parentKey="nameValue" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="LEFT" x="220" y="0" relativePoint="RIGHT" relativeKey="$parent.name"/>
+							<Anchor point="RIGHT" x="-35" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="leftUnit" inherits="TRP3_CheckBox" name="$parentLeftUnit">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-4" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
+						</Anchors>
+					</CheckButton>
+					<EditBox parentKey="leftUnitValue" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="LEFT" x="220" y="0" relativePoint="RIGHT" relativeKey="$parent.leftUnit"/>
+							<Anchor point="RIGHT" x="-35" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="rightUnit" inherits="TRP3_CheckBox" name="$parentRightUnit">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-4" relativePoint="BOTTOMLEFT" relativeKey="$parent.leftUnit"/>
+						</Anchors>
+					</CheckButton>
+					<EditBox parentKey="rightUnitValue" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="LEFT" x="220" y="0" relativePoint="RIGHT" relativeKey="$parent.rightUnit"/>
+							<Anchor point="RIGHT" x="-35" y="0"/>
+						</Anchors>
+					</EditBox>
+
+
 				</Frames>
 			</Frame>
 
