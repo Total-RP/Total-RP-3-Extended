@@ -42,7 +42,7 @@ local function quest_start_init()
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
-				link = TRP3_API.inventory.getItemLink(class, args[1]);
+				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
 			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_START_PREVIEW"):format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
@@ -85,7 +85,7 @@ local function quest_goToStep_init()
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
-				link = TRP3_API.inventory.getItemLink(class, args[1]);
+				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
 			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_GOTOSTEP_PREVIEW"):format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
@@ -128,7 +128,7 @@ local function quest_revealObjective_init()
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
-				link = TRP3_API.inventory.getItemLink(class, args[1]);
+				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
 			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_REVEAL_OBJ_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
@@ -146,7 +146,7 @@ local function quest_revealObjective_init()
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
-				link = TRP3_API.inventory.getItemLink(class, args[1]);
+				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
 			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_REVEAL_OBJ_DONE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
@@ -196,7 +196,7 @@ local function quest_var_set_object_init()
 			local class = getClass(ID);
 			local link;
 			if class ~= TRP3_DB.missing then
-				link = TRP3_API.inventory.getItemLink(class, ID);
+				link = TRP3_API.inventory.getItemLink(class, ID, true);
 			end
 			scriptStepFrame.description:SetText((link or ID) .. " - " .. tostring(args[2]) .. " - " .. tostring(args[3]));
 		end,
@@ -251,7 +251,7 @@ local function quest_var_inc_object_init()
 			local class = getClass(ID);
 			local link;
 			if class ~= TRP3_DB.missing then
-				link = TRP3_API.inventory.getItemLink(class, ID);
+				link = TRP3_API.inventory.getItemLink(class, ID, true);
 			end
 			scriptStepFrame.description:SetText((link or ID) .. " - " .. tostring(args[2]));
 		end,

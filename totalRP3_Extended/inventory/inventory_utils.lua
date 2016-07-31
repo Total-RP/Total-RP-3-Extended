@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs = pairs;
+local pairs, strsplit = pairs, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local loc = TRP3_API.locale.getText;
@@ -103,12 +103,28 @@ local function getQualityColorRGB(quality)
 end
 TRP3_API.inventory.getQualityColorRGB = getQualityColorRGB;
 
-local function getItemLink(itemClass, id)
+local function getItemLink(itemClass, id, complete)
+	local ids = {strsplit(TRP3_API.extended.ID_SEPARATOR, id or "???")};
+	local name, color;
 	if itemClass.TY == TRP3_DB.types.DOCUMENT or itemClass.TY == TRP3_DB.types.QUEST_STEP or itemClass.TY == TRP3_DB.types.DIALOG then
-		return "|cffffffff[" .. (id or "???") .. "]|r";
+		color = "|cffffffff";
+		name = ids[#ids];
 	else
-		local _, name, qa = getBaseClassDataSafe(itemClass);
-		return getQualityColorText(qa) .. "[" .. name .. "]|r";
+		local _, n, qa = getBaseClassDataSafe(itemClass);
+		color = getQualityColorText(qa);
+		name = n;
+	end
+
+	if #ids == 1 or not complete then
+		return color .. "[" .. name .. "]|r";
+	else
+		local totalLink = getItemLink(getClass(ids[1]), ids[1]);
+		local idReconstruct = ids[1];
+		for i=2, #ids do
+			idReconstruct = idReconstruct .. TRP3_API.extended.ID_SEPARATOR .. ids[i];
+			totalLink = totalLink .. "|cff00ff00 - " .. getItemLink(getClass(idReconstruct), idReconstruct);
+		end
+		return totalLink;
 	end
 end
 TRP3_API.inventory.getItemLink = getItemLink;

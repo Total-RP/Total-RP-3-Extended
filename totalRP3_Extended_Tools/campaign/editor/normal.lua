@@ -96,7 +96,7 @@ local function openNPC(npcID, frame)
 			npc.editor.name:SetText(npcData.NA or UNKNOWN);
 			npc.editor.description.scroll.text:SetText(npcData.DE or "");
 			onNPCIconSelected(npcData.IC or Globals.icons.profile_default);
-			TRP3_API.ui.frame.configureHoverFrame(npc.editor, frame, "RIGHT", 0, 5, false);
+			TRP3_API.ui.frame.configureHoverFrame(npc.editor, frame, "RIGHT", 0, 5);
 		else
 			newNPC();
 		end

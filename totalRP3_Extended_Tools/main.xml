@@ -232,6 +232,8 @@
 				</Anchors>
 			</Frame>
 
+
+
 		</Frames>
 		<Scripts>
 			<OnLoad>
@@ -240,7 +242,24 @@
 		</Scripts>
 	</Frame>
 
-
+	<Button parentKey="Reduce" frameStrata="HIGH" parent="UIParent">
+		<Size x="32" y="32"/>
+		<Anchors>
+			<Anchor point="TOPRIGHT" relativeTo="TRP3_ToolFrame" x="-36" y="4"/>
+		</Anchors>
+		<NormalTexture file="Interface\Buttons\UI-Panel-HideButton-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-Panel-HideButton-Down"/>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+		<Scripts>
+			<OnClick>
+				if TRP3_ToolFrame:IsVisible() then
+					TRP3_ToolFrame:Hide();
+				else
+					TRP3_ToolFrame:Show();
+				end
+			</OnClick>
+		</Scripts>
+	</Button>
 
 	<Script file="locales/locale_enEN.lua"/>
 	<Script file="locales/locale_frFR.lua"/>

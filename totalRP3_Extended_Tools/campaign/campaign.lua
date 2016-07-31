@@ -60,6 +60,7 @@ function TRP3_API.extended.tools.getQuestData()
 			NA = loc("QE_NAME_NEW"),
 			IC = "achievement_quests_completed_07",
 			DE = loc("QE_DESCRIPTION_TT"),
+			PR = true,
 		},
 		ST = {
 			step_1_first = TRP3_API.extended.tools.getQuestStepData()

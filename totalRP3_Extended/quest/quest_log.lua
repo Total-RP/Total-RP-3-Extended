@@ -67,6 +67,28 @@ end
 local BASE_BKG = "Interface\\QuestionFrame\\question-background";
 local DEFAULT_CAMPAIGN_IMAGE = "GarrZoneAbility-Stables";
 
+
+local function getCampaignProgression(campaignID)
+	local campaignClass = getClass(campaignID);
+	local progression = 0;
+	local progressionQuestIds = {};
+	local completed, total = 0, 0;
+	local campaignLog = getQuestLog()[campaignID].QUEST;
+	for questID, quest in pairs(campaignClass.QE or EMPTY) do
+		if quest.BA.PR then
+			total = total + 1;
+			if campaignLog[questID] and campaignLog[questID].FI then
+				completed = completed + 1;
+			end
+		end
+	end
+	if total ~= 0 then
+		return (completed / total) * 100;
+	else
+		return 0;
+	end
+end
+
 local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 	local campaignClass = getClass(campaignID);
 	local campaignIcon, campaignName, campaignDescription = getClassDataSafe(campaignClass);
@@ -76,10 +98,17 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 	local range = (campaignClass.BA or EMPTY).RA;
 	local description = (campaignClass.BA or EMPTY).DE;
 
+	local progression = getCampaignProgression(campaignID);
+
 	campaignButton:Show();
 	campaignButton.name:SetText(campaignName);
 
 	campaignButton.IconBorder:SetTexture("Interface\\ExtraButton\\" .. image);
+
+	campaignButton.Completed:Hide();
+	if progression == 100 then
+		campaignButton.Completed:Show();
+	end
 
 	campaignButton.bTile:SetTexture(BASE_BKG, true, true);
 	TRP3_API.ui.frame.setupIconButton(campaignButton, campaignIcon);
@@ -103,8 +132,10 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 
 	if not noTooltip then
 		local createdBy = "|cff00ff00%s: %s|r\n\n";
+		local progress = "|cffffff00%s: %s%%|r\n\n";
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton, "TOPRIGHT", 0, 5, campaignName,
 			createdBy:format(loc("DB_FILTERS_OWNER"), author)
+			.. progress:format(loc("QE_PROGRESS"), progression)
 			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_OPEN")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS"))
 		);
 	else

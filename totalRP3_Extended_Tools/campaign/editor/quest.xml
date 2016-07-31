@@ -134,6 +134,12 @@
 						</Anchors>
 					</CheckButton>
 
+					<CheckButton parentKey="progress" inherits="TRP3_CheckBox" name="$parentProgress">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.auto"/>
+						</Anchors>
+					</CheckButton>
+
 					<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>

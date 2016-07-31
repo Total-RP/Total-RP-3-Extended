@@ -179,7 +179,7 @@ function refresh()
 		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len()) == objectID;
 		local hasChildren = isOpen or objectHasChildren(class);
 		local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
-		local link = TRP3_API.inventory.getItemLink(class, parts[#parts]);
+		local link = TRP3_API.inventory.getItemLink(class, objectID);
 
 		-- idData is wipe frequently: DO NOT STORE PERSISTENT DATA IN IT !!!
 		idData[index] = {

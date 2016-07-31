@@ -145,7 +145,9 @@ end
 
 local function refreshQuestStepList()
 	local data = toolFrame.specificDraft;
+
 	TRP3_API.ui.list.initList(steps.list, data.ST, steps.list.slider);
+
 	steps.list.empty:Hide();
 	if tsize(data.ST) == 0 then
 		steps.list.empty:Show();
@@ -243,6 +245,7 @@ local function load()
 	main.name:SetText(data.BA.NA or "");
 	main.description.scroll.text:SetText(data.BA.DE or "");
 	main.auto:SetChecked(data.BA.IN or false);
+	main.progress:SetChecked(data.BA.PR or false);
 	onIconSelected(data.BA.IC);
 	refreshObjectiveList();
 
@@ -266,6 +269,7 @@ local function saveToDraft()
 	data.BA.DE = stEtN(strtrim(main.description.scroll.text:GetText()));
 	data.BA.IC = main.preview.selectedIcon;
 	data.BA.IN = main.auto:GetChecked();
+	data.BA.PR = main.progress:GetChecked();
 
 	storeDataScript();
 end
@@ -368,6 +372,10 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 	-- Auto reveal
 	main.auto.Text:SetText(loc("QE_AUTO_REVEAL"));
 	setTooltipForSameFrame(main.auto, "RIGHT", 0, 5, loc("QE_AUTO_REVEAL"), loc("QE_AUTO_REVEAL_TT"));
+
+	-- Progress
+	main.progress.Text:SetText(loc("QE_PROGRESS"));
+	setTooltipForSameFrame(main.progress, "RIGHT", 0, 5, loc("QE_PROGRESS"), loc("QE_PROGRESS_TT"));
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NOTES
