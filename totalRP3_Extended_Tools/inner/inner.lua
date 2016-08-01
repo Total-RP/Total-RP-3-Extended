@@ -94,6 +94,7 @@ local function onIDChanged(self)
 end
 
 local function onLineEnter(line)
+	line.Highlight:Show();
 	refreshTooltipForFrame(line);
 	local class = toolFrame.specificDraft.IN[line.objectID];
 	if class.TY == TRP3_DB.types.ITEM then
@@ -101,7 +102,8 @@ local function onLineEnter(line)
 	end
 end
 
-local function onLineLeave()
+local function onLineLeave(line)
+	line.Highlight:Hide();
 	TRP3_MainTooltip:Hide();
 	TRP3_ItemTooltip:Hide();
 end

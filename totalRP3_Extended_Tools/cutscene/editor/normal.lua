@@ -25,7 +25,7 @@ local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color = Utils.str.color;
-local toolFrame, step, editor;
+local toolFrame, step, editor, refreshStepList;
 
 local TABS = {
 	MAIN = 1,
@@ -55,11 +55,20 @@ local function editStep(stepID)
 	editor.rightUnitValue:SetText(data.RU or "target");
 
 	editor.stepID = stepID;
+
+	refreshStepList();
 end
 
 local function decorateStepLine(line, stepID)
 	local data = toolFrame.specificDraft;
 	local stepData = data.DS[stepID];
+
+	line.lock = false;
+	line.Highlight:Hide();
+	if stepID == editor.stepID then
+		line.lock = true;
+		line.Highlight:Show();
+	end
 
 	line.Name:SetText("Step " .. stepID);
 	line.Description:SetText(stepData.TX or "");
@@ -67,7 +76,7 @@ local function decorateStepLine(line, stepID)
 	line.click.stepID = stepID;
 end
 
-local function refreshStepList()
+function refreshStepList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(step.list, data.DS, step.list.slider);
 end
@@ -77,7 +86,6 @@ local function addStep()
 	tinsert(data.DS, {
 		TX = "Hello"
 	});
-	refreshStepList();
 	editStep(#data.DS);
 end
 
@@ -139,7 +147,6 @@ local function load()
 	end
 
 	loadDataScript();
-	refreshStepList();
 	editStep(1);
 
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
@@ -148,7 +155,7 @@ end
 local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
-	local data = toolFrame.specificDraft;
+	saveStep(editor.stepID);
 
 	storeDataScript();
 end
@@ -221,6 +228,7 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 			if button == "RightButton" then
 				removeStep(self.stepID);
 			else
+				saveStep(editor.stepID);
 				editStep(self.stepID);
 			end
 		end);
@@ -230,7 +238,9 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		end);
 		line.click:SetScript("OnLeave", function(self)
 			TRP3_MainTooltip:Hide();
-			self:GetParent().Highlight:Hide();
+			if not self:GetParent().lock then
+				self:GetParent().Highlight:Hide();
+			end
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("DI_STEP"),
@@ -247,9 +257,6 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	editor = toolFrame.cutscene.normal.editor;
-	editor.save:SetScript("OnClick", function(self)
-		saveStep(self:GetParent().stepID);
-	end);
 
 	-- Text
 	editor.text.title:SetText(loc("DI_STEP_TEXT"));

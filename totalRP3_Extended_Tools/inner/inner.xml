@@ -42,17 +42,25 @@
 				</FontString>
 			</Layer>
 		</Layers>
-		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+
+		<Frames>
+			<Frame name="$parentHighlight" parentKey="Highlight" inherits="GlowBorderTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="5" y="-2"/>
+					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetAlpha(0.55);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>
+
 		<Scripts>
 			<OnLoad>
 				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 			</OnLoad>
-			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
-			</OnEnter>
-			<OnLeave>
-				TRP3_MainTooltip:Hide();
-			</OnLeave>
 		</Scripts>
 	</Button>
 

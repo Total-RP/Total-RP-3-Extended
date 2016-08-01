@@ -103,7 +103,7 @@ local function document_show_init()
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
-				link = TRP3_API.inventory.getItemLink(class);
+				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
 			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_DOC_ID") .. ":|r " .. (link or tostring(args[1])));
 		end,

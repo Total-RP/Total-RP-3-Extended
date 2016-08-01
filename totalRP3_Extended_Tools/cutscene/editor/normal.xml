@@ -41,6 +41,18 @@
 					<Anchor point="BOTTOM" x="0" y="5"/>
 				</Anchors>
 
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture parentKey="arrow" file="Interface\GLUES\CHARACTERCREATE\CharacterCreate-Arrow">
+							<Size x="64" y="128"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="RIGHT" x="0" y="0"/>
+							</Anchors>
+							<TexCoords left="1" right="0" top="0" bottom="1"/>
+						</Texture>
+					</Layer>
+				</Layers>
+
 				<Frames>
 
 					<Frame parentKey="list" name="$parentList">
@@ -141,11 +153,6 @@
 				</Anchors>
 
 				<Frames>
-					<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
-						<Anchors>
-							<Anchor point="BOTTOM" x="0" y="10"/>
-						</Anchors>
-					</Button>
 
 					<Frame parentKey="text" inherits="TRP3_TextArea">
 						<Size x="0" y="150"/>

@@ -34,7 +34,20 @@
 					<Anchor point="LEFT" x="15" y="0" />
 				</Anchors>
 			</Frame>
+
 			<Button parentKey="click" inherits="TRP3_InvisibleButton" setAllPoints="true"/>
+
+			<Frame name="$parentHighlight" parentKey="Highlight" inherits="GlowBorderTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="5" y="-2"/>
+					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetAlpha(0.55);
+					</OnLoad>
+				</Scripts>
+			</Frame>
 		</Frames>
 
 		<Layers>
@@ -62,15 +75,6 @@
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10" />
 				</FontString>
-			</Layer>
-			<Layer level="OVERLAY">
-				<Texture alphaMode="ADD" alpha="0.3" parentKey="Highlight" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow" hidden="true">
-					<Size x="150" y="60"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="50" y="0" />
-					</Anchors>
-					<TexCoords left="0.8" right="1" top="0.1" bottom="0.22" />
-				</Texture>
 			</Layer>
 		</Layers>
 
