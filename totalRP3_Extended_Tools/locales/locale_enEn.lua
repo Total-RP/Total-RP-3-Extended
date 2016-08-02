@@ -94,6 +94,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	QUEST_ID = "Quest ID",
 
 	-- Editor common
+	EDITOR_MORE = "More",
 	EDITOR_PREVIEW = "preview",
 	EDITOR_ICON_SELECT = "Click to select an icon.",
 	EDITOR_NOTES = "Free notes",
@@ -104,6 +105,10 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EDITOR_ID_COPY = "Copy ID",
 	EDITOR_ID_COPY_POPUP = "You can copy the object ID below if you need to paste it somewhere.",
 	EDITOR_WARNINGS = "There are %s warnings.\n\n|cffff9900%s|r\n\nSave anyway?",
+	EDITOR_TOP = "Top",
+	EDITOR_BOTTOM = "Bottom",
+	EDITOR_WIDTH = "Width",
+	EDITOR_HEIGHT = "Height",
 
 	-- Item creation
 	IT_NEW_NAME = "New item",
@@ -628,13 +633,18 @@ We should begin with some examples:
 	DI_ATTR_TT = "Only check this if you want to change this attribute relative to the previous dialog step.",
 	DI_NAME_DIRECTION = "Dialog direction",
 	DI_NAME_DIRECTION_TT = "Determines where to place the chat bubble and name. Select none to completely hide the chat bubble and name.",
-	DI_NAME = "Name",
+	DI_NAME = "Speaker name",
 	DI_NAME_TT = "The name of the talking character.\n\nOnly necessary if the dialog direction above is not NONE.\n\n|cff00ff00It can be a free text or one of the keyword \"player\" or \"target\" to get respectively the player's name or the target's name (if exists).",
 	DI_LEFT_UNIT = "Left model",
 	DI_RIGHT_UNIT = "Right model",
 	DI_UNIT_TT = "Sets the model to display:\n\n- Leave empty to hide the model\n- \"player\" to use the player's model\n- \"target\" to use the target's model\n- Any number to load as NPC ID",
 	DI_ATTRIBUTE = "Change attributes",
 	DI_BKG = "Background image",
-	DI_BKG_TT = "Will be used as background for the cutscene step. Please enter the full texture path.",
+	DI_BKG_TT = "Will be used as background for the cutscene step. Please enter the full texture path.\n\nIf you change the background during a cutscene there will be a fade between the two different backgrounds.",
+	DI_DIALOG = "Dialog",
+	DI_FRAME = "Decoration",
+	DI_MODELS = "Models",
+	DI_IMAGE = "Image",
+	DI_IMAGE_TT = "Displays an image in the center of the cutscene frame. The image will fade in. Please enter the full texture path.\n\nTo hide the image afterward, just leave the box empty.",
 
 };
