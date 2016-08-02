@@ -49,7 +49,7 @@ local function loadScalingParameters(data, model, facing)
 end
 
 local function playTextAnim(context)
-	if not dialogFrame.textLineToken then
+	if not dialogFrame.textLineToken or not dialogFrame.ND or dialogFrame.ND == "NONE" then
 		return;
 	end
 	Log.log("AnimWithToken: " .. context);
@@ -222,29 +222,6 @@ local function playDialogStep()
 		end
 	end
 
-	-- Display
-	image:Hide();
-	if dialogStepClass.IM then
---		image:Show();
---
---		if not image.previous then
---			image:SetTexture(data.image.UR);
---			image:SetSize(data.image.WI, data.image.HE);
---			image:SetAlpha(0);
---			TRP3_API.ui.misc.playAnimation(image.FadeIn);
---		elseif image.previous and image.previous ~= data.image.UR then
---			image:SetAlpha(1);
---			TRP3_API.ui.misc.playAnimation(image.FadeOut);
---			after(1, function()
---				image:SetTexture(data.image.UR);
---				image:SetSize(data.image.WI, data.image.HE);
---				image:SetAlpha(0);
---				TRP3_API.ui.misc.playAnimation(image.FadeIn);
---			end)
---		end
---		image.previous = data.image.UR;
-	end
-
 end
 
 -- Prepare all the texts for a step
@@ -273,7 +250,51 @@ function processDialogStep()
 
 	-- Background
 	dialogFrame.BG = dialogStepClass.BG or dialogFrame.BG or DEFAULT_BG;
-	dialogFrame.background:SetTexture(dialogFrame.BG);
+	local setBackground;
+	setBackground = function(forceNoFade)
+		if dialogFrame.background.current ~= dialogFrame.BG then
+			if forceNoFade or dialogFrame.background.current == nil then
+				dialogFrame.background:SetTexture(dialogFrame.BG);
+				dialogFrame.background.current = dialogFrame.BG;
+				if not forceNoFade then
+					dialogFrame.background:SetAlpha(0);
+					TRP3_API.ui.misc.playAnimation(dialogFrame.background.FadeIn);
+				end
+			else
+				dialogFrame.background.current = nil;
+				TRP3_API.ui.misc.playAnimation(dialogFrame.background.FadeOut);
+				after(0.5, function()
+					setBackground();
+				end)
+			end
+		end
+	end
+	if dialogFrame.BG then
+		setBackground(dialogFrame.stepIndex == 1);
+	end
+
+
+	-- Image
+	image:Hide();
+	dialogFrame.IM = dialogStepClass.IM or dialogFrame.IM;
+	local setImage = function()
+		image:SetTexture(dialogFrame.IM.UR);
+		image:SetTexCoord(dialogFrame.IM.LE or 0, dialogFrame.IM.RI or 1, dialogFrame.IM.TO or 0, dialogFrame.IM.BO or 1);
+		image:SetSize(dialogFrame.IM.WI or 256, dialogFrame.IM.HE or 256);
+		TRP3_API.ui.misc.playAnimation(image.FadeIn);
+	end
+	if dialogFrame.IM then
+		image:Show();
+		if not image.previous then
+			setImage();
+		elseif image.previous and image.previous ~= dialogFrame.IM.UR then
+			TRP3_API.ui.misc.playAnimation(image.FadeOut);
+			after(1, function()
+				setImage();
+			end)
+		end
+		image.previous = dialogFrame.IM.UR;
+	end
 
 	-- Models
 	dialogFrame.loaded = false;
@@ -334,14 +355,17 @@ local resizeChat = function()
 	dialogFrame.Chat:SetHeight(dialogFrame.Chat.Text:GetHeight() + CHAT_MARGIN + 5);
 end
 
-local function startDialog(dialogID)
-	local dialogClass = getClass(dialogID);
+local function startDialog(dialogID, class)
+	local dialogClass = dialogID and getClass(dialogID) or class;
 	-- By default, launch the step 1
 	image.previous = nil;
+	dialogFrame.background.current = nil;
+	dialogFrame.isPreview = dialogID == nil;
 	dialogFrame.class = dialogClass;
 	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
 	processDialogStep();
 	dialogFrame:Show();
+	dialogFrame:Raise();
 
 	dialogFrame:SetSize(dialogFrame.width or 950, dialogFrame.height or 670);
 	resizeChat();
@@ -402,6 +426,7 @@ function TRP3_API.extended.dialog.onStart()
 	end;
 
 	-- Choices
+	dialogFrame.Chat.Next:SetText(loc("DI_NEXT"));
 	local setupButton = function(button, iconIndex)
 		local QUEST_POI_ICONS_PER_ROW = 8;
 		local QUEST_POI_ICON_SIZE = 0.125;

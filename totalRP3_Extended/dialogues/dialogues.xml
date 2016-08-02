@@ -61,8 +61,8 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_DialogFrame" inherits="TRP3_StandardParchmentFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
-		<TitleRegion setAllPoints="true"/>
+	<Frame name="TRP3_DialogFrameTemplate" inherits="TRP3_StandardParchmentFrame" virtual="true">
+
 		<Size x="100" y="100" />
 		<Layers>
 			<Layer level="BORDER">
@@ -71,20 +71,28 @@
 						<Anchor point="TOPLEFT" x="20" y="-20"/>
 						<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
 					</Anchors>
+					<Animations>
+						<AnimationGroup parentKey="FadeIn" setToFinalAlpha="true">
+							<Alpha toAlpha="0.5" fromAlpha="0" duration="0.5"/>
+						</AnimationGroup>
+						<AnimationGroup parentKey="FadeOut" setToFinalAlpha="true">
+							<Alpha toAlpha="0" fromAlpha="0.5" duration="0.5"/>
+						</AnimationGroup>
+					</Animations>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
 				<Texture parentKey="Image">
 					<Size x="512" y="256"/>
 					<Anchors>
-						<Anchor point="CENTER" x="0" y="0"/>
+						<Anchor point="TOP" x="0" y="-100"/>
 					</Anchors>
 					<Animations>
 						<AnimationGroup parentKey="FadeIn" setToFinalAlpha="true">
-							<Alpha change="1" duration="1"/>
+							<Alpha toAlpha="1" fromAlpha="0" duration="1"/>
 						</AnimationGroup>
 						<AnimationGroup parentKey="FadeOut" setToFinalAlpha="true">
-							<Alpha change="-1" duration="1"/>
+							<Alpha toAlpha="0" fromAlpha="1" duration="1"/>
 						</AnimationGroup>
 					</Animations>
 				</Texture>
@@ -315,6 +323,10 @@
 
 		</Frames>
 
+	</Frame>
+
+	<Frame name="TRP3_DialogFrame" inherits="TRP3_DialogFrameTemplate" toplevel="true" parent="UIParent" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+		<TitleRegion setAllPoints="true"/>
 	</Frame>
 
 	<Script file="dialogues.lua"/>

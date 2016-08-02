@@ -30,7 +30,6 @@ local toolFrame, step, editor, refreshStepList;
 local TABS = {
 	MAIN = 1,
 	WORKFLOWS = 2,
-	EXPERT = 3
 }
 
 local tabGroup, currentTab, linksStructure;
@@ -39,7 +38,10 @@ local tabGroup, currentTab, linksStructure;
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
+
 local function editStep(stepID)
+	editor.imageEditor:Hide();
 	editor.title:SetText(("%s: %s"):format(loc("DI_STEP_EDIT"), stepID));
 	local data = toolFrame.specificDraft.DS[stepID];
 
@@ -53,6 +55,18 @@ local function editStep(stepID)
 	editor.leftUnitValue:SetText(data.LU or "player");
 	editor.rightUnit:SetChecked(data.RU ~= nil);
 	editor.rightUnitValue:SetText(data.RU or "target");
+	editor.background:SetChecked(data.BG ~= nil);
+	editor.backgroundValue:SetText(data.BG or DEFAULT_BG);
+	editor.image:SetChecked(data.IM ~= nil);
+	editor.imageValue:SetText(data.IM and data.IM.UR or "");
+	editor.imageEditor.width:SetText(data.IM and data.IM.WI or "256");
+	editor.imageEditor.height:SetText(data.IM and data.IM.HE or "256");
+	editor.imageEditor.top:SetText(data.IM and data.IM.TO or "0");
+	editor.imageEditor.bottom:SetText(data.IM and data.IM.BO or "1");
+	editor.imageEditor.left:SetText(data.IM and data.IM.LE or "0");
+	editor.imageEditor.right:SetText(data.IM and data.IM.RI or "1");
+
+	TRP3_ScriptEditorNormal.safeLoadList(editor.workflow, editor.workflowIDs, data.WO or "");
 
 	editor.stepID = stepID;
 
@@ -105,6 +119,21 @@ local function saveStep(stepID)
 	setAttribute(data, "NA", editor.name:GetChecked(), editor.nameValue:GetText());
 	setAttribute(data, "LU", editor.leftUnit:GetChecked(), editor.leftUnitValue:GetText());
 	setAttribute(data, "RU", editor.rightUnit:GetChecked(), editor.rightUnitValue:GetText());
+	setAttribute(data, "BG", editor.background:GetChecked(), editor.backgroundValue:GetText());
+	if editor.image:GetChecked() then
+		data.IM = {
+			UR = editor.imageValue:GetText(),
+			TO = tonumber(editor.imageEditor.top:GetText()),
+			BO = tonumber(editor.imageEditor.bottom:GetText()),
+			LE = tonumber(editor.imageEditor.left:GetText()),
+			RI = tonumber(editor.imageEditor.right:GetText()),
+			WI = tonumber(editor.imageEditor.width:GetText()),
+			HE = tonumber(editor.imageEditor.height:GetText()),
+		};
+	else
+		data.IM = nil;
+	end
+	data.WO = stEtN(editor.workflow:GetSelectedValue());
 
 	refreshStepList();
 end
@@ -132,6 +161,12 @@ end
 -- Load ans save
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function loadMain()
+	editor.workflowIDs = {};
+	editor.workflowListStructure = TRP3_ScriptEditorNormal.reloadWorkflowlist(editor.workflowIDs);
+	TRP3_API.ui.listbox.setupListBox(editor.workflow, editor.workflowListStructure, nil, nil, 300, true);
+end
+
 local function load()
 	assert(toolFrame.rootClassID, "rootClassID is nil");
 	assert(toolFrame.fullClassID, "fullClassID is nil");
@@ -146,6 +181,7 @@ local function load()
 		data.DS = {};
 	end
 
+	loadMain();
 	loadDataScript();
 	editStep(1);
 
@@ -177,6 +213,7 @@ local function onTabChanged(tabWidget, tab)
 	if currentTab == TABS.MAIN then
 		step:Show();
 		editor:Show();
+		loadMain();
 	elseif currentTab == TABS.WORKFLOWS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.cutscene.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
@@ -251,6 +288,11 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	step.list.slider:SetValue(0);
 	step.list.add:SetText(loc("DI_STEP_ADD"));
 	step.list.add:SetScript("OnClick", function() addStep() end);
+	step.list.preview:SetText(loc("EDITOR_PREVIEW"));
+	step.list.preview:SetScript("OnClick", function()
+		saveToDraft();
+		TRP3_API.extended.dialog.startDialog(nil, toolFrame.specificDraft);
+	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Editor
@@ -260,8 +302,10 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 
 	-- Text
 	editor.text.title:SetText(loc("DI_STEP_TEXT"));
+	editor.attributes:SetText(loc("DI_ATTRIBUTE"));
 
-	-- Vertical tiling
+	-- Direction
+	editor.direction.section:SetText(loc("DI_DIALOG"));
 	editor.direction.Text:SetText(loc("DI_NAME_DIRECTION"));
 	setTooltipForSameFrame(editor.direction, "RIGHT", 0, 5, loc("DI_NAME_DIRECTION"), loc("DI_NAME_DIRECTION_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 	TRP3_API.ui.listbox.setupListBox(editor.directionValue, {
@@ -269,17 +313,42 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		{loc("CM_LEFT"), "LEFT"},
 		{loc("CM_RIGHT"), "RIGHT"},
 		{loc("REG_RELATION_NONE"), "NONE"}
-	}, nil, nil, 205, true);
+	}, nil, nil, 195, true);
 
 	-- Name
 	editor.name.Text:SetText(loc("DI_NAME"));
 	setTooltipForSameFrame(editor.name, "RIGHT", 0, 5, loc("DI_NAME"), loc("DI_NAME_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 
+	-- Background
+	editor.background.section:SetText(loc("DI_FRAME"));
+	editor.background.Text:SetText(loc("DI_BKG"));
+	setTooltipForSameFrame(editor.background, "RIGHT", 0, 5, loc("DI_BKG"), loc("DI_BKG_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+
+	-- Image
+	editor.image.Text:SetText(loc("DI_IMAGE"));
+	editor.imageMore:SetText(loc("EDITOR_MORE"));
+	editor.imageMore:SetScript("OnClick", function()
+		if not editor.imageEditor:IsVisible() then
+			TRP3_API.ui.frame.configureHoverFrame(editor.imageEditor, editor.imageMore, "RIGHT", -10, 0);
+		else
+			editor.imageEditor:Hide();
+		end
+	end);
+	setTooltipForSameFrame(editor.image, "RIGHT", 0, 5, loc("DI_IMAGE"), loc("DI_IMAGE_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+	editor.imageEditor.width.title:SetText(loc("EDITOR_WIDTH"));
+	editor.imageEditor.height.title:SetText(loc("EDITOR_HEIGHT"));
+	editor.imageEditor.top.title:SetText(loc("EDITOR_TOP"));
+	editor.imageEditor.bottom.title:SetText(loc("EDITOR_BOTTOM"));
+	editor.imageEditor.left.title:SetText(loc("CM_LEFT"));
+	editor.imageEditor.right.title:SetText(loc("CM_RIGHT"));
+
 	-- Left unit
+	editor.leftUnit.section:SetText(loc("DI_MODELS"));
 	editor.leftUnit.Text:SetText(loc("DI_LEFT_UNIT"));
 	setTooltipForSameFrame(editor.leftUnit, "RIGHT", 0, 5, loc("DI_LEFT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 
 	-- Right unit
 	editor.rightUnit.Text:SetText(loc("DI_RIGHT_UNIT"));
 	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc("DI_RIGHT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+
 end
