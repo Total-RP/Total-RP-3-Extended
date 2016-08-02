@@ -409,6 +409,11 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_DIALOG_START_TT = "Start a cutscene. If a cutscene is already played, it will be interrupted and replace by this one.",
 	EFFECT_DIALOG_START_PREVIEW = "Start cutscene %s.",
 	EFFECT_DIALOG_ID = "Cutscene ID",
+	EFFECT_ITEM_LOOT = "Show loot",
+	EFFECT_ITEM_LOOT_TT = "Displays a loot container to the player.",
+	EFFECT_ITEM_LOOT_PREVIEW = "Loot with %s item(s).",
+	EFFECT_ITEM_LOOT_NAME = "Source name",
+	EFFECT_ITEM_LOOT_NAME_TT = "This will be the loot container name.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",

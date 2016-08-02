@@ -298,6 +298,46 @@ local function item_cooldown_init()
 	end
 end
 
+local function inv_loot_init()
+	local editor = TRP3_EffectEditorLoot;
+
+	registerEffectEditor("item_loot", {
+		title = loc("EFFECT_ITEM_LOOT"),
+		icon = "inv_box_02",
+		description = loc("EFFECT_ITEM_LOOT_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local itemCount = 0;
+			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_LOOT_PREVIEW"):format(itemCount));
+		end,
+		getDefaultArgs = function()
+			return {loc("LOOT")};
+		end,
+		editor = editor;
+	});
+
+	-- Name
+	editor.name.title:SetText(loc("EFFECT_ITEM_LOOT_NAME"));
+	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_LOOT_NAME"), loc("EFFECT_ITEM_LOOT_NAME_TT"));
+
+	-- Loot
+	editor.bag.close:Disable();
+	editor.bag.LockIcon:Hide();
+	editor.bag.DurabilityText:Hide();
+	editor.bag.WeightText:Hide();
+	TRP3_API.ui.frame.createRefreshOnFrame(editor.bag, 0.25, function(self)
+
+	end);
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.name:SetText(data[1] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = strtrim(editor.name:GetText());
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Operands
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -352,7 +392,6 @@ local function inv_item_count_con_init()
 	});
 end
 
-
 function TRP3_API.extended.tools.initItemEffects()
 
 	-- Effects
@@ -362,6 +401,7 @@ function TRP3_API.extended.tools.initItemEffects()
 	item_add_init();
 	item_remove_init();
 	item_cooldown_init();
+	inv_loot_init();
 
 	document_show_init();
 	document_close_init();

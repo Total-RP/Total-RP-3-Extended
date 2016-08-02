@@ -651,6 +651,7 @@ editor.init = function(ToolFrame)
 			"item_bag_durability",
 			"item_consume",
 			"item_cooldown",
+			"item_loot",
 		},
 		[loc("TYPE_DOCUMENT")] = {
 			"document_show",
