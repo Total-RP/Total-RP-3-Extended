@@ -73,7 +73,7 @@ local function getCampaignProgression(campaignID)
 	local progression = 0;
 	local progressionQuestIds = {};
 	local completed, total = 0, 0;
-	local campaignLog = getQuestLog()[campaignID].QUEST;
+	local campaignLog = (getQuestLog()[campaignID] or EMPTY).QUEST or EMPTY;
 	for questID, quest in pairs(campaignClass.QE or EMPTY) do
 		if quest.BA.PR then
 			total = total + 1;

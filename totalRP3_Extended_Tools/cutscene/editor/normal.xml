@@ -148,7 +148,7 @@
 					</Button>
 
 					<Frame parentKey="text" inherits="TRP3_TextArea">
-						<Size x="0" y="150"/>
+						<Size x="0" y="75"/>
 						<Layers>
 							<Layer level="OVERLAY">
 								<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
@@ -169,7 +169,7 @@
 
 					<CheckButton parentKey="direction" inherits="TRP3_CheckBox" name="$parentDirection">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="15" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.text"/>
+							<Anchor point="TOPLEFT" x="15" y="-30" relativePoint="BOTTOMLEFT" relativeKey="$parent.text"/>
 						</Anchors>
 					</CheckButton>
 					<Frame parentKey="directionValue" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentDirectionValue">
@@ -191,9 +191,22 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="leftUnit" inherits="TRP3_CheckBox" name="$parentLeftUnit">
+					<CheckButton parentKey="background" inherits="TRP3_CheckBox" name="$parentBackground">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-4" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
+						</Anchors>
+					</CheckButton>
+					<EditBox parentKey="backgroundValue" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="LEFT" x="220" y="0" relativePoint="RIGHT" relativeKey="$parent.background"/>
+							<Anchor point="RIGHT" x="-35" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="leftUnit" inherits="TRP3_CheckBox" name="$parentLeftUnit">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-4" relativePoint="BOTTOMLEFT" relativeKey="$parent.background"/>
 						</Anchors>
 					</CheckButton>
 					<EditBox parentKey="leftUnitValue" inherits="TRP3_TitledHelpEditBox">
@@ -219,6 +232,20 @@
 
 
 				</Frames>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="attributes" inherits="GameFontNormalSmall" justifyH="LEFT">
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.text" x="0" y="-10"/>
+								<Anchor point="LEFT" x="28" y="0"/>
+								<Anchor point="RIGHT" x="0" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.75" b="0.1"/>
+						</FontString>
+					</Layer>
+				</Layers>
+
 			</Frame>
 
 		</Frames>

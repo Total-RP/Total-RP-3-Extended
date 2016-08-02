@@ -357,6 +357,7 @@ TRP3_API.extended.tools.goToPage = goToPage;
 
 function TRP3_API.extended.tools.showFrame(reset)
 	toolFrame:Show();
+	toolFrame:Raise();
 	if reset then
 		goToListPage();
 	end

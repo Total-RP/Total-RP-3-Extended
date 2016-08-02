@@ -49,7 +49,7 @@ local function loadScalingParameters(data, model, facing)
 end
 
 local function playTextAnim(context)
-	if not dialogFrame.textLineToken then
+	if not dialogFrame.textLineToken or not dialogFrame.ND or dialogFrame.ND == "NONE" then
 		return;
 	end
 	Log.log("AnimWithToken: " .. context);
@@ -402,6 +402,7 @@ function TRP3_API.extended.dialog.onStart()
 	end;
 
 	-- Choices
+	dialogFrame.Chat.Next:SetText(loc("DI_NEXT"));
 	local setupButton = function(button, iconIndex)
 		local QUEST_POI_ICONS_PER_ROW = 8;
 		local QUEST_POI_ICON_SIZE = 0.125;

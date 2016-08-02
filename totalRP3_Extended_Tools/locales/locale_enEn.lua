@@ -633,6 +633,8 @@ We should begin with some examples:
 	DI_LEFT_UNIT = "Left model",
 	DI_RIGHT_UNIT = "Right model",
 	DI_UNIT_TT = "Sets the model to display:\n\n- Leave empty to hide the model\n- \"player\" to use the player's model\n- \"target\" to use the target's model\n- Any number to load as NPC ID",
-
+	DI_ATTRIBUTE = "Change attributes",
+	DI_BKG = "Background image",
+	DI_BKG_TT = "Will be used as background for the cutscene step. Please enter the full texture path.",
 
 };

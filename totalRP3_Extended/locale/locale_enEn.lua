@@ -154,6 +154,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_MACRO = "Create macro",
 	QE_MACRO_TT = "Creates a macro for this action type and pickup the macro on your cursor to be placed in any action bars.",
 	QE_PROGRESS = "Campaign progression",
+	DI_NEXT = "Next",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",

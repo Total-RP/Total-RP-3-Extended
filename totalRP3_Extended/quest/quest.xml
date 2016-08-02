@@ -164,8 +164,8 @@
 					<Size x="0" y="55"/>
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.banner" x="0" y="15"/>
-						<Anchor point="RIGHT" x="-30" y="0"/>
-						<Anchor point="LEFT" x="30" y="0"/>
+						<Anchor point="RIGHT" x="-35" y="0"/>
+						<Anchor point="LEFT" x="35" y="0"/>
 					</Anchors>
 					<Color r="0.2824" g="0.0157" b="0.0157"/>
 				</FontString>
@@ -316,8 +316,8 @@
 				<FontString inherits="SystemFont_Large" justifyH="CENTER" justifyV="MIDDLE" parentKey="Empty" text="[Quest Name Quest Name Quest Name]">
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.break" x="0" y="0"/>
-						<Anchor point="RIGHT" x="-10" y="0"/>
-						<Anchor point="LEFT" x="10" y="0"/>
+						<Anchor point="RIGHT" x="-35" y="0"/>
+						<Anchor point="LEFT" x="35" y="0"/>
 						<Anchor point="BOTTOM" x="0" y="10"/>
 					</Anchors>
 					<Color r="0.2824" g="0.0157" b="0.0157"/>

@@ -39,6 +39,8 @@ local tabGroup, currentTab, linksStructure;
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
+
 local function editStep(stepID)
 	editor.title:SetText(("%s: %s"):format(loc("DI_STEP_EDIT"), stepID));
 	local data = toolFrame.specificDraft.DS[stepID];
@@ -53,6 +55,8 @@ local function editStep(stepID)
 	editor.leftUnitValue:SetText(data.LU or "player");
 	editor.rightUnit:SetChecked(data.RU ~= nil);
 	editor.rightUnitValue:SetText(data.RU or "target");
+	editor.background:SetChecked(data.BG ~= nil);
+	editor.backgroundValue:SetText(data.BG or DEFAULT_BG);
 
 	editor.stepID = stepID;
 end
@@ -97,6 +101,7 @@ local function saveStep(stepID)
 	setAttribute(data, "NA", editor.name:GetChecked(), editor.nameValue:GetText());
 	setAttribute(data, "LU", editor.leftUnit:GetChecked(), editor.leftUnitValue:GetText());
 	setAttribute(data, "RU", editor.rightUnit:GetChecked(), editor.rightUnitValue:GetText());
+	setAttribute(data, "BG", editor.background:GetChecked(), editor.backgroundValue:GetText());
 
 	refreshStepList();
 end
@@ -253,6 +258,7 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 
 	-- Text
 	editor.text.title:SetText(loc("DI_STEP_TEXT"));
+	editor.attributes:SetText(loc("DI_ATTRIBUTE"));
 
 	-- Vertical tiling
 	editor.direction.Text:SetText(loc("DI_NAME_DIRECTION"));
@@ -267,6 +273,11 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	-- Name
 	editor.name.Text:SetText(loc("DI_NAME"));
 	setTooltipForSameFrame(editor.name, "RIGHT", 0, 5, loc("DI_NAME"), loc("DI_NAME_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+
+	-- Background
+	editor.background.Text:SetText(loc("DI_BKG"));
+	setTooltipForSameFrame(editor.background, "RIGHT", 0, 5, loc("DI_BKG"), loc("DI_BKG_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+
 
 	-- Left unit
 	editor.leftUnit.Text:SetText(loc("DI_LEFT_UNIT"));
