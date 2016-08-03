@@ -198,16 +198,58 @@
 		<Frames>
 
 			<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
+				<Size x="230" y="18"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
 			</EditBox>
 
+			<Button parentKey="icon" inherits="TRP3_IconButton" virtual="true">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="40" y="0"/>
+				</Anchors>
+			</Button>
+
 			<Frame parentKey="bag" inherits="TRP3_Container2x4Template" name="$parent2x4" hidden="false" toplevel="false" movable="false">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-25"/>
 				</Anchors>
+				<Frames>
+					<Frame parentKey="editor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
+						<Size x="200" y="130"/>
+						<Frames>
+							<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+								<Size x="0" y="18"/>
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-15"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+									<Anchor point="RIGHT" x="-20" y="0"/>
+								</Anchors>
+							</EditBox>
+
+							<Button parentKey="browse" inherits="TRP3_CommonButton" text="BROWSE">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeKey="$parent.id"/>
+								</Anchors>
+							</Button>
+
+							<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox">
+								<Size x="0" y="18"/>
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeKey="$parent.browse"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+									<Anchor point="RIGHT" x="-20" y="0"/>
+								</Anchors>
+							</EditBox>
+
+							<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="10"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+				</Frames>
 			</Frame>
 
 		</Frames>

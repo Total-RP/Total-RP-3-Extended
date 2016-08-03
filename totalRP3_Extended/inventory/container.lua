@@ -388,79 +388,89 @@ local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
 TRP3_API.inventory.CONTAINER_SLOT_UPDATE_FREQUENCY = CONTAINER_SLOT_UPDATE_FREQUENCY;
 
-local function initContainerSlot(slot, simpleLeftClick)
+local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 	createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
 	slot:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-	slot:RegisterForDrag("LeftButton");
-	slot:SetScript("OnDragStart", slotOnDragStart);
-	slot:SetScript("OnDragStop", slotOnDragStop);
-	slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 	slot:SetScript("OnEnter", slotOnEnter);
 	slot:SetScript("OnLeave", slotOnLeave);
-	slot:SetScript("OnClick", function(self, button)
-		if not self.loot and self.info and not TRP3_API.inventory.isInTransaction(self.info) then
-			if button == "LeftButton" then
-				if IsShiftKeyDown() and (self.info.count or 1) > 1 then
-					OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
-				elseif simpleLeftClick then
-					simpleLeftClick(self);
-				end
-			elseif button == "RightButton" then
-				if IsControlKeyDown() then
-					local rootClass = TRP3_API.extended.getRootClassID(self.info.id);
-					if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
-						TRP3_API.security.showSecurityDetailFrame(rootClass);
-					end
-				else
-					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
-				end
-			end
-		end
-	end);
-	slot:SetScript("OnDoubleClick", function(self, button)
-		if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
-			switchContainerByRef(self.info, self:GetParent());
-			slotOnEnter(self);
-		end
-		if self.additionalDoubleClickHandler then
-			self.additionalDoubleClickHandler(self, button);
-		end
-	end);
-	slot.SplitStack = splitStack;
 
-	-- Listen to refresh event
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
-		if slot.info == slotInfo then
-			slot.info = nil;
-			slot.class = nil;
-			containerSlotUpdate(slot);
-			if TRP3_ItemTooltip.ref == slot then
-				TRP3_ItemTooltip.ref = nil;
-				TRP3_ItemTooltip:Hide();
+	if not lootBuilder then
+		slot:RegisterForDrag("LeftButton");
+		slot:SetScript("OnDragStart", slotOnDragStart);
+		slot:SetScript("OnDragStop", slotOnDragStop);
+		slot:SetScript("OnReceiveDrag", slotOnDragReceive);
+
+		slot:SetScript("OnClick", function(self, button)
+			if not self.loot and self.info and not TRP3_API.inventory.isInTransaction(self.info) then
+				if button == "LeftButton" then
+					if IsShiftKeyDown() and (self.info.count or 1) > 1 then
+						OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
+					elseif simpleLeftClick then
+						simpleLeftClick(self);
+					end
+				elseif button == "RightButton" then
+					if IsControlKeyDown() then
+						local rootClass = TRP3_API.extended.getRootClassID(self.info.id);
+						if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
+							TRP3_API.security.showSecurityDetailFrame(rootClass);
+						end
+					else
+						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+					end
+				end
 			end
-		end
-	end);
+		end);
+		slot:SetScript("OnDoubleClick", function(self, button)
+			if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
+				switchContainerByRef(self.info, self:GetParent());
+				slotOnEnter(self);
+			end
+			if self.additionalDoubleClickHandler then
+				self.additionalDoubleClickHandler(self, button);
+			end
+		end);
+		slot.SplitStack = splitStack;
+
+		-- Listen to refresh event
+		TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
+			if slot.info == slotInfo then
+				slot.info = nil;
+				slot.class = nil;
+				containerSlotUpdate(slot);
+				if TRP3_ItemTooltip.ref == slot then
+					TRP3_ItemTooltip.ref = nil;
+					TRP3_ItemTooltip:Hide();
+				end
+			end
+		end);
+	else
+		slot:SetScript("OnClick", lootBuilder);
+	end
 end
 TRP3_API.inventory.initContainerSlot = initContainerSlot;
 
-local function initContainerSlots(containerFrame, rowCount, colCount, loot)
+local function initContainerSlots(containerFrame, rowCount, colCount, loot, lootBuilder)
 	local slotNum = 1;
 	local rowY = -58;
 	containerFrame.slots = {};
 	for row = 1, rowCount do
 		local colX = 22;
 		for col = 1, colCount do
-			local slot = CreateFrame("Button", containerFrame:GetName() .. "Slot" .. slotNum, containerFrame, "TRP3_ContainerSlotTemplate");
+			local slot = CreateFrame("Button",
+				containerFrame:GetName() .. "Slot" .. slotNum,
+				containerFrame, "TRP3_ContainerSlotTemplate");
 			tinsert(containerFrame.slots, slot);
-			initContainerSlot(slot);
+			initContainerSlot(slot, false, lootBuilder);
 			slot:SetPoint("TOPLEFT", colX, rowY);
 			slot.loot = loot;
+			slot.index = slotNum;
 			colX = colX + COLUMN_SPACING;
 			slotNum = slotNum + 1;
 		end
 		rowY = rowY - ROW_SPACING;
 	end
 end
+TRP3_API.inventory.initContainerSlots = initContainerSlots;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Container

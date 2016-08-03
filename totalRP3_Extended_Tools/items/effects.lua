@@ -19,6 +19,7 @@
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;
+local tinsert = tinsert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -306,11 +307,11 @@ local function inv_loot_init()
 		icon = "inv_box_02",
 		description = loc("EFFECT_ITEM_LOOT_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			local itemCount = 0;
+			local itemCount = #args[1][3];
 			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_LOOT_PREVIEW"):format(itemCount));
 		end,
 		getDefaultArgs = function()
-			return {loc("LOOT")};
+			return {{loc("LOOT"), "inv_misc_bag_07"}, {}};
 		end,
 		editor = editor;
 	});
@@ -319,22 +320,102 @@ local function inv_loot_init()
 	editor.name.title:SetText(loc("EFFECT_ITEM_LOOT_NAME"));
 	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_LOOT_NAME"), loc("EFFECT_ITEM_LOOT_NAME_TT"));
 
+	-- Icon
+	setTooltipForSameFrame(editor.icon, "RIGHT", 0, 5, loc("EDITOR_ICON"));
+	local iconHandler = function(icon)
+		editor.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
+		editor.bag.Icon:SetTexture("Interface\\ICONS\\" .. icon);
+		editor.icon.selectedIcon = icon;
+	end
+	editor.icon:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
+			{parent = editor.icon, point = "LEFT", parentPoint = "RIGHT", x = 15},
+			{iconHandler});
+	end);
+
 	-- Loot
 	editor.bag.close:Disable();
 	editor.bag.LockIcon:Hide();
 	editor.bag.DurabilityText:Hide();
 	editor.bag.WeightText:Hide();
-	TRP3_API.ui.frame.createRefreshOnFrame(editor.bag, 0.25, function(self)
+	editor.bag.Bottom:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
+	editor.bag.Middle:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
+	editor.bag.Top:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
+	local onSlotClicked = function(slot, button)
+		if button == "LeftButton" then
+			if editor.bag.editor:IsVisible() and editor.bag.editor.current == slot then
+				editor.bag.editor:Hide();
+			else
+				TRP3_API.ui.frame.configureHoverFrame(editor.bag.editor, slot, "RIGHT", -10, 0);
+				editor.bag.editor:SetFrameLevel(slot:GetFrameLevel() + 20);
+				editor.bag.editor.current = slot;
+				local data = slot.info or EMPTY;
+				editor.bag.editor.id:SetText(data.classID or "");
+				editor.bag.editor.count:SetText(data.count or "1");
+			end
+		else
+			slot.info = nil;
+			editor.bag.editor:Hide();
+		end
+	end;
+	TRP3_API.inventory.initContainerSlots(editor.bag, 2, 4, true, onSlotClicked);
+	editor.bag.editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor.bag.editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.bag.editor.id:SetText(id);
+		end, TRP3_DB.types.ITEM});
+	end);
+	editor.bag.editor.save:SetScript("OnClick", function()
+		local classID = stEtN(strtrim(editor.bag.editor.id:GetText()));
+		if classID and TRP3_API.extended.classExists(classID) then
+			editor.bag.editor.current.info = {
+				classID = classID,
+				count = tonumber(editor.bag.editor.count:GetText()) or 1,
+			};
+			editor.bag.editor.current.class = getClass(classID);
+			editor.bag.editor:Hide();
+		else
+			Utils.message.displayMessage("Unknown item", 4);
+		end
+	end);
 
+	TRP3_API.ui.frame.createRefreshOnFrame(editor.bag, 0.25, function(self)
+		local text = stEtN(strtrim(editor.name:GetText())) or loc("LOOT");
+		editor.bag.Title:SetText(text);
 	end);
 
 	function editor.load(scriptData)
-		local data = scriptData.args or Globals.empty;
-		editor.name:SetText(data[1] or "");
+		local data = (scriptData.args or Globals.empty)[1] or Globals.empty;
+		editor.name:SetText(data[1] or loc("LOOT"));
+		iconHandler(data[2] or "inv_misc_bag_07");
+		editor.bag.editor:Hide();
+		for index, slot in pairs(editor.bag.slots) do
+			slot.info = nil;
+			slot.class = nil;
+			if data[3] and data[3][index] then
+				slot.info = {
+					classID = data[3][index].classID,
+					count = tonumber(editor.bag.editor.count:GetText()) or 1,
+				};
+				slot.class = getClass(data[3][index].classID);
+			end
+		end
 	end
 
 	function editor.save(scriptData)
-		scriptData.args[1] = strtrim(editor.name:GetText());
+		scriptData.args[1] = {
+			stEtN(strtrim(editor.name:GetText())),
+			editor.icon.selectedIcon,
+			{}
+		};
+		local saveData = scriptData.args[1][3];
+		for _, slot in pairs(editor.bag.slots) do
+			if slot.info then
+				tinsert(saveData, {
+					classID = slot.info.classID,
+					count = slot.info.count,
+				});
+			end
+		end
 	end
 end
 

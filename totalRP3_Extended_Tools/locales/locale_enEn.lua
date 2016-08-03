@@ -109,6 +109,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EDITOR_BOTTOM = "Bottom",
 	EDITOR_WIDTH = "Width",
 	EDITOR_HEIGHT = "Height",
+	EDITOR_ICON = "Select icon",
 
 	-- Item creation
 	IT_NEW_NAME = "New item",

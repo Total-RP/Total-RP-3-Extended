@@ -347,6 +347,13 @@ function processDialogStep()
 	dialogFrame.stepDialogIndex = 1;
 	dialogFrame.dialogStepClass = dialogStepClass;
 
+	if dialogFrame.classID and dialogStepClass.WO then
+		local retCode = TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC,
+			{
+				class = dialogClass
+			}, dialogFrame.classID);
+	end
+
 	playDialogStep();
 end
 
@@ -359,6 +366,7 @@ local function startDialog(dialogID, class)
 	local dialogClass = dialogID and getClass(dialogID) or class;
 	-- By default, launch the step 1
 	image.previous = nil;
+	dialogFrame.classID = dialogID;
 	dialogFrame.background.current = nil;
 	dialogFrame.isPreview = dialogID == nil;
 	dialogFrame.class = dialogClass;
