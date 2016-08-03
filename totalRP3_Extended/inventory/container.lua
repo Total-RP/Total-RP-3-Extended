@@ -320,6 +320,7 @@ local function pickUpLoot(slotFrom, container, slotID)
 			return;
 		end
 	end
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
 	lootFrame:Hide();
 end
 
@@ -630,6 +631,7 @@ local function onContainerHide(self)
 		slot.info = nil;
 		slot.class = nil;
 	end
+	self:Hide();
 end
 
 local CONTAINER_UPDATE_FREQUENCY = 0.15;
@@ -732,7 +734,9 @@ end
 -- Loot
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function presentLoot(loot, onLootCallback)
+local lootDB = {};
+
+local function presentLoot(loot, onLootCallback, forceLoot)
 	if loot then
 		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.BA.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
 		lootFrame.Title:SetText((loot.BA.NA or loc("LOOT")));
@@ -752,14 +756,26 @@ local function presentLoot(loot, onLootCallback)
 			slotCounter = slotCounter + 1;
 		end
 
-		lootFrame:Show();
 		lootFrame:ClearAllPoints();
-		if TRP3_MainFrame:IsVisible() then
-			lootFrame:SetPoint("TOPLEFT", TRP3_MainFrame, "TOPRIGHT", 0, 0);
+		lootFrame.close:Enable();
+		lootFrame.forceLoot = forceLoot;
+		if forceLoot then
+			lootFrame.close:Disable();
+		end
+		if TRP3_DialogFrame:IsVisible() then
+			lootFrame:SetParent(TRP3_DialogFrame);
+			lootFrame:SetPoint("TOP", 0, -75);
+			lootFrame:SetFrameLevel(TRP3_DialogFrame:GetFrameLevel() + 20);
 		else
-			lootFrame:SetPoint("CENTER");
+			lootFrame:SetParent(UIParent);
+			if TRP3_MainFrame:IsVisible() then
+				lootFrame:SetPoint("TOPLEFT", TRP3_MainFrame, "TOPRIGHT", 0, 0);
+			else
+				lootFrame:SetPoint("CENTER");
+			end
 		end
 
+		lootFrame:Show();
 		lootFrame:Raise();
 		lootFrame.onLootCallback = onLootCallback;
 		return 0;
@@ -767,21 +783,42 @@ local function presentLoot(loot, onLootCallback)
 end
 TRP3_API.inventory.presentLoot = presentLoot;
 
-local function presentLootID(lootID)
-	presentLoot(getClass(lootID));
+local function presentLootID(lootID, callback, forceLoot)
+	presentLoot(lootDB[lootID], callback, forceLoot);
 end
 TRP3_API.inventory.presentLootID = presentLootID;
 
+function TRP3_API.inventory.storeLoot(lootID, lootData)
+	local loot = {
+		IT = {},
+		BA = {
+			IC = lootData[2],
+			NA = lootData[1]
+		}
+	}
+	for index, slot in pairs(lootData[3] or EMPTY) do
+		loot.IT[tostring(index)] = {
+			id = slot.classID,
+			count = slot.count or 1
+		}
+	end
+	lootDB[lootID] = loot;
+end
+
 function TRP3_API.inventory.initLootFrame()
-	lootFrame = CreateFrame("Frame", "TRP3_LootFrame", UIParent, "TRP3_Container5x4Template");
+	lootFrame = CreateFrame("Frame", "TRP3_LootFrame", UIParent, "TRP3_Container2x4Template");
 
 	lootFrame.LockIcon:Hide();
 
 	local lootDragStart = function(self)
-		self:StartMoving();
+		if not lootFrame.forceLoot then
+			self:StartMoving();
+		end
 	end
 	local lootDragStop = function(self)
-		self:StopMovingOrSizing();
+		if not lootFrame.forceLoot then
+			self:StopMovingOrSizing();
+		end
 	end
 
 	lootFrame.info = {loot = true};
@@ -790,6 +827,7 @@ function TRP3_API.inventory.initLootFrame()
 	lootFrame:RegisterForDrag("LeftButton");
 	lootFrame:SetScript("OnDragStart", lootDragStart);
 	lootFrame:SetScript("OnDragStop", lootDragStop);
+	lootFrame:SetScript("OnHide", function(self) self:Hide(); end);
 	lootFrame.IconButton:SetScript("OnDragStart", function(self)
 		lootDragStart(self:GetParent());
 	end);
@@ -801,7 +839,7 @@ function TRP3_API.inventory.initLootFrame()
 	lootFrame.Middle:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 	lootFrame.Top:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 
-	initContainerSlots(lootFrame, 5, 4, true);
+	initContainerSlots(lootFrame, 2, 4, true);
 
 	-- Tooltip
 	createRefreshOnFrame(TRP3_ItemTooltip, CONTAINER_UPDATE_FREQUENCY, function(self)

@@ -186,6 +186,11 @@
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.text" x="-10" y="-5"/>
 						</Anchors>
 					</Frame>
+					<CheckButton parentKey="loot" inherits="TRP3_CheckBox" name="$parentLoot">
+						<Anchors>
+							<Anchor point="LEFT" x="25" y="0" relativePoint="RIGHT" relativeKey="$parent.workflow"/>
+						</Anchors>
+					</CheckButton>
 
 					<CheckButton parentKey="direction" inherits="TRP3_CheckBox" name="$parentDirection">
 						<Layers>

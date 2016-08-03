@@ -195,6 +195,13 @@ local function playDialogStep()
 	dialogFrame.Chat.Text:SetText(text);
 	dialogFrame.Chat.start = 0; -- Automatically starts the fade-in animation for text
 
+	dialogFrame.Chat.Next:SetText(loc("DI_NEXT"));
+	dialogFrame.Chat.NextButton:Enable();
+	if dialogFrame.LO then
+		dialogFrame.Chat.NextButton:Disable();
+		dialogFrame.Chat.Next:SetText(loc("DI_WAIT_LOOT"));
+	end
+
 	-- What to do next
 	if dialogFrame.texts[dialogFrame.stepDialogIndex + 1] then
 		-- If there is a text next in the same step
@@ -206,7 +213,7 @@ local function playDialogStep()
 		-- If there is a choice to make
 		if dialogStepClass.CH then
 			setupChoices(dialogStepClass.CH);
-			dialogFrame.Chat.NextButton:SetScript("OnClick", nil);
+			dialogFrame.Chat.NextButton:Disable();
 		else
 			dialogFrame.stepIndex = dialogStepClass.N or (dialogFrame.stepIndex + 1);
 
@@ -222,6 +229,12 @@ local function playDialogStep()
 		end
 	end
 
+end
+
+local function onLootAll()
+	if dialogFrame:IsVisible() and dialogFrame.LO then
+		dialogFrame.Chat.NextButton:GetScript("OnClick")(dialogFrame.Chat.NextButton, "LeftButton");
+	end
 end
 
 -- Prepare all the texts for a step
@@ -247,6 +260,9 @@ function processDialogStep()
 		dialogFrame.Chat.Left.Name:SetText(dialogFrame.NA);
 		dialogFrame.Chat.Left:SetWidth(dialogFrame.Chat.Left.Name:GetStringWidth() + 20);
 	end
+
+	-- Wait for loot
+	dialogFrame.LO = dialogStepClass.LO;
 
 	-- Background
 	dialogFrame.BG = dialogStepClass.BG or dialogFrame.BG or DEFAULT_BG;
@@ -392,6 +408,7 @@ end
 function TRP3_API.extended.dialog.onStart()
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
+	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_LOOT_ALL, onLootAll);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects({
@@ -434,7 +451,6 @@ function TRP3_API.extended.dialog.onStart()
 	end;
 
 	-- Choices
-	dialogFrame.Chat.Next:SetText(loc("DI_NEXT"));
 	local setupButton = function(button, iconIndex)
 		local QUEST_POI_ICONS_PER_ROW = 8;
 		local QUEST_POI_ICON_SIZE = 0.125;

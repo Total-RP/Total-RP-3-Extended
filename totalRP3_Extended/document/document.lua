@@ -53,7 +53,7 @@ TRP3_API.extended.document.BorderType = {
 local function loadPage(page)
 	assert(documentFrame.class, "documentFrame.class is nil");
 	local data = documentFrame.class;
-	local total = #data.PA;
+	local total = #(data.PA or EMPTY);
 
 	documentFrame.next:Disable();
 	documentFrame.previous:Disable();

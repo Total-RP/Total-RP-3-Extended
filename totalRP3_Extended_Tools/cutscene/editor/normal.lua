@@ -47,6 +47,7 @@ local function editStep(stepID)
 
 	-- Load
 	editor.text.scroll.text:SetText(data.TX or "");
+	editor.loot:SetChecked(data.LO or false);
 	editor.direction:SetChecked(data.ND ~= nil);
 	editor.directionValue:SetSelectedValue(data.ND or "NONE");
 	editor.name:SetChecked(data.NA ~= nil);
@@ -115,6 +116,7 @@ local function saveStep(stepID)
 	local data = toolFrame.specificDraft.DS[stepID];
 
 	data.TX = stEtN(strtrim(editor.text.scroll.text:GetText()));
+	data.LO = editor.loot:GetChecked();
 	setAttribute(data, "ND", editor.direction:GetChecked(), editor.directionValue:GetSelectedValue());
 	setAttribute(data, "NA", editor.name:GetChecked(), editor.nameValue:GetText());
 	setAttribute(data, "LU", editor.leftUnit:GetChecked(), editor.leftUnitValue:GetText());
@@ -314,6 +316,10 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		{loc("CM_RIGHT"), "RIGHT"},
 		{loc("REG_RELATION_NONE"), "NONE"}
 	}, nil, nil, 195, true);
+
+	-- Force loot
+	editor.loot.Text:SetText(loc("DI_LOOT"));
+	setTooltipForSameFrame(editor.loot, "RIGHT", 0, 5, loc("DI_LOOT"), loc("DI_LOOT_TT"));
 
 	-- Name
 	editor.name.Text:SetText(loc("DI_NAME"));

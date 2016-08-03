@@ -17,6 +17,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tonumber = tonumber;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -122,7 +123,9 @@ TRP3_API.inventory.EFFECTS = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
 			local lootInfo = args[1];
-			return ("lastEffectReturn = presentLoot(\"%s\");"):format(lootID);
+			local lootID = Utils.str.id();
+			TRP3_API.inventory.storeLoot(lootID, lootInfo);
+			return ("lastEffectReturn = presentLootID(\"%s\", nil, true);"):format(lootID);
 		end,
 		env = {
 			presentLootID = "TRP3_API.inventory.presentLootID",

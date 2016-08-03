@@ -652,5 +652,7 @@ We should begin with some examples:
 	DI_MODELS = "Models",
 	DI_IMAGE = "Image",
 	DI_IMAGE_TT = "Displays an image in the center of the cutscene frame. The image will fade in. Please enter the full texture path.\n\nTo hide the image afterward, just leave the box empty.",
+	DI_LOOT = "Wait for loot",
+	DI_LOOT_TT = "If the workflow selected on the left will display a loot to the player, you can check this parameter to prevent the player to go to the next cutscene step until he looted all the items.",
 
 };

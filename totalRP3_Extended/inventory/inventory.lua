@@ -439,12 +439,14 @@ function TRP3_API.inventory.onStart()
 	TRP3_API.inventory.EVENT_REFRESH_BAG = "EVENT_REFRESH_BAG";
 	TRP3_API.inventory.EVENT_ON_SLOT_REMOVE = "EVENT_ON_SLOT_REMOVE";
 	TRP3_API.inventory.EVENT_SPLIT_SLOT = "EVENT_SPLIT_SLOT";
+	TRP3_API.inventory.EVENT_LOOT_ALL = "EVENT_LOOT_ALL";
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_DETACH_SLOT);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_SPLIT_SLOT);
+	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, swapContainersSlots);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, useContainerSlot);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, removeSlotContent);
