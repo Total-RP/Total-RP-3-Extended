@@ -152,6 +152,11 @@ local function setupChoices(choices)
 	end
 end
 
+local resizeChat = function()
+	dialogFrame.Chat.Text:SetWidth(dialogFrame:GetWidth() - 150);
+	dialogFrame.Chat:SetHeight(dialogFrame.Chat.Text:GetHeight() + CHAT_MARGIN + 5);
+end
+
 -- Called to play one text
 local function playDialogStep()
 	local dialogClass = dialogFrame.class;
@@ -197,7 +202,7 @@ local function playDialogStep()
 
 	dialogFrame.Chat.Next:SetText(loc("DI_NEXT"));
 	dialogFrame.Chat.NextButton:Enable();
-	if dialogFrame.LO then
+	if not dialogFrame.isPreview and dialogFrame.LO then
 		dialogFrame.Chat.NextButton:Disable();
 		dialogFrame.Chat.Next:SetText(loc("DI_WAIT_LOOT"));
 	end
@@ -229,6 +234,7 @@ local function playDialogStep()
 		end
 	end
 
+	resizeChat();
 end
 
 local function onLootAll()
@@ -372,11 +378,6 @@ function processDialogStep()
 	end
 
 	playDialogStep();
-end
-
-local resizeChat = function()
-	dialogFrame.Chat.Text:SetWidth(dialogFrame:GetWidth() - 150);
-	dialogFrame.Chat:SetHeight(dialogFrame.Chat.Text:GetHeight() + CHAT_MARGIN + 5);
 end
 
 local function startDialog(dialogID, class)

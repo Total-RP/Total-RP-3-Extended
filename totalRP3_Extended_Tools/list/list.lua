@@ -541,11 +541,13 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		filterList();
 	end);
 
+	-- Export
 	ToolFrame.list.container.export.title:SetText(loc("DB_EXPORT"));
 	ToolFrame.list.bottom.import.Name:SetText(loc("DB_IMPORT"));
 	ToolFrame.list.bottom.import.InfoText:SetText(loc("DB_IMPORT_TT"));
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.import, "INV_Inscription_ScrollOfWisdom_02");
 
+	-- Import
 	ToolFrame.list.container.import.title:SetText(loc("DB_IMPORT"));
 	ToolFrame.list.container.import.content.title:SetText(loc("DB_IMPORT_TT"));
 	ToolFrame.list.bottom.import:SetScript("OnClick", function()
@@ -569,5 +571,15 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		else
 			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
 		end
+	end);
+
+	-- Disclaimer
+	ToolFrame.list.disclaimer.html:SetText(Utils.str.toHTML(loc("DISCLAIMER")));
+	ToolFrame.list.disclaimer.html.ok:SetText(loc("DISCLAIMER_OK"));
+	ToolFrame.list.disclaimer.html.ok:SetScript("OnClick", function()
+		ToolFrame.list.disclaimer:Hide();
+	end);
+	ToolFrame.list.disclaimer.html:SetScript("OnHyperlinkClick", function(_, link)
+		TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, link);
 	end);
 end

@@ -366,7 +366,35 @@
 							</Frame>
 						</Frames>
 					</Frame>
+
 				</Frames>
+			</Frame>
+
+			<Frame parentKey="disclaimer" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="false" setAllPoints="true">
+
+				<Frames>
+					<SimpleHTML parentKey="html">
+						<Size x="500" y="500"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-30"/>
+						</Anchors>
+						<FontStringHeader1 inherits="GameFontNormalHuge3"/>
+						<FontStringHeader2 inherits="GameFontNormalHuge"/>
+						<FontStringHeader3 inherits="GameFontNormalLarge"/>
+						<FontString inherits="GameFontNormal">
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+						<Frames>
+							<Button parentKey="ok" inherits="TRP3_CommonButton">
+								<Size x="300" y="20"/>
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="30"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</SimpleHTML>
+				</Frames>
+
 			</Frame>
 
 		</Frames>

@@ -19,6 +19,45 @@
 	limitations under the License.
 -->
 
+	<Frame name="TRP3_Tools_CutsceneStepLine" virtual="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="24" /></EdgeSize>
+			<TileSize><AbsValue val="418" /></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5" /></BackgroundInsets>
+		</Backdrop>
+
+		<Size x="0" y="35" />
+
+		<Frames>
+			<Button parentKey="click" inherits="TRP3_InvisibleButton" setAllPoints="true"/>
+
+			<Frame name="$parentHighlight" parentKey="Highlight" inherits="GlowBorderTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="5" y="-2"/>
+					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetAlpha(0.55);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>
+
+		<Layers>
+			<Layer level="BORDER">
+				<FontString parentKey="text" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="LEFT" x="15" y="0" />
+						<Anchor point="RIGHT" x="-5" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10" />
+				</FontString>
+			</Layer>
+		</Layers>
+
+	</Frame>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--    General frame     -->
@@ -33,130 +72,12 @@
 
 		<Frames>
 
-			<Frame parentKey="step" inherits="TRP3_EditorTitledFrame">
-				<Size x="530" y="0"/>
-
-				<Anchors>
-					<Anchor point="TOPLEFT" x="10" y="-5"/>
-					<Anchor point="BOTTOM" x="0" y="5"/>
-				</Anchors>
-
-				<Layers>
-					<Layer level="OVERLAY">
-						<Texture parentKey="arrow" file="Interface\GLUES\CHARACTERCREATE\CharacterCreate-Arrow">
-							<Size x="64" y="128"/>
-							<Anchors>
-								<Anchor point="CENTER" relativePoint="RIGHT" x="0" y="0"/>
-							</Anchors>
-							<TexCoords left="1" right="0" top="0" bottom="1"/>
-						</Texture>
-					</Layer>
-				</Layers>
-
-				<Frames>
-
-					<Frame parentKey="list" name="$parentList">
-
-						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-							<EdgeSize><AbsValue val="32"/></EdgeSize>
-							<TileSize><AbsValue val="380"/></TileSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-						</Backdrop>
-
-						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-35"/>
-							<Anchor point="RIGHT" x="-20" y="0"/>
-							<Anchor point="LEFT" x="20" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="20"/>
-						</Anchors>
-
-						<Frames>
-
-							<Button parentKey="add" inherits="TRP3_CommonButton">
-								<Size x="150" y="20" />
-								<Anchors>
-									<Anchor point="BOTTOMRIGHT" relativePoint="TOP" x="-5" y="10"/>
-								</Anchors>
-							</Button>
-
-							<Button parentKey="preview" inherits="TRP3_CommonButton">
-								<Size x="150" y="20" />
-								<Anchors>
-									<Anchor point="BOTTOMLEFT" relativePoint="TOP" x="5" y="10"/>
-								</Anchors>
-							</Button>
-
-							<Frame parentKey="line1" inherits="TRP3_Tools_QuestEditorObjectiveLine">
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-15"/>
-									<Anchor point="LEFT" x="10" y="0" />
-									<Anchor point="RIGHT" x="-25" y="0" />
-								</Anchors>
-							</Frame>
-
-							<Frame parentKey="line2" inherits="TRP3_Tools_QuestEditorObjectiveLine">
-								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line1" x="0" y="-10"/>
-									<Anchor point="LEFT" x="10" y="0" />
-									<Anchor point="RIGHT" x="-25" y="0" />
-								</Anchors>
-							</Frame>
-
-							<Frame parentKey="line3" inherits="TRP3_Tools_QuestEditorObjectiveLine">
-								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line2" x="0" y="-10"/>
-									<Anchor point="LEFT" x="10" y="0" />
-									<Anchor point="RIGHT" x="-25" y="0" />
-								</Anchors>
-							</Frame>
-
-							<Frame parentKey="line4" inherits="TRP3_Tools_QuestEditorObjectiveLine">
-								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line3" x="0" y="-10"/>
-									<Anchor point="LEFT" x="10" y="0" />
-									<Anchor point="RIGHT" x="-25" y="0" />
-								</Anchors>
-							</Frame>
-
-							<Frame parentKey="line5" inherits="TRP3_Tools_QuestEditorObjectiveLine">
-								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line4" x="0" y="-10"/>
-									<Anchor point="LEFT" x="10" y="0" />
-									<Anchor point="RIGHT" x="-25" y="0" />
-								</Anchors>
-							</Frame>
-
-							<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
-								<Size x="15" y="0" />
-								<Anchors>
-									<Anchor point="RIGHT" x="-7" y="0"/>
-									<Anchor point="TOP" x="0" y="-2"/>
-									<Anchor point="BOTTOM" x="0" y="6"/>
-								</Anchors>
-								<Scripts>
-									<OnLoad>
-										local name = self:GetName();
-										_G[name .. "Text"]:SetText("");
-										_G[name .. "High"]:SetText("");
-										_G[name .. "Low"]:SetText("");
-										self:SetMinMaxValues(0, 6);
-										self:SetValueStep(1);
-										self:SetOrientation("VERTICAL");
-									</OnLoad>
-								</Scripts>
-							</Slider>
-						</Frames>
-
-					</Frame>
-
-				</Frames>
-			</Frame>
-
 			<Frame parentKey="editor" inherits="TRP3_EditorTitledFrame" name="$parentEditor">
 				<Size x="530" y="0"/>
+
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-5"/>
-					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.step" x="0" y="0"/>
+					<Anchor point="TOPRIGHT" x="0" y="-5"/>
+					<Anchor point="BOTTOM" x="0" y="5"/>
 				</Anchors>
 
 				<Frames>
@@ -359,6 +280,138 @@
 					</Layer>
 				</Layers>
 
+			</Frame>
+
+			<Frame parentKey="main" inherits="TRP3_EditorTitledFrame">
+				<Size x="0" y="150"/>
+
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-5"/>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.editor" x="0" y="0"/>
+				</Anchors>
+
+				<Frames>
+					<Button parentKey="preview" inherits="TRP3_CommonButton">
+						<Size x="150" y="20" />
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
+						</Anchors>
+					</Button>
+
+				</Frames>
+
+			</Frame>
+
+			<Frame parentKey="step" inherits="TRP3_EditorTitledFrame">
+				<Size x="530" y="0"/>
+
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.main" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMLEFT" relativeKey="$parent.editor" x="0" y="0"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture parentKey="arrow" file="Interface\GLUES\CHARACTERCREATE\CharacterCreate-Arrow">
+							<Size x="64" y="128"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="RIGHT" x="0" y="0"/>
+							</Anchors>
+							<TexCoords left="1" right="0" top="0" bottom="1"/>
+						</Texture>
+					</Layer>
+				</Layers>
+
+				<Frames>
+
+					<Frame parentKey="list" name="$parentList">
+
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+							<EdgeSize><AbsValue val="32"/></EdgeSize>
+							<TileSize><AbsValue val="380"/></TileSize>
+							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+						</Backdrop>
+
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-35"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="20"/>
+						</Anchors>
+
+						<Frames>
+
+							<Button parentKey="add" inherits="TRP3_CommonButton">
+								<Size x="150" y="20" />
+								<Anchors>
+									<Anchor point="BOTTOM" relativePoint="TOP" x="0" y="10"/>
+								</Anchors>
+							</Button>
+
+							<Frame parentKey="line1" inherits="TRP3_Tools_CutsceneStepLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-15"/>
+									<Anchor point="LEFT" x="10" y="0" />
+									<Anchor point="RIGHT" x="-25" y="0" />
+								</Anchors>
+							</Frame>
+
+							<Frame parentKey="line2" inherits="TRP3_Tools_CutsceneStepLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line1" x="0" y="-10"/>
+									<Anchor point="LEFT" x="10" y="0" />
+									<Anchor point="RIGHT" x="-25" y="0" />
+								</Anchors>
+							</Frame>
+
+							<Frame parentKey="line3" inherits="TRP3_Tools_CutsceneStepLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line2" x="0" y="-10"/>
+									<Anchor point="LEFT" x="10" y="0" />
+									<Anchor point="RIGHT" x="-25" y="0" />
+								</Anchors>
+							</Frame>
+
+							<Frame parentKey="line4" inherits="TRP3_Tools_CutsceneStepLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line3" x="0" y="-10"/>
+									<Anchor point="LEFT" x="10" y="0" />
+									<Anchor point="RIGHT" x="-25" y="0" />
+								</Anchors>
+							</Frame>
+
+							<Frame parentKey="line5" inherits="TRP3_Tools_CutsceneStepLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line4" x="0" y="-10"/>
+									<Anchor point="LEFT" x="10" y="0" />
+									<Anchor point="RIGHT" x="-25" y="0" />
+								</Anchors>
+							</Frame>
+
+							<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
+								<Size x="15" y="0" />
+								<Anchors>
+									<Anchor point="RIGHT" x="-7" y="0"/>
+									<Anchor point="TOP" x="0" y="-2"/>
+									<Anchor point="BOTTOM" x="0" y="6"/>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										local name = self:GetName();
+										_G[name .. "Text"]:SetText("");
+										_G[name .. "High"]:SetText("");
+										_G[name .. "Low"]:SetText("");
+										self:SetMinMaxValues(0, 6);
+										self:SetValueStep(1);
+										self:SetOrientation("VERTICAL");
+									</OnLoad>
+								</Scripts>
+							</Slider>
+						</Frames>
+
+					</Frame>
+
+				</Frames>
 			</Frame>
 
 		</Frames>

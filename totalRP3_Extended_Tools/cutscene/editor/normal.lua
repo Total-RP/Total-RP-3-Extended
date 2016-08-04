@@ -25,7 +25,7 @@ local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color = Utils.str.color;
-local toolFrame, step, editor, refreshStepList;
+local toolFrame, step, editor, refreshStepList, main;
 
 local TABS = {
 	MAIN = 1,
@@ -85,9 +85,7 @@ local function decorateStepLine(line, stepID)
 		line.Highlight:Show();
 	end
 
-	line.Name:SetText("Step " .. stepID);
-	line.Description:SetText(stepData.TX or "");
---	line.ID:SetText(loc("CA_NPC_ID") .. ": " .. stepID);
+	line.text:SetText(stepID .. ") " .. stepData.TX or "");
 	line.click.stepID = stepID;
 end
 
@@ -99,7 +97,7 @@ end
 local function addStep()
 	local data = toolFrame.specificDraft;
 	tinsert(data.DS, {
-		TX = "Hello"
+		TX = "Text."
 	});
 	editStep(#data.DS);
 end
@@ -136,6 +134,19 @@ local function saveStep(stepID)
 		data.IM = nil;
 	end
 	data.WO = stEtN(editor.workflow:GetSelectedValue());
+
+	refreshStepList();
+end
+
+local function removeStep(index)
+	local data = toolFrame.specificDraft.DS;
+
+	if #data > 1 and data[index] then
+		tremove(data, index);
+		if editor.stepID == index then
+			editStep(1);
+		end
+	end
 
 	refreshStepList();
 end
@@ -209,12 +220,14 @@ local function onTabChanged(tabWidget, tab)
 	currentTab = tab or TABS.MAIN;
 	step:Hide();
 	editor:Hide();
+	main:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
 		step:Show();
 		editor:Show();
+		main:Show();
 		loadMain();
 	elseif currentTab == TABS.WORKFLOWS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.cutscene.normal);
@@ -250,6 +263,19 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	toolFrame.cutscene.normal.saveToDraft = saveToDraft;
 
 	createTabBar();
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Main
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	main = toolFrame.cutscene.normal.main;
+	main.title:SetText(loc("TYPE_DIALOG"));
+
+	main.preview:SetText(loc("EDITOR_PREVIEW"));
+	main.preview:SetScript("OnClick", function()
+		saveToDraft();
+		TRP3_API.extended.dialog.startDialog(nil, toolFrame.specificDraft);
+	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- List
@@ -290,11 +316,6 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	step.list.slider:SetValue(0);
 	step.list.add:SetText(loc("DI_STEP_ADD"));
 	step.list.add:SetScript("OnClick", function() addStep() end);
-	step.list.preview:SetText(loc("EDITOR_PREVIEW"));
-	step.list.preview:SetScript("OnClick", function()
-		saveToDraft();
-		TRP3_API.extended.dialog.startDialog(nil, toolFrame.specificDraft);
-	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Editor

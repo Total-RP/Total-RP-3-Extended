@@ -673,4 +673,31 @@ We should begin with some examples:
 	DI_LOOT = "Wait for loot",
 	DI_LOOT_TT = "If the workflow selected on the left will display a loot to the player, you can check this parameter to prevent the player to go to the next cutscene step until he looted all the items.",
 
+	DISCLAIMER_OK = "I hereby sign this contract with my blood",
+	DISCLAIMER =
+[[{h1:c}Please read{/h1}
+
+Creating items and quests takes time and energy and it's always terrible when you lose all the hard work you have done.
+
+All add-ons in World of Warcraft can store data but there are limitations:
+
+• There is an unknown data size limit for add-on data (depending on the fact that you are running a 32 or 64 bits client, among other things).
+• Reaching this limit can wipe all the add-on saved data.
+• Kill the process, force-closing the game client (alt+F4) or crashing can corrupt the add-on saved data.
+• Even if you exit the game correctly, there is always a chance that the game doesn't succeed to save the add-on data and corrupt it.
+
+In regards to all of that, we STRONGLY recommand to regularely backup your add-on saved data.
+
+You can find here a tutorial about finding all saved data:
+{link*https://totalrp3.info/documentation/how_to/saved_variables*Where are my information stored?}
+
+You can find here a tutorial about syncing your data to a cloud service:
+{link*https://totalrp3.info/documentation/how_to/backup_and_sync_profiles*How to backup and synchronize your add-ons settings using a cloud service}
+
+Please understand that we won't reply anymore to comment or ticket relative to a data wipe.
+It's not because we don't want to help but because we can't do anything to restore wiped data.
+
+Thank you, and enjoy Total RP 3 Extended!
+
+{p:r}The TRP3 Team{/p}]]
 };
