@@ -147,6 +147,7 @@ editor.refresh = refresh;
 local LINE_ACTION_DELETE = 1;
 local LINE_ACTION_ID = 2;
 local LINE_ACTION_COPY = 3;
+local LINE_ACTION_PASTE = 4;
 
 local function onLineAction(action, line)
 	assert(toolFrame.specificDraft.IN[line.objectID]);
@@ -173,10 +174,22 @@ local function onLineAction(action, line)
 				refresh();
 			end
 		end, nil, id);
+	elseif action == LINE_ACTION_COPY then
+		wipe(editor.copy);
+		Utils.table.copy(editor.copy, innerObject);
+	elseif action == LINE_ACTION_PASTE then
+		if editor.copy.TY == innerObject.TY then
+			wipe(innerObject);
+			Utils.table.copy(innerObject, editor.copy);
+			refresh();
+		end
 	end
 end
 
 local function onLineClicked(line, button)
+	local id = line.objectID;
+	local innerObject = toolFrame.specificDraft.IN[id];
+
 	if button == "LeftButton" then
 		TRP3_API.extended.tools.goToPage(getFullID(toolFrame.fullClassID, line.objectID));
 	else
@@ -184,6 +197,10 @@ local function onLineClicked(line, button)
 		tinsert(values, {line.text:GetText(), nil});
 		tinsert(values, {DELETE, LINE_ACTION_DELETE, loc("IN_INNER_DELETE_TT")});
 		tinsert(values, {loc("IN_INNER_ID_ACTION"), LINE_ACTION_ID});
+		tinsert(values, {loc("IN_INNER_COPY_ACTION"), LINE_ACTION_COPY});
+		if editor.copy.TY == innerObject.TY then
+			tinsert(values, {loc("IN_INNER_PASTE_ACTION"), LINE_ACTION_PASTE});
+		end
 		TRP3_API.ui.listbox.displayDropDown(line, values, onLineAction, 0, true);
 	end
 end
@@ -211,6 +228,7 @@ end
 function editor.init(ToolFrame)
 	toolFrame = ToolFrame;
 
+	editor.copy = {};
 	editor.browser.title:SetText(loc("IN_INNER_LIST"));
 	editor.help.title:SetText(loc("IN_INNER_HELP_TITLE"));
 	editor.help.text:SetText(loc("IN_INNER_HELP"));

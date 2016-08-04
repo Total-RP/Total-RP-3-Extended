@@ -54,6 +54,12 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	DB_WARNING = "\n|cffff0000!!! Warning !!!\n\n|cffff9900Don't forget to save your changes before returning to the database list!",
 	DB_FILTERS_CLEAR = "Clear",
 	DB_BROWSER = "Object browser",
+	DB_DELETE_TT = "Removes this object and all its children objects.",
+	DB_EXPERT_TT = "Switchs this object to expert mode, allowing more complex customizations.",
+	DB_SECURITY_TT = "Shows all security parameters for this object. From there you can allow or prevent certain undesirable effects.",
+	DB_ADD_ITEM_TT = "Adds one unit of this item in your primary container (or main inventory if you don't have any primary container on your character).",
+	DB_COPY_ID_TT = "Display the object ID in a popup to be copy/pastable.",
+	DB_COPY_TT = "Copy all this object information and child objects to be pastable as inner objects in another object.",
 
 	DB_MY_EMPTY = "You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!",
 	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.",
@@ -457,6 +463,8 @@ We should begin with some examples:
 	IN_INNER_ID_COPY_TT = "You can copy your inner object to paste it in any other parent object.",
 	IN_INNER_ID = "Please enter a new ID for the inner object |cff00ff00[%s]|r.\n\nOld ID: |cff00ffff\"%s\"|r",
 	IN_INNER_NO_AVAILABLE = "This inner ID is not available!",
+	IN_INNER_COPY_ACTION = "Copy object content",
+	IN_INNER_PASTE_ACTION = "Paste object content",
 
 	-- Operands
 	OP_COMP_EQUALS = "is equal to",

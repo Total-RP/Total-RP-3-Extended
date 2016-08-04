@@ -383,6 +383,7 @@ local ACTION_FLAG_ADD = "2";
 local ACTION_FLAG_COPY_ID = "3";
 local ACTION_FLAG_SECURITY = "4";
 local ACTION_FLAG_EXPERT = "5";
+local ACTION_FLAG_COPY = "6";
 
 local function onLineActionSelected(value, button)
 	local action = value:sub(1, 1);
@@ -405,6 +406,9 @@ local function onLineActionSelected(value, button)
 		local link = TRP3_API.inventory.getItemLink(class, objectID);
 		Utils.message.displayMessage(loc("WO_EXPERT_DONE"):format(link));
 		onTabChanged(nil, currentTab);
+	elseif action == ACTION_FLAG_COPY then
+		wipe(TRP3_InnerObjectEditor.copy);
+		Utils.table.copy(TRP3_InnerObjectEditor.copy, getClass(objectID));
 	end
 end
 
@@ -413,19 +417,22 @@ function onLineRightClick(lineWidget, data)
 	tinsert(values, {data.text, nil});
 	if currentTab == TABS.MY_DB or currentTab == TABS.OTHERS_DB then
 		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-			tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID});
+			tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID, loc("DB_DELETE_TT")});
 		end
 		if data.mode == TRP3_DB.modes.NORMAL then
-			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID});
+			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID, loc("DB_EXPERT_TT")});
 		end
 		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-			tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID});
+			tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID, loc("DB_SECURITY_TT")});
 		end
 	end
 	if data.type == TRP3_DB.types.ITEM then
-		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID});
+		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID, loc("DB_ADD_ITEM_TT")});
 	end
-	tinsert(values, {loc("EDITOR_ID_COPY"), ACTION_FLAG_COPY_ID .. data.fullID});
+	tinsert(values, {loc("EDITOR_ID_COPY"), ACTION_FLAG_COPY_ID .. data.fullID, loc("DB_COPY_ID_TT")});
+	if data.type == TRP3_DB.types.ITEM or data.type == TRP3_DB.types.DOCUMENT or data.type == TRP3_DB.types.DIALOG then
+		tinsert(values, {loc("IN_INNER_COPY_ACTION"), ACTION_FLAG_COPY .. data.fullID, loc("DB_COPY_TT")});
+	end
 
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
 end
