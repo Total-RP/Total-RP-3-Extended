@@ -169,6 +169,12 @@ function refresh()
 		lineWidget:Hide();
 	end
 
+	if ToolFrame.list.hasSearch then
+		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc("DB_RESULTS"), 200);
+	else
+		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc("DB_LIST"), 200);
+	end
+
 	table.sort(idList);
 	wipe(idData);
 	for index, objectID in pairs(idList) do
@@ -216,7 +222,8 @@ function refresh()
 		lineWidget.Text:SetText(tt);
 
 		if ToolFrame.list.hasSearch then
-			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.fullID));
+			local totalPath = TRP3_API.inventory.getItemLink(getClass(idData.fullID), idData.fullID, true);
+			lineWidget.Right:SetText(totalPath);
 		else
 			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and loc("ROOT_GEN_ID") or idData.ID));
 		end
@@ -270,12 +277,12 @@ local function checkType(type, class)
 	return type == 0 or type == class.TY;
 end
 
-local function filterList(search)
+local function filterList(typeSearch)
 	-- Here we will filter
 	wipe(idList);
 
 	-- Filter
-	local typeFilter = ToolFrame.list.filters.type:GetSelectedValue();
+	local typeFilter = typeSearch or ToolFrame.list.filters.type:GetSelectedValue();
 	local createdFilter = stEtN(strtrim(ToolFrame.list.filters.owner:GetText()));
 	local nameFilter = stEtN(strtrim(ToolFrame.list.filters.name:GetText()));
 	local idFilter = stEtN(strtrim(ToolFrame.list.filters.id:GetText()));
@@ -337,6 +344,7 @@ local function onTabChanged(tabWidget, tab)
 	ToolFrame.list.bottom.item:Hide();
 	ToolFrame.list.bottom.campaign:Hide();
 	ToolFrame.list.bottom.item.templates:Hide();
+	ToolFrame.list.bottom.import:Hide();
 
 	currentTab = tab or TABS.MY_DB;
 
@@ -348,6 +356,7 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.container.Empty:SetText(loc("DB_OTHERS_EMPTY"));
 	elseif currentTab == TABS.BACKERS_DB then
 	else
+		ToolFrame.list.bottom.import:Show();
 	end
 
 	filterList();
@@ -384,6 +393,7 @@ local ACTION_FLAG_COPY_ID = "3";
 local ACTION_FLAG_SECURITY = "4";
 local ACTION_FLAG_EXPERT = "5";
 local ACTION_FLAG_COPY = "6";
+local ACTION_FLAG_EXPORT = "7";
 
 local function onLineActionSelected(value, button)
 	local action = value:sub(1, 1);
@@ -409,6 +419,16 @@ local function onLineActionSelected(value, button)
 	elseif action == ACTION_FLAG_COPY then
 		wipe(TRP3_InnerObjectEditor.copy);
 		Utils.table.copy(TRP3_InnerObjectEditor.copy, getClass(objectID));
+	elseif action == ACTION_FLAG_EXPORT then
+		local class = getClass(objectID);
+		local serial = Utils.serial.serialize({objectID, class});
+		if serial:len() < 20000 then
+			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
+			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
+			ToolFrame.list.container.export:Show();
+		else
+			Utils.message.displayMessage(loc("DB_EXPORT_TOO_LARGE"):format(serial:len() / 1024), 2);
+		end
 	end
 end
 
@@ -418,20 +438,21 @@ function onLineRightClick(lineWidget, data)
 	if currentTab == TABS.MY_DB or currentTab == TABS.OTHERS_DB then
 		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
 			tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID, loc("DB_DELETE_TT")});
-		end
-		if data.mode == TRP3_DB.modes.NORMAL then
-			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID, loc("DB_EXPERT_TT")});
-		end
-		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
 			tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID, loc("DB_SECURITY_TT")});
 		end
 	end
 	if data.type == TRP3_DB.types.ITEM then
 		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID, loc("DB_ADD_ITEM_TT")});
+		if data.mode == TRP3_DB.modes.NORMAL then
+			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID, loc("DB_EXPERT_TT")});
+		end
 	end
 	tinsert(values, {loc("EDITOR_ID_COPY"), ACTION_FLAG_COPY_ID .. data.fullID, loc("DB_COPY_ID_TT")});
 	if data.type == TRP3_DB.types.ITEM or data.type == TRP3_DB.types.DOCUMENT or data.type == TRP3_DB.types.DIALOG then
 		tinsert(values, {loc("IN_INNER_COPY_ACTION"), ACTION_FLAG_COPY .. data.fullID, loc("DB_COPY_TT")});
+	end
+	if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+		tinsert(values, {loc("DB_EXPORT"), ACTION_FLAG_EXPORT .. data.fullID, loc("DB_EXPORT_TT")});
 	end
 
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
@@ -443,7 +464,6 @@ end
 
 function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame = toolFrame;
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc("DB_LIST"), 150);
 	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, loc("DB_FILTERS"), 150);
 	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, loc("DB_ACTIONS"), 150);
 
@@ -487,9 +507,18 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	end);
 
 	-- Filters
+	local goSearch = function() filterList(); end;
 	ToolFrame.list.filters.name.title:SetText(loc("DB_FILTERS_NAME"));
+	ToolFrame.list.filters.name:SetScript("OnEnterPressed", goSearch);
 	ToolFrame.list.filters.id.title:SetText(loc("ROOT_ID"));
+	ToolFrame.list.filters.id:SetScript("OnEnterPressed", goSearch);
 	ToolFrame.list.filters.owner.title:SetText(loc("DB_FILTERS_OWNER"));
+	ToolFrame.list.filters.owner:SetScript("OnEnterPressed", goSearch);
+	TRP3_API.ui.frame.setupEditBoxesNavigation({
+		ToolFrame.list.filters.owner,
+		ToolFrame.list.filters.name,
+		ToolFrame.list.filters.id,
+	})
 	local types = {
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("ALL")), 0},
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_CAMPAIGN")), TRP3_DB.types.CAMPAIGN},
@@ -499,10 +528,10 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DOCUMENT")), TRP3_DB.types.DOCUMENT},
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DIALOG")), TRP3_DB.types.DIALOG},
 	}
-	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, nil, nil, 255, true);
+	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, filterList, nil, 255, true);
 	ToolFrame.list.filters.type:SetSelectedValue(0);
 	ToolFrame.list.filters.search:SetText(SEARCH);
-	ToolFrame.list.filters.search:SetScript("OnClick", function() filterList(true) end);
+	ToolFrame.list.filters.search:SetScript("OnClick", goSearch);
 	ToolFrame.list.filters.clear:SetText(loc("DB_FILTERS_CLEAR"));
 	ToolFrame.list.filters.clear:SetScript("OnClick", function()
 		ToolFrame.list.filters.type:SetSelectedValue(0);
@@ -510,5 +539,35 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		ToolFrame.list.filters.id:SetText("");
 		ToolFrame.list.filters.owner:SetText("");
 		filterList();
+	end);
+
+	ToolFrame.list.container.export.title:SetText(loc("DB_EXPORT"));
+	ToolFrame.list.bottom.import.Name:SetText(loc("DB_IMPORT"));
+	ToolFrame.list.bottom.import.InfoText:SetText(loc("DB_IMPORT_TT"));
+	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.import, "INV_Inscription_ScrollOfWisdom_02");
+
+	ToolFrame.list.container.import.title:SetText(loc("DB_IMPORT"));
+	ToolFrame.list.container.import.content.title:SetText(loc("DB_IMPORT_TT"));
+	ToolFrame.list.bottom.import:SetScript("OnClick", function()
+		ToolFrame.list.container.import.content.scroll.text:SetText("");
+		ToolFrame.list.container.import:Show();
+	end);
+	ToolFrame.list.container.import.save:SetText(loc("DB_IMPORT_WORD"));
+	ToolFrame.list.container.import.save:SetScript("OnClick", function()
+		local code = ToolFrame.list.container.import.content.scroll.text:GetText();
+		local object = Utils.serial.safeDeserialize(code);
+		if object and type(object) == "table" and #object == 2 then
+			local ID = object[1];
+			local data = object[2];
+			if TRP3_API.extended.classExists(ID) then
+				TRP3_API.extended.removeObject(ID);
+			end
+			TRP3_DB.my[ID] = data;
+			TRP3_API.extended.registerObject(ID, data, 0);
+			ToolFrame.list.container.import:Hide();
+			onTabChanged(nil, currentTab);
+		else
+			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
+		end
 	end);
 end

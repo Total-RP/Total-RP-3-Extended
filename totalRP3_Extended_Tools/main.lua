@@ -194,7 +194,7 @@ local function checkCreation(classID, data)
 	local warnings = {};
 	TRP3_API.extended.iterateObject(classID, data, function(classID, class)
 		local frame = toolFrame[PAGE_BY_TYPE[class.TY].frame or ""];
-		if frame  and frame.validator then
+		if frame and frame.validator then
 			frame.validator(classID, class, warnings);
 		end
 	end);

@@ -122,7 +122,7 @@ local function getItemLink(itemClass, id, complete)
 		local idReconstruct = ids[1];
 		for i=2, #ids do
 			idReconstruct = idReconstruct .. TRP3_API.extended.ID_SEPARATOR .. ids[i];
-			totalLink = totalLink .. "|cff00ff00 - " .. getItemLink(getClass(idReconstruct), idReconstruct);
+			totalLink = totalLink .. "|cff00ff00 > " .. getItemLink(getClass(idReconstruct), idReconstruct);
 		end
 		return totalLink;
 	end

@@ -39,7 +39,7 @@
 			</Layer>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Right" inherits="GameFontNormal" justifyH="RIGHT" text="[Line text]">
-					<Size x="300" y="10" />
+					<Size x="0" y="10" />
 					<Anchors>
 						<Anchor point="RIGHT" x="-15" y="0" />
 					</Anchors>
@@ -193,6 +193,12 @@
 						</Anchors>
 					</Button>
 
+					<Button parentKey="import" inherits="TRP3_QuestButtonTemplate">
+						<Anchors>
+							<Anchor point="CENTER" x="-275" y="0"/>
+						</Anchors>
+					</Button>
+
 				</Frames>
 			</Frame>
 
@@ -244,6 +250,122 @@
 							</Frame>
 						</ScrollChild>
 					</ScrollFrame>
+
+					<Frame parentKey="export" name="$parentExport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+						<Size x="500" y="300"/>
+
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+									<Size x="0" y="30"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-10"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+							</Layer>
+						</Layers>
+
+						<Frames>
+							<Button parentKey="Close" inherits="UIPanelCloseButton">
+								<Anchors>
+									<Anchor point="TOPRIGHT" x="0" y="0"/>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										self:GetParent():Hide();
+									</OnClick>
+								</Scripts>
+							</Button>
+
+							<Frame parentKey="content" inherits="TRP3_TextArea">
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="10" y="12"/>
+												<Anchor point="TOPRIGHT" x="0" y="12"/>
+											</Anchors>
+											<Color r="0.95" g="0.75" b="0.1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
+									<Anchor point="RIGHT" x="-30" y="0"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="30"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+					</Frame>
+
+					<Frame parentKey="import" name="$parentExport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+						<Size x="500" y="300"/>
+
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+									<Size x="0" y="30"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-10"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+							</Layer>
+						</Layers>
+
+						<Frames>
+							<Button parentKey="Close" inherits="UIPanelCloseButton">
+								<Anchors>
+									<Anchor point="TOPRIGHT" x="0" y="0"/>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										self:GetParent():Hide();
+									</OnClick>
+								</Scripts>
+							</Button>
+
+							<Button parentKey="save" inherits="TRP3_CommonButton">
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="20"/>
+								</Anchors>
+							</Button>
+
+							<Frame parentKey="content" inherits="TRP3_TextArea">
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="10" y="12"/>
+												<Anchor point="TOPRIGHT" x="0" y="12"/>
+											</Anchors>
+											<Color r="0.95" g="0.75" b="0.1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
+									<Anchor point="RIGHT" x="-30" y="0"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+									<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.save" x="0" y="5"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+					</Frame>
 				</Frames>
 			</Frame>
 
