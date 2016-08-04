@@ -52,7 +52,7 @@ local function playTextAnim(context)
 	if not dialogFrame.textLineToken or not dialogFrame.ND or dialogFrame.ND == "NONE" then
 		return;
 	end
-	Log.log("AnimWithToken: " .. context);
+--	Log.log("AnimWithToken: " .. context);
 
 	-- Animations
 	local targetModel = dialogFrame.ND == "LEFT" and modelLeft or modelRight;
@@ -366,7 +366,8 @@ function processDialogStep()
 	if dialogFrame.classID and dialogStepClass.WO then
 		local retCode = TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC,
 			{
-				class = dialogClass
+				class = dialogClass,
+				dialogStepClass = dialogStepClass,
 			}, dialogFrame.classID);
 	end
 
@@ -387,9 +388,10 @@ local function startDialog(dialogID, class)
 	dialogFrame.isPreview = dialogID == nil;
 	dialogFrame.class = dialogClass;
 	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
-	processDialogStep();
 	dialogFrame:Show();
 	dialogFrame:Raise();
+
+	processDialogStep();
 
 	dialogFrame:SetSize(dialogFrame.width or 950, dialogFrame.height or 670);
 	resizeChat();

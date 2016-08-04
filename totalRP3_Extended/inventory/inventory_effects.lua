@@ -125,7 +125,7 @@ TRP3_API.inventory.EFFECTS = {
 			local lootInfo = args[1];
 			local lootID = Utils.str.id();
 			TRP3_API.inventory.storeLoot(lootID, lootInfo);
-			return ("lastEffectReturn = presentLootID(\"%s\", nil, true);"):format(lootID);
+			return ("lastEffectReturn = presentLootID(\"%s\", nil, args.dialogStepClass and args.dialogStepClass.LO);"):format(lootID);
 		end,
 		env = {
 			presentLootID = "TRP3_API.inventory.presentLootID",

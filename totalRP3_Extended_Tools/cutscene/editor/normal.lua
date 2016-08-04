@@ -183,8 +183,8 @@ local function load()
 		data.DS = {};
 	end
 
-	loadMain();
 	loadDataScript();
+	loadMain();
 	editStep(1);
 
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);

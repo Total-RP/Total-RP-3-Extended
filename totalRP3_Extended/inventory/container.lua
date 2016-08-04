@@ -320,6 +320,7 @@ local function pickUpLoot(slotFrom, container, slotID)
 			return;
 		end
 	end
+	lootFrame.forceLoot = nil;
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
 	lootFrame:Hide();
 end
@@ -737,6 +738,10 @@ end
 local lootDB = {};
 
 local function presentLoot(loot, onLootCallback, forceLoot)
+	if lootFrame:IsVisible() and lootFrame:GetParent() == TRP3_DialogFrame and lootFrame.forceLoot then
+		Utils.message.displayMessage(loc("IT_LOOT_ERROR"), 4);
+		return;
+	end
 	if loot then
 		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.BA.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
 		lootFrame.Title:SetText((loot.BA.NA or loc("LOOT")));
@@ -759,13 +764,13 @@ local function presentLoot(loot, onLootCallback, forceLoot)
 		lootFrame:ClearAllPoints();
 		lootFrame.close:Enable();
 		lootFrame.forceLoot = forceLoot;
-		if forceLoot then
-			lootFrame.close:Disable();
-		end
 		if TRP3_DialogFrame:IsVisible() then
 			lootFrame:SetParent(TRP3_DialogFrame);
 			lootFrame:SetPoint("TOP", 0, -75);
 			lootFrame:SetFrameLevel(TRP3_DialogFrame:GetFrameLevel() + 20);
+			if forceLoot then
+				lootFrame.close:Disable();
+			end
 		else
 			lootFrame:SetParent(UIParent);
 			if TRP3_MainFrame:IsVisible() then

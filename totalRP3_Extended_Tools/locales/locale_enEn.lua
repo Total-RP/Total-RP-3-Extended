@@ -415,6 +415,7 @@ TRP3_EXTENDED_TOOL_LOCALE["enUS"] = {
 	EFFECT_ITEM_LOOT_PREVIEW = "Loot with %s item(s).",
 	EFFECT_ITEM_LOOT_NAME = "Source name",
 	EFFECT_ITEM_LOOT_NAME_TT = "This will be the loot container name.",
+	EFFECT_ITEM_LOOT_SLOT = "Click on a slot to configure it.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",
@@ -638,7 +639,7 @@ We should begin with some examples:
 	DI_STEP_TEXT = "Step text",
 	DI_ATTR_TT = "Only check this if you want to change this attribute relative to the previous dialog step.",
 	DI_NAME_DIRECTION = "Dialog direction",
-	DI_NAME_DIRECTION_TT = "Determines where to place the chat bubble and name. Select none to completely hide the chat bubble and name.",
+	DI_NAME_DIRECTION_TT = "Determines where to place the chat bubble and name and which model to animate. Select none to completely hide the chat bubble and name.",
 	DI_NAME = "Speaker name",
 	DI_NAME_TT = "The name of the talking character.\n\nOnly necessary if the dialog direction above is not NONE.\n\n|cff00ff00It can be a free text or one of the keyword \"player\" or \"target\" to get respectively the player's name or the target's name (if exists).",
 	DI_LEFT_UNIT = "Left model",

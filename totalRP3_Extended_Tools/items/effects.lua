@@ -307,7 +307,7 @@ local function inv_loot_init()
 		icon = "inv_box_02",
 		description = loc("EFFECT_ITEM_LOOT_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			local itemCount = #args[1][3];
+			local itemCount = #(args[1][3] or EMPTY);
 			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_LOOT_PREVIEW"):format(itemCount));
 		end,
 		getDefaultArgs = function()
@@ -319,6 +319,7 @@ local function inv_loot_init()
 	-- Name
 	editor.name.title:SetText(loc("EFFECT_ITEM_LOOT_NAME"));
 	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_LOOT_NAME"), loc("EFFECT_ITEM_LOOT_NAME_TT"));
+	editor.bag.help:SetText(loc("EFFECT_ITEM_LOOT_SLOT"))
 
 	-- Icon
 	setTooltipForSameFrame(editor.icon, "RIGHT", 0, 5, loc("EDITOR_ICON"));

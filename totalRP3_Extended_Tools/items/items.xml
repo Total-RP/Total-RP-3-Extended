@@ -214,6 +214,17 @@
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-25"/>
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="help" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE">
+							<Size x="0" y="16"/>
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="-30"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
 				<Frames>
 					<Frame parentKey="editor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
 						<Size x="200" y="130"/>
