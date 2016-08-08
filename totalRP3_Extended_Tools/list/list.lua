@@ -330,6 +330,18 @@ local function filterList(typeSearch, localeSearch)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Tutorial
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function startTutorial()
+	if ToolFrame.tutoframe:IsVisible() then
+		ToolFrame.tutoframe:Hide();
+	else
+		ToolFrame.tutoframe:Show();
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TABS
 -- Tabs in the list section are just pre-filters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -395,6 +407,10 @@ end
 function TRP3_API.extended.tools.toList()
 	ToolFrame.rootClassID = nil;
 	tabGroup:SelectTab(1);
+	ToolFrame.tutorial:Show();
+	ToolFrame.tutorial:SetScript("OnClick", function()
+		startTutorial();
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

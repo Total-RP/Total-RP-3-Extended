@@ -298,6 +298,7 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.actions:Show();
 	toolFrame.specific:Show();
 	toolFrame.root:Show();
+	toolFrame.tutorial:Hide();
 
 	-- Load data
 	local rootDraft = openObjectAndGetDraft(rootClassID, forceDraftReload);
@@ -458,6 +459,9 @@ local function onStart()
 			toolFrame.rootDraft.MD.LO = value;
 		end
 	end, nil, 40, true);
+
+	-- Tuto
+	toolFrame.tutoframe.title:SetText(loc("TU_TITLE"));
 
 	-- Tab bar init
 	local homeData = {

@@ -237,7 +237,38 @@
 				</Anchors>
 			</Frame>
 
+			<Button parentKey="tutorial" frameStrata="HIGH">
+				<Size x="46" y="46"/>
+				<Anchors><Anchor point="LEFT" x="-15" y="0"/></Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture parentKey="I" file="Interface\common\help-i">
+							<Size x="46" y="46"/><Anchors><Anchor point="CENTER"/></Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER">
+						<Texture parentKey="Ring" file="Interface\Minimap\MiniMap-TrackingBorder">
+							<Size x="64" y="64"/><Anchors><Anchor point="CENTER" x="12" y="-13"/></Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight">
+					<Size x="46" y="46"/><Anchors><Anchor point="CENTER" x="-1" y="1"/></Anchors>
+				</HighlightTexture>
+				<Scripts>
+					<PostClick>
+						TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+					</PostClick>
+				</Scripts>
+			</Button>
 
+			<Frame parentKey="tutoframe" inherits="TRP3_EditorTitledFrame" hidden="true">
+				<Size x="300" y="0"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="TOPLEFT" x="5" y="0"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMLEFT" x="5" y="0"/>
+				</Anchors>
+			</Frame>
 
 		</Frames>
 		<Scripts>

@@ -892,4 +892,11 @@ It's not because we don't want to help but because we can't do anything to resto
 Thank you, and enjoy Total RP 3 Extended!
 
 {p:r}The TRP3 Team{/p}]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_TITLE = "Tutorial"
+
 };
