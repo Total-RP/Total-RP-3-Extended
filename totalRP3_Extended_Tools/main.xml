@@ -181,6 +181,11 @@
 							<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 						</Anchors>
 					</Button>
+					<Frame parentKey="select" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSelect">
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" x="7" y="4"/>
+						</Anchors>
+					</Frame>
 				</Frames>
 			</Frame>
 
@@ -260,8 +265,5 @@
 			</OnClick>
 		</Scripts>
 	</Button>
-
-	<Script file="locales/locale_enEN.lua"/>
-	<Script file="locales/locale_frFR.lua"/>
 
 </Ui>

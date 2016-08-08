@@ -130,25 +130,31 @@
 					</Frame>
 
 					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
-						<Size x="260" y="18"/>
+						<Size x="160" y="18"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="23" y="-10"/>
 						</Anchors>
 					</EditBox>
 
 					<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
-						<Size x="260" y="18"/>
+						<Size x="160" y="18"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.name" x="30" y="0"/>
 						</Anchors>
 					</EditBox>
 
 					<EditBox parentKey="owner" inherits="TRP3_TitledHelpEditBox">
-						<Size x="260" y="18"/>
+						<Size x="160" y="18"/>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.id" x="0" y="17"/>
 						</Anchors>
 					</EditBox>
+
+					<Frame parentKey="locale" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentLocale">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.owner" x="0" y="5"/>
+						</Anchors>
+					</Frame>
 
 					<Button parentKey="search" inherits="TRP3_CommonButton">
 						<Anchors>

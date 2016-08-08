@@ -186,6 +186,7 @@ function refresh()
 		local hasChildren = isOpen or objectHasChildren(class);
 		local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
 		local link = TRP3_API.inventory.getItemLink(class, objectID);
+		local locale = TRP3_API.extended.tools.getObjectLocale(rootClass);
 
 		-- idData is wipe frequently: DO NOT STORE PERSISTENT DATA IN IT !!!
 		idData[index] = {
@@ -200,6 +201,7 @@ function refresh()
 			fullID = objectID,
 			isOpen = isOpen,
 			hasChildren = hasChildren,
+			locale = locale,
 			metadataTooltip = getMetadataTooltipText(parts[1], rootClass, objectID == parts[#parts], parts[#parts]),
 		}
 
@@ -222,8 +224,12 @@ function refresh()
 		lineWidget.Text:SetText(tt);
 
 		if ToolFrame.list.hasSearch then
+			local locale = "";
+			if idData.depth == 1 or ToolFrame.list.hasSearch then
+				locale = "  |T" .. TRP3_API.extended.tools.getObjectLocaleImage(idData.locale) .. ":11:16|t";
+			end
 			local totalPath = TRP3_API.inventory.getItemLink(getClass(idData.fullID), idData.fullID, true);
-			lineWidget.Right:SetText(totalPath);
+			lineWidget.Right:SetText(totalPath .. locale);
 		else
 			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and loc("ROOT_GEN_ID") or idData.ID));
 		end
@@ -277,16 +283,21 @@ local function checkType(type, class)
 	return type == 0 or type == class.TY;
 end
 
-local function filterList(typeSearch)
+local function checkLocale(locale, class)
+	return locale == 0 or locale == class.MD.LO;
+end
+
+local function filterList(typeSearch, localeSearch)
 	-- Here we will filter
 	wipe(idList);
 
 	-- Filter
 	local typeFilter = typeSearch or ToolFrame.list.filters.type:GetSelectedValue();
+	local localeFilter = localeSearch or ToolFrame.list.filters.locale:GetSelectedValue();
 	local createdFilter = stEtN(strtrim(ToolFrame.list.filters.owner:GetText()));
 	local nameFilter = stEtN(strtrim(ToolFrame.list.filters.name:GetText()));
 	local idFilter = stEtN(strtrim(ToolFrame.list.filters.id:GetText()));
-	local hasSearch = createdFilter or nameFilter or idFilter or typeFilter ~= 0;
+	local hasSearch = createdFilter or nameFilter or idFilter or typeFilter ~= 0 or localeFilter ~= 0;
 
 	if hasSearch then
 		for objectID, object in pairs(TRP3_DB.global) do
@@ -295,7 +306,10 @@ local function filterList(typeSearch)
 				local rootClass = getDB(currentTab)[rootID];
 				if rootClass then
 					local rootClass = getDB(currentTab)[rootID]
-					if checkType(typeFilter, object) and checkOwner(createdFilter, rootClass) and checkName(nameFilter, object) and checkID(idFilter, objectID) then
+					if checkType(typeFilter, object) and checkOwner(createdFilter, rootClass)
+							and checkName(nameFilter, object) and checkID(idFilter, objectID)
+						and checkLocale(localeFilter, rootClass)
+					then
 						tinsert(idList, objectID);
 					end
 				end
@@ -421,7 +435,7 @@ local function onLineActionSelected(value, button)
 		Utils.table.copy(TRP3_InnerObjectEditor.copy, getClass(objectID));
 	elseif action == ACTION_FLAG_EXPORT then
 		local class = getClass(objectID);
-		local serial = Utils.serial.serialize({objectID, class});
+		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class});
 		if serial:len() < 20000 then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
 			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
@@ -528,13 +542,26 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DOCUMENT")), TRP3_DB.types.DOCUMENT},
 		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DIALOG")), TRP3_DB.types.DIALOG},
 	}
-	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, filterList, nil, 255, true);
+	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, function(value) filterList(value, nil) end, nil, 155, true);
+
+	local template = "|T%s:11:16|t";
+	local locales = {
+		{loc("DB_LOCALE")},
+		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), loc("ALL")), 0},
+		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), template:format(TRP3_API.extended.tools.getObjectLocaleImage("en"))), "en"},
+		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), template:format(TRP3_API.extended.tools.getObjectLocaleImage("fr"))), "fr"},
+		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), template:format(TRP3_API.extended.tools.getObjectLocaleImage("es"))), "es"},
+		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), template:format(TRP3_API.extended.tools.getObjectLocaleImage("de"))), "de"},
+	}
+	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.locale, locales, function(value) filterList(nil, value) end, nil, 155, true);
+	ToolFrame.list.filters.locale:SetSelectedValue(0);
 	ToolFrame.list.filters.type:SetSelectedValue(0);
 	ToolFrame.list.filters.search:SetText(SEARCH);
 	ToolFrame.list.filters.search:SetScript("OnClick", goSearch);
 	ToolFrame.list.filters.clear:SetText(loc("DB_FILTERS_CLEAR"));
 	ToolFrame.list.filters.clear:SetScript("OnClick", function()
 		ToolFrame.list.filters.type:SetSelectedValue(0);
+		ToolFrame.list.filters.locale:SetSelectedValue(0);
 		ToolFrame.list.filters.name:SetText("");
 		ToolFrame.list.filters.id:SetText("");
 		ToolFrame.list.filters.owner:SetText("");
@@ -558,16 +585,37 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.container.import.save:SetScript("OnClick", function()
 		local code = ToolFrame.list.container.import.content.scroll.text:GetText();
 		local object = Utils.serial.safeDeserialize(code);
-		if object and type(object) == "table" and #object == 2 then
-			local ID = object[1];
-			local data = object[2];
-			if TRP3_API.extended.classExists(ID) then
-				TRP3_API.extended.removeObject(ID);
+		if object and type(object) == "table" and #object == 3 then
+			local version = object[1];
+			local ID = object[2];
+			local data = object[3];
+			local objectVersion = data.MD.V or 0;
+
+			local import = function()
+				if TRP3_API.extended.classExists(ID) then
+					TRP3_API.extended.removeObject(ID);
+				end
+				TRP3_DB.my[ID] = data;
+				TRP3_API.extended.registerObject(ID, data, 0);
+				ToolFrame.list.container.import:Hide();
+				onTabChanged(nil, currentTab);
 			end
-			TRP3_DB.my[ID] = data;
-			TRP3_API.extended.registerObject(ID, data, 0);
-			ToolFrame.list.container.import:Hide();
-			onTabChanged(nil, currentTab);
+
+			local checkVersion = function()
+				if TRP3_API.extended.classExists(ID) and getClass(ID).MD.V > objectVersion then
+					TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_VERSION"):format(objectVersion, getClass(ID).MD.V), import);
+				else
+					import();
+				end
+			end
+
+			if version ~= Globals.extended_version then
+				TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_CONFIRM"):format(version, Globals.extended_version), function()
+					C_Timer.After(0.25, checkVersion);
+				end);
+			else
+				checkVersion();
+			end
 		else
 			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
 		end
@@ -577,9 +625,14 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.disclaimer.html:SetText(Utils.str.toHTML(loc("DISCLAIMER")));
 	ToolFrame.list.disclaimer.html.ok:SetText(loc("DISCLAIMER_OK"));
 	ToolFrame.list.disclaimer.html.ok:SetScript("OnClick", function()
+		TRP3_Tools_Flags.has_seen_disclaimer = true;
 		ToolFrame.list.disclaimer:Hide();
 	end);
 	ToolFrame.list.disclaimer.html:SetScript("OnHyperlinkClick", function(_, link)
 		TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, link);
 	end);
+	ToolFrame.list.disclaimer:Hide();
+	if not TRP3_Tools_Flags.has_seen_disclaimer then
+		ToolFrame.list.disclaimer:Show();
+	end
 end

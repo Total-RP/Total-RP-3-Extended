@@ -130,6 +130,23 @@ TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
 local draftData = {};
 local draftRegister = {};
 
+local function getObjectLocale(class)
+	return (class.MD or EMPTY).LO or "en";
+end
+TRP3_API.extended.tools.getObjectLocale = getObjectLocale;
+
+local LOCALE_FLAGS = {
+	en = "Interface\\AddOns\\totalRP3_Extended\\libs\\en.tga",
+	es = "Interface\\AddOns\\totalRP3_Extended\\libs\\es.tga",
+	de = "Interface\\AddOns\\totalRP3_Extended\\libs\\de.tga",
+	fr = "Interface\\AddOns\\totalRP3_Extended\\libs\\fr.tga",
+}
+
+local function getObjectLocaleImage(locale)
+	return LOCALE_FLAGS[locale] or LOCALE_FLAGS.en;
+end
+TRP3_API.extended.tools.getObjectLocaleImage = getObjectLocaleImage;
+
 local function getModeLocale(mode)
 	if mode == TRP3_DB.modes.QUICK then
 		return loc("MODE_QUICK");
@@ -181,6 +198,8 @@ local function displayRootInfo(rootClassID, rootClass, classFullID, classID, spe
 	specificText = specificText .. "\n\n" .. fieldFormat:format(loc("TYPE"), getTypeLocale(specificDraft.TY));
 	specificText = specificText .. "\n\n" .. fieldFormat:format(loc("SPECIFIC_MODE"), getModeLocale(specificDraft.MD.MO));
 	toolFrame.specific.text:SetText(specificText);
+
+	toolFrame.root.select:SetSelectedValue(getObjectLocale(rootClass));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -369,14 +388,6 @@ local function onStart()
 	Events.ON_OBJECT_UPDATED = "ON_OBJECT_UPDATED";
 	Events.registerEvent(Events.ON_OBJECT_UPDATED);
 
-	-- Register locales
-	for localeID, localeStructure in pairs(TRP3_EXTENDED_TOOL_LOCALE) do
-		local locale = TRP3_API.locale.getLocale(localeID);
-		for localeKey, text in pairs(localeStructure) do
-			locale.localeContent[localeKey] = text;
-		end
-	end
-
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.root, loc("ROOT_TITLE"), 150);
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.actions, loc("DB_ACTIONS"), 100);
 	toolFrame.actions.cancel:SetText(CANCEL)
@@ -433,6 +444,21 @@ local function onStart()
 		end);
 	end);
 
+	-- Root panel locale selection
+	local template = "|T%s:11:16|t";
+	local types = {
+		{loc("DB_LOCALE")},
+		{template:format(getObjectLocaleImage("en")), "en"},
+		{template:format(getObjectLocaleImage("fr")), "fr"},
+		{template:format(getObjectLocaleImage("es")), "es"},
+		{template:format(getObjectLocaleImage("de")), "de"},
+	}
+	TRP3_API.ui.listbox.setupListBox(toolFrame.root.select, types, function(value)
+		if toolFrame.rootDraft and toolFrame.rootDraft.MD then
+			toolFrame.rootDraft.MD.LO = value;
+		end
+	end, nil, 40, true);
+
 	-- Tab bar init
 	local homeData = {
 		name = loc("DB"),
@@ -485,18 +511,21 @@ local function onInit()
 	if not TRP3_Tools_Parameters.editortabs then
 		TRP3_Tools_Parameters.editortabs = {};
 	end
+	if not TRP3_Tools_Flags then
+		TRP3_Tools_Flags = {};
+	end
 end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended Tools",
 	["description"] = "Total RP 3 extended tools: item, document and campaign creation.",
-	["version"] = 0.4,
+	["version"] = Globals.extended_version,
 	["id"] = "trp3_extended_tools",
 	["onStart"] = onStart,
 	["onInit"] = onInit,
 	["minVersion"] = 14,
 	["requiredDeps"] = {
-		{"trp3_extended", 0.4},
+		{"trp3_extended", Globals.extended_version},
 	}
 };
 
