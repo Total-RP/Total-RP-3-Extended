@@ -262,12 +262,40 @@
 				</Scripts>
 			</Button>
 
-			<Frame parentKey="tutoframe" inherits="TRP3_EditorTitledFrame" hidden="true">
+			<Frame parentKey="tutoframe" inherits="TRP3_EditorTitledFrame" hidden="true" name="$parentFrame">
 				<Size x="300" y="0"/>
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativePoint="TOPLEFT" x="5" y="0"/>
 					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMLEFT" x="5" y="0"/>
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="subtitle" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" text="[TITLE]">
+							<Size x="0" y="30"/>
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.75" b="0.0" />
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+
+					<Frame parentKey="step" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentStep">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.subtitle" x="0" y="-10"/>
+						</Anchors>
+					</Frame>
+
+					<SimpleHTML parentKey="html">
+						<Size x="250" y="0"/>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.step" x="0" y="-10"/>
+							<Anchor point="BOTTOM" x="0" y="0"/>
+						</Anchors>
+						<FontString inherits="GameFontNormalSmall"/>
+					</SimpleHTML>
+				</Frames>
 			</Frame>
 
 		</Frames>

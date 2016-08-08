@@ -333,11 +333,12 @@ end
 -- Tutorial
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function startTutorial()
+local function startTutorial(step)
 	if ToolFrame.tutoframe:IsVisible() then
 		ToolFrame.tutoframe:Hide();
 	else
 		ToolFrame.tutoframe:Show();
+		ToolFrame.tutoframe.html:SetText(Utils.str.toHTML("Coucou"));
 	end
 end
 
@@ -409,7 +410,7 @@ function TRP3_API.extended.tools.toList()
 	tabGroup:SelectTab(1);
 	ToolFrame.tutorial:Show();
 	ToolFrame.tutorial:SetScript("OnClick", function()
-		startTutorial();
+		startTutorial(1);
 	end);
 end
 
