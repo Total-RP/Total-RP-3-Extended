@@ -274,6 +274,7 @@ local function goToListPage(skipButton)
 	toolFrame.actions:Hide();
 	toolFrame.specific:Hide();
 	toolFrame.root:Hide();
+	toolFrame.tutoframe:Hide();
 	for _, pageData in pairs(PAGE_BY_TYPE) do
 		local frame = toolFrame[pageData.frame or ""];
 		if frame then
@@ -298,7 +299,7 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.actions:Show();
 	toolFrame.specific:Show();
 	toolFrame.root:Show();
-	toolFrame.tutorial:Hide();
+	toolFrame.tutoframe:Hide();
 
 	-- Load data
 	local rootDraft = openObjectAndGetDraft(rootClassID, forceDraftReload);
@@ -460,9 +461,6 @@ local function onStart()
 		end
 	end, nil, 40, true);
 
-	-- Tuto
-	toolFrame.tutoframe.title:SetText(loc("TU_TITLE"));
-
 	-- Tab bar init
 	local homeData = {
 		name = loc("DB"),
@@ -499,6 +497,7 @@ local function onStart()
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initCutscene(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
+	TRP3_ExtendedTutorial.init(toolFrame);
 
 	goToListPage();
 
