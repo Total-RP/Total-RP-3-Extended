@@ -104,7 +104,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		text1 = text1 .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
 	end
 
-	if IsAltKeyDown() or forceAlt then
+	if not slotInfo.noAlt and (IsAltKeyDown() or forceAlt) then
 
 		extension1 = "";
 		local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * (class.BA.WE or 0));
@@ -245,9 +245,6 @@ local function containerSlotUpdate(self, elapsed)
 			self.Icon:SetVertexColor(0.85, 0.85, 0.85);
 			self.Container:Show();
 		end
-		if self.additionalOnUpdateHandler then
-			self.additionalOnUpdateHandler(self, elapsed);
-		end
 		if self:IsDragging() or TRP3_API.inventory.isInTransaction(self.info) then
 			self.Icon:SetDesaturated(true);
 		end
@@ -260,6 +257,9 @@ local function containerSlotUpdate(self, elapsed)
 				self.Icon:SetVertexColor(1, 0, 0);
 			end
 		end
+	end
+	if self.additionalOnUpdateHandler then
+		self.additionalOnUpdateHandler(self, elapsed);
 	end
 end
 

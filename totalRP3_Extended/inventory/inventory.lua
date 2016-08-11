@@ -458,6 +458,9 @@ function TRP3_API.inventory.onStart()
 	-- Inventory page
 	TRP3_API.inventory.initInventoryPage();
 
+	-- Inspection
+	TRP3_InspectionFrame.init();
+
 	-- Inventory exchange
 	TRP3_ExchangeFrame.init();
 

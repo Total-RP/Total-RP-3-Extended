@@ -25,9 +25,9 @@
 
 	<Frame name="TRP3_Tools_StepTemplate" virtual="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
-				  edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
-				<AbsValue val="32"/>
+				<AbsValue val="24"/>
 			</EdgeSize>
 			<TileSize>
 				<AbsValue val="380"/>

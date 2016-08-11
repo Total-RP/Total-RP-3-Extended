@@ -24,7 +24,7 @@
 
 			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true">
 
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="24" />
 					</EdgeSize>

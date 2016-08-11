@@ -76,7 +76,7 @@
 	</Frame>
 
 	<Frame name="TRP3_EditorEffectFrame" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="24" />
 			</EdgeSize>
@@ -306,8 +306,8 @@
 
 				<Frames>
 					<Frame parentKey="container" name="$parentContainer">
-						<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\GuildBankFrame\GuildVaultBG">
-							<EdgeSize><AbsValue val="32"/></EdgeSize>
+						<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\GuildBankFrame\GuildVaultBG">
+							<EdgeSize><AbsValue val="24"/></EdgeSize>
 							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 						</Backdrop>
 
@@ -384,7 +384,7 @@
 
 			<Frame parentKey="element" hidden="true" setAllPoints="true" enableMouse="true" frameStrata="HIGH">
 
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="24" />
 					</EdgeSize>

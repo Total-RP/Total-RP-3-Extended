@@ -233,20 +233,16 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<!-- Inventory -->
-	<Frame name="TRP3_InventoryPage" hidden="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="false">
-			<EdgeSize><AbsValue val="24"/></EdgeSize>
-			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
-		</Backdrop>
+	<Frame name="TRP3_InventoryPage" hidden="true" inherits="TRP3_StandardParchmentFrame">
 		<Frames>
 			<Frame parentKey="Main">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
-					<EdgeSize><AbsValue val="24"/></EdgeSize>
-					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
+					<EdgeSize><AbsValue val="16"/></EdgeSize>
+					<BackgroundInsets left="2" right="2" top="5" bottom="5"/>
 				</Backdrop>
 				<Size x="350" y="375" />
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-25"/>
+					<Anchor point="CENTER" x="0" y="0"/>
 				</Anchors>
 				<Frames>
 					<Frame parentKey="Equip" inherits="TRP3_HoveredFrame" hidden="true">
@@ -285,45 +281,87 @@
 						</Frames>
 					</Frame>
 
-					<PlayerModel parentKey="Model" setAllPoints="true" inherits="ModelWithControlsTemplate">
+					<PlayerModel parentKey="Model" inherits="ModelWithControlsTemplate" name="$parentModel">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-5"/>
 							<Anchor point="BOTTOM" x="0" y="5"/>
-							<Anchor point="LEFT" x="7" y="0"/>
-							<Anchor point="RIGHT" x="-7" y="0"/>
+							<Anchor point="LEFT" x="5" y="0"/>
+							<Anchor point="RIGHT" x="-5" y="0"/>
 						</Anchors>
+						<Scripts>
+							<OnEnter function="nil"/>
+							<OnLeave function="nil"/>
+							<OnMouseUp>
+								self.onMouseUpFunc(self, button);
+							</OnMouseUp>
+							<OnMouseDown>
+								Model_OnMouseDown(self, button);
+							</OnMouseDown>
+							<OnMouseWheel function="nil"/>
+						</Scripts>
 						<Layers>
 							<Layer level="OVERLAY">
 								<FontString parentKey="WeightText" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="MIDDLE" text="[[x/x]]">
 									<Size x="0" y="20"/>
 									<Anchors>
-										<Anchor point="BOTTOMLEFT" x="13" y="10"/>
-										<Anchor point="BOTTOMRIGHT" x="-12" y="10"/>
+										<Anchor point="TOPLEFT" x="13" y="-10"/>
+										<Anchor point="TOPRIGHT" x="-12" y="-10"/>
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95"/>
 								</FontString>
 								<FontString parentKey="ValueText" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
 									<Size x="0" y="20"/>
 									<Anchors>
-										<Anchor point="BOTTOMLEFT" x="25" y="10"/>
-										<Anchor point="BOTTOMRIGHT" x="-12" y="10"/>
+										<Anchor point="TOPLEFT" x="25" y="-10"/>
+										<Anchor point="TOPRIGHT" x="-12" y="-10"/>
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95"/>
 								</FontString>
-								<Texture parentKey="Marker" file="Interface\MINIMAP\TempleofKotmogu_ball_green" hidden="true">
-									<Size x="16" y="16"/>
-									<Anchors>
-										<Anchor point="CENTER" x="0" y="0"/>
-									</Anchors>
-								</Texture>
+								<Line parentKey="Line" file="Interface/Artifacts/_Artifacts-DependencyBar-Fill" thickness="12" horizTile="true" />
 							</Layer>
 						</Layers>
 						<Frames>
+							<Button parentKey="Marker" hidden="true" movable="true">
+								<Size x="50" y="50"/>
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="0"/>
+								</Anchors>
+								<Layers>
+									<Layer level="ARTWORK">
+										<Texture file="Interface\PetBattles\PetBattle-SelectedPetGlow" alpha="0.5">
+											<Size x="75" y="75"/>
+											<Anchors>
+												<Anchor point="CENTER" x="0" y="0"/>
+											</Anchors>
+										</Texture>
+									</Layer>
+									<Layer level="OVERLAY">
+										<Texture file="Interface\MINIMAP\TempleofKotmogu_ball_green">
+											<Size x="16" y="16"/>
+											<Anchors>
+												<Anchor point="CENTER" x="0" y="0"/>
+											</Anchors>
+										</Texture>
+									</Layer>
+								</Layers>
+								<Scripts>
+									<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
+									<OnDragStart>
+										local _, _, _, origX, origY = self:GetPoint("CENTER");
+										self.origX = origX;
+										self.origY = origY;
+										self:StartMoving();
+										local _, _, _, x, y = self:GetPoint("TOPLEFT");
+										self.x = x;
+										self.y = y;
+									</OnDragStart>
+								</Scripts>
+							</Button>
 							<Button parentKey="Blocker" inherits="TRP3_InvisibleButton" setAllPoints="true">
 								<Frames>
 									<Button parentKey="ValueHelp" inherits="TRP3_HelpButton">
 										<Anchors>
-											<Anchor point="BOTTOMLEFT" x="6" y="13"/>
+											<Anchor point="TOPLEFT" x="6" y="-13"/>
 										</Anchors>
 									</Button>
 								</Frames>
@@ -356,7 +394,102 @@
 				</FontString>
 			</Layer>
 		</Layers>
+		<Frames>
+			<Button parentKey="Locator">
+				<Size x="20" y="20"/>
+				<NormalTexture file="Interface\MINIMAP\TempleofKotmogu_ball_green"/>
+				<HighlightTexture file="Interface\MINIMAP\TempleofKotmogu_ball_green"/>
+			</Button>
+		</Frames>
 	</Button>
+
+	<Frame name="TRP3_InspectionFrame" inherits="TRP3_StandardParchmentFrame" parent="UIParent" movable="true" enableMouse="true" toplevel="true">
+		<TitleRegion setAllPoints="true"/>
+		<Size x="520" y="480" />
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Frames>
+
+			<Frame parentKey="Main">
+				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
+					<EdgeSize><AbsValue val="24"/></EdgeSize>
+					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+				</Backdrop>
+				<Size x="350" y="375" />
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="0"/>
+				</Anchors>
+
+				<Frames>
+					<PlayerModel parentKey="Model">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="BOTTOM" x="0" y="5"/>
+							<Anchor point="LEFT" x="7" y="0"/>
+							<Anchor point="RIGHT" x="-7" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="40"/>
+										<Anchor point="TOPRIGHT" x="0" y="40"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="WeightText" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" x="13" y="10"/>
+										<Anchor point="BOTTOMRIGHT" x="-12" y="10"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="ValueText" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" x="25" y="10"/>
+										<Anchor point="BOTTOMRIGHT" x="-12" y="10"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="Loading" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" x="0" y="-40"/>
+										<Anchor point="BOTTOMRIGHT" x="0" y="-40"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<Texture parentKey="Marker" file="Interface\MINIMAP\TempleofKotmogu_ball_green" hidden="true">
+									<Size x="16" y="16"/>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+					</PlayerModel>
+				</Frames>
+			</Frame>
+
+			<Button inherits="UIPanelCloseButton" parentKey="close">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-10" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+		</Frames>
+	</Frame>
+
+	<Script file="inspection.lua"/>
 
 	<Include file="inventory_exchange.xml"/>
 	<Script file="inventory_exchange.lua"/>

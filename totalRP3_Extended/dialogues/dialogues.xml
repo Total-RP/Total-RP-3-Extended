@@ -171,7 +171,7 @@
 			</Frame>
 
 			<Frame parentKey="Chat" frameLevel="4">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="16"/>
 					</EdgeSize>
@@ -206,7 +206,7 @@
 				</Layers>
 				<Frames>
 					<Frame parentKey="Left" frameLevel="5">
-						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 							<EdgeSize><AbsValue val="16"/></EdgeSize>
 							<TileSize><AbsValue val="100"/></TileSize>
 							<BackgroundInsets><AbsInset left="4" right="2" top="2" bottom="2"/></BackgroundInsets>
@@ -237,7 +237,7 @@
 					</Frame>
 
 					<Frame parentKey="Right" frameLevel="5">
-						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 							<EdgeSize><AbsValue val="16"/></EdgeSize>
 							<TileSize><AbsValue val="100"/></TileSize>
 							<BackgroundInsets><AbsInset left="4" right="2" top="2" bottom="2"/></BackgroundInsets>

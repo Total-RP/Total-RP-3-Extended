@@ -20,7 +20,7 @@
 	-->
 
 	<Frame name="TRP3_Tools_QuestEditorObjectiveLine" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize><AbsValue val="24" /></EdgeSize>
 			<TileSize><AbsValue val="418" /></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5" /></BackgroundInsets>
@@ -80,9 +80,9 @@
 
 	<Frame name="TRP3_Tools_QuestTemplate" virtual="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
-				  edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
-				<AbsValue val="32"/>
+				<AbsValue val="24"/>
 			</EdgeSize>
 			<TileSize>
 				<AbsValue val="380"/>
@@ -263,8 +263,8 @@
 
 					<Frame parentKey="list" name="$parentList">
 
-						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-							<EdgeSize><AbsValue val="32"/></EdgeSize>
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<EdgeSize><AbsValue val="24"/></EdgeSize>
 							<TileSize><AbsValue val="380"/></TileSize>
 							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 						</Backdrop>
@@ -380,8 +380,8 @@
 
 					<Frame parentKey="list" name="$parentList">
 
-						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-							<EdgeSize><AbsValue val="32"/></EdgeSize>
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<EdgeSize><AbsValue val="24"/></EdgeSize>
 							<TileSize><AbsValue val="380"/></TileSize>
 							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 						</Backdrop>
