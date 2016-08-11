@@ -246,6 +246,7 @@
 				</Anchors>
 				<Frames>
 					<Frame parentKey="Equip" inherits="TRP3_HoveredFrame" hidden="true">
+						<Size x="220" y="150"/>
 						<Layers>
 							<Layer level="OVERLAY">
 								<FontString parentKey="Title" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
@@ -277,7 +278,27 @@
 							</Layer>
 						</Layers>
 						<Frames>
-
+							<EditBox parentKey="sequence" inherits="TRP3_TitledHelpEditBox">
+								<Size x="150" y="18"/>
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="35" relativePoint="BOTTOM"/>
+								</Anchors>
+							</EditBox>
+							<Slider parentKey="time" name="$parentTime" inherits="OptionsSliderTemplate" orientation="HORIZONTAL" valueStep="25" >
+								<Size x="160" y="15" />
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="10" relativePoint="BOTTOM"/>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										local name = self:GetName();
+										_G[name .. "Text"]:SetText("");
+										_G[name .. "High"]:SetText("");
+										_G[name .. "Low"]:SetText("");
+										self:SetMinMaxValues(1, 1500);
+									</OnLoad>
+								</Scripts>
+							</Slider>
 						</Frames>
 					</Frame>
 
