@@ -345,8 +345,7 @@
 									</Layer>
 								</Layers>
 								<Scripts>
-									<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
-									<OnDragStart>
+									<OnMouseDown>
 										local _, _, _, origX, origY = self:GetPoint("CENTER");
 										self.origX = origX;
 										self.origY = origY;
@@ -354,7 +353,7 @@
 										local _, _, _, x, y = self:GetPoint("TOPLEFT");
 										self.x = x;
 										self.y = y;
-									</OnDragStart>
+									</OnMouseDown>
 								</Scripts>
 							</Button>
 							<Button parentKey="Blocker" inherits="TRP3_InvisibleButton" setAllPoints="true">

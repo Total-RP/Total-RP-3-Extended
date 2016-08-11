@@ -56,9 +56,10 @@ local function drawLine(from)
 end
 
 local function moveMarker(self, diffX, diffY, oX, oY)
+	local width, height = TRP3_InventoryPage.Main.Model:GetWidth() / 2, TRP3_InventoryPage.Main.Model:GetHeight() / 2;
 	self:ClearAllPoints();
-	self.posX = oX + diffX;
-	self.posY = oY + diffY;
+	self.posX = math.max(-width, math.min(oX + diffX, width));
+	self.posY = math.max(-height, math.min(oY + diffY, height));
 	self:SetPoint("CENTER", self.posX, self.posY);
 end
 
@@ -84,10 +85,9 @@ local function onSlotEnter(self)
 end
 
 local function onSlotLeave()
-	if TRP3_InventoryPage.Main.Equip:IsVisible() then
-		return;
+	if not TRP3_InventoryPage.Main.Equip:IsVisible() then
+--		resetEquip();
 	end
-	resetEquip();
 end
 
 local function onSlotDrag()
@@ -230,6 +230,9 @@ function TRP3_API.inventory.initInventoryPage()
 	end);
 
 	createRefreshOnFrame(TRP3_InventoryPage.Main, 0.15, containerFrameUpdate);
+	TRP3_InventoryPage.Main.Model:HookScript("OnUpdate", function(self)
+		self:SetSequenceTime(61, 15);
+	end);
 
 	-- Create model slots
 	TRP3_InventoryPage.Main.lockX = 110;
@@ -328,11 +331,12 @@ function TRP3_API.inventory.initInventoryPage()
 	_G[TRP3_InventoryPage.Main.Model.controlFrame:GetName() .. "ZoomInButton"]:Hide();
 	_G[TRP3_InventoryPage.Main.Model.controlFrame:GetName() .. "ZoomOutButton"]:Hide();
 	_G[TRP3_InventoryPage.Main.Model.controlFrame:GetName() .. "PanButton"]:Hide();
-	TRP3_InventoryPage.Main.Model.Marker:SetScript("OnDragStop", function(self)
+	local MOVE_SCALE = 1;
+	TRP3_InventoryPage.Main.Model.Marker:SetScript("OnMouseUp", function(self)
 		local _, _, _, x, y = self:GetPoint("TOPLEFT");
 		local diffX = x - self.x;
 		local diffY = y - self.y;
 		self:StopMovingOrSizing();
-		moveMarker(self, diffX, diffY, self.origX, self.origY);
+		moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY);
 	end);
 end
