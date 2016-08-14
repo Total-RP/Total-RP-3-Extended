@@ -313,7 +313,7 @@
 		</Scripts>
 	</Button>
 
-	<Button parentKey="tutorialhide" hidden="true" parent="TRP3_ToolFrame" enableMouse="true">
+	<Button parentKey="tutorialhide" hidden="true" parent="TRP3_ToolFrame" enableMouse="true" frameStrata="DIALOG">
 		<Anchors>
 			<Anchor point="TOP" x="0" y="-25"/>
 			<Anchor point="BOTTOM" x="0" y="25"/>

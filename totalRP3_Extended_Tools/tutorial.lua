@@ -75,12 +75,19 @@ local function startTutorial(step)
 end
 
 function TRP3_ExtendedTutorial.loadStructure(structure)
+	ToolFrame.tutorial:Hide();
 	currentStructure = structure;
+
+	if not structure then
+		return;
+	end
+
 	wipe(currentList);
 	for index, info in pairs(currentStructure) do
 		tinsert(currentList, {index .. " - " .. loc(info.title), index});
 	end
 
+	ToolFrame.tutorial:Show();
 	ToolFrame.tutorial:SetFrameLevel(ToolFrame:GetFrameLevel() + 100);
 end
 

@@ -334,6 +334,7 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.specificDraft = specificDraft;
 	toolFrame.currentEditor.onLoad();
 	toolFrame.currentEditor:Show();
+	TRP3_ExtendedTutorial.loadStructure(selectedPageFrame.tutorialStructure);
 
 	toolFrame.actions.save:Disable();
 	if TRP3_Tools_DB[rootClassID] then
