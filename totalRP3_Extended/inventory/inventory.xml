@@ -235,11 +235,7 @@
 	<!-- Inventory -->
 	<Frame name="TRP3_InventoryPage" hidden="true" inherits="TRP3_StandardParchmentFrame">
 		<Frames>
-			<Frame parentKey="Main">
-				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
-					<EdgeSize><AbsValue val="16"/></EdgeSize>
-					<BackgroundInsets left="2" right="2" top="5" bottom="5"/>
-				</Backdrop>
+			<Frame parentKey="Main" inherits="TRP3_InnerFrame">
 				<Size x="350" y="375" />
 				<Anchors>
 					<Anchor point="CENTER" x="0" y="0"/>

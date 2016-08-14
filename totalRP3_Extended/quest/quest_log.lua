@@ -147,7 +147,6 @@ end
 
 function refreshCampaignList()
 	local campaigns = getClassesByType(TRP3_DB.types.CAMPAIGN) or EMPTY;
-	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Campaign, loc("QE_CAMPAIGN_LIST"):format(Utils.table.size(campaigns)), 200);
 	TRP3_API.ui.list.initList(TRP3_QuestLogPage.Campaign, campaigns, TRP3_QuestLogPage.Campaign.slider);
 end
 

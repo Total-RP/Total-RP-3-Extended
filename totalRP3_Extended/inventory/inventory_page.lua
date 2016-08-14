@@ -274,9 +274,9 @@ function TRP3_API.inventory.initInventoryPage()
 	for i=1, 17 do
 		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, main, "TRP3_InventoryPageSlotTemplate");
 		if i == 1 then
-			button:SetPoint("TOPRIGHT", model, "TOPLEFT", -10, 0);
+			button:SetPoint("TOPRIGHT", model, "TOPLEFT", -15, 0);
 		elseif i == 9 then
-			button:SetPoint("TOPLEFT", model, "TOPRIGHT", 10, 0);
+			button:SetPoint("TOPLEFT", model, "TOPRIGHT", 15, 0);
 		elseif i == 17 then
 			button:SetPoint("BOTTOMLEFT", model, "BOTTOMLEFT", 5, 10);
 			button.First:SetText(loc("INV_PAGE_QUICK_SLOT"));
