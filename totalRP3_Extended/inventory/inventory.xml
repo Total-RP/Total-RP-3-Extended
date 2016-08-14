@@ -295,7 +295,7 @@
 										_G[name .. "Text"]:SetText("");
 										_G[name .. "High"]:SetText("");
 										_G[name .. "Low"]:SetText("");
-										self:SetMinMaxValues(1, 1500);
+										self:SetMinMaxValues(1, 3000);
 									</OnLoad>
 								</Scripts>
 							</Slider>
@@ -349,19 +349,20 @@
 								</Anchors>
 								<Layers>
 									<Layer level="ARTWORK">
-										<Texture file="Interface\PetBattles\PetBattle-SelectedPetGlow" alpha="0.5">
-											<Size x="75" y="75"/>
+										<Texture parentKey="halo" file="Interface\Cooldown\star4" alpha="0.2" alphaMode="ADD">
+											<Size x="50" y="50"/>
 											<Anchors>
 												<Anchor point="CENTER" x="0" y="0"/>
 											</Anchors>
 										</Texture>
 									</Layer>
 									<Layer level="OVERLAY">
-										<Texture file="Interface\MINIMAP\TempleofKotmogu_ball_green">
+										<Texture parentKey="dot" file="Interface\MINIMAP\PARTYRAIDBLIPS">
 											<Size x="16" y="16"/>
 											<Anchors>
 												<Anchor point="CENTER" x="0" y="0"/>
 											</Anchors>
+											<TexCoords left="0.5" right="0.625" top="0.5" bottom="0.75"/>
 										</Texture>
 									</Layer>
 								</Layers>
@@ -417,8 +418,20 @@
 		<Frames>
 			<Button parentKey="Locator">
 				<Size x="20" y="20"/>
-				<NormalTexture file="Interface\MINIMAP\TempleofKotmogu_ball_green"/>
-				<HighlightTexture file="Interface\MINIMAP\TempleofKotmogu_ball_green"/>
+				<NormalTexture file="Interface\MINIMAP\PARTYRAIDBLIPS">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.5" right="0.625" top="0.5" bottom="0.75"/>
+				</NormalTexture>
+				<HighlightTexture file="Interface\MINIMAP\PARTYRAIDBLIPS">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.5" right="0.625" top="0.5" bottom="0.75"/>
+				</HighlightTexture>
 			</Button>
 		</Frames>
 	</Button>

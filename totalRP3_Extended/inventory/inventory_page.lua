@@ -31,16 +31,15 @@ local model, main;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local QUICK_SLOT_ID = TRP3_API.inventory.QUICK_SLOT_ID;
-local DEFAULT_SEQUENCE = 4;
-local DEFAULT_TIME = 1000;
+local DEFAULT_SEQUENCE = 193;
+local DEFAULT_TIME = 1;
 
 local function resetEquip()
 	Model_Reset(model);
 	main.Equip:Hide();
 	model.Marker:Hide();
 	model.Line:Hide();
-	model.sequence = DEFAULT_SEQUENCE;
-	model.sequenceTime = DEFAULT_TIME;
+	model.sequence = nil;
 end
 
 local function setModelPosition(self, rotation)
@@ -52,36 +51,41 @@ end
 local SLOT_MARGIN = 35;
 local SLOT_SPACING = 12;
 
-local function drawLine(from)
+local function drawLine(from, quality)
 	model.Line:Show();
 	model.Line:SetStartPoint("CENTER", from);
 	model.Line:SetEndPoint("CENTER", model.Marker);
 	from:SetFrameLevel(model:GetFrameLevel() + 5);
-
-	model.Line:SetVertexColor(0.5, 1, 0.5, 1);
+	local r, g, b = TRP3_API.inventory.getQualityColorRGB(quality);
+	model.Line:SetVertexColor(r, g, b, 1);
 end
 
-local function moveMarker(self, diffX, diffY, oX, oY)
+local function moveMarker(self, diffX, diffY, oX, oY, quality)
 	local width, height = model:GetWidth() / 2, model:GetHeight() / 2;
 	self:ClearAllPoints();
 	self.posX = math.max(-width, math.min(oX + diffX, width));
 	self.posY = math.max(-height, math.min(oY + diffY, height));
 	self:SetPoint("CENTER", self.posX, self.posY);
+	local r, g, b = TRP3_API.inventory.getQualityColorRGB(quality);
+	self.dot:SetVertexColor(r, g, b, 1);
+	self.halo:SetVertexColor(r, g, b, 0.3);
 end
 
-local function setButtonModelPosition(self)
+local function setButtonModelPosition(self, force)
 	if self.info and self.class then
 		local isWearable = self.class.BA and self.class.BA.WA;
-		if isWearable then
-			local pos = self.info.pos or EMPTY;
+		local quality = self.class.BA and self.class.BA.QA;
+		local pos = self.info.pos;
+		if isWearable and (pos or force) then
+			pos = pos or EMPTY;
 			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
 			model.sequenceTime = pos.sequenceTime or DEFAULT_TIME;
 			setModelPosition(model, pos.rotation or 0);
-			moveMarker(model.Marker, pos.x or 0, pos.y or 0, 0, 0);
+			moveMarker(model.Marker, pos.x or 0, pos.y or 0, 0, 0, quality);
 			main.Equip.sequence:SetText(model.sequence);
 			main.Equip.time:SetValue(model.sequenceTime);
 			model.Marker:Show();
-			drawLine(self);
+			drawLine(self, quality);
 		else
 			resetEquip();
 		end
@@ -96,7 +100,7 @@ end
 
 local function onSlotLeave()
 	if not main.Equip:IsVisible() then
---		resetEquip();
+		resetEquip();
 	end
 end
 
@@ -116,35 +120,44 @@ local function onSlotUpdate(self, elapsed)
 	end
 end
 
-local function onLocatorClick(button)
+local function onLocatorClick(button, mode)
 	button = button:GetParent();
 
-	if main.Equip:IsVisible() and main.Equip.isOn == button then
-		main.Equip:Hide();
-		return;
-	end
-
-	if button.info and button.class then
-		if not button.class.BA or not button.class.BA.WA then
+	if mode == "LeftButton" then
+		if main.Equip:IsVisible() and main.Equip.isOn == button then
 			main.Equip:Hide();
 			return;
 		end
+
+		if button.info and button.class then
+			if not button.class.BA or not button.class.BA.WA then
+				main.Equip:Hide();
+				return;
+			end
+		end
+
+		local position, x, y = "RIGHT", -10, 0;
+		if button.slotNumber > 8 then
+			position, x, y = "LEFT", 10, 0;
+		end
+		TRP3_API.ui.frame.configureHoverFrame(main.Equip, button.Locator, position, x, y);
+		main.Equip.isOn = button;
+
+		setButtonModelPosition(button, true);
+	else
+		if button.info and button.class and button.info.pos then
+			wipe(button.info.pos);
+			button.info.pos = nil;
+		end
+		resetEquip();
+		setButtonModelPosition(button);
 	end
 
-	local position, x, y = "RIGHT", -10, 0;
-	if button.slotNumber > 8 then
-		position, x, y = "LEFT", 10, 0;
-	end
-	TRP3_API.ui.frame.configureHoverFrame(main.Equip, button.Locator, position, x, y);
-	main.Equip.isOn = button;
-
-	setButtonModelPosition(button);
 end
 
 local function onEquipRefresh(self)
 	-- Camera
 	local rotation = model.rotation;
-
 	self.Camera:SetText(loc("INV_PAGE_CAMERA_CONFIG"):format(rotation));
 
 	local button = main.Equip.isOn
@@ -159,7 +172,9 @@ local function onEquipRefresh(self)
 	end
 
 	-- Marker
-	self.Marker:SetText(loc("INV_PAGE_MARKER"));
+	local x = model.Marker.posX or 0;
+	local y = model.Marker.posY or 0;
+	self.Marker:SetText(loc("INV_PAGE_MARKER"):format(x, y));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -245,13 +260,17 @@ function TRP3_API.inventory.initInventoryPage()
 
 	createRefreshOnFrame(main, 0.15, containerFrameUpdate);
 	model:HookScript("OnUpdate", function(self)
-		self:SetSequenceTime(self.sequence or DEFAULT_SEQUENCE, self.sequenceTime or DEFAULT_TIME);
+		if self.sequence then
+			self:SetSequenceTime(self.sequence or DEFAULT_SEQUENCE, self.sequenceTime or DEFAULT_TIME);
+		end
 	end);
 
 	-- Create model slots
 	main.lockX = 110;
 	main.slots = {};
-	local wearText = loc("INV_PAGE_WEAR_TT") .. "\n\n|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("INV_PAGE_WEAR_ACTION");
+	local wearText = loc("INV_PAGE_WEAR_TT")
+			.. "\n\n|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("INV_PAGE_WEAR_ACTION")
+			.. "\n|cffffff00" .. loc("CM_R_CLICK") .. ":|r " .. loc("INV_PAGE_WEAR_ACTION_RESET");
 	for i=1, 17 do
 		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, main, "TRP3_InventoryPageSlotTemplate");
 		if i == 1 then
@@ -286,10 +305,8 @@ function TRP3_API.inventory.initInventoryPage()
 		button.Locator:SetScript("OnLeave", function(self)
 			TRP3_MainTooltip:Hide();
 			onSlotLeave(self:GetParent());
-			if not main.Equip:IsVisible() then
-				resetEquip();
-			end
 		end);
+		button.Locator:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		button.Locator:SetScript("OnClick", onLocatorClick);
 
 		button.additionalOnEnterHandler = onSlotEnter;
@@ -360,4 +377,6 @@ function TRP3_API.inventory.initInventoryPage()
 	main.Equip.sequence:SetScript("OnEnterPressed", function(self)
 		model.sequence = tonumber(self:GetText()) or DEFAULT_SEQUENCE;
 	end);
+	main.Equip.sequence.title:SetText(loc("INV_PAGE_SEQUENCE"));
+	setTooltipForSameFrame(main.Equip.sequence.help, "RIGHT", 0, 5, loc("INV_PAGE_SEQUENCE"), loc("INV_PAGE_SEQUENCE_TT"));
 end

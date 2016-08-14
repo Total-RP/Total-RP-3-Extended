@@ -54,7 +54,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 
 	-- INVENTORY PAGE
 	INV_PAGE_CAMERA_CONFIG = "Camera parameters:\n   Rotation: %.2f",
-	INV_PAGE_MARKER = "Marker position",
+	INV_PAGE_MARKER = "Marker position:\n   x: %.2f\n   y: %.2f",
 	INV_PAGE_PLAYER_INV = "%s's inventory",
 	INV_PAGE_CHARACTER_INV = "Inventory",
 	INV_PAGE_QUICK_SLOT = "Quick slot",
@@ -66,6 +66,22 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	INV_PAGE_CHARACTER_INSPECTION_TT = "Inspect this character's inventory.",
 	INV_PAGE_WEAR_TT = "This item is wearable.\nThe green zone indicates the item location on the character.",
 	INV_PAGE_WEAR_ACTION = "Configure item location",
+	INV_PAGE_WEAR_ACTION_RESET = "Reset configuration",
+	INV_PAGE_SEQUENCE = "Sequence ID",
+	INV_PAGE_SEQUENCE_TT = [[You can change the pose of your character by entering an animation ID here and select the animation frame with the slider below.
+
+Example of IDs:
+60: /talk
+55: /roar
+195: /train
+225: /fear
+66: /bow
+67: /hi
+113: /salute
+209: /point
+68 : /acclame
+
+Warning: If the animation flickers it's because there is a problem with the animation for your classe. If it happens, please select another animation.]],
 
 	-- SEC
 	SEC_LEVEL = "Security level",
