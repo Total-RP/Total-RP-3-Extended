@@ -873,4 +873,16 @@ function TRP3_API.inventory.initLootFrame()
 			return;
 		end
 	end);
+
+	local lootAll = CreateFrame("Button", "TRP3_LootFrameLootAll", TRP3_LootFrame, "TRP3_CommonButton");
+	lootAll:SetPoint("TOP", TRP3_LootFrameInventory, "BOTTOM", 0, -5);
+	lootAll:SetSize(140, 20);
+	lootAll:SetText(loc("INV_PAGE_LOOT_ALL"));
+	lootAll:SetScript("OnClick", function()
+		for _, slot in pairs(lootFrame.slots) do
+			if slot.info then
+				pickUpLoot(slot);
+			end
+		end
+	end);
 end
