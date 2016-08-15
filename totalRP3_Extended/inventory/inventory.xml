@@ -464,6 +464,7 @@
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
+								<Line parentKey="Line" file="Interface/Artifacts/_Artifacts-DependencyBar-Fill" thickness="12" horizTile="true" hidden="true"/>
 								<FontString parentKey="Title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" text="[[x/x]]">
 									<Size x="0" y="20"/>
 									<Anchors>
@@ -483,27 +484,48 @@
 								<FontString parentKey="ValueText" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
 									<Size x="0" y="20"/>
 									<Anchors>
-										<Anchor point="BOTTOMLEFT" x="25" y="10"/>
+										<Anchor point="BOTTOMLEFT" x="13" y="10"/>
 										<Anchor point="BOTTOMRIGHT" x="-12" y="10"/>
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95"/>
 								</FontString>
-								<FontString parentKey="Loading" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" text="[[x/x]]">
+								<FontString parentKey="Loading" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" text="[[x/x]]">
 									<Size x="0" y="20"/>
 									<Anchors>
-										<Anchor point="BOTTOMLEFT" x="0" y="-40"/>
-										<Anchor point="BOTTOMRIGHT" x="0" y="-40"/>
+										<Anchor point="BOTTOMLEFT" x="0" y="-30"/>
+										<Anchor point="BOTTOMRIGHT" x="0" y="-30"/>
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95"/>
 								</FontString>
-								<Texture parentKey="Marker" file="Interface\MINIMAP\TempleofKotmogu_ball_green" hidden="true">
-									<Size x="16" y="16"/>
-									<Anchors>
-										<Anchor point="CENTER" x="0" y="0"/>
-									</Anchors>
-								</Texture>
 							</Layer>
 						</Layers>
+						<Frames>
+							<Button parentKey="Marker" hidden="true" movable="true">
+								<Size x="50" y="50"/>
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="0"/>
+								</Anchors>
+								<Layers>
+									<Layer level="ARTWORK">
+										<Texture parentKey="halo" file="Interface\Cooldown\star4" alpha="0.2" alphaMode="ADD">
+											<Size x="50" y="50"/>
+											<Anchors>
+												<Anchor point="CENTER" x="0" y="0"/>
+											</Anchors>
+										</Texture>
+									</Layer>
+									<Layer level="OVERLAY">
+										<Texture parentKey="dot" file="Interface\MINIMAP\PARTYRAIDBLIPS">
+											<Size x="16" y="16"/>
+											<Anchors>
+												<Anchor point="CENTER" x="0" y="0"/>
+											</Anchors>
+											<TexCoords left="0.5" right="0.625" top="0.5" bottom="0.75"/>
+										</Texture>
+									</Layer>
+								</Layers>
+							</Button>
+						</Frames>
 					</PlayerModel>
 				</Frames>
 			</Frame>

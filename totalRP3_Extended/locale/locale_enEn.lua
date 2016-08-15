@@ -68,6 +68,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	INV_PAGE_WEAR_ACTION = "Configure item location",
 	INV_PAGE_WEAR_ACTION_RESET = "Reset configuration",
 	INV_PAGE_SEQUENCE = "Sequence ID",
+	INV_PAGE_WAIT = "Waiting for response",
 	INV_PAGE_SEQUENCE_TT = [[You can change the pose of your character by entering an animation ID here and select the animation frame with the slider below.
 
 Example of IDs:
