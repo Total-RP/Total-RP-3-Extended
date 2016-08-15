@@ -450,18 +450,6 @@
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize val="24"/>
 		</Backdrop>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\Artifacts\ArtifactUIPriest">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-5" y="-3"/>
-						<Anchor point="BOTTOMRIGHT" x="-5" y="-3"/>
-						<Anchor point="LEFT" x="5" y="0"/>
-					</Anchors>
-					<TexCoords left="0" right="0.7" top="0" bottom="0.61252"/>
-				</Texture>
-			</Layer>
-		</Layers>
 
 		<Frames>
 
