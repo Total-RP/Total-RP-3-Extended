@@ -341,15 +341,12 @@ local function slotOnDragStop(slotFrom)
 				else
 					local itemClass = getClass(slotFrom.info.id);
 					local itemLink = TRP3_API.inventory.getItemLink(itemClass);
-					if IsControlKeyDown() then
-						TRP3_API.popup.showConfirmPopup(loc("DR_POPUP"):format(itemLink, slotFrom.info.count or 1), function()
-							TRP3_API.inventory.dropItem(container1, slot1, slotFrom.info);
-						end);
-					else
-						TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(itemLink), function()
-							TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
-						end);
-					end
+
+					TRP3_API.inventory.dropOrDestroy(itemClass, function()
+						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info, true);
+					end, function()
+						TRP3_API.inventory.dropItem(container1, slot1, slotFrom.info);
+					end);
 				end
 			else
 				Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
@@ -737,7 +734,7 @@ end
 
 local lootDB = {};
 
-local function presentLoot(loot, onLootCallback, forceLoot)
+local function presentLoot(loot, onLootCallback, forceLoot, checker)
 	if lootFrame:IsVisible() and lootFrame:GetParent() == TRP3_DialogFrame and lootFrame.forceLoot then
 		Utils.message.displayMessage(loc("IT_LOOT_ERROR"), 4);
 		return;
@@ -764,6 +761,7 @@ local function presentLoot(loot, onLootCallback, forceLoot)
 		lootFrame:ClearAllPoints();
 		lootFrame.close:Enable();
 		lootFrame.forceLoot = forceLoot;
+		lootFrame.checker = checker;
 		if TRP3_DialogFrame:IsVisible() then
 			lootFrame:SetParent(TRP3_DialogFrame);
 			lootFrame:SetPoint("TOP", 0, -75);
@@ -846,6 +844,12 @@ function TRP3_API.inventory.initLootFrame()
 
 	initContainerSlots(lootFrame, 2, 4, true);
 
+	createRefreshOnFrame(lootFrame, CONTAINER_UPDATE_FREQUENCY, function(self)
+		if self.checker and not self.checker() then
+			self:Hide();
+		end
+	end);
+
 	-- Tooltip
 	createRefreshOnFrame(TRP3_ItemTooltip, CONTAINER_UPDATE_FREQUENCY, function(self)
 		if not self.ref or not MouseIsOver(self.ref) then
@@ -856,4 +860,17 @@ function TRP3_API.inventory.initLootFrame()
 		self.ref = nil;
 	end);
 
+	-- Inventory button
+	local inventory = CreateFrame("Button", "TRP3_LootFrameInventory", TRP3_LootFrame, "TRP3_CommonButton");
+	inventory:SetPoint("TOP", TRP3_LootFrame, "BOTTOM", 0, -25);
+	inventory:SetSize(140, 20);
+	inventory:SetText(loc("INV_PAGE_INV_OPEN"));
+	inventory:SetScript("OnClick", function()
+		local playerInventory = TRP3_API.inventory.getInventory();
+		local quickSlot = playerInventory.content[TRP3_API.inventory.QUICK_SLOT_ID];
+		if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
+			TRP3_API.inventory.switchContainerBySlotID(playerInventory, TRP3_API.inventory.QUICK_SLOT_ID);
+			return;
+		end
+	end);
 end

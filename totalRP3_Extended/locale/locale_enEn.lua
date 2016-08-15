@@ -57,6 +57,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	INV_PAGE_MARKER = "Marker position:\n   x: %.2f\n   y: %.2f",
 	INV_PAGE_PLAYER_INV = "%s's inventory",
 	INV_PAGE_CHARACTER_INV = "Inventory",
+	INV_PAGE_INV_OPEN = "Open inventory",
+	INV_PAGE_LOOT_ALL = "Loot all",
 	INV_PAGE_QUICK_SLOT = "Quick slot",
 	INV_PAGE_QUICK_SLOT_TT = "This slot will be used as primary container.",
 	INV_PAGE_ITEM_LOCATION = "Item location on character",
@@ -121,6 +123,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	-- LOOT
 	LOOT = "Loot",
 	LOOT_CONTAINER = "Loot container",
+	LOOT_DISTANCE = "You moved too far from the loot point.",
 
 	-- DOCUMENT
 	DOC_UNKNOWN_ALERT = "Can't open the document. (Missing class)",
@@ -220,10 +223,14 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	-- DROP SYSTEM
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	DR_POPUP = "Do you want to drop %s x%d on the ground?",
+	DR_POPUP = "Drop here",
+	DR_POPUP_ASK = "Total RP 3\n \nSelect what to do with the item:\n%s",
+	DR_POPUP_REMOVE = "Destroy",
 	DR_SEARCH_BUTTON = "Search for items",
 	DR_SEARCH_BUTTON_TT = "Search for items in this area within 15 yards.",
 	DR_NOTHING = "No items found in this area.",
+	DR_DELETED = "Destroyed: %s x%d",
+	DR_DROPED = "Droped on the ground: %s x%d",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- EXTENDED TOOLS

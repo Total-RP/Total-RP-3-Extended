@@ -21,6 +21,7 @@ local tinsert, assert, strsplit, tostring, wipe, pairs, sqrt = tinsert, assert, 
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local UnitPosition, SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition = UnitPosition, SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition;
 local loc = TRP3_API.locale.getText;
+local getItemLink = TRP3_API.inventory.getItemLink;
 
 local dropFrame = TRP3_DropSearchFrame;
 local dropData;
@@ -56,6 +57,10 @@ function TRP3_API.inventory.dropItem(container, slotID, initialSlotInfo)
 			};
 			Utils.table.copy(groundData.item, slotInfo);
 			tinsert(dropData, groundData);
+
+			local count = slotInfo.count or 1;
+			local link = getItemLink(getClass(slotInfo.id));
+			Utils.message.displayMessage(loc("DR_DROPED"):format(link, count));
 
 			-- Remove from inv
 			TRP3_API.inventory.removeSlotContent(container, slotID, initialSlotInfo);
@@ -141,10 +146,28 @@ function searchForItems()
 		for index, result in pairs(searchResults) do
 			loot.IT[tostring(index)] = result.item;
 		end
-		TRP3_API.inventory.presentLoot(loot, onLooted);
+		TRP3_API.inventory.presentLoot(loot, onLooted, nil, function()
+			local posY2, posX2 = UnitPosition("player");
+			local isInRad = isInRadius(7.5, posY, posX, posY2, posX2);
+			if not isInRad then
+				Utils.message.displayMessage(loc("LOOT_DISTANCE"));
+			end
+			return isInRad;
+		end);
 	else
 		Utils.message.displayMessage(loc("DR_NOTHING"));
 	end
+end
+
+function TRP3_API.inventory.dropOrDestroy(itemClass, callbackDestroy, callbackDrop)
+	StaticPopupDialogs["TRP3_DROP_ITEM"].text = loc("DR_POPUP_ASK"):format(TRP3_API.inventory.getItemLink(itemClass));
+	local dialog = StaticPopup_Show("TRP3_DROP_ITEM");
+	if dialog then
+		dialog:ClearAllPoints();
+		dialog:SetPoint("CENTER", UIParent, "CENTER");
+	end
+	dropFrame.callbackDestroy = callbackDestroy;
+	dropFrame.callbackDrop = callbackDrop;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -178,5 +201,25 @@ function dropFrame.init()
 			TRP3_API.toolbar.toolbarAddButton(toolbarButton);
 		end
 	end);
+
+	StaticPopupDialogs["TRP3_DROP_ITEM"] = {
+		button1 = loc("DR_POPUP_REMOVE"),
+		button2 = CANCEL,
+		button3 = loc("DR_POPUP"),
+		OnAccept = function()
+			if dropFrame.callbackDestroy then
+				dropFrame.callbackDestroy();
+			end
+		end,
+		OnAlt = function()
+			if dropFrame.callbackDrop then
+				dropFrame.callbackDrop();
+			end
+		end,
+		timeout = false,
+		whileDead = true,
+		hideOnEscape = true,
+		showAlert = true,
+	};
 
 end

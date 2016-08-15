@@ -321,13 +321,18 @@ function TRP3_API.inventory.startCooldown(slotInfo, duration, container)
 	end
 end
 
-local function removeSlotContent(container, slotID, slotInfo)
+local function removeSlotContent(container, slotID, slotInfo, message)
 	-- Check that nothing has changed
 	if container.content[slotID] == slotInfo then
+		local count = slotInfo.count or 1;
+		local link = getItemLink(getClass(slotInfo.id));
 		wipe(container.content[slotID]);
 		container.content[slotID] = nil;
 		TRP3_API.inventory.recomputeAllInventory();
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+		if message then
+			Utils.message.displayMessage(loc("DR_DELETED"):format(link, count));
+		end
 	end
 end
 TRP3_API.inventory.removeSlotContent = removeSlotContent;
