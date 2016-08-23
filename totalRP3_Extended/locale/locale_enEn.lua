@@ -894,7 +894,7 @@ Thank you, and enjoy Total RP 3 Extended!
 {p:r}The TRP3 Team{/p}]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- TUTORIAL
+	-- TUTORIAL: Databases
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	TU_TITLE = "Tutorial",
@@ -953,4 +953,28 @@ Finally, the |cff00ff00create from|r allows you to duplicate an existing item.]]
 	TU_DB_7 = "Object line",
 	TU_DB_7_TEXT = "Each line represents an object. You can click on it to edit it or right click to perform various actions.",
 
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: Items
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_IT_1_TEXT = [[|cff00ff00Welcome to the item creation tutorial.|r
+
+An item is an object that you can store in your character's inventory (or drop it on the ground).
+
+You are here on the Main tab where you can define all the basic attributes for your item.]],
+
+	TU_IT_2 = "Display attributes",
+	TU_IT_2_TEXT = [[The display attributes are purely cosmetic and don't have any "gameplay" effect.
+
+It's all about the attributes needed for the item tooltip and the item icon.]],
+
+	TU_IT_4 = "Gameplay attributes",
+	TU_IT_4_TEXT = [[The gameplay attributes have some effects on the gameplay.
+
+Two attributes are important: Usable and Container as checking them will display the Workflow and Container tabs.]],
+
+	TU_IT_3 = "Free notes",
+	TU_IT_3_TEXT = [[You can write down notes to help you remember what do you want to do with your item.
+
+These notes can also help others that would want to start an item based on yours.]],
 };

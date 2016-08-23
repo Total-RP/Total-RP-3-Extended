@@ -80,6 +80,7 @@ local PAGE_BY_TYPE = {
 		tabTextGetter = function(id, class)
 			return ("%s: %s"):format(loc("TYPE_ITEM"),  TRP3_API.inventory.getItemLink(class));
 		end,
+		tutorial = true,
 		background = 3,
 	},
 	[TRP3_DB.types.DOCUMENT] = {
@@ -323,6 +324,8 @@ function goToPage(fullClassID, forceDraftReload)
 	assert(selectedPageFrame, "No editor for type " .. specificDraft.TY);
 	assert(selectedPageFrame.onLoad, "No load entry for type " .. specificDraft.TY);
 
+	TRP3_ExtendedTutorial.loadStructure(nil);
+
 	-- Show selected
 	setBackground(selectedPageData.background or 1);
 	displayRootInfo(rootClassID, rootDraft, fullClassID, specificClassID, specificDraft);
@@ -334,7 +337,7 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.specificDraft = specificDraft;
 	toolFrame.currentEditor.onLoad();
 	toolFrame.currentEditor:Show();
-	TRP3_ExtendedTutorial.loadStructure(selectedPageFrame.tutorialStructure);
+
 
 	toolFrame.actions.save:Disable();
 	if TRP3_Tools_DB[rootClassID] then
