@@ -324,7 +324,7 @@ local function pickUpLoot(slotFrom, container, slotID)
 	lootFrame:Hide();
 end
 
-local UnitExists, CheckInteractDistance = UnitExists, CheckInteractDistance;
+local UnitExists, CheckInteractDistance, UnitIsPlayer = UnitExists, CheckInteractDistance, UnitIsPlayer;
 
 local function slotOnDragStop(slotFrom)
 	ResetCursor();
@@ -335,7 +335,7 @@ local function slotOnDragStop(slotFrom)
 		container1 = slotFrom:GetParent().info;
 		if slotTo:GetName() == "WorldFrame" then
 			if not slotFrom.loot then
-				if UnitExists("mouseover") and CheckInteractDistance("mouseover", 2) then
+				if UnitExists("mouseover") and UnitIsPlayer("mouseover") and CheckInteractDistance("mouseover", 2) then
 					TRP3_API.inventory.addToExchange(container1, slot1);
 				else
 					local itemClass = getClass(slotFrom.info.id);

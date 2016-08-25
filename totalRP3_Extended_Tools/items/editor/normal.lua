@@ -531,13 +531,13 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 		{
 			text = loc("IT_TRIGGER_ON_USE"),
 			tt = loc("IT_TRIGGER_ON_USE_TT"),
-			icon = "Interface\\ICONS\\achievement_quests_completed_08",
+			icon = "Interface\\ICONS\\ability_paladin_handoflight",
 			field = "OU",
 		},
 		{
 			text = loc("IT_TRIGGER_ON_DESTROY"),
 			tt = loc("IT_TRIGGER_ON_DESTROY_TT"),
-			icon = "Interface\\ICONS\\achievement_quests_completed_08",
+			icon = "Interface\\ICONS\\spell_sandexplosion",
 			field = "OD",
 		},
 	}

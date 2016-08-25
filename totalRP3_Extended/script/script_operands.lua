@@ -197,6 +197,28 @@ local OPERANDS = {
 		},
 	},
 
+	["unit_distance_trade"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("CheckInteractDistance(\"%s\", 2)"):format(unitID);
+		end,
+		env = {
+			["CheckInteractDistance"] = "CheckInteractDistance",
+		},
+	},
+
+	["unit_distance_inspect"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("CheckInteractDistance(\"%s\", 1)"):format(unitID);
+		end,
+		env = {
+			["CheckInteractDistance"] = "CheckInteractDistance",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Inventory
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

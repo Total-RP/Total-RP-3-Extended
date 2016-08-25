@@ -493,6 +493,8 @@ function editor.init()
 --			"unit_range",
 			"unit_exists",
 			"unit_is_dead",
+			"unit_distance_trade",
+			"unit_distance_inspect",
 --			"unit_mounted",
 --			"unit_flying",
 		},

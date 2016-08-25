@@ -791,6 +791,10 @@ We should begin with some examples:
 	OP_OP_QUEST_OBJ_PREVIEW = "Objective %s from %s",
 	OP_OP_QUEST_NPC = "Unit is campaign NPC",
 	OP_OP_QUEST_NPC_TT = "|cff00ff00Returns whether a unit is a customized NPC in the currently active campaign.",
+	OP_OP_UNIT_DISTANCE_TRADE = "Unit is near (trade)",
+	OP_OP_UNIT_DISTANCE_TRADE_TT = "|cff00ff00Returns whether a unit is close enough for trading (11.11 yards).",
+	OP_OP_UNIT_DISTANCE_INSPECT = "Unit is near (inspection)",
+	OP_OP_UNIT_DISTANCE_INSPECT_TT = "|cff00ff00Returns whether a unit is close enough for inspection (28 yards).",
 
 	-- Test
 	COND_EDITOR = "Condition editor",

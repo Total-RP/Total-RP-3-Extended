@@ -324,6 +324,32 @@ local function unit_is_dead_init()
 	});
 end
 
+local function unit_distance_trade_init()
+	registerOperandEditor("unit_distance_trade", {
+		title = loc("OP_OP_UNIT_DISTANCE_TRADE"),
+		description = loc("OP_OP_UNIT_DISTANCE_TRADE_TT"),
+		returnType = true,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_DISTANCE_TRADE") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_distance_inspect_init()
+	registerOperandEditor("unit_distance_inspect", {
+		title = loc("OP_OP_UNIT_DISTANCE_INSPECT"),
+		description = loc("OP_OP_UNIT_DISTANCE_INSPECT_TT"),
+		returnType = true,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_DISTANCE_INSPECT") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -357,5 +383,7 @@ function TRP3_ConditionEditor.initOperands()
 	unit_exists_init();
 	unit_is_player_init();
 	unit_is_dead_init();
+	unit_distance_trade_init();
+	unit_distance_inspect_init();
 
 end

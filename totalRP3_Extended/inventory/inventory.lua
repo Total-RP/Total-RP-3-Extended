@@ -348,8 +348,8 @@ local function removeSlotContent(container, slotID, slotInfo, manuallyDestroyed)
 		local link = getItemLink(class);
 
 		if manuallyDestroyed then
-			if class.LI and class.LI.OU then
-				local retCode = TRP3_API.script.executeClassScript(class.LI.OU, class.SC,
+			if class.LI and class.LI.OD then
+				local retCode = TRP3_API.script.executeClassScript(class.LI.OD, class.SC,
 					{class = class, object = slotInfo, container = container}, slotInfo.id);
 			end
 			Utils.message.displayMessage(loc("DR_DELETED"):format(link, count));
