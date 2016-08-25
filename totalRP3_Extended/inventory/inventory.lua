@@ -50,6 +50,41 @@ local function getItemCount(classID, container)
 end
 TRP3_API.inventory.getItemCount = getItemCount;
 
+local function copySlotContent(slot, itemClass, itemData)
+	if itemClass.CO and itemClass.CO.IT then
+		slot.content = {};
+		Utils.table.copy(slot.content, itemClass.CO.IT);
+	end
+	if itemData.madeBy then
+		if type(itemData.madeBy) == "string" then
+			slot.madeBy = itemData.madeBy;
+		else
+			slot.madeBy = Globals.player_id;
+		end
+	end
+	if itemData.vars then
+		if not slot.vars then
+			slot.vars = {};
+		end
+		tcopy(slot.vars, itemData.vars);
+	end
+	if itemData.content then
+		if not slot.content then
+			slot.content = {};
+		end
+		tcopy(slot.content, itemData.content);
+	end
+end
+
+local function dropMeBecauseIMFull(itemClass, itemData, toAdd, classID)
+	local dropSlot = {
+		count = toAdd,
+		id = classID,
+	};
+	copySlotContent(dropSlot, itemClass, itemData);
+	TRP3_API.inventory.dropItemDirect(dropSlot);
+end
+
 --- Add an item to a container.
 -- Returns:
 -- 0 if OK
@@ -57,7 +92,7 @@ TRP3_API.inventory.getItemCount = getItemCount;
 -- 2 if too many item already possessed (unique)
 -- 3 if givenContainer is not a container
 -- 4 if container can't contain the item
-function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
+function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFull)
 	-- Get the best container
 	local container = givenContainer or playerInventory;
 	if givenContainer == nil then
@@ -95,7 +130,10 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 			local currentCount = getItemCount(classID);
 			if currentCount + 1 > itemClass.BA.UN then
 				Utils.message.displayMessage(loc("IT_INV_ERROR_MAX"):format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
-				return onItemAddEnd(2, count);
+				if dropIfFull then
+					dropMeBecauseIMFull(itemClass, itemData, toAdd - count, classID);
+				end
+				return onItemAddEnd(container, 2, count);
 			end
 		end
 
@@ -119,12 +157,11 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 
 		-- Container is full
 		if not slot then
-			if givenContainer then
-				Utils.message.displayMessage(loc("IT_INV_ERROR_FULL"):format(getItemLink(containerClass)), Utils.message.type.ALERT_MESSAGE);
-			else
-				Utils.message.displayMessage(ERR_INV_FULL, Utils.message.type.ALERT_MESSAGE);
+			Utils.message.displayMessage(loc("IT_INV_ERROR_FULL"):format(getItemLink(containerClass)), Utils.message.type.ALERT_MESSAGE);
+			if dropIfFull then
+				dropMeBecauseIMFull(itemClass, itemData, toAdd - count, classID);
 			end
-			return onItemAddEnd(1, count);
+			return onItemAddEnd(container, 1, count);
 		end
 
 		-- Adding item
@@ -133,29 +170,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 				id = classID,
 			};
 			local slot = container.content[slot];
-			if itemClass.CO and itemClass.CO.IT then
-				slot.content = {};
-				Utils.table.copy(slot.content, itemClass.CO.IT);
-			end
-			if itemData.madeBy then
-				if type(itemData.madeBy) == "string" then
-					slot.madeBy = itemData.madeBy;
-				else
-					slot.madeBy = Globals.player_id;
-				end
-			end
-			if itemData.vars then
-				if not slot.vars then
-					slot.vars = {};
-				end
-				tcopy(slot.vars, itemData.vars);
-			end
-			if itemData.content then
-				if not slot.content then
-					slot.content = {};
-				end
-				tcopy(slot.content, itemData.content);
-			end
+			copySlotContent(slot, itemClass, itemData);
 		end
 		if stackSlot then
 			container.content[slot].count = (container.content[slot].count or 1) + 1;

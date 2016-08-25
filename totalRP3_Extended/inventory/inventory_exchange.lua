@@ -400,7 +400,7 @@ local function lootTransaction()
 		local index = tostring(i);
 		if exchangeFrame.yourData[index] then
 			local slotData = exchangeFrame.yourData[index];
-			TRP3_API.inventory.addItem(nil, slotData.c.id, slotData.c);
+			TRP3_API.inventory.addItem(nil, slotData.c.id, slotData.c, true);
 		end
 	end
 

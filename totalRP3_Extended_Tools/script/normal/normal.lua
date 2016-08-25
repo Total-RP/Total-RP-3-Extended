@@ -264,6 +264,8 @@ local function decorateEffect(scriptStepFrame, effectData)
 	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectData.id);
 	local title = ("%s: |cffff9900%s"):format(loc("WO_EFFECT"), effectInfo.title or UNKNOWN);
 
+	assert(effect and effectInfo, "Unknown effect ID: " .. effectData.id);
+
 	TRP3_API.ui.frame.setupIconButton(scriptStepFrame, effectInfo.icon or ELEMENT_EFFECT_ICON);
 
 	-- Tooltip

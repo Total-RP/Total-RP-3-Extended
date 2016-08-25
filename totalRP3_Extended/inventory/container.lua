@@ -302,11 +302,10 @@ local function pickUpLoot(slotFrom, container, slotID)
 	local itemID = lootInfo.id;
 
 	local returnCode, count = TRP3_API.inventory.addItem(container, itemID, lootInfo);
-	if returnCode == 0 then
+	slotFrom.info.count = (slotFrom.info.count or 1) - count;
+	if returnCode == 0 or slotFrom.info.count <= 0 then
 		slotFrom.info = nil;
 		slotFrom.class = nil;
-	else
-		slotFrom.info.count = (slotFrom.info.count or 1) - count;
 	end
 
 	if lootFrame.onLootCallback then

@@ -81,7 +81,7 @@ TRP3_API.inventory.EFFECTS = {
 			local id = args[1] or "";
 			local count = tonumber(args[2]) or 1;
 			local madeBy = args[3] or false;
-			return ("lastEffectReturn = addItem(%s, \"%s\", {count = %d, madeBy = %s});"):format(targetContainer, id, count, tostring(madeBy));
+			return ("lastEffectReturn = addItem(%s, \"%s\", {count = %d, madeBy = %s}, true);"):format(targetContainer, id, count, tostring(madeBy));
 		end,
 		env = {
 			addItem = "TRP3_API.inventory.addItem",

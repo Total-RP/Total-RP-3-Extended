@@ -30,37 +30,40 @@ local dropData;
 -- Drop
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+function TRP3_API.inventory.dropItemDirect(slotInfo)
+	-- Proper coordinates
+	local posY, posX, posZ, instanceID = UnitPosition("player");
+
+	-- We still need map position for potential marker placement
+	SetMapToCurrentZone();
+	local mapID = GetCurrentMapAreaID();
+	local mapX, mapY = GetPlayerMapPosition("player");
+
+	-- Pack the data
+	local groundData = {
+		posY = posY,
+		posX = posX,
+		posZ = posZ,
+		instanceID = instanceID,
+		mapID = mapID,
+		mapX = mapX,
+		mapY = mapY,
+		item = {}
+	};
+	Utils.table.copy(groundData.item, slotInfo);
+	tinsert(dropData, groundData);
+
+	local count = slotInfo.count or 1;
+	local link = getItemLink(getClass(slotInfo.id));
+	Utils.message.displayMessage(loc("DR_DROPED"):format(link, count));
+end
+
 function TRP3_API.inventory.dropItem(container, slotID, initialSlotInfo)
 	if slotID and container and isContainerByClassID(container.id) and container.content[slotID] then
 		local slotInfo = container.content[slotID];
 		-- Check that nothing has changed
 		if slotInfo == initialSlotInfo then
-
-			-- Proper coordinates
-			local posY, posX, posZ, instanceID = UnitPosition("player");
-
-			-- We still need map position for potential marker placement
-			SetMapToCurrentZone();
-			local mapID = GetCurrentMapAreaID();
-			local mapX, mapY = GetPlayerMapPosition("player");
-
-			-- Pack the data
-			local groundData = {
-				posY = posY,
-				posX = posX,
-				posZ = posZ,
-				instanceID = instanceID,
-				mapID = mapID,
-				mapX = mapX,
-				mapY = mapY,
-				item = {}
-			};
-			Utils.table.copy(groundData.item, slotInfo);
-			tinsert(dropData, groundData);
-
-			local count = slotInfo.count or 1;
-			local link = getItemLink(getClass(slotInfo.id));
-			Utils.message.displayMessage(loc("DR_DROPED"):format(link, count));
+			TRP3_API.inventory.dropItemDirect(slotInfo);
 
 			-- Remove from inv
 			TRP3_API.inventory.removeSlotContent(container, slotID, initialSlotInfo);
@@ -111,7 +114,6 @@ end
 local function onLooted(itemData, count)
 	for index, drop in pairs(dropData) do
 		if drop.item == itemData then
-			drop.item.count = (drop.item.count or 1) - count;
 			if drop.item.count <= 0 then
 				wipe(dropData[index]);
 				dropData[index] = nil;
