@@ -80,6 +80,7 @@ local PAGE_BY_TYPE = {
 		tabTextGetter = function(id, class)
 			return ("%s: %s"):format(loc("TYPE_ITEM"),  TRP3_API.inventory.getItemLink(class));
 		end,
+		tutorial = true,
 		background = 3,
 	},
 	[TRP3_DB.types.DOCUMENT] = {
@@ -274,6 +275,7 @@ local function goToListPage(skipButton)
 	toolFrame.actions:Hide();
 	toolFrame.specific:Hide();
 	toolFrame.root:Hide();
+	toolFrame.tutoframe:Hide();
 	for _, pageData in pairs(PAGE_BY_TYPE) do
 		local frame = toolFrame[pageData.frame or ""];
 		if frame then
@@ -298,6 +300,7 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.actions:Show();
 	toolFrame.specific:Show();
 	toolFrame.root:Show();
+	toolFrame.tutoframe:Hide();
 
 	-- Load data
 	local rootDraft = openObjectAndGetDraft(rootClassID, forceDraftReload);
@@ -321,6 +324,8 @@ function goToPage(fullClassID, forceDraftReload)
 	assert(selectedPageFrame, "No editor for type " .. specificDraft.TY);
 	assert(selectedPageFrame.onLoad, "No load entry for type " .. specificDraft.TY);
 
+	TRP3_ExtendedTutorial.loadStructure(nil);
+
 	-- Show selected
 	setBackground(selectedPageData.background or 1);
 	displayRootInfo(rootClassID, rootDraft, fullClassID, specificClassID, specificDraft);
@@ -332,6 +337,7 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.specificDraft = specificDraft;
 	toolFrame.currentEditor.onLoad();
 	toolFrame.currentEditor:Show();
+
 
 	toolFrame.actions.save:Disable();
 	if TRP3_Tools_DB[rootClassID] then
@@ -495,6 +501,7 @@ local function onStart()
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initCutscene(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
+	TRP3_ExtendedTutorial.init(toolFrame);
 
 	goToListPage();
 

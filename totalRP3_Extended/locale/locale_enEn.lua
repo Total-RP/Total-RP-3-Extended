@@ -919,4 +919,89 @@ It's not because we don't want to help but because we can't do anything to resto
 Thank you, and enjoy Total RP 3 Extended!
 
 {p:r}The TRP3 Team{/p}]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: Databases
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_TITLE = "Tutorial",
+	TU_DB_1_TEXT = [[|cff00ff00Welcome to the database tutorial.|r
+
+This is the database, where all the objects are stored.
+
+An object contains all information about an item, a document, a campaign/quest/step or a cutscene.]],
+	TU_DB_2 = "Database types",
+	TU_DB_2_TEXT = [[There are four tabs, filtering the entire database.
+
+|cff00ff00My database:|r it contains all the objects you created.
+
+|cff00ff00Players database:|r it contains all objects you received (or imported) from other players.
+
+|cff00ff00Backers database:|r it contains the objects created by the Kickstarter backers.
+
+|cff00ff00Full database:|r it contains all the previous databases content.]],
+	TU_DB_3_TEXT = [[You can filter more each database to find a specific object by changing the search filters and select |cff00ff00Search|r.
+
+Without filters, the objects list follows a hierarchical presentation.
+
+But if you filter the list, the results are shown with a flat presentation.
+Here we just filtered the list by object type to show only the |cffff9900items|r.
+
+To exit the search mode, click on the |cff00ff00Clear|r button in the filters panel.]],
+	TU_DB_4 = "Root and inner objects",
+	TU_DB_4_TEXT = [[There are two kind of objects: |cff00ff00root objects and inner objects|r.
+
+|cff00ff00Inner objects|r are always stored in a |cff00ff00root object|r (even if they can be inside another inner object all the way to the root).
+
+When you exchange an item with someone, all the root object information is actually exchanged, even if the item is only an inner object.
+
+So for now, just remember that using inner objects is a good way to link objects that always should be exchange together.
+
+Examples:
+- An item showing a document: the document would be an inner object of the root item object.
+- A campaign with 4 quests: each quest is actually an inner object of the root campaign object.
+- A gun item firing bullet item: the bullet object would be an inner object of the root gun object.
+
+But don't worry, it will come naturally !]],
+	TU_DB_5 = "Root objects",
+	TU_DB_5_TEXT = "Only items and campaigns can be root objects.\n\nYou can use these two buttons to create an new item or campaign.",
+	TU_DB_6 = "Create an item",
+	TU_DB_6_TEXT = [[When creating a new item, you can select a template or use the quick creation mode.
+
+The |cff00ff00quick creation|r mode allows you to easily create a first item, but the possibilities are limited. Now that you can always go to normal creation mode afterward.
+
+Use the |cff00ff00blank item|r template if you want to start from scratch without any example.
+
+The |cff00ff00document item|r template will actually create two objects: an item object and its document inner object. It will also configure the item to show the document when used.
+
+The |cff00ff00container item|r template will create a configure an item object to be used as a container.
+
+Finally, the |cff00ff00create from|r allows you to duplicate an existing item.]],
+	TU_DB_7 = "Object line",
+	TU_DB_7_TEXT = "Each line represents an object. You can click on it to edit it or right click to perform various actions.",
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: Items
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_IT_1_TEXT = [[|cff00ff00Welcome to the item creation tutorial.|r
+
+An item is an object that you can store in your character's inventory (or drop it on the ground).
+
+You are here on the Main tab where you can define all the basic attributes for your item.]],
+
+	TU_IT_2 = "Display attributes",
+	TU_IT_2_TEXT = [[The display attributes are purely cosmetic and don't have any "gameplay" effect.
+
+It's all about the attributes needed for the item tooltip and the item icon.]],
+
+	TU_IT_4 = "Gameplay attributes",
+	TU_IT_4_TEXT = [[The gameplay attributes have some effects on the gameplay.
+
+Two attributes are important: Usable and Container as checking them will display the Workflow and Container tabs.]],
+
+	TU_IT_3 = "Free notes",
+	TU_IT_3_TEXT = [[You can write down notes to help you remember what do you want to do with your item.
+
+These notes can also help others that would want to start an item based on yours.]],
 };

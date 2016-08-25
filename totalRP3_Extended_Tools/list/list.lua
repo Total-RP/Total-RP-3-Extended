@@ -335,6 +335,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tabGroup;
+local TUTORIAL;
 
 local function getDBSize(dbType)
 	local DB = getDB(dbType);
@@ -378,7 +379,7 @@ end
 
 local function createTabBar()
 	local frame = CreateFrame("Frame", "TRP3_ToolFrameListTabPanel", ToolFrame.list);
-	frame:SetSize(400, 30);
+	frame:SetSize(650, 30);
 	frame:SetPoint("BOTTOMLEFT", frame:GetParent(), "TOPLEFT", 15, 0);
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
@@ -395,6 +396,7 @@ end
 function TRP3_API.extended.tools.toList()
 	ToolFrame.rootClassID = nil;
 	tabGroup:SelectTab(1);
+	TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -476,12 +478,74 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function createTutorialStructure()
+	TUTORIAL = {
+		{
+			box = ToolFrame, title = "DB", text = "TU_DB_1_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+		{
+			box = TRP3_ToolFrameListTabPanel, title = "TU_DB_2", text = "TU_DB_2_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(3);
+			end
+		},
+		{
+			box = ToolFrame.list.filters, title = "DB_FILTERS", text = "TU_DB_3_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 500,
+			callback = function()
+				tabGroup:SelectTab(4);
+				ToolFrame.list.filters.clear:GetScript("OnClick")(ToolFrame.list.filters.clear);
+				ToolFrame.list.filters.type:SetSelectedValue(TRP3_DB.types.ITEM);
+			end
+		},
+		{
+			box = "TRP3_ToolFrameListLine1", title = "TU_DB_7", text = "TU_DB_7_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 500,
+			callback = function()
+				tabGroup:SelectTab(4);
+				ToolFrame.list.filters.clear:GetScript("OnClick")(ToolFrame.list.filters.clear);
+			end
+		},
+		{
+			box = ToolFrame.list, title = "TU_DB_4", text = "TU_DB_4_TEXT",
+			arrow = "RIGHT", x = -250, y = 0, anchor = "CENTER", textWidth = 600,
+			callback = function()
+				tabGroup:SelectTab(4);
+				ToolFrame.list.filters.clear:GetScript("OnClick")(ToolFrame.list.filters.clear);
+			end
+		},
+		{
+			box = ToolFrame.list.bottom, title = "TU_DB_5", text = "TU_DB_5_TEXT",
+			arrow = "UP", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+		{
+			box = ToolFrame.list.bottom.item.templates, title = "TU_DB_6", text = "TU_DB_6_TEXT",
+			arrow = "RIGHT", x = 150, y = 0, anchor = "CENTER", textWidth = 600,
+			callback = function()
+				tabGroup:SelectTab(1);
+				ToolFrame.list.bottom.item:GetScript("OnClick")(ToolFrame.list.bottom.item);
+			end
+		},
+	}
+
+
+end
+
 function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame = toolFrame;
 	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, loc("DB_FILTERS"), 150);
 	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, loc("DB_ACTIONS"), 150);
 
 	createTabBar();
+	createTutorialStructure();
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
 		ToolFrame.list.container.scroll.child:SetWidth(containerwidth - 100);

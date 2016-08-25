@@ -34,6 +34,8 @@ local TABS = {
 	EXPERT = 5
 }
 
+local TUTORIAL;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main tab
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -250,12 +252,14 @@ local function onTabChanged(tabWidget, tab)
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
 	TRP3_LinksEditor:Hide();
+	TRP3_ExtendedTutorial.loadStructure(nil);
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
 		display:Show();
 		gameplay:Show();
 		notes:Show();
+		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
 	elseif currentTab == TABS.EFFECTS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.item.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
@@ -323,6 +327,40 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function createTutorialStructure()
+	TUTORIAL = {
+		{
+			box = toolFrame, title = "DB", text = "TU_IT_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+		{
+			box = display, title = "TU_IT_2", text = "TU_IT_2_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+		{
+			box = gameplay, title = "TU_IT_4", text = "TU_IT_4_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+		{
+			box = notes, title = "TU_IT_3", text = "TU_IT_3_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+	}
+
+end
 
 function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	toolFrame = ToolFrame;
@@ -510,4 +548,5 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 		},
 	}
 
+	createTutorialStructure();
 end
