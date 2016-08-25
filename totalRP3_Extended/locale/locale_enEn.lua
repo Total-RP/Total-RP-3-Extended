@@ -799,6 +799,7 @@ We should begin with some examples:
 	CA_NPC_ADD = "Add customized NPC",
 	CA_NPC_UNIT = "Customized NPC",
 	CA_NPC_ID = "NPC ID",
+	CA_NPC_AS = "Duplicate",
 	CA_NPC_NAME = "Default NPC name",
 	CA_NPC_REMOVE = "Remove customization for this NPC?",
 	CA_NPC_ID_TT = "Please enter the ID of the NPC to customize.\n\n|cff00ff00To get the ID of an NPC you targeted, type this command in the chat: /trp3 getID",

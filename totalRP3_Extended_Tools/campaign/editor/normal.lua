@@ -483,7 +483,9 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_NPC_UNIT"),
-			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) ..
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CTRL") .. " + " .. loc("CM_CLICK"), loc("CA_NPC_AS")) ..
+			("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
 	end
 	npc.list.decorate = decorateNPCLine;
 	TRP3_API.ui.list.handleMouseWheel(npc.list, npc.list.slider);
