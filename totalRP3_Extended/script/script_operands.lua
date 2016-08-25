@@ -261,6 +261,16 @@ local OPERANDS = {
 		},
 	},
 
+	["quest_is_npc"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitIsCampaignNPC(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitIsCampaignNPC"] = "TRP3_API.quest.UnitIsCampaignNPC",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- OTHERS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

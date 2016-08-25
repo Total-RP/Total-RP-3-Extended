@@ -401,6 +401,19 @@ local function quest_is_step_init()
 	end
 end
 
+local function quest_is_npc_init()
+	registerOperandEditor("quest_is_npc", {
+		title = loc("OP_OP_QUEST_NPC"),
+		description = loc("OP_OP_QUEST_NPC_TT"),
+		returnType = true,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_QUEST_NPC") .. " (" .. TRP3_API.extended.tools.getUnitText(unitID) .. ")";
+		end,
+		editor = TRP3_OperandEditorUnitType,
+	});
+end
+
 function TRP3_API.extended.tools.initCampaignEffects()
 
 	-- Effect
@@ -414,4 +427,5 @@ function TRP3_API.extended.tools.initCampaignEffects()
 	quest_var_init();
 	quest_is_step_init();
 	quest_obj_init();
+	quest_is_npc_init();
 end

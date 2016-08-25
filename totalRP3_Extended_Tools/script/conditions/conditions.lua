@@ -526,6 +526,7 @@ function editor.init()
 			"quest_var",
 			"quest_is_step",
 			"quest_obj",
+			"quest_is_npc",
 		},
 --		["Expert"] = {-- TODO: locals
 --			"var_workflow",

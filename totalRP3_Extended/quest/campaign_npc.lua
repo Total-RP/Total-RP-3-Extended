@@ -147,6 +147,21 @@ local function onTooltipUpdate(self, elapsed)
 	end
 end
 
+local UnitExists = UnitExists;
+
+function TRP3_API.quest.UnitIsCampaignNPC(unit)
+	if UnitExists(unit) then
+		local unitType, npcID = getUnitDataFromGUID(unit);
+		if unitType == "Creature" and npcID then
+			local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+			if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
+				return true;
+			end
+		end
+	end
+	return false;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

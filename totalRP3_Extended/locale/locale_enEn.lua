@@ -779,6 +779,8 @@ We should begin with some examples:
 	OP_OP_QUEST_OBJ = "Quest objective",
 	OP_OP_QUEST_OBJ_TT = "Return the completion (true or false) for a quest objective. If the campaign, quest or the objective is not yet revealed, returns false.",
 	OP_OP_QUEST_OBJ_PREVIEW = "Objective %s from %s",
+	OP_OP_QUEST_NPC = "Unit is campaign NPC",
+	OP_OP_QUEST_NPC_TT = "|cff00ff00Returns whether a unit is a customized NPC in the currently active campaign.",
 
 	-- Test
 	COND_EDITOR = "Condition editor",
