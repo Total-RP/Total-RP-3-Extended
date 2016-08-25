@@ -282,7 +282,11 @@ local function useContainerSlot(slotButton, containerFrame)
 			if slotButton.info.cooldown then
 				Utils.message.displayMessage(ERR_ITEM_COOLDOWN, Utils.message.type.ALERT_MESSAGE);
 			else
-				local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, object = slotButton.info, container = containerFrame.info}, slotButton.info.id);
+				local useWorkflow = slotButton.class.US.SC;
+				if slotButton.class.LI and slotButton.class.LI.OU then
+					useWorkflow = slotButton.class.LI.OU;
+				end
+				local retCode = TRP3_API.script.executeClassScript(useWorkflow, slotButton.class.SC, {class = slotButton.class, object = slotButton.info, container = containerFrame.info}, slotButton.info.id);
 			end
 		end
 	end
@@ -336,18 +340,25 @@ function TRP3_API.inventory.startCooldown(slotInfo, duration, container)
 	end
 end
 
-local function removeSlotContent(container, slotID, slotInfo, message)
+local function removeSlotContent(container, slotID, slotInfo, manuallyDestroyed)
 	-- Check that nothing has changed
 	if container.content[slotID] == slotInfo then
 		local count = slotInfo.count or 1;
-		local link = getItemLink(getClass(slotInfo.id));
+		local class = getClass(slotInfo.id);
+		local link = getItemLink(class);
+
+		if manuallyDestroyed then
+			if class.LI and class.LI.OU then
+				local retCode = TRP3_API.script.executeClassScript(class.LI.OU, class.SC,
+					{class = class, object = slotInfo, container = container}, slotInfo.id);
+			end
+			Utils.message.displayMessage(loc("DR_DELETED"):format(link, count));
+		end
+
 		wipe(container.content[slotID]);
 		container.content[slotID] = nil;
 		TRP3_API.inventory.recomputeAllInventory();
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-		if message then
-			Utils.message.displayMessage(loc("DR_DELETED"):format(link, count));
-		end
 	end
 end
 TRP3_API.inventory.removeSlotContent = removeSlotContent;

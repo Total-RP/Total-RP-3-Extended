@@ -433,6 +433,9 @@ function onLineActionSelected(value, button)
 	elseif action == ACTION_FLAG_EXPERT then
 		local class = getClass(objectID);
 		class.MD.MO = TRP3_DB.modes.EXPERT;
+		if class.TY == TRP3_DB.types.ITEM then
+			class.LI = {OU = "onUse"};
+		end
 		local link = TRP3_API.inventory.getItemLink(class, objectID);
 		Utils.message.displayMessage(loc("WO_EXPERT_DONE"):format(link));
 		onTabChanged(nil, currentTab);

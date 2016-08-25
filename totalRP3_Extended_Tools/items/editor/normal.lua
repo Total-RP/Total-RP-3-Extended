@@ -535,16 +535,10 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 			field = "OU",
 		},
 		{
-			text = "On destroy",
-			tt = "",
+			text = loc("IT_TRIGGER_ON_DESTROY"),
+			tt = loc("IT_TRIGGER_ON_DESTROY_TT"),
 			icon = "Interface\\ICONS\\achievement_quests_completed_08",
 			field = "OD",
-		},
-		{
-			text = "On give/drop",
-			tt = "",
-			icon = "Interface\\ICONS\\achievement_quests_completed_08",
-			field = "OG",
 		},
 	}
 
