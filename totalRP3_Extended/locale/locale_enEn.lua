@@ -483,6 +483,9 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	WO_CONTEXT_TT = "The workflow context determines which effects can be used in the workflow.",
 	WO_COMMON_EFFECT = "Common effects",
 	WO_EXPERT_EFFECT = "Expert effects",
+	WO_COPY = "Copy workflow content",
+	WO_PASTE = "Paste workflow content",
+	WO_PASTE_CONFIRM = "Replace this workflow content with the one you copied earlier?",
 
 	-- Delay editor
 	WO_DELAY_DURATION = "Duration",
@@ -694,6 +697,7 @@ We should begin with some examples:
 	IN_INNER_NO_AVAILABLE = "This inner ID is not available!",
 	IN_INNER_COPY_ACTION = "Copy object content",
 	IN_INNER_PASTE_ACTION = "Paste object content",
+	IN_INNER_PASTE_CONFIRM = "Replace the content of this inner object with the one you copied earlier?",
 
 	-- Operands
 	OP_COMP_EQUALS = "is equal to",

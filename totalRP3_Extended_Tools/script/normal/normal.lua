@@ -455,6 +455,8 @@ end
 
 local WORKFLOW_LINE_ACTION_DELETE = 1;
 local WORKFLOW_LINE_ACTION_ID = 2;
+local WORKFLOW_LINE_ACTION_COPY = 3;
+local WORKFLOW_LINE_ACTION_PASTE = 4;
 
 local function onWorkflowLineAction(action, line)
 	assert(toolFrame.specificDraft.SC[line.workflowID]);
@@ -477,6 +479,21 @@ local function onWorkflowLineAction(action, line)
 				editor.refreshWorkflowList();
 			end
 		end, nil, workflowID);
+	elseif action == WORKFLOW_LINE_ACTION_COPY then
+		if not editor.copy then
+			editor.copy = {};
+		end
+		wipe(editor.copy);
+		Utils.table.copy(editor.copy, workflow);
+	elseif action == WORKFLOW_LINE_ACTION_PASTE then
+		if editor.copy then
+			TRP3_API.popup.showConfirmPopup(loc("WO_PASTE_CONFIRM"), function()
+				wipe(workflow);
+				Utils.table.copy(workflow, editor.copy);
+				editor.refreshWorkflowList();
+				openWorkflow(workflowID);
+			end);
+		end
 	end
 end
 
@@ -489,6 +506,10 @@ local function onWorkflowLineClick(lineClick, button)
 		tinsert(values, {line.text:GetText(), nil});
 		tinsert(values, {DELETE, WORKFLOW_LINE_ACTION_DELETE});
 		tinsert(values, {loc("IN_INNER_ID_ACTION"), WORKFLOW_LINE_ACTION_ID});
+		tinsert(values, {loc("WO_COPY"), WORKFLOW_LINE_ACTION_COPY});
+		if editor.copy then
+			tinsert(values, {loc("WO_PASTE"), WORKFLOW_LINE_ACTION_PASTE});
+		end
 		TRP3_API.ui.listbox.displayDropDown(line, values, onWorkflowLineAction, 0, true);
 	end
 end

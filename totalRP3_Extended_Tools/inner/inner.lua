@@ -196,12 +196,13 @@ local function onLineAction(action, line)
 		Utils.table.copy(editor.copy, innerObject);
 		editor.copy_fullClassID = toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id;
 	elseif action == LINE_ACTION_PASTE then
-		if editor.copy.TY == innerObject.TY then
-			wipe(innerObject);
-			Utils.table.copy(innerObject, editor.copy);
-			adaptIDs(editor.copy_fullClassID, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id, innerObject);
-
-			refresh();
+		if editor.copy and editor.copy.TY == innerObject.TY then
+			TRP3_API.popup.showConfirmPopup(loc("IN_INNER_PASTE_CONFIRM"), function()
+				wipe(innerObject);
+				Utils.table.copy(innerObject, editor.copy);
+				adaptIDs(editor.copy_fullClassID, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id, innerObject);
+				refresh();
+			end);
 		end
 	end
 end
