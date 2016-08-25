@@ -506,6 +506,10 @@ local function onStart()
 	goToListPage();
 
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
+
+	-- Bindings
+
+	BINDING_NAME_TRP3_EXTENDED_TOOLS = loc("TB_TOOLS");
 end
 
 local function onInit()

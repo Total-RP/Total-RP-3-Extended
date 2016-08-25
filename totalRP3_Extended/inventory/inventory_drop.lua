@@ -160,6 +160,7 @@ function searchForItems()
 		Utils.message.displayMessage(loc("DR_NOTHING"));
 	end
 end
+TRP3_API.inventory.searchForItems = searchForItems;
 
 function TRP3_API.inventory.dropOrDestroy(itemClass, callbackDestroy, callbackDrop)
 	StaticPopupDialogs["TRP3_DROP_ITEM"].text = loc("DR_POPUP_ASK"):format(TRP3_API.inventory.getItemLink(itemClass));

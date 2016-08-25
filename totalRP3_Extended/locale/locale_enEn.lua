@@ -29,8 +29,16 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	EX_SOUND_HISTORY_CLEAR = "Clear",
 	EX_SOUND_HISTORY_STOP_ALL = "Stop all",
 	EX_SOUND_HISTORY_TT = "See what sounds have been played, see where they're from and stop them if they still are playing.",
+	BINDING_NAME_TRP3_INVENTORY = "Open character's inventory",
+	BINDING_NAME_TRP3_MAIN_CONTAINER = "Open main container",
+	BINDING_NAME_TRP3_SEARCH_FOR_ITEMS = "Search for items",
+	BINDING_NAME_TRP3_QUESTLOG = "Open TRP3's quest log",
+	BINDING_NAME_TRP3_QUEST_LOOK = "Quest action: look",
+	BINDING_NAME_TRP3_QUEST_LISTEN = "Quest action: listen",
+	BINDING_NAME_TRP3_QUEST_ACTION = "Quest action: action",
+	BINDING_NAME_TRP3_QUEST_TALK = "Quest action: talk",
 
-	-- INVENTORY
+-- INVENTORY
 	IT_CON = "Container",
 	IT_CON_TT = "Container (%d/%d slots used)",
 	IT_CON_ERROR_TYPE = "This container can't contain this kind of items.",
