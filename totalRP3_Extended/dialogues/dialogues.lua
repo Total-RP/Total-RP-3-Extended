@@ -416,6 +416,7 @@ function TRP3_API.extended.dialog.onStart()
 	-- Effect and operands
 	TRP3_API.script.registerEffects({
 		dialog_start = {
+			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function(args)
 				local dialogID = args[1];
 				return ("lastEffectReturn = startDialog(\"%s\");"):format(dialogID);
