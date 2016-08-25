@@ -435,6 +435,7 @@ local function onLineActionSelected(value, button)
 	elseif action == ACTION_FLAG_COPY then
 		wipe(TRP3_InnerObjectEditor.copy);
 		Utils.table.copy(TRP3_InnerObjectEditor.copy, getClass(objectID));
+		TRP3_InnerObjectEditor.copy_fullClassID = objectID;
 	elseif action == ACTION_FLAG_EXPORT then
 		local class = getClass(objectID);
 		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class});

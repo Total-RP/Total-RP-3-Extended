@@ -395,7 +395,7 @@ local function inv_loot_init()
 			if data[3] and data[3][index] then
 				slot.info = {
 					classID = data[3][index].classID,
-					count = tonumber(editor.bag.editor.count:GetText()) or 1,
+					count = tonumber(data[3][index].count or 1) or 1,
 				};
 				slot.class = getClass(data[3][index].classID);
 			end

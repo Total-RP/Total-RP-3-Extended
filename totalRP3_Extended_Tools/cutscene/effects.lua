@@ -72,6 +72,33 @@ local function dialog_start_init()
 	end
 end
 
+
+local function dialog_quick_init()
+	local editor = TRP3_EffectEditorDialogSimple;
+
+	registerEffectEditor("dialog_quick", {
+		title = loc("EFFECT_DIALOG_QUICK"),
+		icon = "inv_inscription_scrollofwisdom_01",
+		description = loc("EFFECT_DIALOG_QUICK_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" ..loc("EFFECT_TEXT_PREVIEW") .. ":|r " .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {loc("EFFECT_TEXT_TEXT_DEFAULT")};
+		end,
+		editor = editor,
+	});
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.text.scroll.text:SetText(data[1] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.text.scroll.text:GetText()));
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Operands
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -86,6 +113,7 @@ function TRP3_API.extended.tools.initCutsceneEffects()
 
 	-- Effect
 	dialog_start_init();
+	dialog_quick_init();
 
 	-- Operands
 

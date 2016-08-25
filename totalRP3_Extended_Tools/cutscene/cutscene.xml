@@ -63,6 +63,26 @@
 
 	</Frame>
 
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--    Quick dialog      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorDialogSimple" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="text" inherits="TRP3_TextArea">
+				<Size x="260" y="0"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+					<Anchor point="BOTTOM" x="0" y="40"/>
+				</Anchors>
+			</Frame>
+
+		</Frames>
+
+	</Frame>
+
 
 
 	<Script file="cutscene/effects.lua"/>

@@ -400,6 +400,23 @@ end
 
 TRP3_API.extended.dialog.startDialog = startDialog;
 
+function TRP3_API.extended.dialog.startQuickDialog(text)
+	local class = {
+		TY = TRP3_DB.types.DIALOG,
+		BA = {},
+		DS = {
+			{
+				["TX"] = text,
+				["ND"] = "RIGHT",
+				["NA"] = "target",
+				["LU"] = "player",
+				["RU"] = "target",
+			},
+		}
+	}
+	startDialog(nil, class)
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -423,6 +440,19 @@ function TRP3_API.extended.dialog.onStart()
 			end,
 			env = {
 				startDialog = "TRP3_API.extended.dialog.startDialog",
+			}
+		},
+	});
+
+	TRP3_API.script.registerEffects({
+		dialog_quick = {
+			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
+			codeReplacementFunc = function(args)
+				local dialogText = args[1];
+				return ("lastEffectReturn = startQuickDialog(\"%s\");"):format(dialogText);
+			end,
+			env = {
+				startQuickDialog = "TRP3_API.extended.dialog.startQuickDialog",
 			}
 		},
 	});

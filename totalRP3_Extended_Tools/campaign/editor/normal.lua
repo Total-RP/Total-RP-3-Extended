@@ -61,7 +61,7 @@ local function decorateNPCLine(line, npcID)
 	local npcData = data.ND[npcID];
 
 	TRP3_API.ui.frame.setupIconButton(line.Icon, npcData.IC or Globals.icons.profile_default);
-	line.Name:SetText(npcData.NA or UNKNOWN);
+	line.Name:SetText(npcData.NA or loc("CA_NPC_NAME"));
 	line.Description:SetText(npcData.DE or "");
 	line.ID:SetText(loc("CA_NPC_ID") .. ": " .. npcID);
 	line.click.npcID = npcID;
@@ -93,7 +93,7 @@ local function openNPC(npcID, frame)
 		if npcData then
 			npc.editor.oldID = npcID;
 			npc.editor.id:SetText(npcID);
-			npc.editor.name:SetText(npcData.NA or UNKNOWN);
+			npc.editor.name:SetText(npcData.NA or "");
 			npc.editor.description.scroll.text:SetText(npcData.DE or "");
 			onNPCIconSelected(npcData.IC or Globals.icons.profile_default);
 			TRP3_API.ui.frame.configureHoverFrame(npc.editor, frame, "RIGHT", 0, 5);

@@ -271,6 +271,8 @@ local function refreshQuestList(campaignID)
 		if index > 1 then
 			TRP3_QuestLogPage.Quest.Empty:Hide();
 			TRP3_QuestLogPage.Quest.scroll.child.Content.Current:Show();
+		elseif Utils.table.size(getClass(campaignID).QE) == 0 then
+			TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_EMPTY"));
 		else
 			TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_NOQUEST"));
 		end
