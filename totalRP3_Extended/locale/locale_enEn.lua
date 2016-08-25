@@ -795,6 +795,8 @@ We should begin with some examples:
 	OP_OP_UNIT_DISTANCE_TRADE_TT = "|cff00ff00Returns whether a unit is close enough for trading (11.11 yards).",
 	OP_OP_UNIT_DISTANCE_INSPECT = "Unit is near (inspection)",
 	OP_OP_UNIT_DISTANCE_INSPECT_TT = "|cff00ff00Returns whether a unit is close enough for inspection (28 yards).",
+	OP_OP_CHAR_FACING = "Character facing",
+	OP_OP_CHAR_FACING_TT = "Returns the player's orientation (in radians, 0 = north, values increasing counterclockwise).\n\n|cffff9900Indicates the direction the player model is (normally) facing and in which the player will move if he begins walking forward, not the camera orientation.",
 
 	-- Test
 	COND_EDITOR = "Condition editor",

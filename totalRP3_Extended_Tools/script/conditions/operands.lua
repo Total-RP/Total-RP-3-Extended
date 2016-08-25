@@ -351,6 +351,18 @@ local function unit_distance_inspect_init()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Character operands
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function char_facing_init()
+	registerOperandEditor("char_facing", {
+		title = loc("OP_OP_CHAR_FACING"),
+		description = loc("OP_OP_CHAR_FACING_TT"),
+		returnType = 0,
+	});
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -385,5 +397,8 @@ function TRP3_ConditionEditor.initOperands()
 	unit_is_dead_init();
 	unit_distance_trade_init();
 	unit_distance_inspect_init();
+
+	-- Character values
+	char_facing_init();
 
 end

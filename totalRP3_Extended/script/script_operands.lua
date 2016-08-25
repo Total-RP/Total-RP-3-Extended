@@ -220,6 +220,20 @@ local OPERANDS = {
 	},
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CHARACTER values
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["char_facing"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "GetPlayerFacing()";
+		end,
+		env = {
+			["GetPlayerFacing"] = "GetPlayerFacing",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Inventory
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

@@ -490,7 +490,6 @@ function editor.init()
 		},
 		[loc("OP_UNIT_TEST")] = {
 			"unit_is_player",
---			"unit_range",
 			"unit_exists",
 			"unit_is_dead",
 			"unit_distance_trade",
@@ -498,7 +497,7 @@ function editor.init()
 --			"unit_mounted",
 --			"unit_flying",
 		},
---		["Character"] = { -- TODO: locals
+		[CHARACTER] = {
 --			"char_falling",
 --			"char_stealth",
 --			"char_swimming",
@@ -506,8 +505,8 @@ function editor.init()
 --			"char_coord",
 --			"char_zone",
 --			"char_subzone",
---			"char_facing",
---		},
+			"char_facing",
+		},
 --		["Pets and companions"] = { -- TODO: locals
 --			"pet_battle_name",
 --			"pet_pet_name",
@@ -542,7 +541,7 @@ function editor.init()
 	local evaluatedOrder = {
 		loc("OP_UNIT_VALUE"),
 		loc("OP_UNIT_TEST"),
---		"Character", -- TODO: locals
+		CHARACTER,
 --		"Pets and companions", -- TODO: locals
 --		"Campaign and quests", -- TODO: locals
 		loc("INV_PAGE_CHARACTER_INV"),
