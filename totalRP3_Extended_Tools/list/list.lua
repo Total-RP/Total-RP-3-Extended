@@ -28,7 +28,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
 local showItemTooltip = TRP3_API.inventory.showItemTooltip;
 
-local ToolFrame;
+local ToolFrame, onLineActionSelected;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
 local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
 
@@ -109,6 +109,10 @@ local function onLineClick(self, button)
 	local data = self:GetParent().idData;
 	if button == "RightButton" then
 		onLineRightClick(self:GetParent(), data);
+	elseif button == "MiddleButton" then
+		if (currentTab == TABS.MY_DB or currentTab == TABS.OTHERS_DB) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+			onLineActionSelected("1" .. data.fullID);
+		end
 	else
 		if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
 			TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID);
@@ -212,7 +216,7 @@ function refresh()
 		local lineWidget = linesWidget[index];
 		if not lineWidget then
 			lineWidget = CreateFrame("Frame", "TRP3_ToolFrameListLine" .. index, ToolFrame.list.container.scroll.child, "TRP3_Tools_ListLineTemplate");
-			lineWidget.Click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+			lineWidget.Click:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp");
 			lineWidget.Click:SetScript("OnClick", onLineClick);
 			lineWidget.Click:SetScript("OnEnter", onLineEnter);
 			lineWidget.Click:SetScript("OnLeave", onLineLeave);
@@ -411,7 +415,7 @@ local ACTION_FLAG_EXPERT = "5";
 local ACTION_FLAG_COPY = "6";
 local ACTION_FLAG_EXPORT = "7";
 
-local function onLineActionSelected(value, button)
+function onLineActionSelected(value, button)
 	local action = value:sub(1, 1);
 	local objectID = value:sub(2);
 	if action == ACTION_FLAG_DELETE then
@@ -452,11 +456,9 @@ end
 function onLineRightClick(lineWidget, data)
 	local values = {};
 	tinsert(values, {data.text, nil});
-	if currentTab == TABS.MY_DB or currentTab == TABS.OTHERS_DB then
-		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-			tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID, loc("DB_DELETE_TT")});
-			tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID, loc("DB_SECURITY_TT")});
-		end
+	if (currentTab == TABS.MY_DB or currentTab == TABS.OTHERS_DB) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+		tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID, loc("DB_DELETE_TT")});
+		tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID, loc("DB_SECURITY_TT")});
 	end
 	if data.type == TRP3_DB.types.ITEM then
 		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID, loc("DB_ADD_ITEM_TT")});

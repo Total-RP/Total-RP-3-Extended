@@ -65,7 +65,7 @@ local function onSave(toMode)
 	end
 	editor:Hide();
 	Events.fireEvent(Events.ON_OBJECT_UPDATED, ID, TRP3_DB.types.ITEM);
-	return ID;
+	return ID or editor.classID;
 end
 
 local function onConvert()
