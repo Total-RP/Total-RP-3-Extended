@@ -302,14 +302,7 @@
 						</Frames>
 					</Frame>
 
-					<Frame parentKey="list" name="$parentList">
-
-						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-							<EdgeSize><AbsValue val="24"/></EdgeSize>
-							<TileSize><AbsValue val="380"/></TileSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-						</Backdrop>
-
+					<Frame parentKey="list" name="$parentList" inherits="TRP3_InnerFrame">
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.help" x="0" y="-25"/>
 							<Anchor point="RIGHT" x="-20" y="0"/>
@@ -365,26 +358,7 @@
 									<Anchor point="RIGHT" x="-25" y="0" />
 								</Anchors>
 							</Frame>
-
-							<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
-								<Size x="15" y="0" />
-								<Anchors>
-									<Anchor point="RIGHT" x="-7" y="0"/>
-									<Anchor point="TOP" x="0" y="-2"/>
-									<Anchor point="BOTTOM" x="0" y="6"/>
-								</Anchors>
-								<Scripts>
-									<OnLoad>
-										local name = self:GetName();
-										_G[name .. "Text"]:SetText("");
-										_G[name .. "High"]:SetText("");
-										_G[name .. "Low"]:SetText("");
-										self:SetMinMaxValues(0, 6);
-										self:SetValueStep(1);
-										self:SetOrientation("VERTICAL");
-									</OnLoad>
-								</Scripts>
-							</Slider>
+							<Slider name="$parentSlider" parentKey="slider" inherits="TRP3_Scrollbar" />
 						</Frames>
 
 					</Frame>
