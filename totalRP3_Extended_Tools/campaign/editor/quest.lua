@@ -170,6 +170,7 @@ end
 
 local function renameQuestStep(stepID)
 	TRP3_API.popup.showTextInputPopup(loc("QE_STEP_CREATE"), function(newID)
+		newID = TRP3_API.extended.checkID(newID);
 		if stepID ~= newID and not toolFrame.specificDraft.ST[newID] then
 			toolFrame.specificDraft.ST[newID] = toolFrame.specificDraft.ST[stepID];
 			toolFrame.specificDraft.ST[newID].BA.NA = newID;
@@ -183,6 +184,7 @@ end
 
 local function createQuestStep()
 	TRP3_API.popup.showTextInputPopup(loc("QE_STEP_CREATE"), function(value)
+		value = TRP3_API.extended.checkID(value);
 		if not toolFrame.specificDraft.ST[value] then
 			toolFrame.specificDraft.ST[value] = TRP3_API.extended.tools.getQuestStepData(value);
 			refreshQuestStepList();

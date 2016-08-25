@@ -72,6 +72,12 @@ TRP3_DB.missing = missing;
 local DB = TRP3_DB.global;
 local ID_SEPARATOR = " ";
 TRP3_API.extended.ID_SEPARATOR = ID_SEPARATOR;
+TRP3_API.extended.ID_EXCLUSION_PATTERN = "[^%w%_]";
+TRP3_API.extended.ID_EXCLUSION_REPLACEMENT = "_";
+
+function TRP3_API.extended.checkID(ID)
+	return ID:lower():gsub(TRP3_API.extended.ID_EXCLUSION_PATTERN, TRP3_API.extended.ID_EXCLUSION_REPLACEMENT);
+end
 
 local function getFullID(...)
 	return strtrim(strjoin(ID_SEPARATOR, ...));

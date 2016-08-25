@@ -71,10 +71,6 @@ local function createInnerObject(innerID, innerType, innerData)
 
 end
 
-local function checkID(ID)
-	return ID:lower():gsub("[^%w%_]", "_");
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Inner object editor: UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -85,7 +81,7 @@ local function idExists(id)
 end
 
 local function onIDChanged(self)
-	local id = checkID(self:GetText()) or "";
+	local id = TRP3_API.extended.checkID(self:GetText()) or "";
 	if id:len() == 0 or idExists(id) then
 		editor.browser.add:Disable();
 	else
@@ -148,6 +144,27 @@ local LINE_ACTION_DELETE = 1;
 local LINE_ACTION_ID = 2;
 local LINE_ACTION_COPY = 3;
 local LINE_ACTION_PASTE = 4;
+local type, tremove = type, tremove;
+
+---
+-- Recursivity is bad, people.
+-- Always use a stack when you have to parse large structures. :)
+--
+local function adaptIDs(oldID, newID, object)
+	local stack = {object};
+	while #stack ~= 0 do
+		local current = tremove(stack);
+		if type(current) == "table" then
+			for index, value in pairs(current) do
+				if type(value) == "table" then
+					tinsert(stack, value);
+				elseif type(value) == "string" then
+					current[index] = value:gsub(oldID, newID);
+				end
+			end
+		end
+	end
+end
 
 local function onLineAction(action, line)
 	assert(toolFrame.specificDraft.IN[line.objectID]);
@@ -165,7 +182,7 @@ local function onLineAction(action, line)
 		end);
 	elseif action == LINE_ACTION_ID then
 		TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ID"):format(name or UNKNOWN, id), function(newID)
-			newID = checkID(newID);
+			newID = TRP3_API.extended.checkID(newID);
 			if toolFrame.specificDraft.IN[newID] then
 				Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), 4);
 			elseif newID and newID:len() > 0 then
@@ -177,10 +194,13 @@ local function onLineAction(action, line)
 	elseif action == LINE_ACTION_COPY then
 		wipe(editor.copy);
 		Utils.table.copy(editor.copy, innerObject);
+		editor.copy_fullClassID = toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id;
 	elseif action == LINE_ACTION_PASTE then
 		if editor.copy.TY == innerObject.TY then
 			wipe(innerObject);
 			Utils.table.copy(innerObject, editor.copy);
+			adaptIDs(editor.copy_fullClassID, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id, innerObject);
+
 			refresh();
 		end
 	end
@@ -207,7 +227,7 @@ end
 
 local function addInnerObject(type)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-	local innerID = checkID(editor.browser.id:GetText());
+	local innerID = TRP3_API.extended.checkID(editor.browser.id:GetText());
 	createInnerObject(innerID, type);
 	refresh();
 end

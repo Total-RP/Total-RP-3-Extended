@@ -179,6 +179,7 @@ end
 
 local function renameQuest(questID)
 	TRP3_API.popup.showTextInputPopup(loc("CA_QUEST_CREATE"), function(newID)
+		newID = TRP3_API.extended.checkID(newID);
 		if questID ~= newID and not toolFrame.specificDraft.QE[newID] then
 			toolFrame.specificDraft.QE[newID] = toolFrame.specificDraft.QE[questID];
 			toolFrame.specificDraft.QE[questID] = nil;
@@ -191,6 +192,7 @@ end
 
 local function createQuest()
 	TRP3_API.popup.showTextInputPopup(loc("CA_QUEST_CREATE"), function(value)
+		value = TRP3_API.extended.checkID(value);
 		if not toolFrame.specificDraft.QE[value] then
 			toolFrame.specificDraft.QE[value] = TRP3_API.extended.tools.getQuestData();
 			refreshQuestsList();
