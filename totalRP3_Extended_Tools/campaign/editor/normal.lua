@@ -76,13 +76,33 @@ local function refreshNPCList()
 	end
 end
 
-local function newNPC()
+local UnitExists = UnitExists;
+
+local function newNPC(npcID)
 	npc.editor.oldID = nil;
-	npc.editor.id:SetText("");
+	npc.editor.id:SetText(npcID or "");
+	if UnitExists("target") then
+		local unitType, npcID = Utils.str.getUnitDataFromGUID("target");
+		if unitType == "Creature" and npcID then
+			npc.editor.id:SetText(npcID);
+		end
+	end
 	npc.editor.name:SetText("");
 	npc.editor.description.scroll.text:SetText("");
 	onNPCIconSelected(Globals.icons.profile_default);
 	TRP3_API.ui.frame.configureHoverFrame(npc.editor, npc.list.add, "TOP", 0, 5, false);
+end
+
+local function createFrom(npcID)
+	if not npcID then
+		newNPC();
+	else
+		local npcData = toolFrame.specificDraft.ND[npcID];
+		newNPC(npcID);
+		npc.editor.name:SetText(npcData.NA or "");
+		npc.editor.description.scroll.text:SetText(npcData.DE or "");
+		onNPCIconSelected(npcData.IC or Globals.icons.profile_default);
+	end
 end
 
 local function openNPC(npcID, frame)
@@ -446,7 +466,11 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 			if button == "RightButton" then
 				removeNPC(self.npcID);
 			else
-				openNPC(self.npcID, self);
+				if IsControlKeyDown() then
+					createFrom(self.npcID, self);
+				else
+					openNPC(self.npcID, self);
+				end
 			end
 		end);
 		line.click:SetScript("OnEnter", function(self)
