@@ -34,13 +34,18 @@ local QUICK_SLOT_ID = TRP3_API.inventory.QUICK_SLOT_ID;
 local DEFAULT_SEQUENCE = 193;
 local DEFAULT_TIME = 1;
 
-local function resetEquip()
+local function resetEquip(Main, Model)
+	local main = Main or main;
+	local model = Model or model;
 	Model_Reset(model);
-	main.Equip:Hide();
+	if main.Equip then
+		main.Equip:Hide();
+	end
 	model.Marker:Hide();
 	model.Line:Hide();
 	model.sequence = nil;
 end
+TRP3_API.inventory.resetWearable = resetEquip;
 
 local function setModelPosition(self, rotation)
 	self.rotation = rotation;
@@ -51,7 +56,7 @@ end
 local SLOT_MARGIN = 35;
 local SLOT_SPACING = 12;
 
-local function drawLine(from, quality)
+local function drawLine(from, quality, model)
 	model.Line:Show();
 	model.Line:SetStartPoint("CENTER", from);
 	model.Line:SetEndPoint("CENTER", model.Marker);
@@ -60,7 +65,8 @@ local function drawLine(from, quality)
 	model.Line:SetVertexColor(r, g, b, 1);
 end
 
-local function moveMarker(self, diffX, diffY, oX, oY, quality)
+local function moveMarker(self, diffX, diffY, oX, oY, quality, frame)
+	local model = frame or model;
 	local width, height = model:GetWidth() / 2, model:GetHeight() / 2;
 	self:ClearAllPoints();
 	self.posX = math.max(-width, math.min(oX + diffX, width));
@@ -71,7 +77,10 @@ local function moveMarker(self, diffX, diffY, oX, oY, quality)
 	self.halo:SetVertexColor(r, g, b, 0.3);
 end
 
-local function setButtonModelPosition(self, force)
+local function setButtonModelPosition(self, force, frame)
+	local main = (frame and frame.Main) or main;
+	local model = (frame and frame.Main.Model) or model;
+
 	if self.info and self.class then
 		local isWearable = self.class.BA and self.class.BA.WA;
 		local quality = self.class.BA and self.class.BA.QA;
@@ -81,16 +90,19 @@ local function setButtonModelPosition(self, force)
 			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
 			model.sequenceTime = pos.sequenceTime or DEFAULT_TIME;
 			setModelPosition(model, pos.rotation or 0);
-			moveMarker(model.Marker, pos.x or 0, pos.y or 0, 0, 0, quality);
-			main.Equip.sequence:SetText(model.sequence);
-			main.Equip.time:SetValue(model.sequenceTime);
+			moveMarker(model.Marker, pos.x or 0, pos.y or 0, 0, 0, quality, model);
+			if main.Equip then
+				main.Equip.sequence:SetText(model.sequence);
+				main.Equip.time:SetValue(model.sequenceTime);
+			end
 			model.Marker:Show();
-			drawLine(self, quality);
+			drawLine(self, quality, model);
 		else
-			resetEquip();
+			resetEquip(main, model);
 		end
 	end
 end
+TRP3_API.inventory.setWearableConfiguration = setButtonModelPosition;
 
 local function onSlotEnter(self)
 	if not main.Equip:IsVisible() then
@@ -368,15 +380,17 @@ function TRP3_API.inventory.initInventoryPage()
 		local diffX = x - self.x;
 		local diffY = y - self.y;
 		self:StopMovingOrSizing();
-		moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY);
+		moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY, model);
 	end);
 
 	main.Equip.time:SetScript("OnValueChanged", function(self)
 		model.sequenceTime = self:GetValue();
 	end);
-	main.Equip.sequence:SetScript("OnEnterPressed", function(self)
+	local onChange = function(self)
 		model.sequence = tonumber(self:GetText()) or DEFAULT_SEQUENCE;
-	end);
+	end;
+	main.Equip.sequence:SetScript("OnTextChanged", onChange);
+	main.Equip.sequence:SetScript("OnEnterPressed", onChange);
 	main.Equip.sequence.title:SetText(loc("INV_PAGE_SEQUENCE"));
 	setTooltipForSameFrame(main.Equip.sequence.help, "RIGHT", 0, 5, loc("INV_PAGE_SEQUENCE"), loc("INV_PAGE_SEQUENCE_TT"));
 end

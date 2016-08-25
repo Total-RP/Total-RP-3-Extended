@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local Comm = TRP3_API.communication;
-local tinsert, tostring, _G, wipe, pairs = tinsert, tostring, _G, wipe, pairs;
+local tinsert, tostring, _G, wipe, pairs, time = tinsert, tostring, _G, wipe, pairs, time;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
@@ -54,6 +54,7 @@ local function receiveResponse(response, sender)
 					count = slotInfo.count,
 					id = slotInfo.id,
 					noAlt = true,
+					pos = slotInfo.pos
 				};
 				button.class = {
 					BA = slotInfo.BA,
@@ -81,7 +82,8 @@ local function receiveRequest(request, sender)
 			response.slots[slotID] = {
 				count = slot.count,
 				id = slot.id,
-				BA = class.BA;
+				BA = class.BA,
+				pos = slot.pos,
 			};
 			if isContainerByClassID(slot.id) then
 				response.slots[slotID].CO = class.CO;
@@ -98,6 +100,8 @@ end
 local function sendRequest()
 	local reservedMessageID = Comm.getMessageIDAndIncrement();
 	local data = {reservedMessageID};
+	inspectionFrame.time = time();
+	inspectionFrame.Main.Model.Loading:SetText("... " .. loc("INV_PAGE_WAIT") .. " ...");
 	Comm.addMessageIDHandler(inspectionFrame.current, reservedMessageID, function(_, total, current)
 		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(current / total * 100));
 		if current == total then
@@ -111,9 +115,17 @@ end
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function onSlotEnter(self)
+	TRP3_API.inventory.setWearableConfiguration(self, nil, inspectionFrame);
+end
+
+local function onSlotLeave()
+	TRP3_API.inventory.resetWearable(inspectionFrame.Main, inspectionFrame.Main.Model);
+end
+
 local function onToolbarButtonClicked()
 	local unitID = Utils.str.getUnitID("target");
-	if unitID and inspectionFrame.current ~= unitID then
+	if unitID and (inspectionFrame.current ~= unitID or not inspectionFrame:IsVisible()) then
 		inspectionFrame.current = unitID
 
 		for _, slot in pairs(inspectionFrame.Main.slots) do
@@ -133,6 +145,7 @@ local function onToolbarButtonClicked()
 		inspectionFrame.Main.Model.Loading:Show();
 		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(0));
 		inspectionFrame:Show();
+		TRP3_API.inventory.resetWearable(inspectionFrame.Main, inspectionFrame.Main.Model);
 
 		sendRequest();
 	end
@@ -143,9 +156,11 @@ function inspectionFrame.init()
 	loadingTemplate = loc("INV_PAGE_CHARACTER_INSPECTION") .. ": %0.2f %%";
 
 	-- Slots
+	Model_OnLoad(inspectionFrame.Main.Model, nil, nil, 0);
 	inspectionFrame.Main.slots = {};
 	for i=1, 16 do
 		local button = CreateFrame("Button", "TRP3_InspectionFrameSlot" .. i, inspectionFrame.Main, "TRP3_InventoryPageSlotTemplate");
+		button.Locator:Hide();
 		if i == 1 then
 			button:SetPoint("TOPRIGHT", inspectionFrame.Main.Model, "TOPLEFT", -10, 4);
 		elseif i == 9 then
@@ -153,38 +168,22 @@ function inspectionFrame.init()
 		else
 			button:SetPoint("TOP", _G["TRP3_InspectionFrameSlot" .. (i - 1)], "BOTTOM", 0, -11);
 		end
-		if i <= 8 then
-			button.Locator:SetPoint("RIGHT", button, "LEFT", -5, 0);
-		else
-			button.Locator:SetPoint("LEFT", button, "RIGHT", 5, 0);
-		end
 		tinsert(inspectionFrame.Main.slots, button);
 		button.slotNumber = i;
 		button.slotID = tostring(i);
+
+		button.additionalOnEnterHandler = onSlotEnter;
+		button.additionalOnLeaveHandler = onSlotLeave;
+
 		TRP3_API.inventory.initContainerSlot(button, nil, function() end);
-		button.First:ClearAllPoints();
-		if i > 8 then
-			button.tooltipRight = true;
-			button.First:SetPoint("TOPLEFT", button, "TOPRIGHT", 5, -5);
-			button.First:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", 5, 15);
-			button.First:SetPoint("RIGHT", inspectionFrame, "RIGHT", -15, 0);
-			button.First:SetJustifyH("LEFT");
-			button.Second:SetPoint("TOPLEFT", button, "TOPRIGHT", 5, -10);
-			button.Second:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", 5, -10);
-			button.Second:SetPoint("RIGHT", inspectionFrame, "RIGHT", -15, 0);
-			button.Second:SetJustifyH("LEFT");
-		else
-			button.First:SetPoint("TOPRIGHT", button, "TOPLEFT", -5, -5);
-			button.First:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", -5, 15);
-			button.First:SetPoint("LEFT", inspectionFrame, "LEFT", 15, 0);
-			button.First:SetJustifyH("RIGHT");
-			button.Second:SetPoint("TOPRIGHT", button, "TOPLEFT", -5, -10);
-			button.Second:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", -5, -10);
-			button.Second:SetPoint("LEFT", inspectionFrame, "LEFT", 15, 0);
-			button.Second:SetJustifyH("RIGHT");
-		end
 	end
 	TRP3_API.inventory.initContainerInstance(inspectionFrame.Main, 16);
+
+	inspectionFrame.Main.Model:HookScript("OnUpdate", function(self)
+		if self.sequence then
+			self:SetSequenceTime(self.sequence, self.sequenceTime);
+		end
+	end);
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		inspectionFrame:Hide();
@@ -193,6 +192,9 @@ function inspectionFrame.init()
 				id = "aa_player_e_inspect",
 				onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 				configText = loc("INV_PAGE_CHARACTER_INSPECTION"),
+				condition = function(targetType, unitID)
+					return UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) and CheckInteractDistance("target", 1);
+				end,
 				onClick = function(_, _, buttonType, _)
 					onToolbarButtonClicked();
 				end,
