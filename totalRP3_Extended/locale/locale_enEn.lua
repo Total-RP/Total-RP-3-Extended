@@ -356,6 +356,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	EDITOR_ICON = "Select icon",
 
 	-- Item creation
+	IT_CAST = "Casting",
 	IT_NEW_NAME = "New item",
 	IT_NEW_NAME_CO = "New container",
 	IT_QUICK_EDITOR = "Quick item creation",
@@ -503,8 +504,12 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	WO_DELAY_DURATION_TT = "The duration for this delay, in seconds.",
 	WO_DELAY_TYPE = "Delay type",
 	WO_DELAY_TYPE_1 = "Regular delay",
+	WO_DELAY_TYPE_1_TT = "Simply pauses the workflow, without showing any specific information to the player.",
+	WO_DELAY_TYPE_2 = "Cast",
+	WO_DELAY_TYPE_2_TT = "Show a casting bar during the workflow pause.",
 	WO_DELAY_INTERRUPT = "Interruption",
 	WO_DELAY_INTERRUPT_1 = "No interruption",
+	WO_DELAY_INTERRUPT_2 = "Interrupt on move",
 
 	-- Effects editors
 	EFFECT_CAT_SOUND = "Sound and music",

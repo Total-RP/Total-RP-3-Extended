@@ -49,13 +49,15 @@ function delayEditor.init()
 
 	-- Delay type
 	local type = {
-		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_1")), 1}
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_1")), 1, loc("WO_DELAY_TYPE_1_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_2")), 2, loc("WO_DELAY_TYPE_2_TT")}
 	}
 	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, nil, nil, 200, true);
 
 	-- Interruption
 	local type = {
-		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_1")), 1}
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_1")), 1},
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_2")), 2}
 	}
 	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, type, nil, nil, 200, true);
 end

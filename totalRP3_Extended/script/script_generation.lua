@@ -340,8 +340,20 @@ end
 local function writeDelay(delayStructure)
 	assert(type(delayStructure.d) == "number", "listStructure duration is not a number");
 
+	if delayStructure.c == 2 then
+		-- Casting bar
+		writeLine(("castID = showCastingBar(%s, %s, args.class)"):format(delayStructure.d, delayStructure.i or 1));
+		CURRENT_ENVIRONMENT["showCastingBar"] = "TRP3_API.extended.showCastingBar";
+	end
 	writeLine(("delayed(%s, function() "):format(delayStructure.d));
 	addIndent();
+
+	-- Interruption
+	if delayStructure.i == 2 then
+		CURRENT_ENVIRONMENT["castBar"] = "TRP3_CastingBarFrame";
+		writeLine(("if castID ~= castBar.castID then return; end"):format(delayStructure.d));
+	end
+
 	if delayStructure.n then
 		writeElement(delayStructure.n);
 	end
@@ -430,6 +442,7 @@ local function generateCode(effectStructure, rootClassID)
 	writeLine("if not args.custom then args.custom = {}; end");
 	writeLine("local conditionStorage = {};"); -- Store conditions evaluation
 	writeLine("local lastEffectReturn;"); -- Store last return value from effect, to be able to test it in further conditions.
+	writeLine("local castID;"); -- For any casting bar
 	writeElement("1"); -- 1 is always the first element
 	writeLine("return 0, conditionStorage;");
 	closeBlock();

@@ -397,6 +397,7 @@ local function onStart()
 
 	-- Start other systems
 	TRP3_API.security.initSecurity();
+	TRP3_CastingBarFrame.init();
 	TRP3_SoundsHistoryFrame.initSound();
 	TRP3_API.inventory.onStart();
 	TRP3_API.quest.onStart();
