@@ -288,7 +288,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_COPY_ID_TT = "Display the object ID in a popup to be copy/pastable.",
 	DB_COPY_TT = "Copy all this object information and child objects to be pastable as inner objects in another object.",
 	DB_EXPORT = "Quick export object",
-	DB_EXPORT_TT = "Serializes the object content to be exchangeable outside the game.\n\nOnly works on small objects (lesser than 20 kB once serialized).",
+	DB_EXPORT_TT = "Serializes the object content to be exchangeable outside the game.\n\nOnly works on small objects (lesser than 20 kB once serialized). For larger object, use the full export feature.",
 	DB_EXPORT_TOO_LARGE = "This object is too large once serialized to be exported this way.\n\nSize: %0.1f kB.",
 	DB_EXPORT_HELP = "Code for object %s (size: %0.1f kB)",
 	DB_IMPORT = "Quick object import",
@@ -298,6 +298,9 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_IMPORT_CONFIRM = "This object was serialized in a different version of Total RP 3 Extended than yours.\n\nImport TRP3E version: %s\nYour TRP3E version: %s\n\n|cffff9900This can lead to incompatibilities.\nContinue the import anyway?",
 	DB_IMPORT_VERSION = "You are importing an older version of this object than the version you already have.\n\nImport version: %s\nYour version: %s\n\n|cffff9900Do you confirm you want to downgrade?",
 	DB_LOCALE = "Object locale",
+	DB_FULL_EXPORT = "Full export",
+	DB_FULL_EXPORT_TT = "Make a full export for this object regardless of its size.\n\nThis will trigger a UI reload in order to force the writing of add-on save file.",
+	DB_EXPORT_MODULE_NOT_ACTIVE = "Object export: Please enable the totalRP3_Extended_ImpExport add-on first.",
 
 	DB_MY_EMPTY = "You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!",
 	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.",

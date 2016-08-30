@@ -33,6 +33,7 @@ local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
 local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
 
 local SECURITY_LEVEL = TRP3_API.security.SECURITY_LEVEL;
+local hasImportExportModule = false;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: util methods
@@ -414,6 +415,7 @@ local ACTION_FLAG_SECURITY = "4";
 local ACTION_FLAG_EXPERT = "5";
 local ACTION_FLAG_COPY = "6";
 local ACTION_FLAG_EXPORT = "7";
+local ACTION_FLAG_FULL_EXPORT = "8";
 
 function onLineActionSelected(value, button)
 	local action = value:sub(1, 1);
@@ -453,6 +455,19 @@ function onLineActionSelected(value, button)
 		else
 			Utils.message.displayMessage(loc("DB_EXPORT_TOO_LARGE"):format(serial:len() / 1024), 2);
 		end
+	elseif action == ACTION_FLAG_FULL_EXPORT then
+		if hasImportExportModule then
+			wipe(TRP3_Extended_ImpExport);
+			TRP3_Extended_ImpExport.id = objectID;
+			TRP3_Extended_ImpExport.object = {};
+			TRP3_Extended_ImpExport.date = date("%d/%m/%y %H:%M:%S");
+			TRP3_Extended_ImpExport.version = Globals.version;
+			TRP3_Extended_ImpExport.by = Globals.player_id;
+			Utils.table.copy(TRP3_Extended_ImpExport.object, getClass(objectID));
+			ReloadUI();
+		else
+			Utils.message.displayMessage(loc("DB_EXPORT_MODULE_NOT_ACTIVE"), 2);
+		end
 	end
 end
 
@@ -475,6 +490,7 @@ function onLineRightClick(lineWidget, data)
 	end
 	if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
 		tinsert(values, {loc("DB_EXPORT"), ACTION_FLAG_EXPORT .. data.fullID, loc("DB_EXPORT_TT")});
+		tinsert(values, {loc("DB_FULL_EXPORT"), ACTION_FLAG_FULL_EXPORT .. data.fullID, loc("DB_FULL_EXPORT_TT")});
 	end
 
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
@@ -704,5 +720,13 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.disclaimer:Hide();
 	if not TRP3_Tools_Flags.has_seen_disclaimer then
 		ToolFrame.list.disclaimer:Show();
+	end
+
+	-- Detect import/export module
+	hasImportExportModule = IsAddOnLoaded("totalRP3_Extended_ImpExport");
+	if hasImportExportModule then
+		if not TRP3_Extended_ImpExport then
+			TRP3_Extended_ImpExport = {};
+		end
 	end
 end
