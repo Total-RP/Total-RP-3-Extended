@@ -340,6 +340,18 @@ local function initConfig()
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
 
+function TRP3_API.extended.isObjectMine(ID)
+	return TRP3_DB.my[ID] ~= nil;
+end
+
+function TRP3_API.extended.isObjectExchanged(ID)
+	return TRP3_DB.exchange[ID] ~= nil;
+end
+
+function TRP3_API.extended.isObjectBackers(ID)
+	return TRP3_DB.inner[ID] ~= nil;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

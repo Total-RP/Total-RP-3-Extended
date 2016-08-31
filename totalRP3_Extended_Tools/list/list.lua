@@ -27,6 +27,7 @@ local Log = Utils.log;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
 local showItemTooltip = TRP3_API.inventory.showItemTooltip;
+local IsAltKeyDown = IsAltKeyDown;
 
 local ToolFrame, onLineActionSelected;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
@@ -80,17 +81,21 @@ local function objectHasChildren(class)
 	return false;
 end
 
+local function isChild(parentID, childID)
+	return childID ~= parentID and childID:sub(1, parentID:len()) == parentID;
+end
+
 local function isFirstLevelChild(parentID, childID)
-	return childID ~= parentID and childID:sub(1, parentID:len()) == parentID and not childID:sub(parentID:len() + 2):find("%s");
+	return isChild(parentID, childID) and not childID:sub(parentID:len() + 2):find("%s");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: lists
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function addChildrenToPool(parentID)
+local function addChildrenToPool(parentID, addAll)
 	for objectID, _ in pairs(TRP3_DB.global) do
-		if isFirstLevelChild(parentID, objectID) then
+		if (addAll and isChild(parentID, objectID)) or isFirstLevelChild(parentID, objectID) then
 			tinsert(idList, objectID);
 		end
 	end
@@ -111,7 +116,7 @@ local function onLineClick(self, button)
 	if button == "RightButton" then
 		onLineRightClick(self:GetParent(), data);
 	elseif button == "MiddleButton" then
-		if (currentTab == TABS.MY_DB or currentTab == TABS.OTHERS_DB) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+		if (TRP3_API.extended.isObjectMine(data.rootID) or TRP3_API.extended.isObjectExchanged(data.rootID)) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
 			onLineActionSelected("1" .. data.fullID);
 		end
 	else
@@ -163,7 +168,7 @@ end
 
 local function onLineExpandClick(self)
 	if not self.isOpen then
-		addChildrenToPool(self:GetParent().idData.fullID);
+		addChildrenToPool(self:GetParent().idData.fullID, IsAltKeyDown());
 	else
 		removeChildrenFromPool(self:GetParent().idData.fullID);
 	end
@@ -477,7 +482,7 @@ end
 function onLineRightClick(lineWidget, data)
 	local values = {};
 	tinsert(values, {data.text, nil});
-	if (currentTab == TABS.MY_DB or currentTab == TABS.OTHERS_DB) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+	if (TRP3_API.extended.isObjectMine(data.rootID) or TRP3_API.extended.isObjectExchanged(data.rootID)) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
 		tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID, loc("DB_DELETE_TT")});
 		tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID, loc("DB_SECURITY_TT")});
 	end
