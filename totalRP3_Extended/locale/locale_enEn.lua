@@ -300,7 +300,12 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_LOCALE = "Object locale",
 	DB_FULL_EXPORT = "Full export",
 	DB_FULL_EXPORT_TT = "Make a full export for this object regardless of its size.\n\nThis will trigger a UI reload in order to force the writing of add-on save file.",
-	DB_EXPORT_MODULE_NOT_ACTIVE = "Object export: Please enable the totalRP3_Extended_ImpExport add-on first.",
+	DB_EXPORT_MODULE_NOT_ACTIVE = "Object full export/import: Please enable the totalRP3_Extended_ImpExport add-on first.",
+	DB_EXPORT_DONE = "Your object has been exported in the file called |cff00ff00totalRP3_Extended_ImpExport.lua|r in this game directory:\n\nWorld of Warcraft\\WTF\\\naccount\\YOUR_ACCOUNT\\SavedVariables\n\nYou can share this file with your friends!\n\nThey can follow the import process in the |cff00ff00Full Database tab|r.",
+	DB_IMPORT_FULL = "Full objects import",
+	DB_IMPORT_FULL_TT = "Import the |cff00ff00totalRP3_Extended_ImpExport.lua|r file.",
+	DB_IMPORT_EMPTY = "There is no object to import in your |cff00ff00totalRP3_Extended_ImpExport.lua|r file.\n\nThe file must be placed in this game directory |cffff9900prior to the game launch|r:\n\nWorld of Warcraft\\WTF\\\naccount\\YOUR_ACCOUNT\\SavedVariables",
+	DB_IMPORT_DONE = "Object successfully imported!",
 
 	DB_MY_EMPTY = "You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!",
 	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.",

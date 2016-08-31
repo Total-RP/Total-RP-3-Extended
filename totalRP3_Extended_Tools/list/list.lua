@@ -365,6 +365,7 @@ local function onTabChanged(tabWidget, tab)
 	ToolFrame.list.bottom.campaign:Hide();
 	ToolFrame.list.bottom.item.templates:Hide();
 	ToolFrame.list.bottom.import:Hide();
+	ToolFrame.list.bottom.importFull:Hide();
 
 	currentTab = tab or TABS.MY_DB;
 
@@ -377,6 +378,7 @@ local function onTabChanged(tabWidget, tab)
 	elseif currentTab == TABS.BACKERS_DB then
 	else
 		ToolFrame.list.bottom.import:Show();
+		ToolFrame.list.bottom.importFull:Show();
 	end
 
 	filterList();
@@ -461,9 +463,10 @@ function onLineActionSelected(value, button)
 			TRP3_Extended_ImpExport.id = objectID;
 			TRP3_Extended_ImpExport.object = {};
 			TRP3_Extended_ImpExport.date = date("%d/%m/%y %H:%M:%S");
-			TRP3_Extended_ImpExport.version = Globals.version;
+			TRP3_Extended_ImpExport.version = Globals.extended_version;
 			TRP3_Extended_ImpExport.by = Globals.player_id;
 			Utils.table.copy(TRP3_Extended_ImpExport.object, getClass(objectID));
+			TRP3_Extended_ImpExport.alert = true;
 			ReloadUI();
 		else
 			Utils.message.displayMessage(loc("DB_EXPORT_MODULE_NOT_ACTIVE"), 2);
@@ -661,6 +664,50 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.import, "INV_Inscription_ScrollOfWisdom_02");
 
 	-- Import
+	local function importFunction(version, ID, data)
+		local type = data.TY;
+		local objectVersion = data.MD.V or 0;
+		local author = data.MD.CB;
+
+		assert(type and author, "Corrupted import structure.");
+
+		local import = function()
+			if TRP3_API.extended.classExists(ID) then
+				TRP3_API.extended.removeObject(ID);
+			end
+			local DB;
+			if author == Globals.player_id then
+				DB = TRP3_DB.my;
+			else
+				DB = TRP3_DB.exchange;
+			end
+			DB[ID] = {};
+			Utils.table.copy(DB[ID], data);
+			TRP3_API.extended.registerObject(ID, DB[ID], 0);
+			ToolFrame.list.container.import:Hide();
+			onTabChanged(nil, currentTab);
+			Utils.message.displayMessage(loc("DB_IMPORT_DONE"), 3);
+			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+		end
+
+		local checkVersion = function()
+			if TRP3_API.extended.classExists(ID) and getClass(ID).MD.V > objectVersion then
+				TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_VERSION"):format(objectVersion, getClass(ID).MD.V), function()
+					C_Timer.After(0.25, import);
+				end);
+			else
+				import();
+			end
+		end
+
+		if version ~= Globals.extended_version then
+			TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_CONFIRM"):format(version, Globals.extended_version), function()
+				C_Timer.After(0.25, checkVersion);
+			end);
+		else
+			checkVersion();
+		end
+	end
 	ToolFrame.list.container.import.title:SetText(loc("DB_IMPORT"));
 	ToolFrame.list.container.import.content.title:SetText(loc("DB_IMPORT_TT"));
 	ToolFrame.list.bottom.import:SetScript("OnClick", function()
@@ -675,33 +722,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			local version = object[1];
 			local ID = object[2];
 			local data = object[3];
-			local objectVersion = data.MD.V or 0;
-
-			local import = function()
-				if TRP3_API.extended.classExists(ID) then
-					TRP3_API.extended.removeObject(ID);
-				end
-				TRP3_DB.my[ID] = data;
-				TRP3_API.extended.registerObject(ID, data, 0);
-				ToolFrame.list.container.import:Hide();
-				onTabChanged(nil, currentTab);
-			end
-
-			local checkVersion = function()
-				if TRP3_API.extended.classExists(ID) and getClass(ID).MD.V > objectVersion then
-					TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_VERSION"):format(objectVersion, getClass(ID).MD.V), import);
-				else
-					import();
-				end
-			end
-
-			if version ~= Globals.extended_version then
-				TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_CONFIRM"):format(version, Globals.extended_version), function()
-					C_Timer.After(0.25, checkVersion);
-				end);
-			else
-				checkVersion();
-			end
+			importFunction(version, ID, data);
 		else
 			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
 		end
@@ -728,5 +749,26 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		if not TRP3_Extended_ImpExport then
 			TRP3_Extended_ImpExport = {};
 		end
+		if TRP3_Extended_ImpExport.alert then
+			TRP3_Extended_ImpExport.alert = nil;
+			Utils.message.displayMessage(loc("DB_EXPORT_DONE"), 2);
+		end
 	end
+	ToolFrame.list.bottom.importFull.Name:SetText(loc("DB_IMPORT_FULL"));
+	ToolFrame.list.bottom.importFull.InfoText:SetText(loc("DB_IMPORT_FULL_TT"));
+	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.importFull, "INV_Inscription_ScrollOfWisdom_01");
+	ToolFrame.list.bottom.importFull:SetScript("OnClick", function()
+		if hasImportExportModule then
+			if TRP3_Extended_ImpExport.object then
+				local version = TRP3_Extended_ImpExport.version;
+				local ID = TRP3_Extended_ImpExport.id;
+				local data = TRP3_Extended_ImpExport.object;
+				importFunction(version, ID, data);
+			else
+				Utils.message.displayMessage(loc("DB_IMPORT_EMPTY"), 2);
+			end
+		else
+			Utils.message.displayMessage(loc("DB_EXPORT_MODULE_NOT_ACTIVE"), 2);
+		end
+	end);
 end
