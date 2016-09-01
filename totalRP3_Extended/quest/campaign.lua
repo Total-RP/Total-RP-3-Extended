@@ -166,14 +166,14 @@ local function getCurrentCampaignClass()
 end
 TRP3_API.quest.getCurrentCampaignClass = getCurrentCampaignClass;
 
+local function getActiveCampaignLog()
+	return playerQuestLog and playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign];
+end
+TRP3_API.quest.getActiveCampaignLog = getActiveCampaignLog;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- /run TRP3_API.quest.activateCampaign("myFirstCampaign");
--- /run TRP3_API.quest.deactivateCurrentCampaign();
--- /run TRP3_API.quest.resetCampaign("myFirstCampaign");
--- /run TRP3_API.utils.table.dump(TRP3_API.quest.getQuestLog());
 
 local function init()
 	local refreshQuestLog = function()

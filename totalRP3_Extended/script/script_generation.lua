@@ -592,33 +592,45 @@ function TRP3_API.script.parseArgs(text, args)
 	return text;
 end
 
-function TRP3_API.script.setVar(vars, varsType, operationType, varName, varValue)
-	if vars then
-		-- For object, go to sub structure vers
-		if varsType == 2 then
-			if not vars.vars then
-				vars.vars = {};
+function TRP3_API.script.setVar(args, source, operationType, varName, varValue)
+	if args and source and operationType then
+
+		local storage;
+
+		if source == "w" then
+			storage = args.custom;
+		elseif source == "o" and args.object then
+			if not args.object.vars then
+				args.object.vars = {};
 			end
-			vars = vars.vars;
+			storage = args.object.vars;
+		elseif source == "c" and TRP3_API.quest.getActiveCampaignLog() then
+			storage = TRP3_API.quest.getActiveCampaignLog();
+			if not storage.vars then
+				storage.vars = {};
+			end
+			storage = storage.vars;
+		else
+			return;
 		end
 
 		-- Init and set operation
-		if (operationType == "[=]" and not vars[varName]) or operationType == "=" then
-			vars[varName] = varValue;
+		if (operationType == "[=]" and not storage[varName]) or operationType == "=" then
+			storage[varName] = varValue;
 			return;
 		end
 
 		-- Math operations
-		local initialValue = tonumber(vars[varName] or 0) or 0;
+		local initialValue = tonumber(storage[varName] or 0) or 0;
 		local value = tonumber(varValue or 0) or 0;
 		if operationType == "+" then
-			vars[varName] = initialValue + value;
+			storage[varName] = initialValue + value;
 		elseif operationType == "-" then
-			vars[varName] = initialValue - value;
+			storage[varName] = initialValue - value;
 		elseif operationType == "/" then
-			vars[varName] = initialValue / value;
+			storage[varName] = initialValue / value;
 		elseif operationType == "x" then
-			vars[varName] = initialValue * value;
+			storage[varName] = initialValue * value;
 		end
 	end
 end

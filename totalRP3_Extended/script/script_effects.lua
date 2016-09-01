@@ -151,25 +151,13 @@ local EFFECTS = {
 	},
 
 	-- Expert
-	["var_execenv"] = {
-		codeReplacementFunc = function (args)
-			local operationType = args[1] or "i";
-			local varName = args[2] or "var";
-			local varValue = args[3] or 0;
-			return ("setVar(args.custom, 1, \"%s\", var(\"%s\", args), %s); lastEffectReturn = 0;"):format(operationType, varName, varValue);
-		end,
-		env = {
-			setVar = "TRP3_API.script.setVar",
-		},
-		secured = security.HIGH,
-	},
-
 	["var_object"] = {
 		codeReplacementFunc = function (args)
-			local operationType = args[1] or "i";
-			local varName = args[2] or "var";
-			local varValue = args[3] or 0;
-			return ("setVar(args.object, 2, \"%s\", \"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(operationType, varName, varValue);
+			local source = args[1] or "w";
+			local operationType = args[2] or "i";
+			local varName = args[3] or "var";
+			local varValue = args[4] or "0";
+			return ("setVar(args, \"%s\", \"%s\", \"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(source, operationType, varName, varValue);
 		end,
 		env = {
 			setVar = "TRP3_API.script.setVar",

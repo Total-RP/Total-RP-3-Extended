@@ -142,43 +142,46 @@ local function var_set_execenv_init()
 	}
 	TRP3_API.ui.listbox.setupListBox(changeVarEditor.type, types, nil, nil, 250, true);
 
+	-- Source
+	local sources = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_WORKFLOW")), "w", loc("EFFECT_SOURCE_WORKFLOW_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(changeVarEditor.source, sources, nil, nil, 250, true);
+
 	function changeVarEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
-		changeVarEditor.type:SetSelectedValue(data[1] or "[=]");
-		changeVarEditor.var:SetText(data[2] or "varName");
-		changeVarEditor.value:SetText(data[3] or "0");
+		changeVarEditor.source:SetSelectedValue(data[1] or "w");
+		changeVarEditor.type:SetSelectedValue(data[2] or "[=]");
+		changeVarEditor.var:SetText(data[3] or "varName");
+		changeVarEditor.value:SetText(data[4] or "0");
 	end
 
 	function changeVarEditor.save(scriptData)
-		scriptData.args[1] = changeVarEditor.type:GetSelectedValue() or "[=]";
-		scriptData.args[2] = stEtN(strtrim(changeVarEditor.var:GetText()));
-		scriptData.args[3] = tonumber(strtrim(changeVarEditor.value:GetText())) or 0;
+		scriptData.args[1] = changeVarEditor.source:GetSelectedValue() or "w";
+		scriptData.args[2] = changeVarEditor.type:GetSelectedValue() or "[=]";
+		scriptData.args[3] = stEtN(strtrim(changeVarEditor.var:GetText()));
+		scriptData.args[4] = tonumber(strtrim(changeVarEditor.value:GetText())) or 0;
 	end
 
-	registerEffectEditor("var_execenv", {
-		title = loc("EFFECT_VAR_WORK"),
-		icon = "inv_inscription_minorglyph00",
-		description = loc("EFFECT_VAR_WORK_TT"),
-		effectFrameDecorator = function(scriptStepFrame, args)
-			local varName = tostring(args[2]);
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_OPERATION") .. ":|r " .. varName .. " = " .. varName .. " " .. tostring(args[1]) .. " " .. tostring(args[3]));
-		end,
-		getDefaultArgs = function()
-			return {"[=]", "varName", 0};
-		end,
-		editor = changeVarEditor
-	});
+	local sourcesText = {
+		w = loc("EFFECT_SOURCE_WORKFLOW"),
+		o = loc("EFFECT_SOURCE_OBJECT"),
+		c = loc("EFFECT_SOURCE_CAMPAIGN")
+	}
 
 	registerEffectEditor("var_object", {
 		title = loc("EFFECT_VAR_OBJECT_CHANGE"),
 		icon = "inv_inscription_minorglyph01",
 		description = loc("EFFECT_VAR_OBJECT_CHANGE_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			local varName = tostring(args[2]);
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_OPERATION") .. ":|r " .. varName .. " = " .. varName .. " " .. tostring(args[1]) .. " " .. tostring(args[3]));
+			local source = sourcesText[args[1]] or "?";
+			local varName = tostring(args[3]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_OPERATION") .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " = " .. varName .. " |cffff9900" .. tostring(args[2]) .. "|r " .. tostring(args[4]));
 		end,
 		getDefaultArgs = function()
-			return {"[=]", "varName", 0};
+			return {"w", "[=]", "varName", 0};
 		end,
 		editor = changeVarEditor,
 		context = {TRP3_DB.types.ITEM, TRP3_DB.types.CAMPAIGN, TRP3_DB.types.QUEST},

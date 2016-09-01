@@ -48,31 +48,6 @@ TRP3_API.quest.EFFECTS = {
 		}
 	},
 
-	["quest_var_set_object"] = {
-		secured = security.HIGH,
-		codeReplacementFunc = function (args)
-			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
-			local varName = args[2] or "var";
-			local varValue = args[3] or "";
-			return ("setQuestVar(\"%s\", \"%s\", \"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(campaignID, questID, varName, varValue);
-		end,
-		env = {
-			setQuestVar = "TRP3_API.quest.setQuestVar",
-		},
-	},
-
-	["quest_var_inc_object"] = {
-		secured = security.HIGH,
-		codeReplacementFunc = function (args)
-			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
-			local varName = args[2] or "var";
-			return ("incQuestVar(\"%s\", \"%s\", \"%s\"); lastEffectReturn = 0;"):format(campaignID, questID, varName);
-		end,
-		env = {
-			incQuestVar = "TRP3_API.quest.incQuestVar",
-		},
-	},
-
 	["quest_revealObjective"] = {
 		secured = security.HIGH,
 		codeReplacementFunc = function (args)
