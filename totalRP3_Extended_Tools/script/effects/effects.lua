@@ -161,8 +161,8 @@ local function var_set_execenv_init()
 	function changeVarEditor.save(scriptData)
 		scriptData.args[1] = changeVarEditor.source:GetSelectedValue() or "w";
 		scriptData.args[2] = changeVarEditor.type:GetSelectedValue() or "[=]";
-		scriptData.args[3] = stEtN(strtrim(changeVarEditor.var:GetText()));
-		scriptData.args[4] = tonumber(strtrim(changeVarEditor.value:GetText())) or 0;
+		scriptData.args[3] = stEtN(strtrim(changeVarEditor.var:GetText())) or "";
+		scriptData.args[4] = stEtN(strtrim(changeVarEditor.value:GetText())) or "";
 	end
 
 	local sourcesText = {
@@ -178,7 +178,7 @@ local function var_set_execenv_init()
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local source = sourcesText[args[1]] or "?";
 			local varName = tostring(args[3]);
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_OPERATION") .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " = " .. varName .. " |cffff9900" .. tostring(args[2]) .. "|r " .. tostring(args[4]));
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_OPERATION") .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " |cff00ff00=|r " .. varName .. " |cff00ff00" .. tostring(args[2]) .. "|r " .. tostring(args[4]));
 		end,
 		getDefaultArgs = function()
 			return {"w", "[=]", "varName", 0};
