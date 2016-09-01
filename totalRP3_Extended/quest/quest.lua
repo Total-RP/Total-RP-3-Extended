@@ -436,6 +436,10 @@ local function performAction(actionType)
 				end
 			end
 		end
+	else
+		Utils.message.displayMessage("|cffff0000" .. loc("QE_ACTION_NO_CURRENT"), 1);
+		Utils.message.displayMessage("|cffff0000" .. loc("QE_ACTION_NO_CURRENT"), 4);
+		return;
 	end
 
 	-- If we get here: no action have been found

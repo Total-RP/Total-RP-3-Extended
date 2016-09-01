@@ -190,6 +190,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	QE_PROGRESS = "Campaign progression",
 	DI_NEXT = "Next",
 	DI_WAIT_LOOT = "Please loot all items",
+	QE_ACTION_NO_CURRENT = "You don't have any active campaign. You can't use quest actions without an active campaign.",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",
