@@ -111,7 +111,7 @@ local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
 	return distance <= maxDistance, distance;
 end
 
-local function onLooted(itemData, count)
+local function onLooted(itemData)
 	for index, drop in pairs(dropData) do
 		if drop.item == itemData then
 			if drop.item.count <= 0 then
@@ -142,22 +142,24 @@ function searchForItems()
 			IT = {},
 			BA = {
 				IC = "icon_treasuremap",
-				NA = loc("DR_SEARCH_BUTTON")
 			}
 		}
+		local total = 0;
 		for index, result in pairs(searchResults) do
 			loot.IT[tostring(index)] = result.item;
+			total = total + (result.item.count or 1);
 		end
+		loot.BA.NA = loc("DR_RESULTS"):format(total);
 		TRP3_API.inventory.presentLoot(loot, onLooted, nil, function()
 			local posY2, posX2 = UnitPosition("player");
 			local isInRad = isInRadius(7.5, posY, posX, posY2, posX2);
 			if not isInRad then
-				Utils.message.displayMessage(loc("LOOT_DISTANCE"));
+				Utils.message.displayMessage(loc("LOOT_DISTANCE"), 4);
 			end
 			return isInRad;
-		end);
+		end, onLooted);
 	else
-		Utils.message.displayMessage(loc("DR_NOTHING"));
+		Utils.message.displayMessage(loc("DR_NOTHING"), 4);
 	end
 end
 TRP3_API.inventory.searchForItems = searchForItems;

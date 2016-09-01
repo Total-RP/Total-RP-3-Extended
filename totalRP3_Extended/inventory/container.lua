@@ -27,6 +27,7 @@ local getQualityColorRGB, getQualityColorText = TRP3_API.inventory.getQualityCol
 local EMPTY = TRP3_API.globals.empty;
 local parseObjectArgs = TRP3_API.script.parseObjectArgs;
 local color = Utils.str.color;
+local getItemLink = TRP3_API.inventory.getItemLink;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Slot management
@@ -324,6 +325,32 @@ local function pickUpLoot(slotFrom, container, slotID)
 	lootFrame:Hide();
 end
 
+local function discardLoot(slotFrom)
+	assert(slotFrom.info, "No info from origin loot");
+	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
+	local lootInfo = slotFrom.info;
+
+	Utils.message.displayMessage(loc("DR_DELETED"):format(getItemLink(slotFrom.class), lootInfo.count or 1));
+
+	lootInfo.count = 0;
+
+	slotFrom.info = nil;
+	slotFrom.class = nil;
+
+	if lootFrame.onDiscardCallback then
+		lootFrame.onDiscardCallback(lootInfo);
+	end
+
+	for index, slot in pairs(lootFrame.slots) do
+		if slot.info then
+			return;
+		end
+	end
+	lootFrame.forceLoot = nil;
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
+	lootFrame:Hide();
+end
+
 local UnitExists, CheckInteractDistance, UnitIsPlayer = UnitExists, CheckInteractDistance, UnitIsPlayer;
 
 local function slotOnDragStop(slotFrom)
@@ -339,7 +366,7 @@ local function slotOnDragStop(slotFrom)
 					TRP3_API.inventory.addToExchange(container1, slot1);
 				else
 					local itemClass = getClass(slotFrom.info.id);
-					local itemLink = TRP3_API.inventory.getItemLink(itemClass);
+					local itemLink = getItemLink(itemClass);
 
 					TRP3_API.inventory.dropOrDestroy(itemClass, function()
 						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info, true);
@@ -348,7 +375,13 @@ local function slotOnDragStop(slotFrom)
 					end);
 				end
 			else
-				Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
+				if slotFrom.deletable then
+					TRP3_API.popup.showConfirmPopup(loc("DR_POPUP_REMOVE_TEXT"), function()
+						discardLoot(slotFrom);
+					end);
+				else
+					Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
+				end
 			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, ("TRP3_ExchangeFrame"):len()) == "TRP3_ExchangeFrame" then
 			TRP3_API.inventory.addToExchange(container1, slot1);
@@ -415,6 +448,10 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 					else
 						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
 					end
+				end
+			elseif self.loot and self.info then
+				if button == "RightButton" then
+					pickUpLoot(self);
 				end
 			end
 		end);
@@ -733,7 +770,7 @@ end
 
 local lootDB = {};
 
-local function presentLoot(loot, onLootCallback, forceLoot, checker)
+local function presentLoot(loot, onLootCallback, forceLoot, checker, onDiscardCallback)
 	if lootFrame:IsVisible() and lootFrame:GetParent() == TRP3_DialogFrame and lootFrame.forceLoot then
 		Utils.message.displayMessage(loc("IT_LOOT_ERROR"), 4);
 		return;
@@ -749,6 +786,7 @@ local function presentLoot(loot, onLootCallback, forceLoot, checker)
 			if lootFrame.info.content[slot.slotID] then
 				slot.info = lootFrame.info.content[slot.slotID];
 				slot.class = getClass(lootFrame.info.content[slot.slotID].id);
+				slot.deletable = onDiscardCallback ~= nil;
 			else
 				slot.info = nil;
 				slot.class = nil;
@@ -759,6 +797,7 @@ local function presentLoot(loot, onLootCallback, forceLoot, checker)
 
 		lootFrame:ClearAllPoints();
 		lootFrame.close:Enable();
+		lootFrame.onDiscardCallback = onDiscardCallback;
 		lootFrame.forceLoot = forceLoot;
 		lootFrame.checker = checker;
 		if TRP3_DialogFrame:IsVisible() then

@@ -237,11 +237,13 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DR_POPUP = "Drop here",
 	DR_POPUP_ASK = "Total RP 3\n \nSelect what to do with the item:\n%s",
 	DR_POPUP_REMOVE = "Destroy",
+	DR_POPUP_REMOVE_TEXT = "Destroy this item?",
 	DR_SEARCH_BUTTON = "Search for items",
 	DR_SEARCH_BUTTON_TT = "Search for items in this area within 15 yards.",
 	DR_NOTHING = "No items found in this area.",
 	DR_DELETED = "Destroyed: %s x%d",
 	DR_DROPED = "Droped on the ground: %s x%d",
+	DR_RESULTS = "Found %s items",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- EXTENDED TOOLS
