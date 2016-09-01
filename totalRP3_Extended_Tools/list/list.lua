@@ -45,6 +45,7 @@ local TABS = {
 	OTHERS_DB = "OTHERS_DB",
 	BACKERS_DB = "BACKERS_DB",
 	FULL_DB = "FULL_DB",
+	BACKERS_LIST = "BACKERS_LIST",
 }
 
 local currentTab, onLineRightClick;
@@ -371,6 +372,10 @@ local function onTabChanged(tabWidget, tab)
 	ToolFrame.list.bottom.item.templates:Hide();
 	ToolFrame.list.bottom.import:Hide();
 	ToolFrame.list.bottom.importFull:Hide();
+	ToolFrame.list.bottom:Show();
+	ToolFrame.list.container:Show();
+	ToolFrame.list.filters:Show();
+	ToolFrame.list.backers:Hide();
 
 	currentTab = tab or TABS.MY_DB;
 
@@ -381,9 +386,16 @@ local function onTabChanged(tabWidget, tab)
 	elseif currentTab == TABS.OTHERS_DB then
 		ToolFrame.list.container.Empty:SetText(loc("DB_OTHERS_EMPTY"));
 	elseif currentTab == TABS.BACKERS_DB then
-	else
+
+	elseif currentTab == TABS.FULL_DB then
 		ToolFrame.list.bottom.import:Show();
 		ToolFrame.list.bottom.importFull:Show();
+	elseif currentTab == TABS.BACKERS_LIST then
+		ToolFrame.list.bottom:Hide();
+		ToolFrame.list.container:Hide();
+		ToolFrame.list.filters:Hide();
+		ToolFrame.list.backers:Show();
+		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS));
 	end
 
 	filterList();
@@ -400,6 +412,7 @@ local function createTabBar()
 			{ "", TABS.OTHERS_DB, 150 },
 			{ "", TABS.BACKERS_DB, 150 },
 			{ "", TABS.FULL_DB, 150 },
+			{ loc("DB_BACKERS_LIST"), TABS.BACKERS_LIST, 150 },
 		},
 		onTabChanged
 	);

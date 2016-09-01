@@ -309,6 +309,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_IMPORT_FULL_TT = "Import the |cff00ff00totalRP3_Extended_ImpExport.lua|r file.",
 	DB_IMPORT_EMPTY = "There is no object to import in your |cff00ff00totalRP3_Extended_ImpExport.lua|r file.\n\nThe file must be placed in this game directory |cffff9900prior to the game launch|r:\n\nWorld of Warcraft\\WTF\\\naccount\\YOUR_ACCOUNT\\SavedVariables",
 	DB_IMPORT_DONE = "Object successfully imported!",
+	DB_BACKERS_LIST = "Credits",
 
 	DB_MY_EMPTY = "You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!",
 	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.",
@@ -1049,3 +1050,31 @@ Two attributes are important: Usable and Container as checking them will display
 
 These notes can also help others that would want to start an item based on yours.]],
 };
+
+TRP3_KS_BACKERS =
+[[#Total RP 3: Extended
+
+Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ellypse" Parize|r.
+
+## To all our Kickstarter backers: many thanks for the support!
+
+- Abyssaloth
+- Antonio Campos jr from McAllen Texas
+- Ashley Ann
+- Dwargoth 
+- Ellypse
+- Kaeril
+- Keti
+- Laerith
+- Laleila
+- Linnéa Cadier
+- Linreia 
+- Maethi
+- Managan Southpaw
+- Saelora 
+- Sean "Pommie" K
+- Sunkara
+- Taurii of Wyrmrest Accord
+- Valnoressa
+
+##  You are the best!]];
