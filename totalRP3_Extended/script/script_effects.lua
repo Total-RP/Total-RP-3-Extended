@@ -151,28 +151,28 @@ local EFFECTS = {
 	},
 
 	-- Expert
-	["var_set_execenv"] = {
+	["var_execenv"] = {
 		codeReplacementFunc = function (args)
-			local varName = args[1] or "var";
-			local varValue = args[2] or "";
-			local initOnly = tostring(args[3] or false);
-			return ("setWorkflowVar(args.custom, \"%s\", var(\"%s\", args), %s); lastEffectReturn = 0;"):format(varName, varValue, initOnly);
+			local operationType = args[1] or "i";
+			local varName = args[2] or "var";
+			local varValue = args[3] or 0;
+			return ("setVar(args.custom, 1, \"%s\", var(\"%s\", args), %s); lastEffectReturn = 0;"):format(operationType, varName, varValue);
 		end,
 		env = {
-			setWorkflowVar = "TRP3_API.script.setWorkflowVar",
+			setVar = "TRP3_API.script.setVar",
 		},
 		secured = security.HIGH,
 	},
 
-	["var_set_object"] = {
+	["var_object"] = {
 		codeReplacementFunc = function (args)
-			local varName = args[1] or "var";
-			local varValue = args[2] or "";
-			local initOnly = tostring(args[3] or false);
-			return ("setObjectVar(args.object, \"%s\", var(\"%s\", args), %s); lastEffectReturn = 0;"):format(varName, varValue, initOnly);
+			local operationType = args[1] or "i";
+			local varName = args[2] or "var";
+			local varValue = args[3] or 0;
+			return ("setVar(args.object, 2, \"%s\", \"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(operationType, varName, varValue);
 		end,
 		env = {
-			setObjectVar = "TRP3_API.script.setObjectVar",
+			setVar = "TRP3_API.script.setVar",
 		},
 		secured = security.HIGH,
 	},

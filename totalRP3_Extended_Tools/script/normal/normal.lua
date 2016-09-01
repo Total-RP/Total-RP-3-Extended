@@ -260,16 +260,14 @@ function onElementConfirm(self)
 end
 
 local function decorateEffect(scriptStepFrame, effectData)
-	local effect = TRP3_API.script.getEffect(effectData.id);
-	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectData.id);
+	local effect = TRP3_API.script.getEffect(effectData.id) or EMPTY;
+	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectData.id) or EMPTY;
 	local title = ("%s: |cffff9900%s"):format(loc("WO_EFFECT"), effectInfo.title or UNKNOWN);
-
-	assert(effect and effectInfo, "Unknown effect ID: " .. effectData.id);
 
 	TRP3_API.ui.frame.setupIconButton(scriptStepFrame, effectInfo.icon or ELEMENT_EFFECT_ICON);
 
 	-- Tooltip
-	local tooltip = effectInfo.description or "";
+	local tooltip = effectInfo.description or loc("EFFECT_MISSING"):format(effectData.id);
 	scriptStepFrame.description:SetText(tooltip);
 	if effect.secured then
 		tooltip = tooltip .. "\n\n|cffffff00" .. loc("WO_SECURITY") .. ":\n";
@@ -691,8 +689,8 @@ editor.init = function(ToolFrame)
 			"dialog_quick",
 		},
 		[loc("MODE_EXPERT")] = {
-			"var_set_execenv",
-			"var_set_object",
+			"var_execenv",
+			"var_object",
 			"signal_send",
 		},
 		[loc("EFFECT_CAT_DEBUG")] = {

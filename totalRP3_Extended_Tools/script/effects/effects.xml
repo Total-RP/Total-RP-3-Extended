@@ -80,14 +80,20 @@
 	<!--  Set env variable    -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorVarSet" inherits="TRP3_EditorEffectTemplate" hidden="true">
+	<Frame name="TRP3_EffectEditorVarChange" inherits="TRP3_EditorEffectTemplate" hidden="true">
 		<Size x="500" y="250"/>
 		<Frames>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+				</Anchors>
+			</Frame>
 
 			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-25"/>
 				</Anchors>
 			</EditBox>
 
@@ -97,12 +103,6 @@
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="0" y="-20"/>
 				</Anchors>
 			</EditBox>
-
-			<CheckButton parentKey="initOnly" inherits="TRP3_CheckBox" name="$parentInitOnly">
-				<Anchors>
-					<Anchor point="TOPLEFT" x="-8" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.value"/>
-				</Anchors>
-			</CheckButton>
 
 		</Frames>
 

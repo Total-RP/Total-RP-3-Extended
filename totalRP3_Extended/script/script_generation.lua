@@ -574,6 +574,13 @@ local directReplacement = {
 	end
 }
 
+function TRP3_API.script.parseObjectArgs(text, vars)
+	text = text:gsub("%$%{(.-)%}", function(capture)
+		return (vars or EMPTY)[capture];
+	end);
+	return text;
+end
+
 function TRP3_API.script.parseArgs(text, args)
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		if directReplacement[capture] then
@@ -585,26 +592,33 @@ function TRP3_API.script.parseArgs(text, args)
 	return text;
 end
 
-function TRP3_API.script.parseObjectArgs(text, vars)
-	text = text:gsub("%$%{(.-)%}", function(capture)
-		return (vars or EMPTY)[capture];
-	end);
-	return text;
-end
-
-function TRP3_API.script.setWorkflowVar(workflowVars, varName, varValue, initOnly)
-	if workflowVars then
-		if not initOnly or not workflowVars[varName] then
-			workflowVars[varName] = varValue;
+function TRP3_API.script.setVar(vars, varsType, operationType, varName, varValue)
+	if vars then
+		-- For object, go to sub structure vers
+		if varsType == 2 then
+			if not vars.vars then
+				vars.vars = {};
+			end
+			vars = vars.vars;
 		end
-	end
-end
 
-function TRP3_API.script.setObjectVar(object, varName, varValue, initOnly)
-	if object then
-		if not object.vars then object.vars = {} end
-		if not initOnly or not object.vars[varName] then
-			object.vars[varName] = varValue;
+		-- Init and set operation
+		if (operationType == "[=]" and not vars[varName]) or operationType == "=" then
+			vars[varName] = varValue;
+			return;
+		end
+
+		-- Math operations
+		local initialValue = tonumber(vars[varName] or 0) or 0;
+		local value = tonumber(varValue or 0) or 0;
+		if operationType == "+" then
+			vars[varName] = initialValue + value;
+		elseif operationType == "-" then
+			vars[varName] = initialValue - value;
+		elseif operationType == "/" then
+			vars[varName] = initialValue / value;
+		elseif operationType == "x" then
+			vars[varName] = initialValue * value;
 		end
 	end
 end

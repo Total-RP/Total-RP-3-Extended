@@ -118,58 +118,69 @@ end
 -- Workflow expertise
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local varSetEditor = TRP3_EffectEditorVarSet;
+
 
 local function var_set_execenv_init()
-	registerEffectEditor("var_set_execenv", {
+	local changeVarEditor = TRP3_EffectEditorVarChange;
+
+	-- Var name
+	changeVarEditor.var.title:SetText(loc("EFFECT_VAR"))
+	setTooltipForSameFrame(changeVarEditor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+
+	-- Var value
+	changeVarEditor.value.title:SetText(loc("EFFECT_OPERATION_VALUE"));
+	setTooltipForSameFrame(changeVarEditor.value.help, "RIGHT", 0, 5, loc("EFFECT_OPERATION_VALUE"), "");
+
+	-- Type
+	local types = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_INIT")), "[=]", loc("EFFECT_OPERATION_TYPE_INIT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_SET")), "=", loc("EFFECT_OPERATION_TYPE_SET_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_ADD")), "+"},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_SUB")), "-"},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_MULTIPLY")), "x"},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_DIV")), "/"}
+	}
+	TRP3_API.ui.listbox.setupListBox(changeVarEditor.type, types, nil, nil, 250, true);
+
+	function changeVarEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		changeVarEditor.type:SetSelectedValue(data[1] or "[=]");
+		changeVarEditor.var:SetText(data[2] or "varName");
+		changeVarEditor.value:SetText(data[3] or "0");
+	end
+
+	function changeVarEditor.save(scriptData)
+		scriptData.args[1] = changeVarEditor.type:GetSelectedValue() or "[=]";
+		scriptData.args[2] = stEtN(strtrim(changeVarEditor.var:GetText()));
+		scriptData.args[3] = tonumber(strtrim(changeVarEditor.value:GetText())) or 0;
+	end
+
+	registerEffectEditor("var_execenv", {
 		title = loc("EFFECT_VAR_WORK"),
 		icon = "inv_inscription_minorglyph00",
 		description = loc("EFFECT_VAR_WORK_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. tostring(args[1]));
+			local varName = tostring(args[2]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_OPERATION") .. ":|r " .. varName .. " = " .. varName .. " " .. tostring(args[1]) .. " " .. tostring(args[3]));
 		end,
 		getDefaultArgs = function()
-			return {"varName", loc("EFFECT_VAR_VALUE")};
+			return {"[=]", "varName", 0};
 		end,
-		editor = varSetEditor
+		editor = changeVarEditor
 	});
 
-	-- Var name
-	varSetEditor.var.title:SetText(loc("EFFECT_VAR"))
-	setTooltipForSameFrame(varSetEditor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
-
-	-- Var value
-	varSetEditor.value.title:SetText(loc("EFFECT_VAR_VALUE"));
-	setTooltipForSameFrame(varSetEditor.value.help, "RIGHT", 0, 5, loc("EFFECT_VAR_VALUE"), "");
-
-	-- Init only
-	varSetEditor.initOnly.Text:SetText(loc("EFFECT_VAR_INIT_ONLY"));
-	setTooltipForSameFrame(varSetEditor.initOnly, "RIGHT", 0, 5, loc("EFFECT_VAR_INIT_ONLY"), loc("EFFECT_VAR_INIT_ONLY_TT"));
-
-	function varSetEditor.load(scriptData)
-		local data = scriptData.args or Globals.empty;
-		varSetEditor.var:SetText(data[1] or "");
-		varSetEditor.value:SetText(data[2] or "");
-		varSetEditor.initOnly:SetChecked(data[3] or false);
-	end
-
-	function varSetEditor.save(scriptData)
-		scriptData.args[1] = stEtN(strtrim(varSetEditor.var:GetText()));
-		scriptData.args[2] = stEtN(strtrim(varSetEditor.value:GetText()));
-		scriptData.args[3] = varSetEditor.initOnly:GetChecked();
-	end
-
-	registerEffectEditor("var_set_object", {
-		title = loc("EFFECT_VAR_OBJECT"),
+	registerEffectEditor("var_object", {
+		title = loc("EFFECT_VAR_OBJECT_CHANGE"),
 		icon = "inv_inscription_minorglyph01",
-		description = loc("EFFECT_VAR_OBJECT_TT"),
+		description = loc("EFFECT_VAR_OBJECT_CHANGE_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR") .. ":|r " .. tostring(args[1]));
+			local varName = tostring(args[2]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_OPERATION") .. ":|r " .. varName .. " = " .. varName .. " " .. tostring(args[1]) .. " " .. tostring(args[3]));
 		end,
 		getDefaultArgs = function()
-			return {"varName", loc("EFFECT_VAR_VALUE")};
+			return {"[=]", "varName", 0};
 		end,
-		editor = varSetEditor,
+		editor = changeVarEditor,
 		context = {TRP3_DB.types.ITEM, TRP3_DB.types.CAMPAIGN, TRP3_DB.types.QUEST},
 	});
 
