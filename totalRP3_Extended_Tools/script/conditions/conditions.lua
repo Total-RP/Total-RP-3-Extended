@@ -26,6 +26,7 @@ local initList = TRP3_API.ui.list.initList;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
+local getTTAction = TRP3_API.extended.getTTAction;
 
 local editor = TRP3_ConditionEditor;
 local operandEditor = editor.operand.editor;
@@ -326,6 +327,7 @@ local function addExpression()
 end
 
 local TEST_ACTION_REMOVE = 1;
+local TEST_ACTION_DUPLICATE = 2;
 
 local function onTestAction(value, line)
 	local index = line:GetParent().index;
@@ -337,37 +339,50 @@ local function onTestAction(value, line)
 			table.remove(editor.scriptData, index);
 		end
 		listCondition();
+	elseif value == TEST_ACTION_DUPLICATE then
+		local origin = editor.scriptData[index];
+		tinsert(editor.scriptData, "+");
+		tinsert(editor.scriptData, {});
+		Utils.table.copy(editor.scriptData[#editor.scriptData], origin);
+		listCondition();
 	end
 end
 
-local function onComparatorAction(value, line)
+local function switchComparator(line)
 	local index = line:GetParent().index;
-	editor.scriptData[index] = value;
+	if editor.scriptData[index] == "*" then
+		editor.scriptData[index] = "+";
+	else
+		editor.scriptData[index] = "*";
+	end
 	listCondition();
 end
 
 local function onTestLineClick(line, button)
 	local index = line:GetParent().index;
 	local expression = editor.scriptData[index];
-	local values = {};
 
 	if type(expression) == "string" then
-		tinsert(values, {loc("OP_COMPA_SEL"), nil});
-		if expression == "+" then
-			tinsert(values, {loc("OP_OR_SWITCH"), "*"});
-		else
-			tinsert(values, {loc("OP_AND_SWITCH"), "+"});
-		end
-		TRP3_API.ui.listbox.displayDropDown(line, values, onComparatorAction, 0, true);
+		switchComparator(line);
 	elseif type(expression) == "table" then
 		if button == "LeftButton" then
-			openOperandEditor(index);
-		else
-			tinsert(values, {"Test", nil});
-			if #editor.scriptData > 1 then
-				tinsert(values, {loc("OP_REMOVE_TEST"), TEST_ACTION_REMOVE});
+			if IsControlKeyDown() then
+				onTestAction(TEST_ACTION_DUPLICATE, line);
+			else
+				openOperandEditor(index);
 			end
-			TRP3_API.ui.listbox.displayDropDown(line, values, onTestAction, 0, true);
+		elseif button == "MiddleButton" then
+			if #editor.scriptData > 1 then
+				onTestAction(TEST_ACTION_REMOVE, line);
+			end
+		elseif button == "RightButton" then
+			local context = {};
+			tinsert(context, {loc("COND_TEST_EDITOR")});
+			tinsert(context, {loc("CA_NPC_AS"), TEST_ACTION_DUPLICATE});
+			if #editor.scriptData > 1 then
+				tinsert(context, {loc("CM_REMOVE"), TEST_ACTION_REMOVE});
+			end
+			TRP3_API.ui.listbox.displayDropDown(line, context, onTestAction, 0, true);
 		end
 	end
 end
@@ -391,11 +406,18 @@ local function decorateConditionLine(line, index)
 		line.text:SetText("?");
 		if expression == "+" then
 			line.text:SetText(loc("OP_AND"));
+			setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("OP_AND"), getTTAction(loc("CM_CLICK"), loc("OP_OR_SWITCH")));
 		elseif expression == "*" then
 			line.text:SetText(loc("OP_OR"));
+			setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("OP_OR"), getTTAction(loc("CM_CLICK"), loc("OP_AND_SWITCH")));
 		end
 	elseif type(expression) == "table" then
 		line.text:SetText("|cffff9900" .. ((index + 1) / 2) .. ".  " .. getExpressionText(expression));
+		local tooltip = getTTAction(loc("CM_CLICK"), loc("CM_EDIT")) .. getTTAction(loc("CM_CTRL") .. " + " .. loc("CM_CLICK"), loc("CA_NPC_AS"), true);
+		if #editor.scriptData > 1 then
+			tooltip = tooltip .. getTTAction(loc("CM_M_CLICK"), loc("CM_REMOVE"), true);
+		end
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("COND_TEST_EDITOR"), tooltip);
 	end
 end
 
@@ -441,7 +463,7 @@ function editor.init()
 		local line = editor["line" .. i];
 		tinsert(editor.widgetTab, line);
 		line.click:SetScript("OnClick", onTestLineClick);
-		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp");
 	end
 	editor.decorate = decorateConditionLine;
 	handleMouseWheel(editor, editor.slider);

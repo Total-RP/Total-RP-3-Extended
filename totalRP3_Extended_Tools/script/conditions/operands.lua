@@ -359,6 +359,9 @@ local function char_facing_init()
 		title = loc("OP_OP_CHAR_FACING"),
 		description = loc("OP_OP_CHAR_FACING_TT"),
 		returnType = 0,
+		getText = function(args)
+			return loc("OP_OP_CHAR_FACING");
+		end,
 	});
 end
 

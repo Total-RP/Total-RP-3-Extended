@@ -22,6 +22,18 @@ local getClass = TRP3_API.extended.getClass;
 local loc = TRP3_API.locale.getText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Tooltip func
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.extended.getTTAction(method, action, notFirst)
+	local text = "|cffffff00" .. method .. ": |cffff9900" .. action;
+	if notFirst then
+		text = "\n" .. text;
+	end
+	return text;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTILS func
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
