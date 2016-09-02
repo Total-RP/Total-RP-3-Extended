@@ -239,6 +239,7 @@ local function doSave()
 	TRP3_API.extended.registerObject(rootClassID, object, 0);
 	TRP3_API.script.clearRootCompilation(rootClassID);
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, rootClassID);
 
 	goToPage(fullClassID, true);
 end

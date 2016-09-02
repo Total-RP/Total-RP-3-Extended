@@ -595,5 +595,12 @@ local function init()
 	BINDING_NAME_TRP3_QUEST_LISTEN = loc("BINDING_NAME_TRP3_QUEST_LISTEN");
 	BINDING_NAME_TRP3_QUEST_ACTION = loc("BINDING_NAME_TRP3_QUEST_ACTION");
 	BINDING_NAME_TRP3_QUEST_TALK = loc("BINDING_NAME_TRP3_QUEST_TALK");
+
+	-- Events
+	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function(rootClassID)
+		if getCurrentPageID() == "player_quest" then
+			goToPage(false, TAB_CAMPAIGNS);
+		end
+	end);
 end
 TRP3_API.quest.questLogInit = init;

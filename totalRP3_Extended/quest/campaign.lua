@@ -181,7 +181,7 @@ TRP3_API.quest.getCampaignVarStorage = getCampaignVarStorage;
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function init()
+function TRP3_API.quest.campaignInit()
 	local refreshQuestLog = function()
 		playerQuestLog = TRP3_API.quest.getQuestLog();
 	end
@@ -195,6 +195,12 @@ local function init()
 	if playerQuestLog.currentCampaign then
 		activateCampaign(playerQuestLog.currentCampaign, true); -- Force reloading the current campaign
 	end
-end
 
-TRP3_API.quest.campaignInit = init;
+	TRP3_API.quest.EVENT_REFRESH_CAMPAIGN = "EVENT_REFRESH_CAMPAIGN";
+	Events.registerEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
+		if getActiveCampaignLog() and not TRP3_API.extended.classExists(playerQuestLog.currentCampaign) then
+			deactivateCurrentCampaign();
+		end
+	end);
+end

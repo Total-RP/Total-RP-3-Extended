@@ -202,6 +202,7 @@ local function removeObject(objectFullID)
 	end
 	Log.log("Removed object: " .. objectFullID);
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 end
 TRP3_API.extended.removeObject = removeObject;
 

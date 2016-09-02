@@ -706,6 +706,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			onTabChanged(nil, currentTab);
 			Utils.message.displayMessage(loc("DB_IMPORT_DONE"), 3);
 			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+			TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 		end
 
 		local checkVersion = function()
