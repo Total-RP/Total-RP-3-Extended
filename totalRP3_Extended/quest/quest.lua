@@ -138,43 +138,6 @@ local function startQuest(campaignID, questID)
 end
 TRP3_API.quest.startQuest = startQuest;
 
-function TRP3_API.quest.setQuestVar(campaignID, questID, varName, varValue)
-	assert(campaignID and questID, "Illegal args");
-	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign == campaignID, "Can't setQuestVar because current campaign is not " .. campaignID);
-	local campaignLog = playerQuestLog[campaignID];
-	assert(campaignLog, "Trying to setQuestVar from an unstarted campaign: " .. campaignID);
-	local questLog = campaignLog.QUEST[questID];
-	assert(questLog, "Trying to setQuestVar from an unstarted quest: " .. campaignID .. " " .. questID);
-
-	TRP3_API.script.setObjectVar(questLog, varName, varValue, false);
-end
-
-function TRP3_API.quest.incQuestVar(campaignID, questID, varName)
-	assert(campaignID and questID, "Illegal args");
-	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign == campaignID, "Can't setQuestVar because current campaign is not " .. campaignID);
-	local campaignLog = playerQuestLog[campaignID];
-	assert(campaignLog, "Trying to setQuestVar from an unstarted campaign: " .. campaignID);
-	local questLog = campaignLog.QUEST[questID];
-	assert(questLog, "Trying to setQuestVar from an unstarted quest: " .. campaignID .. " " .. questID);
-
-	local current = tonumber((questLog.vars or EMPTY)[varName] or "") or 0;
-	TRP3_API.script.setObjectVar(questLog, varName, current + 1, false);
-end
-
-function TRP3_API.quest.getQuestVar(campaignID, questID, varName)
-	assert(campaignID and questID, "Illegal args");
-	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
-	if campaignLog then
-		local questLog = campaignLog.QUEST[questID];
-		if questLog then
-			return tonumber((questLog.vars or EMPTY)[varName] or "") or 0;
-		end
-	end
-	return 0;
-end
-
 function TRP3_API.quest.isQuestStep(campaignID, questID)
 	assert(campaignID and questID, "Illegal args");
 	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
@@ -273,7 +236,7 @@ local function revealObjective(campaignID, questID, objectiveID)
 		end
 
 		-- Message
-		local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", {object = questLog});
+		local obectiveText = TRP3_API.script.parseObjectArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 		Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
 		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 
@@ -302,7 +265,7 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 
 			if questLog.OB[objectiveID] ~= true then
 				-- Message
-				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", {object = questLog});
+				local obectiveText = TRP3_API.script.parseObjectArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 				Utils.message.displayMessage(loc("QE_QUEST_OBJ_FINISHED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
 				questLog.OB[objectiveID] = true;
 				Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);

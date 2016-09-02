@@ -574,13 +574,6 @@ local directReplacement = {
 	end
 }
 
-function TRP3_API.script.parseObjectArgs(text, vars)
-	text = text:gsub("%$%{(.-)%}", function(capture)
-		return (vars or EMPTY)[capture];
-	end);
-	return text;
-end
-
 function TRP3_API.script.parseArgs(text, args)
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		if directReplacement[capture] then
@@ -588,6 +581,16 @@ function TRP3_API.script.parseArgs(text, args)
 		else
 			return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture];
 		end
+	end);
+	return text;
+end
+
+function TRP3_API.script.parseObjectArgs(text, vars)
+	if not vars then
+		return text;
+	end
+	text = text:gsub("%$%{(.-)%}", function(capture)
+		return (vars or EMPTY)[capture];
 	end);
 	return text;
 end
@@ -613,6 +616,7 @@ function TRP3_API.script.setVar(args, source, operationType, varName, varValue)
 		else
 			return;
 		end
+		if not storage then return; end
 
 		-- Init and set operation
 		if (operationType == "[=]" and not storage[varName]) or operationType == "=" then
@@ -633,4 +637,60 @@ function TRP3_API.script.setVar(args, source, operationType, varName, varValue)
 			storage[varName] = initialValue * value;
 		end
 	end
+end
+
+function TRP3_API.script.varCheck(args, source, varName)
+	if args and source then
+
+		local storage;
+
+		if source == "w" then
+			storage = args.custom;
+		elseif source == "o" and args.object then
+			if not args.object.vars then
+				args.object.vars = {};
+			end
+			storage = args.object.vars;
+		elseif source == "c" and TRP3_API.quest.getActiveCampaignLog() then
+			storage = TRP3_API.quest.getActiveCampaignLog();
+			if not storage.vars then
+				storage.vars = {};
+			end
+			storage = storage.vars;
+		else
+			return "nil";
+		end
+		if not storage then return "nil"; end
+
+		return tostring(storage[varName] or "nil");
+	end
+	return "nil";
+end
+
+function TRP3_API.script.varCheckN(args, source, varName)
+	if args and source then
+
+		local storage;
+
+		if source == "w" then
+			storage = args.custom;
+		elseif source == "o" and args.object then
+			if not args.object.vars then
+				args.object.vars = {};
+			end
+			storage = args.object.vars;
+		elseif source == "c" and TRP3_API.quest.getActiveCampaignLog() then
+			storage = TRP3_API.quest.getActiveCampaignLog();
+			if not storage.vars then
+				storage.vars = {};
+			end
+			storage = storage.vars;
+		else
+			return 0;
+		end
+		if not storage then return 0; end
+
+		return tonumber(storage[varName] or 0) or 0;
+	end
+	return 0;
 end

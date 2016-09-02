@@ -20,7 +20,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local tonumber, tostring, type, tinsert, wipe, strtrim = tonumber, tostring, type, tinsert, wipe, strtrim;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local loc = TRP3_API.locale.getText;
-
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
 local getUnitText = TRP3_API.extended.tools.getUnitText;
 
@@ -366,6 +366,66 @@ local function char_facing_init()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Check vars
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function check_var_init()
+	local editor = TRP3_OperandEditorCheckVar;
+
+	local sourcesText = {
+		w = loc("EFFECT_SOURCE_WORKFLOW"),
+		o = loc("EFFECT_SOURCE_OBJECT"),
+		c = loc("EFFECT_SOURCE_CAMPAIGN")
+	}
+
+	registerOperandEditor("var_check", {
+		title = loc("OP_OP_CHECK_VAR"),
+		description = loc("OP_OP_CHECK_VAR_TT"),
+		returnType = "",
+		noPreview = true,
+		getText = function(args)
+			local source = sourcesText[(args or EMPTY)[1]] or sourcesText.w;
+			local varName = tostring((args or EMPTY)[2] or "var");
+			return loc("OP_OP_CHECK_VAR_PREVIEW"):format(source, varName);
+		end,
+		editor = editor,
+	});
+
+	-- Source
+	local sources = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_WORKFLOW")), "w", loc("EFFECT_SOURCE_WORKFLOW_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 200, true);
+
+	-- Var name
+	editor.var.title:SetText(loc("EFFECT_VAR"))
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+
+	function editor.load(args)
+		editor.source:SetSelectedValue((args or EMPTY)[1] or "w");
+		editor.var:SetText((args or EMPTY)[2] or "var");
+	end
+
+	function editor.save()
+		return {editor.source:GetSelectedValue() or "w", strtrim(editor.var:GetText()) or "var"};
+	end
+
+	registerOperandEditor("var_check_n", {
+		title = loc("OP_OP_CHECK_VAR_N"),
+		description = loc("OP_OP_CHECK_VAR_N_TT"),
+		returnType = 0,
+		getText = function(args)
+			local source = sourcesText[(args or EMPTY)[1]] or sourcesText.w;
+			local varName = tostring((args or EMPTY)[2] or "var");
+			return loc("OP_OP_CHECK_VAR_N_PREVIEW"):format(source, varName);
+		end,
+		editor = editor,
+	});
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -376,6 +436,8 @@ function TRP3_ConditionEditor.initOperands()
 	string_init();
 	boolean_init();
 	numeric_init();
+
+	check_var_init();
 
 	-- Unit string
 	unit_name_init();

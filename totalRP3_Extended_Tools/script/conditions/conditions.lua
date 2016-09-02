@@ -46,8 +46,11 @@ local function registerOperandEditor(operandID, operandStructure)
 end
 TRP3_API.extended.tools.registerOperandEditor = registerOperandEditor;
 
+local defaultInfo = {
+	getText = function() return "?" end
+}
 local function getOperandEditorInfo(operandID)
-	return OPERANDS[operandID] or Globals.empty;
+	return OPERANDS[operandID] or defaultInfo;
 end
 TRP3_API.extended.tools.getOperandEditorInfo = getOperandEditorInfo;
 
@@ -165,6 +168,7 @@ local function onOperandSelected(operandID, list, loadEditor)
 
 	setTooltipForSameFrame(list, "TOP", 0, 0);
 
+	local hasPreview = false;
 	local operandInfo = getOperandEditorInfo(operandID);
 	if operandInfo ~= EMPTY then
 		fullText = operandInfo.getText and operandInfo.getText(list.argsData) or operandInfo.title;
@@ -176,6 +180,7 @@ local function onOperandSelected(operandID, list, loadEditor)
 		end
 		if not operandInfo.noPreview then
 			list.preview:Enable();
+			hasPreview = false;
 		end
 		local returnType = type(operandInfo.returnType);
 		local returnTypeText;
@@ -195,6 +200,8 @@ local function onOperandSelected(operandID, list, loadEditor)
 
 	_G[list:GetName() .. "Text"]:SetText(fullText);
 	checkNumeric();
+
+	return hasPreview;
 end
 
 local function onOperandEditClick(button)
@@ -252,7 +259,7 @@ local function openOperandEditor(expressionIndex)
 	operandEditor.comparator:SetSelectedValue(comparator);
 
 	operandEditor.left.argsData = leftOperand.a;
-	onOperandSelected(leftOperand.i, operandEditor.left);
+	local hasPreview = onOperandSelected(leftOperand.i, operandEditor.left);
 
 	if rightOperand.v ~= nil then
 		operandEditor.right.argsData = rightOperand.v;
@@ -392,9 +399,11 @@ local function getExpressionText(expression)
 	local leftOperand = expression[1];
 	local comparator = getComparatorText(expression[2]);
 	local rightOperand = expression[3];
+	local leftInfo = getOperandEditorInfo(leftOperand.i);
+	local rightInfo = getOperandEditorInfo(rightOperand.i);
 
-	local leftText = leftOperand.i and getOperandEditorInfo(leftOperand.i).getText(leftOperand.a) or getValueString(leftOperand.v);
-	local rightText = rightOperand.i and getOperandEditorInfo(rightOperand.i).getText(rightOperand.a) or getValueString(rightOperand.v);
+	local leftText = leftOperand.i and leftInfo.getText(leftOperand.a) or getValueString(leftOperand.v);
+	local rightText = rightOperand.i and rightInfo.getText(rightOperand.a) or getValueString(rightOperand.v);
 	return "|cffffff00" .. leftText .. "  |cff00ff00" .. comparator .. "  |cffffff00" .. rightText;
 end
 
@@ -546,15 +555,14 @@ function editor.init()
 --			"inv_empty_slot",
 		},
 		[loc("EFFECT_CAT_CAMPAIGN")] = {
-			"quest_var",
 			"quest_is_step",
 			"quest_obj",
 			"quest_is_npc",
 		},
---		["Expert"] = {-- TODO: locals
---			"var_workflow",
---			"var_object",
---		},
+		["Expert"] = {-- TODO: locals
+			"var_check",
+			"var_check_n",
+		},
 --		["Others"] = {-- TODO: locals
 --			"random",
 --		},
@@ -568,6 +576,7 @@ function editor.init()
 --		"Campaign and quests", -- TODO: locals
 		loc("INV_PAGE_CHARACTER_INV"),
 		loc("EFFECT_CAT_CAMPAIGN"),
+		"Expert", -- TODO: locals
 --		"Others", -- TODO: locals
 	}
 

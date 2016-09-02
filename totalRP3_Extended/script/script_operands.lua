@@ -263,18 +263,6 @@ local OPERANDS = {
 	-- QUEST
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	["quest_var"] = {
-		numeric = true,
-		codeReplacement = function(args)
-			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
-			local var = args[2] or "";
-			return ("getQuestVar(\"%s\", \"%s\", \"%s\")"):format(campaignID, questID, var);
-		end,
-		env = {
-			["getQuestVar"] = "TRP3_API.quest.getQuestVar",
-		},
-	},
-
 	["quest_is_step"] = {
 		numeric = true,
 		codeReplacement = function(args)
@@ -304,6 +292,33 @@ local OPERANDS = {
 		end,
 		env = {
 			["UnitIsCampaignNPC"] = "TRP3_API.quest.UnitIsCampaignNPC",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- EXPERT
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["var_check"] = {
+		codeReplacement = function(args)
+			local source = args[1] or "w";
+			local var = args[2] or "";
+			return ("varCheck(args, \"%s\", \"%s\")"):format(source, var);
+		end,
+		env = {
+			["varCheck"] = "TRP3_API.script.varCheck",
+		},
+	},
+
+	["var_check_n"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local source = args[1] or "w";
+			local var = args[2] or "";
+			return ("varCheckN(args, \"%s\", \"%s\")"):format(source, var);
+		end,
+		env = {
+			["varCheckN"] = "TRP3_API.script.varCheckN",
 		},
 	},
 

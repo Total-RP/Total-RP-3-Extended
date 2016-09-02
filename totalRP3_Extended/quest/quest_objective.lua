@@ -55,7 +55,7 @@ local function display()
 						local objectiveClass = questClass.OB[objectiveID];
 						local objText = UNKNOWN;
 						if objectiveClass then
-							local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", {object = questLog});
+							local obectiveText = TRP3_API.script.parseObjectArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 							if state == true then
 								objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. obectiveText;
 							else

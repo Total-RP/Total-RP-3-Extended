@@ -184,7 +184,6 @@ local function var_set_execenv_init()
 			return {"w", "[=]", "varName", 0};
 		end,
 		editor = changeVarEditor,
-		context = {TRP3_DB.types.ITEM, TRP3_DB.types.CAMPAIGN, TRP3_DB.types.QUEST},
 	});
 
 end

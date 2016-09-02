@@ -171,6 +171,12 @@ local function getActiveCampaignLog()
 end
 TRP3_API.quest.getActiveCampaignLog = getActiveCampaignLog;
 
+local function getCampaignVarStorage()
+	local storage = playerQuestLog and playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign];
+	return storage and storage.vars;
+end
+TRP3_API.quest.getCampaignVarStorage = getCampaignVarStorage;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
