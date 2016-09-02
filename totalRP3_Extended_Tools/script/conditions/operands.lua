@@ -281,6 +281,32 @@ local function unit_speed_init()
 	});
 end
 
+local function unit_position_x_init()
+	registerOperandEditor("unit_position_x", {
+		title = loc("OP_OP_UNIT_POSITION_X"),
+		description = loc("OP_OP_UNIT_POSITION_X_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_POSITION_X") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_position_y_init()
+	registerOperandEditor("unit_position_y", {
+		title = loc("OP_OP_UNIT_POSITION_Y"),
+		description = loc("OP_OP_UNIT_POSITION_Y_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_POSITION_Y") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Unit checks operands
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -361,6 +387,72 @@ local function char_facing_init()
 		returnType = 0,
 		getText = function(args)
 			return loc("OP_OP_CHAR_FACING");
+		end,
+	});
+end
+
+local function char_falling_init()
+	registerOperandEditor("char_falling", {
+		title = loc("OP_OP_CHAR_FALLING"),
+		description = loc("OP_OP_CHAR_FALLING_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_FALLING");
+		end,
+	});
+end
+
+local function char_stealth_init()
+	registerOperandEditor("char_stealth", {
+		title = loc("OP_OP_CHAR_STEALTH"),
+		description = loc("OP_OP_CHAR_STEALTH_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_STEALTH");
+		end,
+	});
+end
+
+local function char_flying_init()
+	registerOperandEditor("char_flying", {
+		title = loc("OP_OP_CHAR_FLYING"),
+		description = loc("OP_OP_CHAR_FLYING_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_FLYING");
+		end,
+	});
+end
+
+local function char_mounted_init()
+	registerOperandEditor("char_mounted", {
+		title = loc("OP_OP_CHAR_MOUNTED"),
+		description = loc("OP_OP_CHAR_MOUNTED_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_MOUNTED");
+		end,
+	});
+end
+
+local function char_resting_init()
+	registerOperandEditor("char_resting", {
+		title = loc("OP_OP_CHAR_RESTING"),
+		description = loc("OP_OP_CHAR_RESTING_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_RESTING");
+		end,
+	});
+end
+
+local function char_swimming_init()
+	registerOperandEditor("char_swimming", {
+		title = loc("OP_OP_CHAR_SWIMMING"),
+		description = loc("OP_OP_CHAR_SWIMMING_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_SWIMMING");
 		end,
 	});
 end
@@ -455,6 +547,8 @@ function TRP3_ConditionEditor.initOperands()
 	unit_health_init();
 	unit_level_init();
 	unit_speed_init();
+	unit_position_x_init();
+	unit_position_y_init();
 
 	-- Unit checks
 	unit_exists_init();
@@ -465,5 +559,11 @@ function TRP3_ConditionEditor.initOperands()
 
 	-- Character values
 	char_facing_init();
+	char_falling_init();
+	char_stealth_init();
+	char_flying_init();
+	char_mounted_init();
+	char_resting_init();
+	char_swimming_init();
 
 end

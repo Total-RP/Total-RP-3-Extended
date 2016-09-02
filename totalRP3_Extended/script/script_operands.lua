@@ -163,6 +163,30 @@ local OPERANDS = {
 		},
 	},
 
+	["unit_position_x"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("select(1, UnitPosition(\"%s\"))"):format(unitID);
+		end,
+		env = {
+			["UnitPosition"] = "UnitPosition",
+			["select"] = "select",
+		},
+	},
+
+	["unit_position_y"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("select(2, UnitPosition(\"%s\"))"):format(unitID);
+		end,
+		env = {
+			["UnitPosition"] = "UnitPosition",
+			["select"] = "select",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- UNIT CHECK
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -230,6 +254,66 @@ local OPERANDS = {
 		end,
 		env = {
 			["GetPlayerFacing"] = "GetPlayerFacing",
+		},
+	},
+
+	["char_falling"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "IsFalling()";
+		end,
+		env = {
+			["IsFalling"] = "IsFalling",
+		},
+	},
+
+	["char_stealth"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "IsStealthed()";
+		end,
+		env = {
+			["IsStealthed"] = "IsStealthed",
+		},
+	},
+
+	["char_flying"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "IsFlying()";
+		end,
+		env = {
+			["IsFlying"] = "IsFlying",
+		},
+	},
+
+	["char_mounted"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "IsMounted()";
+		end,
+		env = {
+			["IsMounted"] = "IsMounted",
+		},
+	},
+
+	["char_resting"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "IsResting()";
+		end,
+		env = {
+			["IsResting"] = "IsResting",
+		},
+	},
+
+	["char_swimming"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "IsSwimming()";
+		end,
+		env = {
+			["IsSwimming"] = "IsSwimming",
 		},
 	},
 
