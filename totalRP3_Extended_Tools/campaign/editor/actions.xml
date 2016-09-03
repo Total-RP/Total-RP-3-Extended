@@ -99,6 +99,22 @@
 		</Layers>
 
 		<Frames>
+			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true">
+
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="24" />
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="418" />
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+				</Backdrop>
+
+			</Frame>
+
 			<Frame parentKey="editor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
 				<Size x="300" y="175"/>
 				<Layers>

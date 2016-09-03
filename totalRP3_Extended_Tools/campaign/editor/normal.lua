@@ -32,10 +32,15 @@ local TABS = {
 	QUESTS = 2,
 	INNER = 3,
 	WORKFLOWS = 4,
-	EXPERT = 5
+	EXPERT = 5,
+	ACTIONS = 6
 }
 
 local tabGroup, currentTab, linksStructure;
+local actionEditor = TRP3_ActionsEditorFrame;
+local linksEditor = TRP3_LinksEditor;
+local scriptEditor = TRP3_ScriptEditorNormal;
+local innerEditor = TRP3_InnerObjectEditor;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC
@@ -231,13 +236,13 @@ local function loadDataScript()
 	if not toolFrame.specificDraft.SC then
 		toolFrame.specificDraft.SC = {};
 	end
-	TRP3_ScriptEditorNormal.loadList(TRP3_DB.types.CAMPAIGN);
+	scriptEditor.loadList(TRP3_DB.types.CAMPAIGN);
 end
 
 local function storeDataScript()
 	-- TODO: compute all workflow order
 	for workflowID, workflow in pairs(toolFrame.specificDraft.SC) do
-		TRP3_ScriptEditorNormal.linkElements(workflow);
+		scriptEditor.linkElements(workflow);
 	end
 end
 
@@ -246,7 +251,7 @@ local function loadDataInner()
 	if not toolFrame.specificDraft.IN then
 		toolFrame.specificDraft.IN = {};
 	end
-	TRP3_InnerObjectEditor.refresh();
+	innerEditor.refresh();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -280,9 +285,9 @@ local function load()
 
 	loadDataScript();
 	loadDataInner();
-	TRP3_LinksEditor.load(linksStructure);
+	linksEditor.load(linksStructure);
 
-	TRP3_ActionsEditorFrame.load();
+	actionEditor.load();
 
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
 end
@@ -313,10 +318,10 @@ local function onTabChanged(tabWidget, tab)
 	npc:Hide();
 	notes:Hide();
 	quests:Hide();
-	TRP3_ActionsEditorFrame:Hide();
-	TRP3_ScriptEditorNormal:Hide();
-	TRP3_InnerObjectEditor:Hide();
-	TRP3_LinksEditor:Hide();
+	actionEditor:Hide();
+	scriptEditor:Hide();
+	innerEditor:Hide();
+	linksEditor:Hide();
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
@@ -325,22 +330,23 @@ local function onTabChanged(tabWidget, tab)
 		npc:Show();
 		refreshNPCList();
 	elseif currentTab == TABS.WORKFLOWS then
-		TRP3_ScriptEditorNormal:SetParent(toolFrame.campaign.normal);
-		TRP3_ScriptEditorNormal:SetAllPoints();
-		TRP3_ScriptEditorNormal:Show();
+		scriptEditor:SetParent(toolFrame.campaign.normal);
+		scriptEditor:SetAllPoints();
+		scriptEditor:Show();
 	elseif currentTab == TABS.QUESTS then
 		quests:Show();
 		refreshQuestsList();
 	elseif currentTab == TABS.INNER then
-		TRP3_InnerObjectEditor:SetParent(toolFrame.campaign.normal);
-		TRP3_InnerObjectEditor:SetAllPoints();
-		TRP3_InnerObjectEditor:Show();
+		innerEditor:SetParent(toolFrame.campaign.normal);
+		innerEditor:SetAllPoints();
+		innerEditor:Show();
 	elseif currentTab == TABS.EXPERT then
-		TRP3_LinksEditor:SetParent(toolFrame.campaign.normal);
-		TRP3_LinksEditor:SetAllPoints();
-		TRP3_LinksEditor:Show();
-		TRP3_LinksEditor.load(linksStructure);
-		TRP3_ActionsEditorFrame:Show();
+		linksEditor:SetParent(toolFrame.campaign.normal);
+		linksEditor:SetAllPoints();
+		linksEditor:Show();
+		linksEditor.load(linksStructure);
+	elseif currentTab == TABS.ACTIONS then
+		actionEditor.place(toolFrame.campaign.normal);
 	end
 
 	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
@@ -358,6 +364,7 @@ local function createTabBar()
 			{ loc("IN_INNER"), TABS.INNER, 150 },
 			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
 			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
+			{ loc("CA_ACTIONS"), TABS.ACTIONS, 150 },
 		},
 		onTabChanged
 	);

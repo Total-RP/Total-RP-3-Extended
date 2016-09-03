@@ -59,14 +59,6 @@ local function refreshList()
 end
 
 function editor.load()
-	-- Anchor to links tabs
-	editor:SetParent(TRP3_LinksEditor);
-	editor:ClearAllPoints();
-	editor:SetPoint("TOP", 0, -5);
-	editor:SetPoint("BOTTOM", 0, 5);
-	editor:SetPoint("RIGHT", -10, 0);
-	editor:SetPoint("LEFT", TRP3_LinksEditor, "CENTER", 0, 0);
-
 	local data = toolFrame.specificDraft;
 	if not data.AC then
 		data.AC = {};
@@ -110,7 +102,7 @@ local function openAction(actionIndex, frame)
 		local actionData = toolFrame.specificDraft.AC[actionIndex];
 		if actionData then
 			editor.editor.index = actionIndex;
-			TRP3_API.ui.frame.configureHoverFrame(editor.editor, frame, "RIGHT", 0, 5, false);
+			TRP3_API.ui.frame.configureHoverFrame(editor.editor, frame, "TOP", 0, 0, false);
 			reloadWorkflowlist();
 			TRP3_ScriptEditorNormal.safeLoadList(editor.editor.workflow, editor.editor.workflowIDs, actionData.SC or "");
 			editor.editor.type:SetSelectedValue(actionData.TY or TRP3_API.quest.ACTION_TYPES.LOOK);
@@ -143,16 +135,15 @@ local function openActionCondition(actionIndex)
 		{ { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } }
 	};
 
-	TRP3_LinksEditor.overlay:Show();
-	TRP3_LinksEditor.overlay:SetFrameLevel(TRP3_LinksEditor:GetFrameLevel() + 30);
-
-	TRP3_ConditionEditor:SetParent(TRP3_LinksEditor.overlay);
+	editor.overlay:Show();
+	editor.overlay:SetFrameLevel(editor:GetFrameLevel() + 20);
+	TRP3_ConditionEditor:SetParent(editor.overlay);
 	TRP3_ConditionEditor:ClearAllPoints();
 	TRP3_ConditionEditor:SetPoint("CENTER", 0, 0);
-	TRP3_ConditionEditor:SetFrameLevel(TRP3_LinksEditor.overlay:GetFrameLevel() + 10);
+	TRP3_ConditionEditor:SetFrameLevel(editor.overlay:GetFrameLevel() + 20);
 	TRP3_ConditionEditor:Show();
 	TRP3_ConditionEditor.load(scriptData);
-	TRP3_ConditionEditor:SetScript("OnHide", function() TRP3_LinksEditor.overlay:Hide() end);
+	TRP3_ConditionEditor:SetScript("OnHide", function() editor.overlay:Hide() end);
 	TRP3_ConditionEditor.confirm:SetScript("OnClick", function()
 		TRP3_ConditionEditor.save(scriptData);
 		toolFrame.specificDraft.AC[actionIndex].CO = scriptData;
@@ -160,7 +151,7 @@ local function openActionCondition(actionIndex)
 		refreshList();
 	end);
 	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
-	TRP3_ConditionEditor.title:SetText("Action condition editor");
+	TRP3_ConditionEditor.title:SetText(loc("CA_ACTION_CONDI"));
 end
 
 local function removeCondition(actionIndex)
@@ -174,6 +165,12 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function editor.place(parent)
+	editor:SetParent(parent);
+	editor:SetAllPoints();
+	editor:Show();
+end
 
 function editor.init(ToolFrame)
 	toolFrame = ToolFrame;
@@ -224,7 +221,7 @@ function editor.init(ToolFrame)
 	editor.list.empty:SetText(loc("CA_ACTIONS_NO"));
 
 	-- Editor
-	editor.editor.title:SetText(loc("CA_NPC_EDITOR"));
+	editor.editor.title:SetText(loc("CA_ACTIONS_EDITOR"));
 	editor.editor.save:SetScript("OnClick", function(self)
 		onActionSaved();
 	end);

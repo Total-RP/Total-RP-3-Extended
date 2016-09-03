@@ -32,10 +32,12 @@ local TABS = {
 	STEPS = 2,
 	INNER = 3,
 	WORKFLOWS = 4,
-	EXPERT = 5
+	EXPERT = 5,
+	ACTIONS = 6
 }
 
 local tabGroup, currentTab, linksStructure;
+local actionEditor = TRP3_ActionsEditorFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Quest specifics
@@ -257,7 +259,7 @@ local function load()
 	loadDataInner();
 	TRP3_LinksEditor.load(linksStructure);
 
-	TRP3_ActionsEditorFrame.load();
+	actionEditor.load();
 
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
 end
@@ -289,7 +291,7 @@ local function onTabChanged(tabWidget, tab)
 	notes:Hide();
 	objectives:Hide();
 	steps:Hide();
-	TRP3_ActionsEditorFrame:Hide();
+	actionEditor:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
 	TRP3_LinksEditor:Hide();
@@ -314,7 +316,8 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_LinksEditor:SetAllPoints();
 		TRP3_LinksEditor:Show();
 		TRP3_LinksEditor.load(linksStructure);
-		TRP3_ActionsEditorFrame:Show();
+	elseif currentTab == TABS.ACTIONS then
+		actionEditor.place(toolFrame.quest);
 	end
 
 	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
@@ -332,6 +335,7 @@ local function createTabBar()
 			{ loc("IN_INNER"), TABS.INNER, 150 },
 			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
 			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
+			{ loc("CA_ACTIONS"), TABS.ACTIONS, 150 },
 		},
 		onTabChanged
 	);
