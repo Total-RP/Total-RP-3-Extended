@@ -69,8 +69,8 @@ local function activateCampaignHandlers(campaignID, campaignClass)
 	end
 	-- Active handlers for known quests
 	for questID, questClass in pairs(campaignClass.QE or EMPTY) do
-		if playerQuestLog[campaignID][questID] and not playerQuestLog[campaignID][questID].DO then
-			TRP3_API.quest.activateQuestHandlers(campaignID, campaignClass, questID, questClass);
+		if playerQuestLog[campaignID][questID] and playerQuestLog[campaignID][questID].FI ~= nil then
+			TRP3_API.quest.activateQuestHandlers(campaignID, questID, questClass);
 		end
 	end
 end

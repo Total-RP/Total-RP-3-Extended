@@ -370,13 +370,12 @@ local OPERANDS = {
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	["quest_is_step"] = {
-		numeric = true,
 		codeReplacement = function(args)
 			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
-			return ("isQuestStep(\"%s\", \"%s\")"):format(campaignID, questID);
+			return ("getQuestCurrentStep(\"%s\", \"%s\")"):format(campaignID, questID);
 		end,
 		env = {
-			["isQuestStep"] = "TRP3_API.quest.isQuestStep",
+			["getQuestCurrentStep"] = "TRP3_API.quest.getQuestCurrentStep",
 		},
 	},
 

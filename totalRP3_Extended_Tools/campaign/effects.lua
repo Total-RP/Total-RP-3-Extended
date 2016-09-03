@@ -233,7 +233,7 @@ local function quest_is_step_init()
 	registerOperandEditor("quest_is_step", {
 		title = loc("OP_OP_QUEST_STEP"),
 		description = loc("OP_OP_QUEST_STEP_TT"),
-		returnType = 0,
+		returnType = "",
 		getText = function(args)
 			local id = (args or EMPTY)[1] or "";
 			return loc("OP_OP_QUEST_STEP_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id), id));

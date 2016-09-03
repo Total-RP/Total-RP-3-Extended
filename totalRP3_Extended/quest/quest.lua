@@ -28,11 +28,12 @@ local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass,
 
 local questHandlers = {};
 
-local function onQuestCallback(campaignID, campaignClass, questID, questClass, scriptID, ...)
-	if questClass and questClass.SC and questClass.SC[scriptID] then
+local function onQuestCallback(campaignID, questID, scriptID, ...)
+	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
+	local class = getClass(fullID);
+	if class.SC and class.SC[scriptID] then
 		local playerQuestLog = TRP3_API.quest.getQuestLog();
-		local retCode = TRP3_API.script.executeClassScript(scriptID, questClass.SC, {object = playerQuestLog[campaignID] },
-			TRP3_API.extended.getFullID(campaignID, questID));
+		local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, {object = playerQuestLog[campaignID] }, class);
 	end
 end
 
@@ -57,15 +58,16 @@ local function clearQuestHandlers(questID)
 end
 TRP3_API.quest.clearQuestHandlers = clearQuestHandlers;
 
-local function activateQuestHandlers(campaignID, campaignClass, questID, questClass)
-	for eventID, scriptID in pairs(questClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(eventID, function(...)
-			onQuestCallback(campaignID, campaignClass, questID, questClass, scriptID, ...);
+local function activateQuestHandlers(campaignID, questID, questClass)
+	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
+	for _, event in pairs(questClass.HA or EMPTY) do
+		local handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onQuestCallback(campaignID, questID, event.SC, ...);
 		end);
-		if not questHandlers[questID] then
-			questHandlers[questID] = {};
+		if not questHandlers[fullID] then
+			questHandlers[fullID] = {};
 		end
-		questHandlers[questID][handlerID] = eventID;
+		questHandlers[fullID][handlerID] = event.EV;
 	end
 end
 TRP3_API.quest.activateQuestHandlers = activateQuestHandlers;
@@ -96,7 +98,7 @@ local function startQuest(campaignID, questID)
 		local questIcon, questName, questDescription = getClassDataSafe(questClass);
 		Utils.message.displayMessage(loc("QE_QUEST_START"):format(questName), Utils.message.type.CHAT_FRAME);
 
-		activateQuestHandlers(campaignID, campaignClass, questID, questClass);
+		activateQuestHandlers(campaignID, questID, questClass);
 
 		-- Initial script
 		if questClass.LI and questClass.LI.OS then
@@ -135,7 +137,7 @@ local function startQuest(campaignID, questID)
 end
 TRP3_API.quest.startQuest = startQuest;
 
-function TRP3_API.quest.isQuestStep(campaignID, questID)
+function TRP3_API.quest.getQuestCurrentStep(campaignID, questID)
 	assert(campaignID and questID, "Illegal args");
 	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
 	if campaignLog then
@@ -200,6 +202,7 @@ local function goToStep(campaignID, questID, stepID)
 
 	if stepClass.BA.FI then
 		questLog.FI = true;
+		clearQuestHandlers(TRP3_API.extended.getFullID(campaignID, questID));
 	end
 
 	return 1;
