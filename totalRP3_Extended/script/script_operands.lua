@@ -222,7 +222,6 @@ local OPERANDS = {
 	},
 
 	["unit_distance_trade"] = {
-		numeric = true,
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
 			return ("CheckInteractDistance(\"%s\", 2)"):format(unitID);
@@ -233,13 +232,36 @@ local OPERANDS = {
 	},
 
 	["unit_distance_inspect"] = {
-		numeric = true,
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
 			return ("CheckInteractDistance(\"%s\", 1)"):format(unitID);
 		end,
 		env = {
 			["CheckInteractDistance"] = "CheckInteractDistance",
+		},
+	},
+
+	["unit_distance_point"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			local x = args[2] or 0;
+			local y = args[3] or 0;
+			return ("unitDistancePoint(\"%s\", %s, %s)"):format(unitID, x, y);
+		end,
+		env = {
+			["unitDistancePoint"] = "TRP3_API.extended.unitDistancePoint",
+		},
+	},
+
+	["unit_distance_me"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("unitDistanceMe(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["unitDistanceMe"] = "TRP3_API.extended.unitDistanceMe",
 		},
 	},
 

@@ -520,6 +520,8 @@ function editor.init()
 			"unit_speed",
 			"unit_position_x",
 			"unit_position_y",
+			"unit_distance_point",
+			"unit_distance_me",
 		},
 		[loc("OP_UNIT_TEST")] = {
 			"unit_is_player",

@@ -30,12 +30,9 @@ local unitTypeEditor, stringEditor, numericEditor = TRP3_OperandEditorUnitType, 
 -- Shared editors
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local unitType;
+
 local function initEnitTypeEditor()
-	local unitType = {
-		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_PLAYER")), "player"},
-		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_TARGET")), "target"},
-		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_NPC")), "npc"},
-	}
 	TRP3_API.ui.listbox.setupListBox(unitTypeEditor.type, unitType, nil, nil, 180, true);
 
 	function unitTypeEditor.load(args)
@@ -307,6 +304,52 @@ local function unit_position_y_init()
 	});
 end
 
+local function unit_distance_point_init()
+	local editor = TRP3_OperandEditorDistancePoint;
+	registerOperandEditor("unit_distance_point", {
+		title = loc("OP_OP_DISTANCE_POINT"),
+		description = loc("OP_OP_DISTANCE_POINT_TT"),
+		returnType = 0,
+		getText = function(args)
+			args = args or EMPTY;
+			return loc("OP_OP_DISTANCE_POINT_PREVIEW"):format(args[1] or "target", args[2] or 0, args[3] or 0);
+		end,
+		editor = editor,
+	});
+
+	TRP3_API.ui.listbox.setupListBox(editor.type, unitType, nil, nil, 180, true);
+
+	editor.x.title:SetText(loc("OP_OP_DISTANCE_X"));
+	editor.y.title:SetText(loc("OP_OP_DISTANCE_Y"));
+	editor.current:SetText(loc("OP_OP_DISTANCE_CURRENT"));
+	editor.current:SetScript("OnClick", function()
+		local uX, uY = UnitPosition("player");
+		editor.x:SetText(string.format("%.2f", uX or 0));
+		editor.y:SetText(string.format("%.2f", uY or 0));
+	end);
+
+	function editor.load(args)
+		editor.type:SetSelectedValue((args or EMPTY)[1] or "target");
+		editor.x:SetText((args or EMPTY)[2] or "0");
+		editor.y:SetText((args or EMPTY)[3] or "0");
+	end
+
+	function editor.save()
+		return {editor.type:GetSelectedValue() or "target", tonumber(strtrim(editor.x:GetText())) or 0, tonumber(strtrim(editor.y:GetText())) or 0};
+	end
+
+	registerOperandEditor("unit_distance_me", {
+		title = loc("OP_OP_DISTANCE_ME"),
+		description = loc("OP_OP_DISTANCE_ME_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_DISTANCE_ME") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Unit checks operands
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -523,6 +566,12 @@ end
 
 function TRP3_ConditionEditor.initOperands()
 
+	unitType = {
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_PLAYER")), "player"},
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_TARGET")), "target"},
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_NPC")), "npc"},
+	}
+
 	initEnitTypeEditor();
 
 	string_init();
@@ -549,6 +598,7 @@ function TRP3_ConditionEditor.initOperands()
 	unit_speed_init();
 	unit_position_x_init();
 	unit_position_y_init();
+	unit_distance_point_init();
 
 	-- Unit checks
 	unit_exists_init();
