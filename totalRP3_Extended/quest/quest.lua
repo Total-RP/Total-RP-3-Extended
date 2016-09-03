@@ -31,11 +31,8 @@ local questHandlers = {};
 local function onQuestCallback(campaignID, campaignClass, questID, questClass, scriptID, ...)
 	if questClass and questClass.SC and questClass.SC[scriptID] then
 		local playerQuestLog = TRP3_API.quest.getQuestLog();
-		local retCode = TRP3_API.script.executeClassScript(scriptID, questClass.SC,
-			{
-				campaignID = campaignID, campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID],
-				questID = questID, questClass = questClass, questLog = playerQuestLog[campaignID].QUEST[questID],
-			});
+		local retCode = TRP3_API.script.executeClassScript(scriptID, questClass.SC, {object = playerQuestLog[campaignID] },
+			TRP3_API.extended.getFullID(campaignID, questID));
 	end
 end
 
@@ -104,7 +101,7 @@ local function startQuest(campaignID, questID)
 		-- Initial script
 		if questClass.LI and questClass.LI.OS then
 			local retCode = TRP3_API.script.executeClassScript(questClass.LI.OS, questClass.SC,
-				{classID = questID, class = questClass, object = campaignLog.QUEST[questID]}, TRP3_API.extended.getFullID(campaignID, questID));
+				{object = campaignLog}, TRP3_API.extended.getFullID(campaignID, questID));
 		end
 
 		for stepID, step in pairs(questClass.ST or EMPTY) do
@@ -194,9 +191,7 @@ local function goToStep(campaignID, questID, stepID)
 		-- Initial script
 		if stepClass.LI and stepClass.LI.OS then
 			local retCode = TRP3_API.script.executeClassScript(stepClass.LI.OS, stepClass.SC,
-				{
-					object = questLog, classID = stepID, class = stepClass,
-				}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
+				{object = campaignLog, classID = stepID}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
 		end
 
 	else
@@ -355,11 +350,7 @@ local function performAction(actionType)
 									if action.TY == actionType then
 										if isConditionChecked(action.CO) then
 											local retCode = TRP3_API.script.executeClassScript(action.SC, stepClass.SC,
-												{
-													campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-													questID = questID, questClass = questClass, object = questLog,
-													stepID = stepID, stepClass = stepClass,
-												}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
+												{object = campaignLog}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
 											return;
 										end
 									end
@@ -373,10 +364,7 @@ local function performAction(actionType)
 								if action.TY == actionType then
 									if isConditionChecked(action.CO) then
 										local retCode = TRP3_API.script.executeClassScript(action.SC, questClass.SC,
-											{
-												campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
-												questID = questID, questClass = questClass, object = questLog,
-											}, TRP3_API.extended.getFullID(campaignID, questID));
+											{object = campaignLog}, TRP3_API.extended.getFullID(campaignID, questID));
 										return;
 									end
 								end
@@ -392,7 +380,7 @@ local function performAction(actionType)
 					if action.TY == actionType then
 						if isConditionChecked(action.CO) then
 							local retCode = TRP3_API.script.executeClassScript(action.SC, campaignClass.SC,
-								{campaignID = campaignID, campaignClass = campaignClass, object = campaignLog}, campaignID);
+								{object = campaignLog}, campaignID);
 							return;
 						end
 					end

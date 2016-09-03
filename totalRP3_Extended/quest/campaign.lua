@@ -45,9 +45,10 @@ end
 
 local campaignHandlers = {};
 
-local function onCampaignCallback(campaignID, campaignClass, scriptID, ...)
-	if campaignClass and campaignClass.SC and campaignClass.SC[scriptID] then
-		local retCode = TRP3_API.script.executeClassScript(scriptID, campaignClass.SC, { campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID] });
+local function onCampaignCallback(campaignID, scriptID, condition, ...)
+	local class = getClass(campaignID);
+	if class and class.SC and class.SC[scriptID] then
+		local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, { object = playerQuestLog[campaignID] }, campaignID);
 	end
 end
 
@@ -60,11 +61,11 @@ local function clearCampaignHandlers()
 end
 
 local function activateCampaignHandlers(campaignID, campaignClass)
-	for eventID, scriptID in pairs(campaignClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(eventID, function(...)
-			onCampaignCallback(campaignID, campaignClass, scriptID, ...);
+	for _, event in pairs(campaignClass.HA or EMPTY) do
+		local handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onCampaignCallback(campaignID, event.SC, event.CO, ...);
 		end);
-		campaignHandlers[handlerID] = eventID;
+		campaignHandlers[handlerID] = event.EV;
 	end
 	-- Active handlers for known quests
 	for questID, questClass in pairs(campaignClass.QE or EMPTY) do
@@ -132,8 +133,7 @@ local function activateCampaign(campaignID, force)
 
 		-- Initial script
 		if campaignClass.LI and campaignClass.LI.OS then
-			local retCode = TRP3_API.script.executeClassScript(campaignClass.LI.OS, campaignClass.SC,
-				{ classID = campaignID, class = campaignClass, object = playerQuestLog[campaignID] }, campaignID);
+			local retCode = TRP3_API.script.executeClassScript(campaignClass.LI.OS, campaignClass.SC, { object = playerQuestLog[campaignID] }, campaignID);
 		end
 
 		for questID, quest in pairs(campaignClass.QE or EMPTY) do
@@ -201,6 +201,10 @@ function TRP3_API.quest.campaignInit()
 	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
 		if getActiveCampaignLog() and not TRP3_API.extended.classExists(playerQuestLog.currentCampaign) then
 			deactivateCurrentCampaign();
+		end
+		clearCampaignHandlers();
+		if getCurrentCampaignClass() then
+			activateCampaignHandlers(playerQuestLog.currentCampaign, getCurrentCampaignClass());
 		end
 	end);
 end

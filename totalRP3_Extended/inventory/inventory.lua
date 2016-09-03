@@ -286,7 +286,7 @@ local function useContainerSlot(slotButton, containerFrame)
 				if slotButton.class.LI and slotButton.class.LI.OU then
 					useWorkflow = slotButton.class.LI.OU;
 				end
-				local retCode = TRP3_API.script.executeClassScript(useWorkflow, slotButton.class.SC, {class = slotButton.class, object = slotButton.info, container = containerFrame.info}, slotButton.info.id);
+				local retCode = TRP3_API.script.executeClassScript(useWorkflow, slotButton.class.SC, {object = slotButton.info, container = containerFrame.info}, slotButton.info.id);
 			end
 		end
 	end
@@ -350,7 +350,7 @@ local function removeSlotContent(container, slotID, slotInfo, manuallyDestroyed)
 		if manuallyDestroyed then
 			if class.LI and class.LI.OD then
 				local retCode = TRP3_API.script.executeClassScript(class.LI.OD, class.SC,
-					{class = class, object = slotInfo, container = container}, slotInfo.id);
+					{object = slotInfo, container = container}, slotInfo.id);
 			end
 			Utils.message.displayMessage(loc("DR_DELETED"):format(link, count));
 		end

@@ -498,7 +498,7 @@ local function executeClassScript(scriptID, classScripts, args, innerClassID)
 	end
 
 	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, innerClassID)};
-	local classID = parts[1];
+	local rootClassID = parts[1];
 	local class = classScripts[scriptID];
 
 	-- Not compiled yet
@@ -506,7 +506,7 @@ local function executeClassScript(scriptID, classScripts, args, innerClassID)
 		if not compiledScript[innerClassID] then
 			compiledScript[innerClassID] = {};
 		end
-		compiledScript[innerClassID][scriptID] = getFunction(class.ST, classID);
+		compiledScript[innerClassID][scriptID] = getFunction(class.ST, rootClassID);
 	end
 	return executeFunction(compiledScript[innerClassID][scriptID], args, scriptID);
 end

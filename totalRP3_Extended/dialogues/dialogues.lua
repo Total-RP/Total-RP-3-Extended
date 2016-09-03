@@ -370,11 +370,7 @@ function processDialogStep()
 	dialogFrame.dialogStepClass = dialogStepClass;
 
 	if dialogFrame.classID and dialogStepClass.WO then
-		local retCode = TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC,
-			{
-				class = dialogClass,
-				dialogStepClass = dialogStepClass,
-			}, dialogFrame.classID);
+		local retCode = TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC, {}, dialogFrame.classID);
 	end
 
 	playDialogStep();

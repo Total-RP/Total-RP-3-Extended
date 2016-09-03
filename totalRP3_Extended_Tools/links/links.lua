@@ -185,6 +185,12 @@ function editor.load(structure)
 		data.HA = {};
 	end
 
+	gameLinksEditor:Show();
+	if toolFrame.specificDraft.TY == TRP3_DB.types.QUEST_STEP then
+		-- No game handlers for step currently.
+		gameLinksEditor:Hide();
+	end
+
 	refreshList();
 
 	editor.workflowIDs = {};

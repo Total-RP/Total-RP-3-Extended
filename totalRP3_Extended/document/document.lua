@@ -117,10 +117,7 @@ local function showDocumentClass(document, documentID)
 
 	if documentFrame.ID then
 		if document.LI and document.LI.OO and document.SC and document.SC[document.LI.OO] then
-			local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC,
-				{
-					documentID = documentFrame.ID, documentClass = documentFrame.class
-				}, documentFrame.ID);
+			local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC, {}, documentFrame.ID);
 		end
 	end
 end
@@ -140,10 +137,7 @@ local function onLinkClicked(self, url)
 	if documentFrame.ID and documentFrame.class then
 		local document = documentFrame.class;
 		if document.SC and document.SC[url] then
-			local retCode = TRP3_API.script.executeClassScript(url, document.SC,
-				{
-					documentID = documentFrame.ID, documentClass = document
-				}, documentFrame.ID);
+			local retCode = TRP3_API.script.executeClassScript(url, document.SC, {}, documentFrame.ID);
 		end
 	end
 end
@@ -153,10 +147,7 @@ local function closeDocumentFrame()
 	if documentFrame.ID and documentFrame.class then
 		local document = documentFrame.class;
 		if document.LI and document.LI.OC and document.SC and document.SC[document.LI.OC] then
-			local retCode = TRP3_API.script.executeClassScript(document.LI.OC, document.SC,
-				{
-					documentID = documentFrame.ID, documentClass = document
-				}, documentFrame.ID);
+			local retCode = TRP3_API.script.executeClassScript(document.LI.OC, document.SC, {}, documentFrame.ID);
 		end
 	end
 end
