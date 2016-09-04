@@ -484,7 +484,7 @@ function onLineActionSelected(value, button)
 			TRP3_Extended_ImpExport.version = Globals.extended_version;
 			TRP3_Extended_ImpExport.by = Globals.player_id;
 			Utils.table.copy(TRP3_Extended_ImpExport.object, getClass(objectID));
-			TRP3_Extended_ImpExport.alert = true;
+			TRP3_Tools_Flags.exportAlert = true;
 			ReloadUI();
 		else
 			Utils.message.displayMessage(loc("DB_EXPORT_MODULE_NOT_ACTIVE"), 2);
@@ -772,8 +772,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		if not TRP3_Extended_ImpExport then
 			TRP3_Extended_ImpExport = {};
 		end
-		if TRP3_Extended_ImpExport.alert then
-			TRP3_Extended_ImpExport.alert = nil;
+		if TRP3_Tools_Flags.exportAlert then
+			TRP3_Tools_Flags.exportAlert = nil;
 			Utils.message.displayMessage(loc("DB_EXPORT_DONE"), 2);
 		end
 	end
