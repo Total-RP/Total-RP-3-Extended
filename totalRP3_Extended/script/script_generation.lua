@@ -581,8 +581,11 @@ function TRP3_API.script.parseArgs(text, args)
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		if directReplacement[capture] then
 			return directReplacement[capture]();
+		elseif capture:match("event%.%d+") then
+			local index = tonumber(capture:match("event%.(%d+)") or 1) or 1;
+			return (args.event or EMPTY)[index] or capture;
 		else
-			return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture];
+			return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture] or capture;
 		end
 	end);
 	return text;
@@ -593,7 +596,7 @@ function TRP3_API.script.parseObjectArgs(text, vars)
 		return text;
 	end
 	text = text:gsub("%$%{(.-)%}", function(capture)
-		return (vars or EMPTY)[capture];
+		return (vars or EMPTY)[capture] or capture;
 	end);
 	return text;
 end
