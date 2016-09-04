@@ -285,6 +285,7 @@ local function goToListPage(skipButton)
 	end
 	TRP3_API.extended.tools.toList();
 end
+TRP3_API.extended.tools.goToListPage = goToListPage;
 
 function goToPage(fullClassID, forceDraftReload)
 	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, fullClassID)};
@@ -381,12 +382,9 @@ TRP3_API.extended.tools.goToPage = goToPage;
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.showFrame(reset)
+function TRP3_API.extended.tools.showFrame()
 	toolFrame:Show();
 	toolFrame:Raise();
-	if reset then
-		goToListPage();
-	end
 end
 
 local function onStart()
@@ -504,13 +502,15 @@ local function onStart()
 	TRP3_API.extended.tools.initList(toolFrame);
 	TRP3_ExtendedTutorial.init(toolFrame);
 
-	goToListPage();
-
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
 
 	-- Bindings
 
 	BINDING_NAME_TRP3_EXTENDED_TOOLS = loc("TB_TOOLS");
+
+	Events.listenToEvent(Events.WORKFLOW_ON_FINISH, function()
+		goToListPage();
+	end);
 end
 
 local function onInit()

@@ -53,6 +53,8 @@ local function onCampaignCallback(campaignID, scriptID, condition, ...)
 end
 
 local function clearCampaignHandlers()
+	Log.log("clearCampaignHandlers", Log.level.DEBUG);
+
 	for handlerID, _ in pairs(campaignHandlers) do
 		Utils.event.unregisterHandler(handlerID);
 	end
@@ -61,6 +63,7 @@ local function clearCampaignHandlers()
 end
 
 local function activateCampaignHandlers(campaignID, campaignClass)
+	Log.log("activateCampaignHandlers: " .. campaignID, Log.level.DEBUG);
 	for _, event in pairs(campaignClass.HA or EMPTY) do
 		local handlerID = Utils.event.registerHandler(event.EV, function(...)
 			onCampaignCallback(campaignID, event.SC, event.CO, ...);
@@ -69,7 +72,7 @@ local function activateCampaignHandlers(campaignID, campaignClass)
 	end
 	-- Active handlers for known quests
 	for questID, questClass in pairs(campaignClass.QE or EMPTY) do
-		if playerQuestLog[campaignID][questID] and playerQuestLog[campaignID][questID].FI ~= nil then
+		if playerQuestLog[campaignID].QUEST[questID] and playerQuestLog[campaignID].QUEST[questID].FI == nil then
 			TRP3_API.quest.activateQuestHandlers(campaignID, questID, questClass);
 		end
 	end
@@ -103,14 +106,14 @@ local function activateCampaign(campaignID, force)
 	end
 
 	if not TRP3_API.extended.classExists(campaignID) then
-		Log.log("Unknown campaignID, abord activateCampaign: " .. tostring(campaignID));
+		Log.log("Unknown campaignID, abord activateCampaign: " .. tostring(campaignID), Log.level.WARNING);
 		return;
 	end
 
 	local campaignClass = getClass(campaignID);
 	local _, campaignName = getClassDataSafe(campaignClass);
 
-	local init;
+	local init = false;
 	if not playerQuestLog[campaignID] then
 		init = true;
 
@@ -125,6 +128,7 @@ local function activateCampaign(campaignID, force)
 		Utils.message.displayMessage(loc("QE_CAMPAIGN_RESUME"):format(campaignName), Utils.message.type.CHAT_FRAME);
 	end
 
+	Log.log("Activated campaign: " .. campaignID .. " with init at " .. tostring(init), Log.level.DEBUG);
 	activateCampaignHandlers(campaignID, campaignClass);
 
 	playerQuestLog.currentCampaign = campaignID;
@@ -138,7 +142,7 @@ local function activateCampaign(campaignID, force)
 
 		for questID, quest in pairs(campaignClass.QE or EMPTY) do
 			if quest.BA.IN then
-				TRP3_API.quest.startQuest(campaignID, questID);
+				TRP3_API.quest.startQuest(campaignID, questID, init);
 			end
 		end
 
@@ -193,6 +197,7 @@ function TRP3_API.quest.campaignInit()
 
 	-- Resuming last campaign
 	if playerQuestLog.currentCampaign then
+		Log.log("Init campaign on launch: " .. playerQuestLog.currentCampaign, Log.level.DEBUG);
 		activateCampaign(playerQuestLog.currentCampaign, true); -- Force reloading the current campaign
 	end
 

@@ -604,7 +604,11 @@ function TRP3_API.extended.tools.initList(toolFrame)
 				tooltip = loc("TB_TOOLS"),
 				tooltipSub = loc("TB_TOOLS_TT"),
 				onClick = function()
-					TRP3_API.extended.tools.showFrame(true);
+					if TRP3_ToolFrame:IsVisible() then
+						TRP3_ToolFrame:Hide();
+					else
+						TRP3_API.extended.tools.showFrame();
+					end
 				end,
 				visible = 1
 			};

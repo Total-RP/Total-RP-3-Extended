@@ -33,33 +33,35 @@ local function onQuestCallback(campaignID, questID, scriptID, ...)
 	local class = getClass(fullID);
 	if class.SC and class.SC[scriptID] then
 		local playerQuestLog = TRP3_API.quest.getQuestLog();
-		local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, {object = playerQuestLog[campaignID] }, class);
+		local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, {object = playerQuestLog[campaignID] }, fullID);
 	end
 end
 
-local function clearAllQuestHandlers()
-	for _, struct in pairs(questHandlers) do
-		for handlerID, _ in pairs(struct) do
-			Utils.event.unregisterHandler(handlerID);
-		end
-	end
-	wipe(questHandlers);
-end
-TRP3_API.quest.clearAllQuestHandlers = clearAllQuestHandlers;
+local function clearQuestHandlers(questFullID)
+	Log.log("clearQuestHandlers: " .. questFullID, Log.level.DEBUG);
 
-local function clearQuestHandlers(questID)
-	if questHandlers[questID] then
-		for handlerID, _ in pairs(questHandlers[questID]) do
+	if questHandlers[questFullID] then
+		for handlerID, _ in pairs(questHandlers[questFullID]) do
 			Utils.event.unregisterHandler(handlerID);
 		end
-		wipe(questHandlers[questID]);
-		questHandlers[questID] = nil;
+		wipe(questHandlers[questFullID]);
+		questHandlers[questFullID] = nil;
+		TRP3_API.quest.clearStepHandlersForQuest(questFullID);
 	end
 end
 TRP3_API.quest.clearQuestHandlers = clearQuestHandlers;
 
+local function clearAllQuestHandlers()
+	for questFullID, _ in pairs(questHandlers) do
+		clearQuestHandlers(questFullID);
+	end
+end
+TRP3_API.quest.clearAllQuestHandlers = clearAllQuestHandlers;
+
 local function activateQuestHandlers(campaignID, questID, questClass)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
+	Log.log("activateQuestHandlers: " .. fullID, Log.level.DEBUG);
+
 	for _, event in pairs(questClass.HA or EMPTY) do
 		local handlerID = Utils.event.registerHandler(event.EV, function(...)
 			onQuestCallback(campaignID, questID, event.SC, ...);
@@ -69,16 +71,29 @@ local function activateQuestHandlers(campaignID, questID, questClass)
 		end
 		questHandlers[fullID][handlerID] = event.EV;
 	end
+
+	-- Active handlers for known step
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	if playerQuestLog[campaignID] and playerQuestLog[campaignID].QUEST[questID] then
+		local questLog = playerQuestLog[campaignID].QUEST[questID];
+		for stepID, stepClass in pairs(questClass.ST or EMPTY) do
+			if questLog.CS == stepID then
+				TRP3_API.quest.activateStepHandlers(campaignID, questID, stepID, stepClass);
+			end
+		end
+	end
 end
 TRP3_API.quest.activateQuestHandlers = activateQuestHandlers;
 
-local function startQuest(campaignID, questID)
+local function startQuest(campaignID, questID, init)
 	-- Checks
 	assert(campaignID and questID, "Illegal args");
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
 	assert(playerQuestLog.currentCampaign == campaignID, ("Can't start quest because current campaign (%s) is not %s."):format(tostring(playerQuestLog.currentCampaign), campaignID));
 	local campaignLog = playerQuestLog[campaignID];
 	assert(campaignLog, "Trying to start quest from an unstarted campaign.");
+
+	Log.log("Start quest: " .. questID .. " with init: " .. tostring(init or "false"), Log.level.DEBUG);
 
 	if not campaignLog.QUEST[questID] then
 		Log.log("Starting quest " .. campaignID .. " " .. questID);
@@ -165,6 +180,63 @@ end
 -- STEP API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local stepHandlers = {};
+
+local function onStepCallback(campaignID, questID, stepID, scriptID, ...)
+	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
+	local class = getClass(fullID);
+	if class.SC and class.SC[scriptID] then
+		local playerQuestLog = TRP3_API.quest.getQuestLog();
+		local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, {object = playerQuestLog[campaignID]}, fullID);
+	end
+end
+
+local function clearStepHandlers(stepFullID)
+	Log.log("clearStepHandlers: " .. stepFullID, Log.level.DEBUG);
+
+	if stepHandlers[stepFullID] then
+		for handlerID, _ in pairs(stepHandlers[stepFullID]) do
+			Utils.event.unregisterHandler(handlerID);
+		end
+		wipe(stepHandlers[stepFullID]);
+		stepHandlers[stepFullID] = nil;
+	end
+end
+TRP3_API.quest.clearStepHandlers = clearStepHandlers;
+
+local function clearAllStepHandlers()
+	for stepFullID, _ in pairs(stepHandlers) do
+		clearStepHandlers(stepFullID);
+	end
+end
+TRP3_API.quest.clearAllStepHandlers = clearAllStepHandlers;
+
+function TRP3_API.quest.clearStepHandlersForQuest(questFullID)
+	Log.log("clearStepHandlersForQuest: " .. questFullID, Log.level.DEBUG);
+
+	for stepFullID, _ in pairs(stepHandlers) do
+		if stepFullID:sub(1, questFullID:len()) == questFullID then
+			clearStepHandlers(stepFullID);
+		end
+	end
+end
+
+local function activateStepHandlers(campaignID, questID, stepID, stepClass)
+	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
+	Log.log("activateStepHandlers: " .. fullID, Log.level.DEBUG);
+
+	for _, event in pairs(stepClass.HA or EMPTY) do
+		local handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onStepCallback(campaignID, questID, stepID, event.SC, ...);
+		end);
+		if not stepHandlers[fullID] then
+			stepHandlers[fullID] = {};
+		end
+		stepHandlers[fullID][handlerID] = event.EV;
+	end
+end
+TRP3_API.quest.activateStepHandlers = activateStepHandlers;
+
 local function goToStep(campaignID, questID, stepID)
 	-- Checks
 	assert(campaignID and questID and stepID, "Illegal args");
@@ -175,10 +247,14 @@ local function goToStep(campaignID, questID, stepID)
 	local questLog = campaignLog.QUEST[questID];
 	assert(questLog, "Trying to goToStep from an unstarted quest: " .. campaignID .. " " .. questID);
 
+	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
+
 	-- Change the current step
 	if questLog.CS then
 		if not questLog.PS then questLog.PS = {}; end
 		tinsert(questLog.PS, questLog.CS);
+		-- Remove previous step handlers
+		clearStepHandlers(fullID);
 	end
 	questLog.CS = stepID;
 	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
@@ -190,10 +266,12 @@ local function goToStep(campaignID, questID, stepID)
 
 	if stepClass then
 
+		activateStepHandlers(campaignID, questID, stepID, stepClass);
+
 		-- Initial script
 		if stepClass.LI and stepClass.LI.OS then
 			local retCode = TRP3_API.script.executeClassScript(stepClass.LI.OS, stepClass.SC,
-				{object = campaignLog, classID = stepID}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
+				{object = campaignLog, classID = stepID}, fullID);
 		end
 
 	else

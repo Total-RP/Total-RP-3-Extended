@@ -410,27 +410,32 @@ local function recomputeContainerWeightValue(container)
 	assert(container, "Nil container");
 	local weight, value = 0, 0;
 
-	-- Add container own weight
-	local containerClass = getClass(container.id);
-	if containerClass and containerClass.BA then
-		weight = weight + (containerClass.BA.WE or 0);
-		value = value + (containerClass.BA.VA or 0);
-	end
+	if TRP3_API.extended.classExists(container.id) then
+		-- Add container own weight
+		local containerClass = getClass(container.id);
+		if containerClass and containerClass.BA then
+			weight = weight + (containerClass.BA.WE or 0);
+			value = value + (containerClass.BA.VA or 0);
+		end
 
-	-- Add content weight
-	for slotID, slotInfo in pairs(container.content or EMPTY) do
-		if isContainerByClassID(slotInfo.id) then
-			local subWeight, subValue = recomputeContainerWeightValue(slotInfo);
-			weight = weight + subWeight;
-			value = value + subValue;
-		else
-			local class = getClass(slotInfo.id);
-			if class and class.BA then
-				weight = weight + ((class.BA.WE or 0) * (slotInfo.count or 1));
-				value = value + ((class.BA.VA or 0) * (slotInfo.count or 1));
+		-- Add content weight
+		for slotID, slotInfo in pairs(container.content or EMPTY) do
+			if TRP3_API.extended.classExists(slotInfo.id) then
+				if  isContainerByClassID(slotInfo.id) then
+					local subWeight, subValue = recomputeContainerWeightValue(slotInfo);
+					weight = weight + subWeight;
+					value = value + subValue;
+				else
+					local class = getClass(slotInfo.id);
+					if class and class.BA then
+						weight = weight + ((class.BA.WE or 0) * (slotInfo.count or 1));
+						value = value + ((class.BA.VA or 0) * (slotInfo.count or 1));
+					end
+				end
 			end
 		end
 	end
+
 	container.totalValue = value;
 	container.totalWeight = weight;
 	return weight, value;
