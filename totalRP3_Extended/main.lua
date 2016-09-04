@@ -421,7 +421,7 @@ local function onStart()
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, initConfig);
 end
 
-Globals.extended_version = 0.4;
+Globals.extended_version = 0.5;
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",
@@ -430,7 +430,7 @@ local MODULE_STRUCTURE = {
 	["id"] = "trp3_extended",
 	["onInit"] = onInit,
 	["onStart"] = onStart,
-	["minVersion"] = 14,
+	["minVersion"] = 19,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);
