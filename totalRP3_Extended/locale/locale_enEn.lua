@@ -1116,22 +1116,29 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 ## To all our Kickstarter backers: many thanks for the support!
 
 - Abyssaloth
+- Alex Stromboli (Strom)
 - Antonio Campos jr from McAllen Texas
 - Ashley Ann
+- Cave
 - Dwargoth 
 - Ellypse
+- Glorydan
+- GreenGrass 
 - Kaeril
 - Keti
 - Laerith
 - Laleila
-- Linnéa Cadier
+- Lilithsahl from Moon Guard US
 - Linreia 
 - Maethi
 - Managan Southpaw
+- Miajensen 
 - Saelora 
 - Sean "Pommie" K
 - Sunkara
 - Taurii of Wyrmrest Accord
 - Valnoressa
+- Vinayack 
+- Zencore
 
 ##  You are the best!]];
