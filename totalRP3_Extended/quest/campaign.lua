@@ -159,6 +159,7 @@ local function resetCampaign(campaignID)
 	if playerQuestLog.currentCampaign == campaignID then
 		activateCampaign(campaignID, true);
 	end
+	Events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 end
 
 TRP3_API.quest.resetCampaign = resetCampaign;

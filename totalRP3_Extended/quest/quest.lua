@@ -254,10 +254,9 @@ local function goToStep(campaignID, questID, stepID)
 		if not questLog.PS then questLog.PS = {}; end
 		tinsert(questLog.PS, questLog.CS);
 		-- Remove previous step handlers
-		clearStepHandlers(fullID);
+		clearStepHandlers(TRP3_API.extended.getFullID(campaignID, questID, questLog.CS));
 	end
 	questLog.CS = stepID;
-	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 
 	-- Only then, check if the step exists.
 	local campaignClass = getClass(campaignID);
@@ -282,6 +281,8 @@ local function goToStep(campaignID, questID, stepID)
 		questLog.FI = true;
 		clearQuestHandlers(TRP3_API.extended.getFullID(campaignID, questID));
 	end
+
+	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 
 	return 1;
 end

@@ -532,8 +532,6 @@ local function init()
 	TRP3_QuestLogPage.Quest.PassButton:SetScript("OnClick", function(self)
 		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
 			TRP3_API.quest.resetCampaign(self:GetParent().campaignID);
-			refreshQuestList(self:GetParent().campaignID);
-			refreshQuestVignette(self:GetParent().campaignID);
 		end);
 	end);
 	TRP3_QuestLogPage.Quest.switchButton:SetScript("OnClick", function(self) swapCampaignActivation(self:GetParent()) end);
