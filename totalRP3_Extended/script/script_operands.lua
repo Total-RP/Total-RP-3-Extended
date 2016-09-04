@@ -17,7 +17,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local assert, type = assert, type;
+local assert, type, tonumber = assert, type, tonumber;
 
 local OPERANDS = {
 
@@ -424,6 +424,26 @@ local OPERANDS = {
 		end,
 		env = {
 			["varCheckN"] = "TRP3_API.script.varCheckN",
+		},
+	},
+
+	["check_event_var"] = {
+		codeReplacement = function(args)
+			local var = tonumber(args[1] or 1) or 1;
+			return ("eventVarCheck(args, %s)"):format(var);
+		end,
+		env = {
+			["eventVarCheck"] = "TRP3_API.script.eventVarCheck",
+		},
+	},
+
+	["check_event_var_n"] = {
+		codeReplacement = function(args)
+			local var = tonumber(args[1] or 1) or 1;
+			return ("eventVarCheckN(args, %s)"):format(var);
+		end,
+		env = {
+			["eventVarCheckN"] = "TRP3_API.script.eventVarCheckN",
 		},
 	},
 

@@ -557,6 +557,9 @@ end
 local directConditionTemplate = [[return %s;]]
 
 local function generateAndRunCondition(conditionStructure, args)
+	if not conditionStructure then
+		return true;
+	end
 	local env = {};
 	tableCopy(env, BASE_ENV);
 	local code = directConditionTemplate:format(writeCondition(conditionStructure, nil, env));
@@ -691,6 +694,20 @@ function TRP3_API.script.varCheckN(args, source, varName)
 		if not storage then return 0; end
 
 		return tonumber(storage[varName] or 0) or 0;
+	end
+	return 0;
+end
+
+function TRP3_API.script.eventVarCheck(args, index)
+	if args and args.event and type(index) == "number" then
+		return tostring(args.event[index] or "nil");
+	end
+	return "nil";
+end
+
+function TRP3_API.script.eventVarCheckN(args, index)
+	if args and args.event and type(index) == "number" then
+		return tonumber(args.event[index] or 0);
 	end
 	return 0;
 end

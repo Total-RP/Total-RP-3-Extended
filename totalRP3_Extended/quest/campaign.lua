@@ -48,7 +48,10 @@ local campaignHandlers = {};
 local function onCampaignCallback(campaignID, scriptID, condition, ...)
 	local class = getClass(campaignID);
 	if class and class.SC and class.SC[scriptID] then
-		local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, { object = playerQuestLog[campaignID] }, campaignID);
+		local args = { object = playerQuestLog[campaignID], event = {...} };
+		if TRP3_API.script.generateAndRunCondition(condition, args) then
+			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, campaignID);
+		end
 	end
 end
 

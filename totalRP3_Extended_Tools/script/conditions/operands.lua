@@ -560,6 +560,46 @@ local function check_var_init()
 	});
 end
 
+local function check_event_var_init()
+	local editor = TRP3_OperandEditorCheckEventArg;
+
+	-- Var name
+	editor.index.title:SetText(loc("EFFECT_VAR_INDEX"))
+	setTooltipForSameFrame(editor.index.help, "RIGHT", 0, 5, loc("EFFECT_VAR_INDEX"), loc("EFFECT_VAR_INDEX_TT"));
+
+	function editor.load(args)
+		editor.index:SetText((args or EMPTY)[1] or "1");
+	end
+
+	function editor.save()
+		return {tonumber(strtrim(editor.index:GetText())) or 1};
+	end
+
+	registerOperandEditor("check_event_var", {
+		title = loc("OP_OP_CHECK_EVENT_VAR"),
+		description = loc("OP_OP_CHECK_EVENT_VAR_TT"),
+		returnType = "",
+		noPreview = true,
+		getText = function(args)
+			local varName = tostring((args or EMPTY)[1] or "1");
+			return loc("OP_OP_CHECK_EVENT_VAR_PREVIEW"):format(varName);
+		end,
+		editor = editor,
+	});
+
+	registerOperandEditor("check_event_var_n", {
+		title = loc("OP_OP_CHECK_EVENT_VAR_N"),
+		description = loc("OP_OP_CHECK_EVENT_VAR_N_TT"),
+		returnType = 0,
+		noPreview = true,
+		getText = function(args)
+			local varName = tostring((args or EMPTY)[1] or "1");
+			return loc("OP_OP_CHECK_EVENT_VAR_N_PREVIEW"):format(varName);
+		end,
+		editor = editor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -579,6 +619,7 @@ function TRP3_ConditionEditor.initOperands()
 	numeric_init();
 
 	check_var_init();
+	check_event_var_init();
 
 	-- Unit string
 	unit_name_init();

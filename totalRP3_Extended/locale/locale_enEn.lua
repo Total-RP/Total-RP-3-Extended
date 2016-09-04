@@ -861,6 +861,14 @@ We should begin with some examples:
 	OP_OP_DISTANCE_ME = "Unit distance to player",
 	OP_OP_DISTANCE_ME_TT = "Returns the distance (in yards) between a unit and the player.\n\nOnly works with players.\n\nReturns 0 if unit doesn't exist.\n\n|cffff9900Does not work in instance/battleground/arena since patch 7.1.",
 	OP_OP_DISTANCE_CURRENT = "Use current position",
+	EFFECT_VAR_INDEX = "Argument index",
+	EFFECT_VAR_INDEX_TT = "The index of the argument.\n\nSo if you want to check the third argument of an event, enter 3.",
+	OP_OP_CHECK_EVENT_VAR = "Event argument string value",
+	OP_OP_CHECK_EVENT_VAR_TT = "Checks the n-th argument of the event triggering this condition (if any).\n\nInterpreted as a string.\n\nIf does not exists or can't be interpreted, returns 'nil'.",
+	OP_OP_CHECK_EVENT_VAR_N = "Event argument number value",
+	OP_OP_CHECK_EVENT_VAR_N_TT = "Checks the n-th argument of the event triggering this condition (if any).\n\nInterpreted as a number.\n\nIf does not exists or can't be interpreted, returns 0.",
+	OP_OP_CHECK_EVENT_VAR_PREVIEW = "%s-th event argument |cff00ff00(string)",
+	OP_OP_CHECK_EVENT_VAR_N_PREVIEW = "%s-th event argument |cff00ff00(number)",
 
 	-- Test
 	COND_EDITOR = "Condition editor",

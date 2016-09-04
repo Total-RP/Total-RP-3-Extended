@@ -563,6 +563,8 @@ function editor.init()
 		["Expert"] = {-- TODO: locals
 			"var_check",
 			"var_check_n",
+			"check_event_var",
+			"check_event_var_n",
 		},
 --		["Others"] = {-- TODO: locals
 --			"random",
