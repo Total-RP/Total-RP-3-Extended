@@ -1161,6 +1161,31 @@ It is possible to have a container that is also usable (by right-click). It isn'
 
 |cffff9900Please note that for now, you can only trade with players containers that are empty, or that contains only items that are inner objects of the container. Please see the inner object tab for more information.]],
 
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: Links
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_EL_1_TEXT = [[The event links tab is the place where you can |cff00ff00link your workflows to events|r.
+
+|cffff9900Workflows won't be executed automatically by default!|r So you have to link them to an event in order to have them executed when that event occurs.
+
+We have here two type of events: |cff00ff00Object events and Game events|r.]],
+
+	TU_EL_2_TEXT = [[|cff00ff00Object events|r are event proper to how Total RP 3 works.
+
+The list of possible events is fixed and depends on the type of the object (item, quest ..etc).
+
+You can link one event to only one workflow. But the same workflow can be linked to multiple events.]],
+
+	TU_EL_3_TEXT = [[|cff00ff00Game events|r are events triggered by the game when something happens.
+
+Each link you add will link a game event to a workflow. Each time the event occurs, the workflow will be executed.
+
+|cff00ff00You can add a condition to the link by ctrl+click on it.|r The condition will have access to the event arguments to be tested.
+For example if you listen to the event of casting a spell, you will be able in the condition to test which spell is casted.
+
+|cffff9900There is a large list of game event, thus it wouldn't be for us to list them all in the add-on. We suggest you to consult webwite like wowwiki.
+http://wowwiki.wikia.com/wiki/Event_API]],
 };
 
 TRP3_KS_BACKERS =

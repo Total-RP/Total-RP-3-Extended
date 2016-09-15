@@ -192,6 +192,11 @@ function editor.load(structure)
 	editor.structure = structure;
 
 	TRP3_API.ui.list.initList(editor.links, editor.structure, editor.links.slider);
+
+	gameLinksEditor:Show();
+	if data.TY == TRP3_DB.types.ITEM or data.TY == TRP3_DB.types.DOCUMENT then
+		gameLinksEditor:Hide();
+	end
 end
 
 function editor.init(ToolFrame)
@@ -277,4 +282,22 @@ function editor.init(ToolFrame)
 
 	gameLinksEditor:SetScript("OnHide", function() gameLinksEditor.editor:Hide() end);
 
+	-- Tutorial
+	local TUTORIAL = {
+		{
+			box = toolFrame, title = "WO_LINKS", text = "TU_EL_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
+		},
+		{
+			box = editor.links, title = "WO_EVENT_LINKS", text = "TU_EL_2_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+		},
+		{
+			box = gameLinksEditor, title = "WO_EVENT_EX_LINKS", text = "TU_EL_3_TEXT",
+			arrow = "LEFT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+		}
+	}
+	editor:SetScript("OnShow", function()
+		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
+	end);
 end
