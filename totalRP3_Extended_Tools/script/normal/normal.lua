@@ -690,10 +690,6 @@ editor.init = function(ToolFrame)
 			"var_object",
 			"signal_send",
 		},
-		[loc("EFFECT_CAT_DEBUG")] = {
-			"debug_dump_args",
-			"debug_dump_text",
-		},
 		order = {
 			loc("WO_EFFECT_CAT_COMMON"),
 			loc("EFFECT_CAT_SPEECH"),
@@ -704,7 +700,6 @@ editor.init = function(ToolFrame)
 			loc("REG_COMPANIONS"),
 			"",
 			loc("MODE_EXPERT"),
-			loc("EFFECT_CAT_DEBUG")
 		}
 	}
 
@@ -731,4 +726,40 @@ editor.init = function(ToolFrame)
 	editor.element.selector.effect:SetScript("OnClick", displayEffectDropdown);
 
 	editor:SetScript("OnHide", function() editor.element:Hide(); unlockElements(); end);
+
+	-- Tutorial
+	local TUTORIAL = {
+		{
+			box = toolFrame, title = "WO_WORKFLOW", text = "TU_WO_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				refreshElementList();
+			end
+		},
+		{
+			box = editor.list, title = "TU_WO_2", text = "TU_WO_2_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				refreshElementList();
+			end
+		},
+		{
+			box = editor.workflow, title = "WO_EXECUTION", text = "TU_WO_3_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				refreshElementList();
+			end
+		},
+		{
+			box = editor.element.selector.effect, title = "TU_WO_4", text = "TU_WO_4_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				refreshElementList();
+				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
+			end
+		},
+	}
+	editor:SetScript("OnShow", function()
+		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
+	end);
 end

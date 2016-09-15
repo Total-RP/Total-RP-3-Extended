@@ -334,23 +334,4 @@
 
 	</Frame>
 
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--         Debug        -->
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-
-	<Frame name="TRP3_EffectEditorDebugDumpText" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
-		<Frames>
-
-			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
-				</Anchors>
-			</EditBox>
-
-		</Frames>
-
-	</Frame>
-
 </Ui>

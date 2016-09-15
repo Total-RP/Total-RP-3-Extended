@@ -295,6 +295,7 @@ local function onTabChanged(tabWidget, tab)
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
 	TRP3_LinksEditor:Hide();
+	TRP3_ExtendedTutorial.loadStructure(nil);
 
 	-- Show tab
 	if currentTab == TABS.MAIN then

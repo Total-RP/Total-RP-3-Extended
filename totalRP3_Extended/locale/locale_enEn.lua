@@ -408,7 +408,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	IT_STACK_COUNT_TT = "Sets the maximum units that can be stacked in a same container slot. Should be greated than 1.",
 	IT_USE = "Usable",
 	IT_ON_USE = "On use",
-	IT_ON_USE_TT = "This workflow will be triggered when the player uses this item.",
+	IT_ON_USE_TT = "This workflow will be triggered when the player uses this item.\n\n|cffff9900Note:|r If you want to have more workflows for this item, you can convert it to Expert mode through the Databases view (by right-clicking on it and select |cff00ff00Convert to Expert mode|r).",
 	IT_USE_TT = "Allow this item to be usable.\n\n|cff00ff00You can configure the item use effect in the 'Workflow' tab of this editor.",
 	IT_USE_TEXT = "Usage text",
 	IT_USE_TEXT_TT = "This text, explaining the effect for using this item, will appears in the tooltip.",
@@ -488,7 +488,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	WO_SECURITY_LOW = "Low",
 	WO_SECURITY_LOW_DETAILS = "This effect is not secured and could be malicious. It will prompt security warning and will ask for confirmation, based on the user security settings.",
 	WO_EXPERT = "Expert mode",
-	WO_EXPERT_TT = "A workflow is a set of instructions that can make your object dynamic.\n\nHere you can define all your workflows for this object, then you can link them to an action in the expert tab.",
+	WO_EXPERT_TT = "A workflow is a set of instructions that can make your object dynamic.\n\nHere you can define all your workflows for this object, then you can link them to an action in the event links tab.",
 	WO_EXPERT_DONE = "Switched %s to expert mode. Now unleash your creativity!",
 	WO_ADD = "Create workflow",
 	WO_ADD_ID = "|cff00ff00Enter the workflow ID.|r\n\nIt's an internal ID to help you manage your workflows and won't be visible by the user.\n\nPlease note that you can't have two workflows with the same ID within the same object.",
@@ -535,7 +535,6 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	-- Effects editors
 	EFFECT_CAT_SOUND = "Sound and music",
 	EFFECT_CAT_SPEECH = "Speech and emotes",
-	EFFECT_CAT_DEBUG = "Debug",
 	EFFECT_CAT_CAMPAIGN = "Campaign and quest",
 	EFFECT_TEXT = "Display text",
 	EFFECT_TEXT_TT = "Displays a text.\nDifferent outputs are possible.",
@@ -578,10 +577,6 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	EFFECT_OPERATION_TYPE_SUB = "Substraction",
 	EFFECT_VAR_VALUE = "Variable value",
 	EFFECT_OPERATION_VALUE = "Operation value",
-	EFFECT_DEBUG_DUMP_ARGS = "Debug dump args",
-	EFFECT_DEBUG_DUMP_ARGS_TT = "Dump in chat frame the current workflow variables.",
-	EFFECT_DEBUG_DUMP_TEXT = "Debug dump text",
-	EFFECT_DEBUG_DUMP_TEXT_TT = "Display a text in debug chat frame. It's simple as that.",
 	EFFECT_DOC_DISPLAY = "Display document",
 	EFFECT_DOC_DISPLAY_TT = "Display a document to the player. If there is already a shown document, it will be replaced.",
 	EFFECT_DOC_CLOSE = "Close document",
@@ -704,6 +699,13 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	EFFECT_ITEM_LOOT_NAME_TT = "This will be the loot container name.",
 	EFFECT_ITEM_LOOT_SLOT = "Click on a slot to configure it.",
 	EFFECT_MISSING = "This effect (%s) is unknown and you should remove it.",
+	EFFECT_SIGNAL = "Send signal",
+	EFFECT_SIGNAL_TT = "Send a signal with an ID and a value to the player's target.\n\nThis signal can be handle by campaign/quest/step game event links through the event |cff00ff00TRP3_SIGNAL|r.",
+	EFFECT_SIGNAL_PREVIEW = "|cffffff00Send signal ID:|r %s|cffffff00 with value:|r %s",
+	EFFECT_SIGNAL_ID = "Signal ID",
+	EFFECT_SIGNAL_ID_TT = "It's the ID of your signal. It can be tested if conditions and workflows triggered by the game event |cff00ff00TRP3_SIGNAL|r.",
+	EFFECT_SIGNAL_VALUE = "Signal value",
+	EFFECT_SIGNAL_VALUE_TT = "It's the value of your signal. It can be tested if conditions and workflows triggered by the game event |cff00ff00TRP3_SIGNAL|r and inserted as text tags like |cff00ff00${event.2}|r.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",
@@ -737,7 +739,7 @@ We should begin with some examples:
 
 |rSo it's simple: when you want to create an object, always ask yourself if it wouldn't be better to have it as an inner object for another item or a quest.
 
-|cff00ff00Also: document, cutscenes and loot objects can only be inner objects!]],
+|cff00ff00Also: document and cutscenes can only be inner objects!]],
 	IN_INNER_DELETE_CONFIRM = "Remove the inner object |cff00ffff\"%s\"|r |cff00ff00[%s]|r from the parent object |cff00ff00[%s]|r?\n\n|cffff9900The inner object will be lost.",
 	IN_INNER_DELETE_TT = "Remove this inner object from the parent object.",
 	IN_INNER_ID_ACTION = "Change ID",
@@ -1100,12 +1102,41 @@ It's all about the attributes needed for the item tooltip and the item icon.]],
 	TU_IT_4 = "Gameplay attributes",
 	TU_IT_4_TEXT = [[The gameplay attributes have some effects on the gameplay.
 
-Two attributes are important: Usable and Container as checking them will display the Workflow and Container tabs.]],
+Two attributes are important: |cff00ff00Usable|r and |cff00ff00Container|r as checking them will display the |cff00ff00Workflow|r and |cff00ff00Container|r tabs.]],
 
 	TU_IT_3 = "Free notes",
 	TU_IT_3_TEXT = [[You can write down notes to help you remember what do you want to do with your item.
 
 These notes can also help others that would want to start an item based on yours.]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: Workflow
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_WO_1_TEXT = [[|cff00ff00Welcome to the workflow creation tutorial.|r
+
+A workflow is the mechanism that can bring life to your creation. It's here that you will be able to play effects like showing a text, playing a sound or looting an item to the player.]],
+
+	TU_WO_2 = "Workflow list",
+	TU_WO_2_TEXT = [[On the left you have the |cff00ff00workflows list|r.
+
+You can remove, rename or copy/paste a workflow by right-clicking on it.
+
+|cffff9900Note: If you are here when editing an item in "normal mode", you won't see a list of workflows but only a single "On use" workflow for the item. If you want to be able to use multiple workflows for an item, you can convert this item to "Expert mode" by right-clicking on it in the databases view.]],
+
+	TU_WO_3_TEXT = [[Here is a list of all the workflow elements.
+
+An element can be an effect, a delay or a condition.
+
+The element order is important because they will be executed sequentially during the workflow execution.
+
+You can change the element order by using the arrows at the top right of each elements.]],
+
+	TU_WO_4 = "Add an effect",
+	TU_WO_4_TEXT = [[Effects are things like "playing a sound", "displaying a text" or "start a cutscene".
+
+There a LOT of effects, each are explained in their own tooltip!]],
+
 };
 
 TRP3_KS_BACKERS =
@@ -1133,12 +1164,14 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Maethi
 - Managan Southpaw
 - Miajensen 
+- Orion Cain
 - Saelora 
 - Sean "Pommie" K
 - Sunkara
-- Taurii of Wyrmrest Accord
+- Taurii from House of Crows of Wyrmrest Accord
 - Valnoressa
 - Vinayack 
+- Ydara
 - Zencore
 
 ##  You are the best!]];

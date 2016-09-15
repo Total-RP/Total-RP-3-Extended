@@ -193,11 +193,11 @@ local function signal_send_init()
 	local editor = TRP3_EffectEditorSignalSend;
 
 	registerEffectEditor("signal_send", {
-		title = "Send signal (WIP)", -- TODO: locals
+		title = loc("EFFECT_SIGNAL"),
 		icon = "Inv_gizmo_goblingtonkcontroller",
-		description = "Send a signal with an ID and a value to the player target.", -- TODO: locals
+		description = loc("EFFECT_SIGNAL_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. "Send signal ID" .. ":|r " .. tostring(args[1]) .. "|cffffff00" .. " with value" .. ":|r " .. tostring(args[2]));
+			scriptStepFrame.description:SetText(loc("EFFECT_SIGNAL_PREVIEW"):format(tostring(args[1]), tostring(args[2])));
 		end,
 		getDefaultArgs = function()
 			return {"id", "value"};
@@ -206,12 +206,12 @@ local function signal_send_init()
 	});
 
 	-- Var name
-	editor.id.title:SetText("Signal ID"); -- TODO: locals
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, "Signal ID", ""); -- TODO: locals
+	editor.id.title:SetText(loc("EFFECT_SIGNAL_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_SIGNAL_ID"), loc("EFFECT_SIGNAL_ID_TT"));
 
 	-- Var value
-	editor.value.title:SetText("Signal value"); -- TODO: locals
-	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, "Signal value", ""); -- TODO: locals
+	editor.value.title:SetText(loc("EFFECT_SIGNAL_VALUE"));
+	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, loc("EFFECT_SIGNAL_VALUE"), loc("EFFECT_SIGNAL_VALUE_TT"));
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -222,48 +222,6 @@ local function signal_send_init()
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
 		scriptData.args[2] = stEtN(strtrim(editor.value:GetText()));
-	end
-
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- DEBUGS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local debugDumpArgEditor = TRP3_EffectEditorDebugDumpArg;
-local debugDumpTextEditor = TRP3_EffectEditorDebugDumpText;
-
-local function debugs_init()
-	registerEffectEditor("debug_dump_args", {
-		title = loc("EFFECT_DEBUG_DUMP_ARGS"),
-		icon = "temp",
-		description = loc("EFFECT_DEBUG_DUMP_ARGS_TT"),
-	});
-
-	registerEffectEditor("debug_dump_text", {
-		title = loc("EFFECT_DEBUG_DUMP_TEXT"),
-		icon = "temp",
-		description = loc("EFFECT_DEBUG_DUMP_TEXT_TT"),
-		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_TEXT_TEXT") .. ":|r " .. tostring(args[1]));
-		end,
-		getDefaultArgs = function()
-			return {loc("EFFECT_TEXT_TEXT_TT")};
-		end,
-		editor = debugDumpTextEditor
-	});
-
-	-- Text
-	debugDumpTextEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
-	setTooltipForSameFrame(debugDumpTextEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT_TT"), "");
-
-	function debugDumpTextEditor.load(scriptData)
-		local data = scriptData.args or Globals.empty;
-		debugDumpTextEditor.text:SetText(data[1] or "");
-	end
-
-	function debugDumpTextEditor.save(scriptData)
-		scriptData.args[1] = stEtN(strtrim(debugDumpTextEditor.text:GetText()));
 	end
 
 end
@@ -608,6 +566,4 @@ function TRP3_API.extended.tools.initBaseEffects()
 
 	var_set_execenv_init();
 	signal_send_init();
-
-	debugs_init();
 end

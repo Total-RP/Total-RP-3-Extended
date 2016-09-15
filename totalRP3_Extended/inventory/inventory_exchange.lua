@@ -466,6 +466,8 @@ local function receivedDataResponse(response, sender)
 		TRP3_API.script.clearRootCompilation(classID);
 		TRP3_API.security.registerSender(classID, sender);
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+		TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+		TRP3_API.events.fireEvent(Events.ON_OBJECT_UPDATED);
 	end
 
 	currentDownloads[classID] = nil;

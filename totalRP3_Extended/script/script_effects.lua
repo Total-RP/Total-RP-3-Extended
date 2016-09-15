@@ -256,7 +256,6 @@ local EFFECTS = {
 	},
 
 	-- Companions
-
 	["companion_dismiss_mount"] = {
 		codeReplacementFunc = function ()
 			return "DismissCompanion(\"MOUNT\"); lastEffectReturn = 0;"

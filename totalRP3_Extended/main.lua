@@ -390,12 +390,17 @@ local function onStart()
 
 	-- Signal
 	TRP3_API.extended.SIGNAL_PREFIX = "EXSI";
+	TRP3_API.extended.SIGNAL_EVENT = "TRP3_SIGNAL",
 	TRP3_API.communication.registerProtocolPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
-		Log.log(("Received signal from %s"):format(sender));
-		Utils.table.dump(arg);
+		if sender ~= Globals.player_id then
+			Log.log(("Received signal from %s"):format(sender));
+			Utils.event.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v);
+		end
 	end);
 	function TRP3_API.extended.sendSignal(id, value)
-		TRP3_API.communication.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
+		if UnitExists("target") and UnitIsPlayer("target") then
+			TRP3_API.communication.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
+		end
 	end
 
 	-- Calculate global environement with all ids

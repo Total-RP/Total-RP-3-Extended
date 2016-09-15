@@ -204,7 +204,7 @@
 						</FontString>
 
 						<FontString parentKey="description" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="75"/>
+							<Size x="0" y="85"/>
 							<Anchors>
 								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.script" x="0" y="-20"/>
 								<Anchor point="RIGHT" x="-20" y="0"/>

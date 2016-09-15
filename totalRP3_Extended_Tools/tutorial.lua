@@ -120,4 +120,7 @@ function TRP3_ExtendedTutorial.init(toolFrame)
 		TRP3_API.navigation.hideTutorialTooltip(buttonWidget);
 		ToolFrame.tutorialhide:Hide();
 	end);
+	ToolFrame:SetScript("OnHide", function()
+		ToolFrame.tutoframe:Hide();
+	end);
 end
