@@ -1135,7 +1135,31 @@ You can change the element order by using the arrows at the top right of each el
 	TU_WO_4 = "Add an effect",
 	TU_WO_4_TEXT = [[Effects are things like "playing a sound", "displaying a text" or "start a cutscene".
 
-There a LOT of effects, each are explained in their own tooltip!]],
+There are a LOT of effects, each are explained in their own tooltip!]],
+
+	TU_WO_5 = "Add a condition",
+	TU_WO_5_TEXT = [[Conditions allow you to |cff00ff00test values in order to stop the workflow execution.|r
+
+|cffff9900If the condition is not met, the workflow execution won't continue further.|r
+
+A condition is composed of a series of tests linked together by the OR or AND operator.
+
+Each test is a values comparision. For example: "The target's health is lesser than 500", "The player is not dead" or "The player has more than 3 units of item [xxx] in his inventory".]],
+
+	TU_WO_6 = "Add a delay",
+	TU_WO_6_TEXT = [[Delays can pause the execution of the workflow for a given time, but they can also act as a cast and interrupt the workflow if the player moves.]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: container
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_CO_1_TEXT = [[A container is an item that can contain other items.
+
+To open a container, you can |cff00ff00double-click|r on it in the inventory.
+
+It is possible to have a container that is also usable (by right-click). It isn't two exclusive concepts.
+
+|cffff9900Please note that for now, you can only trade with players containers that are empty, or that contains only items that are inner objects of the container. Please see the inner object tab for more information.]],
 
 };
 

@@ -325,7 +325,7 @@
 	<Frame parentKey="tutoframe" inherits="TRP3_EditorTitledFrame" hidden="true" name="TRP3_ExtendedTutorial" parent="TRP3_ToolFrame">
 		<Size x="300" y="100"/>
 		<Anchors>
-			<Anchor relativePoint="BOTTOM" point="TOP" x="0" y="10"/>
+			<Anchor relativePoint="TOP" point="BOTTOM" x="0" y="10"/>
 		</Anchors>
 		<Frames>
 
@@ -346,6 +346,12 @@
 				<Size x="50" y="20"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOM" relativeKey="$parent.step" x="10" y="0"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
 				</Anchors>
 			</Button>
 

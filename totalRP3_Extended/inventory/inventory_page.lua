@@ -228,22 +228,19 @@ local function onToolbarButtonClicked(buttonType)
 end
 
 local function initPlayerInventoryButton()
-	if TRP3_API.target then
-		local playerInvText = loc("INV_PAGE_PLAYER_INV"):format(Globals.player);
-		TRP3_API.target.registerButton({
-			id = "aa_player_d_inventory",
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+	local playerInvText = loc("INV_PAGE_PLAYER_INV"):format(Globals.player);
+	if TRP3_API.toolbar then
+		local toolbarButton = {
+			id = "hh_player_d_inventory",
 			configText = loc("INV_PAGE_CHARACTER_INV"),
-			condition = function(_, unitID)
-				return unitID == Globals.player_id;
-			end,
+			tooltip = playerInvText,
+			tooltipSub = loc("IT_INV_SHOW_CONTENT"),
+			icon = "inv_misc_bag_16",
 			onClick = function(_, _, buttonType, _)
 				onToolbarButtonClicked(buttonType);
 			end,
-			tooltip = playerInvText,
-			tooltipSub = loc("IT_INV_SHOW_CONTENT"),
-			icon = "inv_misc_bag_16"
-		});
+		};
+		TRP3_API.toolbar.toolbarAddButton(toolbarButton);
 	end
 end
 

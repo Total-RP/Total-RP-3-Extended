@@ -403,15 +403,15 @@ end
 
 local function createTabBar()
 	local frame = CreateFrame("Frame", "TRP3_ToolFrameListTabPanel", ToolFrame.list);
-	frame:SetSize(650, 30);
+	frame:SetSize(810, 30);
 	frame:SetPoint("BOTTOMLEFT", frame:GetParent(), "TOPLEFT", 15, 0);
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ "", TABS.MY_DB, 150 },
-			{ "", TABS.OTHERS_DB, 150 },
-			{ "", TABS.BACKERS_DB, 150 },
-			{ "", TABS.FULL_DB, 150 },
+			{ "", TABS.MY_DB, 200 },
+			{ "", TABS.OTHERS_DB, 200 },
+			{ "", TABS.BACKERS_DB, 200 },
+			{ "", TABS.FULL_DB, 200 },
 			{ loc("DB_BACKERS_LIST"), TABS.BACKERS_LIST, 150 },
 		},
 		onTabChanged

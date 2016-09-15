@@ -758,6 +758,22 @@ editor.init = function(ToolFrame)
 				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
 			end
 		},
+		{
+			box = editor.element.selector.condition, title = "TU_WO_5", text = "TU_WO_5_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				refreshElementList();
+				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
+			end
+		},
+		{
+			box = editor.element.selector.delay, title = "TU_WO_6", text = "TU_WO_6_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				refreshElementList();
+				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
+			end
+		},
 	}
 	editor:SetScript("OnShow", function()
 		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);

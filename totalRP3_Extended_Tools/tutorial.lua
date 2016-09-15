@@ -110,12 +110,25 @@ function TRP3_ExtendedTutorial.init(toolFrame)
 		ToolFrame.tutoframe.step:SetSelectedValue(ToolFrame.tutoframe.currentStep - 1);
 	end);
 
+	ToolFrame.tutoframe.close:SetScript("OnClick", function()
+		ToolFrame.tutoframe:Hide();
+	end);
+
 	-- Create button
 	buttonWidget = CreateFrame( "Button", nil, ToolFrame.tutoframe, "TRP3_TutorialButton" );
 	buttonWidget.boxHighlight = CreateFrame( "Frame", nil, ToolFrame.tutoframe, "HelpPlateBoxHighlight" );
 	buttonWidget:SetSize(46, 46);
 	buttonWidget:Show();
 	buttonWidget.boxHighlight:Show();
+	buttonWidget.click = CreateFrame( "Button", nil, TRP3_TutorialTooltip, "TRP3_InvisibleButton" );
+	buttonWidget.click:SetAllPoints(TRP3_TutorialTooltip);
+	buttonWidget.click:SetScript("OnClick", function()
+		if ToolFrame.tutoframe.next:IsEnabled() then
+			ToolFrame.tutoframe.step:SetSelectedValue(ToolFrame.tutoframe.currentStep + 1);
+		else
+			ToolFrame.tutoframe:Hide();
+		end
+	end);
 	ToolFrame.tutoframe:SetScript("OnHide", function()
 		TRP3_API.navigation.hideTutorialTooltip(buttonWidget);
 		ToolFrame.tutorialhide:Hide();

@@ -34,7 +34,7 @@ local TABS = {
 	EXPERT = 5
 }
 
-local TUTORIAL;
+local TUTORIAL, CONTAINER_TUTORIAL;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main tab
@@ -267,6 +267,7 @@ local function onTabChanged(tabWidget, tab)
 	elseif currentTab == TABS.CONTAINER then
 		decorateContainerPreview(storeDataMain());
 		container:Show();
+		TRP3_ExtendedTutorial.loadStructure(CONTAINER_TUTORIAL);
 	elseif currentTab == TABS.INNER then
 		TRP3_InnerObjectEditor:SetParent(toolFrame.item.normal);
 		TRP3_InnerObjectEditor:SetAllPoints();
@@ -360,6 +361,12 @@ local function createTutorialStructure()
 		},
 	}
 
+	CONTAINER_TUTORIAL = {
+		{
+			box = toolFrame, title = "IT_CON", text = "TU_CO_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
+		},
+	}
 end
 
 function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
