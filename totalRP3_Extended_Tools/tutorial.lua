@@ -28,16 +28,22 @@ local currentStructure;
 local function onStep(step)
 	local stepInfo = currentStructure[step];
 
-	buttonWidget:ClearAllPoints();
-	buttonWidget:SetPoint( stepInfo.anchor, buttonWidget.boxHighlight, stepInfo.anchor, stepInfo.x, stepInfo.y );
+	if stepInfo.callback then
+		stepInfo.callback();
+	end
 
-	if stepInfo.box then
+	if stepInfo.box and stepInfo.box:IsVisible() then
 		if type(stepInfo.box) == "string" then
 			buttonWidget.boxHighlight:SetAllPoints(_G[stepInfo.box]);
 		else
 			buttonWidget.boxHighlight:SetAllPoints(stepInfo.box);
 		end
+	else
+		buttonWidget.boxHighlight:SetAllPoints(ToolFrame);
 	end
+
+	buttonWidget:ClearAllPoints();
+	buttonWidget:SetPoint( stepInfo.anchor, buttonWidget.boxHighlight, stepInfo.anchor, stepInfo.x, stepInfo.y );
 
 	TRP3_API.navigation.hideTutorialTooltip(buttonWidget);
 	buttonWidget.arrow = stepInfo.arrow or "RIGHT";
@@ -52,10 +58,6 @@ local function onStep(step)
 	ToolFrame.tutoframe.next:Enable();
 	if step == #currentStructure then
 		ToolFrame.tutoframe.next:Disable();
-	end
-
-	if stepInfo.callback then
-		stepInfo.callback();
 	end
 
 	ToolFrame.tutoframe.currentStep = step;

@@ -1187,6 +1187,8 @@ For example if you listen to the event of casting a spell, you will be able in t
 |cffff9900There is a large list of game event, thus it wouldn't be for us to list them all in the add-on. We suggest you to consult webwite like wowwiki.
 http://wowwiki.wikia.com/wiki/Event_API]],
 
+	TU_EL_4_TEXT = [[|cff00ff00Game events|r are only available for campaigns, quests and quest steps.]],
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- TUTORIAL: actions
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
