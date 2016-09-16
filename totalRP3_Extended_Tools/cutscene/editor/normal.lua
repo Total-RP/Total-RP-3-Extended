@@ -18,13 +18,10 @@
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
-local tsize = Utils.table.size;
-local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-local color = Utils.str.color;
+local TUTORIAL;
 local toolFrame, step, editor, refreshStepList, main;
 
 local TABS = {
@@ -230,6 +227,7 @@ local function onTabChanged(tabWidget, tab)
 		editor:Show();
 		main:Show();
 		loadMain();
+		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
 	elseif currentTab == TABS.WORKFLOWS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.cutscene.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
@@ -379,4 +377,27 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	editor.rightUnit.Text:SetText(loc("DI_RIGHT_UNIT"));
 	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc("DI_RIGHT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 
+	-- tutorial
+	TUTORIAL = {
+		{
+			box = toolFrame, title = "TYPE_DIALOG", text = "TU_CS_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
+		},
+		{
+			box = step, title = "DI_STEPS", text = "TU_CS_2_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+		},
+		{
+			box = editor, title = "DI_STEP_TEXT", text = "TU_CS_3_TEXT",
+			arrow = "LEFT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+		},
+		{
+			box = editor.workflow, title = "TU_CS_4", text = "TU_CS_4_TEXT",
+			arrow = "BOTTOM", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+		},
+		{
+			box = main, title = "TU_CS_5", text = "TU_CS_5_TEXT",
+			arrow = "BOTTOM", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+		},
+	}
 end

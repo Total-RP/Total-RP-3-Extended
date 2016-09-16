@@ -690,7 +690,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	EFFECT_DIALOG_START_TT = "Start a cutscene. If a cutscene is already played, it will be interrupted and replace by this one.",
 	EFFECT_DIALOG_START_PREVIEW = "Start cutscene %s.",
 	EFFECT_DIALOG_ID = "Cutscene ID",
-	EFFECT_DIALOG_QUICK = "Quick dialog",
+	EFFECT_DIALOG_QUICK = "Quick cutscene",
 	EFFECT_DIALOG_QUICK_TT = "Generate a quick cutscene with only one step. It will automatically takes the player's target as speaker.",
 	EFFECT_ITEM_LOOT = "Show loot",
 	EFFECT_ITEM_LOOT_TT = "Displays a loot container to the player.",
@@ -977,7 +977,7 @@ We should begin with some examples:
 	DI_STEP_ADD = "Add step",
 	DI_STEP_EDIT = "Cutscene step edition",
 	DI_STEP_TEXT = "Step text",
-	DI_ATTR_TT = "Only check this if you want to change this attribute relative to the previous dialog step.",
+	DI_ATTR_TT = "Only check this if you want to change this attribute relative to the previous cutscene step.",
 	DI_NAME_DIRECTION = "Dialog direction",
 	DI_NAME_DIRECTION_TT = "Determines where to place the chat bubble and name and which model to animate. Select none to completely hide the chat bubble and name.",
 	DI_NAME = "Speaker name",
@@ -1167,7 +1167,7 @@ It is possible to have a container that is also usable (by right-click). It isn'
 
 	TU_EL_1_TEXT = [[The event links tab is the place where you can |cff00ff00link your workflows to events|r.
 
-|cffff9900Workflows won't be executed automatically by default!|r So you have to link them to an event in order to have them executed when that event occurs.
+|cffff9900Indeed, workflows aren't executed automatically by default!|r So you have to link them to an event in order to have them executed when that event occurs.
 
 We have here two type of events: |cff00ff00Object events and Game events|r.]],
 
@@ -1186,6 +1186,54 @@ For example if you listen to the event of casting a spell, you will be able in t
 
 |cffff9900There is a large list of game event, thus it wouldn't be for us to list them all in the add-on. We suggest you to consult webwite like wowwiki.
 http://wowwiki.wikia.com/wiki/Event_API]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: actions
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_AC_1_TEXT = [[|cff00ff00Action links|r is where you can link a workflow to a quest action.
+
+There are four types of quest actions that a player can perform: |cff00ff00listen, look, talk and interract|r.
+
+You can define action links in the campaign, quest or quest step level.]],
+
+	TU_AC_2 = "Actions evaluation",
+
+	TU_AC_2_TEXT = [[Each action can be conditionned by |cff00ff00ctrl+click on it|r.
+
+When the player performs an action, |cff00ff00all action links will be evaluated in a certain order|r beginning at the quest step level, then the quest and finally the campaign.
+
+If a link can be used (if it's from the good action type and has no condition or the condition is met), then the associated workflow will be executed and |cffff9900the add-on will stop searching for another link|r.]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: Cutscene
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TU_CS_1_TEXT = [[With |cff00ff00cutscenes|r you will be able to create a real narative experience for the player.
+
+Cutscenes uses the layout already used in the Storyline add-on.]],
+
+	TU_CS_2_TEXT = [[A cutscene is a list of step that will be played one after another.
+
+The cutscene takes place in a scene with two characters talking to each other.
+
+In each step you will be able to completely reconfigure the scene.]],
+
+	TU_CS_3_TEXT = [[The step text will be cut down into sub-steps when you enter a double line break. But these sub-steps will share the same step configuration.
+
+So you will typically change step when you want to change which character is speaking (with the "dialog direction" attribute).
+
+When you want to change a step attribute, |cff00ff00be sure to have activated the parameter.]],
+
+	TU_CS_4 = "Cutscenes and workflows",
+	TU_CS_4_TEXT = [[You can link a workflow to a step. It will be executed a the start of the step (or first sub-step).
+
+If this workflow contains a Loot effect, you can check the "Wait for loot" option to force the player to loot before the cutscene can continue.]],
+
+	TU_CS_5 = "Preview",
+	TU_CS_5_TEXT = [[You can preview your cutscene at any moment.
+
+|cffff9900Linked workflows won't be executed in preview mode.]],
 };
 
 TRP3_KS_BACKERS =

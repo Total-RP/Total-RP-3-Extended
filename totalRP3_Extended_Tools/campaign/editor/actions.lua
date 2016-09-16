@@ -236,4 +236,19 @@ function editor.init(ToolFrame)
 		nil, nil, ACTION_LIST_WIDTH, true);
 
 	editor:SetScript("OnHide", function() editor.editor:Hide() end);
+
+	-- Tutorial
+	local TUTORIAL = {
+		{
+			box = toolFrame, title = "WO_ACTIONS_LINKS", text = "TU_AC_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
+		},
+		{
+			box = editor.list, title = "TU_AC_2", text = "TU_AC_2_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+		}
+	}
+	editor:SetScript("OnShow", function()
+		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
+	end);
 end
