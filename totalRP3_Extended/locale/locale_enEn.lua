@@ -92,7 +92,7 @@ Example of IDs:
 209: /point
 68 : /acclame
 
-Warning: If the animation flickers it's because there is a problem with the animation for your classe. If it happens, please select another animation.]],
+Warning: If the animation flickers it's because there is a problem with the animation for your race. If it happens, please select another animation.]],
 
 	-- SEC
 	SEC_LEVEL = "Security level",
@@ -1238,6 +1238,40 @@ If this workflow contains a Loot effect, you can check the "Wait for loot" optio
 	TU_CS_5_TEXT = [[You can preview your cutscene at any moment.
 
 |cffff9900Linked workflows won't be executed in preview mode.]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: Inventory
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	INV_TU_1 = [[You can place an item (or a stack of items) in each slot of the inventory.
+
+|cff00ff00You are not limited in capacity as you can have an unlimited amount of bags and containers. You can also have containers in containers.
+
+|cffff9900The only thing you should be careful with is the carry weight of each container.|r
+
+If a container has a maximum weight capacity and you overpass this capacity, it will slowly be damaged over time and could randomly drop items on the ground!]],
+
+	INV_TU_2 = [[Any bag you place here will act as primary container.
+
+|cffff9900It's very important to always have a primary container with free space as it will be the container used when exchanging items with other players.
+
+|cff00ff00Also, the primary container can easily be opened with the inventory button on the TRP toolbar.]],
+
+	INV_TU_3 = [[For items that are directly on the character (not in a bag), if they are wearable (which is a choice from the item author), |cff00ff00you can indicates where they are in your character.
+
+|cffff9900For that click on the dot near the item and place the marker on your character. You can also rotate your character and select his pose.
+
+|cff00ff00When someone uses the inspection feature on you, they will see the markers with the proper character pose!]],
+
+	INV_TU_4 = [[When drag & droping an item outside the inventory, |cffff9900you will be asked to choose between destroying it or droping it on the ground.|r
+
+You can drop items (almost) everywhere in the world. |cff00ff00You can then go loot them back later by using the "Search for items" button on the toolbar.
+
+You can also see all droped items on the map by using the "Scan for my items" button.
+
+|cffff9900Note that sometimes items can be droped automatically: if you receive items but your inventory is full, or if one of your bags is damaged.]],
+
+
 };
 
 TRP3_KS_BACKERS =
@@ -1249,30 +1283,89 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 
 - Abyssaloth
 - Alex Stromboli (Strom)
+- Alex Villescas
+- Alexander Salminen
+- Andrew P. Thayer
+- Andy Austin Polycarp Tymczyszyn
 - Antonio Campos jr from McAllen Texas
+- Arranax
 - Ashley Ann
+- Austin Lang
+- Brendan Steward
+- Caleb Peyton
 - Cave
+- Charles Gingras
+- Cheezedogg
+- Chris Magalee
+- Christine Brandon
+- Colin Stent
+- Dave
 - Dwargoth 
-- Ellypse
+- Dylan Garrett
+- Edward Ryan
+- Ella
+- Erzan
+- Fannar Vilhelmsson
 - Glorydan
 - GreenGrass 
+- Herman Duyker
+- James Lofshult ((Solav))
+- James Turner
+- Juan
 - Kaeril
+- Kerry PMack
 - Keti
+- Kevin Kerrigan
+- krinklebearcat
+- Kristin Aurora Brayman
 - Laerith
 - Laleila
 - Lilithsahl from Moon Guard US
 - Linreia 
+- Lium Alxcen
+- Lodjay
 - Maethi
 - Managan Southpaw
+- Manuel Robador Merino
+- Max Juchheim
+- Meg Karper
 - Miajensen 
+- Michael Bell
+- MisticTiger
+- Nat
+- Nicolo Dresp
+- Nimsy
 - Orion Cain
+- Patrick D Fletcher
+- Paul Corlay
+- Phahi
+- Rob G
+- Rocky Aldridge
+- Ryan McGilloway
+- Ryldor
+- Sachiel
 - Saelora 
+- Samaramon
 - Sean "Pommie" K
+- Selendis
+- Simon Abadei
+- Soraptor
 - Sunkara
 - Taurii from House of Crows of Wyrmrest Accord
+- TeegeeUK
+- thedreameater
+- Thêmys
+- Thomas
+- Thomas Laurberg Sørensen
 - Valnoressa
+- victor nilsson
 - Vinayack 
+- W. Kristoph Nolen
+- Weston R. Haring
+- Yann
 - Ydara
+- Zach Platzer
+- Zack Wannemacher
 - Zencore
 
 ##  You are the best!]];

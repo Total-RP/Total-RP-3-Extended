@@ -40,12 +40,13 @@ local function onStep(step)
 		return;
 	end
 
-	if stepInfo.box and stepInfo.box:IsVisible() then
-		if type(stepInfo.box) == "string" then
-			buttonWidget.boxHighlight:SetAllPoints(_G[stepInfo.box]);
-		else
-			buttonWidget.boxHighlight:SetAllPoints(stepInfo.box);
-		end
+	local frame = stepInfo.box;
+	if frame and type(frame) == "string" then
+		frame = _G[stepInfo.box];
+	end
+
+	if frame and frame:IsVisible() then
+		buttonWidget.boxHighlight:SetAllPoints(stepInfo.box);
 	else
 		buttonWidget.boxHighlight:SetAllPoints(ToolFrame);
 	end

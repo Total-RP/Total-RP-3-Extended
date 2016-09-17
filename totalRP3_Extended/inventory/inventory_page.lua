@@ -244,6 +244,58 @@ local function initPlayerInventoryButton()
 	end
 end
 
+-- Tutorial
+local TUTORIAL_STRUCTURE;
+
+local function createTutorialStructure()
+	TUTORIAL_STRUCTURE = {
+		{
+			box = {
+				allPoints = main.slots[1]
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("INV_TU_1"),
+				textWidth = 400,
+				arrow = "RIGHT"
+			}
+		},
+		{
+			box = {
+				allPoints = main.slots[17]
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("INV_TU_2"),
+				textWidth = 400,
+				arrow = "LEFT"
+			}
+		},
+		{
+			box = {
+				x = 0, y = 0, anchor = "CENTER", width = 200, height = 275
+			},
+			button = {
+				x = 50, y = 0, anchor = "CENTER",
+				text = loc("INV_TU_3"),
+				textWidth = 400,
+				arrow = "RIGHT"
+			}
+		},
+		{
+			box = {
+				allPoints = main.slots[12]
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("INV_TU_4"),
+				textWidth = 400,
+				arrow = "LEFT"
+			}
+		},
+	}
+end
+
 function TRP3_API.inventory.initInventoryPage()
 
 	model, main = TRP3_InventoryPage.Main.Model, TRP3_InventoryPage.Main;
@@ -260,7 +312,8 @@ function TRP3_API.inventory.initInventoryPage()
 	TRP3_API.navigation.page.registerPage({
 		id = "player_inventory",
 		frame = TRP3_InventoryPage,
-		onPagePostShow = onInventoryShow
+		onPagePostShow = onInventoryShow,
+		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
@@ -390,4 +443,6 @@ function TRP3_API.inventory.initInventoryPage()
 	main.Equip.sequence:SetScript("OnEnterPressed", onChange);
 	main.Equip.sequence.title:SetText(loc("INV_PAGE_SEQUENCE"));
 	setTooltipForSameFrame(main.Equip.sequence.help, "RIGHT", 0, 5, loc("INV_PAGE_SEQUENCE"), loc("INV_PAGE_SEQUENCE_TT"));
+
+	createTutorialStructure();
 end
