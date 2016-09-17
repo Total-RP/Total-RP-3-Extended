@@ -27,9 +27,17 @@ local currentStructure;
 
 local function onStep(step)
 	local stepInfo = currentStructure[step];
+	local cancel = false;
 
+	local cancelMessage;
 	if stepInfo.callback then
-		stepInfo.callback();
+		cancel, cancelMessage = stepInfo.callback();
+	end
+
+	if cancel then
+		ToolFrame.tutoframe:Hide();
+		Utils.message.displayMessage(cancelMessage, 4);
+		return;
 	end
 
 	if stepInfo.box and stepInfo.box:IsVisible() then

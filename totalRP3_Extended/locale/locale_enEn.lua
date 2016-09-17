@@ -1149,6 +1149,8 @@ Each test is a values comparision. For example: "The target's health is lesser t
 	TU_WO_6 = "Add a delay",
 	TU_WO_6_TEXT = [[Delays can pause the execution of the workflow for a given time, but they can also act as a cast and interrupt the workflow if the player moves.]],
 
+	TU_WO_ERROR_1 = "Please create a workflow before resuming this tutorial.",
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- TUTORIAL: container
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

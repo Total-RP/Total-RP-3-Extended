@@ -731,22 +731,20 @@ editor.init = function(ToolFrame)
 	local TUTORIAL = {
 		{
 			box = toolFrame, title = "WO_WORKFLOW", text = "TU_WO_1_TEXT",
-			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
-			callback = function()
-				refreshElementList();
-			end
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400
 		},
 		{
 			box = editor.list, title = "TU_WO_2", text = "TU_WO_2_TEXT",
-			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
-			callback = function()
-				refreshElementList();
-			end
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400
 		},
 		{
 			box = editor.workflow, title = "WO_EXECUTION", text = "TU_WO_3_TEXT",
 			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
+				if tsize(toolFrame.specificDraft.SC) == 0 then
+					return true, loc("TU_WO_ERROR_1");
+				end
+				openWorkflow(next(toolFrame.specificDraft.SC));
 				refreshElementList();
 			end
 		},
@@ -754,6 +752,10 @@ editor.init = function(ToolFrame)
 			box = editor.element.selector.effect, title = "TU_WO_4", text = "TU_WO_4_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
+				if tsize(toolFrame.specificDraft.SC) == 0 then
+					return true, loc("TU_WO_ERROR_1");
+				end
+				openWorkflow(next(toolFrame.specificDraft.SC));
 				refreshElementList();
 				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
 			end
@@ -762,6 +764,10 @@ editor.init = function(ToolFrame)
 			box = editor.element.selector.condition, title = "TU_WO_5", text = "TU_WO_5_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
+				if tsize(toolFrame.specificDraft.SC) == 0 then
+					return true, loc("TU_WO_ERROR_1");
+				end
+				openWorkflow(next(toolFrame.specificDraft.SC));
 				refreshElementList();
 				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
 			end
@@ -770,6 +776,10 @@ editor.init = function(ToolFrame)
 			box = editor.element.selector.delay, title = "TU_WO_6", text = "TU_WO_6_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
+				if tsize(toolFrame.specificDraft.SC) == 0 then
+					return true, loc("TU_WO_ERROR_1");
+				end
+				openWorkflow(next(toolFrame.specificDraft.SC));
 				refreshElementList();
 				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
 			end
