@@ -21,6 +21,7 @@ local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonu
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local TUTORIAL;
 local toolFrame, step, editor, refreshStepList, main;
 
@@ -82,6 +83,15 @@ local function decorateStepLine(line, stepID)
 		line.Highlight:Show();
 	end
 
+	line.moveup:Show();
+	line.movedown:Show();
+	if stepID == 1 then
+		line.moveup:Hide();
+	elseif stepID == #data.DS then
+		line.movedown:Hide();
+	end
+
+
 	line.text:SetText(stepID .. ") " .. stepData.TX or "");
 	line.click.stepID = stepID;
 end
@@ -142,6 +152,42 @@ local function removeStep(index)
 		tremove(data, index);
 		if editor.stepID == index then
 			editStep(1);
+		end
+	end
+
+	refreshStepList();
+end
+
+local function onMoveUpClick(self)
+	assert(self:GetParent().click.stepID, "No stepID in frame");
+	local data = toolFrame.specificDraft.DS;
+	local index = self:GetParent().click.stepID;
+	if data[index] and data[index - 1] then
+		local previous = data[index - 1];
+		data[index - 1] = data[index];
+		data[index] = previous;
+		if editor.stepID == index then
+			editStep(index - 1);
+		elseif editor.stepID == index - 1 then
+			editStep(index);
+		end
+	end
+
+	refreshStepList();
+end
+
+local function onMoveDownClick(self)
+	assert(self:GetParent().click.stepID, "No stepID in frame");
+	local data = toolFrame.specificDraft.DS;
+	local index = self:GetParent().click.stepID;
+	if data[index] and data[index + 1] then
+		local previous = data[index + 1];
+		data[index + 1] = data[index];
+		data[index] = previous;
+		if editor.stepID == index then
+			editStep(index + 1);
+		elseif editor.stepID == index + 1 then
+			editStep(index);
 		end
 	end
 
@@ -309,6 +355,14 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("DI_STEP"),
 			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+
+		-- Up/down
+		line.movedown:SetFrameLevel(line.click:GetFrameLevel() + 10);
+		line.moveup:SetFrameLevel(line.click:GetFrameLevel() + 10);
+		setTooltipAll(line.moveup, "TOP", 0, 0, loc("CM_MOVE_UP"));
+		setTooltipAll(line.movedown, "TOP", 0, 0, loc("CM_MOVE_DOWN"));
+		line.moveup:SetScript("OnClick", onMoveUpClick);
+		line.movedown:SetScript("OnClick", onMoveDownClick);
 	end
 	step.list.decorate = decorateStepLine;
 	TRP3_API.ui.list.handleMouseWheel(step.list, step.list.slider);
