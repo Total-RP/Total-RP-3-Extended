@@ -293,6 +293,17 @@ local function createTutorialStructure()
 				arrow = "LEFT"
 			}
 		},
+		{
+			box = {
+				allPoints = main.slots[15]
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("INV_TU_5"),
+				textWidth = 400,
+				arrow = "LEFT"
+			}
+		},
 	}
 end
 

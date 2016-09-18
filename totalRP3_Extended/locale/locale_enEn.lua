@@ -1261,7 +1261,11 @@ If a container has a maximum weight capacity and you overpass this capacity, it 
 
 |cffff9900For that click on the dot near the item and place the marker on your character. You can also rotate your character and select his pose.
 
-|cff00ff00When someone uses the inspection feature on you, they will see the markers with the proper character pose!]],
+|cff00ff00When someone uses the inspection feature on you, they will see the markers with the proper character pose!
+
+|rYou can inspect someone's inventory by selecting the character and click on the target bar button |cff00ff00"Character inspection"|r.
+
+|cffff9900Note that the two players must use TRP Extended to be able to inspect each other.]],
 
 	INV_TU_4 = [[When drag & droping an item outside the inventory, |cffff9900you will be asked to choose between destroying it or droping it on the ground.|r
 
@@ -1270,6 +1274,18 @@ You can drop items (almost) everywhere in the world. |cff00ff00You can then go l
 You can also see all droped items on the map by using the "Scan for my items" button.
 
 |cffff9900Note that sometimes items can be droped automatically: if you receive items but your inventory is full, or if one of your bags is damaged.]],
+
+	INV_TU_5 = [[You can exchange an item (or a stack of items) with another player by drag & drop the stack on the player (just like the game does).
+
+|cffff9900When someone give you an item, the exchange frame will tell you if the item could possibly have annoying effects (nobody want their character to shout horrible things).
+
+|rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
+
+|cff00ff00You can block/unblock effects and white-list effects or players by ctrl+right-click on an item on your inventory.]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TUTORIAL: Quest log
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 
 };

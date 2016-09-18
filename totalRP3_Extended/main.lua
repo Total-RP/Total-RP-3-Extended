@@ -358,6 +358,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onInit()
+	Globals.addon_name_me = Globals.addon_name_extended;
+
 	if not TRP3_Tools_DB then
 		TRP3_Tools_DB = {};
 	end

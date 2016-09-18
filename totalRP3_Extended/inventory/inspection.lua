@@ -192,8 +192,14 @@ function inspectionFrame.init()
 				id = "aa_player_e_inspect",
 				onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 				configText = loc("INV_PAGE_CHARACTER_INSPECTION"),
-				condition = function(targetType, unitID)
-					return UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) and CheckInteractDistance("target", 1);
+				condition = function(_, unitID)
+					if UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) and CheckInteractDistance("target", 1) then
+						if TRP3_API.register.isUnitKnown("target") then
+							local character = TRP3_API.register.getUnitIDCharacter(Utils.str.getUnitID("target"));
+							return character.extended ~= nil;
+						end
+					end
+					return false;
 				end,
 				onClick = function(_, _, buttonType, _)
 					onToolbarButtonClicked();
