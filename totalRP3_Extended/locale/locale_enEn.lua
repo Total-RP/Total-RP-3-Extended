@@ -123,7 +123,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	SEC_LEVEL_DETAILS_ACCEPTED = "Accepted",
 	SEC_LEVEL_DETAILS_FROM = "Always accept when received from %s",
 	SEC_EFFECT_BLOCKED = "Effect(s) blocked",
-	SEC_EFFECT_BLOCKED_TT = "Due to your current security settings, at least one of this item (or sub-item) effects is blocked.",
+	SEC_EFFECT_BLOCKED_TT = "Due to your current security settings, at least one of this item (or sub-item) effects is blocked.\n\n|cffff9900Click to review security for this item.\n\nYou can also Ctrl+Right-click on the item in your inventory to configure the security later.",
 	SEC_MISSING_SCRIPT = "Cannot find workflow \"%s\"",
 	SEC_SCRIPT_ERROR = "Error in workflow %s.",
 	SEC_TT_COMBO = "Ctrl + Right click:|cffff9900 Colnfigure security",
@@ -190,7 +190,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	QE_PROGRESS = "Campaign progression",
 	DI_NEXT = "Next",
 	DI_WAIT_LOOT = "Please loot all items",
-	QE_ACTION_NO_CURRENT = "You don't have any active campaign. You can't use quest actions without an active campaign.",
+	QE_ACTION_NO_CURRENT = "You don't have any active campaign. You should activate a campaign before trying to do an action..",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",
@@ -392,7 +392,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	IT_QUEST_TT = "Adds a marker to the item icon to indicates that using this item should start a quest.\n\n|cffff7700Like others display attributes, it's just a visual flag and it's not required for your item to really be able to start a quest.",
 	IT_TT_VALUE = "Item value",
 	IT_TT_VALUE_FORMAT = "Item value (in %s)",
-	IT_TT_VALUE_TT = "This value will be informed on the tooltip extension (hold alt) or during transactions.\n\n|cffff7700If you think that this item is invaluable, please leave 0. Zero doesn't mean that is has no value, it means that the value is undefined.",
+	IT_TT_VALUE_TT = "This value will be informed on the tooltip extension (hold Alt) or during transactions.\n\n|cffff7700If you think that this item is invaluable, please leave 0. Zero doesn't mean that is has no value, it means that the value is undefined.",
 	IT_TT_WEIGHT = "Item weight",
 	IT_TT_WEIGHT_FORMAT = "Item weight (in grams)",
 	IT_TT_WEIGHT_TT = "The weight influence the total weight of the container.\n\n|cffff7700Please enter the value in GRAMS, as it will be converted to the user selected unit on display.",
@@ -1006,7 +1006,7 @@ All add-ons in World of Warcraft can store data but there are limitations:
 
 • There is an unknown data size limit for add-on data (depending on the fact that you are running a 32 or 64 bits client, among other things).
 • Reaching this limit can wipe all the add-on saved data.
-• Kill the process, force-closing the game client (alt+F4) or crashing can corrupt the add-on saved data.
+• Kill the process, force-closing the game client (Alt+F4) or crashing can corrupt the add-on saved data.
 • Even if you exit the game correctly, there is always a chance that the game doesn't succeed to save the add-on data and corrupt it.
 
 In regards to all of that, we STRONGLY recommand to regularely backup your add-on saved data.
@@ -1183,7 +1183,7 @@ You can link one event to only one workflow. But the same workflow can be linked
 
 Each link you add will link a game event to a workflow. Each time the event occurs, the workflow will be executed.
 
-|cff00ff00You can add a condition to the link by ctrl+click on it.|r The condition will have access to the event arguments to be tested.
+|cff00ff00You can add a condition to the link by Ctrl+click on it.|r The condition will have access to the event arguments to be tested.
 For example if you listen to the event of casting a spell, you will be able in the condition to test which spell is casted.
 
 |cffff9900There is a large list of game event, thus it wouldn't be for us to list them all in the add-on. We suggest you to consult webwite like wowwiki.
@@ -1203,7 +1203,7 @@ You can define action links in the campaign, quest or quest step level.]],
 
 	TU_AC_2 = "Actions evaluation",
 
-	TU_AC_2_TEXT = [[Each action can be conditionned by |cff00ff00ctrl+click on it|r.
+	TU_AC_2_TEXT = [[Each action can be conditionned by |cff00ff00Ctrl+click on it|r.
 
 When the player performs an action, |cff00ff00all action links will be evaluated in a certain order|r beginning at the quest step level, then the quest and finally the campaign.
 
@@ -1281,12 +1281,37 @@ You can also see all droped items on the map by using the "Scan for my items" bu
 
 |rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
 
-|cff00ff00You can block/unblock effects and white-list effects or players by ctrl+right-click on an item on your inventory.]],
+|cff00ff00You can block/unblock effects and white-list effects or players by Ctrl+right-click on an item on your inventory.]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- TUTORIAL: Quest log
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	QUEST_TU_1 = [[Quests will often require that |cff00ff00you interract with NPCs or with your environment through actions|r.
+
+There are four types of action: |cff00ff00Listen, look, talk and interract|r.
+
+You can perform an action by |cff00ff00right-clicking on the quest log button on the TRP3 toolbar|r.
+
+But another easier way to do actions is to |cff00ff00create macro for it|r. To help you create the action macros you can use this button.]],
+
+	QUEST_TU_2 = [[|cff00ff00You can find here a list of all available campaigns.|r
+
+A campaign is a collection of one or more quests.
+
+|cffff9900You can only progress in one campaign at a time|r. For this you must mark this campaign as the active campaign. |cff00ff00You can use the "Start or resume" button to activate or pause a campaign.|r
+
+You won't lose your progression if you switch from one campaign to another.
+
+|cffff9900You can reset your progression in a campaign by right-clicking on it and select Reset campaign. Note that all looted items won't be lost on campaign reset.]],
+
+	QUEST_TU_3 = [[|cff00ff00You can find here the list of all currently available quests and all finished quests.|r
+
+You can easily see each quest current situation and what are the current objectives.]],
+
+	QUEST_TU_4 = [[|cff00ff00You can find here the current progression of this quest and all current objectives.|r
+
+You can also see the history of previous steps, in case you forget something.]],
 
 };
 

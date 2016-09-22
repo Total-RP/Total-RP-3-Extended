@@ -449,6 +449,66 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Tutorial
+local TUTORIAL_STRUCTURE_CAMPAIGN, TUTORIAL_STRUCTURE_QUEST, TUTORIAL_STRUCTURE_STEP;
+
+local function createTutorialStructure()
+	local action = {
+		box = {
+			x = -15, y = -15, anchor = "TOPRIGHT", width = 30, height = 30
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("QUEST_TU_1"),
+			textWidth = 400,
+			arrow = "LEFT"
+		}
+	};
+
+	TUTORIAL_STRUCTURE_CAMPAIGN = {
+		action,
+		{
+			box = {
+				allPoints = TRP3_QuestLogPage.Campaign
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("QUEST_TU_2"),
+				textWidth = 400,
+				arrow = "RIGHT"
+			}
+		},
+	};
+	TUTORIAL_STRUCTURE_QUEST = {
+		action,
+		{
+			box = {
+				allPoints = TRP3_QuestLogPage.Quest.scroll
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("QUEST_TU_3"),
+				textWidth = 400,
+				arrow = "DOWN"
+			}
+		},
+	};
+	TUTORIAL_STRUCTURE_STEP = {
+		action,
+		{
+			box = {
+				allPoints = TRP3_QuestLogPage.Step.scroll
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("QUEST_TU_4"),
+				textWidth = 400,
+				arrow = "RIGHT"
+			}
+		},
+	};
+end
+
 local function init()
 
 	Events.listenToEvent(Events.CAMPAIGN_REFRESH_LOG, refreshLog);
@@ -468,7 +528,18 @@ local function init()
 		frame = TRP3_QuestLogPage,
 		onPagePostShow = function()
 			goToPage(false, TAB_CAMPAIGNS);
-		end
+		end,
+		tutorialProvider = function()
+			if TRP3_QuestLogPage.currentPage == TAB_CAMPAIGNS then
+				return TUTORIAL_STRUCTURE_CAMPAIGN;
+			end
+			if TRP3_QuestLogPage.currentPage == TAB_QUESTS then
+				return TUTORIAL_STRUCTURE_QUEST;
+			end
+			if TRP3_QuestLogPage.currentPage == TAB_STEPS then
+				return TUTORIAL_STRUCTURE_STEP;
+			end
+		end,
 	});
 
 	-- Quest log button on target bar
@@ -600,5 +671,8 @@ local function init()
 			goToPage(false, TAB_CAMPAIGNS);
 		end
 	end);
+
+	-- Tuto
+	createTutorialStructure();
 end
 TRP3_API.quest.questLogInit = init;
