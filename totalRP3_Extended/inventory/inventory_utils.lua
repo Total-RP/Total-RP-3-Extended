@@ -178,16 +178,21 @@ end
 TRP3_API.inventory.countItemInstances = countItemInstances;
 
 local function searchForFirstInstance(container, itemID)
+	local foundContainer, foundIndex;
+
 	for slotIndex, slot in pairs(container.content or EMPTY) do
 		if slot.id == itemID then
-			return container, slotIndex;
+			foundContainer, foundIndex = container, slotIndex;
+		elseif isContainerByClassID(slot.id) then
+			foundContainer, foundIndex = searchForFirstInstance(slot, itemID);
+		end
+
+		if foundIndex then
+			break;
 		end
 	end
-	for _, slot in pairs(container.content or EMPTY) do
-		if isContainerByClassID(slot.id) then
-			return searchForFirstInstance(slot, itemID);
-		end
-	end
+
+	return foundContainer, foundIndex;
 end
 TRP3_API.inventory.searchForFirstInstance = searchForFirstInstance;
 

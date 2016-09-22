@@ -533,7 +533,7 @@ end
 TRP3_API.inventory.loadContainerPageSlots = loadContainerPageSlots;
 
 local function containerFrameUpdate(self, elapsed)
-	if not self.info or not self.class then
+	if not self.info or not self.info.id or not TRP3_API.extended.classExists(self.info.id) then
 		self:Hide();
 		return;
 	end

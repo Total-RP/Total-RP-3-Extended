@@ -432,7 +432,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	IT_TRIGGER_ON_DESTROY_TT = "Triggered when the player destroy a stack of this item (drags & drops it out of his inventory and confirms the destruction).|cffff9900\n\nIt is triggered once per stack, and just before the actual stack destruction (so counting the item units in inventory in this workflow will still count the stack).",
 
 	-- Documents
-	DO_NEW_DOC = "New document",
+	DO_NEW_DOC = "Document",
 	DO_PREVIEW = "Click to see a preview",
 	DO_PARAMS_GLOBAL = "Default parameters",
 	DO_PARAMS_GLOBAL_TT = "Change the document default parameters. These parameters will be used for all pages that does not use custom page parameters.",

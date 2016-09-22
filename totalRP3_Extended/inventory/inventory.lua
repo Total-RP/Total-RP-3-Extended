@@ -190,6 +190,7 @@ function TRP3_API.inventory.getItem(container, slotID)
 end
 
 function TRP3_API.inventory.removeItem(classID, amount, container)
+	print(classID, amount, container)
 	if not container or not isContainerByClassID(container.id) then
 		container = playerInventory;
 	end
