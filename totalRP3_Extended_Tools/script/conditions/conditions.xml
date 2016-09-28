@@ -173,6 +173,14 @@
 				</Anchors>
 			</EditBox>
 
+			<EditBox parentKey="failWorkflow" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.add" x="0" y="-25"/>
+					<Anchor point="RIGHT" x="-35" y="0"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="15" y="0"/>
+				</Anchors>
+			</EditBox>
+
 			<Frame parentKey="operand" hidden="true" setAllPoints="true" enableMouse="true">
 
 				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">

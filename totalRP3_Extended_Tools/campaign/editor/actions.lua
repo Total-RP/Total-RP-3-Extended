@@ -150,6 +150,9 @@ local function openActionCondition(actionIndex)
 		TRP3_ConditionEditor:Hide();
 		refreshList();
 	end);
+	TRP3_ConditionEditor.close:SetScript("OnClick", function()
+		TRP3_ConditionEditor:Hide();
+	end);
 	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
 	TRP3_ConditionEditor.title:SetText(loc("CA_ACTION_CONDI"));
 end

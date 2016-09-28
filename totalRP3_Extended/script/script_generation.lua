@@ -330,10 +330,16 @@ local function writeBranching(branchStructure)
 		if DEBUG then
 			writeLine("");
 		end
-		if branch.failMessage then
-			CURRENT_ENVIRONMENT["message"] = "TRP3_API.utils.message.displayMessage";
+		if branch.failMessage or branch.failWorkflow then
 			doElse();
-			writeLine(("message(\"%s\", 4)"):format(escapeString(branch.failMessage)));
+			if branch.failMessage then
+				CURRENT_ENVIRONMENT["message"] = "TRP3_API.utils.message.displayMessage";
+				writeLine(("message(\"%s\", 4)"):format(escapeString(branch.failMessage)));
+			end
+			if branch.failWorkflow then
+				CURRENT_ENVIRONMENT["executeClassScript"] = "TRP3_API.script.executeClassScript";
+				writeLine(("executeClassScript(\"%s\", args.scripts, args, args.classID);"):format(escapeString(branch.failWorkflow)));
+			end
 		end
 		if branch.cond and #branch.cond > 0 then
 			closeBlock();
@@ -519,6 +525,11 @@ local function executeClassScript(scriptID, classScripts, args, innerClassID)
 		end
 		compiledScript[innerClassID][scriptID] = getFunction(class.ST, rootClassID);
 	end
+	if not args then
+		args = {};
+	end
+	args.scripts = classScripts;
+	args.classID = innerClassID;
 	return executeFunction(compiledScript[innerClassID][scriptID], args, scriptID);
 end
 TRP3_API.script.executeClassScript = executeClassScript;

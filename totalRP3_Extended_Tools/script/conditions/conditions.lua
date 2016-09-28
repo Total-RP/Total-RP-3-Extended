@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, _G, type, tinsert, wipe, assert, tostring = pairs, _G, type, tinsert, wipe, assert, tostring;
+local pairs, _G, type, tinsert, wipe, assert, tostring, strtrim = pairs, _G, type, tinsert, wipe, assert, tostring, strtrim;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -448,6 +448,7 @@ function editor.save(scriptData, branchingStepData)
 	Utils.table.copy(scriptData, editor.scriptData);
 	if branchingStepData then
 		branchingStepData.failMessage = stEtN(strtrim(editor.failMessage:GetText()));
+		branchingStepData.failWorkflow = stEtN(strtrim(editor.failWorkflow:GetText()));
 	end
 end
 
@@ -455,9 +456,12 @@ function editor.load(scriptData, branchingStepData)
 	wipe(editor.scriptData);
 	Utils.table.copy(editor.scriptData, scriptData);
 	editor.failMessage:Hide();
+	editor.failWorkflow:Hide();
 	if branchingStepData then
 		editor.failMessage:Show();
 		editor.failMessage:SetText(branchingStepData.failMessage or "");
+		editor.failWorkflow:Show();
+		editor.failWorkflow:SetText(branchingStepData.failWorkflow or "");
 	end
 	listCondition();
 end
@@ -476,6 +480,9 @@ function editor.init()
 
 	editor.failMessage.title:SetText(loc("OP_FAIL"));
 	setTooltipForSameFrame(editor.failMessage.help, "TOP", 0, 0, loc("OP_FAIL"), loc("OP_FAIL_TT"));
+
+	editor.failWorkflow.title:SetText(loc("OP_FAIL_W"));
+	setTooltipForSameFrame(editor.failWorkflow.help, "TOP", 0, 0, loc("OP_FAIL_W"), loc("OP_FAIL_W_TT"));
 
 	editor.widgetTab = {};
 	for i=1, 6 do

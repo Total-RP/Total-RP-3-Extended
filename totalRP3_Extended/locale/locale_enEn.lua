@@ -771,6 +771,8 @@ We should begin with some examples:
 	OP_ADD_TEST = "Add test",
 	OP_FAIL = "Failure message",
 	OP_FAIL_TT = "This message will be displayed if the condition fails. Leave empty if you don't want to show any message.",
+	OP_FAIL_W = "Failure workflow (Expert)",
+	OP_FAIL_W_TT = "If this condition fails, this workflow will be called. That's a way for making an 'else' in a condition.\n\n|cffff9900Please note that this feature is performance heavy and should be used with caution. The called workflow must exist in the same object.\n\n|cffff0000Do NEVER, ever, create a cycle in called workflow (e.g. a workflow A calling a workflow B calling again the workflow A), even using delays!",
 	OP_UNIT_VALUE = "Unit value",
 	OP_UNIT_TEST = "Unit test",
 	OP_EVAL_VALUE = "Evaluated value",

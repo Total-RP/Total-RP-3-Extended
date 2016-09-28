@@ -157,6 +157,9 @@ local function openEventCondition(eventLink)
 		TRP3_ConditionEditor:Hide();
 		refreshList();
 	end);
+	TRP3_ConditionEditor.close:SetScript("OnClick", function()
+		TRP3_ConditionEditor:Hide();
+	end);
 	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
 	TRP3_ConditionEditor.title:SetText(loc("WO_EVENT_EX_CONDI"));
 end
