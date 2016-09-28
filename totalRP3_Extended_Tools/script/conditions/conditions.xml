@@ -138,26 +138,12 @@
 					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line5"/>
 				</Anchors>
 			</Frame>
-			<Frame parentKey="line7" inherits="TRP3_ConditionEditorLine">
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line6" relativePoint="BOTTOM"/>
-					<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line6"/>
-					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line6"/>
-				</Anchors>
-			</Frame>
-			<Frame parentKey="line8" inherits="TRP3_ConditionEditorLine">
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line7" relativePoint="BOTTOM"/>
-					<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line7"/>
-					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line7"/>
-				</Anchors>
-			</Frame>
 			<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
 				<Size x="15" y="0" />
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.line1"/>
 					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.line1"/>
-					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line8"/>
+					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line6"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
@@ -175,9 +161,17 @@
 			<Button parentKey="add" inherits="TRP3_CommonButton">
 				<Size x="150" y="20"/>
 				<Anchors>
-					<Anchor point="TOP" relativeKey="$parent.line8" relativePoint="BOTTOM" x="0" y="-10"/>
+					<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" x="0" y="-10"/>
 				</Anchors>
 			</Button>
+
+			<EditBox parentKey="failMessage" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.add" x="0" y="-25"/>
+					<Anchor point="LEFT" x="35" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
 
 			<Frame parentKey="operand" hidden="true" setAllPoints="true" enableMouse="true">
 

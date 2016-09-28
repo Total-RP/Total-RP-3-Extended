@@ -218,9 +218,9 @@ local function onElementClick(self)
 		setCurrentElementFrame(TRP3_ScriptEditorDelay, loc("WO_DELAY"));
 		TRP3_ScriptEditorDelay.load(scriptStep);
 	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
-		local scriptData = scriptStep.b[1].cond;
+		local scriptData = scriptStep.b[1];
 		setCurrentElementFrame(TRP3_ConditionEditor, loc("COND_EDITOR"));
-		TRP3_ConditionEditor.load(scriptData);
+		TRP3_ConditionEditor.load(scriptData.cond, scriptData);
 	end
 
 	self.highlight:Show();
@@ -250,8 +250,8 @@ function onElementConfirm(self)
 			if not scriptData.args then scriptData.args = {} end
 			editor.element.current.save(scriptData);
 		elseif editor.element.scriptStep.t == ELEMENT_TYPE.CONDITION then
-			local scriptData = editor.element.scriptStep.b[1].cond;
-			editor.element.current.save(scriptData);
+			local scriptData = editor.element.scriptStep.b[1];
+			editor.element.current.save(scriptData.cond, scriptData);
 		else
 			editor.element.current.save(editor.element.scriptStep);
 		end

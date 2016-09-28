@@ -443,14 +443,22 @@ end
 -- Load and save
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function editor.save(scriptData)
+function editor.save(scriptData, branchingStepData)
 	wipe(scriptData);
 	Utils.table.copy(scriptData, editor.scriptData);
+	if branchingStepData then
+		branchingStepData.failMessage = stEtN(strtrim(editor.failMessage:GetText()));
+	end
 end
 
-function editor.load(scriptData)
+function editor.load(scriptData, branchingStepData)
 	wipe(editor.scriptData);
 	Utils.table.copy(editor.scriptData, scriptData);
+	editor.failMessage:Hide();
+	if branchingStepData then
+		editor.failMessage:Show();
+		editor.failMessage:SetText(branchingStepData.failMessage or "");
+	end
 	listCondition();
 end
 
@@ -463,12 +471,14 @@ function editor.init()
 
 	editor.listheader:SetText(loc("COND_TESTS"));
 	editor.fullheader:SetText(loc("COND_COMPLETE"));
-	editor.add:SetText("Add test");
-
+	editor.add:SetText(loc("OP_ADD_TEST"));
 	editor.add:SetScript("OnClick", addExpression);
 
+	editor.failMessage.title:SetText(loc("OP_FAIL"));
+	setTooltipForSameFrame(editor.failMessage.help, "TOP", 0, 0, loc("OP_FAIL"), loc("OP_FAIL_TT"));
+
 	editor.widgetTab = {};
-	for i=1, 8 do
+	for i=1, 6 do
 		local line = editor["line" .. i];
 		tinsert(editor.widgetTab, line);
 		line.click:SetScript("OnClick", onTestLineClick);

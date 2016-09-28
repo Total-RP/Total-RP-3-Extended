@@ -26,7 +26,7 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = false;
+local DEBUG = true;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -102,6 +102,12 @@ end
 local function closeBlock()
 	removeIndent();
 	writeLine("end");
+end
+
+local function doElse()
+	removeIndent();
+	writeLine("else");
+	addIndent();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -323,6 +329,11 @@ local function writeBranching(branchStructure)
 		end
 		if DEBUG then
 			writeLine("");
+		end
+		if branch.failMessage then
+			CURRENT_ENVIRONMENT["message"] = "TRP3_API.utils.message.displayMessage";
+			doElse();
+			writeLine(("message(\"%s\", 4)"):format(escapeString(branch.failMessage)));
 		end
 		if branch.cond and #branch.cond > 0 then
 			closeBlock();
