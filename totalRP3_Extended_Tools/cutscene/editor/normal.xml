@@ -310,10 +310,20 @@
 				</Anchors>
 
 				<Frames>
+
+					<EditBox parentKey="distance" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
+							<Anchor point="LEFT" x="25" y="0" />
+							<Anchor point="RIGHT" x="-15" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</EditBox>
+
 					<Button parentKey="preview" inherits="TRP3_CommonButton">
 						<Size x="150" y="20" />
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
+							<Anchor point="BOTTOM" x="0" y="30"/>
 						</Anchors>
 					</Button>
 

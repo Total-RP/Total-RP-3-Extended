@@ -217,7 +217,7 @@ end
 -- Load ans save
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function loadMain()
+local function loadWorkflows()
 	editor.workflowIDs = {};
 	editor.workflowListStructure = TRP3_ScriptEditorNormal.reloadWorkflowlist(editor.workflowIDs);
 	TRP3_API.ui.listbox.setupListBox(editor.workflow, editor.workflowListStructure, nil, nil, 300, true);
@@ -237,8 +237,10 @@ local function load()
 		data.DS = {};
 	end
 
+	main.distance:SetText(data.BA.DI or "0");
+
 	loadDataScript();
-	loadMain();
+	loadWorkflows();
 	editStep(1);
 
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
@@ -247,6 +249,8 @@ end
 local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
+	local data = toolFrame.specificDraft;
+	data.BA.DI = tonumber(strtrim(main.distance:GetText())) or 0;
 	saveStep(editor.stepID);
 
 	storeDataScript();
@@ -272,7 +276,7 @@ local function onTabChanged(tabWidget, tab)
 		step:Show();
 		editor:Show();
 		main:Show();
-		loadMain();
+		loadWorkflows();
 		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
 	elseif currentTab == TABS.WORKFLOWS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.cutscene.normal);
@@ -315,6 +319,10 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 
 	main = toolFrame.cutscene.normal.main;
 	main.title:SetText(loc("TYPE_DIALOG"));
+
+	-- Name
+	main.distance.title:SetText(loc("DI_DISTANCE"));
+	setTooltipForSameFrame(main.distance.help, "RIGHT", 0, 5, loc("DI_DISTANCE"), loc("DI_DISTANCE_TT"));
 
 	main.preview:SetText(loc("EDITOR_PREVIEW"));
 	main.preview:SetScript("OnClick", function()

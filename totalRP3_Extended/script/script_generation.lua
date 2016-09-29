@@ -26,7 +26,7 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = true;
+local DEBUG = false;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -606,9 +606,12 @@ function TRP3_API.script.parseArgs(text, args)
 		elseif capture:match("event%.%d+") then
 			local index = tonumber(capture:match("event%.(%d+)") or 1) or 1;
 			return (args.event or EMPTY)[index] or capture;
-		else
-			return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture] or capture;
+		elseif (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture] then
+			return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture];
+		elseif TRP3_API.extended.classExists(capture) then
+			return TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(capture), capture);
 		end
+		return capture;
 	end);
 	return text;
 end

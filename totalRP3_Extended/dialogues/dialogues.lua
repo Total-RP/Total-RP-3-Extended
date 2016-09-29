@@ -112,6 +112,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local ANIMATION_TEXT_SPEED = 160;
+local UnitPosition, sqrt = UnitPosition, sqrt;
 
 local function onUpdateChatText(self, elapsed)
 	if self.start and dialogFrame.Chat.Text:GetText() and dialogFrame.Chat.Text:GetText():len() > 0 then
@@ -122,6 +123,13 @@ local function onUpdateChatText(self, elapsed)
 			dialogFrame.Chat.Text:SetAlphaGradient(dialogFrame.Chat.Text:GetText():len(), 1);
 		else
 			dialogFrame.Chat.Text:SetAlphaGradient(self.start, 30);
+		end
+	end
+	if dialogFrame.distanceLimit > 0 then
+		local posY, posX = UnitPosition("player");
+		local distance = sqrt((posY - dialogFrame.posY) ^ 2 + (posX - dialogFrame.posX) ^ 2);
+		if distance >= dialogFrame.distanceLimit then
+			dialogFrame:Hide();
 		end
 	end
 end
@@ -387,6 +395,8 @@ local function startDialog(dialogID, class)
 	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
 	dialogFrame:Show();
 	dialogFrame:Raise();
+	dialogFrame.distanceLimit = dialogClass.BA.DI or 0;
+	dialogFrame.posY, dialogFrame.posX = UnitPosition("player");
 
 	processDialogStep();
 
