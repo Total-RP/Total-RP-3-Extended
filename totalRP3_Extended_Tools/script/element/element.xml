@@ -66,7 +66,7 @@
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 
-		<Size x="420" y="400"/>
+		<Size x="550" y="400"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -99,14 +99,17 @@
 			</Button>
 
 			<Frame parentKey="content">
-				<Size x="390" y="295"/>
+				<Size x="0" y="295"/>
 
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
+
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-35"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
 
 				<Frames>

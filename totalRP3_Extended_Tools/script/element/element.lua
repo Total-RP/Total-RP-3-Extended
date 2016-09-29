@@ -78,21 +78,20 @@ local function onBrowserClose()
 	objectBrowser:Hide();
 end
 
-local function onBrowserIconClick(frame)
+local function onBrowserLineClick(frame)
 	onBrowserClose();
 	if objectBrowser.onSelectCallback then
 		objectBrowser.onSelectCallback(frame.objectID);
 	end
 end
 
-local function decorateBrowserIcon(frame, index)
+local function decorateBrowserLine(frame, index)
 	local objectID = filteredObjectList[index];
 	local class = getClass(objectID);
 	local icon, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
-	local link = TRP3_API.inventory.getItemLink(class, objectID);
+	local link = TRP3_API.inventory.getItemLink(class, objectID, true);
 
-	frame:SetNormalTexture("Interface\\ICONS\\" .. icon);
-	frame:SetPushedTexture("Interface\\ICONS\\" .. icon);
+	_G[frame:GetName().."Text"]:SetText(link);
 	setTooltipForSameFrame(frame, "TOP", 0, 5, link, objectID);
 	frame.objectID = objectID;
 end
@@ -122,10 +121,12 @@ local function filteredObjectBrowser()
 	end
 	objectBrowser.filter.total:SetText( (#filteredObjectList) .. " / " .. total );
 
+	table.sort(filteredObjectList);
+
 	initList(
 		{
 			widgetTab = objectBrowser.widgetTab,
-			decorate = decorateBrowserIcon
+			decorate = decorateBrowserLine
 		},
 		filteredObjectList,
 		objectBrowser.content.slider
@@ -146,17 +147,14 @@ function objectBrowser.init()
 	objectBrowser.content.slider:SetValue(0);
 
 	-- Create icons
-	local row, column;
 	objectBrowser.widgetTab = {};
 
-	for row = 0, 5 do
-		for column = 0, 7 do
-			local button = CreateFrame("Button", "TRP3_ObjectBrowserButton_"..row.."_"..column, objectBrowser.content, "TRP3_IconBrowserButton");
-			button:ClearAllPoints();
-			button:SetPoint("TOPLEFT", objectBrowser.content, "TOPLEFT", 15 + (column * 45), -15 + (row * (-45)));
-			button:SetScript("OnClick", onBrowserIconClick);
-			tinsert(objectBrowser.widgetTab, button);
-		end
+	-- Create lines
+	for line = 0, 8 do
+		local button = CreateFrame("Button", "TRP3_ObjectBrowserButton_" .. line, objectBrowser.content, "TRP3_MusicBrowserLine");
+		button:SetPoint("TOP", objectBrowser.content, "TOP", 0, -10 + (line * (-31)));
+		button:SetScript("OnClick", onBrowserLineClick);
+		tinsert(objectBrowser.widgetTab, button);
 	end
 
 	objectBrowser.filter.box:SetScript("OnTextChanged", filteredObjectBrowser);

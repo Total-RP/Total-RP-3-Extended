@@ -1393,11 +1393,12 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Ryan McGilloway
 - Ryldor
 - Sachiel
-- Saelora 
+- Saelora
 - Samaramon
 - Sean "Pommie" K
 - Selendis
 - Simon Abadei
+- Sindaru
 - Soraptor
 - Sunkara
 - Taurii from House of Crows of Wyrmrest Accord
@@ -1407,9 +1408,9 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Thomas
 - Thomas Laurberg Sørensen
 - Valnoressa
-- victor nilsson
+- Victor Nilsson
 - Vinayack 
-- W. Kristoph Nolen
+- W. Kristoph "Calmorlayne" Nolen
 - Weston R. Haring
 - Yann
 - Ydara

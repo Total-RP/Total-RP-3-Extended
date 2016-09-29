@@ -109,7 +109,7 @@ local function decorateLine(line, innerID)
 	local innerObject = toolFrame.specificDraft.IN[innerID];
 	local _, name, _ = TRP3_API.extended.tools.getClassDataSafeByType(innerObject);
 	local typeLocale = getTypeLocale(innerObject.TY) or UNKNOWN;
-	local text = ("|cff00ff00%s: |r\"%s|r\" |cff00ffff(ID: %s)"):format(typeLocale, name or UNKNOWN, innerID);
+	local text = ("|cff00ff00%s:|cff00ffff %s:|r \"%s\""):format(typeLocale, innerID, name or UNKNOWN);
 	line.objectID = innerID;
 	line.text:SetText(text);
 

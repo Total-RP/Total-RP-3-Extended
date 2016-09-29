@@ -593,7 +593,6 @@ function editor.init()
 		loc("OP_UNIT_TEST"),
 		CHARACTER,
 --		"Pets and companions", -- TODO: locals
---		"Campaign and quests", -- TODO: locals
 		loc("INV_PAGE_CHARACTER_INV"),
 		loc("EFFECT_CAT_CAMPAIGN"),
 		"Expert", -- TODO: locals
