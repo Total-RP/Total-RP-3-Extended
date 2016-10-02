@@ -326,12 +326,13 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT = "A container template.\nContainer can hold other items.",
 	DB_CREATE_ITEM_TEMPLATES_FROM = "Create from ...",
 	DB_CREATE_ITEM_TEMPLATES_FROM_TT = "Create a copy of an existing item.",
-	DB_ADD_ITEM = "Add one unit to main inventory",
+	DB_ADD_ITEM = "Add to main inventory",
 	DB_ADD_INNER = "Add inner object",
 	DB_TO_EXPERT = "Convert to expert mode",
 	DB_CREATE_CAMPAIGN = "Create campaign",
 	DB_CREATE_CAMPAIGN_TT = "Start creating a campaign",
 	DB_REMOVE_OBJECT_POPUP = "Please confirm the removal of the object:\nID: |cff00ffff\"%s\"|r\n|cff00ff00[%s]|r\n\n|cffff9900Warning: This action cannot be reverted!.",
+	DB_ADD_COUNT = "How many units do you want to add to your inventory?",
 
 	-- Creation
 	ROOT_TITLE = "Root object",
