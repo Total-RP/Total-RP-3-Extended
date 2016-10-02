@@ -224,7 +224,7 @@ local coinCampaign = {
 		},
 	},
 	["securityLevel"] = 3,
-	["NT"] = "This shouldn't be consider as an IC method to get money. ;)",
+	["NT"] = "This campaign shows how a campaign can be used more as a shop/event system than a set of quests.\n\nThis shouldn't be consider as an IC method to get money. ;)\n\nWe suggest that all creators use these coins if there are transactions to be done in their quests.",
 	["MD"] = {
 		["CD"] = "25/08/16 10:37:19",
 		["LO"] = "en",

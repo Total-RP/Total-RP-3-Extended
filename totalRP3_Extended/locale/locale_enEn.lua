@@ -1049,7 +1049,7 @@ An object contains all information about an item, a document, a campaign/quest/s
 
 |cff00ff00Players database:|r it contains all objects you received (or imported) from other players.
 
-|cff00ff00Backers database:|r it contains the objects created by the Kickstarter backers.
+|cff00ff00Backers database:|r it contains the objects created by the Kickstarter backers and the TRP3 team.
 
 |cff00ff00Full database:|r it contains all the previous databases content.]],
 	TU_DB_3_TEXT = [[You can filter more each database to find a specific object by changing the search filters and select |cff00ff00Search|r.
@@ -1074,7 +1074,7 @@ Examples:
 - A campaign with 4 quests: each quest is actually an inner object of the root campaign object.
 - A gun item firing bullet item: the bullet object would be an inner object of the root gun object.
 
-But don't worry, it will come naturally !]],
+But don't worry, it will comes naturally !]],
 	TU_DB_5 = "Root objects",
 	TU_DB_5_TEXT = "Only items and campaigns can be root objects.\n\nYou can use these two buttons to create an new item or campaign.",
 	TU_DB_6 = "Create an item",
@@ -1324,7 +1324,7 @@ You can also see the history of previous steps, in case you forget something.]],
 };
 
 TRP3_KS_BACKERS =
-[[#Total RP 3: Extended
+[[#Total RP 3: Extended (version %s)
 
 Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ellypse" Parize|r.
 

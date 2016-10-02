@@ -395,7 +395,7 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.container:Hide();
 		ToolFrame.list.filters:Hide();
 		ToolFrame.list.backers:Show();
-		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS));
+		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(Globals.extended_version)));
 	end
 
 	filterList();
