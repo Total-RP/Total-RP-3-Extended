@@ -454,6 +454,9 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 					pickUpLoot(self);
 				end
 			end
+			if self.additionalClickHandler then
+				self.additionalClickHandler(self, button);
+			end
 		end);
 		slot:SetScript("OnDoubleClick", function(self, button)
 			if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then

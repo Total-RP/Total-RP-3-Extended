@@ -190,6 +190,33 @@ local function onEquipRefresh(self)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Quick add / create / import
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function onSlotClickAction(action, slot)
+	local slotID = slot.slotID;
+	if action == 1 then
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = main, point = "CENTER", parentPoint = "CENTER"}, {function(fromID)
+			TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(fromID))), function(value)
+				TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), fromID, {count = value or 1}, nil, slotID);
+			end, nil, 1);
+		end, TRP3_DB.types.ITEM});
+	end
+end
+
+local function onSlotClick(slot, button)
+	if TRP3_ToolFrame and not slot.info and button == "RightButton" then
+		local menu = {
+			{loc("INV_PAGE_CHARACTER_INV")},
+			{loc("EFFECT_ITEM_ADD"), 1},
+--			{loc("DB_CREATE_ITEM"), 2},
+--			{loc("DB_IMPORT_ITEM"), 3}
+		};
+		TRP3_API.ui.listbox.displayDropDown(slot, menu, onSlotClickAction, 0, true);
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Page management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -387,6 +414,8 @@ function TRP3_API.inventory.initInventoryPage()
 		button.additionalOnDragHandler = onSlotDrag;
 		button.additionalDoubleClickHandler = onSlotDoubleClick;
 		button.additionalOnUpdateHandler = onSlotUpdate;
+		button.additionalClickHandler = onSlotClick;
+
 		button.First:ClearAllPoints();
 		if i > 8 then
 			button.tooltipRight = true;

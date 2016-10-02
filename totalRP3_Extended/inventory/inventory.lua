@@ -92,7 +92,7 @@ end
 -- 2 if too many item already possessed (unique)
 -- 3 if givenContainer is not a container
 -- 4 if container can't contain the item
-function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFull)
+function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFull, toSlot)
 	-- Get the best container
 	local container = givenContainer or playerInventory;
 	if givenContainer == nil then
@@ -137,17 +137,21 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 			end
 		end
 
-		-- Finding an empty slot
-		for i = 1, ((containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)) do
-			local slotID = tostring(i);
-			if not freeSlot and not container.content[slotID] then
-				freeSlot = slotID;
-			elseif canStack and container.content[slotID] and classID == container.content[slotID].id then
-				if not TRP3_API.inventory.isInTransaction(container.content[slotID]) then
-					local expectedCount = (container.content[slotID].count or 1) + 1;
-					if expectedCount <= (itemClass.BA.ST) then
-						stackSlot = slotID;
-						break;
+		if toSlot and not container.content[toSlot] then
+			freeSlot = toSlot;
+		else
+			-- Finding an empty slot
+			for i = 1, ((containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)) do
+				local slotID = tostring(i);
+				if not freeSlot and not container.content[slotID] then
+					freeSlot = slotID;
+				elseif canStack and container.content[slotID] and classID == container.content[slotID].id then
+					if not TRP3_API.inventory.isInTransaction(container.content[slotID]) then
+						local expectedCount = (container.content[slotID].count or 1) + 1;
+						if expectedCount <= (itemClass.BA.ST) then
+							stackSlot = slotID;
+							break;
+						end
 					end
 				end
 			end

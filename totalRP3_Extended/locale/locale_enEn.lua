@@ -287,7 +287,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_DELETE_TT = "Removes this object and all its children objects.",
 	DB_EXPERT_TT = "Switchs this object to expert mode, allowing more complex customizations.",
 	DB_SECURITY_TT = "Shows all security parameters for this object. From there you can allow or prevent certain undesirable effects.",
-	DB_ADD_ITEM_TT = "Adds one unit of this item in your primary container (or main inventory if you don't have any primary container on your character).",
+	DB_ADD_ITEM_TT = "Adds units of this item in your primary container (or main inventory if you don't have any primary container on your character).",
 	DB_COPY_ID_TT = "Display the object ID in a popup to be copy/pastable.",
 	DB_COPY_TT = "Copy all this object information and child objects to be pastable as inner objects in another object.",
 	DB_EXPORT = "Quick export object",
@@ -332,7 +332,8 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_CREATE_CAMPAIGN = "Create campaign",
 	DB_CREATE_CAMPAIGN_TT = "Start creating a campaign",
 	DB_REMOVE_OBJECT_POPUP = "Please confirm the removal of the object:\nID: |cff00ffff\"%s\"|r\n|cff00ff00[%s]|r\n\n|cffff9900Warning: This action cannot be reverted!.",
-	DB_ADD_COUNT = "How many units do you want to add to your inventory?",
+	DB_ADD_COUNT = "How many units of %s do you want to add to your inventory?",
+	DB_IMPORT_ITEM = "Import item",
 
 	-- Creation
 	ROOT_TITLE = "Root object",

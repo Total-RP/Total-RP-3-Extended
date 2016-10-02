@@ -447,7 +447,7 @@ function onLineActionSelected(value, button)
 			onTabChanged(nil, currentTab);
 		end);
 	elseif action == ACTION_FLAG_ADD then
-		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"), function(value)
+		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(objectID))), function(value)
 			TRP3_API.inventory.addItem(nil, objectID, {count = value or 1});
 		end, nil, 1);
 	elseif action == ACTION_FLAG_COPY_ID then
