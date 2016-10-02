@@ -60,6 +60,7 @@ TRP3_DB.inner.rifle = {
 			["US"] = {
 				["SC"] = "onUse",
 			},
+			NT = "This inner object is the bullet to be used in the Simple rifle root object.",
 			["BA"] = {
 				["DE"] = "Made to be charged in a [Simple rifle] ammo clip.",
 				["IC"] = "INV_Misc_Ammo_Bullet_02",
@@ -230,7 +231,7 @@ TRP3_DB.inner.rifle = {
 			},
 		},
 	},
-	NT = "This item shows you that a container is not limited to be a bag. Here we have a gun and it is a container to be able to contains the needed ammo.",
+	NT = "This item shows you that a container is not limited to be a bag. Here we have a gun and it's a container to be able to contain the needed ammo.",
 	["US"] = {
 		["SC"] = "onUse",
 		["AC"] = "Pull the trigger",
@@ -277,6 +278,7 @@ TRP3_DB.inner.letterexample = {
 		["AC"] = "Read the letter",
 		["SC"] = "onUse",
 	},
+	NT = "This is an example of a simple item showing a document when used.",
 	["BA"] = {
 		["QA"] = 8,
 		["ST"] = false,
