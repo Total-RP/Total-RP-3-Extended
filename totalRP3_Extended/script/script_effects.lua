@@ -32,25 +32,26 @@ local SPEECH_PREFIX = {
 }
 TRP3_API.ui.misc.SPEECH_PREFIX = SPEECH_PREFIX;
 
-local function getSpeechPrefixText(speechPrefix, npcName, text)
-	if speechPrefix == SPEECH_PREFIX.SAYS then
-		return ("%s %s: %s"):format(npcName, loc("NPC_SAYS"), text);
-	elseif speechPrefix == SPEECH_PREFIX.YELLS then
-		return ("%s %s: %s"):format(npcName, loc("NPC_YELLS"), text);
-	elseif speechPrefix == SPEECH_PREFIX.WHISPERS then
-		return ("%s %s: %s"):format(npcName, loc("NPC_WHISPERS"), text);
-	elseif speechPrefix == SPEECH_PREFIX.EMOTES then
-		return ("%s %s"):format(npcName, text);
-	end
-	return "...";
-end
-TRP3_API.ui.misc.getSpeechPrefixText = getSpeechPrefixText;
-
 local SPEECH_CHANNEL = {
 	[SPEECH_PREFIX.SAYS] = "SAY",
 	[SPEECH_PREFIX.YELLS] = "YELL",
 	[SPEECH_PREFIX.EMOTES] = "EMOTE",
 }
+
+local function getSpeechPrefixText(speechPrefix, npcName, text)
+	if speechPrefix == SPEECH_CHANNEL[SPEECH_PREFIX.SAYS] then
+		return ("%s %s: %s"):format(npcName, loc("NPC_SAYS"), text);
+	elseif speechPrefix == SPEECH_CHANNEL[SPEECH_PREFIX.YELLS] then
+		return ("%s %s: %s"):format(npcName, loc("NPC_YELLS"), text);
+	elseif speechPrefix == SPEECH_CHANNEL[SPEECH_PREFIX.WHISPERS] then
+		return ("%s %s: %s"):format(npcName, loc("NPC_WHISPERS"), text);
+	elseif speechPrefix == SPEECH_CHANNEL[SPEECH_PREFIX.EMOTES] then
+		return ("%s %s"):format(npcName, text);
+	end
+	return "(error in getSpeechPrefixText)";
+end
+TRP3_API.ui.misc.getSpeechPrefixText = getSpeechPrefixText;
+
 local function getSpeechChannel(mode)
 	return SPEECH_CHANNEL[mode] or "SAY";
 end
