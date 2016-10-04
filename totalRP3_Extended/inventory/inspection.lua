@@ -175,6 +175,10 @@ function inspectionFrame.init()
 		button.additionalOnEnterHandler = onSlotEnter;
 		button.additionalOnLeaveHandler = onSlotLeave;
 
+		if i > 8 then
+			button.tooltipRight = true;
+		end
+
 		TRP3_API.inventory.initContainerSlot(button, nil, function() end);
 	end
 	TRP3_API.inventory.initContainerInstance(inspectionFrame.Main, 16);
