@@ -89,7 +89,7 @@ local function loadData(data)
 	onIconSelected(data.BA.IC);
 end
 
-function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, classID)
+function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, classID, fromInv)
 	onCreatedCallback = callback;
 	editor.classID = classID;
 	if classID then
@@ -98,7 +98,13 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 		loadData(getClass(classID));
 	else
 		editor.title:SetText(loc("IT_QUICK_EDITOR"));
-		TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "BOTTOM", 0, 5, false);
+		editor.convert:Hide();
+		if not fromInv then
+			editor.convert:Show();
+			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "BOTTOM", 0, 5, false);
+		else
+			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "CENTER", 0, 0, false);
+		end
 		loadData({
 			BA = {
 				NA = loc("IT_NEW_NAME"),
@@ -122,6 +128,10 @@ local getQualityColorText = TRP3_API.inventory.getQualityColorText;
 function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame = ToolFrame;
 
+	editor:SetScript("OnHide", function(self)
+		self:Hide();
+	end);
+
 	-- Name
 	editor.name.title:SetText(loc("IT_FIELD_NAME"));
 	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc("IT_FIELD_NAME"), loc("IT_FIELD_NAME_TT"));
@@ -134,8 +144,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_RARE) .. ITEM_QUALITY3_DESC, LE_ITEM_QUALITY_RARE},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_EPIC) .. ITEM_QUALITY4_DESC, LE_ITEM_QUALITY_EPIC},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_LEGENDARY) .. ITEM_QUALITY5_DESC, LE_ITEM_QUALITY_LEGENDARY},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_ARTIFACT) .. ITEM_QUALITY6_DESC, LE_ITEM_QUALITY_ARTIFACT},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_HEIRLOOM) .. ITEM_QUALITY7_DESC, LE_ITEM_QUALITY_HEIRLOOM},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_WOW_TOKEN) .. ITEM_QUALITY8_DESC, LE_ITEM_QUALITY_WOW_TOKEN},
 	};
 	setupListBox(editor.quality, editor.qualityList, nil, nil, 165, true);
 

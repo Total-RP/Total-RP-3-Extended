@@ -201,6 +201,10 @@ local function onSlotClickAction(action, slot)
 				TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), fromID, {count = value or 1}, nil, slotID);
 			end, nil, 1);
 		end, TRP3_DB.types.ITEM});
+	elseif action == 2 then
+		TRP3_API.extended.tools.openItemQuickEditor(main, function(classID, _)
+			TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), classID, {count = 1}, nil, slotID);
+		end, nil, true);
 	end
 end
 
@@ -209,7 +213,7 @@ local function onSlotClick(slot, button)
 		local menu = {
 			{loc("INV_PAGE_CHARACTER_INV")},
 			{loc("EFFECT_ITEM_ADD"), 1},
---			{loc("DB_CREATE_ITEM"), 2},
+			{loc("DB_CREATE_ITEM"), 2},
 --			{loc("DB_IMPORT_ITEM"), 3}
 		};
 		TRP3_API.ui.listbox.displayDropDown(slot, menu, onSlotClickAction, 0, true);
