@@ -416,7 +416,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	IT_USE_TEXT = "Usage text",
 	IT_USE_TEXT_TT = "This text, explaining the effect for using this item, will appears in the tooltip.",
 	IT_WEARABLE = "Wearable",
-	IT_WEARABLE_TT = "Allow this item to be placed on your character.",
+	IT_WEARABLE_TT = "Enables this item for the inspection feature and allows you to precisely place it on your character.\n\n|cffff9900If this flag is checked people will be able to see this item on your inventory if they inspect you, even if you don't configure the item position.",
 	IT_CONTAINER_TT = "Sets this item to be a container. Container can hold other items.\n\n|cff00ff00The container can be configured in the 'Container' tab of this editor.",
 	IT_CO_DURABILITY = "Durability",
 	IT_CO_DURABILITY_TT = "Determine the overall max health for your container. A container can lose health over time or can be damaged. But it can also be repaired with the proper items.\n\n|cff00ff00Zero means invulnerable.",

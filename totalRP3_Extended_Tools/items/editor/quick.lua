@@ -41,6 +41,7 @@ local function injectUIData(data)
 	data.BA.WE = tonumber(editor.weight:GetText());
 	data.BA.IC = editor.preview.selectedIcon;
 	data.BA.CO = editor.component:GetChecked();
+	data.BA.WA = editor.wearable:GetChecked();
 	return data;
 end
 
@@ -92,6 +93,7 @@ local function loadData(data)
 	editor.value:SetText(data.BA.VA or "0");
 	editor.weight:SetText(data.BA.WE or "0");
 	editor.component:SetChecked(data.BA.CO or false);
+	editor.wearable:SetChecked(data.BA.WA or false);
 	onIconSelected(data.BA.IC);
 end
 
@@ -170,6 +172,10 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	-- Component
 	editor.component.Text:SetText(loc("IT_TT_REAGENT"));
 	setTooltipForSameFrame(editor.component, "RIGHT", 0, 5, loc("IT_TT_REAGENT"), loc("IT_TT_REAGENT_TT"));
+
+	-- Wearable
+	editor.wearable.Text:SetText(loc("IT_WEARABLE"));
+	setTooltipForSameFrame(editor.wearable, "RIGHT", 0, 5, loc("IT_WEARABLE"), loc("IT_WEARABLE_TT"));
 
 	-- Value
 	editor.value.title:SetText(loc("IT_TT_VALUE_FORMAT"):format(Utils.str.texture("Interface\\MONEYFRAME\\UI-CopperIcon", 15)));
