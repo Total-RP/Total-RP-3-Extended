@@ -53,7 +53,8 @@ TRP3_API.extended.document.BorderType = {
 local function loadPage(page)
 	assert(documentFrame.class, "documentFrame.class is nil");
 	local data = documentFrame.class;
-	local total = #(data.PA or EMPTY);
+	local pages = data.PA or EMPTY;
+	local total = #pages;
 
 	documentFrame.next:Disable();
 	documentFrame.previous:Disable();
@@ -64,7 +65,7 @@ local function loadPage(page)
 		documentFrame.next:Enable();
 	end
 
-	setFrameHTML(data.PA[page].TX or "");
+	setFrameHTML(pages[page] and pages[page].TX or "");
 	documentFrame.current = page;
 end
 

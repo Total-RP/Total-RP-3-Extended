@@ -112,7 +112,11 @@ local function getClassDataSafeByType(class)
 		return TRP3_API.extended.getClassDataSafe(class);
 	end
 	if class.TY == TRP3_DB.types.DOCUMENT then
-		return "inv_scroll_12", (class.PA[1].TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
+		if class.PA and class.PA[1] and class.PA[1].TX then
+			return "inv_scroll_12", class.PA[1].TX:gsub("\n", ""):sub(1, 70) .. "...";
+		else
+			return "inv_scroll_12", loc("DO_EMPTY");
+		end
 	end
 	if class.TY == TRP3_DB.types.QUEST_STEP then
 		return "inv_inscription_scroll", (class.BA.TX or ""):gsub("\n", ""):sub(1, 70) .. "...";

@@ -140,6 +140,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DO_PAGE_NEXT = "Next page",
 	DO_PAGE_LAST = "Last page",
 	DO_PAGE_PREVIOUS = "Previous page",
+	DO_EMPTY = "Empty document",
 
 	-- Campaign
 	QE_CAMPAIGN = "Campaign",

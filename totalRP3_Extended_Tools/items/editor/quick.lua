@@ -47,6 +47,7 @@ end
 local function onSave(toMode)
 	local ID, data;
 	if editor.classID then
+		ID = editor.classID;
 		-- Edition
 		data = getClass(editor.classID);
 		injectUIData(data);
@@ -54,6 +55,7 @@ local function onSave(toMode)
 		data.MD.SD = date("%d/%m/%y %H:%M:%S");
 		data.MD.SB = Globals.player_id;
 		data.MD.MO = toMode or TRP3_DB.modes.QUICK;
+		TRP3_API.extended.unregisterObject(ID);
 	else
 		-- New item
 		data = TRP3_API.extended.tools.getBlankItemData(toMode);
@@ -64,8 +66,12 @@ local function onSave(toMode)
 		onCreatedCallback(ID, data);
 	end
 	editor:Hide();
+
+	TRP3_API.security.computeSecurity(ID, data);
+	TRP3_API.extended.registerObject(ID, data, 0);
+
 	Events.fireEvent(Events.ON_OBJECT_UPDATED, ID, TRP3_DB.types.ITEM);
-	return ID or editor.classID;
+	return ID;
 end
 
 local function onConvert()
