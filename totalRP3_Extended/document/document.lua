@@ -65,15 +65,18 @@ local function loadPage(page)
 		documentFrame.next:Enable();
 	end
 
-	setFrameHTML(pages[page] and pages[page].TX or "");
+	local text = TRP3_API.script.parseArgs(pages[page] and pages[page].TX or "", documentFrame.parentArgs);
+
+	setFrameHTML(text);
 	documentFrame.current = page;
 end
 
-local function showDocumentClass(document, documentID)
+local function showDocumentClass(document, documentID, parentArgs)
 	documentFrame:Hide();
 
 	documentFrame.ID = documentID;
 	documentFrame.class = document;
+	documentFrame.parentArgs = parentArgs;
 
 	if document.BT == true then
 		documentFrame.bTile:Show();
@@ -124,12 +127,12 @@ local function showDocumentClass(document, documentID)
 end
 TRP3_API.extended.document.showDocumentClass = showDocumentClass;
 
-local function showDocument(documentID)
+local function showDocument(documentID, parentArgs)
 	local document = getClass(documentID);
 	if document == TRP3_DB.missing then
 		Utils.message.displayMessage(loc("DOC_UNKNOWN_ALERT"), Utils.message.type.ALERT_MESSAGE);
 	else
-		showDocumentClass(document, documentID);
+		showDocumentClass(document, documentID, parentArgs);
 	end
 end
 TRP3_API.extended.document.showDocument = showDocument;
@@ -186,7 +189,7 @@ function TRP3_API.extended.document.onStart()
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
 				local documentID = args[1];
-				return ("lastEffectReturn = showDocument(\"%s\");"):format(documentID);
+				return ("lastEffectReturn = showDocument(\"%s\", args);"):format(documentID);
 			end,
 			env = {
 				showDocument = "TRP3_API.extended.document.showDocument",
