@@ -16,8 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tostring, tinsert, tonumber = wipe, pairs, tostring, tinsert, tonumber;
+local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
+local wipe, pairs, strsplit, tinsert, tonumber = wipe, pairs, strsplit, tinsert, tonumber;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -85,14 +85,54 @@ local function onBrowserLineClick(frame)
 	end
 end
 
+local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
+local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
+local color = "|cffffff00";
+local fieldFormat = "%s: " .. color .. "%s|r";
+
 local function decorateBrowserLine(frame, index)
 	local objectID = filteredObjectList[index];
 	local class = getClass(objectID);
 	local icon, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
-	local link = TRP3_API.inventory.getItemLink(class, objectID, true);
+	local fullLink = TRP3_API.inventory.getItemLink(class, objectID, true);
+	local link = TRP3_API.inventory.getItemLink(class, objectID);
 
-	_G[frame:GetName().."Text"]:SetText(link);
-	setTooltipForSameFrame(frame, "TOP", 0, 5, link, objectID);
+	_G[frame:GetName().."Text"]:SetText(fullLink);
+
+	local text = "";
+	local title = fullLink;
+	local parts = {strsplit(ID_SEPARATOR, objectID)};
+	local rootClass = getClass(parts[1]);
+	local metadata = rootClass.MD or EMPTY;
+
+	text = text .. fieldFormat:format(loc("TYPE"), getTypeLocale(class.TY));
+	text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
+	text = text .. "\n" .. fieldFormat:format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
+
+	if class.TY == TRP3_DB.types.ITEM then
+		local base = class.BA or EMPTY;
+
+		text = text .. "\n";
+
+		text = text .. "\n" .. Utils.str.icon(base.IC or "temp", 25) .. " " .. link;
+		if base.LE or base.RI then
+			if base.LE and not base.RI then
+				text = text .. "\n|cffffffff" .. base.LE;
+			elseif base.RI and not base.LE then
+				text = text .. "\n|cffffffff" .. base.RI;
+			else
+				text = text .. "\n|cffffffff" .. base.LE .. " - " .. base.RI;
+			end
+		end
+		if base.DE then
+			text = text .. "\n|cffff9900\"" .. base.DE .. "\"";
+		end
+		text = text .. "\n|cffffffff" .. TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0);
+
+	end
+
+	setTooltipForSameFrame(frame, "TOP", 0, 5, title, text);
+
 	frame.objectID = objectID;
 end
 
@@ -134,7 +174,7 @@ local function filteredObjectBrowser()
 end
 
 local function showObjectBrowser(onSelectCallback, type)
-	objectBrowser.title:SetText(loc("DB_BROWSER") .. " (" .. TRP3_API.extended.tools.getTypeLocale(type) .. ")")
+	objectBrowser.title:SetText(loc("DB_BROWSER") .. " (" .. getTypeLocale(type) .. ")")
 	objectBrowser.onSelectCallback = onSelectCallback;
 	objectBrowser.type = type;
 	objectBrowser.filter.box:SetText("");

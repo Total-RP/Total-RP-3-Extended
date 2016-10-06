@@ -33,6 +33,7 @@ local function createCampaign(data, ID)
 	end
 
 	TRP3_DB.my[ID] = data;
+	TRP3_API.security.computeSecurity(ID, data);
 	TRP3_API.extended.registerObject(ID, data, 0);
 
 	return ID, data;

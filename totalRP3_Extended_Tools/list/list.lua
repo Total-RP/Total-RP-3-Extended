@@ -134,7 +134,7 @@ local fieldFormat = "%s: " .. color .. "%s|r";
 
 local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID)
 	local metadata = rootClass.MD or EMPTY;
-	local text = ""
+	local text = "";
 
 	if isRoot then
 		text = text .. fieldFormat:format(loc("ROOT_GEN_ID"), "|cff00ffff" .. rootID);
