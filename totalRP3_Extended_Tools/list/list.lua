@@ -502,7 +502,10 @@ function onLineRightClick(lineWidget, data)
 		tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID, loc("DB_SECURITY_TT")});
 	end
 	if data.type == TRP3_DB.types.ITEM then
-		tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID, loc("DB_ADD_ITEM_TT")});
+		local class = getClass(data.fullID);
+		if class.BA and not class.BA.PA then
+			tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID, loc("DB_ADD_ITEM_TT")});
+		end
 		if data.mode == TRP3_DB.modes.NORMAL then
 			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID, loc("DB_EXPERT_TT")});
 		end

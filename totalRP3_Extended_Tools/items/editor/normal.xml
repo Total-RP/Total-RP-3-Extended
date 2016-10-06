@@ -199,6 +199,12 @@
 				</Anchors>
 			</CheckButton>
 
+			<CheckButton parentKey="noAdd" inherits="TRP3_CheckBox" name="$parentNoAdd">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.container"/>
+				</Anchors>
+			</CheckButton>
+
 		</Frames>
 	</Frame>
 

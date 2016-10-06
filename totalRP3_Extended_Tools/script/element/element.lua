@@ -151,12 +151,14 @@ local function filteredObjectBrowser()
 	local total, count = 0, 0;
 	for objectFullID, class in pairs(TRP3_DB.global) do
 		if not class.hideFromList and class.TY == objectBrowser.type then
-			local _, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
-			if filterMatch(filter, objectFullID) or filterMatch(filter, name) then
-				tinsert(filteredObjectList, objectFullID);
-				count = count + 1;
+			if not objectBrowser.itemFilter or class.TY ~= TRP3_DB.types.ITEM or not class.BA or not class.BA.PA then
+				local _, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
+				if filterMatch(filter, objectFullID) or filterMatch(filter, name) then
+					tinsert(filteredObjectList, objectFullID);
+					count = count + 1;
+				end
+				total = total + 1;
 			end
-			total = total + 1;
 		end
 	end
 	objectBrowser.filter.total:SetText( (#filteredObjectList) .. " / " .. total );
@@ -173,12 +175,13 @@ local function filteredObjectBrowser()
 	);
 end
 
-local function showObjectBrowser(onSelectCallback, type)
+local function showObjectBrowser(onSelectCallback, type, itemFilter)
 	objectBrowser.title:SetText(loc("DB_BROWSER") .. " (" .. getTypeLocale(type) .. ")")
 	objectBrowser.onSelectCallback = onSelectCallback;
 	objectBrowser.type = type;
 	objectBrowser.filter.box:SetText("");
 	objectBrowser.filter.box:SetFocus();
+	objectBrowser.itemFilter = itemFilter;
 	filteredObjectBrowser();
 end
 

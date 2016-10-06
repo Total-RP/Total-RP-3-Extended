@@ -433,6 +433,8 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	IT_TRIGGER_ON_USE_TT = "Triggered each time the player use this item.\n\n|cff00ff00Don't forget to make your item usable in the main tab.",
 	IT_TRIGGER_ON_DESTROY = "On stack destroy",
 	IT_TRIGGER_ON_DESTROY_TT = "Triggered when the player destroy a stack of this item (drags & drops it out of his inventory and confirms the destruction).|cffff9900\n\nIt is triggered once per stack, and just before the actual stack destruction (so counting the item units in inventory in this workflow will still count the stack).",
+	IT_NO_ADD = "Prevent manual adding",
+	IT_NO_ADD_TT = "Prevent the player to manually adding the item to his inventory. Then it can only be added or looted through workflows.",
 
 	-- Documents
 	DO_NEW_DOC = "Document",

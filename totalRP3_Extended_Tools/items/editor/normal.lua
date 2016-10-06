@@ -107,6 +107,7 @@ local function loadDataMain()
 	gameplay.usetext:SetText(data.US.AC or "");
 	gameplay.wearable:SetChecked(data.BA.WA or false);
 	gameplay.container:SetChecked(data.BA.CT or false);
+	gameplay.noAdd:SetChecked(data.BA.PA or false);
 
 	notes.frame.scroll.text:SetText(data.NT or "");
 
@@ -131,6 +132,7 @@ local function storeDataMain()
 	data.BA.ST = gameplay.stack:GetChecked() and tonumber(gameplay.stackcount:GetText());
 	data.BA.WA = gameplay.wearable:GetChecked();
 	data.BA.CT = gameplay.container:GetChecked();
+	data.BA.PA = gameplay.noAdd:GetChecked();
 	data.BA.US = gameplay.use:GetChecked();
 	data.US.AC = stEtN(strtrim(gameplay.usetext:GetText()));
 	data.US.SC = "onUse";
@@ -478,6 +480,10 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	-- Container
 	gameplay.container.Text:SetText(loc("IT_CON"));
 	setTooltipForSameFrame(gameplay.container, "RIGHT", 0, 5, loc("IT_CON"), loc("IT_CONTAINER_TT"));
+
+	-- Container
+	gameplay.noAdd.Text:SetText(loc("IT_NO_ADD"));
+	setTooltipForSameFrame(gameplay.noAdd, "RIGHT", 0, 5, loc("IT_NO_ADD"), loc("IT_NO_ADD_TT"));
 
 	local onCheckClicked = function()
 		refreshCheck();

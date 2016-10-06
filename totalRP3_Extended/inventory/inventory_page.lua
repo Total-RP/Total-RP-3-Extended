@@ -200,7 +200,7 @@ local function onSlotClickAction(action, slot)
 			TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(fromID))), function(value)
 				TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), fromID, {count = value or 1}, nil, slotID);
 			end, nil, 1);
-		end, TRP3_DB.types.ITEM});
+		end, TRP3_DB.types.ITEM, true});
 	elseif action == 2 then
 		TRP3_API.extended.tools.openItemQuickEditor(main, function(classID, _)
 			TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), classID, {count = 1}, nil, slotID);
