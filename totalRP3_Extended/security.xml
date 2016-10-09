@@ -203,12 +203,6 @@
 				</Anchors>
 			</CheckButton>
 
-			<CheckButton parentKey="save" name="$parentSave" inherits="TRP3_CheckBox" text="CLOSE">
-				<Anchors>
-					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.whitelist" x="0" y="0"/>
-				</Anchors>
-			</CheckButton>
-
 		</Frames>
 	</Frame>
 

@@ -238,10 +238,8 @@ function showSecurityDetailFrame(classID, frameFrom)
 	securityFrame.classID = classID;
 	securityFrame.sender = securityVault.sender[classID];
 
-	securityFrame.save:Show();
 	securityFrame.whitelist:Show();
 	if classID and TRP3_DB.my and TRP3_DB.my[classID] then
-		securityFrame.save:Hide();
 		securityFrame.whitelist:Hide();
 		securityFrame.sender = Globals.player_id;
 		height = height - 50;
@@ -305,7 +303,6 @@ function TRP3_API.security.initSecurity()
 
 	securityFrame.title:SetText(loc("SEC_LEVEL_DETAILS"));
 	securityFrame.empty:SetText(loc("SEC_LEVEL_DETAILS_SECURED"));
-	securityFrame.save.Text:SetText(loc("SEC_LEVEL_DETAILS_REMIND"));
 
 	securityFrame.reasons = {};
 	securityFrame.reasons["SEC_REASON_TALK"] = "|cffffffff" .. loc("SEC_REASON_TALK_WHY");

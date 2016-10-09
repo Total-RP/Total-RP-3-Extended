@@ -116,7 +116,6 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	SEC_REASON_SOUND_WHY = "This object could play a sound or a music that will be heard by the TRP3:E users around you.\n\n|cffff9900It may be undesirable for them if the sound is spammed or if the sound is particulary annoying. And if it's the case, they could blame you and block you.\n\n|cff00ff00If blocked, the sound/music will be played only for you.",
 	SEC_REASON_DISMOUNT = "Dismount",
 	SEC_REASON_DISMOUNT_WHY = "This object could force you to unmount.\n\n|cffff9900It may be undesirable for you... Especially if you are on a flying mount!",
-	SEC_LEVEL_DETAILS_REMIND = "Remember my choices for future version of this object",
 	SEC_LEVEL_DETAILS_THIS = "Switch security for this objects",
 	SEC_LEVEL_DETAILS_THIS_TT = "Accept the execution of this effect for this object only.",
 	SEC_LEVEL_DETAILS_ALL = "Switch security for all objects",
