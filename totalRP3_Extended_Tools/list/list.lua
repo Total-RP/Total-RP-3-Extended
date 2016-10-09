@@ -799,4 +799,11 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			Utils.message.displayMessage(loc("DB_EXPORT_MODULE_NOT_ACTIVE"), 2);
 		end
 	end);
+
+	-- Hard save
+	ToolFrame.list.container.hardsave:SetText(loc("DB_HARD_SAVE"));
+	ToolFrame.list.container.hardsave:SetScript("OnClick", function()
+		ReloadUI();
+	end);
+	setTooltipForSameFrame(ToolFrame.list.container.hardsave, "TOP", 0, 0, loc("DB_HARD_SAVE"), loc("DB_HARD_SAVE_TT"));
 end

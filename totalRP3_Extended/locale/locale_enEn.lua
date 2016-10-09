@@ -335,6 +335,8 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_REMOVE_OBJECT_POPUP = "Please confirm the removal of the object:\nID: |cff00ffff\"%s\"|r\n|cff00ff00[%s]|r\n\n|cffff9900Warning: This action cannot be reverted!.",
 	DB_ADD_COUNT = "How many units of %s do you want to add to your inventory?",
 	DB_IMPORT_ITEM = "Import item",
+	DB_HARD_SAVE = "Hard save",
+	DB_HARD_SAVE_TT = "Reload the game UI in order to force saved variables to be written on the disk.",
 
 	-- Creation
 	ROOT_TITLE = "Root object",
