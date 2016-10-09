@@ -447,6 +447,18 @@ local OPERANDS = {
 		},
 	},
 
+	["random"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local from = tonumber(args[1] or 1) or 1;
+			local to = tonumber(args[2] or 100) or 100;
+			return ("random(%s, %s)"):format(from, to);
+		end,
+		env = {
+			["random"] = "math.random",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- OTHERS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -583,9 +583,9 @@ function editor.init()
 			"check_event_var",
 			"check_event_var_n",
 		},
---		["Others"] = {-- TODO: locals
---			"random",
---		},
+		["Others"] = {-- TODO: locals
+			"random",
+		},
 	}
 
 	local evaluatedOrder = {
@@ -595,8 +595,9 @@ function editor.init()
 --		"Pets and companions", -- TODO: locals
 		loc("INV_PAGE_CHARACTER_INV"),
 		loc("EFFECT_CAT_CAMPAIGN"),
+		"Others", -- TODO: locals
+		"",
 		"Expert", -- TODO: locals
---		"Others", -- TODO: locals
 	}
 
 	local getEvaluatedOperands = function(structure)

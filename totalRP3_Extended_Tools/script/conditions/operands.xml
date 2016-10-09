@@ -110,4 +110,24 @@
 		</Frames>
 	</Frame>
 
+	<Frame name="TRP3_OperandEditorRandom" hidden="true">
+		<Frames>
+			<EditBox parentKey="from" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="to" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.from" x="0" y="-10"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
 </Ui>

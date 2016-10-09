@@ -884,6 +884,11 @@ We should begin with some examples:
 	OP_OP_CHECK_EVENT_VAR_N_TT = "Checks the n-th argument of the event triggering this condition (if any).\n\nInterpreted as a number.\n\nIf does not exists or can't be interpreted, returns 0.",
 	OP_OP_CHECK_EVENT_VAR_PREVIEW = "%s-th event argument |cff00ff00(string)",
 	OP_OP_CHECK_EVENT_VAR_N_PREVIEW = "%s-th event argument |cff00ff00(number)",
+	OP_OP_RANDOM = "Random",
+	OP_OP_RANDOM_TT = "Random number (integer) between two bounds.",
+	OP_OP_RANDOM_PREVIEW = "Random number between |cff00ff00%s|r and |cff00ff00%s|r.",
+	OP_OP_RANDOM_FROM = "From",
+	OP_OP_RANDOM_TO = "To",
 
 	-- Test
 	COND_EDITOR = "Condition editor",

@@ -564,7 +564,7 @@ local function check_event_var_init()
 	local editor = TRP3_OperandEditorCheckEventArg;
 
 	-- Var name
-	editor.index.title:SetText(loc("EFFECT_VAR_INDEX"))
+	editor.index.title:SetText(loc("EFFECT_VAR_INDEX"));
 	setTooltipForSameFrame(editor.index.help, "RIGHT", 0, 5, loc("EFFECT_VAR_INDEX"), loc("EFFECT_VAR_INDEX_TT"));
 
 	function editor.load(args)
@@ -600,6 +600,35 @@ local function check_event_var_init()
 	});
 end
 
+local function random_init()
+	local editor = TRP3_OperandEditorRandom;
+
+	-- From
+	editor.from.title:SetText(loc("OP_OP_RANDOM_FROM"));
+	editor.to.title:SetText(loc("OP_OP_RANDOM_TO"));
+
+	function editor.load(args)
+		editor.from:SetText((args or EMPTY)[1] or "1");
+		editor.to:SetText((args or EMPTY)[2] or "100");
+	end
+
+	function editor.save()
+		return {tonumber(strtrim(editor.from:GetText())) or 1, tonumber(strtrim(editor.to:GetText())) or 100};
+	end
+
+	registerOperandEditor("random", {
+		title = loc("OP_OP_RANDOM"),
+		description = loc("OP_OP_RANDOM_TT"),
+		returnType = 1,
+		getText = function(args)
+			local from = tostring((args or EMPTY)[1] or "1");
+			local to = tostring((args or EMPTY)[2] or "100");
+			return loc("OP_OP_RANDOM_PREVIEW"):format(from, to);
+		end,
+		editor = editor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -617,6 +646,8 @@ function TRP3_ConditionEditor.initOperands()
 	string_init();
 	boolean_init();
 	numeric_init();
+
+	random_init();
 
 	check_var_init();
 	check_event_var_init();
