@@ -55,6 +55,7 @@ local effectGroupDefaultLevel = {
 local transposition = {
 	speech_env = "SEC_REASON_TALK",
 	speech_npc = "SEC_REASON_TALK",
+	speech_player = "SEC_REASON_TALK",
 	sound_id_local = "SEC_REASON_SOUND",
 	sound_music_local = "SEC_REASON_SOUND",
 	companion_dismiss_mount = "SEC_REASON_DISMOUNT",
@@ -127,6 +128,8 @@ local function computeSecurity(rootObjectID, rootObject, details)
 
 	rootObject.securityLevel = minSecurity;
 	rootObject.details = details;
+
+	Utils.log.log(("Security: found %d security issu in %s (%s)."):format(Utils.table.size(details), rootObjectID, minSecurity));
 
 	return details;
 end
@@ -270,7 +273,7 @@ end
 TRP3_API.security.getSecurityDetailText = getSecurityDetailText;
 
 local function atLeastOneBlocked(rootClassID)
-	local secDetails = TRP3_API.security.computeSecurity(rootClassID);
+	local secDetails = getClass(rootClassID).details or EMPTY;
 	for effectGroupID, _ in pairs(secDetails) do
 		if not TRP3_API.security.resolveEffectGroupSecurity(rootClassID, effectGroupID) then
 			return true;

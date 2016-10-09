@@ -462,6 +462,7 @@ local function receivedDataResponse(response, sender)
 	if not classExists(classID) or getClass(classID).MD.V < class.MD.V then
 		TRP3_DB.exchange[classID] = class;
 		TRP3_API.security.computeSecurity(classID, class);
+		TRP3_API.extended.unregisterObject(classID);
 		TRP3_API.extended.registerObject(classID, class, 0);
 		TRP3_API.script.clearRootCompilation(classID);
 		TRP3_API.security.registerSender(classID, sender);

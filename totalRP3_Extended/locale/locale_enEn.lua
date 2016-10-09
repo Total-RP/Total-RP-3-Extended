@@ -20,6 +20,8 @@ TRP3_EXTENDED_LOCALE = {};
 
 TRP3_EXTENDED_LOCALE["enUS"] = {
 
+	NEW_EXTENDED_VERSION = "|cffff9900A new version for TRP3:Extended is available (%s). |cff00ff00Go check it out on Curse!",
+
 	-- MISC
 	EX_SOUND_HISTORY = "Sounds history",
 	EX_SOUND_HISTORY_EMPTY = "No sound has been played.",
@@ -115,15 +117,15 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	SEC_REASON_DISMOUNT = "Dismount",
 	SEC_REASON_DISMOUNT_WHY = "This object could force you to unmount.\n\n|cffff9900It may be undesirable for you... Especially if you are on a flying mount!",
 	SEC_LEVEL_DETAILS_REMIND = "Remember my choices for future version of this object",
-	SEC_LEVEL_DETAILS_THIS = "Accept for this objects",
+	SEC_LEVEL_DETAILS_THIS = "Switch security for this objects",
 	SEC_LEVEL_DETAILS_THIS_TT = "Accept the execution of this effect for this object only.",
-	SEC_LEVEL_DETAILS_ALL = "Accept for all objects",
+	SEC_LEVEL_DETAILS_ALL = "Switch security for all objects",
 	SEC_LEVEL_DETAILS_ALL_TT = "Accept the execution of this effect for all objects, now and in the future.",
 	SEC_LEVEL_DETAILS_BLOCKED = "Blocked",
 	SEC_LEVEL_DETAILS_ACCEPTED = "Accepted",
 	SEC_LEVEL_DETAILS_FROM = "Always accept when received from %s",
 	SEC_EFFECT_BLOCKED = "Effect(s) blocked",
-	SEC_EFFECT_BLOCKED_TT = "Due to your current security settings, at least one of this item (or sub-item) effects is blocked.\n\n|cffff9900Click to review security for this item.\n\nYou can also Ctrl+Right-click on the item in your inventory to configure the security later.",
+	SEC_EFFECT_BLOCKED_TT = "Due to your current security settings, at least one of this item (or sub-objects) effects is blocked.\n\n|cffff9900Click to review security for this item.\n\nYou can also Ctrl+Right-click on the item in your inventory to configure the security later.",
 	SEC_MISSING_SCRIPT = "Cannot find workflow \"%s\"",
 	SEC_SCRIPT_ERROR = "Error in workflow %s.",
 	SEC_TT_COMBO = "Ctrl + Right click:|cffff9900 Colnfigure security",
