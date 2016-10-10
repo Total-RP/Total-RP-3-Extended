@@ -199,7 +199,7 @@
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-15"/>
 					<Anchor point="LEFT" x="18" y="0"/>
-					<Anchor point="RIGHT" x="-20" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
 					<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="0"/>
 				</Anchors>
 			</Button>
@@ -207,28 +207,16 @@
 				<Anchors>
 					<Anchor point="TOP" relativePoint="CENTER" x="0" y="-10"/>
 					<Anchor point="LEFT" x="18" y="0"/>
-					<Anchor point="RIGHT" x="-20" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 			</Button>
-			<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
-				<Size x="15" y="0" />
+			<Slider name="$parentSlider" parentKey="slider" inherits="TRP3_Scrollbar">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" x="-2" y="0" relativeKey="$parent.Slot1"/>
-					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.Slot1"/>
-					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.Slot2"/>
+					<Anchor point="TOP" y="-20"/>
+					<Anchor point="RIGHT" x="-5"/>
+					<Anchor point="BOTTOM" y="20"/>
 				</Anchors>
-				<Scripts>
-					<OnLoad>
-						local name = self:GetName();
-						_G[name .. "Text"]:SetText("");
-						_G[name .. "High"]:SetText("");
-						_G[name .. "Low"]:SetText("");
-						self:SetMinMaxValues(0, 6);
-						self:SetValueStep(1);
-						self:SetOrientation("VERTICAL");
-					</OnLoad>
-				</Scripts>
 			</Slider>
 		</Frames>
 	</Frame>

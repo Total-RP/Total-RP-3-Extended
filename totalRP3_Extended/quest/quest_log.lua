@@ -126,7 +126,7 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 		campaignButton.switchButton:SetNormalTexture("Interface\\TIMEMANAGER\\PauseButton");
 		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc("QE_CAMPAIGN_PAUSE"));
 	else
-		campaignButton.switchButton:SetNormalTexture("Interface\\TIMEMANAGER\\FFButton");
+		campaignButton.switchButton:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up");
 		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc("QE_CAMPAIGN_START_BUTTON"));
 	end
 
