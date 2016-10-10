@@ -357,7 +357,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 
 	-- Editor common
 	EDITOR_MORE = "More",
-	EDITOR_PREVIEW = "preview",
+	EDITOR_PREVIEW = "Preview",
 	EDITOR_ICON_SELECT = "Click to select an icon.",
 	EDITOR_NOTES = "Free notes",
 	EDITOR_MAIN = "Main",
