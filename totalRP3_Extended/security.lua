@@ -59,6 +59,7 @@ local transposition = {
 	sound_id_local = "SEC_REASON_SOUND",
 	sound_music_local = "SEC_REASON_SOUND",
 	companion_dismiss_mount = "SEC_REASON_DISMOUNT",
+	companion_summon_mount = "SEC_REASON_DISMOUNT",
 }
 
 local function resolveEffectGroupSecurity(classID, effectGroupID)

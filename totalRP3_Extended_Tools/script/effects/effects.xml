@@ -334,4 +334,21 @@
 
 	</Frame>
 
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--        Companions    -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorCompanion" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="180"/>
+		<Frames>
+			<Button parentKey="select" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="LEFT" x="50"/>
+				</Anchors>
+			</Button>
+
+		</Frames>
+
+	</Frame>
+
 </Ui>

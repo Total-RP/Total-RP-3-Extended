@@ -290,6 +290,20 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 
+	["companion_summon_mount"] = {
+		codeReplacementFunc = function (args)
+			local mountId = tostring(args[1] or 0);
+			return ("SummonByID(%s); lastEffectReturn = 0;"):format(mountId);
+		end,
+		env = {
+			SummonByID = "C_MountJournal.SummonByID",
+		},
+		securedCodeReplacementFunc = function ()
+			return "lastEffectReturn = 0;";
+		end,
+		secured = security.MEDIUM,
+	},
+
 	-- DEBUG EFFECTs
 	["debug_dump_text"] = {
 		codeReplacementFunc = function (args)

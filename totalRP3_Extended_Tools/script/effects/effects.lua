@@ -114,6 +114,51 @@ local function companion_random_critter_init()
 	});
 end
 
+local companion_editor = TRP3_EffectEditorCompanion;
+
+companion_editor.load = function(scriptData)
+	local data = scriptData.args or Globals.empty;
+	companion_editor.select.Icon:SetTexture(data[4] or "Interface\\ICONS\\inv_misc_questionmark");
+	companion_editor.select.Name:SetText(data[2] or loc("EFFECT_SUMMOUNT_NOMOUNT"))
+	companion_editor.select.InfoText:SetText(data[3] or "");
+	companion_editor.id = data[1];
+end
+
+companion_editor.save = function(scriptData)
+	scriptData.args[1] = companion_editor.id or 0;
+	scriptData.args[2] = stEtN(strtrim(companion_editor.select.Name:GetText()));
+	scriptData.args[3] = stEtN(strtrim(companion_editor.select.InfoText:GetText()));
+	scriptData.args[4] = stEtN(strtrim(companion_editor.select.Icon:GetTexture()));
+end
+
+local companionSelected = function(companionInfo)
+	companion_editor.select.Icon:SetTexture(companionInfo[2]);
+	companion_editor.select.Name:SetText(companionInfo[1])
+	companion_editor.select.InfoText:SetText(companionInfo[3]);
+	companion_editor.id = companionInfo[6];
+end
+
+
+companion_editor.select:SetScript("OnClick", function(self)
+	TRP3_API.popup.showPopup(TRP3_API.popup.COMPANIONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {companionSelected, nil, companion_editor.type});
+end);
+companion_editor.type = TRP3_API.ui.misc.TYPE_MOUNT;
+
+local function companion_summon_mount_init()
+	registerEffectEditor("companion_summon_mount", {
+		title = loc("EFFECT_SUMMOUNT"),
+		icon = "ability_hunter_beastcall",
+		description = loc("EFFECT_SUMMOUNT_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00" ..loc("EFFECT_SUMMOUNT") .. ":|r " .. tostring(args[2]));
+		end,
+		getDefaultArgs = function()
+			return {};
+		end,
+		editor = companion_editor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Workflow expertise
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -553,6 +598,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	companion_dismiss_mount_init();
 	companion_dismiss_critter_init();
 	companion_random_critter_init();
+	companion_summon_mount_init();
 
 	speech_env_init();
 	speech_npc_init();
