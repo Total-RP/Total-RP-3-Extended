@@ -664,6 +664,7 @@ editor.init = function(ToolFrame)
 			"companion_dismiss_mount",
 			"companion_dismiss_critter",
 			"companion_random_critter",
+			"companion_summon_mount",
 		},
 		[loc("INV_PAGE_CHARACTER_INV")] = {
 			"item_add",
