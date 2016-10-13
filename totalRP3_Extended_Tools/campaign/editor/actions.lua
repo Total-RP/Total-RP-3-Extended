@@ -131,9 +131,12 @@ local function onActionSaved()
 end
 
 local function openActionCondition(actionIndex)
-	local scriptData = toolFrame.specificDraft.AC[actionIndex].CO or {
-		{ { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } }
-	};
+	local scriptData = toolFrame.specificDraft.AC[actionIndex].CO;
+	if not scriptData then
+		scriptData = {
+			{ { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } }
+		};
+	end
 
 	editor.overlay:Show();
 	editor.overlay:SetFrameLevel(editor:GetFrameLevel() + 20);

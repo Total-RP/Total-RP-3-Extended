@@ -1029,8 +1029,9 @@ We should begin with some examples:
 	DI_HISTORY = "Cutscene history",
 	DI_HISTORY_TT = "Click to see/hide the history panel, showing the previous cutscene lines.",
 	DI_NEXT = "Next step index",
+	DI_CHOICE_CONDI = "Option condition",
 	DI_NEXT_TT = "You can indicate which step will be played after this one.\n\n|cff00ff00Leave empty to play the next index in sequential order, only use this field if you need to 'jump' to another index. Useful when using choices.",
-
+	DI_CONDI_TT = "Sets a condition for this option. If the condition is not checked when showing the options, the associated option will not be visible.\n\n|cff00ff00Click: Configure condition\nRight-click: Clear condition",
 
 	DISCLAIMER_OK = "I hereby sign this contract with my blood",
 	DISCLAIMER =

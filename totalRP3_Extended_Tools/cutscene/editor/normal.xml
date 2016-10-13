@@ -85,18 +85,24 @@
 			<Anchor point="RIGHT" x="-15" y="0"/>
 		</Anchors>
 		<Frames>
+			<Button parentKey="condition" inherits="TRP3_CommonButton">
+				<Size x="125" y="18"/>
+				<Anchors>
+					<Anchor point="LEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
 			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="0" y="0"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.condition" x="10" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="120" y="0"/>
 				</Anchors>
 			</EditBox>
 			<EditBox parentKey="step" inherits="TRP3_TitledHelpEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="0" y="0"/>
-					<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="130" y="0"/>
 				</Anchors>
 			</EditBox>
 		</Frames>
@@ -114,6 +120,22 @@
 		</Backdrop>
 
 		<Frames>
+
+			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true">
+
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="24" />
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="418" />
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+				</Backdrop>
+
+			</Frame>
 
 			<Frame parentKey="editor" inherits="TRP3_EditorTitledFrame" name="$parentEditor">
 				<Size x="530" y="0"/>
@@ -174,7 +196,7 @@
 						</Anchors>
 					</EditBox>
 					<Frame parentKey="choicesEditor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
-						<Size x="500" y="250"/>
+						<Size x="500" y="225"/>
 						<Layers>
 							<Layer level="OVERLAY">
 								<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER">

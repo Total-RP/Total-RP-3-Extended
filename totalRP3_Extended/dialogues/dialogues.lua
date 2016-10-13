@@ -150,18 +150,22 @@ local function finishDialog()
 end
 
 local function setupChoices(choices)
-	for choiceIndex, choiceData in pairs(choices) do
-		local choiceButton = modelLeft.choices[choiceIndex];
-		choiceButton.Text:SetText(choiceData.TX);
-		choiceButton.Click:SetScript("OnClick", function()
-			if choiceData.N and choiceData.N ~= 0 and (dialogFrame.class.DS or EMPTY)[choiceData.N] then
-				dialogFrame.stepIndex = choiceData.N;
-				processDialogStep();
-			else
-				finishDialog();
-			end
-		end);
-		choiceButton:Show();
+	local index = 1;
+	for _, choiceData in pairs(choices) do
+		local choiceButton = modelLeft.choices[index];
+		if TRP3_API.script.generateAndRunCondition(choiceData.C, dialogFrame.args) then
+			choiceButton.Text:SetText(choiceData.TX);
+			choiceButton.Click:SetScript("OnClick", function()
+				if choiceData.N and choiceData.N ~= 0 and (dialogFrame.class.DS or EMPTY)[choiceData.N] then
+					dialogFrame.stepIndex = choiceData.N;
+					processDialogStep();
+				else
+					finishDialog();
+				end
+			end);
+			choiceButton:Show();
+			index = index + 1;
+		end
 	end
 end
 
@@ -394,7 +398,7 @@ function processDialogStep()
 	playDialogStep();
 end
 
-local function startDialog(dialogID, class)
+local function startDialog(dialogID, class, args)
 	local dialogClass = dialogID and getClass(dialogID) or class;
 	-- By default, launch the step 1
 	image.previous = nil;
@@ -405,6 +409,7 @@ local function startDialog(dialogID, class)
 	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
 	dialogFrame.distanceLimit = dialogClass.BA.DI or 0;
 	dialogFrame.posY, dialogFrame.posX = UnitPosition("player");
+	dialogFrame.args = args;
 
 	processDialogStep();
 
@@ -453,7 +458,7 @@ function TRP3_API.extended.dialog.onStart()
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function(args)
 				local dialogID = args[1];
-				return ("lastEffectReturn = startDialog(\"%s\");"):format(dialogID);
+				return ("lastEffectReturn = startDialog(\"%s\", nil, args);"):format(dialogID);
 			end,
 			env = {
 				startDialog = "TRP3_API.extended.dialog.startDialog",

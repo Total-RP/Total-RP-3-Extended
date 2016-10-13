@@ -38,6 +38,16 @@ local tabGroup, currentTab, linksStructure;
 
 local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
 
+local function refreshConditions()
+	for i=1, 5 do
+		local line = editor.choicesEditor["line" .. i];
+		line.condition:SetText(loc("WO_CONDITION"));
+		if line.scriptData then
+			line.condition:SetText(loc("WO_CONDITION") .. " " .. Utils.str.texture("Interface\\GossipFrame\\DailyQuestIcon"));
+		end
+	end
+end
+
 local function editStep(stepID)
 	editor.imageEditor:Hide();
 	editor.title:SetText(("%s: %s"):format(loc("DI_STEP_EDIT"), stepID));
@@ -71,12 +81,14 @@ local function editStep(stepID)
 		local line = editor.choicesEditor["line" .. i];
 		line.text:SetText("");
 		line.step:SetText("");
+		line.scriptData = nil;
 	end
 
 	for index, choice in pairs(data.CH or EMPTY) do
 		local line = editor.choicesEditor["line" .. index];
 		line.text:SetText(choice.TX or "");
 		line.step:SetText(choice.N or "");
+		line.scriptData = choice.C;
 	end
 
 	TRP3_ScriptEditorNormal.safeLoadList(editor.workflow, editor.workflowIDs, data.WO or "");
@@ -84,6 +96,7 @@ local function editStep(stepID)
 	editor.stepID = stepID;
 
 	refreshStepList();
+	refreshConditions();
 end
 
 local function decorateStepLine(line, stepID)
@@ -178,7 +191,7 @@ local function saveStep(stepID)
 		local line = editor.choicesEditor["line" .. i];
 		local text = stEtN(strtrim(line.text:GetText()));
 		if text then
-			tinsert(choices, {TX = text, N = tonumber(line.step:GetText())});
+			tinsert(choices, {TX = text, N = tonumber(line.step:GetText()), C = line.scriptData});
 		end
 	end
 	if #choices > 0 then
@@ -237,6 +250,37 @@ local function onMoveDownClick(self)
 	refreshStepList();
 end
 
+local function configureCondition(line)
+	local condition = line.scriptData;
+	if not condition then
+		condition = {
+			{ { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } }
+		};
+	end
+	editor.choicesEditor:Hide();
+	toolFrame.cutscene.normal.overlay:Show();
+	toolFrame.cutscene.normal.overlay:SetFrameLevel(toolFrame.cutscene.normal:GetFrameLevel() + 20);
+	TRP3_ConditionEditor:SetParent(toolFrame.cutscene.normal.overlay);
+	TRP3_ConditionEditor:ClearAllPoints();
+	TRP3_ConditionEditor:SetPoint("CENTER", 0, 0);
+	TRP3_ConditionEditor:SetFrameLevel(toolFrame.cutscene.normal.overlay:GetFrameLevel() + 20);
+	TRP3_ConditionEditor:Show();
+	TRP3_ConditionEditor.load(condition);
+	TRP3_ConditionEditor:SetScript("OnHide", function() toolFrame.cutscene.normal.overlay:Hide() end);
+	TRP3_ConditionEditor.confirm:SetScript("OnClick", function()
+		TRP3_ConditionEditor.save(line.scriptData);
+		TRP3_ConditionEditor:Hide();
+		editor.choicesEditor:Show();
+		refreshConditions();
+	end);
+	TRP3_ConditionEditor.close:SetScript("OnClick", function()
+		TRP3_ConditionEditor:Hide();
+		editor.choicesEditor:Show();
+	end);
+	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
+	TRP3_ConditionEditor.title:SetText(loc("DI_CHOICE_CONDI"));
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script tab
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -285,6 +329,7 @@ local function load()
 	loadDataScript();
 	loadWorkflows();
 	editStep(1);
+	editor.choicesEditor:Hide();
 
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
 end
@@ -292,6 +337,7 @@ end
 local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
+	editor.choicesEditor:Hide();
 	local data = toolFrame.specificDraft;
 	data.BA.DI = tonumber(strtrim(main.distance:GetText())) or 0;
 	saveStep(editor.stepID);
@@ -491,7 +537,7 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	setTooltipForSameFrame(editor.choices, "TOP", 0, 5, loc("DI_CHOICES"), loc("DI_CHOICES_TT"));
 	editor.choices:SetScript("OnClick", function()
 		if not editor.choicesEditor:IsVisible() then
-			TRP3_API.ui.frame.configureHoverFrame(editor.choicesEditor, editor.choices, "TOP", 77, 0);
+			TRP3_API.ui.frame.configureHoverFrame(editor.choicesEditor, editor.choices, "TOP", 0, 0);
 		else
 			editor.choicesEditor:Hide();
 		end
@@ -503,6 +549,17 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		setTooltipForSameFrame(line.text.help, "RIGHT", 0, 5, loc("DI_CHOICE") .. " " .. i, loc("DI_CHOICE_TT"));
 		line.step.title:SetText(loc("DI_CHOICE_STEP"));
 		setTooltipForSameFrame(line.step.help, "RIGHT", 0, 5, loc("DI_CHOICE_STEP"), loc("DI_CHOICE_STEP_TT"));
+		setTooltipForSameFrame(line.condition, "RIGHT", 0, 5, loc("WO_CONDITION"), loc("DI_CONDI_TT"));
+		line.condition:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+		line.condition:SetScript("OnClick", function(self, button)
+			if button == "LeftButton" then
+				configureCondition(self:GetParent());
+			else
+				self:GetParent().scriptData = nil;
+				refreshConditions();
+			end
+		end);
+		line.index = i;
 	end
 
 	-- Next
