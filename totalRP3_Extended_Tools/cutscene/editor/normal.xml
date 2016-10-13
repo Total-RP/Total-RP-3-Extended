@@ -78,6 +78,30 @@
 
 	</Frame>
 
+	<Frame name="TRP3_CutsceneEditorChoiceLine" virtual="true">
+		<Size x="0" y="20"/>
+		<Anchors>
+			<Anchor point="LEFT" x="15" y="0"/>
+			<Anchor point="RIGHT" x="-15" y="0"/>
+		</Anchors>
+		<Frames>
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="0" y="18"/>
+				<Anchors>
+					<Anchor point="LEFT" x="0" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+				</Anchors>
+			</EditBox>
+			<EditBox parentKey="step" inherits="TRP3_TitledHelpEditBox">
+				<Size x="0" y="18"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="0" y="0"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--    General frame     -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -131,6 +155,64 @@
 							<Anchor point="LEFT" x="25" y="0" relativePoint="RIGHT" relativeKey="$parent.workflow"/>
 						</Anchors>
 					</CheckButton>
+					<CheckButton parentKey="endpoint" inherits="TRP3_CheckBox" name="$parentEndPoint">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeKey="$parent.loot"/>
+						</Anchors>
+					</CheckButton>
+					<Button parentKey="choices" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="15" y="0" relativePoint="BOTTOMLEFT" relativeKey="$parent.workflow"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-75" y="0"/>
+						</Anchors>
+					</Button>
+					<EditBox parentKey="next" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="15" y="-2" relativePoint="TOPRIGHT" relativeKey="$parent.choices"/>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.endpoint" x="-45" y="0"/>
+						</Anchors>
+					</EditBox>
+					<Frame parentKey="choicesEditor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
+						<Size x="500" y="250"/>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER">
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-15"/>
+									</Anchors>
+									<Color r="0.95" g="0.75" b="0.1"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Frame parentKey="line1" inherits="TRP3_CutsceneEditorChoiceLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-45"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line2" inherits="TRP3_CutsceneEditorChoiceLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line1" x="0" y="-15"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line3" inherits="TRP3_CutsceneEditorChoiceLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line2" x="0" y="-15"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line4" inherits="TRP3_CutsceneEditorChoiceLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line3" x="0" y="-15"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line5" inherits="TRP3_CutsceneEditorChoiceLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.line4" x="0" y="-15"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+					</Frame>
 
 					<CheckButton parentKey="direction" inherits="TRP3_CheckBox" name="$parentDirection">
 						<Layers>
@@ -144,7 +226,7 @@
 							</Layer>
 						</Layers>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="35" y="-50" relativePoint="BOTTOMLEFT" relativeKey="$parent.workflow"/>
+							<Anchor point="TOPLEFT" x="35" y="-70" relativePoint="BOTTOMLEFT" relativeKey="$parent.workflow"/>
 						</Anchors>
 					</CheckButton>
 					<Frame parentKey="directionValue" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentDirectionValue">
@@ -284,13 +366,14 @@
 							<Anchor point="RIGHT" x="-35" y="0"/>
 						</Anchors>
 					</EditBox>
+
 				</Frames>
 
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString parentKey="attributes" inherits="GameFontNormal" justifyH="LEFT">
 							<Anchors>
-								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.workflow" x="0" y="-10"/>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.workflow" x="0" y="-30"/>
 								<Anchor point="LEFT" x="28" y="0"/>
 								<Anchor point="RIGHT" x="0" y="0"/>
 							</Anchors>

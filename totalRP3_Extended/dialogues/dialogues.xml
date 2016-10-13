@@ -288,13 +288,13 @@
 							</OnLeave>
 						</Scripts>
 					</Button>
-					<Button parentKey="PreviousButton" frameLevel="8">
+					<Button parentKey="HistoryButton" frameLevel="8">
 						<Size x="35" y="35"/>
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
 						</Anchors>
-						<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up" />
-						<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
+						<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up" />
+						<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
 						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
 					</Button>
 				</Frames>

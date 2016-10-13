@@ -23,6 +23,7 @@ local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass = TRP3_API.extended.getClass;
 local UnitExists = UnitExists;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
 local dialogFrame = TRP3_DialogFrame;
 local CHAT_MARGIN = 70;
@@ -153,8 +154,12 @@ local function setupChoices(choices)
 		local choiceButton = modelLeft.choices[choiceIndex];
 		choiceButton.Text:SetText(choiceData.TX);
 		choiceButton.Click:SetScript("OnClick", function()
-			dialogFrame.stepIndex = choiceData.N;
-			processDialogStep();
+			if choiceData.N and choiceData.N ~= 0 and (dialogFrame.class.DS or EMPTY)[choiceData.N] then
+				dialogFrame.stepIndex = choiceData.N;
+				processDialogStep();
+			else
+				finishDialog();
+			end
 		end);
 		choiceButton:Show();
 	end
@@ -228,16 +233,21 @@ local function playDialogStep()
 			setupChoices(dialogStepClass.CH);
 			dialogFrame.Chat.NextButton:Disable();
 		else
-			dialogFrame.stepIndex = dialogStepClass.N or (dialogFrame.stepIndex + 1);
-
-			-- Else go to the next step if exists
-			if (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] then
-				dialogFrame.Chat.NextButton:SetScript("OnClick", function()
-					processDialogStep();
-				end);
-			else
-				-- Or finish the cutscene
+			if dialogStepClass.EP then
+				-- End point
 				dialogFrame.Chat.NextButton:SetScript("OnClick", finishDialog);
+			else
+				dialogFrame.stepIndex = dialogStepClass.N or (dialogFrame.stepIndex + 1);
+
+				-- Else go to the next step if exists
+				if (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] then
+					dialogFrame.Chat.NextButton:SetScript("OnClick", function()
+						processDialogStep();
+					end);
+				else
+					-- Or finish the cutscene
+					dialogFrame.Chat.NextButton:SetScript("OnClick", finishDialog);
+				end
 			end
 		end
 	end
@@ -393,12 +403,13 @@ local function startDialog(dialogID, class)
 	dialogFrame.isPreview = dialogID == nil;
 	dialogFrame.class = dialogClass;
 	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
-	dialogFrame:Show();
-	dialogFrame:Raise();
 	dialogFrame.distanceLimit = dialogClass.BA.DI or 0;
 	dialogFrame.posY, dialogFrame.posX = UnitPosition("player");
 
 	processDialogStep();
+
+	dialogFrame:Show();
+	dialogFrame:Raise();
 
 	dialogFrame:SetSize(dialogFrame.width or 950, dialogFrame.height or 670);
 	resizeChat();
@@ -503,6 +514,8 @@ function TRP3_API.extended.dialog.onStart()
 	setupButton(modelLeft.Choice3.Num, 2);
 	setupButton(modelLeft.Choice4.Num, 3);
 	setupButton(modelLeft.Choice5.Num, 4);
-	modelLeft.choices = { modelLeft.Choice1, modelLeft.Choice2, modelLeft.Choice3, modelLeft.Choice4, modelLeft.Choice5}
+	modelLeft.choices = { modelLeft.Choice1, modelLeft.Choice2, modelLeft.Choice3, modelLeft.Choice4, modelLeft.Choice5 }
 
+	-- History
+	setTooltipAll(dialogFrame.Chat.HistoryButton, "RIGHT", 0, 5, loc("DI_HISTORY"), loc("DI_HISTORY_TT"));
 end

@@ -1018,6 +1018,18 @@ We should begin with some examples:
 	DI_LOOT_TT = "If the workflow selected on the left will display a loot to the player, you can check this parameter to prevent the player to go to the next cutscene step until he looted all the items.",
 	DI_DISTANCE = "Distance max (yards)",
 	DI_DISTANCE_TT = "Defines the max distance (in yards) the player can move away once the cutscene started before auto closing it (and trigger the 'On Cancel' object event).\n\n|cff00ff00Zero means no limit.\n\n|cffff9900Does not work in instance/battleground/arena since patch 7.1.",
+	DI_END = "End point",
+	DI_END_TT = "Marks this step as end point. When reached it will finish the cutscene (and triggers the On finish object event).\n\n|cff00ff00Handy if you use player choices in this cutscene.",
+	DI_CHOICES = "Player choices",
+	DI_CHOICES_TT = "Configure player choices for this step.",
+	DI_CHOICE = "Option",
+	DI_CHOICE_TT = "Enter the text for this option.\n\n|cff00ff00Leave empty to disable this option.",
+	DI_CHOICE_STEP = "Go to step",
+	DI_CHOICE_STEP_TT = "Enter the cutscene step number to play if the player selects this option.\n\n|cff00ff00If empty or invalid step index, it will end the cutscene if selected (and trigger the On finish object event).",
+	DI_HISTORY = "Cutscene history",
+	DI_HISTORY_TT = "Click to see/hide the history panel, showing the previous cutscene lines.",
+	DI_NEXT = "Next step index",
+	DI_NEXT_TT = "You can indicate which step will be played after this one.\n\n|cff00ff00Leave empty to play the next index in sequential order, only use this field if you need to 'jump' to another index. Useful when using choices.",
 
 
 	DISCLAIMER_OK = "I hereby sign this contract with my blood",
@@ -1371,8 +1383,7 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Ella
 - Erzan
 - Fannar Vilhelmsson
-- Glorydan
-- GreenGrass 
+- GreenGrass
 - Herman Duyker
 - James Lofshult ((Solav))
 - James Turner
@@ -1405,6 +1416,7 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Paul Corlay
 - Phahi
 - Rob G
+- Robinson Gracely
 - Rocky Aldridge
 - Ryan McGilloway
 - Ryldor

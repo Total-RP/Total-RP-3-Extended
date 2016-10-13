@@ -45,7 +45,9 @@ local function editStep(stepID)
 
 	-- Load
 	editor.text.scroll.text:SetText(data.TX or "");
+	editor.next:SetText(data.N or "");
 	editor.loot:SetChecked(data.LO or false);
+	editor.endpoint:SetChecked(data.EP or false);
 	editor.direction:SetChecked(data.ND ~= nil);
 	editor.directionValue:SetSelectedValue(data.ND or "NONE");
 	editor.name:SetChecked(data.NA ~= nil);
@@ -64,6 +66,18 @@ local function editStep(stepID)
 	editor.imageEditor.bottom:SetText(data.IM and data.IM.BO or "1");
 	editor.imageEditor.left:SetText(data.IM and data.IM.LE or "0");
 	editor.imageEditor.right:SetText(data.IM and data.IM.RI or "1");
+
+	for i=1, 5 do
+		local line = editor.choicesEditor["line" .. i];
+		line.text:SetText("");
+		line.step:SetText("");
+	end
+
+	for index, choice in pairs(data.CH or EMPTY) do
+		local line = editor.choicesEditor["line" .. index];
+		line.text:SetText(choice.TX or "");
+		line.step:SetText(choice.N or "");
+	end
 
 	TRP3_ScriptEditorNormal.safeLoadList(editor.workflow, editor.workflowIDs, data.WO or "");
 
@@ -87,12 +101,25 @@ local function decorateStepLine(line, stepID)
 	line.movedown:Show();
 	if stepID == 1 then
 		line.moveup:Hide();
-	elseif stepID == #data.DS then
+	end
+	if stepID == #data.DS then
 		line.movedown:Hide();
 	end
 
+	local tooltip = "\"" .. (stepData.TX or "") .. "\"";
+	local icon = "Interface\\GossipFrame\\PetitionGossipIcon";
+	if stepData.EP then
+		icon = "Interface\\GossipFrame\\AvailableLegendaryQuestIcon";
+		tooltip = tooltip .. "\n\n" .. Utils.str.texture(icon) .. "|cff00ff00 " .. loc("DI_END");
+	elseif stepData.CH then
+		icon = "Interface\\GossipFrame\\ActiveLegendaryQuestIcon";
+		tooltip = tooltip .. "\n\n" .. Utils.str.texture(icon) .. "|cff00ff00 " .. loc("DI_CHOICES");
+	end
 
-	line.text:SetText(stepID .. ") " .. stepData.TX or "");
+	setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("DI_STEP") .. " " .. stepID,
+		tooltip .. ("\n\n|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+
+	line.text:SetText(Utils.str.texture(icon) .. " |cff00ff00" .. stepID .. ")|r " .. (stepData.TX or ""));
 	line.click.stepID = stepID;
 end
 
@@ -122,6 +149,8 @@ local function saveStep(stepID)
 
 	data.TX = stEtN(strtrim(editor.text.scroll.text:GetText()));
 	data.LO = editor.loot:GetChecked();
+	data.EP = editor.endpoint:GetChecked();
+	data.N = tonumber(editor.next:GetText());
 	setAttribute(data, "ND", editor.direction:GetChecked(), editor.directionValue:GetSelectedValue());
 	setAttribute(data, "NA", editor.name:GetChecked(), editor.nameValue:GetText());
 	setAttribute(data, "LU", editor.leftUnit:GetChecked(), editor.leftUnitValue:GetText());
@@ -141,6 +170,20 @@ local function saveStep(stepID)
 		data.IM = nil;
 	end
 	data.WO = stEtN(editor.workflow:GetSelectedValue());
+
+	-- Choices
+	data.CH = nil;
+	local choices = {};
+	for i=1, 5 do
+		local line = editor.choicesEditor["line" .. i];
+		local text = stEtN(strtrim(line.text:GetText()));
+		if text then
+			tinsert(choices, {TX = text, N = tonumber(line.step:GetText())});
+		end
+	end
+	if #choices > 0 then
+		data.CH = choices;
+	end
 
 	refreshStepList();
 end
@@ -438,6 +481,33 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	-- Right unit
 	editor.rightUnit.Text:SetText(loc("DI_RIGHT_UNIT"));
 	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc("DI_RIGHT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+
+	-- End point
+	editor.endpoint.Text:SetText(loc("DI_END"));
+	setTooltipForSameFrame(editor.endpoint, "RIGHT", 0, 5, loc("DI_END"), loc("DI_END_TT"));
+
+	-- Choices
+	editor.choices:SetText(loc("DI_CHOICES"));
+	setTooltipForSameFrame(editor.choices, "TOP", 0, 5, loc("DI_CHOICES"), loc("DI_CHOICES_TT"));
+	editor.choices:SetScript("OnClick", function()
+		if not editor.choicesEditor:IsVisible() then
+			TRP3_API.ui.frame.configureHoverFrame(editor.choicesEditor, editor.choices, "TOP", 77, 0);
+		else
+			editor.choicesEditor:Hide();
+		end
+	end);
+	editor.choicesEditor.title:SetText(loc("DI_CHOICES"));
+	for i=1, 5 do
+		local line = editor.choicesEditor["line" .. i];
+		line.text.title:SetText(loc("DI_CHOICE") .. " " .. i);
+		setTooltipForSameFrame(line.text.help, "RIGHT", 0, 5, loc("DI_CHOICE") .. " " .. i, loc("DI_CHOICE_TT"));
+		line.step.title:SetText(loc("DI_CHOICE_STEP"));
+		setTooltipForSameFrame(line.step.help, "RIGHT", 0, 5, loc("DI_CHOICE_STEP"), loc("DI_CHOICE_STEP_TT"));
+	end
+
+	-- Next
+	editor.next.title:SetText(loc("DI_NEXT"));
+	setTooltipForSameFrame(editor.next.help, "RIGHT", 0, 5, loc("DI_NEXT"), loc("DI_NEXT_TT"));
 
 	-- tutorial
 	TUTORIAL = {
