@@ -1002,7 +1002,7 @@ We should begin with some examples:
 	DI_NAME_DIRECTION = "Dialog direction",
 	DI_NAME_DIRECTION_TT = "Determines where to place the chat bubble and name and which model to animate. Select none to completely hide the chat bubble and name.",
 	DI_NAME = "Speaker name",
-	DI_NAME_TT = "The name of the talking character.\n\nOnly necessary if the dialog direction above is not NONE.\n\n|cff00ff00It can be a free text or one of the keyword \"player\" or \"target\" to get respectively the player's name or the target's name (if exists).",
+	DI_NAME_TT = "The name of the talking character.\n\nOnly necessary if the dialog direction above is not NONE.",
 	DI_LEFT_UNIT = "Left model",
 	DI_RIGHT_UNIT = "Right model",
 	DI_UNIT_TT = "Sets the model to display:\n\n- Leave empty to hide the model\n- \"player\" to use the player's model\n- \"target\" to use the target's model\n- Any number to load as NPC ID",

@@ -319,7 +319,7 @@ local function revealObjective(campaignID, questID, objectiveID)
 		end
 
 		-- Message
-		local obectiveText = TRP3_API.script.parseObjectArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+		local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 		Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
 		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 
@@ -348,7 +348,7 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 
 			if questLog.OB[objectiveID] ~= true then
 				-- Message
-				local obectiveText = TRP3_API.script.parseObjectArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 				Utils.message.displayMessage(loc("QE_QUEST_OBJ_FINISHED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
 				questLog.OB[objectiveID] = true;
 				Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);

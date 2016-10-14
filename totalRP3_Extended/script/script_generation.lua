@@ -591,15 +591,16 @@ end
 TRP3_API.script.generateAndRunCondition = generateAndRunCondition;
 
 local directReplacement = {
-	target = function()
-		return UnitName("target");
+	["wow.target"] = function()
+		return UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
-	player = function()
+	["wow.player"] = function()
 		return UnitName("player");
 	end
 }
 
 function TRP3_API.script.parseArgs(text, args)
+	args = args or EMPTY;
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		if directReplacement[capture] then
 			return directReplacement[capture]();
@@ -612,16 +613,6 @@ function TRP3_API.script.parseArgs(text, args)
 			return TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(capture), capture);
 		end
 		return capture;
-	end);
-	return text;
-end
-
-function TRP3_API.script.parseObjectArgs(text, vars)
-	if not vars then
-		return text;
-	end
-	text = text:gsub("%$%{(.-)%}", function(capture)
-		return (vars or EMPTY)[capture] or capture;
 	end);
 	return text;
 end

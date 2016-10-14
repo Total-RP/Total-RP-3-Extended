@@ -25,7 +25,6 @@ local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inven
 local getClass, isContainerByClassID = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID;
 local getQualityColorRGB, getQualityColorText = TRP3_API.inventory.getQualityColorRGB, TRP3_API.inventory.getQualityColorText;
 local EMPTY = TRP3_API.globals.empty;
-local parseObjectArgs = TRP3_API.script.parseObjectArgs;
 local color = Utils.str.color;
 local getItemLink = TRP3_API.inventory.getItemLink;
 
@@ -53,17 +52,22 @@ local function incrementLineIfFirst(first, line)
 	return first, line;
 end
 
+local function parseArgs(text, info)
+	return TRP3_API.script.parseArgs(text, info);
+end
+
 local function getItemTooltipLines(slotInfo, class, forceAlt)
 	local title, left, right, text1, text2,  extension1, extension2;
 	local icon, name = getBaseClassDataSafe(class);
 	local rootClass = TRP3_API.extended.getRootClassID(slotInfo.id);
+	local argsStructure = {object = slotInfo};
 	title = getQualityColorText(class.BA.QA) .. name;
 
 	if class.BA.LE then
-		left = color("w") .. parseObjectArgs(class.BA.LE, slotInfo.vars);
+		left = color("w") .. parseArgs(class.BA.LE, argsStructure);
 	end
 	if class.BA.RI then
-		right = color("w") .. parseObjectArgs(class.BA.RI, slotInfo.vars);
+		right = color("w") .. parseArgs(class.BA.RI, argsStructure);
 	end
 
 	text1 = "";
@@ -87,12 +91,12 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. color("o") .. "\"" .. parseObjectArgs(class.BA.DE, slotInfo.vars) .. "\"";
+		text1 = text1 .. color("o") .. "\"" .. parseArgs(class.BA.DE, argsStructure) .. "\"";
 	end
 
 	if class.US and class.US.AC then
 		text1 = incrementLine(text1);
-		text1 = text1 .. color("g") .. USE .. ": " .. parseObjectArgs(class.US.AC, slotInfo.vars);
+		text1 = text1 .. color("g") .. USE .. ": " .. parseArgs(class.US.AC, argsStructure);
 	end
 
 	if class.BA.CO then

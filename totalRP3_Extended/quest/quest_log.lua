@@ -96,7 +96,8 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 
 	local image = (campaignClass.BA or EMPTY).IM or DEFAULT_CAMPAIGN_IMAGE;
 	local range = (campaignClass.BA or EMPTY).RA;
-	local description = (campaignClass.BA or EMPTY).DE;
+	local description = (campaignClass.BA or EMPTY).DE or "";
+	description = TRP3_API.script.parseArgs(description, TRP3_API.quest.getCampaignVarStorage());
 
 	local progression = getCampaignProgression(campaignID);
 
@@ -113,7 +114,7 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 	campaignButton.bTile:SetTexture(BASE_BKG, true, true);
 	TRP3_API.ui.frame.setupIconButton(campaignButton, campaignIcon);
 
-	campaignButton.Desc:SetText(description or "");
+	campaignButton.Desc:SetText(description);
 
 	if range then
 		campaignButton.range:Show();
@@ -166,7 +167,7 @@ local onQuestTabClick;
 
 local function onQuestButtonEnter(button)
 	local questClass = getClass(button.campaignID, button.questID) or EMPTY;
-	local questIcon, questName, questDescription = getClassDataSafe(questClass);
+	local questIcon, questName = getClassDataSafe(questClass);
 	local currentStep = button.questInfo.CS;
 	local objectives = button.questInfo.OB;
 	local stepText, objectivesText;
@@ -184,7 +185,7 @@ local function onQuestButtonEnter(button)
 		for objectiveID, state in pairs(objectives) do
 			local objectiveClass = questClass.OB[objectiveID];
 			if objectiveClass and state == false then
-				local obectiveText = TRP3_API.script.parseObjectArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 				if not objectivesText then
 					objectivesText = "|cff00ff00- " .. obectiveText;
 				else
@@ -198,6 +199,9 @@ local function onQuestButtonEnter(button)
 	if stepText and not objectivesText then finalText = stepText; end
 	if objectivesText and not stepText then finalText = objectivesText; end
 	if objectivesText and stepText then finalText = stepText .. "\n\n" .. objectivesText; end
+	if finalText then
+		finalText = TRP3_API.script.parseArgs(finalText, TRP3_API.quest.getCampaignVarStorage());
+	end
 
 	setTooltipForSameFrame(button, "RIGHT", 0, 5, questName, finalText);
 	TRP3_RefreshTooltipForFrame(button);
@@ -206,6 +210,7 @@ end
 local function decorateQuestButton(questFrame, campaignID, questID, questInfo, questClick)
 	local questClass = getClass(campaignID, questID);
 	local questIcon, questName, questDescription = getClassDataSafe(questClass);
+	questDescription = TRP3_API.script.parseArgs(questDescription or "", TRP3_API.quest.getCampaignVarStorage());
 
 	TRP3_API.ui.frame.setupIconButton(questFrame, questIcon);
 	questFrame.Name:SetText(questName);
@@ -316,7 +321,6 @@ end
 
 local function refreshStepContent(campaignID, questID, questInfo)
 	local questClass = getClass(campaignID, questID);
-	local questIcon, questName, questDescription = getClassDataSafe(questClass);
 	local currentStep = questInfo.CS;
 	local objectives = questInfo.OB;
 	local html = "";
@@ -345,7 +349,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 			local objectiveClass = questClass.OB[objectiveID];
 			local objText = UNKNOWN;
 			if objectiveClass then
-				local obectiveText = TRP3_API.script.parseObjectArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 				if state == true then
 					objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. obectiveText;
 				else
@@ -375,7 +379,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 		html = html .. ("\n%s\n"):format(previousStepText);
 	end
 
-	stepHTML.html = Utils.str.toHTML(html);
+	stepHTML.html = Utils.str.toHTML(TRP3_API.script.parseArgs(html, TRP3_API.quest.getCampaignVarStorage()));
 	stepHTML:SetText(stepHTML.html);
 end
 

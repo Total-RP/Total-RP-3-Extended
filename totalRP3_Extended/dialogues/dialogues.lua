@@ -179,6 +179,7 @@ local function playDialogStep()
 	local dialogClass = dialogFrame.class;
 	local dialogStepClass = dialogFrame.dialogStepClass;
 	local text = dialogFrame.texts[dialogFrame.stepDialogIndex];
+	text = TRP3_API.script.parseArgs(text or "", dialogFrame.args);
 	wipe(modelLeft.animTab);
 	wipe(modelRight.animTab);
 	modelLeft.token = nil;
@@ -273,10 +274,8 @@ function processDialogStep()
 
 	-- Names
 	dialogFrame.ND = dialogStepClass.ND or dialogFrame.ND or "NONE";
-	dialogFrame.NA = dialogStepClass.NA or dialogFrame.NA or "player";
-	if dialogFrame.NA == "player" or dialogFrame.NA == "target" then
-		dialogFrame.NA = UnitName(dialogFrame.NA);
-	end
+	dialogFrame.NA = dialogStepClass.NA or dialogFrame.NA or "${wow.player}";
+	dialogFrame.NA = TRP3_API.script.parseArgs(dialogFrame.NA, dialogFrame.args);
 	dialogFrame.Chat.Right:Hide();
 	dialogFrame.Chat.Left:Hide();
 	if dialogFrame.ND == "RIGHT" then
