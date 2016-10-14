@@ -154,7 +154,8 @@ local function setupChoices(choices)
 	for _, choiceData in pairs(choices) do
 		local choiceButton = modelLeft.choices[index];
 		if TRP3_API.script.generateAndRunCondition(choiceData.C, dialogFrame.args) then
-			choiceButton.Text:SetText(choiceData.TX);
+			local text = TRP3_API.script.parseArgs(choiceData.TX or "", dialogFrame.args);
+			choiceButton.Text:SetText(text);
 			choiceButton.Click:SetScript("OnClick", function()
 				if choiceData.N and choiceData.N ~= 0 and (dialogFrame.class.DS or EMPTY)[choiceData.N] then
 					dialogFrame.stepIndex = choiceData.N;

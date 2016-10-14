@@ -185,7 +185,7 @@ local function onQuestButtonEnter(button)
 		for objectiveID, state in pairs(objectives) do
 			local objectiveClass = questClass.OB[objectiveID];
 			if objectiveClass and state == false then
-				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+				local obectiveText = objectiveClass.TX or "";
 				if not objectivesText then
 					objectivesText = "|cff00ff00- " .. obectiveText;
 				else
@@ -349,7 +349,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 			local objectiveClass = questClass.OB[objectiveID];
 			local objText = UNKNOWN;
 			if objectiveClass then
-				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+				local obectiveText = objectiveClass.TX or "";
 				if state == true then
 					objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. obectiveText;
 				else

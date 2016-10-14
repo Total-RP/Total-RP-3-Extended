@@ -595,8 +595,14 @@ local directReplacement = {
 		return UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["wow.player"] = function()
-		return UnitName("player");
-	end
+		return UnitName("player") or "";
+	end,
+	["trp.player:full"] = function()
+		return TRP3_API.register.getPlayerCompleteName(true) or "";
+	end,
+	["trp.target:full"] = function()
+		return TRP3_API.r.name("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
 }
 
 function TRP3_API.script.parseArgs(text, args)
