@@ -236,6 +236,7 @@ local function doSave()
 	object.MD.V = object.MD.V + 1;
 	object.MD.SD = date("%d/%m/%y %H:%M:%S");
 	object.MD.SB = Globals.player_id;
+	object.MD.tV = Globals.extended_version;
 
 	TRP3_API.security.computeSecurity(rootClassID, object);
 	TRP3_API.extended.unregisterObject(rootClassID);

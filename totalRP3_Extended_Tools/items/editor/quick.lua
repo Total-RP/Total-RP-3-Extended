@@ -98,15 +98,22 @@ end
 function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, classID, fromInv)
 	onCreatedCallback = callback;
 	editor.classID = classID;
+	editor.convert:Hide();
+	if not fromInv then
+		editor.convert:Show();
+	end
+
 	if classID then
 		editor.title:SetText(loc("IT_QUICK_EDITOR_EDIT"));
-		TRP3_API.ui.frame.configureHoverFrame(editor, toolFrame, "CENTER", 0, 5, false);
+		if not fromInv then
+			TRP3_API.ui.frame.configureHoverFrame(editor, toolFrame, "CENTER", 0, 5, false);
+		else
+			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "CENTER", 0, 0, false);
+		end
 		loadData(getClass(classID));
 	else
 		editor.title:SetText(loc("IT_QUICK_EDITOR"));
-		editor.convert:Hide();
 		if not fromInv then
-			editor.convert:Show();
 			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "BOTTOM", 0, 5, false);
 		else
 			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "CENTER", 0, 0, false);
