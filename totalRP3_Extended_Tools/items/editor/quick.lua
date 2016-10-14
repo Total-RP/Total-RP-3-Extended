@@ -40,7 +40,6 @@ local function injectUIData(data)
 	data.BA.VA = tonumber(editor.value:GetText());
 	data.BA.WE = tonumber(editor.weight:GetText());
 	data.BA.IC = editor.preview.selectedIcon;
-	data.BA.CO = editor.component:GetChecked();
 	data.BA.WA = editor.wearable:GetChecked();
 	return data;
 end
@@ -92,7 +91,6 @@ local function loadData(data)
 	editor.right:SetText(data.BA.RI or "");
 	editor.value:SetText(data.BA.VA or "0");
 	editor.weight:SetText(data.BA.WE or "0");
-	editor.component:SetChecked(data.BA.CO or false);
 	editor.wearable:SetChecked(data.BA.WA or false);
 	onIconSelected(data.BA.IC);
 end
@@ -168,10 +166,6 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	-- Description
 	editor.description.title:SetText(loc("IT_TT_DESCRIPTION"));
 	setTooltipForSameFrame(editor.description.help, "RIGHT", 0, 5, loc("IT_TT_DESCRIPTION"), loc("IT_TT_DESCRIPTION_TT"));
-
-	-- Component
-	editor.component.Text:SetText(loc("IT_TT_REAGENT"));
-	setTooltipForSameFrame(editor.component, "RIGHT", 0, 5, loc("IT_TT_REAGENT"), loc("IT_TT_REAGENT_TT"));
 
 	-- Wearable
 	editor.wearable.Text:SetText(loc("IT_WEARABLE"));

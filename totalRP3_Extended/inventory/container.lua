@@ -444,7 +444,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 						simpleLeftClick(self);
 					end
 				elseif button == "RightButton" then
-					if IsControlKeyDown() then
+					if IsAltKeyDown() then
 						local rootClass = TRP3_API.extended.getRootClassID(self.info.id);
 						if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
 							TRP3_API.security.showSecurityDetailFrame(rootClass);

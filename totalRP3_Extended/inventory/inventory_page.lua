@@ -209,14 +209,26 @@ local function onSlotClickAction(action, slot)
 end
 
 local function onSlotClick(slot, button)
-	if TRP3_ToolFrame and not slot.info and button == "RightButton" then
-		local menu = {
-			{loc("INV_PAGE_CHARACTER_INV")},
-			{loc("EFFECT_ITEM_ADD"), 1},
-			{loc("DB_CREATE_ITEM"), 2},
---			{loc("DB_IMPORT_ITEM"), 3}
-		};
-		TRP3_API.ui.listbox.displayDropDown(slot, menu, onSlotClickAction, 0, true);
+	if TRP3_ToolFrame then
+		if not slot.info and button == "RightButton" then
+			local menu = {
+				{loc("INV_PAGE_CHARACTER_INV")},
+				{loc("EFFECT_ITEM_ADD"), 1},
+				{loc("DB_CREATE_ITEM"), 2},
+				--			{loc("DB_IMPORT_ITEM"), 3}
+			};
+			TRP3_API.ui.listbox.displayDropDown(slot, menu, onSlotClickAction, 0, true);
+		elseif button == "LeftButton" and IsAltKeyDown() and slot.info then
+			if TRP3_API.extended.isObjectMine(slot.info.id) then
+				if (TRP3_API.extended.getClass(slot.info.id).MD or EMPTY).MO == TRP3_DB.modes.QUICK then
+					TRP3_API.extended.tools.openItemQuickEditor(main, nil, slot.info.id, true);
+				else
+					Utils.message.displayMessage(loc("INV_PAGE_EDIT_ERROR2"), 4);
+				end
+			else
+				Utils.message.displayMessage(loc("INV_PAGE_EDIT_ERROR1"), 4);
+			end
+		end
 	end
 end
 

@@ -95,6 +95,8 @@ Example of IDs:
 68 : /acclame
 
 Warning: If the animation flickers it's because there is a problem with the animation for your race. If it happens, please select another animation.]],
+	INV_PAGE_EDIT_ERROR1 = "You must be the author of this item to edit it.",
+	INV_PAGE_EDIT_ERROR2 = "This item is not in Quick mode.",
 
 	-- SEC
 	SEC_LEVEL = "Security level",
@@ -127,7 +129,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	SEC_EFFECT_BLOCKED_TT = "Due to your current security settings, at least one of this item (or sub-objects) effects is blocked.\n\n|cffff9900Click to review security for this item.\n\nYou can also Ctrl+Right-click on the item in your inventory to configure the security later.",
 	SEC_MISSING_SCRIPT = "Cannot find workflow \"%s\"",
 	SEC_SCRIPT_ERROR = "Error in workflow %s.",
-	SEC_TT_COMBO = "Ctrl + Right click:|cffff9900 Colnfigure security",
+	SEC_TT_COMBO = "Alt + Right click:|cffff9900 Configure security",
 	SET_TT_SECURED = "Unsecured effects from this item are blocked. Configure security to change that.",
 
 	-- LOOT
@@ -252,7 +254,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	-- TOOLBAR BUTTON
-	TB_TOOLS = "Open Extended tools",
+	TB_TOOLS = "Extended objects database",
 	TB_TOOLS_TT = "Create your own items and quests.",
 
 	-- TYPES
@@ -1318,7 +1320,7 @@ You can also see all droped items on the map by using the "Scan for my items" bu
 
 |rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
 
-|cff00ff00You can block/unblock effects and white-list effects or players by Ctrl+right-click on an item on your inventory.]],
+|cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- TUTORIAL: Quest log
