@@ -292,7 +292,7 @@ local EFFECTS = {
 
 	["companion_summon_mount"] = {
 		codeReplacementFunc = function (args)
-			local mountId = tostring(args[1] or 0);
+			local mountId = tonumber(args[1] or 0);
 			return ("SummonByID(%s); lastEffectReturn = 0;"):format(mountId);
 		end,
 		env = {

@@ -128,7 +128,7 @@ local function companion_summon_mount_init()
 	editor.load = function(scriptData)
 		local data = scriptData.args or Globals.empty;
 		editor.id = data[1];
-		local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfoByID(editor.id or 0);
+		local creatureName, spellID, icon = GetMountInfoByID(editor.id or 0);
 		local _, description = GetMountInfoExtraByID(editor.id or 0);
 		companionSelected({creatureName or loc("EFFECT_SUMMOUNT_NOMOUNT"), icon or "Interface\\ICONS\\inv_misc_questionmark", description or "", loc("PR_CO_MOUNT"), spellID, editor.id});
 	end
