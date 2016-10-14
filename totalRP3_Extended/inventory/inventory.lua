@@ -35,10 +35,11 @@ TRP3_API.inventory.CONTAINER_SLOT_MAX = CONTAINER_SLOT_MAX;
 local QUICK_SLOT_ID = "17";
 TRP3_API.inventory.QUICK_SLOT_ID = QUICK_SLOT_ID;
 
-local function onItemAddEnd(container, ...)
+local function onItemAddEnd(container, itemClass, returnType, count, ...)
+	Utils.message.displayMessage(loc("IT_INV_GOT"):format(getItemLink(itemClass), count));
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	TRP3_API.inventory.recomputeAllInventory();
-	return ...;
+	return returnType, count, ...;
 end
 
 local function getItemCount(classID, container)
@@ -133,7 +134,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 				if dropIfFull then
 					dropMeBecauseIMFull(itemClass, itemData, toAdd - count, classID);
 				end
-				return onItemAddEnd(container, 2, count);
+				return onItemAddEnd(container, itemClass, 2, count);
 			end
 		end
 
@@ -165,7 +166,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 			if dropIfFull then
 				dropMeBecauseIMFull(itemClass, itemData, toAdd - count, classID);
 			end
-			return onItemAddEnd(container, 1, count);
+			return onItemAddEnd(container, itemClass, 1, count);
 		end
 
 		-- Adding item
@@ -182,7 +183,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 
 	end
 
-	return onItemAddEnd(container, 0, toAdd);
+	return onItemAddEnd(container, itemClass, 0, toAdd);
 end
 
 function TRP3_API.inventory.getItem(container, slotID)

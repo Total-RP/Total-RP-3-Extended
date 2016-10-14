@@ -121,7 +121,9 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 end
 
 local function onQuickCreatedFromList(classID, _)
-	TRP3_API.inventory.addItem(nil, classID);
+	TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(classID))), function(value)
+		TRP3_API.inventory.addItem(nil, classID, {count = value or 1});
+	end, nil, 1);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -61,6 +61,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_EX_SLOT_DOWNLOAD = "|rYou don't have the information about this item.\n\n|cff00ff00If the item is not too large, TRP3 will download it automatically from %s.\n\n|cffff9900If it is too large, you can manually request its information with the download button, but keep in mind that it could take some time to be downloaded.",
 	IT_EX_DOWNLOADING = "Downloading: %0.1f %%",
 	IT_LOOT_ERROR = "Can't display loot right now, another loot is currently shown.",
+	IT_INV_GOT = "Received: %s x%d",
 
 	-- INVENTORY PAGE
 	INV_PAGE_CAMERA_CONFIG = "Camera parameters:\n   Rotation: %.2f",
