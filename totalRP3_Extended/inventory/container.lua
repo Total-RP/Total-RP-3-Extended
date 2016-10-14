@@ -300,14 +300,14 @@ local function slotOnDragStart(self)
 	end
 end
 
-local function pickUpLoot(slotFrom, container, slotID)
+local function doPickUpLoot(slotFrom, container, slotID, itemCount)
 	assert(slotFrom.info, "No info from origin loot");
 	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
 	local lootInfo = slotFrom.info;
 	local itemID = lootInfo.id;
 
 	local returnCode, count = TRP3_API.inventory.addItem(container, itemID, lootInfo, nil, slotID);
-	slotFrom.info.count = (slotFrom.info.count or 1) - count;
+	slotFrom.info.count = itemCount - count;
 	if returnCode == 0 or slotFrom.info.count <= 0 then
 		slotFrom.info = nil;
 		slotFrom.class = nil;
@@ -327,6 +327,22 @@ local function pickUpLoot(slotFrom, container, slotID)
 	lootFrame.forceLoot = nil;
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
 	lootFrame:Hide();
+end
+
+local function pickUpLoot(slotFrom, container, slotID)
+	assert(slotFrom.info, "No info from origin loot");
+	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
+	local lootInfo = slotFrom.info;
+	local itemID = lootInfo.id;
+	local itemCount = slotFrom.info.count or 1;
+
+--	if itemCount == 1 then
+		doPickUpLoot(slotFrom, container, slotID, itemCount);
+--	else
+--		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(itemID))), function(value)
+--			doPickUpLoot(slotFrom, container, slotID, value or 1);
+--		end, nil, itemCount);
+--	end
 end
 
 local function discardLoot(slotFrom)
