@@ -303,18 +303,24 @@ end
 local function doPickUpLoot(slotFrom, container, slotID, itemCount)
 	assert(slotFrom.info, "No info from origin loot");
 	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
-	local lootInfo = slotFrom.info;
-	local itemID = lootInfo.id;
 
-	local returnCode, count = TRP3_API.inventory.addItem(container, itemID, lootInfo, nil, slotID);
-	slotFrom.info.count = itemCount - count;
-	if returnCode == 0 or slotFrom.info.count <= 0 then
+	slotFrom.info.count = slotFrom.info.count or 1;
+
+	local lootInfo = {};
+	Utils.table.copy(lootInfo, slotFrom.info);
+	lootInfo.count = itemCount;
+
+	local returnCode, count = TRP3_API.inventory.addItem(container, lootInfo.id, lootInfo, nil, slotID);
+
+	slotFrom.info.count = slotFrom.info.count - count;
+
+	if slotFrom.info.count <= 0 then
 		slotFrom.info = nil;
 		slotFrom.class = nil;
 	end
 
 	if lootFrame.onLootCallback then
-		lootFrame.onLootCallback(lootInfo, count);
+		lootFrame.onLootCallback(slotFrom.info, count);
 	end
 
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
@@ -336,13 +342,16 @@ local function pickUpLoot(slotFrom, container, slotID)
 	local itemID = lootInfo.id;
 	local itemCount = slotFrom.info.count or 1;
 
---	if itemCount == 1 then
+	if itemCount == 1 then
 		doPickUpLoot(slotFrom, container, slotID, itemCount);
---	else
---		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(itemID))), function(value)
---			doPickUpLoot(slotFrom, container, slotID, value or 1);
---		end, nil, itemCount);
---	end
+	else
+		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(itemID))), function(value)
+			value = math.min(value or 1, itemCount);
+			if slotFrom and slotFrom.info and value > 0 and value <= itemCount then
+				doPickUpLoot(slotFrom, container, slotID, value or 1);
+			end
+		end, nil, itemCount);
+	end
 end
 
 local function discardLoot(slotFrom)

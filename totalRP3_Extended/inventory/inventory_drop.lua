@@ -113,11 +113,9 @@ end
 
 local function onLooted(itemData)
 	for index, drop in pairs(dropData) do
-		if drop.item == itemData then
-			if drop.item.count <= 0 then
-				wipe(dropData[index]);
-				dropData[index] = nil;
-			end
+		if drop.item.count <= 0 then
+			wipe(dropData[index]);
+			dropData[index] = nil;
 		end
 	end
 end
