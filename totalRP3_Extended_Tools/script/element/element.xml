@@ -31,7 +31,7 @@
 
 	<Frame name="TRP3_ScriptEditorDelay" hidden="true" inherits="TRP3_EditorEffectTemplate">
 
-		<Size x="400" y="250"/>
+		<Size x="400" y="260"/>
 
 		<Frames>
 
@@ -41,16 +41,23 @@
 				</Anchors>
 			</Frame>
 
+			<EditBox parentKey="sound" inherits="TRP3_TitledHelpEditBox">
+				<Size x="205" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-10"/>
+				</Anchors>
+			</EditBox>
+
 			<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
 				<Size x="205" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.sound" x="0" y="-20"/>
 				</Anchors>
 			</EditBox>
 
 			<Frame parentKey="interrupt" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentInterrupt">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-20" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-20" y="-15"/>
 					<Anchor point="RIGHT" x="-35" y="0"/>
 				</Anchors>
 			</Frame>

@@ -308,7 +308,7 @@ local function decorateElement(scriptStepFrame)
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_DELAY_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_DELAY")));
-		scriptStepFrame.description:SetText(("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_WAIT"), scriptStep.d or 0, loc("WO_DELAY_SECONDS")));
+		scriptStepFrame.description:SetText(TRP3_ScriptEditorDelay.decorate(scriptStep));
 		setTooltipForSameFrame(scriptStepFrame, "TOP", 0, 5, loc("WO_DELAY"), loc("WO_DELAY_TT") .. "\n\n|cffffff00" .. loc("WO_ELEMENT_EDIT"));
 	end
 end

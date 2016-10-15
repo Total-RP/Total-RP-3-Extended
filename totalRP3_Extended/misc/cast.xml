@@ -30,7 +30,6 @@
 			</OnLoad>
 			<OnEvent function="nil" />
 			<OnShow function="nil" />
-			<OnUpdate function="CastingBarFrame_OnUpdate" />
 		</Scripts>
 	</StatusBar>
 

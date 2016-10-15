@@ -65,6 +65,13 @@ TRP3_API.script.delayed = function(delay, func)
 		after(delay, func);
 	end
 end
+TRP3_API.script.cast = function(delay, func)
+	if GetUnitSpeed("player") == 0 then
+		if func and delay then
+			after(delay, func);
+		end
+	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Writer
@@ -359,10 +366,18 @@ local function writeDelay(delayStructure)
 
 	if delayStructure.c == 2 then
 		-- Casting bar
-		writeLine(("castID = showCastingBar(%s, %s, args.class)"):format(delayStructure.d, delayStructure.i or 1));
+		writeLine(("castID = showCastingBar(%s, %s, args.class, %s)"):format(delayStructure.d, delayStructure.i or 1, delayStructure.s or 0));
 		CURRENT_ENVIRONMENT["showCastingBar"] = "TRP3_API.extended.showCastingBar";
+
+		if delayStructure.i == 2 then
+			CURRENT_ENVIRONMENT["cast"] = "TRP3_API.script.cast";
+			writeLine(("cast(%s, function() "):format(delayStructure.d));
+		else
+			writeLine(("delayed(%s, function() "):format(delayStructure.d));
+		end
+	else
+		writeLine(("delayed(%s, function() "):format(delayStructure.d));
 	end
-	writeLine(("delayed(%s, function() "):format(delayStructure.d));
 	addIndent();
 
 	-- Interruption

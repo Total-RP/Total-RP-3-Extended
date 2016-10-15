@@ -30,8 +30,17 @@ local delayEditor = TRP3_ScriptEditorDelay;
 -- Delay
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+function delayEditor.decorate(scriptStep)
+	if scriptStep.c == 2 then
+		return ("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_CAST"), scriptStep.d or 0, loc("WO_DELAY_SECONDS"));
+	else
+		return ("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_WAIT"), scriptStep.d or 0, loc("WO_DELAY_SECONDS"));
+	end
+end
+
 function delayEditor.save(scriptStepStructure)
 	scriptStepStructure.d = tonumber(delayEditor.duration:GetText()) or 1;
+	scriptStepStructure.s = tonumber(delayEditor.sound:GetText()) or 0;
 	scriptStepStructure.c = delayEditor.type:GetSelectedValue() or 1;
 	scriptStepStructure.i = delayEditor.interrupt:GetSelectedValue() or 1;
 end
@@ -40,6 +49,7 @@ function delayEditor.load(scriptStepStructure)
 	delayEditor.type:SetSelectedValue(scriptStepStructure.c or 1);
 	delayEditor.interrupt:SetSelectedValue(scriptStepStructure.i or 1);
 	delayEditor.duration:SetText(scriptStepStructure.d or 0);
+	delayEditor.sound:SetText(scriptStepStructure.s or 0);
 end
 
 function delayEditor.init()
@@ -47,12 +57,22 @@ function delayEditor.init()
 	delayEditor.duration.title:SetText(loc("WO_DELAY_DURATION"));
 	setTooltipForSameFrame(delayEditor.duration.help, "RIGHT", 0, 5, loc("WO_DELAY_DURATION"), loc("WO_DELAY_DURATION_TT"));
 
+	-- Cast sound
+	delayEditor.sound.title:SetText(loc("WO_DELAY_CAST_SOUND"));
+	setTooltipForSameFrame(delayEditor.sound.help, "RIGHT", 0, 5, loc("WO_DELAY_CAST_SOUND"), loc("WO_DELAY_CAST_SOUND_TT"));
+
 	-- Delay type
 	local type = {
 		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_1")), 1, loc("WO_DELAY_TYPE_1_TT")},
 		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_2")), 2, loc("WO_DELAY_TYPE_2_TT")}
 	}
-	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, nil, nil, 200, true);
+	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, function(value)
+		if value == 2 then
+			delayEditor.sound:Show();
+		else
+			delayEditor.sound:Hide();
+		end
+	end, nil, 200, true);
 
 	-- Interruption
 	local type = {
