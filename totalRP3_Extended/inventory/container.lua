@@ -297,6 +297,9 @@ local function slotOnDragStart(self)
 		if self.additionalOnDragHandler then
 			self.additionalOnDragHandler(self);
 		end
+		if self.class then
+			TRP3_API.ui.misc.playSoundKit(self.class.BA.PS or 1186, "SFX");
+		end
 	end
 end
 
@@ -389,6 +392,11 @@ local function slotOnDragStop(slotFrom)
 		local container1, slot1;
 		slot1 = slotFrom.slotID;
 		container1 = slotFrom:GetParent().info;
+
+		local class = getClass(slotFrom.info.id);
+		if class then
+			TRP3_API.ui.misc.playSoundKit(class.BA.DS or 1203, "SFX");
+		end
 		if slotTo:GetName() == "WorldFrame" then
 			if not slotFrom.loot then
 				if UnitExists("mouseover") and UnitIsPlayer("mouseover") and CheckInteractDistance("mouseover", 2) then
@@ -686,6 +694,7 @@ local function onContainerShow(self)
 	lockOnContainer(self, self.originContainer);
 	decorateContainer(self, self.class, self.info);
 	loadContainerPageSlots(self);
+	TRP3_API.ui.misc.playSoundKit(12206, "SFX");
 end
 
 local function onContainerHide(self)
@@ -698,6 +707,7 @@ local function onContainerHide(self)
 		slot.class = nil;
 	end
 	self:Hide();
+	TRP3_API.ui.misc.playSoundKit(12206, "SFX");
 end
 
 local CONTAINER_UPDATE_FREQUENCY = 0.15;

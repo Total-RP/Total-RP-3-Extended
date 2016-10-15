@@ -108,6 +108,8 @@ local function loadDataMain()
 	gameplay.wearable:SetChecked(data.BA.WA or false);
 	gameplay.container:SetChecked(data.BA.CT or false);
 	gameplay.noAdd:SetChecked(data.BA.PA or false);
+	gameplay.pickSound:SetSelectedValue(data.BA.PS or 1186);
+	gameplay.dropSound:SetSelectedValue(data.BA.DS or 1203);
 
 	notes.frame.scroll.text:SetText(data.NT or "");
 
@@ -137,6 +139,9 @@ local function storeDataMain()
 	data.US.AC = stEtN(strtrim(gameplay.usetext:GetText()));
 	data.US.SC = "onUse";
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
+	data.BA.PS = gameplay.pickSound:GetSelectedValue() or 1186;
+	data.BA.DS = gameplay.dropSound:GetSelectedValue() or 1203;
+
 	return data;
 end
 
@@ -314,11 +319,13 @@ local function loadItem()
 	if not toolFrame.specificDraft.BA then
 		toolFrame.specificDraft.BA = {};
 	end
+	gameplay.mute = true;
 	loadDataMain();
 	loadDataScript();
 	loadDataContainer();
 	loadDataInner();
 	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
+	gameplay.mute = false;
 end
 
 local function saveToDraft()
@@ -481,9 +488,32 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	gameplay.container.Text:SetText(loc("IT_CON"));
 	setTooltipForSameFrame(gameplay.container, "RIGHT", 0, 5, loc("IT_CON"), loc("IT_CONTAINER_TT"));
 
-	-- Container
+	-- No add
 	gameplay.noAdd.Text:SetText(loc("IT_NO_ADD"));
 	setTooltipForSameFrame(gameplay.noAdd, "RIGHT", 0, 5, loc("IT_NO_ADD"), loc("IT_NO_ADD_TT"));
+
+	-- Pick up sound
+	local pickUpList = {};
+	for i = 1183, 1199 do
+		tinsert(pickUpList, {loc("IT_PU_SOUND") .. ": |cff00ff00" .. loc("IT_PU_SOUND_" .. i), i});
+	end
+	tinsert(pickUpList, {loc("IT_PU_SOUND") .. ": |cff00ff00" .. loc("IT_PU_SOUND_" .. 1221), 1221});
+	TRP3_API.ui.listbox.setupListBox(gameplay.pickSound, pickUpList, function(value)
+		if not gameplay.mute then
+			TRP3_API.ui.misc.playSoundKit(value, "SFX");
+		end
+	end, nil, 200, true);
+
+	-- Drop sound
+	local dropList = {};
+	for i = 1200, 1217 do
+		tinsert(dropList, {loc("IT_DR_SOUND") .. ": |cff00ff00" .. loc("IT_DR_SOUND_" .. i), i});
+	end
+	TRP3_API.ui.listbox.setupListBox(gameplay.dropSound, dropList, function(value)
+		if not gameplay.mute then
+			TRP3_API.ui.misc.playSoundKit(value, "SFX");
+		end
+	end, nil, 200, true);
 
 	local onCheckClicked = function()
 		refreshCheck();

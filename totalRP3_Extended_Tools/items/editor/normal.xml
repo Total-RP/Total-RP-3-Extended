@@ -205,6 +205,19 @@
 				</Anchors>
 			</CheckButton>
 
+			<Frame parentKey="pickSound" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentPickSound">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="-5" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.noAdd"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="dropSound" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentDropSound">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.pickSound"/>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="CENTER"/>
+				</Anchors>
+			</Frame>
+
 		</Frames>
 	</Frame>
 
