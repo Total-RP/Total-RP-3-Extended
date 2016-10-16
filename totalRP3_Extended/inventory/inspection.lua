@@ -145,6 +145,7 @@ local function onToolbarButtonClicked()
 		inspectionFrame.Main.Model.Loading:Show();
 		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(0));
 		inspectionFrame:Show();
+		inspectionFrame:GetTitleRegion():SetAllPoints(inspectionFrame);
 		TRP3_API.inventory.resetWearable(inspectionFrame.Main, inspectionFrame.Main.Model);
 
 		sendRequest();

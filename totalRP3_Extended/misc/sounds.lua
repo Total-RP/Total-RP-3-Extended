@@ -123,23 +123,25 @@ local function onLinkClicked(self, link, text, button)
 		else
 			Utils.music.playSoundID(id, channel, Globals.player_id);
 		end
+	elseif mode == "source" then
+
 	end
 
 end
 
-local function showHistory(button)
-	if button then
-		TRP3_API.ui.frame.configureHoverFrame(historyFrame, button, "TOP", 0, 5, false);
-	end
+local function showHistory()
+	historyFrame:Show();
+	historyFrame:GetTitleRegion():SetAllPoints(historyFrame);
 
 	historyFrame.container:Clear();
 	historyFrame.empty:Show();
 	for index, handler in pairs(Utils.music.getHandlers()) do
 		historyFrame.empty:Hide();
+		local source = handler.source or UNKNOWN;
 		local string = ("%s) " .. loc("EX_SOUND_HISTORY_LINE")):format(handler.date,
-			"|cff00ff00[" .. (handler.source or UNKNOWN) .. "]|r",
+			"|Hsource:" .. source .. "|h|cff00ff00[" .. source .. "]|h|r",
 			"|cffffff00" .. handler.id .. "|r",
-			"|cffffffff" .. handler.channel .. "|r"
+			"|cffffffff" .. handler.channel .. " (" .. handler.handlerID .. ")|r"
 		);
 		string = string .. (" |Hstop:%s:%s|h|cffff0000[%s]|h"):format(handler.handlerID, handler.channel, loc("EX_SOUND_HISTORY_STOP"));
 		string = string .. (" |Hreplay:%s:%s|h|cffffff00[%s]|h"):format(handler.id, handler.channel, loc("EX_SOUND_HISTORY_REPLAY"));
@@ -168,7 +170,7 @@ local function initHistory()
 					if historyFrame:IsVisible() then
 						historyFrame:Hide();
 					else
-						showHistory(self);
+						showHistory();
 					end
 				end,
 				visible = 1
@@ -196,6 +198,19 @@ local function initHistory()
 		Utils.music.clearHandlers();
 		Utils.music.stopMusic();
 		showHistory();
+	end);
+
+	historyFrame:SetScript("OnMouseWheel",function(self, delta)
+		if delta == -1 then
+			historyFrame.container:ScrollDown();
+		elseif delta == 1 then
+			historyFrame.container:ScrollUp();
+		end
+	end);
+	historyFrame:EnableMouseWheel(1);
+
+	historyFrame.bottom:SetScript("OnClick", function()
+		historyFrame.container:ScrollToBottom();
 	end);
 end
 
