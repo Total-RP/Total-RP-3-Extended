@@ -366,7 +366,7 @@ local function writeDelay(delayStructure)
 
 	if delayStructure.c == 2 then
 		-- Casting bar
-		writeLine(("castID = showCastingBar(%s, %s, args.class, %s)"):format(delayStructure.d, delayStructure.i or 1, delayStructure.s or 0));
+		writeLine(("castID = showCastingBar(%s, %s, args.class, %s, \"%s\")"):format(delayStructure.d, delayStructure.i or 1, delayStructure.s or 0, delayStructure.x or ""));
 		CURRENT_ENVIRONMENT["showCastingBar"] = "TRP3_API.extended.showCastingBar";
 
 		if delayStructure.i == 2 then
@@ -519,9 +519,9 @@ TRP3_API.script.executeFunction = executeFunction;
 
 local compiledScript = {}
 
-local function executeClassScript(scriptID, classScripts, args, innerClassID)
+local function executeClassScript(scriptID, classScripts, args, fullID)
 	assert(scriptID and classScripts, "Missing arguments.");
-	assert(innerClassID, "ClassID is needed for security purpose.");
+	assert(fullID, "ClassID is needed for security purpose.");
 
 
 	if not classScripts[scriptID] then
@@ -529,23 +529,23 @@ local function executeClassScript(scriptID, classScripts, args, innerClassID)
 		return;
 	end
 
-	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, innerClassID)};
+	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, fullID)};
 	local rootClassID = parts[1];
 	local class = classScripts[scriptID];
 
 	-- Not compiled yet
-	if not compiledScript[innerClassID] or not compiledScript[innerClassID][scriptID] then
-		if not compiledScript[innerClassID] then
-			compiledScript[innerClassID] = {};
+	if not compiledScript[fullID] or not compiledScript[fullID][scriptID] then
+		if not compiledScript[fullID] then
+			compiledScript[fullID] = {};
 		end
-		compiledScript[innerClassID][scriptID] = getFunction(class.ST, rootClassID);
+		compiledScript[fullID][scriptID] = getFunction(class.ST, rootClassID);
 	end
 	if not args then
 		args = {};
 	end
 	args.scripts = classScripts;
-	args.classID = innerClassID;
-	return executeFunction(compiledScript[innerClassID][scriptID], args, scriptID);
+	args.classID = fullID;
+	return executeFunction(compiledScript[fullID][scriptID], args, scriptID);
 end
 TRP3_API.script.executeClassScript = executeClassScript;
 

@@ -31,7 +31,7 @@
 
 	<Frame name="TRP3_ScriptEditorDelay" hidden="true" inherits="TRP3_EditorEffectTemplate">
 
-		<Size x="400" y="260"/>
+		<Size x="400" y="290"/>
 
 		<Frames>
 
@@ -48,10 +48,17 @@
 				</Anchors>
 			</EditBox>
 
-			<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
 				<Size x="205" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.sound" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
+				<Size x="205" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.text" x="0" y="-20"/>
 				</Anchors>
 			</EditBox>
 

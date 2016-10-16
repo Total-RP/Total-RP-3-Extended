@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, pairs, strsplit, tinsert, tonumber = wipe, pairs, strsplit, tinsert, tonumber;
+local wipe, pairs, strsplit, tinsert, tonumber, strtrim = wipe, pairs, strsplit, tinsert, tonumber, strtrim;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -43,6 +43,7 @@ function delayEditor.save(scriptStepStructure)
 	scriptStepStructure.s = tonumber(delayEditor.sound:GetText()) or 0;
 	scriptStepStructure.c = delayEditor.type:GetSelectedValue() or 1;
 	scriptStepStructure.i = delayEditor.interrupt:GetSelectedValue() or 1;
+	scriptStepStructure.x = stEtN(strtrim(delayEditor.text:GetText() or ""));
 end
 
 function delayEditor.load(scriptStepStructure)
@@ -50,6 +51,7 @@ function delayEditor.load(scriptStepStructure)
 	delayEditor.interrupt:SetSelectedValue(scriptStepStructure.i or 1);
 	delayEditor.duration:SetText(scriptStepStructure.d or 0);
 	delayEditor.sound:SetText(scriptStepStructure.s or 0);
+	delayEditor.text:SetText(scriptStepStructure.x or "");
 end
 
 function delayEditor.init()
@@ -61,6 +63,10 @@ function delayEditor.init()
 	delayEditor.sound.title:SetText(loc("WO_DELAY_CAST_SOUND"));
 	setTooltipForSameFrame(delayEditor.sound.help, "RIGHT", 0, 5, loc("WO_DELAY_CAST_SOUND"), loc("WO_DELAY_CAST_SOUND_TT"));
 
+	-- Cast text
+	delayEditor.text.title:SetText(loc("WO_DELAY_CAST_TEXT"));
+	setTooltipForSameFrame(delayEditor.text.help, "RIGHT", 0, 5, loc("WO_DELAY_CAST_TEXT"), loc("WO_DELAY_CAST_TEXT_TT"));
+
 	-- Delay type
 	local type = {
 		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_1")), 1, loc("WO_DELAY_TYPE_1_TT")},
@@ -69,8 +75,10 @@ function delayEditor.init()
 	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, function(value)
 		if value == 2 then
 			delayEditor.sound:Show();
+			delayEditor.text:Show();
 		else
 			delayEditor.sound:Hide();
+			delayEditor.text:Hide();
 		end
 	end, nil, 200, true);
 

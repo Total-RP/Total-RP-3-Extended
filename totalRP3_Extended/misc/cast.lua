@@ -48,7 +48,7 @@ local function interrupt()
 	end
 end
 
-function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundID)
+function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundID, castText)
 	if GetUnitSpeed("player") > 0 then
 		Utils.message.displayMessage(SPELL_FAILED_MOVING, 4);
 		return;
@@ -70,7 +70,10 @@ function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundI
 	frame:SetMinMaxValues(0, frame.maxValue);
 	frame:SetValue(frame.value);
 
-	if class and class.US and class.US.AC then
+
+	if castText and castText:len() > 0 then
+		frame.Text:SetText(castText);
+	elseif class and class.US and class.US.AC then
 		frame.Text:SetText(class.US.AC);
 	else
 		frame.Text:SetText(loc("IT_CAST"));
