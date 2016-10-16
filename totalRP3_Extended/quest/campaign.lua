@@ -218,4 +218,10 @@ function TRP3_API.quest.campaignInit()
 			activateCampaignHandlers(playerQuestLog.currentCampaign, getCurrentCampaignClass());
 		end
 	end);
+
+	-- Emote event (yes, I put it here because I'm the boss)
+	TRP3_API.extended.EMOTE_EVENT = "TRP3_EMOTE";
+	hooksecurefunc("DoEmote", function(emote, arg2, arg3)
+		Utils.event.fireEvent(TRP3_API.extended.EMOTE_EVENT, emote);
+	end);
 end
