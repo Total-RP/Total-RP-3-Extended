@@ -366,7 +366,7 @@ local function writeDelay(delayStructure)
 
 	if delayStructure.c == 2 then
 		-- Casting bar
-		writeLine(("castID = showCastingBar(%s, %s, args.class, %s, \"%s\")"):format(delayStructure.d, delayStructure.i or 1, delayStructure.s or 0, delayStructure.x or ""));
+		writeLine(("castID = showCastingBar(%s, %s, args.class, %s, var(\"%s\", args))"):format(delayStructure.d, delayStructure.i or 1, delayStructure.s or 0, delayStructure.x or ""));
 		CURRENT_ENVIRONMENT["showCastingBar"] = "TRP3_API.extended.showCastingBar";
 
 		if delayStructure.i == 2 then
@@ -606,16 +606,22 @@ end
 TRP3_API.script.generateAndRunCondition = generateAndRunCondition;
 
 local directReplacement = {
-	["wow.target"] = function()
+	["wow:target"] = function()
 		return UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
-	["wow.player"] = function()
+	["wow:player"] = function()
 		return UnitName("player") or "";
 	end,
-	["trp.player:full"] = function()
+	["wow:target:id"] = function()
+		return TRP3_API.utils.str.getUnitID("target") or UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
+	["wow:player:id"] = function()
+		return TRP3_API.utils.str.getUnitID("player") or UnitName("player") or "";
+	end,
+	["trp:player:full"] = function()
 		return TRP3_API.register.getPlayerCompleteName(true) or "";
 	end,
-	["trp.target:full"] = function()
+	["trp:target:full"] = function()
 		return TRP3_API.r.name("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 }
