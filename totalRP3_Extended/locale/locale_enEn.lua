@@ -297,7 +297,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_COPY_TT = "Copy all this object information and child objects to be pastable as inner objects in another object.",
 	DB_EXPORT = "Quick export object",
 	DB_EXPORT_TT = "Serializes the object content to be exchangeable outside the game.\n\nOnly works on small objects (lesser than 20 kB once serialized). For larger object, use the full export feature.",
-	DB_EXPORT_TOO_LARGE = "This object is too large once serialized to be exported this way.\n\nSize: %0.1f kB.",
+	DB_EXPORT_TOO_LARGE = "This object is too large once serialized to be exported this way. Please use the full export feature.\n\nSize: %0.1f kB.",
 	DB_EXPORT_HELP = "Code for object %s (size: %0.1f kB)",
 	DB_IMPORT = "Quick object import",
 	DB_IMPORT_TT = "Paste here a previously serialized object",
@@ -341,6 +341,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DB_IMPORT_ITEM = "Import item",
 	DB_HARD_SAVE = "Hard save",
 	DB_HARD_SAVE_TT = "Reload the game UI in order to force saved variables to be written on the disk.",
+	DB_IMPORT_FULL_CONFIRM = "Do you want to import the following object?\n\n%s\n%s\nBy |cff00ff00%s|r\nVersion %s",
 
 	-- Creation
 	ROOT_TITLE = "Root object",
