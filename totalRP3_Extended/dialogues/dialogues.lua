@@ -35,6 +35,8 @@ local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_COD
 local scalingLib = LibStub:GetLibrary("TRP-Dialog-Scaling-DB");
 local animationLib = LibStub:GetLibrary("TRP-Dialog-Animation-DB");
 
+local historyFrame = TRP3_DialogFrameHistory;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Models and animations
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -196,9 +198,10 @@ local function playDialogStep()
 	local animTab = targetModel.animTab;
 
 	-- Text color (emote)
-	if text:byte() == 60 then
+	if text:byte() == 60 or text:byte() == 42 then
 		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
 		text = text:gsub("<", color):gsub(">", "|r");
+		text = text:gsub("^%*", color):gsub("%*$", "|r");
 	else
 		text:gsub("[%.%?%!]+", function(finder)
 			animTab[#animTab + 1] = animationLib:GetDialogAnimation(targetModel.model, finder:sub(1, 1));
@@ -258,6 +261,18 @@ local function playDialogStep()
 		end
 	end
 
+	-- History
+	if dialogFrame.ND ~= "NONE" then
+		if dialogFrame.NA == "${trp:player:full}" then
+			historyFrame.container:AddMessage(("|cff00ff00[%s]|r %s"):format(dialogFrame.NA_PARSED or UNKNOWN, text));
+		else
+			historyFrame.container:AddMessage(("|cffff9900[%s]|r %s"):format(dialogFrame.NA_PARSED or UNKNOWN, text));
+		end
+	else
+		historyFrame.container:AddMessage(text, 1, 0.75, 0);
+	end
+
+
 	resizeChat();
 end
 
@@ -275,17 +290,17 @@ function processDialogStep()
 
 	-- Names
 	dialogFrame.ND = dialogStepClass.ND or dialogFrame.ND or "NONE";
-	dialogFrame.NA = dialogStepClass.NA or dialogFrame.NA or "${wow.player}";
-	dialogFrame.NA = TRP3_API.script.parseArgs(dialogFrame.NA, dialogFrame.args);
+	dialogFrame.NA = dialogStepClass.NA or dialogFrame.NA or "${trp:player:full}";
+	dialogFrame.NA_PARSED = TRP3_API.script.parseArgs(dialogFrame.NA, dialogFrame.args);
 	dialogFrame.Chat.Right:Hide();
 	dialogFrame.Chat.Left:Hide();
 	if dialogFrame.ND == "RIGHT" then
 		dialogFrame.Chat.Right:Show();
-		dialogFrame.Chat.Right.Name:SetText(dialogFrame.NA);
+		dialogFrame.Chat.Right.Name:SetText(dialogFrame.NA_PARSED);
 		dialogFrame.Chat.Right:SetWidth(dialogFrame.Chat.Right.Name:GetStringWidth() + 20);
 	elseif dialogFrame.ND == "LEFT" then
 		dialogFrame.Chat.Left:Show();
-		dialogFrame.Chat.Left.Name:SetText(dialogFrame.NA);
+		dialogFrame.Chat.Left.Name:SetText(dialogFrame.NA_PARSED);
 		dialogFrame.Chat.Left:SetWidth(dialogFrame.Chat.Left.Name:GetStringWidth() + 20);
 	end
 
@@ -411,6 +426,7 @@ local function startDialog(dialogID, class, args)
 	dialogFrame.posY, dialogFrame.posX = UnitPosition("player");
 	dialogFrame.args = args;
 
+	historyFrame.container:AddMessage("---------------------------------------------------------------");
 	processDialogStep();
 
 	dialogFrame:Show();
@@ -522,5 +538,33 @@ function TRP3_API.extended.dialog.onStart()
 	modelLeft.choices = { modelLeft.Choice1, modelLeft.Choice2, modelLeft.Choice3, modelLeft.Choice4, modelLeft.Choice5 }
 
 	-- History
+	local function showHistory()
+		historyFrame:Show();
+	end
 	setTooltipAll(dialogFrame.Chat.HistoryButton, "RIGHT", 0, 5, loc("DI_HISTORY"), loc("DI_HISTORY_TT"));
+	dialogFrame.Chat.HistoryButton:SetScript("OnClick", function()
+		showHistory();
+	end);
+	historyFrame.title:SetText(loc("DI_HISTORY"));
+	historyFrame.Close:SetScript("OnClick", function()
+		historyFrame:Hide();
+	end);
+	historyFrame:SetScript("OnMouseWheel",function(self, delta)
+		if delta == -1 then
+			historyFrame.container:ScrollDown();
+		elseif delta == 1 then
+			historyFrame.container:ScrollUp();
+		end
+	end);
+	historyFrame:EnableMouseWheel(1);
+
+	historyFrame.bottom:SetScript("OnClick", function()
+		historyFrame.container:ScrollToBottom();
+	end);
+	historyFrame:SetScript("OnShow", function(self)
+		if self:GetTitleRegion() then
+			self:GetTitleRegion():SetAllPoints(self);
+		end
+	end);
+
 end

@@ -561,13 +561,19 @@ local function init()
 						TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
 					else
 						local values = {};
+						tinsert(values, {loc("DI_HISTORY")});
+						tinsert(values, {loc("CM_OPEN"), 0});
 						tinsert(values, {loc("CM_ACTIONS")});
 						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)), TRP3_API.quest.ACTION_TYPES.LOOK});
 						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)), TRP3_API.quest.ACTION_TYPES.LISTEN});
 						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)), TRP3_API.quest.ACTION_TYPES.ACTION});
 						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)), TRP3_API.quest.ACTION_TYPES.TALK});
 						TRP3_API.ui.listbox.displayDropDown(self, values, function(action)
-							TRP3_API.quest.performAction(action);
+							if action == 0 then
+								TRP3_DialogFrameHistory:Show();
+							else
+								TRP3_API.quest.performAction(action);
+							end
 						end, 0, true);
 					end
 				end,

@@ -61,7 +61,7 @@ local function editStep(stepID)
 	editor.direction:SetChecked(data.ND ~= nil);
 	editor.directionValue:SetSelectedValue(data.ND or "NONE");
 	editor.name:SetChecked(data.NA ~= nil);
-	editor.nameValue:SetText(data.NA or "player");
+	editor.nameValue:SetText(data.NA or "${trp:player:full}");
 	editor.leftUnit:SetChecked(data.LU ~= nil);
 	editor.leftUnitValue:SetText(data.LU or "player");
 	editor.rightUnit:SetChecked(data.RU ~= nil);

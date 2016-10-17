@@ -1055,7 +1055,7 @@ We should begin with some examples:
 	DI_CHOICE_TT = "Enter the text for this option.\n\n|cff00ff00Leave empty to disable this option.",
 	DI_CHOICE_STEP = "Go to step",
 	DI_CHOICE_STEP_TT = "Enter the cutscene step number to play if the player selects this option.\n\n|cff00ff00If empty or invalid step index, it will end the cutscene if selected (and trigger the On finish object event).",
-	DI_HISTORY = "Cutscene history",
+	DI_HISTORY = "Cutscenes history",
 	DI_HISTORY_TT = "Click to see/hide the history panel, showing the previous cutscene lines.",
 	DI_NEXT = "Next step index",
 	DI_CHOICE_CONDI = "Option condition",
