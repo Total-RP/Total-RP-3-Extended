@@ -122,7 +122,7 @@ local function onLineClick(self, button)
 		end
 	else
 		if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
-			TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID);
+			TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID, nil,  not TRP3_DB.my[data.rootID]);
 		else
 			TRP3_API.extended.tools.goToPage(data.fullID, true);
 		end

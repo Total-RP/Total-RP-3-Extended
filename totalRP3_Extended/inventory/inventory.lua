@@ -293,6 +293,7 @@ local function useContainerSlot(slotButton, containerFrame)
 				end
 				local retCode = TRP3_API.script.executeClassScript(useWorkflow, slotButton.class.SC,
 					{object = slotButton.info, container = containerFrame.info, class = slotButton.class}, slotButton.info.id);
+				Utils.event.fireEvent(TRP3_API.extended.ITEM_USED_EVENT, slotButton.info.id, retCode);
 			end
 		end
 	end
@@ -475,6 +476,7 @@ function TRP3_API.inventory.onStart()
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
 	refreshInventory();
 
+	TRP3_API.extended.ITEM_USED_EVENT = "TRP3_ITEM_USED";
 	TRP3_API.inventory.EVENT_ON_SLOT_USE = "EVENT_ON_SLOT_USE";
 	TRP3_API.inventory.EVENT_ON_SLOT_SWAP = "EVENT_ON_SLOT_SWAP";
 	TRP3_API.inventory.EVENT_DETACH_SLOT = "EVENT_DETACH_SLOT";

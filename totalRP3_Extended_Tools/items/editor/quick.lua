@@ -95,12 +95,16 @@ local function loadData(data)
 	onIconSelected(data.BA.IC);
 end
 
-function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, classID, fromInv)
+function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, classID, fromInv, noSave)
 	onCreatedCallback = callback;
 	editor.classID = classID;
 	editor.convert:Hide();
-	if not fromInv then
+	editor.save:Disable();
+	if not fromInv and not noSave then
 		editor.convert:Show();
+	end
+	if not noSave then
+		editor.save:Enable();
 	end
 
 	if classID then
