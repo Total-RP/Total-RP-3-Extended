@@ -107,7 +107,7 @@
 						<FontString parentKey="addText" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 							<Size x="0" y="10"/>
 							<Anchors>
-								<Anchor point="BOTTOM" x="0" y="70"/>
+								<Anchor point="BOTTOM" x="0" y="90"/>
 								<Anchor point="LEFT" x="30" y="0"/>
 								<Anchor point="RIGHT" x="-30" y="0"/>
 							</Anchors>
@@ -122,7 +122,7 @@
 					<Frame parentKey="container" inherits="TRP3_InnerFrame">
 						<Size x="0" y="295"/>
 						<Anchors>
-							<Anchor point="CENTER" x="0" y="0"/>
+							<Anchor point="TOP" x="0" y="-65"/>
 							<Anchor point="RIGHT" x="-15" y="0"/>
 							<Anchor point="LEFT" x="15" y="0"/>
 						</Anchors>

@@ -526,20 +526,26 @@ local function refreshWorkflowList()
 	editor.workflow:Hide();
 	editor.list.arrow:Hide();
 	editor.list.add:Hide();
+	editor.list.sub:Hide();
 
 	if toolFrame.specificDraft.TY == TRP3_DB.types.ITEM and toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
 		assert(editor.workflowIDToLoad, "No editor.workflowIDToLoad for refresh.");
 		editor.list.script:SetText(editor.scriptTitle or "");
 		editor.list.description:SetText(editor.scriptDescription or "");
-		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.slider);
+		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.sub.slider);
 		openWorkflow(editor.workflowIDToLoad);
 	else
 		editor.list.script:SetText(loc("WO_CONTEXT") .. ": " .. getTypeLocale(editor.currentContext));
 		editor.list.description:SetText(loc("WO_EXPERT_TT"));
 		editor.list.add:Show();
+		editor.list.sub:Show();
+		editor.list.sub.empty:Show();
+		if Utils.table.size(toolFrame.specificDraft.SC) > 0 then
+			editor.list.sub.empty:Hide();
+		end
 
 		-- List
-		TRP3_API.ui.list.initList(editor.list, toolFrame.specificDraft.SC, editor.list.slider);
+		TRP3_API.ui.list.initList(editor.list, toolFrame.specificDraft.SC, editor.list.sub.slider);
 		refreshLines();
 	end
 
@@ -632,15 +638,16 @@ editor.init = function(ToolFrame)
 	editor.list.title:SetText(loc("WO_WORKFLOW"));
 	editor.list.widgetTab = {};
 	for i=1, 6 do
-		local line = editor.list["line" .. i];
+		local line = editor.list.sub["line" .. i];
 		tinsert(editor.list.widgetTab, line);
 		line.click:SetScript("OnClick", onWorkflowLineClick);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	end
 	editor.list.decorate = decorateWorkflowLine;
-	TRP3_API.ui.list.handleMouseWheel(editor, editor.list.slider);
-	editor.list.slider:SetValue(0);
+	TRP3_API.ui.list.handleMouseWheel(editor, editor.list.sub.slider);
+	editor.list.sub.slider:SetValue(0);
 	editor.list.add:SetText(loc("WO_ADD"));
+	editor.list.sub.empty:SetText(loc("WO_NO"));
 	editor.list.add:SetScript("OnClick", onAddWorkflow);
 
 	-- Effect selector

@@ -224,61 +224,76 @@
 				</Layers>
 
 				<Frames>
-					<Frame parentKey="line1" inherits="TRP3_ConditionEditorLine">
+
+					<Frame parentKey="sub" name="$parentSub" inherits="TRP3_InnerFrame">
+						<Size x="0" y="200"/>
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.description" x="0" y="-50"/>
-							<Anchor point="LEFT" x="40" y="0"/>
-							<Anchor point="RIGHT" x="-40" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.description" x="0" y="-40"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
 						</Anchors>
-					</Frame>
-					<Frame parentKey="line2" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line1" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line1"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line1"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="line3" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line2" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line2"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line2"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="line4" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line3" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line3"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line3"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="line5" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line4" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line4"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line4"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="line6" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line5" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line5"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line5"/>
-						</Anchors>
+
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="empty" inherits="GameFontNormalLarge">
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Frame parentKey="line1" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10"/>
+									<Anchor point="LEFT" x="5" y="0"/>
+									<Anchor point="RIGHT" x="-20" y="0"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line2" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line1" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line1"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line1"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line3" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line2" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line2"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line2"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line4" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line3" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line3"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line3"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line5" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line4" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line4"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line4"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line6" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line5" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line5"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line5"/>
+								</Anchors>
+							</Frame>
+							<Slider parentKey="slider" name="$parentSlider" inherits="TRP3_Scrollbar"/>
+						</Frames>
 					</Frame>
 					<Button parentKey="add" inherits="TRP3_CommonButton">
 						<Size x="150" y="20"/>
 						<Anchors>
-							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" x="0" y="-10"/>
+							<Anchor point="TOP" relativeKey="$parent.sub" relativePoint="BOTTOM" x="0" y="-10"/>
 						</Anchors>
 					</Button>
-					<Slider parentKey="slider" name="$parentSlider" inherits="TRP3_Scrollbar">
-						<Anchors>
-							<Anchor point="RIGHT" relativePoint="RIGHT" x="20" y="0" relativeKey="$parent.line1"/>
-							<Anchor point="TOP" x="0" y="0" relativeKey="$parent.line1"/>
-							<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line6"/>
-						</Anchors>
-					</Slider>
 				</Frames>
 
 			</Frame>

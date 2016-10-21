@@ -493,6 +493,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 
 	-- Workflows
 	WO_WORKFLOW = "Workflows",
+	WO_NO = "No workflows",
 	WO_EXECUTION = "Workflow execution",
 	WO_EMPTY = "You can start by adding an element to your workflow.\nThis can be an effect, a condition or a delay.",
 	WO_ELEMENT_ADD = "Add element to workflow",
