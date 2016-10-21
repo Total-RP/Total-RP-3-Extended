@@ -88,7 +88,7 @@ local function activateQuestHandlers(campaignID, questID, questClass)
 end
 TRP3_API.quest.activateQuestHandlers = activateQuestHandlers;
 
-local function startQuest(campaignID, questID, init)
+local function startQuest(campaignID, questID)
 	-- Checks
 	assert(campaignID and questID, "Illegal args");
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
@@ -96,7 +96,7 @@ local function startQuest(campaignID, questID, init)
 	local campaignLog = playerQuestLog[campaignID];
 	assert(campaignLog, "Trying to start quest from an unstarted campaign.");
 
-	Log.log("Start quest: " .. questID .. " with init: " .. tostring(init or "false"), Log.level.DEBUG);
+	Log.log("Start quest: " .. questID, Log.level.DEBUG);
 
 	if not campaignLog.QUEST[questID] then
 		Log.log("Starting quest " .. campaignID .. " " .. questID);
@@ -105,7 +105,7 @@ local function startQuest(campaignID, questID, init)
 		local questClass = getClass(campaignID, questID);
 
 		if not campaignClass or not questClass then
-			Log.log("Unknown campaign class (" .. campaignID .. ") (" .. questID .. ")");
+			Log.log("Unknown campaign or quest class (" .. campaignID .. ") (" .. questID .. ")");
 			return;
 		end
 

@@ -167,9 +167,13 @@ end
 
 TRP3_API.quest.resetCampaign = resetCampaign;
 
+local function getCurrentCampaignID()
+	return playerQuestLog and playerQuestLog.currentCampaign;
+end
+
 local function getCurrentCampaignClass()
-	if playerQuestLog and playerQuestLog.currentCampaign then
-		return getClass(playerQuestLog.currentCampaign);
+	if getCurrentCampaignID() then
+		return getClass(getCurrentCampaignID());
 	end
 end
 TRP3_API.quest.getCurrentCampaignClass = getCurrentCampaignClass;
@@ -224,4 +228,32 @@ function TRP3_API.quest.campaignInit()
 	hooksecurefunc("DoEmote", function(emote, arg2, arg3)
 		Utils.event.fireEvent(TRP3_API.extended.EMOTE_EVENT, emote);
 	end);
+
+	-- Helpers
+	TRP3_API.slash.registerCommand({
+		id = "debug_quest_step",
+		helpLine = " " .. loc("DEBUG_QUEST_STEP"),
+		handler = function(questID, stepID)
+			if questID and stepID then
+				if getCurrentCampaignID() then
+					TRP3_API.quest.goToStep(getCurrentCampaignID(), questID, stepID);
+				end
+			else
+				Utils.message.displayMessage(loc("DEBUG_QUEST_STEP_USAGE"));
+			end
+		end
+	});
+	TRP3_API.slash.registerCommand({
+		id = "debug_quest_start",
+		helpLine = " " .. loc("DEBUG_QUEST_START"),
+		handler = function(questID)
+			if questID then
+				if getCurrentCampaignID() then
+					TRP3_API.quest.startQuest(getCurrentCampaignID(), questID);
+				end
+			else
+				Utils.message.displayMessage(loc("DEBUG_QUEST_START_USAGE"));
+			end
+		end
+	});
 end

@@ -1065,6 +1065,11 @@ We should begin with some examples:
 	DI_NEXT_TT = "You can indicate which step will be played after this one.\n\n|cff00ff00Leave empty to play the next index in sequential order, only use this field if you need to 'jump' to another index. Useful when using choices.",
 	DI_CONDI_TT = "Sets a condition for this option. If the condition is not checked when showing the options, the associated option will not be visible.\n\n|cff00ff00Click: Configure condition\nRight-click: Clear condition",
 
+	DEBUG_QUEST_STEP = "Go to a quest step.",
+	DEBUG_QUEST_STEP_USAGE = "Usage: /trp3 debug_quest_step questID stepID",
+	DEBUG_QUEST_START = "Start quest",
+	DEBUG_QUEST_START_USAGE = "Usage: /trp3 debug_quest_start questID",
+
 	DISCLAIMER_OK = "I hereby sign this contract with my blood",
 	DISCLAIMER =
 [[{h1:c}Please read{/h1}
