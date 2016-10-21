@@ -119,12 +119,8 @@
 				<Frames>
 
 					<!-- Content -->
-					<Frame parentKey="container">
+					<Frame parentKey="container" inherits="TRP3_InnerFrame">
 						<Size x="0" y="295"/>
-						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-							<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-						</Backdrop>
 						<Anchors>
 							<Anchor point="CENTER" x="0" y="0"/>
 							<Anchor point="RIGHT" x="-15" y="0"/>
@@ -138,24 +134,7 @@
 							</Layer>
 						</Layers>
 						<Frames>
-							<Slider parentKey="slider" name="TRP3_InnerObjectEditorSlider" inherits="OptionsSliderTemplate">
-								<Size x="15" y="0"/>
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-5"/>
-									<Anchor point="RIGHT" x="0" y="0"/>
-									<Anchor point="BOTTOM" x="0" y="5"/>
-								</Anchors>
-								<Scripts>
-									<OnLoad>
-										TRP3_InnerObjectEditorSliderText:SetText("");
-										TRP3_InnerObjectEditorSliderHigh:SetText("");
-										TRP3_InnerObjectEditorSliderLow:SetText("");
-										self:SetMinMaxValues(0, 6);
-										self:SetValueStep(1);
-										self:SetOrientation("VERTICAL");
-									</OnLoad>
-								</Scripts>
-							</Slider>
+							<Slider parentKey="slider" name="TRP3_InnerObjectEditorSlider" inherits="TRP3_Scrollbar"/>
 						</Frames>
 					</Frame>
 

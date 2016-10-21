@@ -272,24 +272,12 @@
 							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" x="0" y="-10"/>
 						</Anchors>
 					</Button>
-					<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
-						<Size x="15" y="0" />
+					<Slider parentKey="slider" name="$parentSlider" inherits="TRP3_Scrollbar">
 						<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.line1"/>
+							<Anchor point="RIGHT" relativePoint="RIGHT" x="20" y="0" relativeKey="$parent.line1"/>
 							<Anchor point="TOP" x="0" y="0" relativeKey="$parent.line1"/>
 							<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line6"/>
 						</Anchors>
-						<Scripts>
-							<OnLoad>
-								local name = self:GetName();
-								_G[name .. "Text"]:SetText("");
-								_G[name .. "High"]:SetText("");
-								_G[name .. "Low"]:SetText("");
-								self:SetMinMaxValues(0, 6);
-								self:SetValueStep(1);
-								self:SetOrientation("VERTICAL");
-							</OnLoad>
-						</Scripts>
 					</Slider>
 				</Frames>
 
@@ -305,11 +293,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame parentKey="container" name="$parentContainer">
-						<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\GuildBankFrame\GuildVaultBG">
-							<EdgeSize><AbsValue val="24"/></EdgeSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-						</Backdrop>
+					<Frame parentKey="container" name="$parentContainer" inherits="TRP3_InnerFrame">
 
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-25" relativePoint="BOTTOM" relativeKey="$parent.title"/>
