@@ -400,7 +400,11 @@ local function slotOnDragStop(slotFrom)
 		if slotTo:GetName() == "WorldFrame" then
 			if not slotFrom.loot then
 				if UnitExists("mouseover") and UnitIsPlayer("mouseover") and CheckInteractDistance("mouseover", 2) then
-					TRP3_API.inventory.addToExchange(container1, slot1);
+					if class and not class.BA.SB then
+						TRP3_API.inventory.addToExchange(container1, slot1);
+					else
+						Utils.message.displayMessage(ERR_TRADE_BOUND_ITEM, Utils.message.type.ALERT_MESSAGE);
+					end
 				else
 					local itemClass = getClass(slotFrom.info.id);
 					local itemLink = getItemLink(itemClass);
@@ -408,7 +412,11 @@ local function slotOnDragStop(slotFrom)
 					TRP3_API.inventory.dropOrDestroy(itemClass, function()
 						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info, true);
 					end, function()
-						TRP3_API.inventory.dropItem(container1, slot1, slotFrom.info);
+						if class and not class.BA.SB then
+							TRP3_API.inventory.dropItem(container1, slot1, slotFrom.info);
+						else
+							Utils.message.displayMessage(ERR_DROP_BOUND_ITEM, Utils.message.type.ALERT_MESSAGE);
+						end
 					end);
 				end
 			else
