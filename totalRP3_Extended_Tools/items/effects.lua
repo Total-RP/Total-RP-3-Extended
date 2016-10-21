@@ -307,11 +307,16 @@ local function inv_loot_init()
 		icon = "inv_box_02",
 		description = loc("EFFECT_ITEM_LOOT_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
+			local isDrop = args[1][4] or false;
 			local itemCount = #(args[1][3] or EMPTY);
-			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_LOOT_PREVIEW"):format(itemCount));
+			if isDrop then
+				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_LOOT_PREVIEW_1"):format(itemCount));
+			else
+				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_LOOT_PREVIEW_2"):format(itemCount));
+			end
 		end,
 		getDefaultArgs = function()
-			return {{loc("LOOT"), "inv_misc_bag_07"}, {}};
+			return {{loc("LOOT"), "inv_misc_bag_07", {}, false}};
 		end,
 		editor = editor;
 	});
@@ -320,6 +325,11 @@ local function inv_loot_init()
 	editor.name.title:SetText(loc("EFFECT_ITEM_LOOT_NAME"));
 	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_LOOT_NAME"), loc("EFFECT_ITEM_LOOT_NAME_TT"));
 	editor.bag.help:SetText(loc("EFFECT_ITEM_LOOT_SLOT"))
+
+	-- Crafted
+	editor.drop.Text:SetText(loc("EFFECT_ITEM_LOOT_DROP"));
+	setTooltipForSameFrame(editor.drop, "RIGHT", 0, 5, loc("EFFECT_ITEM_LOOT_DROP"), loc("EFFECT_ITEM_LOOT_DROP_TT"));
+
 
 	-- Icon
 	setTooltipForSameFrame(editor.icon, "RIGHT", 0, 5, loc("EDITOR_ICON"));
@@ -387,6 +397,7 @@ local function inv_loot_init()
 	function editor.load(scriptData)
 		local data = (scriptData.args or Globals.empty)[1] or Globals.empty;
 		editor.name:SetText(data[1] or loc("LOOT"));
+		editor.drop:SetChecked(data[4] or false);
 		iconHandler(data[2] or "inv_misc_bag_07");
 		editor.bag.editor:Hide();
 		for index, slot in pairs(editor.bag.slots) do
@@ -406,7 +417,8 @@ local function inv_loot_init()
 		scriptData.args[1] = {
 			stEtN(strtrim(editor.name:GetText())),
 			editor.icon.selectedIcon,
-			{}
+			{},
+			editor.drop:GetChecked()
 		};
 		local saveData = scriptData.args[1][3];
 		for _, slot in pairs(editor.bag.slots) do

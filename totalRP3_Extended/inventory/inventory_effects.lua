@@ -123,12 +123,18 @@ TRP3_API.inventory.EFFECTS = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
 			local lootInfo = args[1];
+			local isDrop = lootInfo[4] or false;
 			local lootID = Utils.str.id();
 			TRP3_API.inventory.storeLoot(lootID, lootInfo);
-			return ("lastEffectReturn = presentLootID(\"%s\", nil, args.dialogStepClass and args.dialogStepClass.LO);"):format(lootID);
+			if not isDrop then
+				return ("lastEffectReturn = presentLootID(\"%s\", nil, args.dialogStepClass and args.dialogStepClass.LO);"):format(lootID);
+			else
+				return ("lastEffectReturn = dropLoot(\"%s\");"):format(lootID);
+			end
 		end,
 		env = {
 			presentLootID = "TRP3_API.inventory.presentLootID",
+			dropLoot = "TRP3_API.inventory.dropLoot",
 		}
 	},
 

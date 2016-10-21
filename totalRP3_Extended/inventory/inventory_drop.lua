@@ -16,6 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local EMPTY = Globals.empty;
 local Comm = TRP3_API.communication;
 local tinsert, assert, strsplit, tostring, wipe, pairs, sqrt = tinsert, assert, strsplit, tostring, wipe, pairs, sqrt;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
@@ -30,7 +31,7 @@ local dropData;
 -- Drop
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.inventory.dropItemDirect(slotInfo)
+local function dropCommon(lootInfo)
 	-- Proper coordinates
 	local posY, posX, posZ, instanceID = UnitPosition("player");
 
@@ -50,12 +51,24 @@ function TRP3_API.inventory.dropItemDirect(slotInfo)
 		mapY = mapY,
 		item = {}
 	};
-	Utils.table.copy(groundData.item, slotInfo);
+	Utils.table.copy(groundData.item, lootInfo);
 	tinsert(dropData, groundData);
+end
 
+function TRP3_API.inventory.dropItemDirect(slotInfo)
+	dropCommon(slotInfo);
 	local count = slotInfo.count or 1;
 	local link = getItemLink(getClass(slotInfo.id));
 	Utils.message.displayMessage(loc("DR_DROPED"):format(link, count));
+end
+
+function TRP3_API.inventory.dropLoot(lootID)
+	local loot = TRP3_API.inventory.getLoot(lootID);
+	if loot then
+		for _, loot in pairs(loot.IT or EMPTY) do
+			TRP3_API.inventory.dropItemDirect(loot);
+		end
+	end
 end
 
 function TRP3_API.inventory.dropItem(container, slotID, initialSlotInfo)

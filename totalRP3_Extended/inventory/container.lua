@@ -871,6 +871,10 @@ local function presentLootID(lootID, callback, forceLoot)
 end
 TRP3_API.inventory.presentLootID = presentLootID;
 
+function TRP3_API.inventory.getLoot(lootID)
+	return lootDB[lootID];
+end
+
 function TRP3_API.inventory.storeLoot(lootID, lootData)
 	local loot = {
 		IT = {},

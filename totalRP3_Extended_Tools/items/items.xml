@@ -194,7 +194,7 @@
 	</Frame>
 
 	<Frame name="TRP3_EffectEditorLoot" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="350"/>
+		<Size x="500" y="375"/>
 		<Frames>
 
 			<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
@@ -210,9 +210,15 @@
 				</Anchors>
 			</Button>
 
+			<CheckButton parentKey="drop" inherits="TRP3_CheckBox" name="$parentCrafted">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
+				</Anchors>
+			</CheckButton>
+
 			<Frame parentKey="bag" inherits="TRP3_Container2x4Template" name="$parent2x4" hidden="false" toplevel="false" movable="false">
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-25"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-45"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">

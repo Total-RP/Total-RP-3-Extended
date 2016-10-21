@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local Comm = TRP3_API.communication;
-local tinsert, tostring, _G, wipe, pairs, time = tinsert, tostring, _G, wipe, pairs, time;
+local tinsert, tostring, _G, wipe, pairs, time, tonumber = tinsert, tostring, _G, wipe, pairs, time, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
@@ -201,7 +201,7 @@ function inspectionFrame.init()
 					if UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) and CheckInteractDistance("target", 1) then
 						if TRP3_API.register.isUnitKnown("target") then
 							local character = TRP3_API.register.getUnitIDCharacter(Utils.str.getUnitID("target"));
-							return character.extended ~= nil;
+							return (tonumber(character.extended or 0) or 0) > 0;
 						end
 					end
 					return false;
