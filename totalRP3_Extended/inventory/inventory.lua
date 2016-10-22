@@ -275,6 +275,21 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 	end
 end
 
+local function doUseSlot(info, class, container)
+	if info.cooldown then
+		Utils.message.displayMessage(ERR_ITEM_COOLDOWN, Utils.message.type.ALERT_MESSAGE);
+	else
+		local useWorkflow = class.US.SC;
+		if class.LI and class.LI.OU then
+			useWorkflow = class.LI.OU;
+		end
+		local retCode = TRP3_API.script.executeClassScript(useWorkflow, class.SC,
+			{object = info, container = container, class = class}, info.id);
+		Utils.event.fireEvent(TRP3_API.extended.ITEM_USED_EVENT, info.id, retCode);
+		return retCode;
+	end
+end
+
 local function useContainerSlot(slotButton, containerFrame)
 	if slotButton.info then
 		if slotButton.class.missing then -- If using a missing item : remove it
@@ -284,17 +299,18 @@ local function useContainerSlot(slotButton, containerFrame)
 			end
 			containerFrame.info.content[slotButton.slotID] = nil;
 		elseif slotButton.class and isUsableByClass(slotButton.class) then
-			if slotButton.info.cooldown then
-				Utils.message.displayMessage(ERR_ITEM_COOLDOWN, Utils.message.type.ALERT_MESSAGE);
-			else
-				local useWorkflow = slotButton.class.US.SC;
-				if slotButton.class.LI and slotButton.class.LI.OU then
-					useWorkflow = slotButton.class.LI.OU;
-				end
-				local retCode = TRP3_API.script.executeClassScript(useWorkflow, slotButton.class.SC,
-					{object = slotButton.info, container = containerFrame.info, class = slotButton.class}, slotButton.info.id);
-				Utils.event.fireEvent(TRP3_API.extended.ITEM_USED_EVENT, slotButton.info.id, retCode);
-			end
+			doUseSlot(slotButton.info, slotButton.class, containerFrame.info);
+		end
+	end
+end
+
+function TRP3_API.inventory.useContainerSlotID(container, slotID)
+	if container and container.content and container.content[slotID] and container.content[slotID].id then
+		local info = container.content[slotID];
+		local id = info.id;
+		local class = getClass(id);
+		if class and isUsableByClass(class) then
+			return doUseSlot(info, class, container);
 		end
 	end
 end

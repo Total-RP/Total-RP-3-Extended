@@ -74,6 +74,7 @@ local function setCurrentElementFrame(frame, title, noConfirm)
 	end
 
 	editor.element:Show();
+	editor.element.current:SetFrameLevel(editor.element:GetFrameLevel() + 20);
 end
 
 local function addDelayElement()
@@ -212,6 +213,7 @@ local function onElementClick(self)
 			setCurrentElementFrame(effectInfo.editor, effectInfo.title);
 			effectInfo.editor.load(scriptData);
 		else
+			Utils.Log.log("No editor => No selection");
 			return; -- No editor => No selection
 		end
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
@@ -680,6 +682,7 @@ editor.init = function(ToolFrame)
 			"item_bag_durability",
 			"item_consume",
 			"item_cooldown",
+			"item_use",
 			"item_loot",
 		},
 		[loc("TYPE_DOCUMENT")] = {

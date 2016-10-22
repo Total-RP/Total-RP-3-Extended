@@ -281,7 +281,7 @@ local function item_cooldown_init()
 		getDefaultArgs = function()
 			return {1};
 		end,
-		editor = editor;
+		editor = editor,
 		context = {TRP3_DB.types.ITEM},
 	});
 
@@ -296,6 +296,37 @@ local function item_cooldown_init()
 
 	function editor.save(scriptData)
 		scriptData.args[1] = tonumber(strtrim(editor.time:GetText())) or 0;
+	end
+end
+
+local function item_use_init()
+	local editor = TRP3_OperandEditorItemUse;
+
+	registerEffectEditor("item_use", {
+		title = loc("EFFECT_ITEM_USE"),
+		icon = "ability_paladin_handoflight",
+		description = loc("EFFECT_ITEM_USE_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_USE_PREVIEW"):format("|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
+		end,
+		getDefaultArgs = function()
+			return {"1"};
+		end,
+		editor = editor,
+		context = {TRP3_DB.types.ITEM},
+	});
+
+	-- Time
+	editor.id.title:SetText(loc("EFFECT_USE_SLOT"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_USE_SLOT"), loc("EFFECT_USE_SLOT_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.id:SetText(data[1] or "1");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.id:GetText())) or "1";
 	end
 end
 
@@ -495,6 +526,7 @@ function TRP3_API.extended.tools.initItemEffects()
 	item_add_init();
 	item_remove_init();
 	item_cooldown_init();
+	item_use_init();
 	inv_loot_init();
 
 	document_show_init();

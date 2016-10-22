@@ -438,6 +438,7 @@ local OPERANDS = {
 	},
 
 	["check_event_var_n"] = {
+		numeric = true,
 		codeReplacement = function(args)
 			local var = tonumber(args[1] or 1) or 1;
 			return ("eventVarCheckN(args, %s)"):format(var);

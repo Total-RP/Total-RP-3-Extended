@@ -638,7 +638,7 @@ local function lockOnContainer(self, originContainer)
 		end
 		originContainer.lockedBy = self;
 		if originContainer.info.id ~= "main" then
-			self:SetPoint("TOPLEFT", originContainer, "TOPRIGHT", originContainer.lockX or 0, originContainer.lockY or 0);
+			self:SetPoint("BOTTOM", originContainer, "TOP", originContainer.lockX or 0, originContainer.lockY or 42);
 			containerFrameUpdate(originContainer);
 		else
 			self:SetPoint("TOPLEFT", originContainer, "TOPRIGHT", originContainer.lockX or 20, originContainer.lockY or 0);

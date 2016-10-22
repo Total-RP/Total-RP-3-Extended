@@ -138,4 +138,15 @@ TRP3_API.inventory.EFFECTS = {
 		}
 	},
 
+	["item_use"] = {
+		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
+		codeReplacementFunc = function (args)
+			local slotID = tostring(tonumber(args[1] or 0) or 0);
+			return ("lastEffectReturn = useContainerSlotID(args.object, \"%s\");"):format(slotID);
+		end,
+		env = {
+			useContainerSlotID = "TRP3_API.inventory.useContainerSlotID",
+		}
+	},
+
 }

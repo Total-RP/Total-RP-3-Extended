@@ -104,7 +104,7 @@
 				<Texture parentKey="LockIcon" file="Interface\PETBATTLES\PetBattle-LockIcon">
 					<Size x="20" y="20" />
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" x="-5" y="0"/>
+						<Anchor point="BOTTOM" relativePoint="TOP" x="5" y="-4"/>
 					</Anchors>
 				</Texture>
 			</Layer>
