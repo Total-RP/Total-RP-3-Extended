@@ -539,7 +539,7 @@ local MODULE_STRUCTURE = {
 	["id"] = "trp3_extended_tools",
 	["onStart"] = onStart,
 	["onInit"] = onInit,
-	["minVersion"] = 20,
+	["minVersion"] = 23,
 	["requiredDeps"] = {
 		{"trp3_extended", Globals.extended_version},
 	}
