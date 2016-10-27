@@ -57,7 +57,7 @@
 					<Size x="0" y="20" />
 					<Anchors>
 						<Anchor point="TOPLEFT" x="15" y="-10" />
-						<Anchor point="RIGHT" relativeKey="$perent.ID" relativePoint="LEFT" x="-5" y="0" />
+						<Anchor point="RIGHT" relativeKey="$parent.ID" relativePoint="LEFT" x="-5" y="0" />
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>

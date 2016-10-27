@@ -57,7 +57,7 @@
 					<Size x="0" y="20" />
 					<Anchors>
 						<Anchor point="TOPLEFT" x="15" y="-10" />
-						<Anchor point="RIGHT" relativeKey="$perent.ID" relativePoint="LEFT" x="-5" y="0" />
+						<Anchor point="RIGHT" relativeKey="$parent.ID" relativePoint="LEFT" x="-5" y="0" />
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
@@ -79,8 +79,7 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Frame name="TRP3_Tools_QuestTemplate" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
-				  edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="24"/>
 			</EdgeSize>

@@ -562,6 +562,8 @@ function TRP3_API.extended.dialog.onStart()
 		historyFrame.container:ScrollToBottom();
 	end);
 
+	historyFrame.container:SetFontObject(ChatFontNormal);
+
 	TRP3_API.ui.frame.setupMove(historyFrame);
 	TRP3_API.ui.frame.setupMove(dialogFrame);
 end

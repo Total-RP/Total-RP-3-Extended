@@ -109,6 +109,7 @@ end
 local historyFrame = TRP3_SoundsHistoryFrame;
 
 local function onLinkClicked(self, link, text, button)
+
 	local mode, id, channel = strsplit(":", link);
 
 	if mode == "stop" then
@@ -133,7 +134,7 @@ local function showHistory()
 	historyFrame:Show();
 	historyFrame.container:Clear();
 	historyFrame.empty:Show();
-	for index, handler in pairs(Utils.music.getHandlers()) do
+	for _, handler in pairs(Utils.music.getHandlers()) do
 		historyFrame.empty:Hide();
 		local source = handler.source or UNKNOWN;
 		local string = ("%s) " .. loc("EX_SOUND_HISTORY_LINE")):format(handler.date,
@@ -175,6 +176,9 @@ local function initHistory()
 			TRP3_API.toolbar.toolbarAddButton(toolbarButton);
 		end
 	end);
+
+	historyFrame.container:SetFontObject(ChatFontNormal);
+	historyFrame.container:SetHyperlinksEnabled(true);
 
 	historyFrame.title:SetText(loc("EX_SOUND_HISTORY"));
 	historyFrame.empty:SetText(loc("EX_SOUND_HISTORY_EMPTY"));

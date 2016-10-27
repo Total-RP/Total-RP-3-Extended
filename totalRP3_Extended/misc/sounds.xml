@@ -67,7 +67,6 @@
 					<Anchor point="LEFT" x="20" y="0"/>
 					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.stop" x="0" y="5"/>
 				</Anchors>
-				<FontString inherits="ChatFontNormal" justifyH="LEFT" indented="true" nonspacewrap="true"/>
 			</ScrollingMessageFrame>
 
 			<Button parentKey="bottom">
