@@ -145,7 +145,6 @@ local function onToolbarButtonClicked()
 		inspectionFrame.Main.Model.Loading:Show();
 		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(0));
 		inspectionFrame:Show();
-		inspectionFrame:GetTitleRegion():SetAllPoints(inspectionFrame);
 		TRP3_API.inventory.resetWearable(inspectionFrame.Main, inspectionFrame.Main.Model);
 
 		sendRequest();
@@ -219,4 +218,6 @@ function inspectionFrame.init()
 	-- Register prefix for data exchange
 	Comm.registerProtocolPrefix(INSPECTION_REQUEST, receiveRequest);
 	Comm.registerProtocolPrefix(INSPECTION_RESPONSE, receiveResponse);
+
+	TRP3_API.ui.frame.setupMove(inspectionFrame);
 end

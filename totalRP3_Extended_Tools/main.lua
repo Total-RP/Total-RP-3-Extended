@@ -515,6 +515,8 @@ local function onStart()
 	Events.listenToEvent(Events.WORKFLOW_ON_FINISH, function()
 		goToListPage();
 	end);
+
+	TRP3_API.ui.frame.setupMove(toolFrame);
 end
 
 local function onInit()

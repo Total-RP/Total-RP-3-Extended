@@ -238,4 +238,5 @@ function dropFrame.init()
 		showAlert = true,
 	};
 
+	TRP3_API.ui.frame.setupMove(dropFrame);
 end

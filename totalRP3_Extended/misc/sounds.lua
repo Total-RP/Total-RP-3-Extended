@@ -131,8 +131,6 @@ end
 
 local function showHistory()
 	historyFrame:Show();
-	historyFrame:GetTitleRegion():SetAllPoints(historyFrame);
-
 	historyFrame.container:Clear();
 	historyFrame.empty:Show();
 	for index, handler in pairs(Utils.music.getHandlers()) do
@@ -147,7 +145,6 @@ local function showHistory()
 		string = string .. (" |Hreplay:%s:%s|h|cffffff00[%s]|h"):format(handler.id, handler.channel, loc("EX_SOUND_HISTORY_REPLAY"));
 		historyFrame.container:AddMessage(string);
 	end
-
 end
 
 function historyFrame.onSoundPlayed()
@@ -219,8 +216,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function historyFrame.initSound()
-
 	initSharedSound();
 	initHistory();
 
+	TRP3_API.ui.frame.setupMove(historyFrame);
 end

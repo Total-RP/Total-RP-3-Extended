@@ -327,4 +327,6 @@ function TRP3_API.security.initSecurity()
 
 	TRP3_API.security.EVENT_SECURITY_CHANGED = "EVENT_SECURITY_CHANGED";
 	TRP3_API.events.registerEvent(TRP3_API.security.EVENT_SECURITY_CHANGED);
+
+	TRP3_API.ui.frame.setupMove(securityFrame);
 end

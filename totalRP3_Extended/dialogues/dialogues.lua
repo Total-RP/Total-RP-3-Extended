@@ -561,10 +561,7 @@ function TRP3_API.extended.dialog.onStart()
 	historyFrame.bottom:SetScript("OnClick", function()
 		historyFrame.container:ScrollToBottom();
 	end);
-	historyFrame:SetScript("OnShow", function(self)
-		if self:GetTitleRegion() then
-			self:GetTitleRegion():SetAllPoints(self);
-		end
-	end);
 
+	TRP3_API.ui.frame.setupMove(historyFrame);
+	TRP3_API.ui.frame.setupMove(dialogFrame);
 end

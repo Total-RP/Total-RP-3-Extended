@@ -68,8 +68,6 @@
 	</Frame>
 
 	<Frame name="TRP3_SecurityFrame" inherits="TRP3_AltHoveredFrame" frameStrata="HIGH" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
-		<TitleRegion setAllPoints="true"/>
-
 		<Size x="450" y="400"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>

@@ -24,7 +24,6 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Frame name="TRP3_DocumentFrame" inherits="TRP3_StandardParchmentFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
-		<TitleRegion setAllPoints="true"/>
 		<Size x="100" y="100"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>

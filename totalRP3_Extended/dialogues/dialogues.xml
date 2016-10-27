@@ -326,11 +326,9 @@
 	</Frame>
 
 	<Frame name="TRP3_DialogFrame" inherits="TRP3_DialogFrameTemplate" toplevel="true" parent="UIParent" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
-		<TitleRegion setAllPoints="true"/>
 	</Frame>
 
 	<Frame name="TRP3_DialogFrameHistory" parent="UIParent" inherits="TRP3_AltHoveredFrame" toplevel="true" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
-		<TitleRegion setAllPoints="true"/>
 		<Size x="600" y="400"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>

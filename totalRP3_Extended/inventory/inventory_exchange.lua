@@ -603,4 +603,6 @@ function exchangeFrame.init()
 			reloadDownloads();
 		end
 	end);
+
+	TRP3_API.ui.frame.setupMove(exchangeFrame);
 end

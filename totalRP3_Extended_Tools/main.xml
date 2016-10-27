@@ -29,8 +29,7 @@
 	<Include file="cutscene/cutscene.xml"/>
 	<Include file="list/list.xml"/>
 
-	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
-		<TitleRegion setAllPoints="true"/>
+	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true" movable="true">
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>

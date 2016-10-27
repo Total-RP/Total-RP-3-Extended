@@ -206,4 +206,6 @@ function TRP3_API.extended.document.onStart()
 			}
 		}
 	});
+
+	TRP3_API.ui.frame.setupMove(documentFrame);
 end

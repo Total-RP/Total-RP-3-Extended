@@ -20,13 +20,10 @@
 -->
 
 	<Frame name="TRP3_DropSearchFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
-		<TitleRegion setAllPoints="true"/>
-
 		<Size x="500" y="320"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
-
 	</Frame>
 
 </Ui>
