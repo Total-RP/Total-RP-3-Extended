@@ -428,11 +428,11 @@ local function onStart()
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, initConfig);
 end
 
-Globals.extended_version = 0.8;
+Globals.extended_version = 0.81;
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",
-	["description"] = "Total RP 3 extended features: inventory, quest log, document and more !",
+	["description"] = "Total RP 3 extended features: inventory, quest log, document and more!",
 	["version"] = Globals.extended_version,
 	["id"] = "trp3_extended",
 	["onInit"] = onInit,

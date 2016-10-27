@@ -253,9 +253,10 @@ end
 local function configureCondition(line)
 	local condition = line.scriptData;
 	if not condition then
-		condition = {
+		line.scriptData = {
 			{ { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } }
 		};
+		condition = line.scriptData;
 	end
 	editor.choicesEditor:Hide();
 	toolFrame.cutscene.normal.overlay:Show();
