@@ -79,7 +79,7 @@ end
 
 local function dropMeBecauseIMFull(itemClass, itemData, toAdd, classID)
 	local dropSlot = {
-		count = toAdd,
+		count = toAdd or 1,
 		id = classID,
 	};
 	copySlotContent(dropSlot, itemClass, itemData);

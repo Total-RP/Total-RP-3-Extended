@@ -52,6 +52,7 @@ local function dropCommon(lootInfo)
 		item = {}
 	};
 	Utils.table.copy(groundData.item, lootInfo);
+	groundData.item.count = groundData.item.count or 1;
 	tinsert(dropData, groundData);
 end
 
@@ -197,6 +198,17 @@ function dropFrame.init()
 		TRP3_Drop = {};
 	end
 	dropData = TRP3_Drop;
+
+	-- Cleanup
+	for index, dropData in pairs(dropData) do
+		if dropData.item.count then
+			if dropData.item.count == 0 then
+				tremove(dropData, index);
+			end
+		else
+			dropData.item.count = 1;
+		end
+	end
 
 	initScans();
 
