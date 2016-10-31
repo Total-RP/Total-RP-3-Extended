@@ -91,7 +91,7 @@ end
 local function initScans()
 	TRP3_API.map.registerScan({
 		id = "inv_scan_self",
-		buttonText = "Scan for my items",
+		buttonText = loc("IT_INV_SCAN_MY_ITEMS"),
 		scanTitle = "Item(s)",
 		scan = function(saveStructure)
 			local mapID = GetCurrentMapAreaID();
@@ -102,7 +102,8 @@ local function initScans()
 			end
 		end,
 		canScan = function()
-			return true;
+			local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
+			return x ~= nil and y ~= nil;
 		end,
 		scanMarkerDecorator = function(index, entry, marker)
 			local drop = dropData[index];

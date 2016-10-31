@@ -53,6 +53,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_INV_ERROR_FULL = "%s is full.",
 	IT_INV_ERROR_CANT_HERE = "You can't place items here.",
 	IT_INV_ERROR_CANT_DESTROY_LOOT = "You can't destroy loot items.",
+    IT_INV_SCAN_MY_ITEMS = "Scan for my items",
 	IT_CON_TT_MISSING_CLASS = "Missing item class ID",
 	IT_EX_DOWNLOAD = "Download",
 	IT_EX_DOWNLOAD_TT = "|cffff9900This item is %s messages long and would take at minimum %.1f seconds to be downloaded (in the best condition).\n\n|cff00ff00Click to requests %s to send you all the data about this item.\n\n|cffff9900You can't finish a trade if you don't have all the updated information about all items you would receive.",
