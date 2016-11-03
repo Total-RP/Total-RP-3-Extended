@@ -269,6 +269,8 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DR_STASHES_REMOVED = "Stash removed.",
 	DR_STASHES_FULL = "This stash is full.",
 	DR_STASHED = "Stashed: %s x%d",
+	DR_STASHES_FOUND = "Stashes found: %s",
+	DR_STASHES_NOTHING = "No stashes found in this area.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- EXTENDED TOOLS

@@ -27,7 +27,7 @@ local getItemLink = TRP3_API.inventory.getItemLink;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local broadcast = TRP3_API.communication.broadcast;
 
-local dropFrame, stashEditFrame = TRP3_DropSearchFrame, TRP3_StashEditFrame;
+local dropFrame, stashEditFrame, stashFoundFrame = TRP3_DropSearchFrame, TRP3_StashEditFrame, TRP3_StashFoundFrame;
 local dropData, stashesData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -284,12 +284,12 @@ end
 local function openStashEditor(stashIndex)
 	stashEditFrame.stashIndex = stashIndex;
 	if stashIndex then
-		TRP3_StashEditFrame.title:SetText(loc("DR_STASHES_EDIT"));
+		stashEditFrame.title:SetText(loc("DR_STASHES_EDIT"));
 		local stash = stashesData[stashIndex] or EMPTY;
 		stashEditFrame.name:SetText(stash.BA and stash.BA.NA or loc("DR_STASHES_NAME"));
 		iconHandler(stash.BA and stash.BA.IC or "temp");
 	else
-		TRP3_StashEditFrame.title:SetText(loc("DR_STASHES_CREATE"));
+		stashEditFrame.title:SetText(loc("DR_STASHES_CREATE"));
 		stashEditFrame.name:SetText(loc("DR_STASHES_NAME"));
 		iconHandler("temp");
 	end
@@ -506,6 +506,66 @@ function TRP3_API.inventory.stashSlot(slotFrom, container, slotID)
 	end
 end
 
+local SEARCH_STASHES_COMMAND = "SSCM";
+local STASHES_REQUEST_DURATION = 2.5;
+local stashResponse = {};
+
+local function displayStashesResponse()
+	local total = #stashResponse;
+	if total == 0 then
+		Utils.message.displayMessage(loc("DR_STASHES_NOTHING"), 4);
+	else
+		stashFoundFrame.title:SetText(loc("DR_STASHES_FOUND"):format(#stashResponse));
+
+		stashFoundFrame:Show();
+	end
+end
+
+local function startStashesRequest()
+	SetMapToCurrentZone();
+	local posY, posX = UnitPosition("player");
+	local mapID = GetCurrentMapAreaID();
+	if posX and posY then
+		wipe(stashResponse);
+		local cID = TRP3_API.extended.showCastingBar(STASHES_REQUEST_DURATION, 2, nil, nil, loc("DR_STASHES_SCAN"));
+		broadcast.broadcast(SEARCH_STASHES_COMMAND, mapID, posY, posX, cID);
+		C_Timer.After(STASHES_REQUEST_DURATION, function()
+			if TRP3_CastingBarFrame.castID == cID then
+				displayStashesResponse();
+			end
+		end);
+	end
+end
+
+local function receivedStashesRequest(sender, mapID, posY, posX, castID)
+	mapID = tonumber(mapID or 0) or 0;
+	posY = tonumber(posY or 0) or 0;
+	posX = tonumber(posX or 0) or 0;
+	Utils.log.log(("%s is asking for stashes in zone %s."):format(sender, mapID));
+	for index, stash in pairs(stashesData) do
+		if stash.mapID == mapID then
+			local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
+			if isInRadius then
+				-- P2P response
+				local total = 0;
+				for index, slot in pairs(stash.item) do
+					total = total + 1;
+				end
+				Comm.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, index, stash.BA.NA, stash.BA.IC, total, castID);
+			end
+		end
+	end
+end
+
+local function receivedStashesResponse(sender, index, name, icon, slot, cID)
+	Utils.log.log(("Received stash %s from %s."):format(name, sender));
+	if TRP3_CastingBarFrame.castID == cID then
+		tinsert(stashResponse, {sender, index, name, icon, slot});
+	else
+		Utils.log.log(("Wrong cast ID for stashes response."));
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Toolbar button
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -519,6 +579,8 @@ local function onDropButtonAction(actionID)
 		searchForItems();
 	elseif actionID == ACTION_STASH_CREATE then
 		openStashEditor(nil);
+	elseif actionID == ACTION_STASH_SEARCH then
+		startStashesRequest();
 	elseif type(actionID) == "number" then
 		showStash(stashesData[actionID], actionID);
 	end
@@ -660,4 +722,8 @@ function dropFrame.init()
 	end);
 
 	initStashContainer();
+	Comm.broadcast.registerCommand(SEARCH_STASHES_COMMAND, receivedStashesRequest);
+	Comm.broadcast.registerP2PCommand(SEARCH_STASHES_COMMAND, receivedStashesResponse);
+
+	TRP3_API.ui.frame.setupMove(stashFoundFrame);
 end
