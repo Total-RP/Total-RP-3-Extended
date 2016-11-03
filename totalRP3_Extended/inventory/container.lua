@@ -267,6 +267,7 @@ local function containerSlotUpdate(self, elapsed)
 		self.additionalOnUpdateHandler(self, elapsed);
 	end
 end
+TRP3_API.inventory.containerSlotUpdate = containerSlotUpdate;
 
 local function slotOnEnter(self)
 	if self.info then
@@ -303,17 +304,17 @@ local function slotOnDragStart(self)
 	end
 end
 
-local function doPickUpLoot(slotFrom, container, slotID, itemCount)
+local function doPickUpLoot(slotFrom, containerTo, slotIDTo, itemCount)
 	assert(slotFrom.info, "No info from origin loot");
 	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
-
 	slotFrom.info.count = slotFrom.info.count or 1;
+	local containerFromFrame = slotFrom:GetParent();
 
 	local lootInfo = {};
 	Utils.table.copy(lootInfo, slotFrom.info);
 	lootInfo.count = itemCount;
 
-	local returnCode, count = TRP3_API.inventory.addItem(container, lootInfo.id, lootInfo, nil, slotID);
+	local returnCode, count = TRP3_API.inventory.addItem(containerTo, lootInfo.id, lootInfo, nil, slotIDTo);
 
 	slotFrom.info.count = slotFrom.info.count - count;
 
@@ -322,28 +323,32 @@ local function doPickUpLoot(slotFrom, container, slotID, itemCount)
 		slotFrom.class = nil;
 	end
 
-	if lootFrame.onLootCallback then
-		lootFrame.onLootCallback(slotFrom.info, count);
+	if containerFromFrame.onLootCallback then
+		containerFromFrame.onLootCallback(slotFrom.info, count, slotFrom);
 	end
 
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, containerTo);
 
-	for index, slot in pairs(lootFrame.slots) do
-		if slot.info then
-			return;
+	if not containerFromFrame.info.stash then
+		for index, slot in pairs(lootFrame.slots) do
+			if slot.info then
+				return;
+			end
 		end
+		lootFrame.forceLoot = nil;
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
+		lootFrame:Hide();
 	end
-	lootFrame.forceLoot = nil;
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
-	lootFrame:Hide();
 end
 
 local function pickUpLoot(slotFrom, container, slotID)
 	assert(slotFrom.info, "No info from origin loot");
 	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
+	slotFrom.info.count = slotFrom.info.count or 1;
+
 	local lootInfo = slotFrom.info;
 	local itemID = lootInfo.id;
-	local itemCount = slotFrom.info.count or 1;
+	local itemCount = slotFrom.info.count;
 
 	if itemCount == 1 then
 		doPickUpLoot(slotFrom, container, slotID, itemCount);
@@ -357,7 +362,7 @@ local function pickUpLoot(slotFrom, container, slotID)
 	end
 end
 
-local function discardLoot(slotFrom)
+local function discardLoot(slotFrom, containerFrame)
 	assert(slotFrom.info, "No info from origin loot");
 	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
 	local lootInfo = slotFrom.info;
@@ -369,18 +374,20 @@ local function discardLoot(slotFrom)
 	slotFrom.info = nil;
 	slotFrom.class = nil;
 
-	if lootFrame.onDiscardCallback then
-		lootFrame.onDiscardCallback(lootInfo);
+	if containerFrame.onDiscardCallback then
+		containerFrame.onDiscardCallback(lootInfo, slotFrom);
 	end
 
-	for index, slot in pairs(lootFrame.slots) do
-		if slot.info then
-			return;
+	if containerFrame.info and not containerFrame.info.stash then
+		for index, slot in pairs(containerFrame.slots) do
+			if slot.info then
+				return;
+			end
 		end
+		containerFrame.forceLoot = nil;
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
+		containerFrame:Hide();
 	end
-	lootFrame.forceLoot = nil;
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
-	lootFrame:Hide();
 end
 
 local UnitExists, CheckInteractDistance, UnitIsPlayer = UnitExists, CheckInteractDistance, UnitIsPlayer;
@@ -422,14 +429,16 @@ local function slotOnDragStop(slotFrom)
 			else
 				if slotFrom.deletable then
 					TRP3_API.popup.showConfirmPopup(loc("DR_POPUP_REMOVE_TEXT"), function()
-						discardLoot(slotFrom);
+						discardLoot(slotFrom, slotFrom:GetParent());
 					end);
 				else
 					Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
 				end
 			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, ("TRP3_ExchangeFrame"):len()) == "TRP3_ExchangeFrame" then
-			TRP3_API.inventory.addToExchange(container1, slot1);
+			if not container1.loot then
+				TRP3_API.inventory.addToExchange(container1, slot1);
+			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
 			if TRP3_API.inventory.isInTransaction(slotTo.info or EMPTY) then
 				return;
@@ -439,8 +448,12 @@ local function slotOnDragStop(slotFrom)
 			container2 = slotTo:GetParent().info;
 			if not container1.loot then
 				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
-			else
+			elseif not container2.loot then
 				pickUpLoot(slotFrom, container2, slot2);
+			end
+		elseif slotTo:GetName() and slotTo:GetName():sub(1, 19) == "TRP3_StashContainer" then
+			if not container1.loot then
+				TRP3_API.inventory.stashSlot(slotFrom, container1, slot1);
 			end
 		else
 			Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_HERE"), Utils.message.type.ALERT_MESSAGE);
@@ -902,7 +915,6 @@ end
 
 function TRP3_API.inventory.initLootFrame()
 	lootFrame = CreateFrame("Frame", "TRP3_LootFrame", UIParent, "TRP3_Container2x4Template");
-
 	lootFrame.LockIcon:Hide();
 
 	local lootDragStart = function(self)
@@ -923,12 +935,6 @@ function TRP3_API.inventory.initLootFrame()
 	lootFrame:SetScript("OnDragStart", lootDragStart);
 	lootFrame:SetScript("OnDragStop", lootDragStop);
 	lootFrame:SetScript("OnHide", function(self) self:Hide(); end);
-	lootFrame.IconButton:SetScript("OnDragStart", function(self)
-		lootDragStart(self:GetParent());
-	end);
-	lootFrame.IconButton:SetScript("OnDragStop", function(self)
-		lootDragStop(self:GetParent());
-	end);
 
 	lootFrame.Bottom:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 	lootFrame.Middle:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");

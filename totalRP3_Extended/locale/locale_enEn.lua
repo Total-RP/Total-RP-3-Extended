@@ -240,16 +240,35 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	-- DROP SYSTEM
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	DR_SYSTEM = "Drop system",
+	DR_SYSTEM_TT = "Drop / search for items and create / access your stashes.\n\nThe drop system does not work in dungeons/arenas/battlegrounds.",
 	DR_POPUP = "Drop here",
 	DR_POPUP_ASK = "Total RP 3\n \nSelect what to do with the item:\n%s",
 	DR_POPUP_REMOVE = "Destroy",
 	DR_POPUP_REMOVE_TEXT = "Destroy this item?",
-	DR_SEARCH_BUTTON = "Search for items",
-	DR_SEARCH_BUTTON_TT = "Search for items in this area within 15 yards.",
+	DR_SEARCH_BUTTON = "Search for |cff00ff00my|r items",
+	DR_SEARCH_BUTTON_TT = "Search for your items in the area within 15 yards.",
 	DR_NOTHING = "No items found in this area.",
 	DR_DELETED = "Destroyed: %s x%d",
 	DR_DROPED = "Droped on the ground: %s x%d",
 	DR_RESULTS = "Found %s items",
+	DR_STASHES = "Stashes",
+	DR_STASHES_CREATE = "Create a stash here",
+	DR_STASHES_CREATE_TT = "Create a stash where you stand.",
+	DR_STASHES_EDIT = "Edit stash",
+	DR_STASHES_REMOVE = "Remove stash",
+	DR_STASHES_REMOVE_PP = "Remove this stash?\n|cffff9900All items still inside will be lost!",
+	DR_STASHES_NAME = "Stash",
+	DR_STASHES_MAX = "max 50 characters",
+	DR_STASHES_WITHIN = "|cff00ff00Your|r stashes within 15 yards",
+	DR_STASHES_SEARCH = "Search for |cff00ff00players|r stashes",
+	DR_STASHES_SEARCH_TT = "Search for stashes from other players in the area within 15 yards.\n\nIt will launch a scan for 3 seconds, stand still!",
+	DR_STASHES_SCAN_MY = "Scan for my stashes",
+	DR_STASHES_SCAN = "Scan for players stashes",
+	DR_STASHES_TOO_FAR = "You are too far from this stash.",
+	DR_STASHES_REMOVED = "Stash removed.",
+	DR_STASHES_FULL = "This stash is full.",
+	DR_STASHED = "Stashed: %s x%d",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- EXTENDED TOOLS
@@ -269,6 +288,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	TYPE_LOOT = "Loot",
 	TYPE_DOCUMENT = "Document",
 	TYPE_DIALOG = "Cutscene",
+	TYPE_ITEMS = "Item(s)",
 
 	-- MODES
 	MODE_QUICK = "Quick",

@@ -26,4 +26,51 @@
 		</Anchors>
 	</Frame>
 
+	<Frame name="TRP3_StashEditFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
+		<Size x="380" y="150"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER">
+					<Size x="0" y="0"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="TOP" x="0" y="-18"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+
+			<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
+				<Size x="200" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="-15" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="icon" inherits="TRP3_IconButton" virtual="true">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="40" y="0"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="ok" inherits="TRP3_CommonButton">
+				<Size x="90" y="20"/>
+				<Anchors>
+					<Anchor relativePoint="BOTTOM" point="BOTTOMRIGHT" x="-5" y="15"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="cancel" inherits="TRP3_CommonButton">
+				<Size x="90" y="20"/>
+				<Anchors>
+					<Anchor relativePoint="BOTTOM" point="BOTTOMLEFT" x="5" y="15"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
 </Ui>

@@ -131,12 +131,12 @@
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="3">
 				<Texture parentKey="Token" file="Interface\ContainerFrame\UI-Backpack-TokenFrame">
-					<Size x="0" y="35" />
+					<Size x="0" y="34" />
 					<Anchors>
-						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Bottom" x="11" y="8"/>
-						<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Bottom" x="-4" y="8"/>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Bottom" x="11" y="6"/>
+						<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Bottom" x="-1" y="6"/>
 					</Anchors>
-					<TexCoords left="0" right="0.70" top="0" bottom="1"/>
+					<TexCoords left="0" right="0.71" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
 
