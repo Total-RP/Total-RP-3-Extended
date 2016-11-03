@@ -371,19 +371,16 @@ local function initStashContainer()
 	stashContainer = CreateFrame("Frame", "TRP3_StashContainer", UIParent, "TRP3_Container2x4Template");
 	stashContainer.LockIcon:Hide();
 
-	local dragStart = function(self)
-		self:StartMoving();
-	end
-	local dragStop = function(self)
-		self:StopMovingOrSizing();
-	end
-
 	stashContainer.info = { loot = true, stash = true };
 	stashContainer.DurabilityText:SetText(loc("DR_STASHES_NAME"));
 	stashContainer.WeightText:SetText("");
 	stashContainer:RegisterForDrag("LeftButton");
-	stashContainer:SetScript("OnDragStart", dragStart);
-	stashContainer:SetScript("OnDragStop", dragStop);
+	stashContainer:SetScript("OnDragStart", function(self)
+		self:StartMoving();
+	end);
+	stashContainer:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing();
+	end);
 	stashContainer:SetScript("OnHide", function(self)
 		self.stashInfo = nil;
 		self.stashIndex = nil;
@@ -515,8 +512,10 @@ local function displayStashesResponse()
 	if total == 0 then
 		Utils.message.displayMessage(loc("DR_STASHES_NOTHING"), 4);
 	else
+		local posY, posX = UnitPosition("player");
+		stashFoundFrame.posX = posX;
+		stashFoundFrame.posY = posY;
 		stashFoundFrame.title:SetText(loc("DR_STASHES_FOUND"):format(#stashResponse));
-
 		stashFoundFrame:Show();
 	end
 end
@@ -726,4 +725,11 @@ function dropFrame.init()
 	Comm.broadcast.registerP2PCommand(SEARCH_STASHES_COMMAND, receivedStashesResponse);
 
 	TRP3_API.ui.frame.setupMove(stashFoundFrame);
+	createRefreshOnFrame(stashFoundFrame, 0.15, function(self)
+		local posY, posX = UnitPosition("player");
+		if (not posY or not posX) or not isInRadius(MAX_SEARCH_DISTANCE / 2, posY, posX, self.posY, self.posX) then
+			self:Hide();
+			Utils.message.displayMessage(loc("DR_STASHES_TOO_FAR"), 4);
+		end
+	end);
 end

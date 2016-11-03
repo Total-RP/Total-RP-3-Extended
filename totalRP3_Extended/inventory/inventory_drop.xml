@@ -91,7 +91,7 @@
 		</Layers>
 		<Frames>
 
-			
+
 
 			<Button parentKey="Close" inherits="UIPanelCloseButton">
 				<Anchors>
