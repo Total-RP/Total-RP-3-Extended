@@ -26,7 +26,7 @@
 		</Anchors>
 	</Frame>
 
-	<Frame name="TRP3_StashEditFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
+	<Frame name="TRP3_StashEditFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true" clampedToScreen="true">
 		<Size x="380" y="150"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
@@ -73,8 +73,8 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_StashFoundFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
-		<Size x="380" y="150"/>
+	<Frame name="TRP3_StashFoundFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true" clampedToScreen="true">
+		<Size x="380" y="300"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -91,7 +91,38 @@
 		</Layers>
 		<Frames>
 
+			<Button parentKey="slot1" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="LEFT" x="50" y="0"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-17"/>
+				</Anchors>
+			</Button>
 
+			<Button parentKey="slot2" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot1" x="0" y="-23"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="slot3" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot2" x="0" y="-23"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="slot4" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.slot3" x="0" y="-23"/>
+				</Anchors>
+			</Button>
+
+			<Slider parentKey="slider" name="$parentSlider" inherits="TRP3_Scrollbar">
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.slot1"/>
+					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.slot4"/>
+				</Anchors>
+			</Slider>
 
 			<Button parentKey="Close" inherits="UIPanelCloseButton">
 				<Anchors>

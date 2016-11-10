@@ -271,6 +271,9 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DR_STASHED = "Stashed: %s x%d",
 	DR_STASHES_FOUND = "Stashes found: %s",
 	DR_STASHES_NOTHING = "No stashes found in this area.",
+	DR_STASHES_SYNC = "Synchronizing...",
+	DR_STASHES_ERROR_SYNC = "Stash is not synced.",
+	DR_STASHES_ERROR_OUT_SYNC = "Stash out of sync, please retry.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- EXTENDED TOOLS

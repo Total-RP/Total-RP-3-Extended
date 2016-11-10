@@ -325,6 +325,7 @@ local function saveStash()
 		stash.mapID = mapID;
 		stash.mapX = mapX;
 		stash.mapY = mapY;
+		stash.id = Utils.str.id();
 	end
 
 	stashEditFrame:Hide();
@@ -332,10 +333,16 @@ local function saveStash()
 	showStash(stash, index);
 end
 
-function showStash(stashInfo, stashIndex)
+function showStash(stashInfo, stashIndex, sharedData)
 	if stashInfo then
 		Utils.texture.applyRoundTexture(stashContainer.Icon, "Interface\\ICONS\\" .. (stashInfo.BA.IC or "TEMP"), "Interface\\ICONS\\TEMP");
 		stashContainer.Title:SetText((stashInfo.BA.NA or loc("DR_STASHES_NAME")));
+
+		if not sharedData or not stashContainer.sync then
+			stashContainer.DurabilityText:SetText(loc("DR_STASHES_NAME"));
+			stashContainer.WeightText:SetText("");
+			stashContainer.sync = false;
+		end
 
 		local owner = stashInfo.owner or Globals.player_id;
 		local sub = "|cff00ff00" .. owner;
@@ -351,7 +358,7 @@ function showStash(stashInfo, stashIndex)
 			slot.index = index;
 			if data[index] then
 				slot.info = data[index];
-				slot.class = getClass(data[index].id);
+				slot.class = data[index].class or getClass(data[index].id);
 				slot.deletable = stashIndex ~= nil;
 			else
 				slot.info = nil;
@@ -364,6 +371,7 @@ function showStash(stashInfo, stashIndex)
 		stashContainer:Raise();
 		stashContainer.stashInfo = stashInfo;
 		stashContainer.stashIndex = stashIndex;
+		stashContainer.sharedData = sharedData;
 	end
 end
 
@@ -452,31 +460,36 @@ local function doStashSlot(slotFrom, container, slotID, itemCount)
 	-- Check that nothing has changed
 	if slotInfo == slotFrom.info then
 
-		if stashContainer:IsVisible() and stashContainer.stashIndex then
-			-- Check that there is a free slot in the stash
-			local stashData = stashContainer.stashInfo;
-			if #stashData.item < 8 then
-				slotFrom.info.count = slotFrom.info.count or 1;
+		if stashContainer:IsVisible() then
 
-				local stashedSlotInfo = {};
-				Utils.table.copy(stashedSlotInfo, slotFrom.info);
-				stashedSlotInfo.count = itemCount;
+			if stashContainer.stashIndex or not stashContainer.sync then
+				-- Check that there is a free slot in the stash
+				local stashData = stashContainer.stashInfo;
+				if #stashData.item < 8 then
+					slotFrom.info.count = slotFrom.info.count or 1;
 
-				tinsert(stashData.item, stashedSlotInfo);
-				showStash(stashData, stashContainer.stashIndex);
+					local stashedSlotInfo = {};
+					Utils.table.copy(stashedSlotInfo, slotFrom.info);
+					stashedSlotInfo.count = itemCount;
 
-				Utils.message.displayMessage(loc("DR_STASHED"):format(getItemLink(getClass(stashedSlotInfo.id)), itemCount));
+					tinsert(stashData.item, stashedSlotInfo);
+					showStash(stashData, stashContainer.stashIndex, stashContainer.sharedData);
 
-				-- Remove from inv
-				slotInfo.count = (slotInfo.count or 1) - itemCount;
-				if slotInfo.count <= 0 then
-					TRP3_API.inventory.removeSlotContent(container, slotID, slotInfo);
+					Utils.message.displayMessage(loc("DR_STASHED"):format(getItemLink(getClass(stashedSlotInfo.id)), itemCount));
+
+					-- Remove from inv
+					slotInfo.count = (slotInfo.count or 1) - itemCount;
+					if slotInfo.count <= 0 then
+						TRP3_API.inventory.removeSlotContent(container, slotID, slotInfo);
+					else
+						TRP3_API.inventory.recomputeAllInventory();
+						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+					end
 				else
-					TRP3_API.inventory.recomputeAllInventory();
-					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+					Utils.message.displayMessage(loc("DR_STASHES_FULL"), 4);
 				end
 			else
-				Utils.message.displayMessage(loc("DR_STASHES_FULL"), 4);
+				Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
 			end
 		end
 	end
@@ -505,7 +518,69 @@ end
 
 local SEARCH_STASHES_COMMAND = "SSCM";
 local STASHES_REQUEST_DURATION = 2.5;
+local STASH_TOTAL_REQUEST = "STRQ";
+local STASH_TOTAL_RESPONSE = "STRS";
 local stashResponse = {};
+
+local function receiveStashResponse(response, sender)
+	if type(response) == "table" and response.item then
+		wipe(stashContainer.stashInfo.item);
+		Utils.table.copy(stashContainer.stashInfo.item, response.item);
+		stashContainer.sync = false;
+		showStash(stashContainer.stashInfo, nil, stashContainer.sharedData);
+	else
+		Utils.log.log("Stash out of sync: " .. response);
+		stashContainer:Hide();
+		Utils.message.displayMessage(loc("DR_STASHES_ERROR_OUT_SYNC"), 4);
+	end
+end
+
+local function receiveStashRequest(data, sender)
+	local reservedMessageID = data[1];
+	local id = data[2];
+	for _, stash in pairs(stashesData) do
+		if stash.id == id then
+			local response = {
+				item = {},
+			};
+			Utils.table.copy(response.item, stash.item);
+			Comm.sendObject(STASH_TOTAL_RESPONSE, response, sender, "BULK", reservedMessageID);
+			return;
+		end
+	end
+	Comm.sendObject(STASH_TOTAL_RESPONSE, "0", sender, "BULK", reservedMessageID);
+end
+
+local function decorateStashSlot(slot, index)
+	local stashResponse = stashResponse[index];
+	TRP3_API.ui.frame.setupIconButton(slot, stashResponse[4] or "Temp");
+	slot.Name:SetText((stashResponse[3] or loc("DR_STASHES_NAME")) .. "|cffff9900 (" .. (stashResponse[5] or 0) .. "/8)");
+	slot.InfoText:SetText("|cff00ff00" .. stashResponse[1]);
+	slot.info = stashResponse;
+	slot:SetScript("OnClick", function(self)
+		stashFoundFrame:Hide();
+		local posY, posX, posZ = UnitPosition("player");
+		local stashInfo = {
+			owner = self.info[1],
+			posY = posY,
+			posX = posX,
+			BA = {
+				NA = self.info[3] or loc("DR_STASHES_NAME"),
+				IC = self.info[4] or "Temp"
+			},
+			item = {}
+		}
+		stashContainer.DurabilityText:SetText(loc("DR_STASHES_SYNC"));
+		stashContainer.sync = true;
+		showStash(stashInfo, nil, self.info);
+		local reservedMessageID = Comm.getMessageIDAndIncrement();
+		stashContainer.WeightText:SetText("0 %");
+		Comm.addMessageIDHandler(self.info[1], reservedMessageID, function(_, total, current)
+			stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
+		end);
+		Comm.sendObject(STASH_TOTAL_REQUEST, {reservedMessageID, self.info[2]}, self.info[1], "ALERT");
+	end);
+end
 
 local function displayStashesResponse()
 	local total = #stashResponse;
@@ -517,6 +592,7 @@ local function displayStashesResponse()
 		stashFoundFrame.posY = posY;
 		stashFoundFrame.title:SetText(loc("DR_STASHES_FOUND"):format(#stashResponse));
 		stashFoundFrame:Show();
+		TRP3_API.ui.list.initList(stashFoundFrame, stashResponse, stashFoundFrame.slider);
 	end
 end
 
@@ -525,6 +601,8 @@ local function startStashesRequest()
 	local posY, posX = UnitPosition("player");
 	local mapID = GetCurrentMapAreaID();
 	if posX and posY then
+		stashFoundFrame:Hide();
+		stashEditFrame:Hide();
 		wipe(stashResponse);
 		local cID = TRP3_API.extended.showCastingBar(STASHES_REQUEST_DURATION, 2, nil, nil, loc("DR_STASHES_SCAN"));
 		broadcast.broadcast(SEARCH_STASHES_COMMAND, mapID, posY, posX, cID);
@@ -550,16 +628,16 @@ local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 				for index, slot in pairs(stash.item) do
 					total = total + 1;
 				end
-				Comm.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, index, stash.BA.NA, stash.BA.IC, total, castID);
+				Comm.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, stash.id, stash.BA.NA, stash.BA.IC, total, castID);
 			end
 		end
 	end
 end
 
-local function receivedStashesResponse(sender, index, name, icon, slot, cID)
+local function receivedStashesResponse(sender, id, name, icon, slot, cID)
 	Utils.log.log(("Received stash %s from %s."):format(name, sender));
 	if TRP3_CastingBarFrame.castID == cID then
-		tinsert(stashResponse, {sender, index, name, icon, slot});
+		tinsert(stashResponse, {sender, id, name, icon, slot});
 	else
 		Utils.log.log(("Wrong cast ID for stashes response."));
 	end
@@ -630,6 +708,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 
 function dropFrame.init()
 	-- Init data
@@ -732,4 +812,16 @@ function dropFrame.init()
 			Utils.message.displayMessage(loc("DR_STASHES_TOO_FAR"), 4);
 		end
 	end);
+
+	-- Stash list
+	Comm.registerProtocolPrefix(STASH_TOTAL_REQUEST, receiveStashRequest);
+	Comm.registerProtocolPrefix(STASH_TOTAL_RESPONSE, receiveStashResponse);
+	stashFoundFrame.widgetTab = {};
+	for i=1, 6 do
+		local line = stashFoundFrame["slot" .. i];
+		tinsert(stashFoundFrame.widgetTab, line);
+	end
+	stashFoundFrame.decorate = decorateStashSlot;
+	handleMouseWheel(stashFoundFrame, stashFoundFrame.slider);
+	stashFoundFrame.slider:SetValue(0);
 end
