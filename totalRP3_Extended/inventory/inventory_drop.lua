@@ -500,6 +500,11 @@ function TRP3_API.inventory.stashSlot(slotFrom, container, slotID)
 	assert(slotFrom.info, "No info from origin loot");
 	assert(not slotFrom:GetParent().info.loot, "Can't stash from a loot.");
 
+	if stashContainer.sharedData then
+		Utils.message.displayMessage(loc("DR_STASHES_DROP"), 4);
+		return;
+	end
+
 	local lootInfo = slotFrom.info;
 	local itemID = lootInfo.id;
 	local itemCount = slotFrom.info.count or 1;
@@ -514,6 +519,60 @@ function TRP3_API.inventory.stashSlot(slotFrom, container, slotID)
 			end
 		end, nil, itemCount);
 	end
+end
+
+local STASH_ITEM_REQUEST = "SIRQ";
+local STASH_ITEM_RESPONSE = "SIRS";
+
+local function onUnstashResponse(response, sender)
+	if type(response) == "table" then
+		-- TODO
+	elseif response == "0" then
+		Utils.log.log("Stash out of sync: " .. response);
+		stashContainer:Hide();
+		Utils.message.displayMessage(loc("DR_STASHES_ERROR_OUT_SYNC"), 4);
+	end
+	stashContainer.sync = false;
+	showStash(stashContainer.stashInfo, nil, stashContainer.sharedData);
+end
+
+local function onUnstashRequest(request, sender)
+	local reservedMessageID = request.rID;
+	local version = request.v;
+	local stashID = request.stashID;
+	local slotID = request.slotID;
+	local rootID = request.rootID;
+
+	-- TODO
+
+	local response = {};
+	Comm.sendObject(STASH_ITEM_RESPONSE, response, sender, "BULK", reservedMessageID);
+end
+
+function TRP3_API.inventory.unstashSlot(slotFrom, container1, slot1, container2, slot2)
+	local stashID = stashContainer.sharedData[2];
+	local slotID = slotFrom.index;
+	local classID = slotFrom.info.id;
+	local rootClassID = TRP3_API.extended.getRootClassID(classID);
+	local version = 0;
+	if TRP3_API.extended.classExists(rootClassID) then
+		version = getClass(rootClassID).MD.V or 0;
+	end
+
+	stashContainer.DurabilityText:SetText(loc("IT_EX_DOWNLOAD"));
+	stashContainer.sync = true;
+	local reservedMessageID = Comm.getMessageIDAndIncrement();
+	stashContainer.WeightText:SetText("0 %");
+	Comm.addMessageIDHandler(stashContainer.sharedData[1], reservedMessageID, function(_, total, current)
+		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
+	end);
+	Comm.sendObject(STASH_ITEM_REQUEST, {
+		rID = reservedMessageID,
+		stashID = stashID,
+		slotID = slotID,
+		rootID = rootClassID,
+		v = version
+	}, stashContainer.sharedData[1], "ALERT");
 end
 
 local SEARCH_STASHES_COMMAND = "SSCM";
@@ -544,6 +603,17 @@ local function receiveStashRequest(data, sender)
 				item = {},
 			};
 			Utils.table.copy(response.item, stash.item);
+			for _, slot in pairs(response.item) do
+				local class = getClass(slot.id);
+				slot.class = {
+					BA = {},
+					CO = {},
+					US = {},
+				};
+				Utils.table.copy(slot.class.BA, class.BA);
+				Utils.table.copy(slot.class.CO, class.CO or EMPTY);
+				Utils.table.copy(slot.class.US, class.US or EMPTY);
+			end
 			Comm.sendObject(STASH_TOTAL_RESPONSE, response, sender, "BULK", reservedMessageID);
 			return;
 		end
@@ -816,6 +886,9 @@ function dropFrame.init()
 	-- Stash list
 	Comm.registerProtocolPrefix(STASH_TOTAL_REQUEST, receiveStashRequest);
 	Comm.registerProtocolPrefix(STASH_TOTAL_RESPONSE, receiveStashResponse);
+	Comm.registerProtocolPrefix(STASH_ITEM_REQUEST, onUnstashRequest);
+	Comm.registerProtocolPrefix(STASH_ITEM_RESPONSE, onUnstashResponse);
+
 	stashFoundFrame.widgetTab = {};
 	for i=1, 6 do
 		local line = stashFoundFrame["slot" .. i];

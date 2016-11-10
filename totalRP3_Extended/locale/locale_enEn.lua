@@ -274,6 +274,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DR_STASHES_SYNC = "Synchronizing...",
 	DR_STASHES_ERROR_SYNC = "Stash is not synced.",
 	DR_STASHES_ERROR_OUT_SYNC = "Stash out of sync, please retry.",
+	DR_STASHES_DROP = "You can't drop item in someone else's stash.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- EXTENDED TOOLS

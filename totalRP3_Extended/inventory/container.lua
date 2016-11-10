@@ -250,7 +250,7 @@ local function containerSlotUpdate(self, elapsed)
 			self.Icon:SetVertexColor(0.85, 0.85, 0.85);
 			self.Container:Show();
 		end
-		if self:IsDragging() or TRP3_API.inventory.isInTransaction(self.info) then
+		if self:IsDragging() or TRP3_API.inventory.isInTransaction(self.info) or self:GetParent().sync then
 			self.Icon:SetDesaturated(true);
 		end
 		if self.info.cooldown then
@@ -448,6 +448,12 @@ local function slotOnDragStop(slotFrom)
 			container2 = slotTo:GetParent().info;
 			if not container1.loot then
 				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
+			elseif slotFrom:GetName() and slotFrom:GetName():sub(1, 19) == "TRP3_StashContainer" then
+				if not slotFrom:GetParent().sync then
+					TRP3_API.inventory.unstashSlot(slotFrom, container1, slot1, container2, slot2);
+				else
+					Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
+				end
 			elseif not container2.loot then
 				pickUpLoot(slotFrom, container2, slot2);
 			end
