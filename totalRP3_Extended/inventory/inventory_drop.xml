@@ -27,7 +27,7 @@
 	</Frame>
 
 	<Frame name="TRP3_StashEditFrame" inherits="TRP3_AltHoveredFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true" clampedToScreen="true">
-		<Size x="380" y="150"/>
+		<Size x="380" y="175"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -56,6 +56,12 @@
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="40" y="0"/>
 				</Anchors>
 			</Button>
+
+			<CheckButton parentKey="hidden" inherits="TRP3_CheckBox" name="$parentHidden">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
+				</Anchors>
+			</CheckButton>
 
 			<Button parentKey="ok" inherits="TRP3_CommonButton">
 				<Size x="90" y="20"/>

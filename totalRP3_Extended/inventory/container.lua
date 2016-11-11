@@ -419,11 +419,7 @@ local function slotOnDragStop(slotFrom)
 					TRP3_API.inventory.dropOrDestroy(itemClass, function()
 						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1ID, slotFrom.info, true);
 					end, function()
-						if class and not class.BA.SB then
-							TRP3_API.inventory.dropItem(container1, slot1ID, slotFrom.info);
-						else
-							Utils.message.displayMessage(ERR_DROP_BOUND_ITEM, Utils.message.type.ALERT_MESSAGE);
-						end
+						TRP3_API.inventory.dropItem(container1, slot1ID, slotFrom.info);
 					end);
 				end
 			else

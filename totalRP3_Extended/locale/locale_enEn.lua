@@ -44,7 +44,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_CON = "Container",
 	IT_CON_TT = "Container (%d/%d slots used)",
 	IT_CON_ERROR_TYPE = "This container can't contain this kind of items.",
-	IT_CON_ERROR_TRADE = "You can't trade this container if it's not empty.",
+	IT_CON_ERROR_TRADE = "You can't drop this container if it's not empty.",
 	IT_CON_OPEN = "Open/Close container",
 	IT_CON_CAN_INNER = "Can't place a container inside itself!",
 	IT_INV_SHOW_ALL = "Show all inventory",
@@ -276,6 +276,8 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	DR_STASHES_ERROR_SYNC = "Stash is not synced.",
 	DR_STASHES_ERROR_OUT_SYNC = "Stash out of sync, please retry.",
 	DR_STASHES_DROP = "You can't drop item in someone else's stash.",
+	DR_STASHES_HIDE = "Hide from scan",
+	DR_STASHES_HIDE_TT = "This stash won't appear on other players map scan.\n\nNote that they will always be able to access it if they know where it is.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- EXTENDED TOOLS

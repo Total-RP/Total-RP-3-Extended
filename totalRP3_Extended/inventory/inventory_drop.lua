@@ -160,7 +160,7 @@ local function initScans()
 		scanCommand = STASHES_SCAN_COMMAND,
 		scanResponder = function(sender, requestMapID)
 			for _, stash in pairs(stashesData) do
-				if stash.mapID == tonumber(requestMapID) then
+				if stash.mapID == tonumber(requestMapID) and not stash.BA.NS then
 					local total = 0;
 					for index, slot in pairs(stash.item) do
 						total = total + 1;
@@ -289,10 +289,12 @@ local function openStashEditor(stashIndex)
 		local stash = stashesData[stashIndex] or EMPTY;
 		stashEditFrame.name:SetText(stash.BA and stash.BA.NA or loc("DR_STASHES_NAME"));
 		iconHandler(stash.BA and stash.BA.IC or "temp");
+		stashEditFrame.hidden:SetChecked(stash.BA.NS or false);
 	else
 		stashEditFrame.title:SetText(loc("DR_STASHES_CREATE"));
 		stashEditFrame.name:SetText(loc("DR_STASHES_NAME"));
 		iconHandler("temp");
+		stashEditFrame.hidden:SetChecked(false);
 	end
 	stashEditFrame:Show();
 end
@@ -313,6 +315,7 @@ local function saveStash()
 	end
 	stash.BA.IC = stashEditFrame.icon.selectedIcon or "TEMP";
 	stash.BA.NA = stEtN(strtrim(stashEditFrame.name:GetText():sub(1, 50))) or loc("DR_STASHES_NAME");
+	stash.BA.NS = stashEditFrame.hidden:GetChecked();
 
 	-- Proper coordinates
 	local posY, posX, posZ = UnitPosition("player");
@@ -401,6 +404,7 @@ local function initStashContainer()
 		self.stashInfo = nil;
 		self.stashIndex = nil;
 		self:Hide();
+		TRP3_ItemTooltip:Hide();
 	end);
 	stashContainer.IconButton:SetScript("OnClick", function(self)
 		if stashContainer.stashIndex then
@@ -495,10 +499,10 @@ local function doStashSlot(slotFrom, container, slotID, itemCount)
 						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 					end
 				else
-					Utils.message.displayMessage(loc("DR_STASHES_FULL"), 4);
+					Utils.message.displayMessage(loc("DR_STASHES_FULL"), Utils.message.type.ALERT_MESSAGE);
 				end
 			else
-				Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
+				Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), Utils.message.type.ALERT_MESSAGE);
 			end
 		end
 	end
@@ -509,14 +513,30 @@ function TRP3_API.inventory.stashSlot(slotFrom, container, slotID)
 	assert(slotFrom.info, "No info from origin loot");
 	assert(not slotFrom:GetParent().info.loot, "Can't stash from a loot.");
 
-	if stashContainer.sharedData then
-		Utils.message.displayMessage(loc("DR_STASHES_DROP"), 4);
-		return;
-	end
-
 	local lootInfo = slotFrom.info;
 	local itemID = lootInfo.id;
 	local itemCount = slotFrom.info.count or 1;
+	local itemClass = getClass(itemID);
+
+	-- You can't stash bound items
+	if itemClass.BA.SB then
+		Utils.message.displayMessage(ERR_DROP_BOUND_ITEM, Utils.message.type.ALERT_MESSAGE);
+		return;
+	end
+
+	-- You can't stash non empty containers, to avoid uncalculable data transfer
+	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slotFrom.info.content or EMPTY) > 0 then
+		if not itemClass.CO.OI then
+			Utils.message.displayMessage(loc("IT_CON_ERROR_TRADE"), Utils.message.type.ALERT_MESSAGE);
+			return;
+		end
+	end
+
+	-- You can't drop item in someone else's stash (for now)
+	if stashContainer.sharedData then
+		Utils.message.displayMessage(loc("DR_STASHES_DROP"), Utils.message.type.ALERT_MESSAGE);
+		return;
+	end
 
 	if itemCount == 1 then
 		doStashSlot(slotFrom, container, slotID, itemCount);
@@ -946,6 +966,8 @@ function dropFrame.init()
 			{ parent = stashEditFrame.icon, point = "LEFT", parentPoint = "RIGHT", x = 15 },
 			{ iconHandler });
 	end);
+	stashEditFrame.hidden.Text:SetText(loc("DR_STASHES_HIDE"));
+	setTooltipForSameFrame(stashEditFrame.hidden, "RIGHT", 0, 5, loc("DR_STASHES_HIDE"), loc("DR_STASHES_HIDE_TT"));
 
 	initStashContainer();
 	Comm.broadcast.registerCommand(SEARCH_STASHES_COMMAND, receivedStashesRequest);
