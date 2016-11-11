@@ -163,25 +163,8 @@
 					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line7"/>
 				</Anchors>
 			</Frame>
-			<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
-				<Size x="15" y="0" />
-				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.line1"/>
-					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.line1"/>
-					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line8"/>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						local name = self:GetName();
-						_G[name .. "Text"]:SetText("");
-						_G[name .. "High"]:SetText("");
-						_G[name .. "Low"]:SetText("");
-						self:SetMinMaxValues(0, 6);
-						self:SetValueStep(1);
-						self:SetOrientation("VERTICAL");
-					</OnLoad>
-				</Scripts>
-			</Slider>
+
+			<Slider parentKey="slider" name="$parentSlider" inherits="TRP3_Scrollbar" hidden="true"/>
 
 			<Button parentKey="Close" inherits="TRP3_CommonButton" text="CLOSE">
 				<Anchors>

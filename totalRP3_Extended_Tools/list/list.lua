@@ -711,12 +711,16 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			DB[ID] = {};
 			Utils.table.copy(DB[ID], data);
 			TRP3_API.extended.registerObject(ID, DB[ID], 0);
-			TRP3_API.security.registerSender(ID, Globals.player_id);
+			TRP3_API.security.registerSender(ID, author);
 			ToolFrame.list.container.import:Hide();
 			onTabChanged(nil, currentTab);
 			Utils.message.displayMessage(loc("DB_IMPORT_DONE"), 3);
 			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 			TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+
+			if DB[ID].securityLevel ~= 3 then
+				TRP3_API.security.showSecurityDetailFrame(ID, ToolFrame);
+			end
 		end
 
 		local checkVersion = function()
@@ -756,7 +760,9 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			local objectVersion = data.MD.V or 0;
 			local type = TRP3_API.extended.tools.getTypeLocale(data.TY);
 			TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_FULL_CONFIRM"):format(type, link, by, objectVersion), function()
-				importFunction(version, ID, data);
+				C_Timer.After(0.25, function()
+					importFunction(version, ID, data);
+				end);
 			end);
 		else
 			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
@@ -803,7 +809,9 @@ function TRP3_API.extended.tools.initList(toolFrame)
 				local objectVersion = data.MD.V or 0;
 				local type = TRP3_API.extended.tools.getTypeLocale(data.TY);
 				TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_FULL_CONFIRM"):format(type, link, by, objectVersion), function()
-					importFunction(version, ID, data);
+					C_Timer.After(0.25, function()
+						importFunction(version, ID, data);
+					end);
 				end);
 			else
 				Utils.message.displayMessage(loc("DB_IMPORT_EMPTY"), 2);
