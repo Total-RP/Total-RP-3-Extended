@@ -396,8 +396,8 @@ local function slotOnDragStop(slotFrom)
 	ResetCursor();
 	if slotFrom.info and not TRP3_API.inventory.isInTransaction(slotFrom.info) then
 		local slotTo = GetMouseFocus();
-		local container1, slot1;
-		slot1 = slotFrom.slotID;
+		local container1, slot1ID;
+		slot1ID = slotFrom.slotID;
 		container1 = slotFrom:GetParent().info;
 
 		local class = getClass(slotFrom.info.id);
@@ -408,7 +408,7 @@ local function slotOnDragStop(slotFrom)
 			if not slotFrom.loot then
 				if UnitExists("mouseover") and UnitIsPlayer("mouseover") and CheckInteractDistance("mouseover", 2) then
 					if class and not class.BA.SB then
-						TRP3_API.inventory.addToExchange(container1, slot1);
+						TRP3_API.inventory.addToExchange(container1, slot1ID);
 					else
 						Utils.message.displayMessage(ERR_TRADE_BOUND_ITEM, Utils.message.type.ALERT_MESSAGE);
 					end
@@ -417,10 +417,10 @@ local function slotOnDragStop(slotFrom)
 					local itemLink = getItemLink(itemClass);
 
 					TRP3_API.inventory.dropOrDestroy(itemClass, function()
-						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info, true);
+						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1ID, slotFrom.info, true);
 					end, function()
 						if class and not class.BA.SB then
-							TRP3_API.inventory.dropItem(container1, slot1, slotFrom.info);
+							TRP3_API.inventory.dropItem(container1, slot1ID, slotFrom.info);
 						else
 							Utils.message.displayMessage(ERR_DROP_BOUND_ITEM, Utils.message.type.ALERT_MESSAGE);
 						end
@@ -437,29 +437,29 @@ local function slotOnDragStop(slotFrom)
 			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, ("TRP3_ExchangeFrame"):len()) == "TRP3_ExchangeFrame" then
 			if not container1.loot then
-				TRP3_API.inventory.addToExchange(container1, slot1);
+				TRP3_API.inventory.addToExchange(container1, slot1ID);
 			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
 			if TRP3_API.inventory.isInTransaction(slotTo.info or EMPTY) then
 				return;
 			end
-			local container2, slot2;
-			slot2 = slotTo.slotID;
+			local container2, slot2ID;
+			slot2ID = slotTo.slotID;
 			container2 = slotTo:GetParent().info;
 			if not container1.loot then
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
-			elseif slotFrom:GetName() and slotFrom:GetName():sub(1, 19) == "TRP3_StashContainer" then
+				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1ID, container2, slot2ID);
+			elseif slotFrom:GetParent() == TRP3_StashContainer and TRP3_StashContainer.sharedData then
 				if not slotFrom:GetParent().sync then
-					TRP3_API.inventory.unstashSlot(slotFrom, container1, slot1, container2, slot2);
+					TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2ID);
 				else
 					Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
 				end
 			elseif not container2.loot then
-				pickUpLoot(slotFrom, container2, slot2);
+				pickUpLoot(slotFrom, container2, slot2ID);
 			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, 19) == "TRP3_StashContainer" then
 			if not container1.loot then
-				TRP3_API.inventory.stashSlot(slotFrom, container1, slot1);
+				TRP3_API.inventory.stashSlot(slotFrom, container1, slot1ID);
 			end
 		else
 			Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_HERE"), Utils.message.type.ALERT_MESSAGE);
@@ -513,8 +513,14 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
 					end
 				end
-			elseif self.loot and self.info then
-				if button == "RightButton" then
+			elseif self.loot and self.info and button == "RightButton" then
+				if self:GetParent() == TRP3_StashContainer and TRP3_StashContainer.sharedData then
+					if not self:GetParent().sync then
+						TRP3_API.inventory.unstashSlot(self);
+					else
+						Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
+					end
+				else
 					pickUpLoot(self);
 				end
 			end

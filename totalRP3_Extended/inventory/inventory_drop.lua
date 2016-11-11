@@ -28,6 +28,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local broadcast = TRP3_API.communication.broadcast;
 
 local dropFrame, stashEditFrame, stashFoundFrame = TRP3_DropSearchFrame, TRP3_StashEditFrame, TRP3_StashFoundFrame;
+local callForStashRefresh;
 local dropData, stashesData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -367,8 +368,15 @@ function showStash(stashInfo, stashIndex, sharedData)
 			TRP3_API.inventory.containerSlotUpdate(slot);
 		end
 
+		if sharedData then
+			TRP3_API.ui.tooltip.setTooltipAll(stashContainer.IconButton, "TOP", 0, 0, loc("DR_STASHES_NAME"), loc("CM_CLICK") .. ": " .. loc("DR_STASHES_RESYNC"));
+		else
+			TRP3_API.ui.tooltip.setTooltipAll(stashContainer.IconButton, "TOP", 0, 0, loc("DR_STASHES_NAME"), loc("CM_CLICK") .. ": " .. loc("CM_ACTIONS"));
+		end
+
 		stashContainer:Show();
 		stashContainer:Raise();
+		stashContainer.stashID = stashInfo.id;
 		stashContainer.stashInfo = stashInfo;
 		stashContainer.stashIndex = stashIndex;
 		stashContainer.sharedData = sharedData;
@@ -415,9 +423,10 @@ local function initStashContainer()
 					end);
 				end
 			end, 0, true);
+		elseif stashContainer.sharedData then
+			callForStashRefresh(stashContainer.sharedData[1], stashContainer.sharedData[2]);
 		end
 	end);
-	TRP3_API.ui.tooltip.setTooltipAll(stashContainer.IconButton, "TOP", 0, 0, loc("CM_ACTIONS"));
 	local checkDiscard = function(slotFrom)
 		local index = slotFrom.index;
 		if index and stashContainer:IsVisible() and stashContainer.stashInfo and stashContainer.stashIndex then
@@ -521,35 +530,113 @@ function TRP3_API.inventory.stashSlot(slotFrom, container, slotID)
 	end
 end
 
+local SEARCH_STASHES_COMMAND = "SSCM";
+local STASHES_REQUEST_DURATION = 2.5;
+local STASH_TOTAL_REQUEST = "STRQ";
+local STASH_TOTAL_RESPONSE = "STRS";
+local stashResponse = {};
 local STASH_ITEM_REQUEST = "SIRQ";
 local STASH_ITEM_RESPONSE = "SIRS";
+local classExists = TRP3_API.extended.classExists;
+
+function callForStashRefresh(target, stashID)
+	stashContainer.DurabilityText:SetText(loc("DR_STASHES_SYNC"));
+	stashContainer.sync = true;
+	local reservedMessageID = Comm.getMessageIDAndIncrement();
+	stashContainer.WeightText:SetText("0 %");
+	Comm.addMessageIDHandler(target, reservedMessageID, function(_, total, current)
+		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
+	end);
+	Comm.sendObject(STASH_TOTAL_REQUEST, {reservedMessageID, stashID}, target, "ALERT");
+end
 
 local function onUnstashResponse(response, sender)
-	if type(response) == "table" then
-		-- TODO
-	elseif response == "0" then
-		Utils.log.log("Stash out of sync: " .. response);
-		stashContainer:Hide();
-		Utils.message.displayMessage(loc("DR_STASHES_ERROR_OUT_SYNC"), 4);
+	if stashContainer:IsVisible() and stashContainer.sharedData and stashContainer.sharedData[1] == sender then
+		if type(response) == "table" then
+
+			-- If we did get info
+			if response.class then
+				local classID = response.id;
+				local class = response.class;
+
+				-- Last check that we didn't got it in the meantime
+				if not classExists(classID) or getClass(classID).MD.V < class.MD.V then
+					TRP3_DB.exchange[classID] = class;
+					TRP3_API.security.computeSecurity(classID, class);
+					TRP3_API.extended.unregisterObject(classID);
+					TRP3_API.extended.registerObject(classID, class, 0);
+					TRP3_API.script.clearRootCompilation(classID);
+					TRP3_API.security.registerSender(classID, sender);
+					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+					TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+					TRP3_API.events.fireEvent(Events.ON_OBJECT_UPDATED);
+				end
+			end
+
+			-- Adds
+			TRP3_API.inventory.addItem(stashContainer.toContainer, response.slot.id, response.slot, true, stashContainer.toSlot);
+
+			-- Calls for refresh
+			callForStashRefresh(stashContainer.sharedData[1], stashContainer.sharedData[2]);
+
+		elseif response == "0" then
+			Utils.log.log("Stash out of sync: " .. response);
+			stashContainer:Hide();
+			Utils.message.displayMessage(loc("DR_STASHES_ERROR_OUT_SYNC"), 4);
+		end
+		stashContainer.sync = false;
+		showStash(stashContainer.stashInfo, nil, stashContainer.sharedData);
 	end
-	stashContainer.sync = false;
-	showStash(stashContainer.stashInfo, nil, stashContainer.sharedData);
 end
 
 local function onUnstashRequest(request, sender)
 	local reservedMessageID = request.rID;
 	local version = request.v;
 	local stashID = request.stashID;
-	local slotID = request.slotID;
+	local slotID = tonumber(request.slotID or 0) or 0;
 	local rootID = request.rootID;
 
-	-- TODO
+	for _, stash in pairs(stashesData) do
+		if slotID and stash.id == stashID then
+			Utils.log.log("Stash found.");
+			if slotID and stash.item[slotID] then
+				Utils.log.log("Stash slot found.");
+				local localData = stash.item[slotID];
+				local localRootId = TRP3_API.extended.getRootClassID(localData.id);
+				if rootID == localRootId then
+					Utils.log.log("Stash item class matches.");
 
-	local response = {};
-	Comm.sendObject(STASH_ITEM_RESPONSE, response, sender, "BULK", reservedMessageID);
+					local localRootClass = getClass(localRootId);
+					local localVersion = localRootClass.MD.V or 0;
+					local response = {
+						slot = localData,
+					};
+					if version < localVersion then
+						response.id = rootID;
+						response.class = localRootClass;
+					end
+					Comm.sendObject(STASH_ITEM_RESPONSE, response, sender, "BULK", reservedMessageID);
+
+					-- Remove from our stash
+					tremove(stash.item, slotID);
+
+					-- Refresh our stash if we are currently showing it
+					if stashContainer:IsVisible() and stashContainer.stashID == stashID and stashContainer.stashIndex then
+						showStash(stashContainer.stashInfo, stashContainer.stashIndex);
+					end
+					return;
+				end
+			end
+		end
+	end
+
+	Comm.sendObject(STASH_ITEM_RESPONSE, "0", sender, "BULK", reservedMessageID);
 end
 
-function TRP3_API.inventory.unstashSlot(slotFrom, container1, slot1, container2, slot2)
+function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
+	assert(stashContainer:IsVisible(), "Stash is not shown.");
+	assert(stashContainer.sharedData, "The stash is not a shared stash.");
+
 	local stashID = stashContainer.sharedData[2];
 	local slotID = slotFrom.index;
 	local classID = slotFrom.info.id;
@@ -559,6 +646,8 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container1, slot1, container2,
 		version = getClass(rootClassID).MD.V or 0;
 	end
 
+	stashContainer.toContainer = container2;
+	stashContainer.toSlot = slot2;
 	stashContainer.DurabilityText:SetText(loc("IT_EX_DOWNLOAD"));
 	stashContainer.sync = true;
 	local reservedMessageID = Comm.getMessageIDAndIncrement();
@@ -574,12 +663,6 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container1, slot1, container2,
 		v = version
 	}, stashContainer.sharedData[1], "ALERT");
 end
-
-local SEARCH_STASHES_COMMAND = "SSCM";
-local STASHES_REQUEST_DURATION = 2.5;
-local STASH_TOTAL_REQUEST = "STRQ";
-local STASH_TOTAL_RESPONSE = "STRS";
-local stashResponse = {};
 
 local function receiveStashResponse(response, sender)
 	if type(response) == "table" and response.item then
@@ -631,6 +714,7 @@ local function decorateStashSlot(slot, index)
 		stashFoundFrame:Hide();
 		local posY, posX, posZ = UnitPosition("player");
 		local stashInfo = {
+			id = self.info[2],
 			owner = self.info[1],
 			posY = posY,
 			posX = posX,
@@ -640,15 +724,8 @@ local function decorateStashSlot(slot, index)
 			},
 			item = {}
 		}
-		stashContainer.DurabilityText:SetText(loc("DR_STASHES_SYNC"));
-		stashContainer.sync = true;
 		showStash(stashInfo, nil, self.info);
-		local reservedMessageID = Comm.getMessageIDAndIncrement();
-		stashContainer.WeightText:SetText("0 %");
-		Comm.addMessageIDHandler(self.info[1], reservedMessageID, function(_, total, current)
-			stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
-		end);
-		Comm.sendObject(STASH_TOTAL_REQUEST, {reservedMessageID, self.info[2]}, self.info[1], "ALERT");
+		callForStashRefresh(self.info[1], self.info[2]);
 	end);
 end
 
