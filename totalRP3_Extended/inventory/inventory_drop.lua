@@ -782,6 +782,9 @@ local function startStashesRequest()
 end
 
 local function receivedStashesRequest(sender, mapID, posY, posX, castID)
+	if sender == Globals.player_id then
+		return;
+	end
 	mapID = tonumber(mapID or 0) or 0;
 	posY = tonumber(posY or 0) or 0;
 	posX = tonumber(posX or 0) or 0;
