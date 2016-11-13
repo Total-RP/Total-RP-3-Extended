@@ -26,7 +26,7 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = false;
+local DEBUG = true;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -135,7 +135,7 @@ local function writeOperand(testStructure, comparatorType, env)
 			assert(tonumber(testStructure.v) ~= nil, "Cannot parse operand numeric value: " .. testStructure.v);
 			code = testStructure.v;
 		else
-			code = "\"" .. escapeString(tostring(testStructure.v)) .. "\"";
+			code = "var(\"" .. escapeString(tostring(testStructure.v)) .. "\", args)";
 		end
 	else
 		local operandInfo = getTestOperande(testStructure.i);
@@ -623,6 +623,12 @@ local directReplacement = {
 	end,
 	["trp:target:full"] = function()
 		return TRP3_API.r.name("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
+	["trp:player:first"] = function()
+		return TRP3_API.profile.getData("player/characteristics").FN or "";
+	end,
+	["trp:player:last"] = function()
+		return TRP3_API.profile.getData("player/characteristics").LN or "";
 	end,
 }
 
