@@ -111,7 +111,7 @@ Warning: If the animation flickers it's because there is a problem with the anim
 	SEC_HIGH = "High",
 	SEC_HIGH_TT = "This item and all of its related object are secured and don't use any malicious or undesirable effects.",
 	SEC_LEVEL_DETAILS = "Security details",
-	SEC_LEVEL_DETAILS_TT = "For %s and all its inner objects",
+	SEC_LEVEL_DETAILS_TT = "For %s and all its inner objects.\n|cffff9900Made by: |cff00ff00%s\n|cffff9900Received from: |cff00ff00%s",
 	SEC_LEVEL_DETAILS_SECURED = "This object and all its inner objects are secure!",
 	SEC_UNSECURED_WHY = "Why is this unsecure?",
 	SEC_REASON_TALK = "Character talk",

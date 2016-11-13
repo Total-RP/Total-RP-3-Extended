@@ -85,7 +85,7 @@
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
 				<FontString parentKey="subtitle" inherits="GameFontNormal" justifyH="CENTER">
-					<Size x="0" y="10" />
+					<Size x="0" y="50" />
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-15" />
 						<Anchor point="LEFT" x="15" y="0" />
@@ -109,7 +109,7 @@
 		<Frames>
 			<Frame parentKey="line1" inherits="TRP3_SecurityFrameLineTemplate">
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.subtitle" x="0" y="-20"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.subtitle" x="0" y="-10"/>
 					<Anchor point="LEFT" x="20" y="0"/>
 					<Anchor point="RIGHT" x="-30" y="0"/>
 				</Anchors>

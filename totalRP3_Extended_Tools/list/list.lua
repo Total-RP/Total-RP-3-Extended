@@ -484,7 +484,6 @@ function onLineActionSelected(value, button)
 			TRP3_Extended_ImpExport.object = {};
 			TRP3_Extended_ImpExport.date = date("%d/%m/%y %H:%M:%S");
 			TRP3_Extended_ImpExport.version = Globals.extended_version;
-			TRP3_Extended_ImpExport.by = Globals.player_id;
 			Utils.table.copy(TRP3_Extended_ImpExport.object, getClass(objectID));
 			TRP3_Tools_Flags.exportAlert = true;
 			ReloadUI();
@@ -805,7 +804,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 				local ID = TRP3_Extended_ImpExport.id;
 				local data = TRP3_Extended_ImpExport.object;
 				local link = TRP3_API.inventory.getItemLink(data);
-				local by = TRP3_Extended_ImpExport.by;
+				local by = data.MD.CB;
 				local objectVersion = data.MD.V or 0;
 				local type = TRP3_API.extended.tools.getTypeLocale(data.TY);
 				TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_FULL_CONFIRM"):format(type, link, by, objectVersion), function()

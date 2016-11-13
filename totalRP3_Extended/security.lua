@@ -176,7 +176,7 @@ local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local securityFrame = TRP3_SecurityFrame;
-local NORMAL_HEIGHT = 280;
+local NORMAL_HEIGHT = 310;
 
 local ACTION_FLAG_THIS = "1";
 local ACTION_FLAG_ALL = "2";
@@ -187,10 +187,10 @@ local function onLineActionSelected(value, button)
 
 	if action == ACTION_FLAG_THIS then
 		TRP3_API.security.acceptSpecificEffectGroup(securityFrame.classID, effectGroup, not (securityVault.specific[securityFrame.classID] and securityVault.specific[securityFrame.classID][effectGroup]));
-		showSecurityDetailFrame(securityFrame.classID);
+		showSecurityDetailFrame(securityFrame.classID, securityFrame.frameFrom);
 	elseif action == ACTION_FLAG_ALL then
 		TRP3_API.security.acceptEffectGroup(effectGroup, not securityVault.global[effectGroup]);
-		showSecurityDetailFrame(securityFrame.classID);
+		showSecurityDetailFrame(securityFrame.classID, securityFrame.frameFrom);
 	end
 end
 
@@ -230,6 +230,7 @@ function showSecurityDetailFrame(classID, frameFrom)
 
 	local height = NORMAL_HEIGHT;
 
+	securityFrame.frameFrom = frameFrom;
 	securityFrame.empty:Hide();
 	if tsize(securityFrame.securityDetails) == 0 then
 		securityFrame.empty:Show();
@@ -240,19 +241,17 @@ function showSecurityDetailFrame(classID, frameFrom)
 	securityFrame.sender = securityVault.sender[classID];
 
 	securityFrame.whitelist:Show();
-	if classID and TRP3_DB.my and TRP3_DB.my[classID] then
+	if (classID and TRP3_DB.my and TRP3_DB.my[classID]) or securityFrame.sender == Globals.player_id then
 		securityFrame.whitelist:Hide();
-		securityFrame.sender = Globals.player_id;
 		height = height - 50;
 	else
 		securityFrame.whitelist:SetChecked(securityVault.whitelist[securityFrame.sender]);
 		securityFrame.whitelist.Text:SetText(loc("SEC_LEVEL_DETAILS_FROM"):format("|cff00ff00" .. securityFrame.sender));
 	end
 
-
 	initList(securityFrame, securityFrame.securityDetails, securityFrame.slider);
 
-	securityFrame.subtitle:SetText(loc("SEC_LEVEL_DETAILS_TT"):format(TRP3_API.inventory.getItemLink(class)));
+	securityFrame.subtitle:SetText(loc("SEC_LEVEL_DETAILS_TT"):format(TRP3_API.inventory.getItemLink(class), class.MD.CB, securityFrame.sender));
 
 	securityFrame:SetHeight(height);
 	securityFrame:ClearAllPoints();
@@ -322,7 +321,7 @@ function TRP3_API.security.initSecurity()
 
 	securityFrame.whitelist:SetScript("OnClick", function(self)
 		TRP3_API.security.whitelistSender(securityFrame.sender, self:GetChecked());
-		showSecurityDetailFrame(securityFrame.classID);
+		showSecurityDetailFrame(securityFrame.classID, securityFrame.frameFrom);
 	end);
 
 	TRP3_API.security.EVENT_SECURITY_CHANGED = "EVENT_SECURITY_CHANGED";
