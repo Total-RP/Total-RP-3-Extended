@@ -960,6 +960,10 @@ We should begin with some examples:
 	OP_OP_RANDOM_PREVIEW = "Random number between |cff00ff00%s|r and |cff00ff00%s|r.",
 	OP_OP_RANDOM_FROM = "From",
 	OP_OP_RANDOM_TO = "To",
+	OP_OP_CHAR_ZONE = "Zone name",
+	OP_OP_CHAR_ZONE_TT = "The zone name where the character currently is.\n\n|cffff9900Warning: The text depends on the client locale.",
+	OP_OP_CHAR_SUBZONE = "Sub-zone name",
+	OP_OP_CHAR_SUBZONE_TT = "The sub-zone name where the character currently is.\n\n|cffff9900Warning: The text depends on the client locale.",
 
 	-- Test
 	COND_EDITOR = "Condition editor",

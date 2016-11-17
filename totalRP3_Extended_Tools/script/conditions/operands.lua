@@ -500,6 +500,28 @@ local function char_swimming_init()
 	});
 end
 
+local function char_zone_init()
+	registerOperandEditor("char_zone", {
+		title = loc("OP_OP_CHAR_ZONE"),
+		description = loc("OP_OP_CHAR_ZONE_TT"),
+		returnType = "",
+		getText = function(args)
+			return loc("OP_OP_CHAR_ZONE");
+		end,
+	});
+end
+
+local function char_subzone_init()
+	registerOperandEditor("char_subzone", {
+		title = loc("OP_OP_CHAR_SUBZONE"),
+		description = loc("OP_OP_CHAR_SUBZONE_TT"),
+		returnType = "",
+		getText = function(args)
+			return loc("OP_OP_CHAR_SUBZONE");
+		end,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Check vars
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -687,5 +709,7 @@ function TRP3_ConditionEditor.initOperands()
 	char_mounted_init();
 	char_resting_init();
 	char_swimming_init();
+	char_zone_init();
+	char_subzone_init();
 
 end

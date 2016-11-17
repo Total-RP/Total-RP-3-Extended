@@ -555,6 +555,8 @@ function editor.init()
 			"char_resting",
 			"char_swimming",
 			"char_facing",
+			"char_zone",
+			"char_subzone",
 		},
 --		["Pets and companions"] = { -- TODO: locals
 --			"pet_battle_name",
