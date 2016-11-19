@@ -83,20 +83,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	INV_PAGE_WEAR_ACTION_RESET = "Reset configuration",
 	INV_PAGE_SEQUENCE = "Sequence ID",
 	INV_PAGE_WAIT = "Waiting for response",
-	INV_PAGE_SEQUENCE_TT = [[You can change the pose of your character by entering an animation ID here and select the animation frame with the slider below.
-
-Example of IDs:
-60: /talk
-55: /roar
-195: /train
-225: /fear
-66: /bow
-67: /hi
-113: /salute
-209: /point
-68 : /acclame
-
-Warning: If the animation flickers it's because there is a problem with the animation for your race. If it happens, please select another animation.]],
+	INV_PAGE_SEQUENCE_TT = "You can change the pose of your character by entering an animation ID here and select the animation frame with the slider below.\n\nWarning: If the animation flickers it's because there is a problem with the animation for your race model. If it happens, please select another animation.",
+	INV_PAGE_SEQUENCE_PRESET = "You can select a sequence ID corresponding to an emote here.",
 	INV_PAGE_EDIT_ERROR1 = "You must be the author of this item to edit it.",
 	INV_PAGE_EDIT_ERROR2 = "This item is not in Quick mode.",
 

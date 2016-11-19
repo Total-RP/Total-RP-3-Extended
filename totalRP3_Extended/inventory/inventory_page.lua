@@ -500,5 +500,37 @@ function TRP3_API.inventory.initInventoryPage()
 	main.Equip.sequence.title:SetText(loc("INV_PAGE_SEQUENCE"));
 	setTooltipForSameFrame(main.Equip.sequence.help, "RIGHT", 0, 5, loc("INV_PAGE_SEQUENCE"), loc("INV_PAGE_SEQUENCE_TT"));
 
+	-- Preset
+	local presets = {
+		{"/acclame", 68},
+		{"/bow", 66},
+		{"/classypose", 29},
+		{"/drunk", 14},
+		{"/fear", 225},
+		{"/flex", 82},
+		{"/hi", 67},
+		{"/kiss", 76},
+		{"/lol", 70},
+		{"/point", 209},
+		{"/pickup", 50},
+		{"/roar", 55},
+		{"/rude", 73},
+		{"/run", 5},
+		{"/salute", 113},
+		{"/talk", 60},
+		{"/train", 195},
+		{"/use", 63},
+		{"/walk", 4},
+		{"/workworkwork", 62},
+		{"/!", 64},
+		{"/?", 65},
+	};
+	main.Equip.preset:SetScript("OnClick", function(self)
+		TRP3_API.ui.listbox.displayDropDown(self, presets, function(value)
+			main.Equip.sequence:SetText(value or "");
+		end, 0, true);
+	end);
+	setTooltipForSameFrame(main.Equip.preset, "RIGHT", 0, 5, loc("INV_PAGE_SEQUENCE"), loc("INV_PAGE_SEQUENCE_PRESET"));
+
 	createTutorialStructure();
 end
