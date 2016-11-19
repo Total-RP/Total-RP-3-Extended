@@ -522,6 +522,17 @@ local function char_subzone_init()
 	});
 end
 
+local function char_minimap_init()
+	registerOperandEditor("char_minimap", {
+		title = loc("OP_OP_CHAR_MINIMAP"),
+		description = loc("OP_OP_CHAR_MINIMAP_TT"),
+		returnType = "",
+		getText = function(args)
+			return loc("OP_OP_CHAR_MINIMAP");
+		end,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Check vars
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -711,5 +722,6 @@ function TRP3_ConditionEditor.initOperands()
 	char_swimming_init();
 	char_zone_init();
 	char_subzone_init();
+	char_minimap_init();
 
 end

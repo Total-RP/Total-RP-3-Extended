@@ -509,6 +509,7 @@ local function inv_item_count_con_init()
 		title = loc("OP_OP_INV_COUNT_CON"),
 		description = loc("OP_OP_INV_COUNT_CON_TT"),
 		returnType = 0,
+		noPreview = true,
 		getText = function(args)
 			local id = (args or EMPTY)[1] or "";
 			return loc("OP_OP_INV_COUNT_CON_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id)) .. "|cffffff00");

@@ -280,7 +280,7 @@ local OPERANDS = {
 	},
 
 	["char_falling"] = {
-		numeric = true,
+		numeric = false,
 		codeReplacement = function(args)
 			return "IsFalling()";
 		end,
@@ -290,7 +290,7 @@ local OPERANDS = {
 	},
 
 	["char_stealth"] = {
-		numeric = true,
+		numeric = false,
 		codeReplacement = function(args)
 			return "IsStealthed()";
 		end,
@@ -300,7 +300,7 @@ local OPERANDS = {
 	},
 
 	["char_flying"] = {
-		numeric = true,
+		numeric = false,
 		codeReplacement = function(args)
 			return "IsFlying()";
 		end,
@@ -310,7 +310,7 @@ local OPERANDS = {
 	},
 
 	["char_mounted"] = {
-		numeric = true,
+		numeric = false,
 		codeReplacement = function(args)
 			return "IsMounted()";
 		end,
@@ -320,7 +320,7 @@ local OPERANDS = {
 	},
 
 	["char_resting"] = {
-		numeric = true,
+		numeric = false,
 		codeReplacement = function(args)
 			return "IsResting()";
 		end,
@@ -330,12 +330,42 @@ local OPERANDS = {
 	},
 
 	["char_swimming"] = {
-		numeric = true,
+		numeric = false,
 		codeReplacement = function(args)
 			return "IsSwimming()";
 		end,
 		env = {
 			["IsSwimming"] = "IsSwimming",
+		},
+	},
+
+	["char_zone"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "GetZoneText()";
+		end,
+		env = {
+			["GetZoneText"] = "GetZoneText",
+		},
+	},
+
+	["char_subzone"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "GetSubZoneText()";
+		end,
+		env = {
+			["GetSubZoneText"] = "GetSubZoneText",
+		},
+	},
+
+	["char_minimap"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "GetMinimapZoneText()";
+		end,
+		env = {
+			["GetMinimapZoneText"] = "GetMinimapZoneText",
 		},
 	},
 

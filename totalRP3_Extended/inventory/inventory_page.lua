@@ -375,7 +375,7 @@ function TRP3_API.inventory.initInventoryPage()
 	end);
 
 	createRefreshOnFrame(main, 0.15, containerFrameUpdate);
-	model:HookScript("OnUpdate", function(self)
+	model:HookScript("OnUpdateModel", function(self)
 		if self.sequence then
 			self:SetSequenceTime(self.sequence or DEFAULT_SEQUENCE, self.sequenceTime or DEFAULT_TIME);
 		end

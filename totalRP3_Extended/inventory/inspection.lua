@@ -183,7 +183,7 @@ function inspectionFrame.init()
 	end
 	TRP3_API.inventory.initContainerInstance(inspectionFrame.Main, 16);
 
-	inspectionFrame.Main.Model:HookScript("OnUpdate", function(self)
+	inspectionFrame.Main.Model:HookScript("OnUpdateModel", function(self)
 		if self.sequence then
 			self:SetSequenceTime(self.sequence, self.sequenceTime);
 		end

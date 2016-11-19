@@ -964,6 +964,8 @@ We should begin with some examples:
 	OP_OP_CHAR_ZONE_TT = "The zone name where the character currently is.\n\n|cffff9900Warning: The text depends on the client locale.",
 	OP_OP_CHAR_SUBZONE = "Sub-zone name",
 	OP_OP_CHAR_SUBZONE_TT = "The sub-zone name where the character currently is.\n\n|cffff9900Warning: The text depends on the client locale.",
+	OP_OP_CHAR_MINIMAP = "Minimap text",
+	OP_OP_CHAR_MINIMAP_TT = "Returns the minimap zone text.\n\nThe game event \"MINIMAP_ZONE_CHANGED\" is triggered, when the text changes. So you can test it in a game event link in a campaign or a quest.",
 
 	-- Test
 	COND_EDITOR = "Condition editor",

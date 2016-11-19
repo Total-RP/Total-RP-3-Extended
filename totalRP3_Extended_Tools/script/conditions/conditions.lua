@@ -557,15 +557,12 @@ function editor.init()
 			"char_facing",
 			"char_zone",
 			"char_subzone",
+			"char_minimap",
 		},
 --		["Pets and companions"] = { -- TODO: locals
 --			"pet_battle_name",
 --			"pet_pet_name",
 --			"pet_mount_name",
---		},
---		["Campaign and quests"] = { -- TODO: locals
---			"campaign_started",
---			"campaign_quest_started",
 --		},
 		[loc("INV_PAGE_CHARACTER_INV")] = {
 			"inv_item_count",
