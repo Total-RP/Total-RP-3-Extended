@@ -566,7 +566,6 @@ function editor.init()
 --		},
 		[loc("INV_PAGE_CHARACTER_INV")] = {
 			"inv_item_count",
-			"inv_item_count_con",
 --			"inv_durability",
 --			"inv_weight",
 --			"inv_empty_slot",

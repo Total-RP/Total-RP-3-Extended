@@ -27,6 +27,7 @@ local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor;
 
+local inventorySources, inventorySourcesLocals;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effects
@@ -187,12 +188,7 @@ local function item_add_init()
 	setTooltipForSameFrame(editor.crafted, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_CRAFTED"), loc("EFFECT_ITEM_ADD_CRAFTED_TT"));
 
 	-- Source
-	local sources = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_TO"), loc("EFFECT_ITEM_TO_1")), "inventory", loc("EFFECT_ITEM_TO_1_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_TO"), loc("EFFECT_ITEM_TO_2")), "parent", loc("EFFECT_ITEM_TO_2_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_TO"), loc("EFFECT_ITEM_TO_3")), "self", loc("EFFECT_ITEM_TO_3_TT")},
-	}
-	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 250, true);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -247,12 +243,7 @@ local function item_remove_init()
 	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_QT"), loc("EFFECT_ITEM_REMOVE_QT_TT"));
 
 	-- Source
-	local sources = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_1")), "inventory", loc("EFFECT_ITEM_SOURCE_1_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_2")), "parent", loc("EFFECT_ITEM_SOURCE_2_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_3")), "self", loc("EFFECT_ITEM_SOURCE_3_TT")},
-	}
-	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 250, true);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -468,57 +459,73 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
-local itemSelectionEditor = TRP3_OperandEditorItemSelection;
 
-local function initItemSelectionEditor()
+local function initItemSelectionEditor(editor)
 
-	itemSelectionEditor.browse:SetText(BROWSE);
-	itemSelectionEditor.browse:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = itemSelectionEditor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
-			itemSelectionEditor.id:SetText(id);
+	editor.browse:SetText(BROWSE);
+	editor.browse:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
+			editor.id:SetText(id);
 		end, TRP3_DB.types.ITEM});
 	end);
 
 	-- Text
-	itemSelectionEditor.id.title:SetText(loc("ITEM_ID"));
+	editor.id.title:SetText(loc("ITEM_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("ITEM_ID"), loc("EFFECT_ITEM_SOURCE_ID"));
 
-	function itemSelectionEditor.load(args)
-		itemSelectionEditor.id:SetText((args or EMPTY)[1] or "");
-	end
-
-	function itemSelectionEditor.save()
-		return {strtrim(itemSelectionEditor.id:GetText()) or ""};
-	end
 end
 
 local function inv_item_count_init()
+	local editor = TRP3_OperandEditorItemCount;
+	initItemSelectionEditor(editor);
+
 	registerOperandEditor("inv_item_count", {
 		title = loc("OP_OP_INV_COUNT"),
 		description = loc("OP_OP_INV_COUNT_TT"),
 		returnType = 0,
 		getText = function(args)
-			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_INV_COUNT_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id)) .. "|cffffff00");
+			local data = args or EMPTY;
+			local id = data[1] or "";
+			if id:len() == 0 then
+				id = "|cff00ff00" .. loc("OP_OP_INV_COUNT_ANY");
+			else
+				id = TRP3_API.inventory.getItemLink(getClass(id));
+			end
+			local source = data[2] or "inventory";
+			return loc("OP_OP_INV_COUNT_PREVIEW"):format(id .. "|cffffff00", inventorySourcesLocals[source] or "?");
 		end,
-		editor = itemSelectionEditor,
+		editor = editor,
+		getDefaultArgs = function()
+			return {"", "inventory"};
+		end,
 	});
-end
 
-local function inv_item_count_con_init()
-	registerOperandEditor("inv_item_count_con", {
-		title = loc("OP_OP_INV_COUNT_CON"),
-		description = loc("OP_OP_INV_COUNT_CON_TT"),
-		returnType = 0,
-		noPreview = true,
-		getText = function(args)
-			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_INV_COUNT_CON_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id)) .. "|cffffff00");
-		end,
-		editor = itemSelectionEditor,
-	});
+	-- Source
+	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 185, true);
+
+	function editor.load(args)
+		local data = args or EMPTY;
+		editor.id:SetText(data[1] or "");
+		editor.source:SetSelectedValue(data[2] or "inventory");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or "", editor.source:GetSelectedValue() or "inventory"};
+	end
 end
 
 function TRP3_API.extended.tools.initItemEffects()
+
+	inventorySources = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_1")), "inventory", loc("EFFECT_ITEM_SOURCE_1_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_2")), "parent", loc("EFFECT_ITEM_SOURCE_2_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_3")), "self", loc("EFFECT_ITEM_SOURCE_3_TT")},
+	}
+	inventorySourcesLocals = {
+		inventory = loc("EFFECT_ITEM_SOURCE_1"),
+		parent = loc("EFFECT_ITEM_SOURCE_2"),
+		self = loc("EFFECT_ITEM_SOURCE_3"),
+	}
 
 	-- Effects
 	item_sheath_init();
@@ -534,8 +541,5 @@ function TRP3_API.extended.tools.initItemEffects()
 	document_close_init();
 
 	-- Operands
-	initItemSelectionEditor();
-
 	inv_item_count_init();
-	inv_item_count_con_init();
 end

@@ -165,7 +165,7 @@ local function countItemInstances(container, itemID)
 	local count = 0;
 
 	for _, slot in pairs(container.content or EMPTY) do
-		if slot.id == itemID then
+		if itemID:len() == 0 or slot.id == itemID then
 			count = count + (slot.count or 1);
 		end
 		if isContainerByClassID(slot.id) then

@@ -226,7 +226,7 @@
 								</Anchors>
 								<Frames>
 									<Frame parentKey="args" inherits="TRP3_HoveredFrame" hidden="true" name="$parentArgs" enableMouse="true">
-										<Size x="230" y="150"/>
+										<Size x="230" y="160"/>
 										<Layers>
 											<Layer level="OVERLAY">
 												<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[Line text]">
@@ -272,7 +272,7 @@
 								</Anchors>
 								<Frames>
 									<Frame parentKey="args" inherits="TRP3_HoveredFrame" hidden="true" name="$parentArgs" enableMouse="true">
-										<Size x="230" y="150"/>
+										<Size x="230" y="160"/>
 										<Layers>
 											<Layer level="OVERLAY">
 												<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[Line text]">

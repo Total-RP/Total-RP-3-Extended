@@ -377,18 +377,13 @@ local OPERANDS = {
 		numeric = true,
 		codeReplacement = function(args)
 			local id = args[1] or "";
-			return ("getItemCount(\"%s\")"):format(id);
-		end,
-		env = {
-			["getItemCount"] = "TRP3_API.inventory.getItemCount",
-		},
-	},
-
-	["inv_item_count_con"] = {
-		numeric = true,
-		codeReplacement = function(args)
-			local id = args[1] or "";
-			return ("getItemCount(\"%s\", args.object)"):format(id);
+			local source = "nil";
+			if args[2] == "parent" then
+				source = "args.container";
+			elseif args[2] == "self" then
+				source = "args.object";
+			end
+			return ("getItemCount(\"%s\", %s)"):format(id, source);
 		end,
 		env = {
 			["getItemCount"] = "TRP3_API.inventory.getItemCount",

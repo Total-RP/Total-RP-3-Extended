@@ -176,7 +176,7 @@
 
 	</Frame>
 
-	<Frame name="TRP3_OperandEditorItemSelection" hidden="true">
+	<Frame name="TRP3_OperandEditorItemTemplate" virtual="true">
 		<Frames>
 			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
 				<Anchors>
@@ -190,6 +190,17 @@
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
 				</Anchors>
 			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorItemCount" inherits="TRP3_OperandEditorItemTemplate" hidden="true">
+		<Frames>
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="LEFT" relativeKey="$parent.id" x="-20" y="0"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-5"/>
+				</Anchors>
+			</Frame>
 		</Frames>
 	</Frame>
 
