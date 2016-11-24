@@ -852,12 +852,12 @@ local function onToolbarButtonClick(button, mouseButton)
 	tinsert(dropdownItems, { loc("DR_STASHES_CREATE"), getActionValue(ACTION_STASH_CREATE, posX, posY), loc("DR_STASHES_CREATE_TT") });
 	if posX and posY then
 		local searchResults = {};
-		for _, stash in pairs(stashesData) do
+		for stashIndex, stash in pairs(stashesData) do
 			if stash.mapID == mapID then
 				local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
 				if isInRadius then
 					-- Show loot
-					tinsert(searchResults, stash);
+					tinsert(searchResults, stashIndex);
 				end
 			end
 		end
@@ -865,8 +865,8 @@ local function onToolbarButtonClick(button, mouseButton)
 		if #searchResults > 0 then
 			tinsert(dropdownItems, { "" });
 			tinsert(dropdownItems, { loc("DR_STASHES_WITHIN"), nil });
-			for index, stash in pairs(searchResults) do
-				tinsert(dropdownItems, { getItemLink(stash), index });
+			for _, stashIndex in pairs(searchResults) do
+				tinsert(dropdownItems, { getItemLink(stashesData[stashIndex]), stashIndex });
 			end
 		end
 	end
