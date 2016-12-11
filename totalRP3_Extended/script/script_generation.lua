@@ -26,7 +26,7 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = false;
+local DEBUG = true;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -575,6 +575,7 @@ function TRP3_API.script.generateAndRun(code, args, env)
 	for alias, global in pairs(env or EMPTY) do
 		code = "\n" .. IMPORT_PATTERN:format(alias, global) .. code;
 	end
+	code = "\n" .. IMPORT_PATTERN:format("var", "TRP3_API.script.parseArgs") .. code;
 
 	if DEBUG then
 		print(code);

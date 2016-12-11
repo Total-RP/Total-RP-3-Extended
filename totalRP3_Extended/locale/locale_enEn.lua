@@ -1015,7 +1015,7 @@ We should begin with some examples:
 	QE_AUTO_REVEAL_TT = "Reveal the quest in the quest log when the campaign is started.",
 	QE_OBJ = "Quest objectives",
 	QE_OBJ_SINGULAR = "Quest objective",
-	QE_OBJ_TT = "Quest objectives are hints for the player. Accomplishing all objectives does not automatically complete the quest. You decide when objectives are shown so you can have secret objective in your quest.",
+	QE_OBJ_TT = "Quest objectives are hints for the player. Accomplishing all objectives does not automatically complete the quest. You decide when objectives are shown so you can have secret objective in your quest.\n|cffff9900Objectives are always ordered by ID in the quest log, and not following their reveal order.",
 	QE_OBJ_ADD = "Add objective",
 	QE_OBJ_REMOVE = "Remove this quest objective?",
 	QE_OBJ_NO = "No quest objective",
