@@ -35,12 +35,12 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	BINDING_NAME_TRP3_MAIN_CONTAINER = "Open main container",
 	BINDING_NAME_TRP3_SEARCH_FOR_ITEMS = "Search for items",
 	BINDING_NAME_TRP3_QUESTLOG = "Open TRP3's quest log",
-	BINDING_NAME_TRP3_QUEST_LOOK = "Quest action: look",
+	BINDING_NAME_TRP3_QUEST_LOOK = "Quest action: inspect",
 	BINDING_NAME_TRP3_QUEST_LISTEN = "Quest action: listen",
-	BINDING_NAME_TRP3_QUEST_ACTION = "Quest action: action",
+	BINDING_NAME_TRP3_QUEST_ACTION = "Quest action: interact",
 	BINDING_NAME_TRP3_QUEST_TALK = "Quest action: talk",
 
--- INVENTORY
+	-- INVENTORY
 	IT_CON = "Container",
 	IT_CON_TT = "Container (%d/%d slots used)",
 	IT_CON_ERROR_TYPE = "This container can't contain this kind of items.",
@@ -168,7 +168,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_ACTIONS_TYPE_LOOK = "Inspect",
 	QE_ACTIONS_TYPE_TALK = "Talk",
 	QE_ACTIONS_TYPE_LISTEN = "Listen",
-	QE_ACTIONS_TYPE_INTERRACT = "Interract",
+	QE_ACTIONS_TYPE_INTERRACT = "Interact",
 	QE_NOACTION_LOOK = "You don't see anything special.",
 	QE_NOACTION_LISTEN = "You don't hear anything special.",
 	QE_NOACTION_ACTION = "There is nothing to do.",
@@ -552,7 +552,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_LINKS = "Event links",
 	WO_EVENT_LINKS = "Object event links",
 	WO_ACTIONS_LINKS = "Action links",
-	WO_ACTIONS_LINKS_TT = "Here you can link your workflows to player quest actions.\nThese actions are: |cff00ff00Interract, listen, talk and inspect.|r\nEach link can be conditioned.",
+	WO_ACTIONS_LINKS_TT = "Here you can link your workflows to player quest actions.\nThese actions are: |cff00ff00Interact, listen, talk and inspect.|r\nEach link can be conditioned.",
 	WO_LINKS_TRIGGERS = "Here you can link your workflows to specifics events for this object.",
 	WO_LINKS_NO_LINKS = "No link",
 	WO_LINKS_NO_LINKS_TT = "Does not link this action/event to a workflow.",
@@ -570,8 +570,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_EVENT_EX_LINK = "Game event link",
 	WO_EVENT_EX_ADD = "Add event link",
 	WO_EVENT_EX_NO = "No event link",
-	WO_EVENT_EX_EDITOR = "Game link editor",
-	WO_EVENT_EX_CONDI = "Game link condition editor",
+	WO_EVENT_EX_EDITOR = "Event link editor",
+	WO_EVENT_EX_CONDI = "Event link condition editor",
 	WO_EVENT_ID = "Event ID",
 	WO_EVENT_ID_TT = "The event ID.\n\nYou can see the whole events list on websites like wowwiki of wowpedia.\n\nHere as an example, PLAYER_REGEN_DISABLED is triggered when you enter a combat.",
 
@@ -1292,7 +1292,7 @@ http://wowwiki.wikia.com/wiki/Event_API]],
 
 	TU_AC_1_TEXT = [[|cff00ff00Action links|r is where you can link a workflow to a quest action.
 
-There are four types of quest actions that a player can perform: |cff00ff00listen, look, talk and interract|r.
+There are four types of quest actions that a player can perform: |cff00ff00listen, look, talk and interact|r.
 
 You can define action links in the campaign, quest or quest step level.]],
 
@@ -1382,9 +1382,9 @@ You can also see all droped items on the map by using the "Scan for my items" bu
 	-- TUTORIAL: Quest log
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	QUEST_TU_1 = [[Quests will often require that |cff00ff00you interract with NPCs or with your environment through actions|r.
+	QUEST_TU_1 = [[Quests will often require that |cff00ff00you interact with NPCs or with your environment through actions|r.
 
-There are four types of action: |cff00ff00Listen, look, talk and interract|r.
+There are four types of action: |cff00ff00Listen, look, talk and interact|r.
 
 You can perform an action by |cff00ff00right-clicking on the quest log button on the TRP3 toolbar|r.
 

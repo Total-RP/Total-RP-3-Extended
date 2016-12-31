@@ -408,11 +408,11 @@ local function createTabBar()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ "", TABS.MY_DB, 200 },
-			{ "", TABS.OTHERS_DB, 200 },
-			{ "", TABS.BACKERS_DB, 200 },
-			{ "", TABS.FULL_DB, 200 },
-			{ loc("DB_BACKERS_LIST"), TABS.BACKERS_LIST, 150 },
+			{ "", TABS.MY_DB, 201 },
+			{ "", TABS.OTHERS_DB, 241 },
+			{ "", TABS.BACKERS_DB, 221 },
+			{ "", TABS.FULL_DB, 221 },
+			{ loc("DB_BACKERS_LIST"), TABS.BACKERS_LIST, 160 },
 		},
 		onTabChanged
 	);

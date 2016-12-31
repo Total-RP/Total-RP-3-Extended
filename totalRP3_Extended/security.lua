@@ -238,7 +238,7 @@ function showSecurityDetailFrame(classID, frameFrom)
 	end
 
 	securityFrame.classID = classID;
-	securityFrame.sender = securityVault.sender[classID];
+	securityFrame.sender = securityVault.sender[classID] or UNKNOWN;
 
 	securityFrame.whitelist:Show();
 	if (classID and TRP3_DB.my and TRP3_DB.my[classID]) or securityFrame.sender == Globals.player_id then
