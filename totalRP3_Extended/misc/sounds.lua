@@ -154,6 +154,11 @@ function historyFrame.onSoundPlayed()
 	end
 end
 
+local function stopAll()
+	Utils.music.stopChannel();
+	Utils.music.stopMusic();
+end
+
 local function initHistory()
 	-- Button on target bar
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
@@ -164,11 +169,15 @@ local function initHistory()
 				configText = loc("EX_SOUND_HISTORY"),
 				tooltip = loc("EX_SOUND_HISTORY"),
 				tooltipSub = loc("EX_SOUND_HISTORY_TT"),
-				onClick = function(self)
-					if historyFrame:IsVisible() then
-						historyFrame:Hide();
+				onClick = function(self, _, button)
+					if button == "LeftButton" then
+						if historyFrame:IsVisible() then
+							historyFrame:Hide();
+						else
+							showHistory();
+						end
 					else
-						showHistory();
+						stopAll();
 					end
 				end,
 				visible = 1
@@ -188,10 +197,7 @@ local function initHistory()
 	end);
 
 	historyFrame.stop:SetText(loc("EX_SOUND_HISTORY_STOP_ALL"));
-	historyFrame.stop:SetScript("OnClick", function()
-		Utils.music.stopChannel();
-		Utils.music.stopMusic();
-	end);
+	historyFrame.stop:SetScript("OnClick", stopAll);
 
 	historyFrame.clear:SetText(loc("EX_SOUND_HISTORY_CLEAR"));
 	historyFrame.clear:SetScript("OnClick", function()
