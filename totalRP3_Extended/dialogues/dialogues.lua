@@ -563,6 +563,7 @@ function TRP3_API.extended.dialog.onStart()
 	end);
 
 	historyFrame.container:SetFontObject(ChatFontNormal);
+	historyFrame.container:SetJustifyH("LEFT");
 
 	TRP3_API.ui.frame.setupMove(historyFrame);
 	TRP3_API.ui.frame.setupMove(dialogFrame);

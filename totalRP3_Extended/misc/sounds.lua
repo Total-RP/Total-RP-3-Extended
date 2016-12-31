@@ -188,6 +188,7 @@ local function initHistory()
 
 	historyFrame.container:SetFontObject(ChatFontNormal);
 	historyFrame.container:SetHyperlinksEnabled(true);
+	historyFrame.container:SetJustifyH("LEFT");
 
 	historyFrame.title:SetText(loc("EX_SOUND_HISTORY"));
 	historyFrame.empty:SetText(loc("EX_SOUND_HISTORY_EMPTY"));

@@ -284,7 +284,7 @@ Clic droit : Effacer la condition]=],
 Pour cacher l'image par la suite, laissez juste le champ vide.]=],
 	["DI_LEFT_UNIT"] = "Modèle de gauche",
 	["DI_LOOT"] = "Attendre le butin",
-	["DI_LOOT_TT"] = "Si le workflow sélectionné à gauche déclenche l'affichage d'un butin pour le joueur, vous pouvez cocher ce paramètre pour empêcher le joueur de passer à l'étape suivante du dialogue tant qu'il n'a pas récupéré l'intégralité du butin.",
+	["DI_LOOT_TT"] = "Si le processus sélectionné à gauche déclenche l'affichage d'un butin pour le joueur, vous pouvez cocher ce paramètre pour empêcher le joueur de passer à l'étape suivante du dialogue tant qu'il n'a pas récupéré l'intégralité du butin.",
 	["DI_MODELS"] = "Modèles",
 	["DI_NAME"] = "Nom de l'orateur",
 	["DI_NAME_DIRECTION"] = "Direction du dialogue",
@@ -420,7 +420,7 @@ Le radar sera lancé 3 secondes, patience !]=],
 
 Le système de dépôt ne fonctionne pas en donjon/arène/champ de bataille.]=],
 	["EDITOR_BOTTOM"] = "Bas",
-	["EDITOR_CANCEL_TT"] = [=[Annule tous les changements sur l'élément %s entier (l'élément-racine et tous ses éléments inclus).
+	["EDITOR_CANCEL_TT"] = [=[Annule tous les changements sur l'élément %s entier (l'élément-racine et tous ses éléments internes).
 
 |cffff9900Les changements non sauvegardés seront perdus !]=],
 	["EDITOR_CONFIRM"] = "Confirmer",
@@ -433,7 +433,7 @@ Le système de dépôt ne fonctionne pas en donjon/arène/champ de bataille.]=],
 	["EDITOR_MORE"] = "Plus",
 	["EDITOR_NOTES"] = "Notes libres",
 	["EDITOR_PREVIEW"] = "Prévisualiser",
-	["EDITOR_SAVE_TT"] = "Sauvegarde tous les changements sur l'élément %s entier (l'élément-racine et tous ses éléments inclus) et incrémente automatiquement son numéro de version.",
+	["EDITOR_SAVE_TT"] = "Sauvegarde tous les changements sur l'élément %s entier (l'élément-racine et tous ses éléments internes) et incrémente automatiquement son numéro de version.",
 	["EDITOR_TOP"] = "Haut",
 	["EDITOR_WARNINGS"] = [=[Il y a %s avertissements.
 
@@ -468,7 +468,7 @@ Sauvegarder quand même ?]=],
 |cffffff00Conseil : copiez-collez l'ID complet pour être sûr d'éviter les coquilles.]=],
 	["EFFECT_ITEM_ADD"] = "Ajouter objet",
 	["EFFECT_ITEM_ADD_CRAFTED"] = "Artisanat",
-	["EFFECT_ITEM_ADD_CRAFTED_TT"] = "Marque les objets ajoutés (via workflow) comme étant \"Fabriqué par xxx\" où xxx sera le nom du joueur.",
+	["EFFECT_ITEM_ADD_CRAFTED_TT"] = "Marque les objets ajoutés (via processus) comme étant \"Fabriqué par xxx\" où xxx sera le nom du joueur.",
 	["EFFECT_ITEM_ADD_ID"] = "ID d'objet",
 	["EFFECT_ITEM_ADD_ID_TT"] = [=[L'objet à ajouter.
 
@@ -582,13 +582,13 @@ Si la quête n’apparaît pas dans le navigateur, essayer d'abord de sauvegarde
 	["EFFECT_SHEATH_TT"] = "Dégaine ou rengaine les armes du personnage.",
 	["EFFECT_SIGNAL"] = "Envoyer signal",
 	["EFFECT_SIGNAL_ID"] = "ID du signal",
-	["EFFECT_SIGNAL_ID_TT"] = "C'est l'identifiant de votre signal. Il pourra être testé dans les conditions et workflows déclenchés par l’événement de jeu |cff00ff00TRP3_SIGNAL|r.",
+	["EFFECT_SIGNAL_ID_TT"] = "C'est l'identifiant de votre signal. Il pourra être testé dans les conditions et processus déclenchés par l’événement de jeu |cff00ff00TRP3_SIGNAL|r.",
 	["EFFECT_SIGNAL_PREVIEW"] = "|cffffff00Envoyer le signal:|r %s|cffffff00 avec la valeur:|r %s",
 	["EFFECT_SIGNAL_TT"] = [=[Envoi un signal avec un identifiant et une valeur au personnage sélectionné par le joueur.
 
 Ce signal peut être écouté par les campagnes, quêtes et étapes via les événements de jeu en écoutant l’événement |cff00ff00TRP3_SIGNAL|r.]=],
 	["EFFECT_SIGNAL_VALUE"] = "Valeur du signal",
-	["EFFECT_SIGNAL_VALUE_TT"] = "C'est la valeur de votre signal. Il pourra être testé dans les conditions et workflows déclenchés par l’événement de jeu |cff00ff00TRP3_SIGNAL|r. Il peut aussi être inséré comme balise de texte |cff00ff00${event.2}|r.",
+	["EFFECT_SIGNAL_VALUE_TT"] = "C'est la valeur de votre signal. Il pourra être testé dans les conditions et processus déclenchés par l’événement de jeu |cff00ff00TRP3_SIGNAL|r. Il peut aussi être inséré comme balise de texte |cff00ff00${event.2}|r.",
 	["EFFECT_SOUND_ID_LOCAL"] = "Jouer son local",
 	["EFFECT_SOUND_ID_LOCAL_PREVIEW"] = "Jouer le son d'ID %s dans le channel %s dans un rayon de %s yards.",
 	["EFFECT_SOUND_ID_LOCAL_TT"] = "Joue un son qui sera entendu par les joueurs aux alentours.",
@@ -596,55 +596,118 @@ Ce signal peut être écouté par les campagnes, quêtes et étapes via les év�
 	["EFFECT_SOUND_ID_SELF_CHANNEL"] = "Channel",
 	["EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE"] = "Ambiance",
 	["EFFECT_SOUND_ID_SELF_CHANNEL_SFX"] = "SFX",
+	["EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT"] = [=[SFX est à utiliser pour les effets sonores. Il utilise le volume du jeu.
+
+Différents sons SFX peuvent être joués simultanément.]=],
 	["EFFECT_SOUND_ID_SELF_ID"] = "ID de son",
 	["EFFECT_SOUND_ID_SELF_PREVIEW"] = "Joue le son d'ID %s dans le channel %s.",
-	["IN_INNER"] = "Éléments inclus",
-	["IN_INNER_ADD"] = "Créer un élément inclus",
-	["IN_INNER_COPY_ACTION"] = "Copier le contenu de l'élément",
-	["IN_INNER_DELETE_CONFIRM"] = [=[Supprimer l'élément inclus |cff00ffff"%s"|r |cff00ff00[%s]|r de l'élément-mère |cff00ff00[%s]|r ?
+	["EFFECT_SOUND_ID_SELF_TT"] = "Joue un son dans un channel particulier. Seul le joueur l'entendra.",
+	["EFFECT_SOUND_LOCAL_DISTANCE"] = "Distance de jeu",
+	["EFFECT_SOUND_LOCAL_DISTANCE_TT"] = "Détermine la distance jusqu'à laquelle les joueurs aux alentours entendront l'effet sonore.",
+	["EFFECT_SOUND_MUSIC_LOCAL"] = "Joueur musique locale",
+	["EFFECT_SOUND_MUSIC_LOCAL_PREVIEW"] = "Joue la musique \"%s\" dans un rayon de %s mètres.",
+	["EFFECT_SOUND_MUSIC_LOCAL_TT"] = "Joue une musique pour les joueurs aux alentours.",
+	["EFFECT_SOUND_MUSIC_SELF"] = "Jouer musique",
+	["EFFECT_SOUND_MUSIC_SELF_PATH"] = "Chemin de la musique",
+	["EFFECT_SOUND_MUSIC_SELF_PREVIEW"] = "Joue la musique: %s",
+	["EFFECT_SOUND_MUSIC_STOP"] = "Arrêter la musique",
+	["EFFECT_SOUND_PLAY"] = "Jouer",
+	["EFFECT_SOURCE"] = "Source",
+	["EFFECT_SOURCE_CAMPAIGN"] = "Campagne active",
+	["EFFECT_SOURCE_CAMPAIGN_TT"] = "Recherche la variable dans la campagne active, si il existe une campagne active.",
+	["EFFECT_SOURCE_OBJECT"] = "Création",
+	["EFFECT_SOURCE_WORKFLOW"] = "Processus",
+	["EFFECT_SOURCE_WORKFLOW_TT"] = "Recherche la variable dans l'exécution du processus. La portée de la variable est limitée à l'exécution de ce processus et sera détruite par après.",
+	["EFFECT_SPEECH_NAR"] = "Discours: Narration",
+	["EFFECT_SPEECH_NAR_DEFAULT"] = "L'hivers s'installe doucement dans la nuit ...",
+	["EFFECT_SPEECH_NAR_TEXT_TT"] = "Veuillez ne pas inclure le préfixe ||.",
+	["EFFECT_SPEECH_NPC"] = "Discours: PNJ",
+	["EFFECT_SPEECH_NPC_DEFAULT"] = "Je voudrais un bonhomme de neige.",
+	["EFFECT_SPEECH_NPC_NAME"] = "Nom du PNJ",
+	["EFFECT_SPEECH_NPC_NAME_TT"] = "Le nom du PNJ.",
+	["EFFECT_SPEECH_PLAYER"] = "Discours: Joueur",
+	["EFFECT_SPEECH_PLAYER_DEFAULT"] = "Que le dragon vous consume !",
+	["EFFECT_SPEECH_PLAYER_TT"] = "Fait parler/crier le joueur, ou lui fait faire une emote /e.",
+	["EFFECT_SPEECH_TYPE"] = "Type de discours",
+	["EFFECT_SUMMOUNT"] = "Invoquer une monture",
+	["EFFECT_SUMMOUNT_NOMOUNT"] = "Pas de monture sélectionnée.",
+	["EFFECT_SUMMOUNT_TT"] = "Invoque une monture spécifique, si elle est disponible.",
+	["EFFECT_TEXT"] = "Afficher du texte",
+	["EFFECT_TEXT_PREVIEW"] = "Texte affiché",
+	["EFFECT_TEXT_TEXT"] = "Texte",
+	["EFFECT_TEXT_TEXT_DEFAULT"] = "Votre texte",
+	["EFFECT_TEXT_TEXT_TT"] = "Le texte à afficher.",
+	["EFFECT_TEXT_TT"] = [=[Affiche un texte.
+Différents affichages sont disponibles.]=],
+	["EFFECT_TEXT_TYPE"] = "Type d'affichage",
+	["EFFECT_TEXT_TYPE_1"] = "Fenêtre de chat",
+	["EFFECT_TEXT_TYPE_2"] = "Popup d'alerte",
+	["EFFECT_TEXT_TYPE_3"] = "Texte d'alerte de raid",
+	["EFFECT_TEXT_TYPE_4"] = "Message d'erreur",
+	["EFFECT_USE_SLOT"] = "Index d'emplacement du contenant.",
+	["EFFECT_USE_SLOT_TT"] = "Les indexes des emplacements sont assignés de gauche à droite et de haut en bas.",
+	["EFFECT_VAR"] = "Nom de variable",
+	["EFFECT_VAR_INDEX"] = "Index d'argument",
+	["EFFECT_VAR_INDEX_TT"] = [=[L'index de l'argument.
 
-|cffff9900Cet élément inclus sera perdu.]=],
-	["IN_INNER_DELETE_TT"] = "Supprime cet élément inclus de l'élément-mère.",
-	["IN_INNER_EMPTY"] = [=[Pas d'élément inclus.
+Donc si vous souhaitez vérifier le troisième argument de l'événement, entrez 3.]=],
+	["EFFECT_VAR_OBJECT_CHANGE"] = "Opération sur variable de création",
+	["EFFECT_VAR_VALUE"] = "Valeur de variable",
+	["EX_SOUND_HISTORY"] = "Historique sonore",
+	["EX_SOUND_HISTORY_CLEAR"] = "Réinitialiser",
+	["EX_SOUND_HISTORY_EMPTY"] = "Aucun son n'a été joué.",
+	["EX_SOUND_HISTORY_LINE"] = "%s a joué le son %s dans le channel %s.",
+	["EX_SOUND_HISTORY_REPLAY"] = "Rejouer",
+	["EX_SOUND_HISTORY_STOP"] = "Arrêter",
+	["EX_SOUND_HISTORY_STOP_ALL"] = "Arrêter tous",
+	["EX_SOUND_HISTORY_TT"] = "Voyez quels effets sonores ont été joués, d'où ils proviennent et interrompez les si ils sont toujours en cours.",
+	["IN_INNER"] = "Éléments internes",
+	["IN_INNER_ADD"] = "Créer un élément interne",
+	["IN_INNER_COPY_ACTION"] = "Copier le contenu de l'élément",
+	["IN_INNER_DELETE_CONFIRM"] = [=[Supprimer l'élément interne |cff00ffff"%s"|r |cff00ff00[%s]|r de l'élément-mère |cff00ff00[%s]|r ?
+
+|cffff9900Cet élément interne sera perdu.]=],
+	["IN_INNER_DELETE_TT"] = "Supprime cet élément interne de l'élément-mère.",
+	["IN_INNER_EMPTY"] = [=[Pas d'élément interne.
 
 Vous pouvez en ajouter un en utilisant le bouton Ajouter ci-dessous.]=],
-	["IN_INNER_ENTER_ID"] = "Entrer un nouvel ID d'élément inclus",
-	["IN_INNER_ENTER_ID_TT"] = [=[L'ID de l'élément inclus doit être unique au sein de l'élément-parent.
+	["IN_INNER_ENTER_ID"] = "Entrer un nouvel ID d'élément interne",
+	["IN_INNER_ENTER_ID_TT"] = [=[L'ID de l'élément interne doit être unique au sein de l'élément-parent.
 
 |cffff9900Veuillez n'utiliser que les minuscules et le tiret-bas (_). Tous les autres caractères seront automatiquement convertis en _.]=],
-	["IN_INNER_HELP"] = [=[Les éléments inclus sont des éléments hébergés dans un élément-mère.
+	["IN_INNER_HELP"] = [=[Les éléments internes sont des éléments hébergés dans un élément-mère.
 
 Prenons quelques exemples :
 |cffff9900
-- Vous voulez créer un fusil avec des objets "balles" pour le recharger. Typiquement, le fusil serait l'objet principal, donc l'élément-mère, dans lequel la balle serait l'élément inclus.
+- Vous voulez créer un fusil avec des objets "balles" pour le recharger. Typiquement, le fusil serait l'objet principal, donc l'élément-mère, dans lequel la balle serait l'élément interne.
 
-- Un objet de courrier ouvrant un document. Le document (une lettre, par exemple) serait l'élément inclus, conçu pour l'objet de courrier (une enveloppe, par ex.).
+- Un objet de courrier ouvrant un document. Le document (une lettre, par exemple) serait l'élément interne, conçu pour l'objet de courrier (une enveloppe, par ex.).
 
-- Création de quêtes : tous les objets/documents/cinématiques que vous employez dans une quête peuvent être de tels "élément inclus", s'ils sont justement conçus pour cette quête.
+- Création de quêtes : tous les objets/documents/cinématiques que vous employez dans une quête peuvent être de tels "élément interne", s'ils sont justement conçus pour cette quête.
 
-|rLes avantages à employer des éléments inclus sont multiples :
+|rLes avantages à employer des éléments internes sont multiples :
 |cff00ff00
-- Les données des éléments inclus sont vraiment hébergées à l'intérieur des données de l'élément-mère. Ce qui signifie qu'ils partagent le même numéro de version, et que leurs données sont échangées en même temps que celles de leur élément-mère.
+- Les données des éléments internes sont vraiment hébergées à l'intérieur des données de l'élément-mère. Ce qui signifie qu'ils partagent le même numéro de version, et que leurs données sont échangées en même temps que celles de leur élément-mère.
 
-- Employer des éléments inclus apporte plus de performances.
+- Employer des éléments internes apporte plus de performances.
 
 - Il est plus simple de gérer vos éléments et d'y naviguer s'ils sont hébergés dans des éléments-mères. Vous pouvez vraiment voir un élément-mère comme un dossier dans lequel vous insérez des fiches.
 
-|rDonc c'est simple : chaque fois que vous voulez créer un élément, demandez-vous si ça ne serait pas plus efficace d'en faire un élément inclus, attribué à un autre objet ou à une quête qui lui est lié(e).
+|rDonc c'est simple : chaque fois que vous voulez créer un élément, demandez-vous si ça ne serait pas plus efficace d'en faire un élément interne, attribué à un autre objet ou à une quête qui lui est lié(e).
 
-|cff00ff00NB : Les documents et les cinématiques ne peuvent être QUE des éléments inclus !]=],
-	["IN_INNER_HELP_TITLE"] = "Qu'est-ce que les éléments inclus ?",
-	["IN_INNER_ID"] = [=[Veuillez entrer un nouvel ID pour cet élément inclus |cff00ff00[%s]|r.
+|cff00ff00NB : Les documents et les cinématiques ne peuvent être QUE des éléments internes !]=],
+	["IN_INNER_HELP_TITLE"] = "Qu'est-ce que les éléments internes ?",
+	["IN_INNER_ID"] = [=[Veuillez entrer un nouvel ID pour cet élément interne |cff00ff00[%s]|r.
 
 Ancien ID: |cff00ffff"%s"|r]=],
 	["IN_INNER_ID_ACTION"] = "Changer l'identifiant",
 	["IN_INNER_ID_COPY"] = "Copier",
-	["IN_INNER_ID_COPY_TT"] = "Vous pouvez copier votre élément inclus pour le coller dans un autre élément-mère.",
-	["IN_INNER_LIST"] = "Liste des éléments inclus",
+	["IN_INNER_ID_COPY_TT"] = "Vous pouvez copier votre élément interne pour le coller dans un autre élément-mère.",
+	["IN_INNER_LIST"] = "Liste des éléments internes",
 	["IN_INNER_NO_AVAILABLE"] = "Cet identifiant inclus n'est pas disponible !",
 	["IN_INNER_PASTE_ACTION"] = "Coller le contenu d'élément",
-	["IN_INNER_PASTE_CONFIRM"] = "Remplacer le contenu de cet élément inclus par celui que vous venez de copier ?",
-	["IN_INNER_S"] = "Élément inclus",
+	["IN_INNER_PASTE_CONFIRM"] = "Remplacer le contenu de cet élément interne par celui que vous venez de copier ?",
+	["IN_INNER_S"] = "Élément interne",
 	["INV_PAGE_CAMERA_CONFIG"] = [=[Paramètres de caméra :
    Rotation: %.2f]=],
 	["INV_PAGE_CHARACTER_INSPECTION"] = "Inspection de personnage",
@@ -709,6 +772,7 @@ Vous pouvez déposer des objets (presque) partout dans le monde. |cffff9900Vous 
 |rQuand c'est le cas, TRP convertira ces effets en une forme moins dangereuse (par exemple, le fait de crier sera converti en texte personnel) jusqu'à ce que vous décidiez de les débloquer.
 
 |cff00ff00Vous pouvez bloquer/débloquer ces effets, et valider des effets ou joueurs de confiance, avec Alt + Clic droit sur un objet de votre inventaire.]=],
+	["IT_CAST"] = "Incantation",
 	["IT_CO_DURABILITY"] = "Durabilité",
 	["IT_CO_DURABILITY_TT"] = [=[Détermine le meilleur état possible de votre contenant. Un contenant peut voir son état se dégrader dans le temps, ou peut être endommagé. Mais il peut aussi être réparé avec les objets adéquats.
 
@@ -724,6 +788,7 @@ Vous pouvez déposer des objets (presque) partout dans le monde. |cffff9900Vous 
 
 Pour l'instant, seuls les contenants avec cette option activée peuvent être troqués alors qu'ils contiennent d'autres objets.]=],
 	["IT_CO_SIZE"] = "Taille du contenant",
+	["IT_CO_SIZE_COLROW"] = "%s lignes par %s colonnes",
 	["IT_CON"] = "Contenant",
 	["IT_CON_CAN_INNER"] = "Impossible de placer un contenant dans lui-même !",
 	["IT_CON_ERROR_TRADE"] = "Vous ne pouvez pas jeter ce contenant s'il n'est pas vide.",
@@ -762,11 +827,13 @@ Vous pouvez aller plus loin et éditer cet objet en mode normal. Ceci vous appor
 	["IT_FIELD_NAME"] = "Nom d'objet",
 	["IT_FIELD_NAME_TT"] = "C'est le nom de votre objet, tel qu'il apparaîtra sur l'infobulle ou dans un lien d'objet dans la fenêtre de discussion.",
 	["IT_FIELD_QUALITY"] = "Qualité de l'objet",
+	["IT_GAMEPLAY_ATT"] = "Attributs de gameplay",
 	["IT_INV_ERROR_CANT_DESTROY_LOOT"] = "Vous ne pouvez pas détruire les objets ramassés.",
 	["IT_INV_ERROR_CANT_HERE"] = "Vous ne pouvez pas placer d'objets ici.",
 	["IT_INV_ERROR_FULL"] = "%s est plein.",
 	["IT_INV_ERROR_MAX"] = "Vous ne pouvez pas porter davantage de %s.",
 	["IT_INV_GOT"] = "Reçu : %s x%d",
+	["IT_INV_SCAN_MY_ITEMS"] = "Chercher mes objets",
 	["IT_INV_SHOW_ALL"] = "Montrer tout l'inventaire",
 	["IT_INV_SHOW_CONTENT"] = [=[|cffffff00Clic :|r Ouvre le contenant principal (s'il existe)
 |cffffff00Clic droit :|r Ouvre l'inventaire]=],
@@ -827,6 +894,10 @@ Si votre objet est utilisable, essayez d'indiquer ici comment il devrait être u
 	["IT_TT_LEFT_TT"] = [=[C'est un texte libre qui sera placé dans l'infobulle, à gauche sous le nom d'objet.
 
 |cff00ff00Un exemple-type d'information à placer ici est l'emplacement d'équipement (Tête, Cou, Épaule, Jambes, Main droite, Tenu(e) en main gauche, Deux mains...) ou éventuellement le type d'objet (Potion...).]=],
+	["IT_TT_REAGENT"] = "Indicateur de composant",
+	["IT_TT_REAGENT_TT"] = [=[Affiche la ligne "Composant d'artisanat" dans l'infobulle.
+
+|cffff7700Comme pour les autres attributs visuels, cela n'a aucune influence sur le jeu et n'est pas requis pour que cet objet puisse être utilisé en tant que composant.]=],
 	["IT_TT_RIGHT"] = "Note d'infobulle de droite",
 	["IT_TT_RIGHT_TT"] = [=[C'est un texte libre qui sera placé dans l'infobulle, à droite sous le nom d'objet.
 
@@ -850,6 +921,8 @@ Si votre objet est utilisable, essayez d'indiquer ici comment il devrait être u
 	["IT_USE_TT"] = [=[Permet à cet objet d'être utilisé.
 
 |cff00ff00Vous pouvez configurer l'effet d'utilisation de l'objet dans la table "Processus" de cet éditeur]=],
+	["IT_WARNING_1"] = "Un objet ne devrait pas être à la fois empilable et fabriqué. (%s)",
+	["IT_WARNING_2"] = "Un objet contenant ne devrait pas être empilable. (%s)",
 	["IT_WEARABLE"] = "Équipable",
 	["IT_WEARABLE_TT"] = [=[Autorise cet objet pour l'outil d'inspection et vous permet de le placer précisément sur votre personnage.
 
@@ -862,10 +935,11 @@ Si votre objet est utilisable, essayez d'indiquer ici comment il devrait être u
 	["MODE_NORMAL"] = "Normal",
 	["MODE_QUICK"] = "Rapide",
 	["NEW_EXTENDED_VERSION"] = "|cffff9900Une nouvelle version de TRP3:Extended est disponible (%s). |cff00ff00Retrouvez-la sur Curse !",
-	["NPC_EMOTES"] = "émotes",
-	["NPC_SAYS"] = "paroles",
-	["NPC_WHISPERS"] = "chuchotements ",
-	["NPC_YELLS"] = "cris",
+	["NPC_EMOTES"] = "émote",
+	["NPC_SAYS"] = "dit",
+	["NPC_WHISPERS"] = "chuchotte",
+	["NPC_YELLS"] = "crie",
+	["OP_ADD_TEST"] = "Ajouter test",
 	["OP_AND"] = "ET",
 	["OP_AND_SWITCH"] = "Basculer sur ET",
 	["OP_BOOL"] = "Valeur booléenne",
@@ -881,8 +955,16 @@ Si votre objet est utilisable, essayez d'indiquer ici comment il devrait être u
 	["OP_CONFIGURE"] = "Configurer",
 	["OP_CURRENT"] = "Valeur actuelle",
 	["OP_CURRENT_TT"] = "Affiche, dans la fenêtre de discussion, l'évaluation de ce paramètre basée sur la situation actuelle.",
+	["OP_DIRECT_VALUE"] = "Valeur directe",
+	["OP_EVAL_VALUE"] = "Valeur évaluée",
 	["OP_FAIL"] = "Message d'échec",
 	["OP_FAIL_TT"] = "Ce message sera affiché si les conditions ne sont pas remplies. Laissez vide si vous ne voulez pas montrer de message.",
+	["OP_FAIL_W"] = "Processus d'échec (Expert)",
+	["OP_FAIL_W_TT"] = [=[Si cette condition échoue, ce processus sera exécuté. C'est une manière de faire un "sinon" dans une condition.
+
+|cffff9900Notez que cette fonctionnalité peut être lourde en performance et devrait donc être utilisée avec parcimonie. Le processus appelé doit exister dans la même création.
+
+|cffff0000Ne faites JAMAIS de boucle dans les processus appelés (par exemple: un processus A appelant un processus B appelant lui même à nouveau le processus A), même si vous utilisez des délais !]=],
 	["OP_NUMERIC"] = "Valeur numérique",
 	["OP_OP_CHAR_FACING"] = "Orientation du personnage",
 	["OP_OP_CHAR_FACING_TT"] = [=[Détermine l'orientation du personnage (en radians, 0 = nord, cette valeur augmente dans le sens anti-horaire).
@@ -892,6 +974,7 @@ Si votre objet est utilisable, essayez d'indiquer ici comment il devrait être u
 	["OP_OP_CHAR_FALLING_TT"] = "Détermine si le personnage du joueur est actuellement en train de se prendre pour un écureuil volant.",
 	["OP_OP_CHAR_FLYING"] = "En vol",
 	["OP_OP_CHAR_FLYING_TT"] = "Vérifie si le personnage est en train de voler.",
+	["OP_OP_CHAR_MINIMAP"] = "Texte de la mini-carte",
 	["OP_OP_CHAR_MOUNTED"] = "En monture",
 	["OP_OP_CHAR_MOUNTED_TT"] = "Vérifie si le personnage est sur une monture.",
 	["OP_OP_CHAR_RESTING"] = "En repos",
@@ -908,6 +991,35 @@ Si votre objet est utilisable, essayez d'indiquer ici comment il devrait être u
 	["OP_OP_CHAR_ZONE_TT"] = [=[Le nom de la zone où le personnage est actuellement situé.
 
 |cffff9900Attention : Le texte est influencé par le client du jeu (VO ou VF).]=],
+	["OP_OP_CHECK_EVENT_VAR"] = "Argument d’événement (valeur texte)",
+	["OP_OP_CHECK_EVENT_VAR_N"] = "Argument d’événement (valeur numérique)",
+	["OP_OP_CHECK_EVENT_VAR_N_PREVIEW"] = "%s-ième argument d'événement |cff00ff00(nombre)",
+	["OP_OP_CHECK_EVENT_VAR_N_TT"] = [=[Vérifie le n-ième argument de l'événement déclenchant cette condition (si existant).
+
+Interprété comme un numéro.
+
+S'il n'existe pas ou ne peut pas être interprété, renvoie 0.]=],
+	["OP_OP_CHECK_EVENT_VAR_PREVIEW"] = "%s-ième argument d'événement |cff00ff00(texte)",
+	["OP_OP_CHECK_EVENT_VAR_TT"] = [=[Vérifie le n-ième argument de l'événement déclenchant cette condition (si existant).
+
+Interprété comme un texte.
+
+S'il n'existe pas ou ne peut pas être interprété, renvoie 'nil' .]=],
+	["OP_OP_CHECK_VAR"] = "Valeur texte variable",
+	["OP_OP_CHECK_VAR_N"] = "Valeur numérique variable",
+	["OP_OP_CHECK_VAR_N_PREVIEW"] = "|cff00ffff%s: |cffff9900(n)|r %s",
+	["OP_OP_CHECK_VAR_N_TT"] = [=[Renvoie la valeur d'une variable,|cff00ff00interprétée comme un nombre | r.
+
+Si la variable n'existe pas, ne peut pas être atteinte ou ne peut pas être interprétée comme un nombre, renvoie 0.
+
+|cffff9900Comme la valeur dépend de l'exécution, elle ne peut pas être prévisualisée.]=],
+	["OP_OP_CHECK_VAR_PREVIEW"] = "|cff00ffff%s:|r %s",
+	["OP_OP_CHECK_VAR_TT"] = [=[Renvoie la valeur d'une variable, |cff00ff00 interprétée comme une chaîne de caractères| r.
+
+Si la variable n'existe pas ou ne peut pas être atteinte, renvoie la chaîne de caractères 'nil'.
+
+|cffff9900Comme la valeur dépend de l'exécution, il ne peut pas être prévisualisé.]=],
+	["OP_OP_DISTANCE_CURRENT"] = "Utiliser la position actuelle",
 	["OP_OP_DISTANCE_ME"] = "Distance de l'unité au joueur",
 	["OP_OP_DISTANCE_ME_TT"] = [=[Détermine la distance (en mètres) entre une unité et le joueur.
 
@@ -916,6 +1028,8 @@ Ne fonctionne qu'avec les joueurs.
 Vaudra 0 si l'unité n'existe pas.
 
 |cffff9900Ne fonctionne pas en instance/champ de bataille/arène depuis le patch 7.1.]=],
+	["OP_OP_DISTANCE_POINT"] = "Distance de l'unité - point",
+	["OP_OP_DISTANCE_POINT_PREVIEW"] = "|cff00ff00%s|r distance de |cff00ff00 (% s,% s)",
 	["OP_OP_DISTANCE_POINT_TT"] = [=[Détermine la distance (en mètres) entre une unité et un point de coordonnées.
 
 Ne fonctionne qu'avec les joueurs.
@@ -927,15 +1041,160 @@ Vaudra 0 si l'unité n'existe pas.
 	["OP_OP_DISTANCE_Y"] = "Coordonnée Y",
 	["OP_OP_INV_COUNT"] = "Compte d'unités d'objet",
 	["OP_OP_INV_COUNT_ANY"] = "N'importe quel objet",
+	["OP_OP_INV_COUNT_PREVIEW"] = "%s unités dans |cffff9900%s",
+	["OP_OP_INV_COUNT_TT"] = "|cff00ff00Le nombre d'unités d'un élément que le joueur possède dans son inventaire.",
+	["OP_OP_QUEST_NPC"] = "L'unité est un PNJ de campagne",
+	["OP_OP_QUEST_NPC_TT"] = "|cff00ff00Retourne si une unité est un PNJ personnalisé dans la campagne active.",
+	["OP_OP_QUEST_OBJ"] = "Objectif de la quête",
+	["OP_OP_QUEST_OBJ_PREVIEW"] = "Objectif %s de %s",
+	["OP_OP_QUEST_OBJ_TT"] = "Renvoie l'accomplissement (vrai ou faux) pour un objectif de quête. Si la campagne, la quête ou l'objectif n'est pas encore révélé, renvoie faux.",
+	["OP_OP_QUEST_STEP"] = "Étape de quête actuelle",
+	["OP_OP_QUEST_STEP_PREVIEW"] = "%s étape actuelle",
+	["OP_OP_QUEST_STEP_TT"] = "Renvoie l'ID de l'étape de la quête actuelle. Si la quête n'est pas révélée ou n'a pas d'étape courante, renvoie nil.",
+	["OP_OP_RANDOM"] = "Aléatoire",
+	["OP_OP_RANDOM_FROM"] = "De",
+	["OP_OP_RANDOM_PREVIEW"] = "Nombre aléatoire entre |cff00ff00%s|r et |cff00ff00%s|r.",
+	["OP_OP_RANDOM_TO"] = "à",
+	["OP_OP_RANDOM_TT"] = "Nombre aléatoire (entier) entre deux bornes.",
+	["OP_OP_UNIT_CLASS"] = "Classe d'unités",
+	["OP_OP_UNIT_CLASS_TT"] = "|cff00ff00La classe d'unité EN ANGLAIS MINUSCULE, retournée par les seconds arguments de UnitClass.",
+	["OP_OP_UNIT_CLASSIFICATION"] = "Classification des unités",
+	["OP_OP_UNIT_CLASSIFICATION_TT"] = [=[|cff00ff00Le classement de l'unité EN ANGLAIS MINUSCULE. Exemple: normal, elite, rare, worldboss, moins ...
+
+Retourne toujours normal pour les joueurs.]=],
+	["OP_OP_UNIT_DEAD"] = "L'unité est morte",
+	["OP_OP_UNIT_DEAD_TT"] = "|cff00ff00Retourne si une unité est morte ou fantôme.",
+	["OP_OP_UNIT_DISTANCE_INSPECT"] = "L'unité est proche (inspection)",
+	["OP_OP_UNIT_DISTANCE_INSPECT_TT"] = "|cff00ff00Retourne si une unité est assez proche pour l'inspection (28 mètres).",
+	["OP_OP_UNIT_DISTANCE_TRADE"] = "L'unité est proche (commerce)",
+	["OP_OP_UNIT_DISTANCE_TRADE_TT"] = "|cff00ff00Retourne si une unité est assez proche pour l'échange (11,11 mètres).",
+	["OP_OP_UNIT_EXISTS"] = "L'unité existe",
+	["OP_OP_UNIT_EXISTS_TT"] = [=[|cff00ff00Retourne si une unité existe.
+
+|rA Une unité 'existe' si elle peut être référencée par le joueur; par exemple. La cible existe si le joueur a une cible, le PNJ existe si le joueur interagit actuellement avec un PNJ, etc.]=],
+	["OP_OP_UNIT_FACTION"] = "Faction de l'unité",
+	["OP_OP_UNIT_FACTION_TT"] = "|cff00ff00La faction de l'unité en ANGLAIS ET MINUSCULE.",
+	["OP_OP_UNIT_GUILD"] = "Guilde de l'unité",
+	["OP_OP_UNIT_GUILD_RANK"] = "Rank de guilde de l'unité",
+	["OP_OP_UNIT_HEALTH"] = "Points de vie de l'unité",
+	["OP_OP_UNIT_ID"] = "ID de l'unité",
+	["OP_OP_UNIT_ISPLAYER"] = "L'unité est un joueur",
+	["OP_OP_UNIT_LEVEL"] = "Niveau de l'unité",
+	["OP_OP_UNIT_NAME"] = "Nom de l'unité",
+	["OP_OP_UNIT_NPC_ID"] = "ID de PNJ de l'unité",
+	["OP_OP_UNIT_POSITION_X"] = "Position X de l'unité",
+	["OP_OP_UNIT_POSITION_Y"] = "Position Y de l'unité",
+	["OP_OP_UNIT_RACE"] = "Race de l'unité",
+	["OP_OP_UNIT_SEX"] = "Sexe de l'unité",
+	["OP_OP_UNIT_SPEED"] = "Vitesse de l'unité",
+	["OP_OR"] = "OU",
+	["OP_OR_SWITCH"] = "Changer en OU",
+	["OP_PREVIEW"] = "Prévisualisation",
+	["OP_REMOVE_TEST"] = "Retirer le test",
+	["OP_STRING"] = "Valeur texte",
+	["OP_UNIT"] = "Type d'unité",
+	["OP_UNIT_NPC"] = "PNJ",
+	["OP_UNIT_PLAYER"] = "Joueur",
+	["OP_UNIT_TARGET"] = "Cible",
+	["OP_UNIT_TEST"] = "Test d'unité",
+	["OP_UNIT_VALUE"] = "Valeur d'unité",
+	["QE_ACTION"] = "Action de quête",
+	["QE_ACTION_NO_CURRENT"] = "Vous n'avez pas de campagne active. Vous devez activer une campagne avant de pouvoir effectuer une action.",
+	["QE_ACTIONS_TYPE_INTERRACT"] = "Interagir",
+	["QE_ACTIONS_TYPE_LISTEN"] = "Écouter",
+	["QE_ACTIONS_TYPE_LOOK"] = "Inspecter",
+	["QE_ACTIONS_TYPE_TALK"] = "Parler",
+	["QE_AUTO_REVEAL"] = "Révélation auto.",
+	["QE_AUTO_REVEAL_TT"] = "Révèle automatiquement la quête dans le journal lorsque la campagne est commencée.",
+	["QE_BUTTON"] = "Ouvrir journal de quêtes",
+	["QE_CAMPAIGN"] = "Campagne",
+	["QE_CAMPAIGN_CURRENT"] = "Campagne actuelle",
+	["QE_CAMPAIGN_CURRENT_NO"] = "Pas de campagne active",
+	["QE_CAMPAIGN_EMPTY"] = "Cette campagne n'a pas de quête.",
+	["QE_CAMPAIGN_LIST"] = "%s campagne(s) disponible(s)",
+	["QE_CAMPAIGN_NOQUEST"] = [=[Aucune quête révélée pour cette campagne.
+Jetez un œil à la description de campagne pour révéler votre première quête.]=],
+	["QE_CAMPAIGN_PAUSE"] = "Mettre la campagne en pause.",
+	["QE_CAMPAIGN_RESET"] = "Réinitialiser la campagne",
+	["QE_CAMPAIGN_RESUME"] = "Reprise de la campagne |cff00ff00[%s]|r.",
+	["QE_CAMPAIGN_START"] = "Commencement de la campagne |cff00ff00[%s]|r.",
+	["QE_CAMPAIGN_START_BUTTON"] = "Commencer ou reprendre la campagne",
+	["QE_CAMPAIGN_UNSTARTED"] = [=[Vous n'avez pas encore commencé cette campagne.
+Cliquez sur le bouton "Commencer" en haut à droite.]=],
+	["QE_CAMPAIGNS"] = "Campagnes",
+	["QE_COMPLETED"] = "Complétées",
+	["QE_DESCRIPTION"] = "Résumé de quête",
+	["QE_DESCRIPTION_TT"] = "Ce court résumé sera visible sur la page de la quête, dans le journal de quêtes.",
+	["QE_FAILED"] = "Échouées",
+	["QE_LINKS_ON_START"] = "Au démarrage de la quête",
+	["QE_LINKS_ON_START_TT"] = [=[Déclenché |cff00ff00une fois|r lorsque le joueur commencer votre quête, en la révélant dans son journal de quêtes.
+
+|cff00ff00C'est un bon endroit pour diriger le joueur vers la première étape de la quête.]=],
+	["QE_MACRO"] = "Créer macro",
+	["QE_MACRO_TT"] = "Créer une macro pour ce type d'action et placer la macro sous le curseur afin de vous laisser la placer dans vos barres d'actions.",
+	["QE_NAME"] = "Nom de la quête",
+	["QE_NAME_NEW"] = "Nouvelle quête",
+	["QE_NAME_TT"] = "C'est le nom de votre quête, tel qu'il apparaîtra dans le journal de quêtes.",
+	["QE_NEW"] = "Nouvelle quête révélée",
+	["QE_NOACTION_ACTION"] = "Il n'y a rien à faire.",
+	["QE_NOACTION_LISTEN"] = "Vous n'entendez rien d'intéressant.",
+	["QE_NOACTION_LOOK"] = "Vous ne voyez rien de spécial.",
+	["QE_NOACTION_TALK"] = "Il n'y a rien à dire.",
+	["QE_NPC"] = "PNJ de campagne",
+	["QE_OBJ"] = "Objectifs de quête",
+	["QE_OBJ_ADD"] = "Ajouter objectif",
+	["QE_OBJ_AUTO"] = "Révélation auto.",
+	["QE_OBJ_AUTO_TT"] = "Révèle automatiquement cet objectif lorsque la quête est révélée dans le journal de quêtes.",
+	["QE_OBJ_ID"] = "ID d'objectif",
+	["QE_OBJ_ID_TT"] = "C'est l'identifiant de votre objectif. Vous ne pouvez avoir deux objectifs ayant le même ID dans la même quête.",
+	["QE_OBJ_NO"] = "Pas d'objectif de quête",
+	["QE_OBJ_REMOVE"] = "Supprimer cet objectif de quête ?",
+	["QE_OBJ_SINGULAR"] = "Objectif de quête",
+	["QE_OBJ_TEXT"] = "Texte d'objectif",
+	["QE_OBJ_TT"] = [=[Les objectifs de quête sont des indices pour le joueur. Accomplir tous les objectifs ne cloture pas automatiquement la quête dans le journal. Vous décidez pleinement quand les objectifs sont révélés et il est dès lors possible d'avoir des objectifs cachés.
+|cffff9900Les objectifs sont toujours ordonnés par ID dans le journal de quête, et non pas alphabétiquement.]=],
+	["QE_OVERVIEW"] = "Aperçu de la quête",
+	["QE_PREVIOUS_STEP"] = "Précédemment",
+	["QE_PROGRESS"] = "Progression",
+	["QE_PROGRESS_TT"] = [=[Ce paramètre indique que cette quête fait partie du calcul de progression de la campagne (même si la quête n'est pas révélée).
+
+La progression de campagne est un indicateur en % placé dans le journal de quête et reflétant la progression globale des quêtes (en terme de % de quêtes accomplies par rapport au nombre total de quêtes).
+
+|cff00ff00De manière générale cet indicateur sera toujours sélectionné, sauf pour les quêtes considérées comme annexe à votre campagne.]=],
+	["QE_QUEST"] = "Quête",
+	["QE_QUEST_LIST"] = "Quêtes pour cette campagne",
+	["QE_QUEST_OBJ_AND_HIST"] = "Objectifs et historique",
+	["QE_QUEST_OBJ_FINISHED"] = "|cffffff00Objectif accompli: |cff00ff00%s",
+	["QE_QUEST_OBJ_REVEALED"] = "|cffffff00Nouvel objectif: |cff00ff00%s",
+	["QE_QUEST_START"] = "Début de la quête |cff00ff00[%s]|r.",
+	["QE_QUEST_TT_STEP"] = [=[|cffffff00Actuellement:|r
+"%s"]=],
+	["QE_QUESTS"] = "Quêtes",
+	["QE_QUESTS_HELP"] = [=[Vous pouvez ici ajouter des quêtes à votre campagne. Veuillez noter qu'une quête n'est pas automatiquement révélée dans le journal de quêtes lorsqu'il commence la campagne.
+Vous devez révéler la quête via un processus, ou indiquer que la quête doit être révélée automatiquement.
+|cffff9900Les quêtes sont ordonnées par ID dans le journal de quêtes et non pas alphabétiquement ou par ordre de révélation.]=],
+	["QE_RESET_CONFIRM"] = [=[Réinitialiser cette campagne ?
+
+Cela va annuler toute progression pour toutes les quêtes de la campagne.
+
+Veuillez noter que vous ne perdrez pas les objets gagnés précédemment lors de la campagne.]=],
+	["QE_ST_AUTO_REVEAL"] = "Étape initiale",
+	["QE_ST_AUTO_REVEAL_TT"] = "Marque cette étape comme étant l'étape initiale de la quête lorsque celle-ci est révélée dans le journal de quête.",
 	["QE_ST_END"] = "Étape finale",
 	["QE_ST_END_TT"] = "Marque cette étape comme étant une étape finale de la quête. Lorsque cette étape sera atteinte, la quête sera automatiquement marquée comme terminée dans le journal de quêtes.",
 	["QE_ST_LINKS_ON_LEAVE"] = "A la fin d'étape",
 	["QE_ST_LINKS_ON_LEAVE_TT"] = "Déclenché |cff00ff00à chaque fois|r que le joueur quitte cette étape pour une autre. Cela sera déclenché avant que l’événement \"Au début d'étape\" de l'étape suivante ne soit déclenché.",
 	["QE_ST_LINKS_ON_START"] = "Au début d'étape",
 	["QE_ST_LINKS_ON_START_TT"] = "Déclanché |cff00ff00à chaque fois|r que le joueur atteint cette étape.",
+	["QE_ST_POST"] = "Historique de la quête",
 	["QE_ST_PRE"] = "Entrée du journal de quêtes",
 	["QE_STEP"] = "Étape de quête",
 	["QE_STEP_ADD"] = "Ajouter étape de quête",
+	["QE_STEP_CREATE"] = [=[Veuillez entrer l'ID d'étape. Vous ne pouvez avoir deux étapes ayant le même ID au sein de la même quête.
+
+|cffff9900Veuillez noter que les étapes seront listées par ordre alphabétique d'ID ici et sur la base de données.
+
+|cff00ff00C'est donc de bonne pratique de toujours commencer l'ID d'une étape par step_# où # est le numéro d'étape dans la quête.]=],
 	["QE_STEP_EXIST"] = "Il existe déjà une étape avec l'identifiant %s.",
 	["QE_STEP_LIST"] = "Étapes pour cette quête",
 	["QE_STEP_LIST_CURRENT"] = "Quêtes disponibles",
@@ -944,18 +1203,42 @@ Vaudra 0 si l'unité n'existe pas.
 	["QE_STEP_NAME_NEW"] = "Nouvelle étape de quête",
 	["QE_STEP_NO"] = "Pas d'étape de quête",
 	["QE_STEP_REMOVE"] = "Supprimer cette étape ?",
+	["QE_STEP_TT"] = [=[Les quêtes sont découpées en une liste d'étapes.
+Chaque étape possède un texte explicatif visible dans le journal et peut ajouter une entrée dans l'historique de la quête une fois une nouvelle étape atteinte.]=],
 	["QE_STEPS"] = "Étapes de quête",
 	["QUEST_ID"] = "Identifiant de quête",
-	["ROOT_CREATED"] = "Créé par %s sur %s",
+	["QUEST_TU_1"] = [=[Les quêtes vont souvent nécessiter |cff00ff00des interactions avec des PNJs ou des éléments de l'environnement.|r
+
+Il y a quatre types d'action: |cff00ff00Écouter, inspecter, parler et interagir|r.
+
+Vous pouvez effectuer des actions en |cff00ff00cliquant-droit sur le bouton du journal de quête sur la barre TRP3.|r
+
+Mais une manière plus simple est de |cff00ff00créer des macro.|r Pour cela, utilisez ce bouton de création de macro.]=],
+	["QUEST_TU_2"] = [=[|cff00ff00Vous trouvez ici la liste de toutes les campagnes disponibles.|r
+
+Une campagne est une collection de quêtes.
+
+|cffff9900Vous ne pouvez progresser que dans une campagne à la fois|r. Il faut donc marquer cette campagne comme étant la campagne active. |cff00ff00Pour cela utilisez le bouton "Commencer ou continuer" situé sur le cadre de la campagne.|r
+
+Vous ne perdrez pas votre progression dans vos campagnes quand vous passez d'une campagne à une autre.
+
+|cffff9900Vous pouvez néanmoins réinitialiser votre progression dans une campagne en cliquant-droit sur son cadre et sélectionner Réinitialiser campagne. Veuillez noter que vous garderez tous vos objets gagnés lors de votre progression.]=],
+	["QUEST_TU_3"] = [=[|cff00ff00Vous trouverez ici la liste de toutes les quêtes en cours et terminées.|r
+
+Vous pouvez y voir pour chaque quête ses objectifs actuels ainsi que la dernière étape atteinte.]=],
+	["QUEST_TU_4"] = [=[|cff00ff00Vous trouverez ici la progression actuelle de la quête et tous les objectifs à remplir.|r
+
+Vous trouverez aussi un historique des étapes précédentes, au cas où vous auriez besoin de vous rafraîchir la mémoire.]=],
+	["ROOT_CREATED"] = "Créé par %s le %s",
 	["ROOT_CREATED_BY"] = "Créé par",
-	["ROOT_CREATED_ON"] = "Créé sur",
+	["ROOT_CREATED_ON"] = "Créé le",
 	["ROOT_GEN_ID"] = "ID généré",
-	["ROOT_ID"] = "Identifiant d'objet",
-	["ROOT_SAVED"] = "Dernière modification par %s sur %s",
-	["ROOT_TITLE"] = "Objet racine",
+	["ROOT_ID"] = "Identifiant de création",
+	["ROOT_SAVED"] = "Dernière modif. par %s le %s",
+	["ROOT_TITLE"] = "Création racine",
 	["ROOT_VERSION"] = "Version",
 	["SEC_EFFECT_BLOCKED"] = "Effet(s) bloqué(s)",
-	["SEC_EFFECT_BLOCKED_TT"] = [=[En raison de vos paramètres de sécurité actuels, au moins un effet de cet objet (ou élément inclus) est bloqué.
+	["SEC_EFFECT_BLOCKED_TT"] = [=[En raison de vos paramètres de sécurité actuels, au moins un effet de cet objet (ou élément interne) est bloqué.
 
 |cffff9900Cliquez pour visualiser la sécurité de cet objet.
 
@@ -971,17 +1254,17 @@ Vous pourrez aussi Ctrl+Clic droit sur l'objet dans votre inventaire pour config
 	["SEC_LEVEL_DETAILS_ALL_TT"] = "Accepte l'exécution de cet effet sur tous les éléments, maintenant et à l'avenir.",
 	["SEC_LEVEL_DETAILS_BLOCKED"] = "Bloqué",
 	["SEC_LEVEL_DETAILS_FROM"] = "Toujours accepter quand reçu de %s",
-	["SEC_LEVEL_DETAILS_SECURED"] = "Cet élément et tous ses éléments inclus sont sûrs !",
+	["SEC_LEVEL_DETAILS_SECURED"] = "Cet élément et tous ses éléments internes sont sûrs !",
 	["SEC_LEVEL_DETAILS_THIS"] = "Change la sécurité pour cet objet",
 	["SEC_LEVEL_DETAILS_THIS_TT"] = "Accepte l'exécution de cet effet pour cet élément seulement.",
-	["SEC_LEVEL_DETAILS_TT"] = [=[Pour %s et tous ses éléments inclus.
+	["SEC_LEVEL_DETAILS_TT"] = [=[Pour %s et tous ses éléments internes.
 |cffff9900Fait par : |cff00ff00%s
 |cffff9900Reçu de : |cff00ff00%s]=],
 	["SEC_LOW"] = "Bas",
 	["SEC_LOW_TT"] = "Cet objet, ou un de ses éléments liés, utilise au moins un script problématique qui pourrait avoir des effets malveillants.",
 	["SEC_MEDIUM"] = "Moyen",
 	["SEC_MEDIUM_TT"] = "Cet objet, ou un de ses éléments liés, utilise au moins un script problématique qui pourrait avoir des effets gênants.",
-	["SEC_MISSING_SCRIPT"] = "Workflow \"%s\" introuvable",
+	["SEC_MISSING_SCRIPT"] = "Processus \"%s\" introuvable",
 	["SEC_REASON_DISMOUNT"] = "Désarçonner",
 	["SEC_REASON_DISMOUNT_WHY"] = [=[Cet élément pourrait vous désarçonner de votre monture.
 
@@ -998,7 +1281,7 @@ Vous pourrez aussi Ctrl+Clic droit sur l'objet dans votre inventaire pour config
 |cffff0000Ceci pourrait être utilisé d'une façon malveillante pour vous forcer à dire quelque-chose de répréhensible selon les termes de services Blizzard, ce qui pourrait vous valoir un bannissement du jeu.
 
 |cffff0000Si vous le bloquez, le texte sera affiché seulement pour vous (et non prononcé par votre personnage).]=],
-	["SEC_SCRIPT_ERROR"] = "Erreur dans le workflow %s.",
+	["SEC_SCRIPT_ERROR"] = "Erreur dans le processus %s.",
 	["SEC_TT_COMBO"] = "Alt + clic droit:|cffff9900 Configurer la sécurité",
 	["SEC_UNSECURED_WHY"] = "Pourquoi n'est-ce pas sûr ?",
 	["SET_TT_SECURED"] = "Des effets problématiques de cet élément sont bloqués. Configurez la sécurité pour changer cela.",
@@ -1008,6 +1291,51 @@ Vous pourrez aussi Ctrl+Clic droit sur l'objet dans votre inventaire pour config
 	["SPECIFIC_PATH"] = "Chemin de la racine",
 	["TB_TOOLS"] = "Base de données d'objets Extended",
 	["TB_TOOLS_TT"] = "Créez vos propres objets et quêtes.",
+	["TU_AC_2"] = "Évaluation d'actions",
+	["TU_CS_4"] = "Cinématiques et processus",
+	["TU_CS_5"] = "Aperçu",
+	["TU_DB_2"] = "Types de base de données",
+	["TU_DB_4"] = "Création racine et créations internes",
+	["TU_DB_5"] = "Créations racines",
+	["TU_DB_6"] = "Créer un objet",
+	["TU_DB_7"] = "Line d'une création",
+	["TU_IT_2"] = "Paramètres d'affichage",
+	["TU_IT_3"] = "Notes libres",
+	["TU_IT_4"] = "Paramètres de jouabilité",
+	["TU_TITLE"] = "Tutoriel",
+	["TU_WO_1_TEXT"] = [=[|cff00ff00Bienvenue dans ce tutoriel de création de processus.|r
+
+Un processus est un mécanisme apportant du dynamisme à votre création. C'est ici que vous serez capable de jouer des sons, d'afficher un texte ou de proposer un loot au joueur, par exemple.]=],
+	["TU_WO_2"] = "Liste de processus",
+	["TU_WO_2_TEXT"] = [=[A gauche se trouve |cff00ff00la liste de vos processus|r.
+
+Vous pouvez supprimer, renommer ou copier/coller un processus en cliquant-droit sur ce dernier.
+
+|cffff9900Note: Si vous êtes en train de modifier un objet en "mode normal", vous ne verrez pas une liste de processus mais un seul et unique processus "A l'utilisation".
+
+Si vous souhaitez pouvoir utiliser plusieurs processus pour un objet, vous pouvez le convertir en "mode Expert" en cliquant-droit sur l'objet dans la vue des bases de données.]=],
+	["TU_WO_3_TEXT"] = [=[Ici se trouve la liste de tous les éléments du processus sélectionné.
+
+Un élément peut être un effet, un délais ou une condition.
+
+L'ordre des éléments est important car le processus sera exécuté de manière séquentielle.
+
+Vous pouvez dès lors changer l'ordre des éléments en utilisant les flèches en haut à droite de chaque élément.]=],
+	["TU_WO_4"] = "Ajouter un effet",
+	["TU_WO_4_TEXT"] = [=[Les effets sont les éléments comme "jouer un son", "commencer une quête" ou encore "afficher une alerte".
+
+Il y a BEAUCOUP d'effets, chacun étant décrit dans son infobulle !]=],
+	["TU_WO_5"] = "Ajouter une condition",
+	["TU_WO_5_TEXT"] = [=[Les conditions vous permettent |cff00ff00de tester des valeurs afin d'altérer l'exécution du processus.|r
+
+|cffff9900Si la condition n'est pas respectée, l'exécution du processus s’interrompt.|r
+
+Une condition est composée d'une série de tests liés entre eux par des opérateurs OU et ET.
+
+Chaque test est une comparaison de valeurs. Par exemple: "Les points de vie de la cible sont inférieur à 500", "Le joueur n'est pas mort" ou encore "Le joueur possède au moins 3 unités de tel objet dans son inventaire".]=],
+	["TU_WO_6"] = "Ajouter un délais",
+	["TU_WO_6_TEXT"] = "Les délais peuvent mettre l'exécution du processus en pause pour une durée déterminée, mais ils peuvent aussi agir en tant qu'incantation et être interrompu lorsque le joueur se déplace.",
+	["TU_WO_ERROR_1"] = "Veuillez créer un processus avant de continuer ce tutoriel.",
 	["TYPE"] = "Type",
 	["TYPE_CAMPAIGN"] = "Campagne",
 	["TYPE_DIALOG"] = "Cinématique",
@@ -1050,11 +1378,11 @@ Stoppe le processus si la condition échoue.]=],
 	["WO_DELAY_INTERRUPT_1"] = "Pas d'interruption",
 	["WO_DELAY_INTERRUPT_2"] = "Interruption au mouvement",
 	["WO_DELAY_SECONDS"] = "seconde(s)",
-	["WO_DELAY_TT"] = [=[Met le workflow en pause.
+	["WO_DELAY_TT"] = [=[Met le processus en pause.
 Peut aussi être utilisé comme incantation et peut être interrompu.]=],
 	["WO_DELAY_TYPE"] = "Type de délai",
 	["WO_DELAY_TYPE_1"] = "Délai normal",
-	["WO_DELAY_TYPE_1_TT"] = "Met simplement le workflow en pause, sans afficher d'information au joueur.",
+	["WO_DELAY_TYPE_1_TT"] = "Met simplement le processus en pause, sans afficher d'information au joueur.",
 	["WO_DELAY_TYPE_2"] = "Incantation",
 	["WO_DELAY_TYPE_2_TT"] = "Affiche une barre d'incantation pendant la pause.",
 	["WO_DELAY_WAIT"] = "Pause pendant",
@@ -1065,14 +1393,51 @@ Peut aussi être utilisé comme incantation et peut être interrompu.]=],
 	["WO_EFFECT_TT"] = [=[Jouer un effet.
 Il peut s'agir de jouer un son, afficher un texte ...etc.]=],
 	["WO_ELEMENT"] = "Condition d'élément",
-	["WO_ELEMENT_ADD"] = "Ajouter un élément au workflow",
+	["WO_ELEMENT_ADD"] = "Ajouter un élément au processus",
 	["WO_ELEMENT_EDIT"] = "Cliquez pour modifier l'élément",
 	["WO_ELEMENT_TYPE"] = "Sélectionnez le type d'élément",
-	["WO_EMPTY"] = [=[Commencez par ajouter un élément à votre workflow.
+	["WO_EMPTY"] = [=[Commencez par ajouter un élément à votre processus.
 Cela peut être un effet, une condition ou un délai.]=],
-	["WO_END"] = "Fin de workflow",
+	["WO_END"] = "Fin de processus",
+	["WO_EVENT_EX_ADD"] = "Ajouter un lien d'événement",
+	["WO_EVENT_EX_CONDI"] = "Éditeur de condition de lien",
+	["WO_EVENT_EX_EDITOR"] = "Éditeur de lien d'événement",
+	["WO_EVENT_EX_LINK"] = "Lien d'événement du jeu",
+	["WO_EVENT_EX_LINKS"] = "Liens d'événements du jeu",
+	["WO_EVENT_EX_LINKS_TT"] = [=[Ici vous pouvez lier vos processus à des événements du jeu.
+Chaque lien peut être conditionné.]=],
+	["WO_EVENT_EX_NO"] = "Pas de lien",
+	["WO_EVENT_ID"] = "ID d'événement",
+	["WO_EVENT_ID_TT"] = [=[L'ID d'événement.
+
+Vous trouverez la liste complète des événements du jeu sur des sites comme wowwiki ou wowpedia.
+
+Par exemple, PLAYER_REGEN_DISABLED est un événement déclenché dès que le joueur entre en combat.]=],
+	["WO_EVENT_LINKS"] = "Liens d'événements de création",
+	["WO_EXECUTION"] = "Exécution du processus",
 	["WO_EXPERT"] = "Mode expert",
-	["WO_NO"] = "Pas de workflow",
-	["WO_PASTE"] = "Coller le contenu du workflow",
-	["WO_PASTE_CONFIRM"] = "Remplacer le contenu de ce workflow par celui copié précédemment ?",
+	["WO_EXPERT_DONE"] = "%s passé en mode expert. Déchaînez maintenant votre créativité !",
+	["WO_EXPERT_EFFECT"] = "Effets experts",
+	["WO_EXPERT_TT"] = [=[Un processus est un ensemble d'instructions pouvant rentre votre création dynamique.
+
+Ici vous pouvez définir tous les processus de votre création et les lier à des actions ou des événements dans l'onglet de Liens d'événements.]=],
+	["WO_LINKS"] = "Liens d'événements",
+	["WO_LINKS_NO_LINKS"] = "Pas de lien",
+	["WO_LINKS_NO_LINKS_TT"] = "Ne pas lier cette action/événement à un processus.",
+	["WO_LINKS_SELECT"] = "Sélectionnez un processus à lier",
+	["WO_LINKS_TO"] = "Lié au processus",
+	["WO_LINKS_TRIGGERS"] = "Ici, vous pouvez lier vos processus à des événements spécifiques pour cette création.",
+	["WO_NO"] = "Pas de processus",
+	["WO_PASTE"] = "Coller le contenu du processus",
+	["WO_PASTE_CONFIRM"] = "Remplacer le contenu de ce processus par celui copié précédemment ?",
+	["WO_REMOVE_POPUP"] = "Supprimer le processus %s ?",
+	["WO_SECURITY"] = "Niveau de sécurité",
+	["WO_SECURITY_HIGH"] = "Haute",
+	["WO_SECURITY_HIGH_DETAILS"] = "Cet effet est sécurisé et ne demandera aucune autorisation à l'utilisateur.",
+	["WO_SECURITY_LOW"] = "Basse",
+	["WO_SECURITY_LOW_DETAILS"] = "Cet effet n'est pas sécurisé et peut être utilisé de manière mal intentionnée. Une alerte sera affichée et une autorisation sera demandée à l'utilisateur, selon ses paramètres de sécurité.",
+	["WO_SECURITY_NORMAL"] = "Moyenne",
+	["WO_SECURITY_NORMAL_DETAILS"] = "Cet effet est sécurisé mais peut causer des inconveniences. Pour cette raison, il est possible qu'une autorisation soit demandée à l'utilisateur, en fonction de ses paramètres de sécurité.",
+	["WO_WO_SECURITY"] = "Sécurité du processus",
+	["WO_WORKFLOW"] = "Processus",
 };
