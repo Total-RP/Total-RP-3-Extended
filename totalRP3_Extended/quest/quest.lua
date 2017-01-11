@@ -247,13 +247,24 @@ local function goToStep(campaignID, questID, stepID)
 	-- Checks
 	assert(campaignID and questID and stepID, "Illegal args");
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign == campaignID, "Can't goToStep because current campaign is not " .. campaignID);
+	if playerQuestLog.currentCampaign ~= campaignID then
+		Utils.message.displayMessage("|cffff0000[Error] Can't 'go to step' because current campaign is not " .. campaignID);
+		return 2;
+	end
 	local campaignLog = playerQuestLog[campaignID];
-	assert(campaignLog, "Trying to goToStep from an unstarted campaign: " .. campaignID);
+	if not campaignLog then
+		Utils.message.displayMessage("|cffff0000[Error] Trying to 'go to step' from an unstarted campaign: " .. campaignID);
+		return 2;
+	end
 	local questLog = campaignLog.QUEST[questID];
-	assert(questLog, "Trying to goToStep from an unstarted quest: " .. campaignID .. " " .. questID);
-
-	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
+	if not questLog then
+		Utils.message.displayMessage("|cffff0000[Error] Trying to 'go to step' from an unstarted quest: " .. campaignID .. " " .. questID);
+		return 2;
+	end
+	if not TRP3_API.extended.classExists(campaignID, questID, stepID) then
+		Utils.message.displayMessage("|cffff0000[Error] 'go to step': Unknown quest step: " .. campaignID .. " " .. questID .. " " .. stepID);
+		return 2;
+	end
 
 	-- Change the current step
 	if questLog.CS then
@@ -269,18 +280,12 @@ local function goToStep(campaignID, questID, stepID)
 	local questClass = getClass(campaignID, questID);
 	local stepClass = getClass(campaignID, questID, stepID);
 
-	if stepClass then
+	activateStepHandlers(campaignID, questID, stepID, stepClass);
 
-		activateStepHandlers(campaignID, questID, stepID, stepClass);
-
-		-- Initial script
-		if stepClass.LI and stepClass.LI.OS then
-			local retCode = TRP3_API.script.executeClassScript(stepClass.LI.OS, stepClass.SC,
-				{object = campaignLog, classID = stepID}, fullID);
-		end
-
-	else
-		Log.log("Unknown step class (" .. campaignID .. ") (" .. questID .. ") (" .. stepID .. ")");
+	-- Initial script
+	if stepClass.LI and stepClass.LI.OS then
+		local retCode = TRP3_API.script.executeClassScript(stepClass.LI.OS, stepClass.SC,
+			{object = campaignLog, classID = stepID}, TRP3_API.extended.getFullID(campaignID, questID, stepID));
 	end
 
 	if stepClass.BA.FI then

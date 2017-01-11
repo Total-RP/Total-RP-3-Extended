@@ -595,11 +595,21 @@ Ce signal peut être écouté par les campagnes, quêtes et étapes via les év�
 	["EFFECT_SOUND_ID_SELF"] = "Jouer un son",
 	["EFFECT_SOUND_ID_SELF_CHANNEL"] = "Channel",
 	["EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE"] = "Ambiance",
+	["EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT"] = [=[Ambiance correspond aux sons ambiants. Les paramètres de volume des sons d'ambiance seront utilisés.
+
+Plusieurs sons d'ambience peuvent être joués simultanément.
+
+|cffff9900Veillez à ne pas utiliser cet effet pour jouer de la musique car la musique déjà jouée par la jeu ne sera pas coupée. Pour jouer une musique vous devez utiliser l'effet Jouer musique.]=],
 	["EFFECT_SOUND_ID_SELF_CHANNEL_SFX"] = "SFX",
 	["EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT"] = [=[SFX est à utiliser pour les effets sonores. Il utilise le volume du jeu.
 
 Différents sons SFX peuvent être joués simultanément.]=],
 	["EFFECT_SOUND_ID_SELF_ID"] = "ID de son",
+	["EFFECT_SOUND_ID_SELF_ID_TT"] = [=[L'ID correspond à un identifiant interne au jeu pour chaque son.
+
+|cff00ff00Vous pouvez trouver les ID des sons du jeu sur des sites comme WoWHead.
+
+|cffff9900À noter que si l'ID correspond à une liste de plusieurs sons, un des sons sera choisi aléatoirement.]=],
 	["EFFECT_SOUND_ID_SELF_PREVIEW"] = "Joue le son d'ID %s dans le channel %s.",
 	["EFFECT_SOUND_ID_SELF_TT"] = "Joue un son dans un channel particulier. Seul le joueur l'entendra.",
 	["EFFECT_SOUND_LOCAL_DISTANCE"] = "Distance de jeu",
@@ -609,22 +619,42 @@ Différents sons SFX peuvent être joués simultanément.]=],
 	["EFFECT_SOUND_MUSIC_LOCAL_TT"] = "Joue une musique pour les joueurs aux alentours.",
 	["EFFECT_SOUND_MUSIC_SELF"] = "Jouer musique",
 	["EFFECT_SOUND_MUSIC_SELF_PATH"] = "Chemin de la musique",
+	["EFFECT_SOUND_MUSIC_SELF_PATH_TT"] = [=[Le chemin de fichier vers une musique du jeu.
+
+|cffff9900Ne doit PAS contenir la partie Sounds\Music\ du chemin ou l'extension .mp3.]=],
 	["EFFECT_SOUND_MUSIC_SELF_PREVIEW"] = "Joue la musique: %s",
+	["EFFECT_SOUND_MUSIC_SELF_TT"] = [=[Joue une musique. Seul le joueur l'entendra.
+
+À noter que la musique se jouera en boucle jusqu'à ce qu'un évènement déclenche une autre musique (suite à un changement de zone par exemple), ou qu'un effet "Arrêter la musique" est déclenché. Le joueur peut également arrêter la musique manuellement via l'interface d'historique sonore.]=],
 	["EFFECT_SOUND_MUSIC_STOP"] = "Arrêter la musique",
+	["EFFECT_SOUND_MUSIC_STOP_TT"] = [=[Si vous utilisez l'effet "Jouer musique", la musique se jouera en boucle jusqu'à ce que le jeu déclenche une autre musique (suite à un changement de zone par exemple) ou si le joueur arrête manuellement le son depuis l'interface d'historique sonore ou jusqu'à ce que vous utilisiez cet effet.
+
+|cffff9900À noter que cet effet n'arrêtera que la musique jouée par l'add-on, pas celle du jeu.]=],
 	["EFFECT_SOUND_PLAY"] = "Jouer",
 	["EFFECT_SOURCE"] = "Source",
 	["EFFECT_SOURCE_CAMPAIGN"] = "Campagne active",
 	["EFFECT_SOURCE_CAMPAIGN_TT"] = "Recherche la variable dans la campagne active, si il existe une campagne active.",
 	["EFFECT_SOURCE_OBJECT"] = "Création",
+	["EFFECT_SOURCE_OBJECT_TT"] = [=[Recherche la variable dans le processus de l'objet source.
+
+Ne fonctionne que si l'objet source est un objet, une campagne, une quête ou une étape de quête.
+
+Dans le cas d'une campagne, quête ou étape de quête, la recherche se fera au niveau de la campagne (en entière).]=],
 	["EFFECT_SOURCE_WORKFLOW"] = "Processus",
 	["EFFECT_SOURCE_WORKFLOW_TT"] = "Recherche la variable dans l'exécution du processus. La portée de la variable est limitée à l'exécution de ce processus et sera détruite par après.",
 	["EFFECT_SPEECH_NAR"] = "Discours: Narration",
 	["EFFECT_SPEECH_NAR_DEFAULT"] = "L'hivers s'installe doucement dans la nuit ...",
 	["EFFECT_SPEECH_NAR_TEXT_TT"] = "Veuillez ne pas inclure le préfixe ||.",
+	["EFFECT_SPEECH_NAR_TT"] = [=[Joue un effet de narration sous la forme d'une émote.
+
+|cff00ff00Même principe que d'écrire une émote en commençant par le caractère || (pipe). Le message sera formaté dans la fenêtre de discussions pour les autres utilisateurs de Total RP.]=],
 	["EFFECT_SPEECH_NPC"] = "Discours: PNJ",
 	["EFFECT_SPEECH_NPC_DEFAULT"] = "Je voudrais un bonhomme de neige.",
 	["EFFECT_SPEECH_NPC_NAME"] = "Nom du PNJ",
 	["EFFECT_SPEECH_NPC_NAME_TT"] = "Le nom du PNJ.",
+	["EFFECT_SPEECH_NPC_TT"] = [=[Joue un texte de PNJ sous forme d'émote.
+
+|cff00ff00Même principe que d'écrire une émote en commençant par le caractère || (pipe) avec un nom de PNJ et un texte. Le message sera formaté dans la fenêtre de discussions pour les autres utilisateurs de Total RP.]=],
 	["EFFECT_SPEECH_PLAYER"] = "Discours: Joueur",
 	["EFFECT_SPEECH_PLAYER_DEFAULT"] = "Que le dragon vous consume !",
 	["EFFECT_SPEECH_PLAYER_TT"] = "Fait parler/crier le joueur, ou lui fait faire une emote /e.",
@@ -652,6 +682,9 @@ Différents affichages sont disponibles.]=],
 
 Donc si vous souhaitez vérifier le troisième argument de l'événement, entrez 3.]=],
 	["EFFECT_VAR_OBJECT_CHANGE"] = "Opération sur variable de création",
+	["EFFECT_VAR_OBJECT_CHANGE_TT"] = [=[Exécute une opération sur une variable.
+
+|cffff9900Pour les opérations mathématiques: Si la variable n'existe pas ou ne peut pas être interprétée comme un nombre elle sera initialisée à 0.]=],
 	["EFFECT_VAR_VALUE"] = "Valeur de variable",
 	["EX_SOUND_HISTORY"] = "Historique sonore",
 	["EX_SOUND_HISTORY_CLEAR"] = "Réinitialiser",
@@ -975,6 +1008,9 @@ Si votre objet est utilisable, essayez d'indiquer ici comment il devrait être u
 	["OP_OP_CHAR_FLYING"] = "En vol",
 	["OP_OP_CHAR_FLYING_TT"] = "Vérifie si le personnage est en train de voler.",
 	["OP_OP_CHAR_MINIMAP"] = "Texte de la mini-carte",
+	["OP_OP_CHAR_MINIMAP_TT"] = [=[Retourne le nom de la zone tel qu'indiqué sur la mini-carte.
+
+L'évènement du jeu "MINIMAP_ZONE_CHANGED" est déclenché quand le texte change, vous pouvez donc le tester dans une campagne ou une quête.]=],
 	["OP_OP_CHAR_MOUNTED"] = "En monture",
 	["OP_OP_CHAR_MOUNTED_TT"] = "Vérifie si le personnage est sur une monture.",
 	["OP_OP_CHAR_RESTING"] = "En repos",
@@ -1076,17 +1112,44 @@ Retourne toujours normal pour les joueurs.]=],
 	["OP_OP_UNIT_FACTION_TT"] = "|cff00ff00La faction de l'unité en ANGLAIS ET MINUSCULE.",
 	["OP_OP_UNIT_GUILD"] = "Guilde de l'unité",
 	["OP_OP_UNIT_GUILD_RANK"] = "Rank de guilde de l'unité",
+	["OP_OP_UNIT_GUILD_RANK_TT"] = "|cff00ff00Le rang de guilde de l'unité (si elle appartient à une guilde).",
+	["OP_OP_UNIT_GUILD_TT"] = "|cff00ff00Le nom de la guilde de l'unité (si elle appartient à une guilde).",
 	["OP_OP_UNIT_HEALTH"] = "Points de vie de l'unité",
+	["OP_OP_UNIT_HEALTH_TT"] = "|cff00ff00Les points de vie actuels de l'unité.",
 	["OP_OP_UNIT_ID"] = "ID de l'unité",
+	["OP_OP_UNIT_ID_TT"] = "|cff00ff00L'ID de l'unité sous la forme |cff00ff00'joueur-royaume'|r, comme retourné par la fonction UnitFullName. Le royaume sera toujours présent.",
 	["OP_OP_UNIT_ISPLAYER"] = "L'unité est un joueur",
+	["OP_OP_UNIT_ISPLAYER_TT"] = "|cff00ff00Retourne vrai si l'unité est un joueur.",
 	["OP_OP_UNIT_LEVEL"] = "Niveau de l'unité",
+	["OP_OP_UNIT_LEVEL_TT"] = "|cff00ff00Le niveau de l'unité.",
 	["OP_OP_UNIT_NAME"] = "Nom de l'unité",
+	["OP_OP_UNIT_NAME_TT"] = [=[|cff00ff00Le nom d'une unité, première valeur de retour de la fonction UnitName.
+
+|rUtilisé sur un joueur, il peut être |cff00ff00'joueur'|r ou |cff00ff00'joueur-royaume'|r. Donc si vous voulez être certain d'obtenir la forme |cff00ff00'joueur-royaume'|r vous devez utiliser l'opérande |cff00ff00'Unit ID'|r.]=],
 	["OP_OP_UNIT_NPC_ID"] = "ID de PNJ de l'unité",
+	["OP_OP_UNIT_NPC_ID_TT"] = "|cff00ff00Le PNJ ID, indiqué par UnitGUID. Ne fonctionne qu'avec les PNJ.",
 	["OP_OP_UNIT_POSITION_X"] = "Position X de l'unité",
+	["OP_OP_UNIT_POSITION_X_TT"] = [=[Retourne la coordonnée X d'une unité.
+
+Ne fonctionne qu'avec les joueurs.
+
+|cffff9900Ne fonctionne pas en instance/champs de bataille/arène depuis le patch 7.1.]=],
 	["OP_OP_UNIT_POSITION_Y"] = "Position Y de l'unité",
+	["OP_OP_UNIT_POSITION_Y_TT"] = [=[Retourne la coordonnée Y d'une unité.
+
+Ne fonctionne qu'avec les joueurs.
+
+|cffff9900Ne fonctionne pas en instance/champs de bataille/arène depuis le patch 7.1.]=],
 	["OP_OP_UNIT_RACE"] = "Race de l'unité",
+	["OP_OP_UNIT_RACE_TT"] = [=[|cff00ff00La race de l'unité EN ANGLAIS ET EN MINUSCULE, comme la seconde valeur de retour de la fonction UnitRace.
+
+Donc scourge pour les Réprouvés.]=],
 	["OP_OP_UNIT_SEX"] = "Sexe de l'unité",
+	["OP_OP_UNIT_SEX_TT"] = [=[|cff00ff00L'index du sexe de l'unité. 2 = Homme, 3 = Femme. 1 correspond à neutre ou inconnu.
+
+|cffffff00Retourné sous forme de STRING.]=],
 	["OP_OP_UNIT_SPEED"] = "Vitesse de l'unité",
+	["OP_OP_UNIT_SPEED_TT"] = "|cff00ff00La vitesse actuelle de l'unité en mètre par secondes. Marcher correspond à 2.5 et courir (sans amélioration) correspond à 7.",
 	["OP_OR"] = "OU",
 	["OP_OR_SWITCH"] = "Changer en OU",
 	["OP_PREVIEW"] = "Prévisualisation",
@@ -1292,9 +1355,30 @@ Vous pourrez aussi Ctrl+Clic droit sur l'objet dans votre inventaire pour config
 	["TB_TOOLS"] = "Base de données d'objets Extended",
 	["TB_TOOLS_TT"] = "Créez vos propres objets et quêtes.",
 	["TU_AC_2"] = "Évaluation d'actions",
+	["TU_CO_1_TEXT"] = [=[Un contenant est un object pouvant contenir d'autres objets.
+
+Pour ouvrir un contenant vous pouvez |cff00ff00double-cliquer|r dessus dans l'inventaire.
+
+Il est possible d'avoir des contenants qui sont également utilisables (par clic-droit). L'un n'empêche pas l'autre.
+
+|cffff9900Please note that for now, you can only trade with players containers that are empty, or that contains only items that are inner objects of the container. Please see the inner object tab for more information.]=],
 	["TU_CS_4"] = "Cinématiques et processus",
 	["TU_CS_5"] = "Aperçu",
+	["TU_DB_1_TEXT"] = [=[|cff00ff00Bienvenue dans le tutoriel de la base de données.|r
+
+Ceci est la base de données où toutes les créations sont rangées.
+
+Une création contient toutes les informations sur un objet, un document, une campagne/quête/étape de quête ou une scène cinématique.]=],
 	["TU_DB_2"] = "Types de base de données",
+	["TU_DB_2_TEXT"] = [=[Il y a quatre onglets pour filtrer la base de données.
+
+|cff00ff00Ma base de données :|r contient tous les objets que vous avez créé.
+
+|cff00ff00Base de données des joueurs :|r contient tous les objets que vous avez reçu ou importé d'autres joueurs.
+
+|cff00ff00 Base de données Backers :|r contient les objets créé par les backers ayant participé au Kickstarter et par l'équipe de TRP3.
+
+|cff00ff00 Base de données complète :|r contient toutes les données.]=],
 	["TU_DB_4"] = "Création racine et créations internes",
 	["TU_DB_5"] = "Créations racines",
 	["TU_DB_6"] = "Créer un objet",
