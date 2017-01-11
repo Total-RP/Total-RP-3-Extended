@@ -92,66 +92,63 @@ local function startQuest(campaignID, questID)
 	-- Checks
 	assert(campaignID and questID, "Illegal args");
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign == campaignID, ("Can't start quest because current campaign (%s) is not %s."):format(tostring(playerQuestLog.currentCampaign), campaignID));
+	if playerQuestLog.currentCampaign ~= campaignID then
+		Utils.message.displayMessage("|cffff0000[Error] Can't 'start quest' because current campaign is not " .. campaignID);
+		return 2;
+	end
 	local campaignLog = playerQuestLog[campaignID];
-	assert(campaignLog, "Trying to start quest from an unstarted campaign.");
-
-	Log.log("Start quest: " .. questID, Log.level.DEBUG);
-
-	if not campaignLog.QUEST[questID] then
-		Log.log("Starting quest " .. campaignID .. " " .. questID);
-
-		local campaignClass = getClass(campaignID);
-		local questClass = getClass(campaignID, questID);
-
-		if not campaignClass or not questClass then
-			Log.log("Unknown campaign or quest class (" .. campaignID .. ") (" .. questID .. ")");
-			return;
-		end
-
-		campaignLog.QUEST[questID] = {
-			OB = {},
-		};
-
-		local questIcon, questName, questDescription = getClassDataSafe(questClass);
-		Utils.message.displayMessage(loc("QE_QUEST_START"):format(questName), Utils.message.type.CHAT_FRAME);
-
-		activateQuestHandlers(campaignID, questID, questClass);
-
-		-- Initial script
-		if questClass.LI and questClass.LI.OS then
-			local retCode = TRP3_API.script.executeClassScript(questClass.LI.OS, questClass.SC,
-				{object = campaignLog}, TRP3_API.extended.getFullID(campaignID, questID));
-		end
-
-		for stepID, step in pairs(questClass.ST or EMPTY) do
-			if step.BA.IN then
-				TRP3_API.quest.goToStep(campaignID, questID, stepID);
-				break;
-			end
-		end
-
-		for objectiveID, objective in pairs(questClass.OB or EMPTY) do
-			if objective.AA then
-				TRP3_API.quest.revealObjective(campaignID, questID, objectiveID);
-			end
-		end
-
-		TRP3_API.ui.frame.setupIconButton(TRP3_QuestToast, questIcon);
-		TRP3_QuestToast.name:SetText(questName);
-		TRP3_QuestToast.campaignID = campaignID;
-		TRP3_QuestToast.questID = questID;
-		TRP3_QuestToast.questName = questName;
-		TRP3_QuestToast.campaignName = campaignClass.BA.NA;
-		TRP3_QuestToast:Show();
-
-		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
-		return 1;
-	else
-		Log.log("Can't start quest because already starterd " .. campaignID .. " " .. questID);
+	if not campaignLog then
+		Utils.message.displayMessage("|cffff0000[Error] Trying to 'start quest' from an unstarted campaign: " .. campaignID);
+		return 2;
+	end
+	if not TRP3_API.extended.classExists(campaignID, questID) then
+		Utils.message.displayMessage("|cffff0000[Error] 'start quest': Unknown quest: " .. campaignID .. " " .. questID);
+		return 2;
 	end
 
-	return 0;
+	Log.log("Starting quest " .. campaignID .. " " .. questID);
+
+	local campaignClass = getClass(campaignID);
+	local questClass = getClass(campaignID, questID);
+
+	campaignLog.QUEST[questID] = {
+		OB = {},
+	};
+
+	local questIcon, questName, questDescription = getClassDataSafe(questClass);
+	Utils.message.displayMessage(loc("QE_QUEST_START"):format(questName), Utils.message.type.CHAT_FRAME);
+
+	activateQuestHandlers(campaignID, questID, questClass);
+
+	-- Initial script
+	if questClass.LI and questClass.LI.OS then
+		local retCode = TRP3_API.script.executeClassScript(questClass.LI.OS, questClass.SC,
+			{object = campaignLog}, TRP3_API.extended.getFullID(campaignID, questID));
+	end
+
+	for stepID, step in pairs(questClass.ST or EMPTY) do
+		if step.BA.IN then
+			TRP3_API.quest.goToStep(campaignID, questID, stepID);
+			break;
+		end
+	end
+
+	for objectiveID, objective in pairs(questClass.OB or EMPTY) do
+		if objective.AA then
+			TRP3_API.quest.revealObjective(campaignID, questID, objectiveID);
+		end
+	end
+
+	TRP3_API.ui.frame.setupIconButton(TRP3_QuestToast, questIcon);
+	TRP3_QuestToast.name:SetText(questName);
+	TRP3_QuestToast.campaignID = campaignID;
+	TRP3_QuestToast.questID = questID;
+	TRP3_QuestToast.questName = questName;
+	TRP3_QuestToast.campaignName = campaignClass.BA.NA;
+	TRP3_QuestToast:Show();
+
+	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+	return 1;
 end
 TRP3_API.quest.startQuest = startQuest;
 
@@ -275,7 +272,7 @@ local function goToStep(campaignID, questID, stepID)
 	end
 	questLog.CS = stepID;
 
-	-- Only then, check if the step exists.
+	-- Go to new step
 	local campaignClass = getClass(campaignID);
 	local questClass = getClass(campaignID, questID);
 	local stepClass = getClass(campaignID, questID, stepID);
@@ -307,32 +304,46 @@ local function revealObjective(campaignID, questID, objectiveID)
 	-- Checks
 	assert(campaignID and questID and objectiveID, "Illegal args");
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign == campaignID, "Can't revealObjective because current campaign is not " .. campaignID);
+	if playerQuestLog.currentCampaign ~= campaignID then
+		Utils.message.displayMessage("|cffff0000[Error] Can't 'reveal objective' because current campaign is not " .. campaignID);
+		return 2;
+	end
 	local campaignLog = playerQuestLog[campaignID];
-	assert(campaignLog, "Trying to revealObjective from an unstarted campaign: " .. campaignID);
+	if not campaignLog then
+		Utils.message.displayMessage("|cffff0000[Error] Trying to 'reveal objective' from an unstarted campaign: " .. campaignID);
+		return 2;
+	end
 	local questLog = campaignLog.QUEST[questID];
-	assert(questLog, "Trying to revealObjective from an unstarted quest: " .. campaignID .. " " .. questID);
+	if not questLog then
+		Utils.message.displayMessage("|cffff0000[Error] Trying to 'reveal objective' from an unstarted quest: " .. campaignID .. " " .. questID);
+		return 2;
+	end
+	if not TRP3_API.extended.classExists(campaignID, questID) then
+		Utils.message.displayMessage("|cffff0000[Error] 'reveal objective': Unknown quest: " .. campaignID .. " " .. questID);
+		return 2;
+	end
 
 	local questClass = getClass(campaignID, questID);
-	local objectiveClass = (questClass or EMPTY).OB[objectiveID];
-	if objectiveClass then
-		if not questLog.OB then questLog.OB = {} end
+	local objectiveClass = questClass.OB[objectiveID];
 
-		if questLog.OB[objectiveID] == nil then
-			-- Boolean objective
-			questLog.OB[objectiveID] = false;
-		end
-
-		-- Message
-		local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
-		Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
-		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
-
-		return 1;
-	else
-		Log.log("Unknown objectiveID (" .. campaignID .. ") (" .. questID .. ") (" .. objectiveID .. ")");
-		return 0;
+	if not objectiveClass then
+		Utils.message.displayMessage("|cffff0000[Error] 'reveal objective': Unknown objective: " .. campaignID .. " " .. questID .. " " .. objectiveID);
+		return 2;
 	end
+
+	if not questLog.OB then questLog.OB = {} end
+
+	if questLog.OB[objectiveID] == nil then
+		-- Boolean objective
+		questLog.OB[objectiveID] = false;
+	end
+
+	-- Message
+	local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+	Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
+	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+
+	return 1;
 end
 TRP3_API.quest.revealObjective = revealObjective;
 
@@ -340,33 +351,47 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 	-- Checks
 	assert(campaignID and questID and objectiveID, "Illegal args");
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign == campaignID, "Can't showObjective because current campaign is not " .. campaignID);
+	if playerQuestLog.currentCampaign ~= campaignID then
+		Utils.message.displayMessage("|cffff0000[Error] Can't 'mark objective done' because current campaign is not " .. campaignID);
+		return 2;
+	end
 	local campaignLog = playerQuestLog[campaignID];
-	assert(campaignLog, "Trying to showObjective from an unstarted campaign: " .. campaignID);
+	if not campaignLog then
+		Utils.message.displayMessage("|cffff0000[Error] Trying to 'mark objective done' from an unstarted campaign: " .. campaignID);
+		return 2;
+	end
 	local questLog = campaignLog.QUEST[questID];
-	assert(questLog, "Trying to showObjective from an unstarted quest: " .. campaignID .. " " .. questID);
+	if not questLog then
+		Utils.message.displayMessage("|cffff0000[Error] Trying to 'mark objective done' from an unstarted quest: " .. campaignID .. " " .. questID);
+		return 2;
+	end
+	if not TRP3_API.extended.classExists(campaignID, questID) then
+		Utils.message.displayMessage("|cffff0000[Error] 'mark objective done': Unknown quest: " .. campaignID .. " " .. questID);
+		return 2;
+	end
 
 	local questClass = getClass(campaignID, questID);
-	local objectiveClass = (questClass or EMPTY).OB[objectiveID];
-	if objectiveClass then
-		if questLog.OB and questLog.OB[objectiveID] ~= nil then
+	local objectiveClass = questClass.OB[objectiveID];
 
-			if questLog.OB[objectiveID] ~= true then
-				-- Message
-				local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
-				Utils.message.displayMessage(loc("QE_QUEST_OBJ_FINISHED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
-				questLog.OB[objectiveID] = true;
-				Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
-			end
-			return 1;
-		else
-			Log.log("Objective not revealed yet (" .. campaignID .. ") (" .. questID .. ") (" .. objectiveID .. ")");
-			return 0;
-		end
-	else
-		Log.log("Unknown objectiveID (" .. campaignID .. ") (" .. questID .. ") (" .. objectiveID .. ")");
-		return 0;
+	if not objectiveClass then
+		Utils.message.displayMessage("|cffff0000[Error] 'mark objective done': Unknown objective: " .. campaignID .. " " .. questID .. " " .. objectiveID);
+		return 2;
 	end
+
+	if not questLog.OB then questLog.OB = {} end
+
+	if questLog.OB[objectiveID] == nil then
+		-- Boolean objective
+		questLog.OB[objectiveID] = false;
+	end
+
+	-- Message
+	local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+	Utils.message.displayMessage(loc("QE_QUEST_OBJ_FINISHED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
+	questLog.OB[objectiveID] = true;
+	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+
+	return 1;
 end
 TRP3_API.quest.markObjectiveDone = markObjectiveDone;
 
