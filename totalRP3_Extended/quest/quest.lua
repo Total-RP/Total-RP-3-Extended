@@ -265,10 +265,20 @@ local function goToStep(campaignID, questID, stepID)
 
 	-- Change the current step
 	if questLog.CS then
+		local currentStepID = TRP3_API.extended.getFullID(campaignID, questID, questLog.CS);
+		local currentStepClass = getClass(currentStepID);
+
+		-- Triggers current step On Leave
+		if currentStepClass and currentStepClass.LI and currentStepClass.LI.OL then
+			local retCode = TRP3_API.script.executeClassScript(currentStepClass.LI.OL, currentStepClass.SC,
+				{object = campaignLog, classID = stepID}, currentStepID);
+		end
+
 		if not questLog.PS then questLog.PS = {}; end
 		tinsert(questLog.PS, questLog.CS);
+
 		-- Remove previous step handlers
-		clearStepHandlers(TRP3_API.extended.getFullID(campaignID, questID, questLog.CS));
+		clearStepHandlers(currentStepID);
 	end
 	questLog.CS = stepID;
 
