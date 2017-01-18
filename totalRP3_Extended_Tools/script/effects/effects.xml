@@ -115,7 +115,7 @@
 	</Frame>
 
 	<Frame name="TRP3_EffectEditorStoreVar" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
+		<Size x="500" y="375"/>
 		<Frames>
 
 			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
@@ -125,10 +125,29 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-20" y="-20"/>
 				</Anchors>
+			</Frame>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="0" y="-20"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="config" inherits="GameFontNormal" justifyH="LEFT" text="[CONFIGURATION]">
+							<Size x="0" y="10" />
+							<Anchors>
+								<Anchor point="LEFT" x="15" y="0" />
+								<Anchor point="RIGHT" x="-15" y="0" />
+								<Anchor point="BOTTOM" x="0" y="-20" />
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
 			</Frame>
 
 		</Frames>

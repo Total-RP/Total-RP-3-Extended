@@ -163,16 +163,41 @@ end
 
 local function var_set_operand_init()
 	local editor = TRP3_EffectEditorStoreVar;
+	local getOperandEditorInfo = TRP3_API.extended.tools.getOperandEditorInfo;
 
 	-- Var name
 	editor.var.title:SetText(loc("EFFECT_VAR"))
 	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
 
+	-- Source
+	local sources = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_WORKFLOW")), "w", loc("EFFECT_SOURCE_WORKFLOW_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+
 	local function onOperandSelected(operandID, listbox)
-		_G[listbox:GetName().."Text"]:SetText(operandID);
+		local operand = getOperandEditorInfo(operandID) or Globals.empty;
+		_G[listbox:GetName() .. "Text"]:SetText(operand.title or UNKNOWN);
 
 		-- Show the editor, if any
-
+		if editor.currentEditor then
+			editor.currentEditor:Hide();
+		end
+		listbox.config:SetText(loc("EFFECT_VAR_OPERAND_CONFIG_NO"));
+		if operand.editor then
+			operand.editor:SetParent(editor);
+			operand.editor:ClearAllPoints();
+			operand.editor:SetPoint("LEFT", 100, 0);
+			operand.editor:SetPoint("RIGHT", -100, 0);
+			operand.editor:SetPoint("BOTTOM", 0, 20);
+			operand.editor:SetPoint("TOP", listbox, "BOTTOM", 0, -10);
+			operand.editor.load();
+			editor.currentEditor = operand.editor;
+			operand.editor:Show();
+			listbox.config:SetText(loc("EFFECT_VAR_OPERAND_CONFIG"));
+		end
 	end
 
 	function editor.load(scriptData)
@@ -182,14 +207,32 @@ local function var_set_operand_init()
 
 		local data = scriptData.args or Globals.empty;
 		editor.var:SetText(data[1] or "varName");
-		editor.type.selectedValue = data[2] or "random";
+		editor.source:SetSelectedValue(data[2] or "w");
+		editor.type.selectedValue = data[3] or "random";
 		onOperandSelected(editor.type:GetSelectedValue(), editor.type);
+
+		local operand = getOperandEditorInfo(editor.type:GetSelectedValue()) or Globals.empty;
+		if operand.editor and operand.editor.load then
+			operand.editor.load(data[4]);
+		end
 	end
 
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.var:GetText())) or "";
-		scriptData.args[2] = editor.type:GetSelectedValue() or "random";
+		scriptData.args[2] = editor.source:GetSelectedValue() or "w";
+		scriptData.args[3] = editor.type:GetSelectedValue() or "random";
+
+		local operand = getOperandEditorInfo(scriptData.args[3]) or Globals.empty;
+		if operand.editor and operand.editor.save then
+			scriptData.args[4] = operand.editor.save();
+		end
 	end
+
+	local sourcesText = {
+		w = loc("EFFECT_SOURCE_WORKFLOW"),
+		o = loc("EFFECT_SOURCE_OBJECT"),
+		c = loc("EFFECT_SOURCE_CAMPAIGN")
+	}
 
 	registerEffectEditor("var_operand", {
 		title = loc("EFFECT_VAR_OPERAND"),
@@ -197,11 +240,17 @@ local function var_set_operand_init()
 		description = loc("EFFECT_VAR_OPERAND_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local varName = tostring(args[1]);
-			local operandID = tostring(args[2]);
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR_OPERAND") .. ":|r " .. varName .. " = |cff00ff00" .. operandID);
+			local source = sourcesText[args[2]] or "?";
+			local operandID = tostring(args[3]);
+			local operand = getOperandEditorInfo(operandID) or Globals.empty;
+			local text = operand.title or UNKNOWN;
+			if operand.getText then
+				text = operand.getText(args[4]);
+			end
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR_OPERAND") .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " = |cff00ff00" .. text);
 		end,
 		getDefaultArgs = function()
-			return {"varName", "random"};
+			return {"varName", "w", "random"};
 		end,
 		editor = editor,
 	});

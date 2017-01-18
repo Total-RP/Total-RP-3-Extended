@@ -166,6 +166,26 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 
+	["var_operand"] = {
+		codeReplacementFunc = function (args)
+			local varName = args[1] or "var";
+			local source = args[2] or "w";
+			local operandID = args[3] or "random";
+			local operandArgs = args[4];
+			local operand = TRP3_API.script.getOperand(operandID);
+			local code = "";
+			if operand and operand.codeReplacement then
+				code = operand.codeReplacement(operandArgs);
+			end
+			return ("setVar(args, \"%s\", \"[=]\", \"%s\", tostring(%s)); lastEffectReturn = 0;"):format(source, varName, code), operand.env;
+		end,
+		env = {
+			setVar = "TRP3_API.script.setVar",
+			tostring = "tostring",
+		},
+		secured = security.HIGH,
+	},
+
 	["signal_send"] = {
 		codeReplacementFunc = function (args)
 			local varName = args[1] or "";

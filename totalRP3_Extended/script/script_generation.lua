@@ -274,7 +274,13 @@ local function writeEffect(effectStructure)
 				CURRENT_ENVIRONMENT[map] = g;
 			end
 		end
-		effectCode = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
+		local code, supEnv = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
+		effectCode = code;
+		if supEnv then
+			for map, g in pairs(supEnv) do
+				CURRENT_ENVIRONMENT[map] = g;
+			end
+		end
 	elseif effectInfo.securedCodeReplacementFunc and effectInfo.securedEnv then
 		-- Register operand environment
 		if effectInfo.securedEnv then
@@ -496,7 +502,7 @@ local function getFunction(structure, rootClassID)
 
 	if DEBUG then
 		TRP3_DEBUG_CODE_FRAME:Show();
-		TRP3_DEBUG_CODE_FRAME_TEXT:SetText(code);
+		TRP3_DEBUG_CODE_FRAME.scroll.text:SetText(code);
 	end
 
 	if functionFactory then
