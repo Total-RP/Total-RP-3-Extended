@@ -340,7 +340,7 @@
 							</ScrollFrame>
 
 							<Button parentKey="add" inherits="TRP3_CommonButton">
-								<Size x="200" y="20"/>
+								<Size x="250" y="20"/>
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="-5"/>
 								</Anchors>

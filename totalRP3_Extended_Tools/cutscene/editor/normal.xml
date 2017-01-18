@@ -174,7 +174,7 @@
 					</Frame>
 					<CheckButton parentKey="loot" inherits="TRP3_CheckBox" name="$parentLoot">
 						<Anchors>
-							<Anchor point="LEFT" x="25" y="0" relativePoint="RIGHT" relativeKey="$parent.workflow"/>
+							<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.workflow"/>
 						</Anchors>
 					</CheckButton>
 					<CheckButton parentKey="endpoint" inherits="TRP3_CheckBox" name="$parentEndPoint">
@@ -192,7 +192,7 @@
 						<Size x="0" y="18"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="15" y="-2" relativePoint="TOPRIGHT" relativeKey="$parent.choices"/>
-							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.endpoint" x="-45" y="0"/>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.endpoint" x="-20" y="0"/>
 						</Anchors>
 					</EditBox>
 					<Frame parentKey="choicesEditor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">

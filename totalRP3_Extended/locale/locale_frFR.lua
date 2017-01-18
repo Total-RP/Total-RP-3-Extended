@@ -1233,8 +1233,7 @@ La progression de campagne est un indicateur en % placé dans le journal de quê
 	["QE_QUEST_TT_STEP"] = [=[|cffffff00Actuellement:|r
 "%s"]=],
 	["QE_QUESTS"] = "Quêtes",
-	["QE_QUESTS_HELP"] = [=[Vous pouvez ici ajouter des quêtes à votre campagne. Veuillez noter qu'une quête n'est pas automatiquement révélée dans le journal de quêtes lorsqu'il commence la campagne.
-Vous devez révéler la quête via un processus, ou indiquer que la quête doit être révélée automatiquement.
+	["QE_QUESTS_HELP"] = [=[Vous pouvez ici ajouter des quêtes à votre campagne.
 |cffff9900Les quêtes sont ordonnées par ID dans le journal de quêtes et non pas alphabétiquement ou par ordre de révélation.]=],
 	["QE_RESET_CONFIRM"] = [=[Réinitialiser cette campagne ?
 

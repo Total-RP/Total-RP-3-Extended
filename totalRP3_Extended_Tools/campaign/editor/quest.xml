@@ -280,7 +280,7 @@
 						<Frames>
 
 							<Button parentKey="add" inherits="TRP3_CommonButton">
-								<Size x="150" y="20" />
+								<Size x="200" y="20" />
 								<Anchors>
 									<Anchor point="BOTTOM" relativePoint="TOP" x="0" y="10"/>
 								</Anchors>
