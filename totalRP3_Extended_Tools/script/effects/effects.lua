@@ -161,7 +161,51 @@ end
 -- Workflow expertise
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function var_set_operand_init()
+	local editor = TRP3_EffectEditorStoreVar;
 
+	-- Var name
+	editor.var.title:SetText(loc("EFFECT_VAR"))
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+
+	local function onOperandSelected(operandID, listbox)
+		_G[listbox:GetName().."Text"]:SetText(operandID);
+
+		-- Show the editor, if any
+
+	end
+
+	function editor.load(scriptData)
+		local structure = {};
+		TRP3_API.extended.tools.getEvaluatedOperands(structure);
+		TRP3_API.ui.listbox.setupListBox(editor.type, structure, onOperandSelected, nil, 255, true);
+
+		local data = scriptData.args or Globals.empty;
+		editor.var:SetText(data[1] or "varName");
+		editor.type.selectedValue = data[2] or "random";
+		onOperandSelected(editor.type:GetSelectedValue(), editor.type);
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.var:GetText())) or "";
+		scriptData.args[2] = editor.type:GetSelectedValue() or "random";
+	end
+
+	registerEffectEditor("var_operand", {
+		title = loc("EFFECT_VAR_OPERAND"),
+		icon = "inv_inscription_minorglyph04",
+		description = loc("EFFECT_VAR_OPERAND_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local varName = tostring(args[1]);
+			local operandID = tostring(args[2]);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR_OPERAND") .. ":|r " .. varName .. " = |cff00ff00" .. operandID);
+		end,
+		getDefaultArgs = function()
+			return {"varName", "random"};
+		end,
+		editor = editor,
+	});
+end
 
 local function var_set_execenv_init()
 	local changeVarEditor = TRP3_EffectEditorVarChange;
@@ -609,5 +653,6 @@ function TRP3_API.extended.tools.initBaseEffects()
 	sound_music_local_init();
 
 	var_set_execenv_init();
+	var_set_operand_init();
 	signal_send_init();
 end

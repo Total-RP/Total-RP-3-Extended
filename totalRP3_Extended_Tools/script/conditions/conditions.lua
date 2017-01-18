@@ -466,6 +466,102 @@ function editor.load(scriptData, branchingStepData)
 	listCondition();
 end
 
+local getEvaluatedOperands = function(structure)
+	local evaluatedOperands = {
+		[loc("OP_UNIT_VALUE")] = {
+			"unit_name",
+			"unit_id",
+			"unit_npc_id",
+			"unit_guild",
+			"unit_guild_rank",
+			"unit_classification",
+			"unit_sex",
+			"unit_class",
+			"unit_race",
+			"unit_faction",
+			"unit_health",
+			"unit_level",
+			"unit_speed",
+			"unit_position_x",
+			"unit_position_y",
+			"unit_distance_point",
+			"unit_distance_me",
+		},
+		[loc("OP_UNIT_TEST")] = {
+			"unit_is_player",
+			"unit_exists",
+			"unit_is_dead",
+			"unit_distance_trade",
+			"unit_distance_inspect",
+		},
+		[CHARACTER] = {
+			"char_falling",
+			"char_stealth",
+			"char_flying",
+			"char_mounted",
+			"char_resting",
+			"char_swimming",
+			"char_facing",
+			"char_zone",
+			"char_subzone",
+			"char_minimap",
+		},
+		--		["Pets and companions"] = { -- TODO: locals
+		--			"pet_battle_name",
+		--			"pet_pet_name",
+		--			"pet_mount_name",
+		--		},
+		[loc("INV_PAGE_CHARACTER_INV")] = {
+			"inv_item_count",
+			--			"inv_durability",
+			--			"inv_weight",
+			--			"inv_empty_slot",
+		},
+		[loc("EFFECT_CAT_CAMPAIGN")] = {
+			"quest_is_step",
+			"quest_obj",
+			"quest_is_npc",
+		},
+		["Expert"] = {-- TODO: locals
+			"var_check",
+			"var_check_n",
+			"check_event_var",
+			"check_event_var_n",
+		},
+		["Others"] = {-- TODO: locals
+			"random",
+		},
+	}
+
+	local evaluatedOrder = {
+		loc("OP_UNIT_VALUE"),
+		loc("OP_UNIT_TEST"),
+		CHARACTER,
+		--		"Pets and companions", -- TODO: locals
+		loc("INV_PAGE_CHARACTER_INV"),
+		loc("EFFECT_CAT_CAMPAIGN"),
+		"Others", -- TODO: locals
+		"",
+		"Expert", -- TODO: locals
+	}
+
+	wipe(structure);
+	tinsert(structure, {loc("OP_EVAL_VALUE")});
+	for _, group in pairs(evaluatedOrder) do
+		local subStructure = {};
+		tinsert(subStructure, {group});
+
+		for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
+			local operandInfo = getOperandEditorInfo(operandID);
+			tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
+		end
+
+		tinsert(structure, {group, subStructure});
+	end
+	return structure;
+end
+TRP3_API.extended.tools.getEvaluatedOperands = getEvaluatedOperands;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -519,101 +615,6 @@ function editor.init()
 		{getComparatorText(">="), ">="},
 	}
 	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, checkNumeric, nil, 175, true);
-
-	local evaluatedOperands = {
-		[loc("OP_UNIT_VALUE")] = {
-			"unit_name",
-			"unit_id",
-			"unit_npc_id",
-			"unit_guild",
-			"unit_guild_rank",
-			"unit_classification",
-			"unit_sex",
-			"unit_class",
-			"unit_race",
-			"unit_faction",
-			"unit_health",
-			"unit_level",
-			"unit_speed",
-			"unit_position_x",
-			"unit_position_y",
-			"unit_distance_point",
-			"unit_distance_me",
-		},
-		[loc("OP_UNIT_TEST")] = {
-			"unit_is_player",
-			"unit_exists",
-			"unit_is_dead",
-			"unit_distance_trade",
-			"unit_distance_inspect",
-		},
-		[CHARACTER] = {
-			"char_falling",
-			"char_stealth",
-			"char_flying",
-			"char_mounted",
-			"char_resting",
-			"char_swimming",
-			"char_facing",
-			"char_zone",
-			"char_subzone",
-			"char_minimap",
-		},
---		["Pets and companions"] = { -- TODO: locals
---			"pet_battle_name",
---			"pet_pet_name",
---			"pet_mount_name",
---		},
-		[loc("INV_PAGE_CHARACTER_INV")] = {
-			"inv_item_count",
---			"inv_durability",
---			"inv_weight",
---			"inv_empty_slot",
-		},
-		[loc("EFFECT_CAT_CAMPAIGN")] = {
-			"quest_is_step",
-			"quest_obj",
-			"quest_is_npc",
-		},
-		["Expert"] = {-- TODO: locals
-			"var_check",
-			"var_check_n",
-			"check_event_var",
-			"check_event_var_n",
-		},
-		["Others"] = {-- TODO: locals
-			"random",
-		},
-	}
-
-	local evaluatedOrder = {
-		loc("OP_UNIT_VALUE"),
-		loc("OP_UNIT_TEST"),
-		CHARACTER,
---		"Pets and companions", -- TODO: locals
-		loc("INV_PAGE_CHARACTER_INV"),
-		loc("EFFECT_CAT_CAMPAIGN"),
-		"Others", -- TODO: locals
-		"",
-		"Expert", -- TODO: locals
-	}
-
-	local getEvaluatedOperands = function(structure)
-		wipe(structure);
-		tinsert(structure, {loc("OP_EVAL_VALUE")});
-		for _, group in pairs(evaluatedOrder) do
-			local subStructure = {};
-			tinsert(subStructure, {group});
-
-			for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
-				local operandInfo = getOperandEditorInfo(operandID);
-				tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
-			end
-
-			tinsert(structure, {group, subStructure});
-		end
-		return structure;
-	end
 
 	TRP3_API.ui.listbox.setupListBox(operandEditor.left, getEvaluatedOperands(leftListStructure), function(operandID, list)
 		list.argsData = nil;

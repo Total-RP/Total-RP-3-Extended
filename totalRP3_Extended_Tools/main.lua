@@ -489,12 +489,13 @@ local function onStart()
 	NavBar_Initialize(toolFrame.navBar, "NavButtonTemplate", homeData, toolFrame.navBar.home, toolFrame.navBar.overflow);
 
 	-- Init effects and operands
+	local effectMenu = TRP3_API.extended.tools.getEffectOperandLocale();
 	TRP3_API.extended.tools.initBaseEffects();
 	TRP3_API.extended.tools.initCampaignEffects();
 	TRP3_API.extended.tools.initItemEffects();
 
 	-- Init editors
-	TRP3_API.extended.tools.initScript(toolFrame);
+	TRP3_API.extended.tools.initScript(toolFrame, effectMenu);
 	TRP3_InnerObjectEditor.init(toolFrame);
 	TRP3_LinksEditor.init(toolFrame);
 	TRP3_API.extended.tools.initDocument(toolFrame);

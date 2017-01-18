@@ -24,12 +24,77 @@ local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.locale.getText;
 local toolFrame;
 
+function TRP3_API.extended.tools.getEffectOperandLocale()
+	local effectMenu = {
+		[loc("WO_EFFECT_CAT_COMMON")] = {
+			"text",
+		},
+		[loc("EFFECT_CAT_SOUND")] = {
+			"sound_id_self",
+			"sound_music_self",
+			"sound_music_stop",
+			"sound_id_local",
+			"sound_music_local",
+		},
+		[loc("EFFECT_CAT_SPEECH")] = {
+			"speech_env",
+			"speech_npc",
+			"speech_player",
+		},
+		[loc("REG_COMPANIONS")] = {
+			"companion_dismiss_mount",
+			"companion_dismiss_critter",
+			"companion_random_critter",
+			"companion_summon_mount",
+		},
+		[loc("INV_PAGE_CHARACTER_INV")] = {
+			"item_add",
+			"item_remove",
+			"item_sheath",
+			"item_bag_durability",
+			"item_consume",
+			"item_cooldown",
+			"item_use",
+			"item_loot",
+		},
+		[loc("TYPE_DOCUMENT")] = {
+			"document_show",
+			"document_close",
+		},
+		[loc("EFFECT_CAT_CAMPAIGN")] = {
+			"quest_start",
+			"quest_goToStep",
+			"quest_revealObjective",
+			"quest_markObjDone",
+			"dialog_start",
+			"dialog_quick",
+		},
+		[loc("MODE_EXPERT")] = {
+			"var_object",
+			"var_operand",
+			"signal_send",
+		},
+		order = {
+			loc("WO_EFFECT_CAT_COMMON"),
+			loc("EFFECT_CAT_SPEECH"),
+			loc("INV_PAGE_CHARACTER_INV"),
+			loc("TYPE_DOCUMENT"),
+			loc("EFFECT_CAT_CAMPAIGN"),
+			loc("EFFECT_CAT_SOUND"),
+			loc("REG_COMPANIONS"),
+			"",
+			loc("MODE_EXPERT"),
+		}
+	}
+	return effectMenu;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.initScript(ToolFrame)
-	TRP3_ScriptEditorNormal.init(ToolFrame);
+function TRP3_API.extended.tools.initScript(ToolFrame, effectMenu)
+	TRP3_ScriptEditorNormal.init(ToolFrame, effectMenu);
 	TRP3_ScriptEditorDelay.init(ToolFrame);
 	TRP3_ConditionEditor.initOperands(ToolFrame);
 	TRP3_ConditionEditor.init(ToolFrame);

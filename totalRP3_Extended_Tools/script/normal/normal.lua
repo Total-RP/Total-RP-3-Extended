@@ -628,7 +628,7 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-editor.init = function(ToolFrame)
+editor.init = function(ToolFrame, effectMenu)
 	toolFrame = ToolFrame;
 
 	-- Resize
@@ -653,66 +653,7 @@ editor.init = function(ToolFrame)
 	editor.list.add:SetScript("OnClick", onAddWorkflow);
 
 	-- Effect selector
-	menuData = {
-		[loc("WO_EFFECT_CAT_COMMON")] = {
-			"text",
-		},
-		[loc("EFFECT_CAT_SOUND")] = {
-			"sound_id_self",
-			"sound_music_self",
-			"sound_music_stop",
-			"sound_id_local",
-			"sound_music_local",
-		},
-		[loc("EFFECT_CAT_SPEECH")] = {
-			"speech_env",
-			"speech_npc",
-			"speech_player",
-		},
-		[loc("REG_COMPANIONS")] = {
-			"companion_dismiss_mount",
-			"companion_dismiss_critter",
-			"companion_random_critter",
-			"companion_summon_mount",
-		},
-		[loc("INV_PAGE_CHARACTER_INV")] = {
-			"item_add",
-			"item_remove",
-			"item_sheath",
-			"item_bag_durability",
-			"item_consume",
-			"item_cooldown",
-			"item_use",
-			"item_loot",
-		},
-		[loc("TYPE_DOCUMENT")] = {
-			"document_show",
-			"document_close",
-		},
-		[loc("EFFECT_CAT_CAMPAIGN")] = {
-			"quest_start",
-			"quest_goToStep",
-			"quest_revealObjective",
-			"quest_markObjDone",
-			"dialog_start",
-			"dialog_quick",
-		},
-		[loc("MODE_EXPERT")] = {
-			"var_object",
-			"signal_send",
-		},
-		order = {
-			loc("WO_EFFECT_CAT_COMMON"),
-			loc("EFFECT_CAT_SPEECH"),
-			loc("INV_PAGE_CHARACTER_INV"),
-			loc("TYPE_DOCUMENT"),
-			loc("EFFECT_CAT_CAMPAIGN"),
-			loc("EFFECT_CAT_SOUND"),
-			loc("REG_COMPANIONS"),
-			"",
-			loc("MODE_EXPERT"),
-		}
-	}
+	menuData = effectMenu;
 
 	-- Workflow edition
 	editor.workflow.container.empty:SetText(loc("WO_EMPTY"));
