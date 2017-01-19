@@ -93,37 +93,30 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 	local campaignClass = getClass(campaignID);
 	local campaignIcon, campaignName, campaignDescription = getClassDataSafe(campaignClass);
 	local author = campaignClass.MD.CB;
-
-	local image = (campaignClass.BA or EMPTY).IM or DEFAULT_CAMPAIGN_IMAGE;
-	local range = (campaignClass.BA or EMPTY).RA;
-	local description = (campaignClass.BA or EMPTY).DE or "";
-	description = TRP3_API.script.parseArgs(description, TRP3_API.quest.getCampaignVarStorage());
-
+	local logEntry = getQuestLog()[campaignID];
 	local progression = getCampaignProgression(campaignID);
-
+	local progress = "%s: %s%%";
+	local current = getQuestLog().currentCampaign == campaignID;
 	campaignButton:Show();
 	campaignButton.name:SetText(campaignName);
 
-	campaignButton.IconBorder:SetTexture("Interface\\ExtraButton\\" .. image);
-
 	campaignButton.Completed:Hide();
-	if progression == 100 then
+	local color = "";
+	if current then
+		color = "|cff00ff00";
+	end
+	if not logEntry then
+		campaignButton.range:SetText(color .. loc("QE_CAMPAIGN_NO"));
+	elseif progression == 100 then
+		campaignButton.range:SetText(color .. loc("QE_CAMPAIGN_FULL"));
 		campaignButton.Completed:Show();
+	else
+		campaignButton.range:SetText(color .. progress:format(loc("QE_PROGRESS"), progression));
 	end
 
-	campaignButton.bTile:SetTexture(BASE_BKG, true, true);
 	TRP3_API.ui.frame.setupIconButton(campaignButton, campaignIcon);
 
-	campaignButton.Desc:SetText(description);
-
-	if range then
-		campaignButton.range:Show();
-		campaignButton.range:SetText(range);
-	else
-		campaignButton.range:Hide();
-	end
-
-	if getQuestLog().currentCampaign == campaignID then
+	if current then
 		campaignButton.switchButton:SetNormalTexture("Interface\\TIMEMANAGER\\PauseButton");
 		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc("QE_CAMPAIGN_PAUSE"));
 	else
@@ -133,11 +126,10 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 
 	if not noTooltip then
 		local createdBy = "|cff00ff00%s: %s|r\n\n";
-		local progress = "|cffffff00%s: %s%%|r\n\n";
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton, "TOPRIGHT", 0, 5, campaignName,
 			createdBy:format(loc("DB_FILTERS_OWNER"), author)
 			.. progress:format(loc("QE_PROGRESS"), progression)
-			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_OPEN")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS"))
+			.. ("|r\n\n|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_OPEN")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS"))
 		);
 	else
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton);
@@ -289,6 +281,12 @@ end
 local function refreshQuestVignette(campaignID)
 	local campaignClass = getClass(campaignID);
 	decorateCampaignButton(TRP3_QuestLogPage.Quest, campaignID, true);
+	local image = (campaignClass.BA or EMPTY).IM or DEFAULT_CAMPAIGN_IMAGE;
+	TRP3_QuestLogPage.Quest.IconBorder:SetTexture("Interface\\ExtraButton\\" .. image);
+	TRP3_QuestLogPage.Quest.bTile:SetTexture(BASE_BKG, true, true);
+	local description = (campaignClass.BA or EMPTY).DE or "";
+	description = TRP3_API.script.parseArgs(description, TRP3_API.quest.getCampaignVarStorage());
+	TRP3_QuestLogPage.Quest.Desc:SetText(description);
 end
 
 local function swapCampaignActivation(button)
@@ -595,7 +593,7 @@ local function init()
 
 	-- Campaign page init
 	TRP3_QuestLogPage.Campaign.widgetTab = {};
-	for i=1, 2 do
+	for i=1, 5 do
 		local line = TRP3_QuestLogPage.Campaign["Slot" .. i];
 		line.switchButton:SetScript("OnClick", function(self) onCampaignActionSelected(2, self:GetParent()) end);
 		line:SetScript("OnClick", onCampaignButtonClick);

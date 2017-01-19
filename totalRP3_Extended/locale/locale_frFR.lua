@@ -1185,7 +1185,7 @@ Jetez un œil à la description de campagne pour révéler votre première quêt
 	["QE_CAMPAIGN_UNSTARTED"] = [=[Vous n'avez pas encore commencé cette campagne.
 Cliquez sur le bouton "Commencer" en haut à droite.]=],
 	["QE_CAMPAIGNS"] = "Campagnes",
-	["QE_COMPLETED"] = "Complétées",
+	["QE_COMPLETED"] = "Complétée",
 	["QE_DESCRIPTION"] = "Résumé de quête",
 	["QE_DESCRIPTION_TT"] = "Ce court résumé sera visible sur la page de la quête, dans le journal de quêtes.",
 	["QE_FAILED"] = "Échouées",

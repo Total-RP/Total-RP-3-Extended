@@ -277,7 +277,6 @@ local function load()
 
 	main.name:SetText(data.BA.NA or "");
 	main.description.scroll.text:SetText(data.BA.DE or "");
-	main.range:SetText(data.BA.RA or "");
 	onIconSelected(data.BA.IC);
 	onCampaignPortraitSelected(data.BA.IM)
 
@@ -298,7 +297,6 @@ local function saveToDraft()
 	local data = toolFrame.specificDraft;
 	data.BA.NA = stEtN(strtrim(main.name:GetText()));
 	data.BA.DE = stEtN(strtrim(main.description.scroll.text:GetText()));
-	data.BA.RA = stEtN(strtrim(main.range:GetText()));
 	data.BA.IC = main.vignette.selectedIcon;
 	data.BA.IM = main.vignette.selectedPortrait;
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
@@ -397,10 +395,6 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	-- Description
 	main.description.title:SetText(loc("CA_DESCRIPTION"));
 	setTooltipAll(main.description.dummy, "RIGHT", 0, 5, loc("CA_DESCRIPTION"), loc("CA_DESCRIPTION_TT"));
-
-	-- Range
-	main.range.title:SetText(loc("CA_RANGE"));
-	setTooltipForSameFrame(main.range.help, "RIGHT", 0, 5, loc("CA_RANGE"), loc("CA_RANGE_TT"));
 
 	local CAMPAIGN_PORTRAITS = {
 		"AirStrike",

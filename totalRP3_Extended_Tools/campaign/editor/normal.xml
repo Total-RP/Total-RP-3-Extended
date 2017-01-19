@@ -110,14 +110,6 @@
 						</Anchors>
 					</EditBox>
 
-					<EditBox parentKey="range" inherits="TRP3_TitledHelpEditBox">
-						<Size x="0" y="18"/>
-						<Anchors>
-							<Anchor point="LEFT" x="20" y="0" relativePoint="RIGHT" relativeKey="$parent.name"/>
-							<Anchor point="RIGHT" x="-30" y="0"/>
-						</Anchors>
-					</EditBox>
-
 					<Button parentKey="vignette">
 						<Size x="150" y="75"/>
 						<Layers>
@@ -147,7 +139,7 @@
 							</Layer>
 						</Layers>
 						<Anchors>
-							<Anchor point="TOPRIGHT" x="5" y="-30" relativePoint="BOTTOMRIGHT" relativeKey="$parent.range"/>
+							<Anchor point="TOPLEFT" x="100" y="-35" relativePoint="BOTTOMRIGHT" relativeKey="$parent.name"/>
 						</Anchors>
 					</Button>
 

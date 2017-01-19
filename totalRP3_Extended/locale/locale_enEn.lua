@@ -155,6 +155,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_QUEST = "Quest",
 	QE_QUESTS = "Quests",
 	QE_QUEST_OBJ_REVEALED = "|cffffff00New objective: |cff00ff00%s",
+	QE_QUEST_OBJ_UPDATED = "|cffffff00Objective updated: |cff00ff00%s",
 	QE_QUEST_OBJ_FINISHED = "|cffffff00Objective complete: |cff00ff00%s",
 	QE_QUEST_LIST = "Quests for this campaign",
 	QE_STEP = "Step",
@@ -185,6 +186,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	DI_NEXT = "Next",
 	DI_WAIT_LOOT = "Please loot all items",
 	QE_ACTION_NO_CURRENT = "You don't have any active campaign. You should activate a campaign before trying to do an action..",
+	QE_CAMPAIGN_NO = "No started yet",
+	QE_CAMPAIGN_FULL = "Finished",
 
 	-- COMMANDS
 	COM_NPC_ID = " get targeted npc id",
@@ -982,8 +985,6 @@ We should begin with some examples:
 	CA_ICON_TT = "Select campaign icon",
 	CA_DESCRIPTION = "Campaign summary",
 	CA_DESCRIPTION_TT = "This brief summary will be visible on the campaign page, in the quest log.",
-	CA_RANGE = "Level range",
-	CA_RANGE_TT = "Indicates in the campaign vignette the level range required to be able to perform this campaign.\n\nThis is an optional information. If you don't fill it there will be no indication on the campaign vignette.",
 	QE_QUESTS_HELP = "You can add quests to your campaign here. Please note that a quest is not automatically added to the player's quests log when he starts your campaign. You have to start the quests through workflows.\n|cffff9900Quests are sorted by ID in the quest log, not by name nor by reveal order.",
 	CA_QUEST_ADD = "Add quest",
 	CA_QUEST_REMOVE = "Remove this quest?",
