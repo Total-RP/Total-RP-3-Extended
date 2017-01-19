@@ -446,6 +446,16 @@ local function onStart()
 
 	-- Config
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, initConfig);
+
+	-- Simplier combat kill event
+	TRP3_API.extended.KILL_EVENT = "TRP3_KILL";
+	Utils.event.registerHandler("COMBAT_LOG_EVENT_UNFILTERED", function(...)
+		local time, event, _, source, sourceName, _, _, dest, destName = ...;
+		if event == "PARTY_KILL" then
+			local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(dest);
+			Utils.event.fireEvent(TRP3_API.extended.KILL_EVENT, event, source, sourceName, dest, destName, NPC_ID);
+		end
+	end);
 end
 
 Globals.extended_version = 1;

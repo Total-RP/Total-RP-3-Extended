@@ -681,7 +681,7 @@ Différents affichages sont disponibles.]=],
 	["EFFECT_VAR_INDEX_TT"] = [=[L'index de l'argument.
 
 Donc si vous souhaitez vérifier le troisième argument de l'événement, entrez 3.]=],
-	["EFFECT_VAR_OBJECT_CHANGE"] = "Opération sur variable de création",
+	["EFFECT_VAR_OBJECT_CHANGE"] = "Opération sur variable",
 	["EFFECT_VAR_OBJECT_CHANGE_TT"] = [=[Exécute une opération sur une variable.
 
 |cffff9900Pour les opérations mathématiques: Si la variable n'existe pas ou ne peut pas être interprétée comme un nombre elle sera initialisée à 0.]=],

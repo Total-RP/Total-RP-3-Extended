@@ -177,7 +177,7 @@ local EFFECTS = {
 			if operand and operand.codeReplacement then
 				code = operand.codeReplacement(operandArgs);
 			end
-			return ("setVar(args, \"%s\", \"[=]\", \"%s\", tostring(%s)); lastEffectReturn = 0;"):format(source, varName, code), operand.env;
+			return ("setVar(args, \"%s\", \"=\", \"%s\", tostring(%s)); lastEffectReturn = 0;"):format(source, varName, code), operand.env;
 		end,
 		env = {
 			setVar = "TRP3_API.script.setVar",
