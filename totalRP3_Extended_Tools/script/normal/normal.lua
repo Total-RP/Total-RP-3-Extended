@@ -199,34 +199,66 @@ editor.list.listElement = {};
 local ELEMENT_DELAY_ICON = "spell_mage_altertime";
 local ELEMENT_EFFECT_ICON = "inv_misc_enggizmos_37";
 local ELEMENT_CONDITION_ICON = "Ability_druid_balanceofpower";
+local ELEMENT_LINE_ACTION_COPY = "ELEMENT_LINE_ACTION_COPY";
+local ELEMENT_LINE_ACTION_PASTE = "ELEMENT_LINE_ACTION_PASTE";
 
-local function onElementClick(self)
+local function onElementLineAction(action, self)
 	assert(self.scriptStepData, "No stepData in frame");
 
 	local scriptStep = self.scriptStepData;
-	editor.element.scriptStep = scriptStep;
 
-	if scriptStep.t == ELEMENT_TYPE.EFFECT then
-		local scriptData = scriptStep.e[1];
-		local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(scriptData.id);
-		if effectInfo.editor then
-			setCurrentElementFrame(effectInfo.editor, effectInfo.title);
-			effectInfo.editor.load(scriptData);
-		else
-			Utils.Log.log("No editor => No selection");
-			return; -- No editor => No selection
+	if action == ELEMENT_LINE_ACTION_COPY then
+		if not editor.elemCopy then
+			editor.elemCopy = {};
 		end
-	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
-		setCurrentElementFrame(TRP3_ScriptEditorDelay, loc("WO_DELAY"));
-		TRP3_ScriptEditorDelay.load(scriptStep);
-	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
-		local scriptData = scriptStep.b[1];
-		setCurrentElementFrame(TRP3_ConditionEditor, loc("COND_EDITOR"));
-		TRP3_ConditionEditor.load(scriptData.cond, scriptData);
+		wipe(editor.elemCopy);
+		Utils.table.copy(editor.elemCopy, scriptStep);
+	elseif action == ELEMENT_LINE_ACTION_PASTE then
+		if editor.elemCopy then
+			wipe(self.scriptStepData);
+			Utils.table.copy(self.scriptStepData, editor.elemCopy);
+			refreshElementList();
+		end
 	end
+end
 
-	self.highlight:Show();
-	self.lock = true;
+local function onElementClick(self, button)
+	assert(self.scriptStepData, "No stepData in frame");
+
+	local scriptStep = self.scriptStepData;
+
+	if button == "LeftButton" then
+		editor.element.scriptStep = scriptStep;
+		if scriptStep.t == ELEMENT_TYPE.EFFECT then
+			local scriptData = scriptStep.e[1];
+			local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(scriptData.id);
+			if effectInfo.editor then
+				setCurrentElementFrame(effectInfo.editor, effectInfo.title);
+				effectInfo.editor.load(scriptData);
+			else
+				Utils.Log.log("No editor => No selection");
+				return; -- No editor => No selection
+			end
+		elseif scriptStep.t == ELEMENT_TYPE.DELAY then
+			setCurrentElementFrame(TRP3_ScriptEditorDelay, loc("WO_DELAY"));
+			TRP3_ScriptEditorDelay.load(scriptStep);
+		elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
+			local scriptData = scriptStep.b[1];
+			setCurrentElementFrame(TRP3_ConditionEditor, loc("COND_EDITOR"));
+			TRP3_ConditionEditor.load(scriptData.cond, scriptData);
+		end
+
+		self.highlight:Show();
+		self.lock = true;
+	else
+		local values = {};
+		tinsert(values, {self.title:GetText(), nil});
+		tinsert(values, {loc("WO_ELEMENT_COPY"), ELEMENT_LINE_ACTION_COPY});
+		if editor.elemCopy and editor.elemCopy.t == scriptStep.t then
+			tinsert(values, {loc("WO_ELEMENT_PASTE"), ELEMENT_LINE_ACTION_PASTE});
+		end
+		TRP3_API.ui.listbox.displayDropDown(self, values, onElementLineAction, 0, true);
+	end
 end
 
 local function onRemoveClick(self)
@@ -326,7 +358,7 @@ function openLastEffect()
 	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
 	local scriptStepFrame = editor.list.listElement[tsize(data)];
 	if scriptStepFrame then
-		onElementClick(scriptStepFrame);
+		onElementClick(scriptStepFrame, "LeftButton");
 	end
 end
 
