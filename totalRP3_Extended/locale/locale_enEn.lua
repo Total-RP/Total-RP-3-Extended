@@ -775,6 +775,13 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	EFFECT_SIGNAL_ID_TT = "It's the ID of your signal. It can be tested if conditions and workflows triggered by the game event |cff00ff00TRP3_SIGNAL|r.",
 	EFFECT_SIGNAL_VALUE = "Signal value",
 	EFFECT_SIGNAL_VALUE_TT = "It's the value of your signal. It can be tested if conditions and workflows triggered by the game event |cff00ff00TRP3_SIGNAL|r and inserted as text tags like |cff00ff00${event.2}|r.",
+	EFFECT_RUN_WORKFLOW = "Run workflow",
+	EFFECT_RUN_WORKFLOW_TT = "Run another workflow. All workflow variables will be passed through the next.",
+	EFFECT_RUN_WORKFLOW_PREVIEW = "Run workflow %s in %s.",
+	EFFECT_W_OBJECT_TT = "Search for the workflow in the same object.",
+	EFFECT_W_CAMPAIGN_TT = "Search for the workflow in the current active campaign.",
+	EFFECT_RUN_WORKFLOW_ID = "Workflow ID",
+	EFFECT_RUN_WORKFLOW_ID_TT = "The workflow ID you want to run.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",

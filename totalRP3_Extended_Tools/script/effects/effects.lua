@@ -362,6 +362,53 @@ local function signal_send_init()
 
 end
 
+local function run_workflow_init()
+	local editor = TRP3_EffectEditorRunWorkflow;
+
+	-- Source
+	local sources = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_W_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_W_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_RUN_WORKFLOW_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_RUN_WORKFLOW_ID"), loc("EFFECT_RUN_WORKFLOW_ID_TT"));
+
+
+	local sourcesText = {
+		o = loc("EFFECT_SOURCE_OBJECT"),
+		c = loc("EFFECT_SOURCE_CAMPAIGN")
+	}
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.source:SetSelectedValue(data[1] or "o");
+		editor.id:SetText(data[2] or "id");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = editor.source:GetSelectedValue() or "o";
+		scriptData.args[2] = stEtN(strtrim(editor.id:GetText())) or "";
+	end
+
+	registerEffectEditor("run_workflow", {
+		title = loc("EFFECT_RUN_WORKFLOW"),
+		icon = "inv_gizmo_electrifiedether",
+		description = loc("EFFECT_RUN_WORKFLOW_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local source = sourcesText[args[1]] or "?";
+			local id = tostring(args[2]);
+			scriptStepFrame.description:SetText(loc("EFFECT_RUN_WORKFLOW_PREVIEW"):format("|cff00ff00".. id .."|r", "|cff00ff00".. source .."|r"));
+		end,
+		getDefaultArgs = function()
+			return {"o", "id"};
+		end,
+		editor = editor
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Speechs
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -704,4 +751,5 @@ function TRP3_API.extended.tools.initBaseEffects()
 	var_set_execenv_init();
 	var_set_operand_init();
 	signal_send_init();
+	run_workflow_init();
 end

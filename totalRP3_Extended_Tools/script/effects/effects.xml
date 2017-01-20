@@ -154,6 +154,27 @@
 
 	</Frame>
 
+	<Frame name="TRP3_EffectEditorRunWorkflow" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.source" x="0" y="-25"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--    Send signal       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->

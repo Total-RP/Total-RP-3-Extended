@@ -518,7 +518,7 @@ local function executeFunction(func, args, scriptID)
 		return ret;
 	else
 		TRP3_API.utils.message.displayMessage(loc("SEC_SCRIPT_ERROR"):format(scriptID or "preview"), 4);
-		log(tostring(ret), logLevel.WARN);
+		TRP3_API.utils.message.displayMessage("|cffff0000" .. tostring(ret));
 	end
 end
 TRP3_API.script.executeFunction = executeFunction;

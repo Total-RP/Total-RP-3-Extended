@@ -181,7 +181,6 @@ local EFFECTS = {
 		end,
 		env = {
 			setVar = "TRP3_API.script.setVar",
-			tostring = "tostring",
 		},
 		secured = security.HIGH,
 	},
@@ -194,6 +193,18 @@ local EFFECTS = {
 		end,
 		env = {
 			sendSignal = "TRP3_API.extended.sendSignal",
+		},
+		secured = security.HIGH,
+	},
+
+	["run_workflow"] = {
+		codeReplacementFunc = function (args)
+			local source = args[1] or "o";
+			local id = args[2] or "";
+			return ("runWorkflow(args, \"%s\", \"%s\"); lastEffectReturn = 0;"):format(source, id);
+		end,
+		env = {
+			runWorkflow = "TRP3_API.script.runWorkflow",
 		},
 		secured = security.HIGH,
 	},
