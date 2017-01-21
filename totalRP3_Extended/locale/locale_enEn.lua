@@ -1013,6 +1013,8 @@ We should begin with some examples:
 	QE_DESCRIPTION_TT = "This brief summary will be visible on the quest page, in the quest log.",
 	QE_LINKS_ON_START = "On quest start",
 	QE_LINKS_ON_START_TT = "Triggered |cff00ff00once|r when the player start your quest, by unlocking it in the quest log.\n\n|cff00ff00This is a good place to go to the first quest step.",
+	QE_LINKS_ON_OBJECTIVE = "On objective completed",
+	QE_LINKS_ON_OBJECTIVE_TT = "Triggered each time the player complete an objective for this quest.\n\n|cff00ff00It's a good place to check if all objectives has been completed and reveal the next quest.",
 	CA_ACTIONS_ADD = "Add action",
 	CA_ACTIONS_NO = "No action",
 	CA_ACTIONS = "Actions",

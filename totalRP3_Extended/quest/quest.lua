@@ -386,7 +386,8 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 		return 2;
 	end
 
-	local questClass = getClass(campaignID, questID);
+	local questFullID = TRP3_API.extended.getFullID(campaignID, questID);
+	local questClass = getClass(questFullID);
 	local objectiveClass = questClass.OB[objectiveID];
 
 	if not objectiveClass then
@@ -396,16 +397,17 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 
 	if not questLog.OB then questLog.OB = {} end
 
-	if questLog.OB[objectiveID] == nil then
-		-- Boolean objective
-		questLog.OB[objectiveID] = false;
-	end
-
 	-- Message
 	local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 	Utils.message.displayMessage(loc("QE_QUEST_OBJ_FINISHED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
 	questLog.OB[objectiveID] = true;
 	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+
+	-- Initial script
+	if questClass.LI and questClass.LI.OOC then
+		local retCode = TRP3_API.script.executeClassScript(questClass.LI.OOC, questClass.SC,
+			{object = campaignLog, classID = questFullID}, questFullID);
+	end
 
 	return 1;
 end

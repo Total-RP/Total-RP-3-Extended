@@ -454,6 +454,12 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 			tt = loc("QE_LINKS_ON_START_TT"),
 			icon = "Interface\\ICONS\\achievement_quests_completed_02",
 			field = "OS",
+		},
+		{
+			text = loc("QE_LINKS_ON_OBJECTIVE"),
+			tt = loc("QE_LINKS_ON_OBJECTIVE_TT"),
+			icon = "Interface\\ICONS\\achievement_quests_completed_uldum",
+			field = "OOC",
 		}
 	}
 
