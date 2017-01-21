@@ -261,7 +261,7 @@ local function load()
 
 	actionEditor.load();
 
-	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
+	tabGroup:SelectTab(TRP3_API.extended.tools.getSaveTab(toolFrame.fullClassID, tabGroup:Size()));
 end
 
 local function saveToDraft()
@@ -321,7 +321,7 @@ local function onTabChanged(tabWidget, tab)
 		actionEditor.place(toolFrame.quest);
 	end
 
-	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
+	TRP3_API.extended.tools.saveTab(toolFrame.fullClassID, currentTab);
 end
 
 local function createTabBar()

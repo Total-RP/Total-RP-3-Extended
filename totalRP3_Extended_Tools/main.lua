@@ -382,6 +382,19 @@ function goToPage(fullClassID, forceDraftReload)
 end
 TRP3_API.extended.tools.goToPage = goToPage;
 
+function TRP3_API.extended.tools.saveTab(fullClassID, tab)
+	TRP3_Tools_Parameters.editortabs[fullClassID] = tab;
+end
+
+function TRP3_API.extended.tools.getSaveTab(fullClassID, maxTabSize)
+	local savedTab = TRP3_Tools_Parameters.editortabs[fullClassID];
+	if savedTab and savedTab <= maxTabSize then
+		return savedTab;
+	else
+		return 1;
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

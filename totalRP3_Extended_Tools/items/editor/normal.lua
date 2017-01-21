@@ -286,7 +286,7 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_LinksEditor.load(linksStructure);
 	end
 
-	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
+	TRP3_API.extended.tools.saveTab(toolFrame.fullClassID, currentTab);
 end
 
 local function createTabBar()
@@ -324,7 +324,7 @@ local function loadItem()
 	loadDataScript();
 	loadDataContainer();
 	loadDataInner();
-	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
+	tabGroup:SelectTab(TRP3_API.extended.tools.getSaveTab(toolFrame.fullClassID, tabGroup:Size()));
 	gameplay.mute = false;
 end
 
