@@ -520,6 +520,8 @@ local getEvaluatedOperands = function(structure)
 		[loc("EFFECT_CAT_CAMPAIGN")] = {
 			"quest_is_step",
 			"quest_obj",
+			"quest_obj_current",
+			"quest_obj_all",
 			"quest_is_npc",
 		},
 		["Expert"] = {-- TODO: locals

@@ -176,6 +176,36 @@ function TRP3_API.quest.isQuestObjectiveDone(campaignID, questID, objectiveID)
 	return false;
 end
 
+function TRP3_API.quest.isAllQuestObjectiveDone(campaignID, questID, all)
+	assert(campaignID and questID, "Illegal args");
+	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
+	if campaignLog then
+		local questLog = campaignLog.QUEST[questID];
+		if questLog then
+			if not all then
+				if questLog.OB then
+					for id, val in pairs(questLog.OB) do
+						if not val then
+							return false;
+						end
+					end
+				end
+				return true;
+			else
+				local fullID = TRP3_API.extended.getFullID(campaignID, questID);
+				local class = getClass(fullID);
+				for id, _ in pairs(class.OB) do
+					if not questLog.OB or not questLog.OB[id] then
+						return false;
+					end
+				end
+				return true;
+			end
+		end
+	end
+	return false;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- STEP API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

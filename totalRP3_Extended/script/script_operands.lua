@@ -415,6 +415,26 @@ local OPERANDS = {
 		},
 	},
 
+	["quest_obj_current"] = {
+		codeReplacement = function(args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			return ("isAllQuestObjectiveDone(\"%s\", \"%s\", false)"):format(campaignID, questID);
+		end,
+		env = {
+			["isAllQuestObjectiveDone"] = "TRP3_API.quest.isAllQuestObjectiveDone",
+		},
+	},
+
+	["quest_obj_all"] = {
+		codeReplacement = function(args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			return ("isAllQuestObjectiveDone(\"%s\", \"%s\", true)"):format(campaignID, questID);
+		end,
+		env = {
+			["isAllQuestObjectiveDone"] = "TRP3_API.quest.isAllQuestObjectiveDone",
+		},
+	},
+
 	["quest_is_npc"] = {
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";

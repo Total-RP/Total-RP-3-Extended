@@ -260,6 +260,33 @@ local function quest_is_step_init()
 	end
 end
 
+local function quest_obj_all_init()
+	local editor = TRP3_OperandEditorQuestSelection;
+
+	registerOperandEditor("quest_obj_all", {
+		title = loc("OP_OP_QUEST_OBJ_ALL"),
+		description = loc("OP_OP_QUEST_OBJ_ALL_TT"),
+		returnType = "",
+		getText = function(args)
+			local id = (args or EMPTY)[1] or "";
+			return loc("OP_OP_QUEST_OBJ_ALL_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id), id));
+		end,
+		editor = editor,
+	});
+
+	registerOperandEditor("quest_obj_current", {
+		title = loc("OP_OP_QUEST_OBJ_CURRENT"),
+		description = loc("OP_OP_QUEST_OBJ_CURRENT_TT"),
+		returnType = "",
+		getText = function(args)
+			local id = (args or EMPTY)[1] or "";
+			return loc("OP_OP_QUEST_OBJ_CURRENT_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id), id));
+		end,
+		editor = editor,
+	});
+
+end
+
 local function quest_is_npc_init()
 	registerOperandEditor("quest_is_npc", {
 		title = loc("OP_OP_QUEST_NPC"),
@@ -284,4 +311,5 @@ function TRP3_API.extended.tools.initCampaignEffects()
 	quest_is_step_init();
 	quest_obj_init();
 	quest_is_npc_init();
+	quest_obj_all_init();
 end
