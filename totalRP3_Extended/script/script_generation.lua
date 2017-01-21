@@ -26,7 +26,7 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = false;
+local DEBUG = true;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -611,6 +611,22 @@ local function generateAndRunCondition(conditionStructure, args)
 	return TRP3_API.script.generateAndRun(code, args, env);
 end
 TRP3_API.script.generateAndRunCondition = generateAndRunCondition;
+
+function TRP3_API.script.runWorkflow(args, source, workflowID)
+	if source == "o" then
+		-- Workflow in the same object
+		executeClassScript(workflowID, args.scripts, args, args.classID);
+	elseif source == "c" then
+		-- Workflow in the current campaign
+		local playerQuestLog = TRP3_API.quest.getQuestLog();
+		if playerQuestLog and playerQuestLog.currentCampaign then
+			local campaignClass = TRP3_API.extended.getClass(playerQuestLog.currentCampaign);
+			if campaignClass and campaignClass.SC then
+				executeClassScript(workflowID, campaignClass.SC, args, playerQuestLog.currentCampaign);
+			end
+		end
+	end
+end
 
 local directReplacement = {
 	["wow:target"] = function()
