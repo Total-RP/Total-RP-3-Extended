@@ -361,13 +361,13 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 		{
 			text = loc("DO_LINKS_ONOPEN"),
 			tt = loc("DO_LINKS_ONOPEN_TT"),
-			icon = "Interface\\ICONS\\ability_warlock_soullink",
+			icon = "Interface\\ICONS\\inv_inscription_scrollofwisdom_01",
 			field = "OO",
 		},
 		{
 			text = loc("DO_LINKS_ONCLOSE"),
 			tt = loc("DO_LINKS_ONCLOSE_TT"),
-			icon = "Interface\\ICONS\\ability_warlock_soullink",
+			icon = "Interface\\ICONS\\inv_inscription_scrollofwisdom_02",
 			field = "OC",
 		}
 	}

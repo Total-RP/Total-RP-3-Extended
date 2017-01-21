@@ -149,6 +149,9 @@ local after = C_Timer.After;
 
 local function finishDialog()
 	dialogFrame:Hide();
+	if dialogFrame.classID and dialogFrame.class.LI and dialogFrame.class.LI.OE and dialogFrame.class.SC then
+		local retCode = TRP3_API.script.executeClassScript(dialogFrame.class.LI.OE, dialogFrame.class.SC, {}, dialogFrame.classID);
+	end
 end
 
 local function setupChoices(choices)
@@ -425,6 +428,10 @@ local function startDialog(dialogID, class, args)
 	dialogFrame.distanceLimit = dialogClass.BA.DI or 0;
 	dialogFrame.posY, dialogFrame.posX = UnitPosition("player");
 	dialogFrame.args = args;
+
+	if dialogID and dialogClass.LI and dialogClass.LI.OS and dialogClass.SC then
+		local retCode = TRP3_API.script.executeClassScript(dialogClass.LI.OS, dialogClass.SC, {}, dialogID);
+	end
 
 	historyFrame.container:AddMessage("---------------------------------------------------------------");
 	processDialogStep();

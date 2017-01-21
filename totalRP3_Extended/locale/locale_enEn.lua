@@ -1099,6 +1099,10 @@ We should begin with some examples:
 	DI_CHOICE_CONDI = "Option condition",
 	DI_NEXT_TT = "You can indicate which step will be played after this one.\n\n|cff00ff00Leave empty to play the next index in sequential order, only use this field if you need to 'jump' to another index. Useful when using choices.",
 	DI_CONDI_TT = "Sets a condition for this option. If the condition is not checked when showing the options, the associated option will not be visible.\n\n|cff00ff00Click: Configure condition\nRight-click: Clear condition",
+	DI_LINKS_ONSTART = "On cutscene start",
+	DI_LINKS_ONSTART_TT = "Triggered when the cutscene is played.\n\n|cffff9900Note that this workflow will be played BEFORE showing the first step.",
+	DI_LINKS_ONEND = "On cutscene end",
+	DI_LINKS_ONEND_TT = "Triggered when the cutscene is ended.\n\n|cff00ff00This can be done by reaching the end of last step or by allowing the player to select a choice with an empty or unknown 'go to step'.\n\n|cffff0000This is NOT triggered if the player cancels the cutscene by manually closing the frame.",
 
 	DEBUG_QUEST_STEP = "Go to a quest step.",
 	DEBUG_QUEST_STEP_USAGE = "Usage: /trp3 debug_quest_step questID stepID",

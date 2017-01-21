@@ -199,7 +199,7 @@ function editor.load(structure)
 
 	gameLinksEditor:Show();
 	TUTORIAL = tutoAll;
-	if data.TY == TRP3_DB.types.ITEM or data.TY == TRP3_DB.types.DOCUMENT then
+	if data.TY == TRP3_DB.types.ITEM or data.TY == TRP3_DB.types.DOCUMENT or data.TY == TRP3_DB.types.DIALOG then
 		gameLinksEditor:Hide();
 		TUTORIAL = tutoPartial;
 	end

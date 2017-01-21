@@ -28,6 +28,7 @@ local toolFrame, step, editor, refreshStepList, main;
 local TABS = {
 	MAIN = 1,
 	WORKFLOWS = 2,
+	EXPERT = 3,
 }
 
 local tabGroup, currentTab, linksStructure;
@@ -329,6 +330,7 @@ local function load()
 
 	loadDataScript();
 	loadWorkflows();
+	TRP3_LinksEditor.load(linksStructure);
 	editStep(1);
 	editor.choicesEditor:Hide();
 
@@ -359,6 +361,7 @@ local function onTabChanged(tabWidget, tab)
 	editor:Hide();
 	main:Hide();
 	TRP3_ScriptEditorNormal:Hide();
+	TRP3_LinksEditor:Hide();
 	TRP3_ExtendedTutorial.loadStructure(nil);
 
 	-- Show tab
@@ -372,6 +375,11 @@ local function onTabChanged(tabWidget, tab)
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.cutscene.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
 		TRP3_ScriptEditorNormal:Show();
+	elseif currentTab == TABS.EXPERT then
+		TRP3_LinksEditor:SetParent(toolFrame.cutscene.normal);
+		TRP3_LinksEditor:SetAllPoints();
+		TRP3_LinksEditor:Show();
+		TRP3_LinksEditor.load(linksStructure);
 	end
 
 	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
@@ -386,6 +394,7 @@ local function createTabBar()
 		{
 			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
 			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
+			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -589,5 +598,21 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 			box = main, title = "TU_CS_5", text = "TU_CS_5_TEXT",
 			arrow = "BOTTOM", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 		},
+	}
+
+	-- Workflows links
+	linksStructure = {
+		{
+			text = loc("DI_LINKS_ONSTART"),
+			tt = loc("DI_LINKS_ONSTART_TT"),
+			icon = "Interface\\ICONS\\ability_priest_heavanlyvoice",
+			field = "OS",
+		},
+		{
+			text = loc("DI_LINKS_ONEND"),
+			tt = loc("DI_LINKS_ONEND_TT"),
+			icon = "Interface\\ICONS\\achievement_BG_captureflag_EOS",
+			field = "OE",
+		}
 	}
 end
