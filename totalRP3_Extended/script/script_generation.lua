@@ -666,13 +666,29 @@ local directReplacement = {
 		return UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["wow:player"] = function()
-		return UnitName("player") or "";
+		return UnitName("player") or UNKNOWN;
 	end,
 	["wow:target:id"] = function()
 		return TRP3_API.utils.str.getUnitID("target") or UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["wow:player:id"] = function()
 		return TRP3_API.utils.str.getUnitID("player") or UnitName("player") or "";
+	end,
+	["wow:player:race"] = function()
+		local race = UnitRace("player");
+		return race or UNKNOWN;
+	end,
+	["wow:target:race"] = function()
+		local race = UnitRace("target");
+		return race or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
+	["wow:player:class"] = function()
+		local class = UnitClass("player");
+		return class or UNKNOWN;
+	end,
+	["wow:target:class"] = function()
+		local class = UnitClass("target");
+		return class or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["trp:player:full"] = function()
 		return TRP3_API.register.getPlayerCompleteName(true) or "";
@@ -693,6 +709,14 @@ function TRP3_API.script.parseArgs(text, args)
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		if directReplacement[capture] then
 			return directReplacement[capture]();
+		elseif capture:match("gender%:%w+%:[^%:]+%:[^%:]+") then
+			local type, male, female = capture:match("gender%:(%w+)%:([^%:]+)%:([^%:]+)");
+			if UnitSex(type) == 2 then
+				return male;
+			elseif UnitSex(type) == 3 then
+				return female;
+			end
+			return UNKNOWN;
 		elseif capture:match("event%.%d+") then
 			local index = tonumber(capture:match("event%.(%d+)") or 1) or 1;
 			return (args.event or EMPTY)[index] or capture;
