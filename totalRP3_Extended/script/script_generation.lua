@@ -612,7 +612,7 @@ local function generateAndRunCondition(conditionStructure, args)
 end
 TRP3_API.script.generateAndRunCondition = generateAndRunCondition;
 
-function TRP3_API.script.runWorkflow(args, source, workflowID)
+function TRP3_API.script.runWorkflow(args, source, workflowID, slotID)
 	if source == "o" then
 		-- Workflow in the same object
 		executeClassScript(workflowID, args.scripts, args, args.classID);
@@ -625,6 +625,39 @@ function TRP3_API.script.runWorkflow(args, source, workflowID)
 				executeClassScript(workflowID, campaignClass.SC, args, playerQuestLog.currentCampaign);
 			end
 		end
+	elseif source == "p" then
+		if args.container and args.container.id then
+			local containerClass = TRP3_API.extended.getClass(args.container.id);
+			if containerClass and containerClass.SC then
+				-- Problem here
+				args.object = args.container;
+				-- args.container = ???
+				executeClassScript(workflowID, containerClass.SC, args, args.object.id);
+			end
+		end
+	elseif source == "c" then
+		if args.object and args.object.content and args.object.content[slotID] then
+			local itemSlot = args.object.content[slotID];
+			local itemClass = TRP3_API.extended.getClass(itemSlot.id);
+			if itemClass and itemClass.SC then
+				-- Problem here
+				args.container = args.object;
+				args.object = itemSlot;
+				executeClassScript(workflowID, itemClass.SC, args, args.object.id);
+			end
+		end
+	elseif source == "s" then
+		if args.container and args.container.content and args.container.content[slotID] then
+			local itemSlot = args.container.content[slotID];
+			local itemClass = TRP3_API.extended.getClass(itemSlot.id);
+			if itemClass and itemClass.SC then
+				-- Problem here
+				args.object = itemSlot;
+				executeClassScript(workflowID, itemClass.SC, args, args.object.id);
+			end
+		end
+	else
+		error("Bad source type for runWorkflow: " .. tostring(source));
 	end
 end
 

@@ -454,6 +454,60 @@ local function inv_loot_init()
 	end
 end
 
+local function run_item_workflow_init()
+	local editor = TRP3_EffectEditorItemWorkflow;
+
+	-- Source
+	local sources = {
+--		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_PARENT")), "p", loc("EFFECT_SOURCE_PARENT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_SLOT")), "c", loc("EFFECT_SOURCE_SLOT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_SLOT_B")), "s", loc("EFFECT_SOURCE_SLOT_B_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+
+	-- ID
+	editor.id.title:SetText(loc("EFFECT_RUN_WORKFLOW_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_RUN_WORKFLOW_ID"), loc("EFFECT_RUN_WORKFLOW_ID_TT"));
+
+	-- Slot
+	editor.slot.title:SetText(loc("EFFECT_RUN_WORKFLOW_SLOT"));
+	setTooltipForSameFrame(editor.slot.help, "RIGHT", 0, 5, loc("EFFECT_RUN_WORKFLOW_SLOT"), loc("EFFECT_RUN_WORKFLOW_SLOT_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.source:SetSelectedValue(data[1] or "c");
+		editor.id:SetText(data[2] or "id");
+		editor.slot:SetText(data[3] or "1");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = editor.source:GetSelectedValue() or "c";
+		scriptData.args[2] = stEtN(strtrim(editor.id:GetText())) or "";
+		scriptData.args[3] = stEtN(strtrim(editor.slot:GetText())) or "1";
+	end
+
+	registerEffectEditor("run_item_workflow", {
+		title = loc("EFFECT_ITEM_WORKFLOW"),
+		icon = "inv_gizmo_electrifiedether",
+		description = loc("EFFECT_ITEM_WORKFLOW_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			local source = args[1];
+			local id = tostring(args[2]);
+			local slot = tostring(args[3]);
+			if source == "c" then
+				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_WORKFLOW_PREVIEW_C"):format("|cff00ff00".. id .."|r", "|cff00ff00".. slot .."|r"));
+			else
+				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_WORKFLOW_PREVIEW_S"):format("|cff00ff00".. id .."|r", "|cff00ff00".. slot .."|r"));
+			end
+		end,
+		getDefaultArgs = function()
+			return {"c", "id", "1"};
+		end,
+		editor = editor,
+		context = {TRP3_DB.types.ITEM},
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Operands
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -536,6 +590,7 @@ function TRP3_API.extended.tools.initItemEffects()
 	item_cooldown_init();
 	item_use_init();
 	inv_loot_init();
+	run_item_workflow_init();
 
 	document_show_init();
 	document_close_init();

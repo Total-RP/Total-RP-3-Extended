@@ -149,4 +149,17 @@ TRP3_API.inventory.EFFECTS = {
 		}
 	},
 
+	["run_item_workflow"] = {
+		codeReplacementFunc = function (args)
+			local source = args[1] or "p";
+			local id = args[2] or "";
+			local slotID = args[3] or "";
+			return ("runWorkflow(args, \"%s\", \"%s\", \"%s\"); lastEffectReturn = 0;"):format(source, id, slotID);
+		end,
+		env = {
+			runWorkflow = "TRP3_API.script.runWorkflow",
+		},
+		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
+	},
+
 }

@@ -395,10 +395,16 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.container:Hide();
 		ToolFrame.list.filters:Hide();
 		ToolFrame.list.backers:Show();
-		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(Globals.extended_version)));
+		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion())));
 	end
 
 	filterList();
+end
+
+function TRP3_API.extended.tools.formatVersion(version)
+	local v = tostring(version or Globals.extended_version);
+	local inter = tostring(tonumber(v:sub(2, 3)));
+	return v:sub(1, 1) .. "." .. inter .. "." .. v:sub(4, 4);
 end
 
 local function createTabBar()
@@ -733,7 +739,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		end
 
 		if version ~= Globals.extended_version then
-			TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_CONFIRM"):format(version, Globals.extended_version), function()
+			TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_CONFIRM"):format(TRP3_API.extended.tools.formatVersion(version), TRP3_API.extended.tools.formatVersion()), function()
 				C_Timer.After(0.25, checkVersion);
 			end);
 		else

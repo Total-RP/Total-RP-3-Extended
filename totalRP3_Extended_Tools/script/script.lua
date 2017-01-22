@@ -74,6 +74,7 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"var_operand",
 			"signal_send",
 			"run_workflow",
+			"run_item_workflow",
 		},
 		order = {
 			loc("WO_EFFECT_CAT_COMMON"),
