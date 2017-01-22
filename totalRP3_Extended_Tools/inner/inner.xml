@@ -104,7 +104,7 @@
 
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString parentKey="addText" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+						<FontString parentKey="addText" text="[placeholder_line]" inherits="GameFontNormal" justifyH="CENTER" justifyV="TOP">
 							<Size x="0" y="10"/>
 							<Anchors>
 								<Anchor point="BOTTOM" x="0" y="90"/>
@@ -139,21 +139,20 @@
 					</Frame>
 
 					<Button parentKey="add" inherits="TRP3_CommonButton">
-						<Size x="100" y="20"/>
+						<Size x="200" y="20"/>
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.addText" x="0" y="-18"/>
-							<Anchor point="RIGHT" x="-30" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.addText" x="0" y="-15"/>
+							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Button>
 
-					<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
-						<Size x="260" y="18"/>
+					<Button parentKey="addcopy" inherits="TRP3_CommonButton">
+						<Size x="200" y="20"/>
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.addText" x="0" y="-20"/>
-							<Anchor point="LEFT" x="35" y="0"/>
-							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.add" x="-30" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.add" x="0" y="-5"/>
+							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
-					</EditBox>
+					</Button>
 
 				</Frames>
 

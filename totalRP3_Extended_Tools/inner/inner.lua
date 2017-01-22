@@ -40,7 +40,11 @@ editor.browser.container.lines = {};
 local function createInnerObject(innerID, innerType, innerData)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
 	assert(innerID and innerID:len() > 0, "Bad inner ID");
-	assert(not toolFrame.specificDraft.IN[innerID], "Inner ID not available.");
+
+	if toolFrame.specificDraft.IN[innerID] then
+		Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), 4);
+		return;
+	end
 
 	if innerType == TRP3_DB.types.ITEM then
 		toolFrame.specificDraft.IN[innerID] = innerData or {
@@ -80,15 +84,6 @@ local function idExists(id)
 	return toolFrame.specificDraft.IN[id];
 end
 
-local function onIDChanged(self)
-	local id = TRP3_API.extended.checkID(self:GetText()) or "";
-	if id:len() == 0 or idExists(id) then
-		editor.browser.add:Disable();
-	else
-		editor.browser.add:Enable();
-	end
-end
-
 local function onLineEnter(line)
 	line.Highlight:Show();
 	refreshTooltipForFrame(line);
@@ -123,8 +118,6 @@ end
 
 local function refresh()
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-	editor.browser.id:SetText("");
-	onIDChanged(editor.browser.id);
 	editor.browser.container.empty:Hide();
 	if tsize(toolFrame.specificDraft.IN) == 0 then
 		editor.browser.container.empty:Show();
@@ -226,11 +219,22 @@ local function onLineClicked(line, button)
 	end
 end
 
-local function addInnerObject(type)
+local function addInnerObject(type, self)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-	local innerID = TRP3_API.extended.checkID(editor.browser.id:GetText());
-	createInnerObject(innerID, type);
-	refresh();
+	TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ENTER_ID") .. "\n\n" .. loc("IN_INNER_ENTER_ID_TT"), function(innerID)
+		if self == editor.browser.add then
+			createInnerObject(innerID, type);
+			refresh();
+		elseif self == editor.browser.addcopy then
+			TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "CENTER", parentPoint = "CENTER"}, {function(id)
+				local class = getClass(id);
+				local template = {};
+				Utils.table.copy(template, class);
+				createInnerObject(innerID, type, template);
+				refresh();
+			end, type});
+		end
+	end, nil, "");
 end
 
 local function onAddClicked(self)
@@ -253,10 +257,9 @@ function editor.init(ToolFrame)
 	editor.browser.title:SetText(loc("IN_INNER_LIST"));
 	editor.help.title:SetText(loc("IN_INNER_HELP_TITLE"));
 	editor.help.text:SetText(loc("IN_INNER_HELP"));
-	editor.browser.add:SetText(ADD);
+	editor.browser.add:SetText(loc("IN_INNER_ADD_NEW"));
+	editor.browser.addcopy:SetText(loc("IN_INNER_ADD_COPY"));
 	editor.browser.addText:SetText(loc("IN_INNER_ADD"));
-	editor.browser.id.title:SetText(loc("IN_INNER_ENTER_ID"));
-	setTooltipForSameFrame(editor.browser.id.help, "RIGHT", 0, 5, loc("IN_INNER_ENTER_ID"), loc("IN_INNER_ENTER_ID_TT"));
 	editor.browser.container.empty:SetText(loc("IN_INNER_EMPTY"));
 
 	handleMouseWheel(editor.browser.container, editor.browser.container.slider);
@@ -272,10 +275,6 @@ function editor.init(ToolFrame)
 	end
 
 	editor.browser.add:SetScript("OnClick", onAddClicked);
-	editor.browser.id:SetScript("OnTextChanged", onIDChanged)
-	editor.browser.id:SetScript("OnEnterPressed", function()
-		if editor.browser.add:IsEnabled() then
-			editor.browser.add:GetScript("OnClick")(editor.browser.add);
-		end
-	end)
+	editor.browser.addcopy:SetScript("OnClick", onAddClicked);
+
 end
