@@ -222,7 +222,9 @@ end
 local function addInnerObject(type, self)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
 	TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ENTER_ID") .. "\n\n" .. loc("IN_INNER_ENTER_ID_TT"), function(innerID)
-		if self == editor.browser.add then
+		if not innerID or innerID:len() == 0 then
+			return;
+		elseif self == editor.browser.add then
 			createInnerObject(innerID, type);
 			refresh();
 		elseif self == editor.browser.addcopy then
