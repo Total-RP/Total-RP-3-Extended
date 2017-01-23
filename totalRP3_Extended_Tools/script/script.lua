@@ -56,6 +56,7 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"item_cooldown",
 			"item_use",
 			"item_loot",
+			"item_roll_dice",
 		},
 		[loc("TYPE_DOCUMENT")] = {
 			"document_show",

@@ -149,6 +149,18 @@ TRP3_API.inventory.EFFECTS = {
 		}
 	},
 
+	["item_roll_dice"] = {
+		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
+		codeReplacementFunc = function (args)
+			local roll = tostring(args[1]) or "1d100";
+			local serial = strjoin("\", args), var(\"", strsplit(" ", roll));
+			return ("lastEffectReturn = rollDices(var(\"%s\", args));"):format(serial);
+		end,
+		env = {
+			rollDices = "TRP3_API.slash.rollDices",
+		}
+	},
+
 	["run_item_workflow"] = {
 		codeReplacementFunc = function (args)
 			local source = args[1] or "p";

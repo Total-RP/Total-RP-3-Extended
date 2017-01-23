@@ -321,6 +321,36 @@ local function item_use_init()
 	end
 end
 
+local function item_roll_dice_init()
+	local editor = TRP3_EffectEditorRollDice;
+
+	-- Roll
+	editor.roll.title:SetText(loc("EFFECT_ITEM_DICE_ROLL"));
+	setTooltipForSameFrame(editor.roll.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_DICE_ROLL"), loc("EFFECT_ITEM_DICE_ROLL_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.roll:SetText(data[1] or "1d100");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.roll:GetText())) or "1d100";
+	end
+
+	registerEffectEditor("item_roll_dice", {
+		title = loc("EFFECT_ITEM_DICE"),
+		icon = "inv_misc_dice_02",
+		description = loc("EFFECT_ITEM_DICE_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_DICE_PREVIEW"):format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+		end,
+		getDefaultArgs = function()
+			return {"1d100", ""};
+		end,
+		editor = editor,
+	});
+end
+
 local function inv_loot_init()
 	local editor = TRP3_EffectEditorLoot;
 
@@ -589,6 +619,7 @@ function TRP3_API.extended.tools.initItemEffects()
 	item_remove_init();
 	item_cooldown_init();
 	item_use_init();
+	item_roll_dice_init();
 	inv_loot_init();
 	run_item_workflow_init();
 
