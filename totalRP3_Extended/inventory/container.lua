@@ -150,13 +150,19 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 					text2 = text2 .. "\n";
 					text2 = text2 .. color("y") .. loc("SEC_TT_COMBO");
 				end
-				if TRP3_API.security.atLeastOneBlocked(rootClass) then
-					text2 = text2 .. "\n\n";
-					text2 = text2 .. color("y") .. loc("SET_TT_SECURED");
-				end
 			end
 		end
 
+	end
+
+	-- Security
+	if TRP3_API.security.atLeastOneBlocked(rootClass) then
+		if text2 and text2:len() > 0 then
+			text2 = text2 .. "\n";
+		else
+			text2 = "";
+		end
+		text2 = text2 .. color("y") .. "\n" .. loc("SET_TT_SECURED");
 	end
 
 	return title, left, right, text1, text2, extension1, extension2;

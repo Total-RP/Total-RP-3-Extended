@@ -236,7 +236,6 @@ local function onElementClick(self, button)
 				setCurrentElementFrame(effectInfo.editor, effectInfo.title);
 				effectInfo.editor.load(scriptData);
 			else
-				Utils.Log.log("No editor => No selection");
 				return; -- No editor => No selection
 			end
 		elseif scriptStep.t == ELEMENT_TYPE.DELAY then

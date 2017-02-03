@@ -116,11 +116,11 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	SEC_LEVEL_DETAILS_ACCEPTED = "Accepted",
 	SEC_LEVEL_DETAILS_FROM = "Always accept when received from %s",
 	SEC_EFFECT_BLOCKED = "Effect(s) blocked",
-	SEC_EFFECT_BLOCKED_TT = "Due to your current security settings, at least one of this item (or sub-objects) effects is blocked.\n\n|cffff9900Click to review security for this item.\n\nYou can also Ctrl+Right-click on the item in your inventory to configure the security later.",
+	SEC_EFFECT_BLOCKED_TT = "Due to your current security settings, at least one of this item (or sub-objects) effects has been secured.\n\n|cffff9900Click to review security for this item.\n\nYou can also Ctrl+Right-click on the item in your inventory to configure the security later.",
 	SEC_MISSING_SCRIPT = "Cannot find workflow \"%s\"",
 	SEC_SCRIPT_ERROR = "Error in workflow %s.",
 	SEC_TT_COMBO = "Alt + Right click:|cffff9900 Configure security",
-	SET_TT_SECURED = "Unsecured effects from this item are blocked. Configure security to change that.",
+	SET_TT_SECURED = "Some potentially malicious effects have been secured for your safety.\nAlt + Right click for more details.",
 
 	-- LOOT
 	LOOT = "Loot",

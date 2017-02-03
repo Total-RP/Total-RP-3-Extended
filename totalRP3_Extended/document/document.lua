@@ -38,7 +38,7 @@ local function setFrameSize(width, height)
 end
 
 local function setFrameHTML(html)
-	HTMLFrame.html = Utils.str.toHTML(html);
+	HTMLFrame.html = Utils.str.toHTML(html, true);
 	HTMLFrame:SetText(HTMLFrame.html);
 end
 
