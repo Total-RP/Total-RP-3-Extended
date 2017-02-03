@@ -234,15 +234,15 @@ function refresh()
 		local tt = ("|cff00ff00%s: %s|r"):format(getTypeLocale(idData.type) or UNKNOWN, idData.text or UNKNOWN);
 		lineWidget.Text:SetText(tt);
 
+		local locale = "";
+		if idData.depth == 1 or ToolFrame.list.hasSearch then
+			locale = "  |T" .. TRP3_API.extended.tools.getObjectLocaleImage(idData.locale) .. ":11:16|t";
+		end
 		if ToolFrame.list.hasSearch then
-			local locale = "";
-			if idData.depth == 1 or ToolFrame.list.hasSearch then
-				locale = "  |T" .. TRP3_API.extended.tools.getObjectLocaleImage(idData.locale) .. ":11:16|t";
-			end
 			local totalPath = TRP3_API.inventory.getItemLink(getClass(idData.fullID), idData.fullID, true);
 			lineWidget.Right:SetText(totalPath .. locale);
 		else
-			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and loc("ROOT_GEN_ID") or idData.ID));
+			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and loc("ROOT_GEN_ID") .. locale or idData.ID));
 		end
 
 

@@ -150,19 +150,29 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 					text2 = text2 .. "\n";
 					text2 = text2 .. color("y") .. loc("SEC_TT_COMBO");
 				end
+				if TRP3_DB.exchange[rootClass] and TRP3_API.security.atLeastOneBlocked(rootClass) then
+					text2 = text2 .. "\n\n";
+					text2 = text2 .. color("o") .. loc("SET_TT_SECURED");
+				end
+				if not rootClass.MD or not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
+					text2 = text2 .. "\n\n";
+					text2 = text2 .. color("o") .. loc("SET_TT_OLD");
+				end
 			end
 		end
-
-	end
-
-	-- Security
-	if TRP3_API.security.atLeastOneBlocked(rootClass) then
-		if text2 and text2:len() > 0 then
-			text2 = text2 .. "\n";
+	else
+		local alertCount = 0;
+		if class.missing then
+			alertCount = alertCount + 1;
 		else
-			text2 = "";
+			if TRP3_DB.exchange[rootClass] and TRP3_API.security.atLeastOneBlocked(rootClass) then
+				alertCount = alertCount + 1;
+			end
 		end
-		text2 = text2 .. color("y") .. "\n" .. loc("SET_TT_SECURED");
+		if alertCount > 0 then
+			extension1 = color("y") .. loc("SET_TT_DETAILS_2"):format(alertCount);
+			extension2 = color("y") .. loc("SET_TT_DETAILS_1");
+		end
 	end
 
 	return title, left, right, text1, text2, extension1, extension2;
