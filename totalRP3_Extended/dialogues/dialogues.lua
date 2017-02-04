@@ -481,7 +481,7 @@ function TRP3_API.extended.dialog.onStart()
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function(args)
 				local dialogID = args[1];
-				return ("lastEffectReturn = startDialog(\"%s\", nil, args);"):format(dialogID);
+				return ("args.LAST = startDialog(\"%s\", nil, args);"):format(dialogID);
 			end,
 			env = {
 				startDialog = "TRP3_API.extended.dialog.startDialog",
@@ -494,7 +494,7 @@ function TRP3_API.extended.dialog.onStart()
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function(args)
 				local dialogText = args[1];
-				return ("lastEffectReturn = startQuickDialog(\"%s\");"):format(dialogText);
+				return ("args.LAST = startQuickDialog(\"%s\");"):format(dialogText);
 			end,
 			env = {
 				startQuickDialog = "TRP3_API.extended.dialog.startQuickDialog",

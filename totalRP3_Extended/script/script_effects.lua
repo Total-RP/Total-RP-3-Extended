@@ -71,7 +71,7 @@ local EFFECTS = {
 
 	["MISSING"] = {
 		codeReplacementFunc = function (_, id)
-			return ("message(\"|cffff0000" .. loc("SCRIPT_UNKNOWN_EFFECT") .. ": %s\", 1); lastEffectReturn = nil;"):format(id);
+			return ("message(\"|cffff0000" .. loc("SCRIPT_UNKNOWN_EFFECT") .. ": %s\", 1); args.LAST = nil;"):format(id);
 		end,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -84,7 +84,7 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local text = args[1] or "";
 			local type = tonumber(args[2]) or 1;
-			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(text, type);
+			return ("message(var(\"%s\", args), %s); args.LAST = 0;"):format(text, type);
 		end,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -96,14 +96,14 @@ local EFFECTS = {
 	["speech_env"] = {
 		codeReplacementFunc = function (args)
 			local text = args[1] or "";
-			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); lastEffectReturn = 0;"):format(text);
+			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); args.LAST = 0;"):format(text);
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
 		},
 		securedCodeReplacementFunc = function (args)
 			local text = args[1] or "";
-			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(text, 1);
+			return ("message(var(\"%s\", args), %s); args.LAST = 0;"):format(text, 1);
 		end,
 		securedEnv = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -115,7 +115,7 @@ local EFFECTS = {
 			local name = args[1] or "";
 			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
-			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text));
+			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); args.LAST = 0;"):format(getSpeechPrefixText(type, name, text));
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
@@ -124,7 +124,7 @@ local EFFECTS = {
 			local name = args[1] or "";
 			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
-			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text), 1);
+			return ("message(var(\"%s\", args), %s); args.LAST = 0;"):format(getSpeechPrefixText(type, name, text), 1);
 		end,
 		securedEnv = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -135,7 +135,7 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local channel = getSpeechChannel(args[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS);
 			local text = args[2] or "";
-			return ("SendChatMessage(var(\"%s\", args), \"%s\"); lastEffectReturn = 0;"):format(text, channel);
+			return ("SendChatMessage(var(\"%s\", args), \"%s\"); args.LAST = 0;"):format(text, channel);
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
@@ -143,7 +143,7 @@ local EFFECTS = {
 		securedCodeReplacementFunc = function (args)
 			local prefix = args[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = getSpeech(args[2] or "", prefix);
-			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(text, 1);
+			return ("message(var(\"%s\", args), %s); args.LAST = 0;"):format(text, 1);
 		end,
 		securedEnv = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -158,7 +158,7 @@ local EFFECTS = {
 			local operationType = args[2] or "i";
 			local varName = args[3] or "var";
 			local varValue = args[4] or "0";
-			return ("setVar(args, \"%s\", \"%s\", \"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(source, operationType, varName, varValue);
+			return ("setVar(args, \"%s\", \"%s\", \"%s\", var(\"%s\", args)); args.LAST = 0;"):format(source, operationType, varName, varValue);
 		end,
 		env = {
 			setVar = "TRP3_API.script.setVar",
@@ -177,7 +177,7 @@ local EFFECTS = {
 			if operand and operand.codeReplacement then
 				code = operand.codeReplacement(operandArgs);
 			end
-			return ("setVar(args, \"%s\", \"=\", \"%s\", tostring(%s)); lastEffectReturn = 0;"):format(source, varName, code), operand.env;
+			return ("setVar(args, \"%s\", \"=\", \"%s\", tostring(%s)); args.LAST = 0;"):format(source, varName, code), operand.env;
 		end,
 		env = {
 			setVar = "TRP3_API.script.setVar",
@@ -189,7 +189,7 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local varName = args[1] or "";
 			local varValue = args[2] or "";
-			return ("sendSignal(\"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(varName, varValue);
+			return ("sendSignal(\"%s\", var(\"%s\", args)); args.LAST = 0;"):format(varName, varValue);
 		end,
 		env = {
 			sendSignal = "TRP3_API.extended.sendSignal",
@@ -201,7 +201,7 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local source = args[1] or "o";
 			local id = args[2] or "";
-			return ("runWorkflow(args, \"%s\", \"%s\"); lastEffectReturn = 0;"):format(source, id);
+			return ("runWorkflow(args, \"%s\", \"%s\"); args.LAST = 0;"):format(source, id);
 		end,
 		env = {
 			runWorkflow = "TRP3_API.script.runWorkflow",
@@ -215,7 +215,7 @@ local EFFECTS = {
 			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
 			local source = "Script"; -- TODO: get source
-			return ("lastEffectReturn = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
+			return ("args.LAST = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
 		end,
 		env = {
 			playSoundID = "TRP3_API.utils.music.playSoundID",
@@ -226,7 +226,7 @@ local EFFECTS = {
 	["sound_music_self"] = {
 		codeReplacementFunc = function (args)
 			local path = (args[1] or ""):gsub("\\", "\\\\");
-			return ("lastEffectReturn = playMusic(\"%s\");"):format(path);
+			return ("args.LAST = playMusic(\"%s\");"):format(path);
 		end,
 		env = {
 			playMusic = "TRP3_API.utils.music.playMusic",
@@ -236,7 +236,7 @@ local EFFECTS = {
 
 	["sound_music_stop"] = {
 		codeReplacementFunc = function ()
-			return "stopMusic(); lastEffectReturn = 0;";
+			return "stopMusic(); args.LAST = 0;";
 		end,
 		env = {
 			stopMusic = "TRP3_API.utils.music.stopMusic",
@@ -250,7 +250,7 @@ local EFFECTS = {
 			local channel = args[1] or "SFX";
 			local distance = tonumber(args[3] or 0);
 			local source = "Script"; -- TODO: get source
-			return ("lastEffectReturn = playLocalSoundID(%s, \"%s\", %s, \"%s\");"):format(soundID, channel, distance, source);
+			return ("args.LAST = playLocalSoundID(%s, \"%s\", %s, \"%s\");"):format(soundID, channel, distance, source);
 		end,
 		env = {
 			playLocalSoundID = "TRP3_API.utils.music.playLocalSoundID",
@@ -259,7 +259,7 @@ local EFFECTS = {
 			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
 			local source = "Script"; -- TODO: get source
-			return ("lastEffectReturn = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
+			return ("args.LAST = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
 		end,
 		securedEnv = {
 			playSoundID = "TRP3_API.utils.music.playSoundID",
@@ -272,14 +272,14 @@ local EFFECTS = {
 			local musicPath = (args[1] or ""):gsub("\\", "\\\\");
 			local distance = tonumber(args[2] or 0);
 			local source = "Script"; -- TODO: get source
-			return ("lastEffectReturn = playLocalMusic(\"%s\", %s, \"%s\");"):format(musicPath, distance, source);
+			return ("args.LAST = playLocalMusic(\"%s\", %s, \"%s\");"):format(musicPath, distance, source);
 		end,
 		env = {
 			playLocalMusic = "TRP3_API.utils.music.playLocalMusic",
 		},
 		securedCodeReplacementFunc = function (args)
 			local path = (args[1] or ""):gsub("\\", "\\\\");
-			return ("lastEffectReturn = playMusic(\"%s\");"):format(path);
+			return ("args.LAST = playMusic(\"%s\");"):format(path);
 		end,
 		securedEnv = {
 			playMusic = "TRP3_API.utils.music.playMusic",
@@ -290,20 +290,20 @@ local EFFECTS = {
 	-- Companions
 	["companion_dismiss_mount"] = {
 		codeReplacementFunc = function ()
-			return "DismissCompanion(\"MOUNT\"); lastEffectReturn = 0;"
+			return "DismissCompanion(\"MOUNT\"); args.LAST = 0;"
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
 		},
 		securedCodeReplacementFunc = function ()
-			return "lastEffectReturn = 0;";
+			return "args.LAST = 0;";
 		end,
 		secured = security.MEDIUM,
 	},
 
 	["companion_dismiss_critter"] = {
 		codeReplacementFunc = function ()
-			return "DismissCompanion(\"CRITTER\"); lastEffectReturn = 0;"
+			return "DismissCompanion(\"CRITTER\"); args.LAST = 0;"
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
@@ -313,7 +313,7 @@ local EFFECTS = {
 
 	["companion_random_critter"] = {
 		codeReplacementFunc = function ()
-			return "SummonRandomPet(); lastEffectReturn = 0;"
+			return "SummonRandomPet(); args.LAST = 0;"
 		end,
 		env = {
 			SummonRandomPet = "C_PetJournal.SummonRandomPet",
@@ -324,13 +324,13 @@ local EFFECTS = {
 	["companion_summon_mount"] = {
 		codeReplacementFunc = function (args)
 			local mountId = tonumber(args[1] or 0);
-			return ("SummonByID(%s); lastEffectReturn = 0;"):format(mountId);
+			return ("SummonByID(%s); args.LAST = 0;"):format(mountId);
 		end,
 		env = {
 			SummonByID = "C_MountJournal.SummonByID",
 		},
 		securedCodeReplacementFunc = function ()
-			return "lastEffectReturn = 0;";
+			return "args.LAST = 0;";
 		end,
 		secured = security.MEDIUM,
 	},

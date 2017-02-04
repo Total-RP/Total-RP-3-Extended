@@ -189,7 +189,7 @@ function TRP3_API.extended.document.onStart()
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
 				local documentID = args[1];
-				return ("lastEffectReturn = showDocument(\"%s\", args);"):format(documentID);
+				return ("args.LAST = showDocument(\"%s\", args);"):format(documentID);
 			end,
 			env = {
 				showDocument = "TRP3_API.extended.document.showDocument",
@@ -199,7 +199,7 @@ function TRP3_API.extended.document.onStart()
 		document_close = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
-				return "lastEffectReturn = closeDocument();";
+				return "args.LAST = closeDocument();";
 			end,
 			env = {
 				closeDocument = "TRP3_API.extended.document.closeDocument",

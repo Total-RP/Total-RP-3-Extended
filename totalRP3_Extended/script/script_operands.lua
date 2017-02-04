@@ -516,7 +516,7 @@ local OPERANDS = {
 
 	-- Let you test the return value from the last effect
 	["last_return"] = {
-		codeReplacement = "tostring(lastEffectReturn)",
+		codeReplacement = "tostring(args.LAST)",
 	},
 };
 

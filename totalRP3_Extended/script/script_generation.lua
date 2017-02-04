@@ -26,7 +26,7 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = true;
+local DEBUG = false;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -479,7 +479,6 @@ local function generateCode(effectStructure, rootClassID)
 	writeLine("args = args or EMPTY;");
 	writeLine("if not args.custom then args.custom = {}; end");
 	writeLine("local conditionStorage = {};"); -- Store conditions evaluation
-	writeLine("local lastEffectReturn;"); -- Store last return value from effect, to be able to test it in further conditions.
 	writeLine("local castID;"); -- For any casting bar
 	writeElement("1"); -- 1 is always the first element
 	writeLine("return 0, conditionStorage;");
@@ -702,13 +701,16 @@ local directReplacement = {
 	["trp:player:last"] = function()
 		return TRP3_API.profile.getData("player/characteristics").LN or "";
 	end,
+	["last.return"] = function(args)
+		return args and args.LAST or "";
+	end,
 }
 
 function TRP3_API.script.parseArgs(text, args)
 	args = args or EMPTY;
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		if directReplacement[capture] then
-			return directReplacement[capture]();
+			return directReplacement[capture](args);
 		elseif capture:match("gender%:%w+%:[^%:]+%:[^%:]+") then
 			local type, male, female = capture:match("gender%:(%w+)%:([^%:]+)%:([^%:]+)");
 			if UnitSex(type) == 2 then
