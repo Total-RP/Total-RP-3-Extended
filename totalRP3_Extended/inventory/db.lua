@@ -50,6 +50,7 @@ TRP3_DB.inner.bag = {
 		["MO"] = "NO",
 		["SD"] = "28/04/16 17:36:41",
 		["V"] = 2,
+		["tV"] = TRP3_API.globals.extended_version,
 	},
 }
 
@@ -251,6 +252,7 @@ TRP3_DB.inner.rifle = {
 		["MO"] = "NO",
 		["SD"] = "19/06/16 16:14:15",
 		["V"] = 44,
+		["tV"] = TRP3_API.globals.extended_version,
 	},
 	["BA"] = {
 		["DE"] = "A rifle with a 4 slots clip. Double click on the rifle to open the ammo clip. Example item from TRP3 authors.",
@@ -357,6 +359,213 @@ TRP3_DB.inner.letterexample = {
 		["MO"] = "NO",
 		["SD"] = "30/04/16 19:27:36",
 		["V"] = 8,
+	},
+	["TY"] = "IT",
+};
+
+TRP3_DB.inner.diceexample = {
+	securityLevel = 3,
+	["IN"] = {
+		["dice20"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "Goes into a ${diceexample}.",
+				["PS"] = 1186,
+				["IC"] = "INV_Misc_Dice_01",
+				["CO"] = false,
+				["NA"] = "Dice with 20 faces",
+				["ST"] = 20,
+				["QA"] = 2,
+				["PA"] = false,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = false,
+				["DS"] = 1203,
+				["US"] = false,
+				["QE"] = false,
+				["SB"] = false,
+				["UN"] = false,
+				["CT"] = false,
+				["WE"] = 10,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["MW"] = 0,
+				["DU"] = 0,
+				["SC"] = "4",
+				["SI"] = "5x4",
+				["SR"] = "5",
+			},
+			["IN"] = {
+			},
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["TY"] = "IT",
+		},
+		["dice6"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "Goes into a ${diceexample}.",
+				["PS"] = 1186,
+				["IC"] = "INV_Misc_Dice_02",
+				["CO"] = false,
+				["NA"] = "Dice with 6 faces",
+				["ST"] = 20,
+				["QA"] = 2,
+				["PA"] = false,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = false,
+				["DS"] = 1203,
+				["US"] = false,
+				["QE"] = false,
+				["SB"] = false,
+				["UN"] = false,
+				["CT"] = false,
+				["WE"] = 8,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["MW"] = 0,
+				["DU"] = 0,
+				["SC"] = "4",
+				["SI"] = "5x4",
+				["SR"] = "5",
+			},
+			["IN"] = {
+			},
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["TY"] = "IT",
+		},
+	},
+	["BA"] = {
+		["DE"] = "A cup with dices.",
+		["PS"] = 1198,
+		["US"] = true,
+		["CO"] = false,
+		["NA"] = "Dices cup",
+		["ST"] = false,
+		["QA"] = 4,
+		["SB"] = false,
+		["WA"] = false,
+		["VA"] = 0,
+		["CR"] = false,
+		["DS"] = 1217,
+		["IC"] = "TRADE_ARCHAEOLOGY_GEMMEDDRINKINGCUP",
+		["PA"] = false,
+		["UN"] = false,
+		["QE"] = false,
+		["CT"] = true,
+		["WE"] = 0,
+	},
+	["SC"] = {
+		["onUse"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "var_operand",
+							["args"] = {
+								"count20", -- [1]
+								"w", -- [2]
+								"inv_item_count", -- [3]
+								{
+									"diceexample dice20", -- [1]
+									"self", -- [2]
+								}, -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "2",
+				},
+				["4"] = {
+					["e"] = {
+						{
+							["id"] = "speech_player",
+							["args"] = {
+								"/e", -- [1]
+								"rolled a total of ${last.return}.", -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+				["3"] = {
+					["e"] = {
+						{
+							["id"] = "item_roll_dice",
+							["args"] = {
+								"${count20}d20 ${count6}d6", -- [1]
+								"", -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "4",
+				},
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "var_operand",
+							["args"] = {
+								"count6", -- [1]
+								"w", -- [2]
+								"inv_item_count", -- [3]
+								{
+									"diceexample dice6", -- [1]
+									"self", -- [2]
+								}, -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "3",
+				},
+			},
+		},
+	},
+	["securityLevel"] = 1,
+	["US"] = {
+		["AC"] = "Roll it!",
+		["SC"] = "onUse",
+	},
+	["CO"] = {
+		["OI"] = true,
+		["MW"] = 0,
+		["DU"] = 0,
+		["SC"] = "4",
+		["SI"] = "1x4",
+		["SR"] = "1",
+	},
+	["MD"] = {
+		["LO"] = "en",
+		["SB"] = "Telkostrasz-KirinTor",
+		["SD"] = "04/02/17 11:23:32",
+		["CB"] = "Telkostrasz-KirinTor",
+		["MO"] = "NO",
+		["tV"] = TRP3_API.globals.extended_version,
+		["CD"] = "23/01/17 19:21:20",
+		["V"] = 11,
 	},
 	["TY"] = "IT",
 };

@@ -59,7 +59,8 @@ end
 local function getItemTooltipLines(slotInfo, class, forceAlt)
 	local title, left, right, text1, text2,  extension1, extension2;
 	local icon, name = getBaseClassDataSafe(class);
-	local rootClass = TRP3_API.extended.getRootClassID(slotInfo.id);
+	local rootClassID = TRP3_API.extended.getRootClassID(slotInfo.id);
+	local rootClass = TRP3_API.extended.classExists(rootClassID) and getClass(rootClassID);
 	local argsStructure = {object = slotInfo};
 	title = getQualityColorText(class.BA.QA) .. name;
 
@@ -146,15 +147,15 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 				text2 = text2 .. "\n";
 				text2 = text2 .. color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ":|cffff9900 " .. slotInfo.id;
 			else
-				if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
+				if TRP3_DB.exchange[rootClassID] or TRP3_DB.my[rootClassID] then
 					text2 = text2 .. "\n";
 					text2 = text2 .. color("y") .. loc("SEC_TT_COMBO");
 				end
-				if TRP3_DB.exchange[rootClass] and TRP3_API.security.atLeastOneBlocked(rootClass) then
+				if TRP3_DB.exchange[rootClassID] and TRP3_API.security.atLeastOneBlocked(rootClassID) then
 					text2 = text2 .. "\n\n";
 					text2 = text2 .. color("o") .. loc("SET_TT_SECURED");
 				end
-				if not rootClass.MD or not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
+				if not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
 					text2 = text2 .. "\n\n";
 					text2 = text2 .. color("o") .. loc("SET_TT_OLD");
 				end
@@ -165,7 +166,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		if class.missing then
 			alertCount = alertCount + 1;
 		else
-			if TRP3_DB.exchange[rootClass] and TRP3_API.security.atLeastOneBlocked(rootClass) then
+			if TRP3_DB.exchange[rootClassID] and TRP3_API.security.atLeastOneBlocked(rootClassID) then
 				alertCount = alertCount + 1;
 			end
 		end

@@ -248,11 +248,6 @@ local function getEffectInfo(id)
 	return TRP3_API.script.getEffect(id) or TRP3_API.script.getEffect(EFFECT_MISSING_ID);
 end
 
-function TRP3_API.script.protected()
-	print("Protected !");
-	return -1;
-end
-
 local function writeEffect(effectStructure)
 	assert(type(effectStructure) == "table", "effectStructure is not a table");
 	assert(effectStructure.id, "Effect don't have ID");
@@ -261,10 +256,10 @@ local function writeEffect(effectStructure)
 
 	local effectCode, secured;
 
-	if effectInfo.secured and effectInfo.secured ~= TRP3_API.security.SECURITY_LEVEL.HIGH then
-		secured = TRP3_API.security.resolveEffectSecurity(CURRENT_CLASS_ID, effectStructure.id);
-	else
+	if TRP3_DB.inner[CURRENT_CLASS_ID] ~= nil or not effectInfo.secured then
 		secured = true;
+	elseif effectInfo.secured ~= TRP3_API.security.SECURITY_LEVEL.HIGH then
+		secured = TRP3_API.security.resolveEffectSecurity(CURRENT_CLASS_ID, effectStructure.id);
 	end
 
 	if secured then
