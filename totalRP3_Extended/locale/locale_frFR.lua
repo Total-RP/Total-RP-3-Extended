@@ -77,10 +77,6 @@ Cette personnalisation sera visible lorsque le joueur aura votre campagne comme 
 	["CA_QUEST_EXIST"] = "Il y a déjà une quête avec l'identifiant %s.",
 	["CA_QUEST_NO"] = "Pas de quête",
 	["CA_QUEST_REMOVE"] = "Supprimer cette quête ?",
-	["CA_RANGE"] = "Niveau conseillé",
-	["CA_RANGE_TT"] = [=[Indique dans la vignette de campagne le niveau conseillé pour pouvoir faire cette campagne.
-
-C'est une information optionnelle. Si vous la laissez vide, elle n’apparaîtra pas dans la vignette de campagne.]=],
 	["COM_NPC_ID"] = "voir l'ID du PNJ ciblé",
 	["COND_COMPLETE"] = "Expression logique complète",
 	["COND_EDITOR"] = "Éditeur de condition",
@@ -283,6 +279,16 @@ Clic droit : Effacer la condition]=],
 
 Pour cacher l'image par la suite, laissez juste le champ vide.]=],
 	["DI_LEFT_UNIT"] = "Modèle de gauche",
+	["DI_LINKS_ONEND"] = "En fin de cinématique",
+	["DI_LINKS_ONEND_TT"] = [=[Déclenché lorsque la cinématique est terminée.
+
+|cff00ff00Cela peut se produire lorsque la dernière étape est atteinte ou lorsqu'un choix laissé au joueur mène à une étape vide ou non existante.
+
+|cffff0000Cela n'est PAS déclenché lorsque le joueur annule la cinématique en fermant manuellement la fenêtre de cinématique.]=],
+	["DI_LINKS_ONSTART"] = "En début de cinématique",
+	["DI_LINKS_ONSTART_TT"] = [=[Déclenché lorsque la cinématique commence.
+
+|cffff9900Notez que ce déclencheur se lance avant que la première étape de cinématique ne s'exécute.]=],
 	["DI_LOOT"] = "Attendre le butin",
 	["DI_LOOT_TT"] = "Si le processus sélectionné à gauche déclenche l'affichage d'un butin pour le joueur, vous pouvez cocher ce paramètre pour empêcher le joueur de passer à l'étape suivante du dialogue tant qu'il n'a pas récupéré l'intégralité du butin.",
 	["DI_MODELS"] = "Modèles",
@@ -406,8 +412,8 @@ NB : Elle leur sera toujours accessible, s'ils savent déjà où elle est.]=],
 |cffff9900Tous les objets encore dedans seront perdus !]=],
 	["DR_STASHES_REMOVED"] = "Cachette supprimée.",
 	["DR_STASHES_RESYNC"] = "Resynchroniser",
-	["DR_STASHES_SCAN"] = "Détecter les cachettes de joueurs",
-	["DR_STASHES_SCAN_MY"] = "Détecter mes cachettes",
+	["DR_STASHES_SCAN"] = "Afficher toutes les cachettes",
+	["DR_STASHES_SCAN_MY"] = "Afficher mes cachettes",
 	["DR_STASHES_SEARCH"] = "Rechercher des cachettes de |cff00ff00joueurs|r",
 	["DR_STASHES_SEARCH_TT"] = [=[Recherche des cachettes d'autres joueurs dans la zone des 15 mètres alentours.
 
@@ -499,6 +505,13 @@ Sauvegarder quand même ?]=],
 	["EFFECT_ITEM_COOLDOWN"] = "Lancer rafraîchissement",
 	["EFFECT_ITEM_COOLDOWN_PREVIEW"] = "Durée : %s seconde(s)",
 	["EFFECT_ITEM_COOLDOWN_TT"] = "Déclenche un \"cooldown\" pour cet objet.",
+	["EFFECT_ITEM_DICE"] = "Lancer de dés",
+	["EFFECT_ITEM_DICE_PREVIEW"] = "Lancer %s",
+	["EFFECT_ITEM_DICE_ROLL"] = "Lancer",
+	["EFFECT_ITEM_DICE_ROLL_TT"] = [=[Entrez une configuration de lancer, similaire à celle de la commande /trp3 roll.
+
+|cff00ff00Exemple: 1d20, 3d6 ..etc.]=],
+	["EFFECT_ITEM_DICE_TT"] = "They see me rollin', they hating.",
 	["EFFECT_ITEM_LOOT"] = "Montrer/déposer butin",
 	["EFFECT_ITEM_LOOT_DROP"] = "Déposer objets",
 	["EFFECT_ITEM_LOOT_DROP_TT"] = "Dépose des objets au sol au lieu de présenter une fenêtre de butin au joueur. Le joueur peut ensuite ramasser les objets qu'il veut via la méthode \"rechercher des objets\".",
@@ -534,6 +547,11 @@ Sauvegarder quand même ?]=],
 	["EFFECT_ITEM_USE_TT"] = [=[Utilise un objet dans un emplacement du contenant.
 
 |cffff9900Fonctionne seulement si ce processus est déclenché par un contenant.]=],
+	["EFFECT_ITEM_WORKFLOW"] = "Exécuter processus d'objet",
+	["EFFECT_ITEM_WORKFLOW_PREVIEW_C"] = "Déclenche le processus %s dans l'objet contenu en emplacement %s.",
+	["EFFECT_ITEM_WORKFLOW_PREVIEW_P"] = "Déclenche le processus %s dans le conteneur parent.",
+	["EFFECT_ITEM_WORKFLOW_PREVIEW_S"] = "Déclenche le processus %s dans l'objet frère d'emplacement %s.",
+	["EFFECT_ITEM_WORKFLOW_TT"] = "Exécute un processus dans le conteneur parent ou sur un objet contenu (si l'objet courant est un conteneur).",
 	["EFFECT_MISSING"] = "Cet effet (%s) est inconnu et vous devriez le supprimer.",
 	["EFFECT_OPERATION"] = "Opération",
 	["EFFECT_OPERATION_TYPE"] = "Type d'opération",
@@ -578,6 +596,13 @@ Si la quête n’apparaît pas dans le navigateur, essayer d'abord de sauvegarde
 |cffff9900Fonctionne seulement si la quête fait partie de la campagne active.]=],
 	["EFFECT_RANDSUM"] = "Invoquer une mascotte aléatoire",
 	["EFFECT_RANDSUM_TT"] = "Invoque une mascotte aléatoire, choisie parmi vos mascotte favorites.",
+	["EFFECT_RUN_WORKFLOW"] = "Exécuter processus",
+	["EFFECT_RUN_WORKFLOW_ID"] = "ID de processus",
+	["EFFECT_RUN_WORKFLOW_ID_TT"] = "L'identifiant du processus que vous souhaitez exécuter.",
+	["EFFECT_RUN_WORKFLOW_PREVIEW"] = "Exécuter le processus %s situé dans %s.",
+	["EFFECT_RUN_WORKFLOW_SLOT"] = "ID d'emplacement",
+	["EFFECT_RUN_WORKFLOW_SLOT_TT"] = "L'indexe de l'emplacement du conteneur où trouver l'objet à déclencher. Les emplacements sont numéroté de gauche à droite et de haut en bas, en commençant par 1.",
+	["EFFECT_RUN_WORKFLOW_TT"] = "Exécuter un autre processus. Toutes les variables seront passées de l'exécution actuelle du processus vers le nouveau processus appelé.",
 	["EFFECT_SHEATH"] = "Dégainer/rengainer armes",
 	["EFFECT_SHEATH_TT"] = "Dégaine ou rengaine les armes du personnage.",
 	["EFFECT_SIGNAL"] = "Envoyer signal",
@@ -640,6 +665,13 @@ Différents sons SFX peuvent être joués simultanément.]=],
 Ne fonctionne que si l'objet source est un objet, une campagne, une quête ou une étape de quête.
 
 Dans le cas d'une campagne, quête ou étape de quête, la recherche se fera au niveau de la campagne (en entière).]=],
+	["EFFECT_SOURCE_PARENT"] = "Conteneur parent",
+	["EFFECT_SOURCE_PARENT_TT"] = "Chercher le processus dans l'objet conteneur parent.",
+	["EFFECT_SOURCE_SLOT"] = "Objet dans l'emplacement (enfant)",
+	["EFFECT_SOURCE_SLOT_B"] = "Objet dans l'emplacement (frère)",
+	["EFFECT_SOURCE_SLOT_B_TT"] = "Cherche le processus dans l'objet situé à un certain emplacement dans le même conteneur parent.",
+	["EFFECT_SOURCE_SLOT_TT"] = [=[Cherche le processus dans un emplacement spécifique à l'intérieur de cet objet.
+Fonctionne uniquement si l'objet courant est un conteneur !]=],
 	["EFFECT_SOURCE_WORKFLOW"] = "Processus",
 	["EFFECT_SOURCE_WORKFLOW_TT"] = "Recherche la variable dans l'exécution du processus. La portée de la variable est limitée à l'exécution de ce processus et sera détruite par après.",
 	["EFFECT_SPEECH_NAR"] = "Discours: Narration",
@@ -685,7 +717,13 @@ Donc si vous souhaitez vérifier le troisième argument de l'événement, entrez
 	["EFFECT_VAR_OBJECT_CHANGE_TT"] = [=[Exécute une opération sur une variable.
 
 |cffff9900Pour les opérations mathématiques: Si la variable n'existe pas ou ne peut pas être interprétée comme un nombre elle sera initialisée à 0.]=],
+	["EFFECT_VAR_OPERAND"] = "Variable évaluée",
+	["EFFECT_VAR_OPERAND_CONFIG"] = "Configuration de valeur",
+	["EFFECT_VAR_OPERAND_CONFIG_NO"] = "Pas de configuration pour cette valeur",
+	["EFFECT_VAR_OPERAND_TT"] = "Évalue à l'exécution une valeur à placer dans une variable. Toutes les valeurs testables dans les conditions sont disponibles.",
 	["EFFECT_VAR_VALUE"] = "Valeur de variable",
+	["EFFECT_W_CAMPAIGN_TT"] = "Chercher le processus dans la campagne courante.",
+	["EFFECT_W_OBJECT_TT"] = "Chercher le processus dans la création courante.",
 	["EX_SOUND_HISTORY"] = "Historique sonore",
 	["EX_SOUND_HISTORY_CLEAR"] = "Réinitialiser",
 	["EX_SOUND_HISTORY_EMPTY"] = "Aucun son n'a été joué.",
@@ -696,6 +734,8 @@ Donc si vous souhaitez vérifier le troisième argument de l'événement, entrez
 	["EX_SOUND_HISTORY_TT"] = "Voyez quels effets sonores ont été joués, d'où ils proviennent et interrompez les si ils sont toujours en cours.",
 	["IN_INNER"] = "Éléments internes",
 	["IN_INNER_ADD"] = "Créer un élément interne",
+	["IN_INNER_ADD_COPY"] = "Copie d'une création existante",
+	["IN_INNER_ADD_NEW"] = "Nouvelle création",
 	["IN_INNER_COPY_ACTION"] = "Copier le contenu de l'élément",
 	["IN_INNER_DELETE_CONFIRM"] = [=[Supprimer l'élément interne |cff00ffff"%s"|r |cff00ff00[%s]|r de l'élément-mère |cff00ff00[%s]|r ?
 
@@ -866,7 +906,7 @@ Vous pouvez aller plus loin et éditer cet objet en mode normal. Ceci vous appor
 	["IT_INV_ERROR_FULL"] = "%s est plein.",
 	["IT_INV_ERROR_MAX"] = "Vous ne pouvez pas porter davantage de %s.",
 	["IT_INV_GOT"] = "Reçu : %s x%d",
-	["IT_INV_SCAN_MY_ITEMS"] = "Chercher mes objets",
+	["IT_INV_SCAN_MY_ITEMS"] = "Afficher mes objets",
 	["IT_INV_SHOW_ALL"] = "Montrer tout l'inventaire",
 	["IT_INV_SHOW_CONTENT"] = [=[|cffffff00Clic :|r Ouvre le contenant principal (s'il existe)
 |cffffff00Clic droit :|r Ouvre l'inventaire]=],
@@ -1082,6 +1122,12 @@ Vaudra 0 si l'unité n'existe pas.
 	["OP_OP_QUEST_NPC"] = "L'unité est un PNJ de campagne",
 	["OP_OP_QUEST_NPC_TT"] = "|cff00ff00Retourne si une unité est un PNJ personnalisé dans la campagne active.",
 	["OP_OP_QUEST_OBJ"] = "Objectif de la quête",
+	["OP_OP_QUEST_OBJ_ALL"] = "Tous les objectifs de quête",
+	["OP_OP_QUEST_OBJ_ALL_PREVIEW"] = "Objectifs de %s",
+	["OP_OP_QUEST_OBJ_ALL_TT"] = "Indique si tous les objectifs possibles de la quêtes sont complétés. Donc tout autant les objectifs révélés que ceux pas encore révélés.",
+	["OP_OP_QUEST_OBJ_CURRENT"] = "Objectifs courants",
+	["OP_OP_QUEST_OBJ_CURRENT_PREVIEW"] = "Obj. courants de %s",
+	["OP_OP_QUEST_OBJ_CURRENT_TT"] = "Détermine si tous les objectifs actuellement révélés sont complétés.",
 	["OP_OP_QUEST_OBJ_PREVIEW"] = "Objectif %s de %s",
 	["OP_OP_QUEST_OBJ_TT"] = "Renvoie l'accomplissement (vrai ou faux) pour un objectif de quête. Si la campagne, la quête ou l'objectif n'est pas encore révélé, renvoie faux.",
 	["OP_OP_QUEST_STEP"] = "Étape de quête actuelle",
@@ -1174,7 +1220,9 @@ Donc scourge pour les Réprouvés.]=],
 	["QE_CAMPAIGN_CURRENT"] = "Campagne actuelle",
 	["QE_CAMPAIGN_CURRENT_NO"] = "Pas de campagne active",
 	["QE_CAMPAIGN_EMPTY"] = "Cette campagne n'a pas de quête.",
+	["QE_CAMPAIGN_FULL"] = "Terminée",
 	["QE_CAMPAIGN_LIST"] = "%s campagne(s) disponible(s)",
+	["QE_CAMPAIGN_NO"] = "Pas encore commencée",
 	["QE_CAMPAIGN_NOQUEST"] = [=[Aucune quête révélée pour cette campagne.
 Jetez un œil à la description de campagne pour révéler votre première quête.]=],
 	["QE_CAMPAIGN_PAUSE"] = "Mettre la campagne en pause.",
@@ -1185,10 +1233,14 @@ Jetez un œil à la description de campagne pour révéler votre première quêt
 	["QE_CAMPAIGN_UNSTARTED"] = [=[Vous n'avez pas encore commencé cette campagne.
 Cliquez sur le bouton "Commencer" en haut à droite.]=],
 	["QE_CAMPAIGNS"] = "Campagnes",
-	["QE_COMPLETED"] = "Complétée",
+	["QE_COMPLETED"] = "Terminée",
 	["QE_DESCRIPTION"] = "Résumé de quête",
 	["QE_DESCRIPTION_TT"] = "Ce court résumé sera visible sur la page de la quête, dans le journal de quêtes.",
 	["QE_FAILED"] = "Échouées",
+	["QE_LINKS_ON_OBJECTIVE"] = "A la complétion d'objectif",
+	["QE_LINKS_ON_OBJECTIVE_TT"] = [=[Déclenché à chaque fois que le joueur complète un objectif pour cette quête.
+
+|cff00ff00C'est un bon endroit où vérifier si tous les objectifs actuels ont été complétés si vous avez plusieurs objectifs en cours à un moment donné.]=],
 	["QE_LINKS_ON_START"] = "Au démarrage de la quête",
 	["QE_LINKS_ON_START_TT"] = [=[Déclenché |cff00ff00une fois|r lorsque le joueur commencer votre quête, en la révélant dans son journal de quêtes.
 
@@ -1229,6 +1281,7 @@ La progression de campagne est un indicateur en % placé dans le journal de quê
 	["QE_QUEST_OBJ_AND_HIST"] = "Objectifs et historique",
 	["QE_QUEST_OBJ_FINISHED"] = "|cffffff00Objectif accompli: |cff00ff00%s",
 	["QE_QUEST_OBJ_REVEALED"] = "|cffffff00Nouvel objectif: |cff00ff00%s",
+	["QE_QUEST_OBJ_UPDATED"] = "|cffffff00Objectif mis à jour: |cff00ff00%s",
 	["QE_QUEST_START"] = "Début de la quête |cff00ff00[%s]|r.",
 	["QE_QUEST_TT_STEP"] = [=[|cffffff00Actuellement:|r
 "%s"]=],
@@ -1346,7 +1399,12 @@ Vous pourrez aussi Ctrl+Clic droit sur l'objet dans votre inventaire pour config
 	["SEC_SCRIPT_ERROR"] = "Erreur dans le processus %s.",
 	["SEC_TT_COMBO"] = "Alt + clic droit:|cffff9900 Configurer la sécurité",
 	["SEC_UNSECURED_WHY"] = "Pourquoi n'est-ce pas sûr ?",
-	["SET_TT_SECURED"] = "Des effets problématiques de cet élément sont bloqués. Configurez la sécurité pour changer cela.",
+	["SET_TT_DETAILS_1"] = "Maintenez Alt pour afficher",
+	["SET_TT_DETAILS_2"] = "%s alerte(s)",
+	["SET_TT_OLD"] = [=[Cet objet a été créé avec une version antérieure de Extended (v %s).
+Cela peut entraîner des incompatibilités.]=],
+	["SET_TT_SECURED"] = [=[Certains effets potentiellement dérangeants ont été sécurisés.
+|cff00ff00Alt + clic droit pour plus de détails.]=],
 	["SPECIFIC"] = "Objet spécifique",
 	["SPECIFIC_INNER_ID"] = "ID interne",
 	["SPECIFIC_MODE"] = "Mode",
@@ -1477,7 +1535,9 @@ Peut aussi être utilisé comme incantation et peut être interrompu.]=],
 Il peut s'agir de jouer un son, afficher un texte ...etc.]=],
 	["WO_ELEMENT"] = "Condition d'élément",
 	["WO_ELEMENT_ADD"] = "Ajouter un élément au processus",
+	["WO_ELEMENT_COPY"] = "Copier contenu de l'élément",
 	["WO_ELEMENT_EDIT"] = "Cliquez pour modifier l'élément",
+	["WO_ELEMENT_PASTE"] = "Coller contenu de l'élément",
 	["WO_ELEMENT_TYPE"] = "Sélectionnez le type d'élément",
 	["WO_EMPTY"] = [=[Commencez par ajouter un élément à votre processus.
 Cela peut être un effet, une condition ou un délai.]=],
@@ -1522,5 +1582,5 @@ Ici vous pouvez définir tous les processus de votre création et les lier à de
 	["WO_SECURITY_NORMAL"] = "Moyenne",
 	["WO_SECURITY_NORMAL_DETAILS"] = "Cet effet est sécurisé mais peut causer des inconveniences. Pour cette raison, il est possible qu'une autorisation soit demandée à l'utilisateur, en fonction de ses paramètres de sécurité.",
 	["WO_WO_SECURITY"] = "Sécurité du processus",
-	["WO_WORKFLOW"] = "Processus",
+	["WO_WORKFLOW"] = "Processus"
 };
