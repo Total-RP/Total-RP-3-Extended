@@ -73,6 +73,8 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 		[loc("EFFECT_CAT_CAMERA")] = {
 			"cam_zoom_in",
 			"cam_zoom_out",
+			"cam_save",
+			"cam_load",
 		},
 		[loc("MODE_EXPERT")] = {
 			"var_object",

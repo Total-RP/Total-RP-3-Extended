@@ -764,11 +764,54 @@ local function cam_zoom_init()
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
-		editor.distance:SetText(data[1]);
+		editor.distance:SetText(data[1] or 0);
 	end
 
 	function editor.save(scriptData)
-		scriptData.args[1] = tonumber(strtrim(editor.distance:GetText()));
+		scriptData.args[1] = tonumber(strtrim(editor.distance:GetText())) or 0;
+	end
+end
+
+local function cam_save_init()
+	local editor = TRP3_EffectEditorCameraSlot;
+
+	registerEffectEditor("cam_save", {
+		title = loc("EFFECT_CAT_CAMERA_SAVE"),
+		icon = "inv_misc_spyglass_02",
+		description = loc("EFFECT_CAT_CAMERA_SAVE_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_SAVE") .. ":|cff00ff00 " .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {1};
+		end,
+		editor = editor,
+	});
+
+	registerEffectEditor("cam_load", {
+		title = loc("EFFECT_CAT_CAMERA_LOAD"),
+		icon = "inv_misc_spyglass_01",
+		description = loc("EFFECT_CAT_CAMERA_LOAD_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_LOAD") .. ":|cff00ff00 " .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {1};
+		end,
+		editor = editor,
+	});
+
+	-- Slot
+	editor.slot.title:SetText(loc("EFFECT_CAT_CAMERA_SLOT"));
+	setTooltipForSameFrame(editor.slot.help, "RIGHT", 0, 5, loc("EFFECT_CAT_CAMERA_SLOT"), loc("EFFECT_CAT_CAMERA_SLOT_TT"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.slot:SetText(data[1] or 1);
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = tonumber(strtrim(editor.slot:GetText())) or 1;
 	end
 end
 
@@ -800,5 +843,6 @@ function TRP3_API.extended.tools.initBaseEffects()
 	run_workflow_init();
 
 	cam_zoom_init();
+	cam_save_init();
 
 end

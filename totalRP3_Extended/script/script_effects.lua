@@ -361,7 +361,7 @@ local EFFECTS = {
 	-- Camera effects
 	["cam_zoom_in"] = {
 		codeReplacementFunc = function (args)
-			local distance = args[1] or 0;
+			local distance = tonumber(args[1]) or 0;
 			return ("CameraZoomIn(%s); args.LAST = 0;"):format(distance);
 		end,
 		env = {
@@ -371,11 +371,31 @@ local EFFECTS = {
 	},
 	["cam_zoom_out"] = {
 		codeReplacementFunc = function (args)
-			local distance = args[1] or 0;
+			local distance = tonumber(args[1]) or 0;
 			return ("CameraZoomOut(%s); args.LAST = 0;"):format(distance);
 		end,
 		env = {
 			CameraZoomOut = "CameraZoomOut",
+		},
+		secured = security.HIGH,
+	},
+	["cam_save"] = {
+		codeReplacementFunc = function (args)
+			local slot = tonumber(args[1]) or 1;
+			return ("SaveView(%s); args.LAST = 0;"):format(slot);
+		end,
+		env = {
+			SaveView = "SaveView",
+		},
+		secured = security.HIGH,
+	},
+	["cam_load"] = {
+		codeReplacementFunc = function (args)
+			local slot = tonumber(args[1]) or 1;
+			return ("SetView(%s); args.LAST = 0;"):format(slot);
+		end,
+		env = {
+			SetView = "SetView",
 		},
 		secured = security.HIGH,
 	},

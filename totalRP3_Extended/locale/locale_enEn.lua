@@ -809,6 +809,12 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	EFFECT_CAT_CAMERA_ZOOM_OUT = "Camera zoom out",
 	EFFECT_CAT_CAMERA_ZOOM_OUT_TT = "Zooms the camera out by a specified distance.",
 	EFFECT_CAT_CAMERA_ZOOM_DISTANCE = "Zoom distance",
+	EFFECT_CAT_CAMERA_SAVE = "Save camera",
+	EFFECT_CAT_CAMERA_SAVE_TT = "Saves the player's current camera position in one of the 5 save slots available.",
+	EFFECT_CAT_CAMERA_LOAD = "Load camera",
+	EFFECT_CAT_CAMERA_LOAD_TT = "Sets the player's camera position based on a previously saved position.",
+	EFFECT_CAT_CAMERA_SLOT = "Slot number",
+	EFFECT_CAT_CAMERA_SLOT_TT = "The index of one of the slots available, 1 to 5.",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",
