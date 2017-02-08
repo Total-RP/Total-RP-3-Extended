@@ -741,7 +741,7 @@ local function cam_zoom_init()
 			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_ZOOM_IN") .. ":|cff00ff00 " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
-			return {5};
+			return {"5"};
 		end,
 		editor = editor,
 	});
@@ -754,7 +754,7 @@ local function cam_zoom_init()
 			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_ZOOM_OUT") .. ":|cff00ff00 " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
-			return {5};
+			return {"5"};
 		end,
 		editor = editor,
 	});
@@ -764,11 +764,11 @@ local function cam_zoom_init()
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
-		editor.distance:SetText(data[1] or 0);
+		editor.distance:SetText(data[1] or "5");
 	end
 
 	function editor.save(scriptData)
-		scriptData.args[1] = tonumber(strtrim(editor.distance:GetText())) or 0;
+		scriptData.args[1] = stEtN(strtrim(editor.distance:GetText())) or "5";
 	end
 end
 

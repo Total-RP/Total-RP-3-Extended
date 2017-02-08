@@ -533,6 +533,17 @@ local function char_minimap_init()
 	});
 end
 
+local function char_cam_distance_init()
+	registerOperandEditor("char_cam_distance", {
+		title = loc("OP_OP_CHAR_CAM_DISTANCE"),
+		description = loc("OP_OP_CHAR_CAM_DISTANCE_TT"),
+		returnType = 1,
+		getText = function(args)
+			return loc("OP_OP_CHAR_CAM_DISTANCE");
+		end,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Check vars
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -723,5 +734,6 @@ function TRP3_ConditionEditor.initOperands()
 	char_zone_init();
 	char_subzone_init();
 	char_minimap_init();
+	char_cam_distance_init();
 
 end

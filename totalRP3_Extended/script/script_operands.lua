@@ -369,6 +369,16 @@ local OPERANDS = {
 		},
 	},
 
+	["char_cam_distance"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "GetCameraZoom()";
+		end,
+		env = {
+			["GetCameraZoom"] = "GetCameraZoom",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Inventory
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

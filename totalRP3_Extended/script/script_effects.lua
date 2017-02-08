@@ -361,8 +361,8 @@ local EFFECTS = {
 	-- Camera effects
 	["cam_zoom_in"] = {
 		codeReplacementFunc = function (args)
-			local distance = tonumber(args[1]) or 0;
-			return ("CameraZoomIn(%s); args.LAST = 0;"):format(distance);
+			local distance = args[1] or "0";
+			return ("CameraZoomIn(tonumber(var(\"%s\", args)) or 0); args.LAST = 0;"):format(distance);
 		end,
 		env = {
 			CameraZoomIn = "CameraZoomIn",
@@ -371,8 +371,8 @@ local EFFECTS = {
 	},
 	["cam_zoom_out"] = {
 		codeReplacementFunc = function (args)
-			local distance = tonumber(args[1]) or 0;
-			return ("CameraZoomOut(%s); args.LAST = 0;"):format(distance);
+			local distance = args[1] or "0";
+			return ("CameraZoomOut(tonumber(var(\"%s\", args)) or 0); args.LAST = 0;"):format(distance);
 		end,
 		env = {
 			CameraZoomOut = "CameraZoomOut",

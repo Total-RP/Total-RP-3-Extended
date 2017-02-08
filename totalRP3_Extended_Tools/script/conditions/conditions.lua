@@ -505,6 +505,7 @@ local getEvaluatedOperands = function(structure)
 			"char_zone",
 			"char_subzone",
 			"char_minimap",
+			"char_cam_distance",
 		},
 		--		["Pets and companions"] = { -- TODO: locals
 		--			"pet_battle_name",
