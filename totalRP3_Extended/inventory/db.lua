@@ -358,6 +358,7 @@ TRP3_DB.inner.letterexample = {
 		["SB"] = "TRP3 Team",
 		["MO"] = "NO",
 		["SD"] = "30/04/16 19:27:36",
+		["tV"] = TRP3_API.globals.extended_version,
 		["V"] = 8,
 	},
 	["TY"] = "IT",
@@ -504,7 +505,7 @@ TRP3_DB.inner.diceexample = {
 							["id"] = "speech_player",
 							["args"] = {
 								"/e", -- [1]
-								"rolled a total of ${last.return}.", -- [2]
+								"rolled dices and got a total of ${last.return}.", -- [2]
 							},
 						}, -- [1]
 					},

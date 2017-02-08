@@ -123,7 +123,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	SET_TT_SECURED = "Some potentially malicious effects have been secured for your safety.\n|cff00ff00Alt + Right click for more details.",
 	SET_TT_DETAILS_1 = "Hold Alt key to show more",
 	SET_TT_DETAILS_2 = "%s warning(s)",
-	SET_TT_OLD = "This item has been created with an older version of Extended. Incompatibilities may occured.",
+	SET_TT_OLD = "This item has been created with an older version of Extended (v %s). Incompatibilities may occured.",
 
 	-- LOOT
 	LOOT = "Loot",
