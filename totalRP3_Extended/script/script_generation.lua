@@ -256,7 +256,7 @@ local function writeEffect(effectStructure)
 
 	local effectCode, secured;
 
-	if TRP3_DB.inner[CURRENT_CLASS_ID] ~= nil or not effectInfo.secured then
+	if TRP3_DB.inner[CURRENT_CLASS_ID] ~= nil or not effectInfo.secured or effectInfo.secured == TRP3_API.security.SECURITY_LEVEL.HIGH then
 		secured = true;
 	elseif effectInfo.secured ~= TRP3_API.security.SECURITY_LEVEL.HIGH then
 		secured = TRP3_API.security.resolveEffectSecurity(CURRENT_CLASS_ID, effectStructure.id);

@@ -803,6 +803,12 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	EFFECT_W_CAMPAIGN_TT = "Search for the workflow in the current active campaign.",
 	EFFECT_RUN_WORKFLOW_ID = "Workflow ID",
 	EFFECT_RUN_WORKFLOW_ID_TT = "The workflow ID you want to run.",
+	EFFECT_CAT_CAMERA = "Camera",
+	EFFECT_CAT_CAMERA_ZOOM_IN = "Camera zoom in",
+	EFFECT_CAT_CAMERA_ZOOM_IN_TT = "Zooms the camera in by a specified distance.",
+	EFFECT_CAT_CAMERA_ZOOM_OUT = "Camera zoom out",
+	EFFECT_CAT_CAMERA_ZOOM_OUT_TT = "Zooms the camera out by a specified distance.",
+	EFFECT_CAT_CAMERA_ZOOM_DISTANCE = "Zoom distance",
 
 	-- Inner objects
 	IN_INNER = "Inner objects",

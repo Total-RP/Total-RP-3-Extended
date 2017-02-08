@@ -727,6 +727,52 @@ local function sound_music_local_init()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Camera
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function cam_zoom_init()
+	local editor = TRP3_EffectEditorCamera;
+
+	registerEffectEditor("cam_zoom_in", {
+		title = loc("EFFECT_CAT_CAMERA_ZOOM_IN"),
+		icon = "inv_misc_spyglass_03",
+		description = loc("EFFECT_CAT_CAMERA_ZOOM_IN_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_ZOOM_IN") .. ":|cff00ff00 " .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {5};
+		end,
+		editor = editor,
+	});
+
+	registerEffectEditor("cam_zoom_out", {
+		title = loc("EFFECT_CAT_CAMERA_ZOOM_OUT"),
+		icon = "inv_misc_spyglass_03",
+		description = loc("EFFECT_CAT_CAMERA_ZOOM_OUT_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_ZOOM_OUT") .. ":|cff00ff00 " .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {5};
+		end,
+		editor = editor,
+	});
+
+	-- Distance
+	editor.distance.title:SetText(loc("EFFECT_CAT_CAMERA_ZOOM_DISTANCE"));
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.distance:SetText(data[1]);
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = tonumber(strtrim(editor.distance:GetText()));
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -752,4 +798,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	var_set_operand_init();
 	signal_send_init();
 	run_workflow_init();
+
+	cam_zoom_init();
+
 end

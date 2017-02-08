@@ -357,6 +357,28 @@ local EFFECTS = {
 		},
 		secured = security.HIGH,
 	},
+
+	-- Camera effects
+	["cam_zoom_in"] = {
+		codeReplacementFunc = function (args)
+			local distance = args[1] or 0;
+			return ("CameraZoomIn(%s); args.LAST = 0;"):format(distance);
+		end,
+		env = {
+			CameraZoomIn = "CameraZoomIn",
+		},
+		secured = security.HIGH,
+	},
+	["cam_zoom_out"] = {
+		codeReplacementFunc = function (args)
+			local distance = args[1] or 0;
+			return ("CameraZoomOut(%s); args.LAST = 0;"):format(distance);
+		end,
+		env = {
+			CameraZoomOut = "CameraZoomOut",
+		},
+		secured = security.HIGH,
+	},
 }
 
 

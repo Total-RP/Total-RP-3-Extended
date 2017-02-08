@@ -70,6 +70,10 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"dialog_start",
 			"dialog_quick",
 		},
+		[loc("EFFECT_CAT_CAMERA")] = {
+			"cam_zoom_in",
+			"cam_zoom_out",
+		},
 		[loc("MODE_EXPERT")] = {
 			"var_object",
 			"var_operand",
@@ -85,6 +89,7 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			loc("EFFECT_CAT_CAMPAIGN"),
 			loc("EFFECT_CAT_SOUND"),
 			loc("REG_COMPANIONS"),
+			loc("EFFECT_CAT_CAMERA"),
 			"",
 			loc("MODE_EXPERT"),
 		}
