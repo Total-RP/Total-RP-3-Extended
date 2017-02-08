@@ -511,7 +511,7 @@ function onLineRightClick(lineWidget, data)
 		if class.BA and not class.BA.PA then
 			tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID, loc("DB_ADD_ITEM_TT")});
 		end
-		if data.mode == TRP3_DB.modes.NORMAL then
+		if data.mode == TRP3_DB.modes.NORMAL and not TRP3_DB.inner[data.rootID] then
 			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID, loc("DB_EXPERT_TT")});
 		end
 	end
