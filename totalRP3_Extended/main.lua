@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, strjoin, tostring, strtrim, wipe, assert = pairs, strjoin, tostring, strtrim, wipe, assert;
+local pairs, strjoin, tostring, strtrim, wipe, assert, strsplit = pairs, strjoin, tostring, strtrim, wipe, assert, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.locale.getText;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
@@ -44,7 +44,6 @@ TRP3_DB = {
 		ITEM = "IT",
 		DOCUMENT = "DO",
 		DIALOG = "DI",
-		LOOT = "LO",
 	},
 	modes = {
 		QUICK = "QU",
@@ -73,11 +72,22 @@ TRP3_DB.missing = missing;
 local DB = TRP3_DB.global;
 local ID_SEPARATOR = " ";
 TRP3_API.extended.ID_SEPARATOR = ID_SEPARATOR;
+TRP3_API.extended.ID_EXCLUSION_PATTERN = "[^%w%_]";
+TRP3_API.extended.ID_EXCLUSION_REPLACEMENT = "_";
+
+function TRP3_API.extended.checkID(ID)
+	return ID:lower():gsub(TRP3_API.extended.ID_EXCLUSION_PATTERN, TRP3_API.extended.ID_EXCLUSION_REPLACEMENT);
+end
 
 local function getFullID(...)
 	return strtrim(strjoin(ID_SEPARATOR, ...));
 end
 TRP3_API.extended.getFullID = getFullID;
+
+local function splitID(fullID)
+	return strsplit(TRP3_API.extended.ID_SEPARATOR, fullID);
+end
+TRP3_API.extended.splitID = splitID;
 
 local function getClass(...)
 	local id = getFullID(...);
@@ -95,6 +105,23 @@ local function classExists(...)
 	return class ~= nil;
 end
 TRP3_API.extended.classExists = classExists;
+
+local function getRootClassID(classID)
+	classID = classID or "";
+	local find  = classID:find(ID_SEPARATOR);
+	if find then
+		return classID:sub(1, find - 1);
+	end
+	return classID;
+end
+TRP3_API.extended.getRootClassID = getRootClassID;
+
+local function objectsAreRelated(classID1, classID2)
+	local rootClassID1 = ({strsplit(TRP3_API.extended.ID_SEPARATOR, classID1)})[1];
+	local rootClassID2 = ({strsplit(TRP3_API.extended.ID_SEPARATOR, classID2)})[1];
+	return rootClassID1 == rootClassID2;
+end
+TRP3_API.extended.objectsAreRelated = objectsAreRelated;
 
 local function getClassesByType(classType)
 	local classes = {};
@@ -134,6 +161,16 @@ local function registerObject(objectFullID, object, count, registerTo)
 		count = registerObject(getFullID(objectFullID, childID), childClass, count, registerTo);
 	end
 
+	-- Quest
+	for childID, childClass in pairs(object.QE or EMPTY) do
+		count = registerObject(getFullID(objectFullID, childID), childClass, count, registerTo);
+	end
+
+	-- Quest step
+	for childID, childClass in pairs(object.ST or EMPTY) do
+		count = registerObject(getFullID(objectFullID, childID), childClass, count, registerTo);
+	end
+
 	return count + 1;
 end
 TRP3_API.extended.registerObject = registerObject;
@@ -165,6 +202,7 @@ local function removeObject(objectFullID)
 	end
 	Log.log("Removed object: " .. objectFullID);
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 end
 TRP3_API.extended.removeObject = removeObject;
 
@@ -190,14 +228,6 @@ local function registerDB(db, count, registerTo)
 	-- Register object
 	for id, object in pairs(db or EMPTY) do
 		count = registerObject(id, object, count, registerTo);
-		-- Quests
-		for questID, quest in pairs(object.QE or EMPTY) do
-			count = registerObject(getFullID(id, questID), quest, count, registerTo);
-			-- Steps
-			for stepID, step in pairs(quest.ST or EMPTY) do
-				count = registerObject(getFullID(id, questID, stepID), step, count, registerTo);
-			end
-		end
 	end
 	return count;
 end
@@ -311,11 +341,25 @@ local function initConfig()
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
 
+function TRP3_API.extended.isObjectMine(ID)
+	return TRP3_DB.my[ID] ~= nil;
+end
+
+function TRP3_API.extended.isObjectExchanged(ID)
+	return TRP3_DB.exchange[ID] ~= nil;
+end
+
+function TRP3_API.extended.isObjectBackers(ID)
+	return TRP3_DB.inner[ID] ~= nil;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onInit()
+	Globals.addon_name_me = Globals.addon_name_extended;
+
 	if not TRP3_Tools_DB then
 		TRP3_Tools_DB = {};
 	end
@@ -328,6 +372,26 @@ local function onInit()
 
 	-- Register locales
 	for localeID, localeStructure in pairs(TRP3_EXTENDED_LOCALE) do
+
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1200 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1183;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1201 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1184;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1202 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1185;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1203 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1186;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1204 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1221;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1205 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1187;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1206 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1188;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1207 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1190;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1208 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1189;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1209 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1192;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1210 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1193;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1211 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1194;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1212 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1195;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1213 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1191;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1214 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1196;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1215 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1197;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1216 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1199;
+		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1217 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1198;
+
 		local locale = TRP3_API.locale.getLocale(localeID);
 		for localeKey, text in pairs(localeStructure) do
 			locale.localeContent[localeKey] = text;
@@ -348,12 +412,17 @@ local function onStart()
 
 	-- Signal
 	TRP3_API.extended.SIGNAL_PREFIX = "EXSI";
+	TRP3_API.extended.SIGNAL_EVENT = "TRP3_SIGNAL",
 	TRP3_API.communication.registerProtocolPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
-		Log.log(("Received signal from %s"):format(sender));
-		Utils.table.dump(arg);
+		if sender ~= Globals.player_id then
+			Log.log(("Received signal from %s"):format(sender));
+			Utils.event.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v);
+		end
 	end);
 	function TRP3_API.extended.sendSignal(id, value)
-		TRP3_API.communication.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
+		if UnitExists("target") and UnitIsPlayer("target") then
+			TRP3_API.communication.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
+		end
 	end
 
 	-- Calculate global environement with all ids
@@ -368,6 +437,7 @@ local function onStart()
 
 	-- Start other systems
 	TRP3_API.security.initSecurity();
+	TRP3_CastingBarFrame.init();
 	TRP3_SoundsHistoryFrame.initSound();
 	TRP3_API.inventory.onStart();
 	TRP3_API.quest.onStart();
@@ -376,16 +446,28 @@ local function onStart()
 
 	-- Config
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, initConfig);
+
+	-- Simplier combat kill event
+	TRP3_API.extended.KILL_EVENT = "TRP3_KILL";
+	Utils.event.registerHandler("COMBAT_LOG_EVENT_UNFILTERED", function(...)
+		local time, event, _, source, sourceName, _, _, dest, destName = ...;
+		if event == "PARTY_KILL" then
+			local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(dest);
+			Utils.event.fireEvent(TRP3_API.extended.KILL_EVENT, event, source, sourceName, dest, destName, NPC_ID);
+		end
+	end);
 end
+
+Globals.extended_version = 1001;
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",
-	["description"] = "Total RP 3 extended features: inventory, quest log, document and more !",
-	["version"] = 0.2,
+	["description"] = "Total RP 3 extended features: inventory, quest log, document and more!",
+	["version"] = Globals.extended_version,
 	["id"] = "trp3_extended",
 	["onInit"] = onInit,
 	["onStart"] = onStart,
-	["minVersion"] = 14,
+	["minVersion"] = 26,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);

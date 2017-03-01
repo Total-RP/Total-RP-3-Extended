@@ -17,7 +17,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local assert, type = assert, type;
+local assert, type, tonumber = assert, type, tonumber;
 
 local OPERANDS = {
 
@@ -98,7 +98,7 @@ local OPERANDS = {
 	["unit_sex"] = {
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
-			return ("UnitSex(\"%s\")"):format(unitID);
+			return ("UnitSex(\"%s\") or 1"):format(unitID);
 		end,
 		env = {
 			["UnitSex"] = "UnitSex",
@@ -163,6 +163,30 @@ local OPERANDS = {
 		},
 	},
 
+	["unit_position_x"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("select(1, UnitPosition(\"%s\"))"):format(unitID);
+		end,
+		env = {
+			["UnitPosition"] = "UnitPosition",
+			["select"] = "select",
+		},
+	},
+
+	["unit_position_y"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("select(2, UnitPosition(\"%s\"))"):format(unitID);
+		end,
+		env = {
+			["UnitPosition"] = "UnitPosition",
+			["select"] = "select",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- UNIT CHECK
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -197,6 +221,164 @@ local OPERANDS = {
 		},
 	},
 
+	["unit_distance_trade"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("CheckInteractDistance(\"%s\", 2)"):format(unitID);
+		end,
+		env = {
+			["CheckInteractDistance"] = "CheckInteractDistance",
+		},
+	},
+
+	["unit_distance_inspect"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("CheckInteractDistance(\"%s\", 1)"):format(unitID);
+		end,
+		env = {
+			["CheckInteractDistance"] = "CheckInteractDistance",
+		},
+	},
+
+	["unit_distance_point"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			local x = args[2] or 0;
+			local y = args[3] or 0;
+			return ("unitDistancePoint(\"%s\", %s, %s)"):format(unitID, x, y);
+		end,
+		env = {
+			["unitDistancePoint"] = "TRP3_API.extended.unitDistancePoint",
+		},
+	},
+
+	["unit_distance_me"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("unitDistanceMe(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["unitDistanceMe"] = "TRP3_API.extended.unitDistanceMe",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CHARACTER values
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["char_facing"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "GetPlayerFacing()";
+		end,
+		env = {
+			["GetPlayerFacing"] = "GetPlayerFacing",
+		},
+	},
+
+	["char_falling"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "IsFalling()";
+		end,
+		env = {
+			["IsFalling"] = "IsFalling",
+		},
+	},
+
+	["char_stealth"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "IsStealthed()";
+		end,
+		env = {
+			["IsStealthed"] = "IsStealthed",
+		},
+	},
+
+	["char_flying"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "IsFlying()";
+		end,
+		env = {
+			["IsFlying"] = "IsFlying",
+		},
+	},
+
+	["char_mounted"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "IsMounted()";
+		end,
+		env = {
+			["IsMounted"] = "IsMounted",
+		},
+	},
+
+	["char_resting"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "IsResting()";
+		end,
+		env = {
+			["IsResting"] = "IsResting",
+		},
+	},
+
+	["char_swimming"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "IsSwimming()";
+		end,
+		env = {
+			["IsSwimming"] = "IsSwimming",
+		},
+	},
+
+	["char_zone"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "GetZoneText()";
+		end,
+		env = {
+			["GetZoneText"] = "GetZoneText",
+		},
+	},
+
+	["char_subzone"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "GetSubZoneText()";
+		end,
+		env = {
+			["GetSubZoneText"] = "GetSubZoneText",
+		},
+	},
+
+	["char_minimap"] = {
+		numeric = false,
+		codeReplacement = function(args)
+			return "GetMinimapZoneText()";
+		end,
+		env = {
+			["GetMinimapZoneText"] = "GetMinimapZoneText",
+		},
+	},
+
+	["char_cam_distance"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "GetCameraZoom()";
+		end,
+		env = {
+			["GetCameraZoom"] = "GetCameraZoom",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Inventory
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -205,21 +387,131 @@ local OPERANDS = {
 		numeric = true,
 		codeReplacement = function(args)
 			local id = args[1] or "";
-			return ("getItemCount(\"%s\")"):format(id);
+			local source = "nil";
+			if args[2] == "parent" then
+				source = "args.container";
+			elseif args[2] == "self" then
+				source = "args.object";
+			end
+			return ("getItemCount(\"%s\", %s)"):format(id, source);
 		end,
 		env = {
 			["getItemCount"] = "TRP3_API.inventory.getItemCount",
 		},
 	},
 
-	["inv_item_count_con"] = {
-		numeric = true,
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- QUEST
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["quest_is_step"] = {
 		codeReplacement = function(args)
-			local id = args[1] or "";
-			return ("getItemCount(\"%s\", args.object)"):format(id);
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			return ("getQuestCurrentStep(\"%s\", \"%s\")"):format(campaignID, questID);
 		end,
 		env = {
-			["getItemCount"] = "TRP3_API.inventory.getItemCount",
+			["getQuestCurrentStep"] = "TRP3_API.quest.getQuestCurrentStep",
+		},
+	},
+
+	["quest_obj"] = {
+		codeReplacement = function(args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local objectiveID = args[2] or "";
+			return ("isQuestObjectiveDone(\"%s\", \"%s\", \"%s\")"):format(campaignID, questID, objectiveID);
+		end,
+		env = {
+			["isQuestObjectiveDone"] = "TRP3_API.quest.isQuestObjectiveDone",
+		},
+	},
+
+	["quest_obj_current"] = {
+		codeReplacement = function(args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			return ("isAllQuestObjectiveDone(\"%s\", \"%s\", false)"):format(campaignID, questID);
+		end,
+		env = {
+			["isAllQuestObjectiveDone"] = "TRP3_API.quest.isAllQuestObjectiveDone",
+		},
+	},
+
+	["quest_obj_all"] = {
+		codeReplacement = function(args)
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			return ("isAllQuestObjectiveDone(\"%s\", \"%s\", true)"):format(campaignID, questID);
+		end,
+		env = {
+			["isAllQuestObjectiveDone"] = "TRP3_API.quest.isAllQuestObjectiveDone",
+		},
+	},
+
+	["quest_is_npc"] = {
+		codeReplacement = function(args)
+			local unitID = args[1] or "target";
+			return ("UnitIsCampaignNPC(\"%s\")"):format(unitID);
+		end,
+		env = {
+			["UnitIsCampaignNPC"] = "TRP3_API.quest.UnitIsCampaignNPC",
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- EXPERT
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["var_check"] = {
+		codeReplacement = function(args)
+			local source = args[1] or "w";
+			local var = args[2] or "";
+			return ("varCheck(args, \"%s\", \"%s\")"):format(source, var);
+		end,
+		env = {
+			["varCheck"] = "TRP3_API.script.varCheck",
+		},
+	},
+
+	["var_check_n"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local source = args[1] or "w";
+			local var = args[2] or "";
+			return ("varCheckN(args, \"%s\", \"%s\")"):format(source, var);
+		end,
+		env = {
+			["varCheckN"] = "TRP3_API.script.varCheckN",
+		},
+	},
+
+	["check_event_var"] = {
+		codeReplacement = function(args)
+			local var = tonumber(args[1] or 1) or 1;
+			return ("eventVarCheck(args, %s)"):format(var);
+		end,
+		env = {
+			["eventVarCheck"] = "TRP3_API.script.eventVarCheck",
+		},
+	},
+
+	["check_event_var_n"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local var = tonumber(args[1] or 1) or 1;
+			return ("eventVarCheckN(args, %s)"):format(var);
+		end,
+		env = {
+			["eventVarCheckN"] = "TRP3_API.script.eventVarCheckN",
+		},
+	},
+
+	["random"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local from = tonumber(args[1] or 1) or 1;
+			local to = tonumber(args[2] or 100) or 100;
+			return ("random(%s, %s)"):format(from, to);
+		end,
+		env = {
+			["random"] = "math.random",
 		},
 	},
 
@@ -229,12 +521,12 @@ local OPERANDS = {
 
 	-- Let you test a previous test results
 	["cond"] = {
-		codeReplacement= "tostring(conditionStorage[\"%s\"])",
+		codeReplacement = "tostring(conditionStorage[\"%s\"])",
 	},
 
 	-- Let you test the return value from the last effect
 	["last_return"] = {
-		codeReplacement= "tostring(lastEffectReturn)",
+		codeReplacement = "tostring(args.LAST)",
 	},
 };
 

@@ -17,7 +17,8 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tostring, tinsert, assert, tonumber = wipe, pairs, tostring, tinsert, assert, tonumber;
+local wipe, pairs, tostring, tinsert, assert, tonumber, sort = wipe, pairs, tostring, tinsert, assert, tonumber, table.sort;
+local tContains, strjoin, unpack = tContains, strjoin, unpack;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -26,9 +27,10 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local getEffectSecurity = TRP3_API.security.getEffectSecurity;
 local editor = TRP3_ScriptEditorNormal;
-local refreshElementList, toolFrame, unlockElements, onElementConfirm;
-
+local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local securityLevel = TRP3_API.security.SECURITY_LEVEL;
+
+local refreshElementList, toolFrame, unlockElements, onElementConfirm, openLastEffect;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- New element
@@ -72,6 +74,7 @@ local function setCurrentElementFrame(frame, title, noConfirm)
 	end
 
 	editor.element:Show();
+	editor.element.current:SetFrameLevel(editor.element:GetFrameLevel() + 20);
 end
 
 local function addDelayElement()
@@ -81,6 +84,7 @@ local function addDelayElement()
 		d = 1,
 	};
 	refreshElementList();
+	openLastEffect();
 end
 
 local function addConditionElement()
@@ -94,6 +98,7 @@ local function addConditionElement()
 		},
 	};
 	refreshElementList();
+	openLastEffect();
 end
 
 local function addEffectElement(effectID)
@@ -109,21 +114,41 @@ local function addEffectElement(effectID)
 		}
 	};
 	refreshElementList();
+	openLastEffect();
 end
 
 local menuData;
+local contextTemplate = "|cff00ff00%s: %s|r\n\n";
+
+local function getContext(context)
+	if not context then
+		return contextTemplate:format(loc("WO_CONTEXT"), loc("ALL"));
+	else
+		local contexts = {};
+		for _, c in pairs(context) do
+			tinsert(contexts, getTypeLocale(c));
+		end
+		return contextTemplate:format(loc("WO_CONTEXT"), strjoin(", ", unpack(contexts)));
+	end
+end
 
 local function displayEffectDropdown(self)
 	local values = {};
-	tinsert(values, {loc("WO_EFFECT_SELECT"), nil});
+	tinsert(values, {loc("WO_COMMON_EFFECT"), nil});
 	for _, sectionID in pairs(menuData.order) do
-		local section = menuData[sectionID];
-		local sectionTab = {};
-		for _, effectID in pairs(section) do
-			local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
-			tinsert(sectionTab, {effectInfo.title or effectID, effectID, effectInfo.description});
+		if sectionID == "" then
+			tinsert(values, {loc("WO_EXPERT_EFFECT")});
+		else
+			local section = menuData[sectionID];
+			local sectionTab = {};
+			for _, effectID in pairs(section) do
+				local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
+				if not effectInfo.context or tContains(effectInfo.context, editor.currentContext) then
+					tinsert(sectionTab, {effectInfo.title or effectID, effectID, getContext(effectInfo.context) .. effectInfo.description});
+				end
+			end
+			tinsert(values, {sectionID, sectionTab});
 		end
-		tinsert(values, {sectionID, sectionTab});
 	end
 
 	TRP3_API.ui.listbox.displayDropDown(self, values, addEffectElement, 0, true);
@@ -174,33 +199,65 @@ editor.list.listElement = {};
 local ELEMENT_DELAY_ICON = "spell_mage_altertime";
 local ELEMENT_EFFECT_ICON = "inv_misc_enggizmos_37";
 local ELEMENT_CONDITION_ICON = "Ability_druid_balanceofpower";
+local ELEMENT_LINE_ACTION_COPY = "ELEMENT_LINE_ACTION_COPY";
+local ELEMENT_LINE_ACTION_PASTE = "ELEMENT_LINE_ACTION_PASTE";
 
-local function onElementClick(self)
+local function onElementLineAction(action, self)
 	assert(self.scriptStepData, "No stepData in frame");
 
 	local scriptStep = self.scriptStepData;
-	editor.element.scriptStep = scriptStep;
 
-	if scriptStep.t == ELEMENT_TYPE.EFFECT then
-		local scriptData = scriptStep.e[1];
-		local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(scriptData.id);
-		if effectInfo.editor then
-			setCurrentElementFrame(effectInfo.editor, effectInfo.title);
-			effectInfo.editor.load(scriptData);
-		else
-			return; -- No editor => No selection
+	if action == ELEMENT_LINE_ACTION_COPY then
+		if not editor.elemCopy then
+			editor.elemCopy = {};
 		end
-	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
-		setCurrentElementFrame(TRP3_ScriptEditorDelay, loc("WO_DELAY"));
-		TRP3_ScriptEditorDelay.load(scriptStep);
-	elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
-		local scriptData = scriptStep.b[1].cond;
-		setCurrentElementFrame(TRP3_ConditionEditor, loc("COND_EDITOR"));
-		TRP3_ConditionEditor.load(scriptData);
+		wipe(editor.elemCopy);
+		Utils.table.copy(editor.elemCopy, scriptStep);
+	elseif action == ELEMENT_LINE_ACTION_PASTE then
+		if editor.elemCopy then
+			wipe(self.scriptStepData);
+			Utils.table.copy(self.scriptStepData, editor.elemCopy);
+			refreshElementList();
+		end
 	end
+end
 
-	self.highlight:Show();
-	self.lock = true;
+local function onElementClick(self, button)
+	assert(self.scriptStepData, "No stepData in frame");
+
+	local scriptStep = self.scriptStepData;
+
+	if button == "LeftButton" then
+		editor.element.scriptStep = scriptStep;
+		if scriptStep.t == ELEMENT_TYPE.EFFECT then
+			local scriptData = scriptStep.e[1];
+			local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(scriptData.id);
+			if effectInfo.editor then
+				setCurrentElementFrame(effectInfo.editor, effectInfo.title);
+				effectInfo.editor.load(scriptData);
+			else
+				return; -- No editor => No selection
+			end
+		elseif scriptStep.t == ELEMENT_TYPE.DELAY then
+			setCurrentElementFrame(TRP3_ScriptEditorDelay, loc("WO_DELAY"));
+			TRP3_ScriptEditorDelay.load(scriptStep);
+		elseif scriptStep.t == ELEMENT_TYPE.CONDITION then
+			local scriptData = scriptStep.b[1];
+			setCurrentElementFrame(TRP3_ConditionEditor, loc("COND_EDITOR"));
+			TRP3_ConditionEditor.load(scriptData.cond, scriptData);
+		end
+
+		self.highlight:Show();
+		self.lock = true;
+	else
+		local values = {};
+		tinsert(values, {self.title:GetText(), nil});
+		tinsert(values, {loc("WO_ELEMENT_COPY"), ELEMENT_LINE_ACTION_COPY});
+		if editor.elemCopy and editor.elemCopy.t == scriptStep.t then
+			tinsert(values, {loc("WO_ELEMENT_PASTE"), ELEMENT_LINE_ACTION_PASTE});
+		end
+		TRP3_API.ui.listbox.displayDropDown(self, values, onElementLineAction, 0, true);
+	end
 end
 
 local function onRemoveClick(self)
@@ -226,8 +283,8 @@ function onElementConfirm(self)
 			if not scriptData.args then scriptData.args = {} end
 			editor.element.current.save(scriptData);
 		elseif editor.element.scriptStep.t == ELEMENT_TYPE.CONDITION then
-			local scriptData = editor.element.scriptStep.b[1].cond;
-			editor.element.current.save(scriptData);
+			local scriptData = editor.element.scriptStep.b[1];
+			editor.element.current.save(scriptData.cond, scriptData);
 		else
 			editor.element.current.save(editor.element.scriptStep);
 		end
@@ -236,14 +293,14 @@ function onElementConfirm(self)
 end
 
 local function decorateEffect(scriptStepFrame, effectData)
-	local effect = TRP3_API.script.getEffect(effectData.id);
-	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectData.id);
+	local effect = TRP3_API.script.getEffect(effectData.id) or EMPTY;
+	local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectData.id) or EMPTY;
 	local title = ("%s: |cffff9900%s"):format(loc("WO_EFFECT"), effectInfo.title or UNKNOWN);
 
 	TRP3_API.ui.frame.setupIconButton(scriptStepFrame, effectInfo.icon or ELEMENT_EFFECT_ICON);
 
 	-- Tooltip
-	local tooltip = effectInfo.description or "";
+	local tooltip = effectInfo.description or loc("EFFECT_MISSING"):format(effectData.id);
 	scriptStepFrame.description:SetText(tooltip);
 	if effect.secured then
 		tooltip = tooltip .. "\n\n|cffffff00" .. loc("WO_SECURITY") .. ":\n";
@@ -280,10 +337,11 @@ local function decorateElement(scriptStepFrame)
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_CONDITION_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_CONDITION")));
 		scriptStepFrame.description:SetText(TRP3_ConditionEditor.getConditionPreview(scriptStep.b[1].cond));
+		setTooltipForSameFrame(scriptStepFrame, "TOP", 0, 5, loc("WO_CONDITION"), loc("WO_CONDITION_TT") .. "\n\n|cffffff00" .. loc("WO_ELEMENT_EDIT"));
 	elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 		TRP3_API.ui.frame.setupIconButton(scriptStepFrame, ELEMENT_DELAY_ICON);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, loc("WO_DELAY")));
-		scriptStepFrame.description:SetText(("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_WAIT"), scriptStep.d or 0, loc("WO_DELAY_SECONDS")));
+		scriptStepFrame.description:SetText(TRP3_ScriptEditorDelay.decorate(scriptStep));
 		setTooltipForSameFrame(scriptStepFrame, "TOP", 0, 5, loc("WO_DELAY"), loc("WO_DELAY_TT") .. "\n\n|cffffff00" .. loc("WO_ELEMENT_EDIT"));
 	end
 end
@@ -292,6 +350,14 @@ function unlockElements()
 	for _, element in pairs(editor.list.listElement) do
 		element.lock = nil;
 		element.highlight:Hide();
+	end
+end
+
+function openLastEffect()
+	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
+	local scriptStepFrame = editor.list.listElement[tsize(data)];
+	if scriptStepFrame then
+		onElementClick(scriptStepFrame, "LeftButton");
 	end
 end
 
@@ -413,7 +479,7 @@ local function openWorkflow(workflowID)
 	refreshElementList();
 	refreshLines();
 
-	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
+	if toolFrame.specificDraft.TY == TRP3_DB.types.ITEM and toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
 		editor.workflow.title:SetText(loc("WO_EXECUTION"));
 	else
 		editor.workflow.title:SetText(loc("WO_EXECUTION") .. ": |cff00ff00" .. editor.workflowID);
@@ -422,6 +488,8 @@ end
 
 local WORKFLOW_LINE_ACTION_DELETE = 1;
 local WORKFLOW_LINE_ACTION_ID = 2;
+local WORKFLOW_LINE_ACTION_COPY = 3;
+local WORKFLOW_LINE_ACTION_PASTE = 4;
 
 local function onWorkflowLineAction(action, line)
 	assert(toolFrame.specificDraft.SC[line.workflowID]);
@@ -444,6 +512,21 @@ local function onWorkflowLineAction(action, line)
 				editor.refreshWorkflowList();
 			end
 		end, nil, workflowID);
+	elseif action == WORKFLOW_LINE_ACTION_COPY then
+		if not editor.copy then
+			editor.copy = {};
+		end
+		wipe(editor.copy);
+		Utils.table.copy(editor.copy, workflow);
+	elseif action == WORKFLOW_LINE_ACTION_PASTE then
+		if editor.copy then
+			TRP3_API.popup.showConfirmPopup(loc("WO_PASTE_CONFIRM"), function()
+				wipe(workflow);
+				Utils.table.copy(workflow, editor.copy);
+				editor.refreshWorkflowList();
+				openWorkflow(workflowID);
+			end);
+		end
 	end
 end
 
@@ -456,6 +539,10 @@ local function onWorkflowLineClick(lineClick, button)
 		tinsert(values, {line.text:GetText(), nil});
 		tinsert(values, {DELETE, WORKFLOW_LINE_ACTION_DELETE});
 		tinsert(values, {loc("IN_INNER_ID_ACTION"), WORKFLOW_LINE_ACTION_ID});
+		tinsert(values, {loc("WO_COPY"), WORKFLOW_LINE_ACTION_COPY});
+		if editor.copy then
+			tinsert(values, {loc("WO_PASTE"), WORKFLOW_LINE_ACTION_PASTE});
+		end
 		TRP3_API.ui.listbox.displayDropDown(line, values, onWorkflowLineAction, 0, true);
 	end
 end
@@ -472,26 +559,41 @@ local function refreshWorkflowList()
 	editor.workflow:Hide();
 	editor.list.arrow:Hide();
 	editor.list.add:Hide();
+	editor.list.sub:Hide();
 
-	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
+	if toolFrame.specificDraft.TY == TRP3_DB.types.ITEM and toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
 		assert(editor.workflowIDToLoad, "No editor.workflowIDToLoad for refresh.");
 		editor.list.script:SetText(editor.scriptTitle or "");
 		editor.list.description:SetText(editor.scriptDescription or "");
-		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.slider);
+		TRP3_API.ui.list.initList(editor.list, EMPTY, editor.list.sub.slider);
 		openWorkflow(editor.workflowIDToLoad);
-
-	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
-		editor.list.script:SetText(loc("WO_EXPERT"));
+	else
+		editor.list.script:SetText(loc("WO_CONTEXT") .. ": " .. getTypeLocale(editor.currentContext));
 		editor.list.description:SetText(loc("WO_EXPERT_TT"));
 		editor.list.add:Show();
+		editor.list.sub:Show();
+		editor.list.sub.empty:Show();
+		if Utils.table.size(toolFrame.specificDraft.SC) > 0 then
+			editor.list.sub.empty:Hide();
+		end
 
 		-- List
-		TRP3_API.ui.list.initList(editor.list, toolFrame.specificDraft.SC, editor.list.slider);
+		TRP3_API.ui.list.initList(editor.list, toolFrame.specificDraft.SC, editor.list.sub.slider);
 		refreshLines();
 	end
 
 end
 editor.refreshWorkflowList = refreshWorkflowList;
+
+function editor.loadList(context)
+	editor.currentContext = context;
+	refreshWorkflowList();
+	-- Select first
+	for id, _ in pairs(toolFrame.specificDraft.SC) do
+		openWorkflow(id);
+		break;
+	end
+end
 
 function editor.linkElements(workflow)
 	local size = tsize(workflow.ST);
@@ -523,10 +625,41 @@ local function onAddWorkflow()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UTILS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function editor.safeLoadList(list, keys, key)
+	if keys and key and tContains(keys, key) then
+		list:SetSelectedValue(key);
+	else
+		list:SetSelectedValue("");
+	end
+end
+
+function editor.reloadWorkflowlist(workflowIDs)
+	local workflowListStructure = {
+		{loc("WO_LINKS_SELECT")},
+		{loc("WO_LINKS_NO_LINKS"), "", loc("WO_LINKS_NO_LINKS_TT")},
+	}
+
+	wipe(workflowIDs);
+	for workflowID, _ in pairs(toolFrame.specificDraft.SC) do
+		tinsert(workflowIDs, workflowID);
+	end
+	sort(workflowIDs);
+
+	for _, workflowID in pairs(workflowIDs) do
+		tinsert(workflowListStructure, {TRP3_API.formats.dropDownElements:format(loc("WO_LINKS_TO"), workflowID), workflowID});
+	end
+
+	return workflowListStructure;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-editor.init = function(ToolFrame)
+editor.init = function(ToolFrame, effectMenu)
 	toolFrame = ToolFrame;
 
 	-- Resize
@@ -538,66 +671,20 @@ editor.init = function(ToolFrame)
 	editor.list.title:SetText(loc("WO_WORKFLOW"));
 	editor.list.widgetTab = {};
 	for i=1, 6 do
-		local line = editor.list["line" .. i];
+		local line = editor.list.sub["line" .. i];
 		tinsert(editor.list.widgetTab, line);
 		line.click:SetScript("OnClick", onWorkflowLineClick);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	end
 	editor.list.decorate = decorateWorkflowLine;
-	TRP3_API.ui.list.handleMouseWheel(editor, editor.list.slider);
-	editor.list.slider:SetValue(0);
+	TRP3_API.ui.list.handleMouseWheel(editor, editor.list.sub.slider);
+	editor.list.sub.slider:SetValue(0);
 	editor.list.add:SetText(loc("WO_ADD"));
+	editor.list.sub.empty:SetText(loc("WO_NO"));
 	editor.list.add:SetScript("OnClick", onAddWorkflow);
 
 	-- Effect selector
-	menuData = {
-		[loc("WO_EFFECT_CAT_COMMON")] = {
-			"text",
-		},
-		[loc("EFFECT_CAT_SOUND")] = {
-			"sound_id_self",
-			"sound_music_self",
-			"sound_music_stop",
-			"sound_id_local",
-			"sound_music_local",
-		},
-		[loc("EFFECT_CAT_SPEECH")] = {
-			"speech_env",
-			"speech_npc",
-		},
-		[loc("REG_COMPANIONS")] = {
-			"companion_dismiss_mount",
-			"companion_dismiss_critter",
-			"companion_random_critter",
-		},
-		[loc("INV_PAGE_CHARACTER_INV")] = {
-			"item_add",
-			"item_remove",
-			"item_sheath",
-			"item_bag_durability",
-			"item_consume",
-			"item_cooldown",
-			"document_show",
-		},
-		[loc("MODE_EXPERT")] = {
-			"var_set_execenv",
-			"var_set_object",
-			"signal_send",
-		},
-		[loc("EFFECT_CAT_DEBUG")] = {
-			"debug_dump_args",
-			"debug_dump_text",
-		},
-		order = {
-			loc("WO_EFFECT_CAT_COMMON"),
-			loc("EFFECT_CAT_SPEECH"),
-			loc("EFFECT_CAT_SOUND"),
-			loc("REG_COMPANIONS"),
-			loc("INV_PAGE_CHARACTER_INV"),
-			loc("MODE_EXPERT"),
-			loc("EFFECT_CAT_DEBUG")
-		}
-	}
+	menuData = effectMenu;
 
 	-- Workflow edition
 	editor.workflow.container.empty:SetText(loc("WO_EMPTY"));
@@ -620,4 +707,68 @@ editor.init = function(ToolFrame)
 	editor.element.selector.condition:SetScript("OnClick", addConditionElement);
 	editor.element.selector.delay:SetScript("OnClick", addDelayElement);
 	editor.element.selector.effect:SetScript("OnClick", displayEffectDropdown);
+
+	editor:SetScript("OnHide", function() editor.element:Hide(); unlockElements(); end);
+
+	-- Tutorial
+	local TUTORIAL = {
+		{
+			box = toolFrame, title = "WO_WORKFLOW", text = "TU_WO_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400
+		},
+		{
+			box = editor.list, title = "TU_WO_2", text = "TU_WO_2_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400
+		},
+		{
+			box = editor.workflow, title = "WO_EXECUTION", text = "TU_WO_3_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				if tsize(toolFrame.specificDraft.SC) == 0 then
+					return true, loc("TU_WO_ERROR_1");
+				end
+				openWorkflow(next(toolFrame.specificDraft.SC));
+				refreshElementList();
+			end
+		},
+		{
+			box = editor.element.selector.effect, title = "TU_WO_4", text = "TU_WO_4_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				if tsize(toolFrame.specificDraft.SC) == 0 then
+					return true, loc("TU_WO_ERROR_1");
+				end
+				openWorkflow(next(toolFrame.specificDraft.SC));
+				refreshElementList();
+				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
+			end
+		},
+		{
+			box = editor.element.selector.condition, title = "TU_WO_5", text = "TU_WO_5_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				if tsize(toolFrame.specificDraft.SC) == 0 then
+					return true, loc("TU_WO_ERROR_1");
+				end
+				openWorkflow(next(toolFrame.specificDraft.SC));
+				refreshElementList();
+				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
+			end
+		},
+		{
+			box = editor.element.selector.delay, title = "TU_WO_6", text = "TU_WO_6_TEXT",
+			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				if tsize(toolFrame.specificDraft.SC) == 0 then
+					return true, loc("TU_WO_ERROR_1");
+				end
+				openWorkflow(next(toolFrame.specificDraft.SC));
+				refreshElementList();
+				setCurrentElementFrame(editor.element.selector, loc("WO_ELEMENT_TYPE"), true);
+			end
+		},
+	}
+	editor:SetScript("OnShow", function()
+		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
+	end);
 end

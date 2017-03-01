@@ -60,16 +60,17 @@
 
 			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
+					<Anchor point="TOP" x="0" y="-45"/>
 				</Anchors>
 			</Frame>
 
-			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
+			<Frame parentKey="text" inherits="TRP3_TextArea">
+				<Size x="260" y="0"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-10"/>
+					<Anchor point="BOTTOM" x="0" y="40"/>
 				</Anchors>
-			</EditBox>
+			</Frame>
 
 		</Frames>
 
@@ -79,14 +80,26 @@
 	<!--  Set env variable    -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorVarSet" inherits="TRP3_EditorEffectTemplate" hidden="true">
+	<Frame name="TRP3_EffectEditorVarChange" inherits="TRP3_EditorEffectTemplate" hidden="true">
 		<Size x="500" y="250"/>
 		<Frames>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.source" x="0" y="-5"/>
+				</Anchors>
+			</Frame>
 
 			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-25"/>
 				</Anchors>
 			</EditBox>
 
@@ -97,11 +110,66 @@
 				</Anchors>
 			</EditBox>
 
-			<CheckButton parentKey="initOnly" inherits="TRP3_CheckBox" name="$parentInitOnly">
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorStoreVar" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="375"/>
+		<Frames>
+
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="-8" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.value"/>
+					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
-			</CheckButton>
+			</EditBox>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-20" y="-20"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="0" y="-20"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="config" inherits="GameFontNormal" justifyH="LEFT" text="[CONFIGURATION]">
+							<Size x="0" y="10" />
+							<Anchors>
+								<Anchor point="LEFT" x="15" y="0" />
+								<Anchor point="RIGHT" x="-15" y="0" />
+								<Anchor point="BOTTOM" x="0" y="-20" />
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorRunWorkflow" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.source" x="0" y="-25"/>
+				</Anchors>
+			</EditBox>
 
 		</Frames>
 
@@ -163,10 +231,37 @@
 				</Anchors>
 			</EditBox>
 
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.name" x="-20" y="-20"/>
+				</Anchors>
+			</Frame>
+
 			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.name" x="0" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorSpeechPlayer" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
 				</Anchors>
 			</EditBox>
 
@@ -301,14 +396,29 @@
 	</Frame>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--         Debug        -->
+	<!--    Camera       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorDebugDumpText" hidden="true" inherits="TRP3_EditorEffectTemplate">
+	<Frame name="TRP3_EffectEditorCamera" inherits="TRP3_EditorEffectTemplate" hidden="true">
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+			<EditBox parentKey="distance" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorCameraSlot" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<EditBox parentKey="slot" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-65"/>
@@ -320,135 +430,17 @@
 	</Frame>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--        Inventory        -->
+	<!--        Companions    -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_EffectEditorItemBagDurability" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
+	<Frame name="TRP3_EffectEditorCompanion" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="180"/>
 		<Frames>
-
-			<Frame parentKey="method" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Button parentKey="select" inherits="TRP3_QuestButtonTemplate">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
-				</Anchors>
-			</Frame>
-
-			<EditBox parentKey="amount" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.method" x="20" y="-20"/>
-				</Anchors>
-			</EditBox>
-
-		</Frames>
-
-	</Frame>
-
-	<Frame name="TRP3_EffectEditorDocumentShow" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
-		<Frames>
-
-			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
-				</Anchors>
-			</EditBox>
-
-			<Button parentKey="browse" inherits="TRP3_CommonButton">
-				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+					<Anchor point="LEFT" x="50"/>
 				</Anchors>
 			</Button>
-
-		</Frames>
-
-	</Frame>
-
-	<Frame name="TRP3_EffectEditorItemRemove" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
-		<Frames>
-
-			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
-				</Anchors>
-			</EditBox>
-
-			<Button parentKey="browse" inherits="TRP3_CommonButton">
-				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
-				</Anchors>
-			</Button>
-
-			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox" numeric="true">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-50"/>
-				</Anchors>
-			</EditBox>
-
-			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-20" y="-10"/>
-				</Anchors>
-			</Frame>
-
-		</Frames>
-
-	</Frame>
-
-	<Frame name="TRP3_EffectEditorItemAdd" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="275"/>
-		<Frames>
-
-			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
-				</Anchors>
-			</EditBox>
-
-			<Button parentKey="browse" inherits="TRP3_CommonButton">
-				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
-				</Anchors>
-			</Button>
-
-			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox" numeric="true">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-50"/>
-				</Anchors>
-			</EditBox>
-
-			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-20" y="-10"/>
-				</Anchors>
-			</Frame>
-
-			<CheckButton parentKey="crafted" inherits="TRP3_CheckBox" name="$parentCrafted">
-				<Anchors>
-					<Anchor point="TOPLEFT" x="20" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.source"/>
-				</Anchors>
-			</CheckButton>
-
-		</Frames>
-
-	</Frame>
-
-	<Frame name="TRP3_EffectEditorItemCooldown" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
-		<Frames>
-
-			<EditBox parentKey="time" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
-				</Anchors>
-			</EditBox>
 
 		</Frames>
 

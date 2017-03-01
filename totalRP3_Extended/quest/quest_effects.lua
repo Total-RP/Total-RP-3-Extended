@@ -21,15 +21,16 @@
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tostring = tostring;
+local tostring, strtrim = tostring, strtrim;
+local security = TRP3_API.security.SECURITY_LEVEL;
 
 TRP3_API.quest.EFFECTS = {
 
 	["quest_start"] = {
+		secured = security.HIGH,
 		codeReplacementFunc = function (args)
-			local campaignID = args[1];
-			local questID = args[2];
-			return ("lastEffectReturn = startQuest(\"%s\", \"%s\");"):format(campaignID, questID);
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			return ("args.LAST = startQuest(\"%s\", \"%s\");"):format(campaignID, questID);
 		end,
 		env = {
 			startQuest = "TRP3_API.quest.startQuest",
@@ -37,11 +38,10 @@ TRP3_API.quest.EFFECTS = {
 	},
 
 	["quest_goToStep"] = {
+		secured = security.HIGH,
 		codeReplacementFunc = function (args)
-			local campaignID = args[1];
-			local questID = args[2];
-			local stepID = args[3];
-			return ("lastEffectReturn = goToStep(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, stepID);
+			local campaignID, questID, stepID = TRP3_API.extended.splitID(args[1] or "");
+			return ("args.LAST = goToStep(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, stepID);
 		end,
 		env = {
 			goToStep = "TRP3_API.quest.goToStep",
@@ -49,11 +49,11 @@ TRP3_API.quest.EFFECTS = {
 	},
 
 	["quest_revealObjective"] = {
+		secured = security.HIGH,
 		codeReplacementFunc = function (args)
-			local campaignID = args[1];
-			local questID = args[2];
-			local objectiveID = args[3];
-			return ("lastEffectReturn = revealObjective(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, objectiveID);
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local objectiveID = args[2];
+			return ("args.LAST = revealObjective(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, objectiveID);
 		end,
 		env = {
 			revealObjective = "TRP3_API.quest.revealObjective",
@@ -61,11 +61,11 @@ TRP3_API.quest.EFFECTS = {
 	},
 
 	["quest_markObjDone"] = {
+		secured = security.HIGH,
 		codeReplacementFunc = function (args)
-			local campaignID = args[1];
-			local questID = args[2];
-			local objectiveID = args[3];
-			return ("lastEffectReturn = markObjectiveDone(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, objectiveID);
+			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local objectiveID = args[2];
+			return ("args.LAST = markObjectiveDone(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, objectiveID);
 		end,
 		env = {
 			markObjectiveDone = "TRP3_API.quest.markObjectiveDone",

@@ -68,8 +68,6 @@
 	</Frame>
 
 	<Frame name="TRP3_SecurityFrame" inherits="TRP3_AltHoveredFrame" frameStrata="HIGH" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
-		<TitleRegion setAllPoints="true"/>
-
 		<Size x="450" y="400"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
@@ -87,7 +85,7 @@
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
 				<FontString parentKey="subtitle" inherits="GameFontNormal" justifyH="CENTER">
-					<Size x="0" y="10" />
+					<Size x="0" y="50" />
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-15" />
 						<Anchor point="LEFT" x="15" y="0" />
@@ -111,7 +109,7 @@
 		<Frames>
 			<Frame parentKey="line1" inherits="TRP3_SecurityFrameLineTemplate">
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.subtitle" x="0" y="-20"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.subtitle" x="0" y="-10"/>
 					<Anchor point="LEFT" x="20" y="0"/>
 					<Anchor point="RIGHT" x="-30" y="0"/>
 				</Anchors>
@@ -165,25 +163,8 @@
 					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line7"/>
 				</Anchors>
 			</Frame>
-			<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
-				<Size x="15" y="0" />
-				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.line1"/>
-					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.line1"/>
-					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line8"/>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						local name = self:GetName();
-						_G[name .. "Text"]:SetText("");
-						_G[name .. "High"]:SetText("");
-						_G[name .. "Low"]:SetText("");
-						self:SetMinMaxValues(0, 6);
-						self:SetValueStep(1);
-						self:SetOrientation("VERTICAL");
-					</OnLoad>
-				</Scripts>
-			</Slider>
+
+			<Slider parentKey="slider" name="$parentSlider" inherits="TRP3_Scrollbar" hidden="true"/>
 
 			<Button parentKey="Close" inherits="TRP3_CommonButton" text="CLOSE">
 				<Anchors>
@@ -200,12 +181,6 @@
 				<Anchors>
 					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.Close" x="0" y="10"/>
 					<Anchor point="LEFT" x="20" y="0"/>
-				</Anchors>
-			</CheckButton>
-
-			<CheckButton parentKey="save" name="$parentSave" inherits="TRP3_CheckBox" text="CLOSE">
-				<Anchors>
-					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.whitelist" x="0" y="0"/>
 				</Anchors>
 			</CheckButton>
 

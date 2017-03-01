@@ -55,53 +55,47 @@ local setBackground = TRP3_API.extended.tools.setBackground;
 
 local PAGE_BY_TYPE = {
 	[TRP3_DB.types.CAMPAIGN] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_CAMPAIGN") .. ": " .. id;
+		frame = "campaign",
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_CAMPAIGN"),  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 2,
 	},
 	[TRP3_DB.types.QUEST] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_QUEST") .. ": " .. id;
+		frame = "quest",
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_QUEST"),  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 2,
 	},
 	[TRP3_DB.types.QUEST_STEP] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_QUEST_STEP") .. ": " .. id;
+		frame = "step",
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_QUEST_STEP"),  TRP3_API.inventory.getItemLink(class, id));
 		end,
 		background = 2,
 	},
 	[TRP3_DB.types.ITEM] = {
 		frame = "item",
-		tabTextGetter = function(id, class, isRoot)
+		tabTextGetter = function(id, class)
 			return ("%s: %s"):format(loc("TYPE_ITEM"),  TRP3_API.inventory.getItemLink(class));
 		end,
+		tutorial = true,
 		background = 3,
 	},
 	[TRP3_DB.types.DOCUMENT] = {
 		frame = "document",
-		tabTextGetter = function(id)
-			return loc("TYPE_DOCUMENT") .. ": " .. id;
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_DOCUMENT"),  TRP3_API.inventory.getItemLink(class, id));
 		end,
 		background = 4,
 	},
 	[TRP3_DB.types.DIALOG] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_DIALOG") .. ": " .. id;
+		frame = "cutscene",
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc("TYPE_DIALOG"),  TRP3_API.inventory.getItemLink(class, id));
 		end,
 		background = 5,
-	},
-	[TRP3_DB.types.LOOT] = {
-		frame = nil,
-		tabTextGetter = function(id)
-			return loc("TYPE_LOOT") .. ": " .. id;
-		end,
-		background = 6,
 	},
 }
 
@@ -118,17 +112,17 @@ local function getClassDataSafeByType(class)
 		return TRP3_API.extended.getClassDataSafe(class);
 	end
 	if class.TY == TRP3_DB.types.DOCUMENT then
-		local _, name = TRP3_API.extended.getClassDataSafe(class);
-		return "inv_scroll_12", name;
+		if class.PA and class.PA[1] and class.PA[1].TX then
+			return "inv_scroll_12", class.PA[1].TX:gsub("\n", ""):sub(1, 70) .. "...";
+		else
+			return "inv_scroll_12", loc("DO_EMPTY");
+		end
 	end
 	if class.TY == TRP3_DB.types.QUEST_STEP then
-		return "inv_inscription_scroll", (class.TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
+		return "inv_inscription_scroll", (class.BA.TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
 	end
 	if class.TY == TRP3_DB.types.DIALOG then
-		return "ability_warrior_rallyingcry", (class.ST[1].TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
-	end
-	if class.TY == TRP3_DB.types.LOOT then
-		return "inv_misc_coinbag_special", class.NA or "";
+		return "ability_warrior_rallyingcry", (class.DS[1].TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
 	end
 end
 TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
@@ -139,6 +133,23 @@ TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
 
 local draftData = {};
 local draftRegister = {};
+
+local function getObjectLocale(class)
+	return (class.MD or EMPTY).LO or "en";
+end
+TRP3_API.extended.tools.getObjectLocale = getObjectLocale;
+
+local LOCALE_FLAGS = {
+	en = "Interface\\AddOns\\totalRP3_Extended\\libs\\en.tga",
+	es = "Interface\\AddOns\\totalRP3_Extended\\libs\\es.tga",
+	de = "Interface\\AddOns\\totalRP3_Extended\\libs\\de.tga",
+	fr = "Interface\\AddOns\\totalRP3_Extended\\libs\\fr.tga",
+}
+
+local function getObjectLocaleImage(locale)
+	return LOCALE_FLAGS[locale] or LOCALE_FLAGS.en;
+end
+TRP3_API.extended.tools.getObjectLocaleImage = getObjectLocaleImage;
 
 local function getModeLocale(mode)
 	if mode == TRP3_DB.modes.QUICK then
@@ -175,7 +186,7 @@ local function displayRootInfo(rootClassID, rootClass, classFullID, classID, spe
 	local color = "|cffffff00";
 	local fieldFormat = "|cffff9900%s: " .. color .. "%s";
 
-	local objectText = ("%s (%s: |cff00ffff%s|r)"):format(TRP3_API.inventory.getItemLink(rootClass), loc("ROOT_GEN_ID"), rootClassID);
+	local objectText = ("%s (%s: |cff00ffff%s|r)"):format(TRP3_API.inventory.getItemLink(rootClass, rootClassID), loc("ROOT_GEN_ID"), rootClassID);
 	objectText = objectText .. "\n\n" .. fieldFormat:format(loc("ROOT_VERSION"), rootClass.MD.V or 0);
 	objectText = objectText .. "\n\n|cffff9900" .. loc("ROOT_CREATED"):format(color .. (rootClass.MD.CB or "?") .. "|cffff9900", color .. (rootClass.MD.CD or "?"));
 	objectText = objectText .. "\n\n|cffff9900" .. loc("ROOT_SAVED"):format(color .. (rootClass.MD.SB or "?") .. "|cffff9900", color .. (rootClass.MD.SD or "?"));
@@ -191,6 +202,8 @@ local function displayRootInfo(rootClassID, rootClass, classFullID, classID, spe
 	specificText = specificText .. "\n\n" .. fieldFormat:format(loc("TYPE"), getTypeLocale(specificDraft.TY));
 	specificText = specificText .. "\n\n" .. fieldFormat:format(loc("SPECIFIC_MODE"), getModeLocale(specificDraft.MD.MO));
 	toolFrame.specific.text:SetText(specificText);
+
+	toolFrame.root.select:SetSelectedValue(getObjectLocale(rootClass));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -204,7 +217,7 @@ local function checkCreation(classID, data)
 	local warnings = {};
 	TRP3_API.extended.iterateObject(classID, data, function(classID, class)
 		local frame = toolFrame[PAGE_BY_TYPE[class.TY].frame or ""];
-		if frame  and frame.validator then
+		if frame and frame.validator then
 			frame.validator(classID, class, warnings);
 		end
 	end);
@@ -223,11 +236,14 @@ local function doSave()
 	object.MD.V = object.MD.V + 1;
 	object.MD.SD = date("%d/%m/%y %H:%M:%S");
 	object.MD.SB = Globals.player_id;
+	object.MD.tV = Globals.extended_version;
 
 	TRP3_API.security.computeSecurity(rootClassID, object);
+	TRP3_API.extended.unregisterObject(rootClassID);
 	TRP3_API.extended.registerObject(rootClassID, object, 0);
 	TRP3_API.script.clearRootCompilation(rootClassID);
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, rootClassID);
 
 	goToPage(fullClassID, true);
 end
@@ -264,6 +280,7 @@ local function goToListPage(skipButton)
 	toolFrame.actions:Hide();
 	toolFrame.specific:Hide();
 	toolFrame.root:Hide();
+	toolFrame.tutoframe:Hide();
 	for _, pageData in pairs(PAGE_BY_TYPE) do
 		local frame = toolFrame[pageData.frame or ""];
 		if frame then
@@ -272,6 +289,7 @@ local function goToListPage(skipButton)
 	end
 	TRP3_API.extended.tools.toList();
 end
+TRP3_API.extended.tools.goToListPage = goToListPage;
 
 function goToPage(fullClassID, forceDraftReload)
 	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, fullClassID)};
@@ -288,6 +306,7 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.actions:Show();
 	toolFrame.specific:Show();
 	toolFrame.root:Show();
+	toolFrame.tutoframe:Hide();
 
 	-- Load data
 	local rootDraft = openObjectAndGetDraft(rootClassID, forceDraftReload);
@@ -311,6 +330,8 @@ function goToPage(fullClassID, forceDraftReload)
 	assert(selectedPageFrame, "No editor for type " .. specificDraft.TY);
 	assert(selectedPageFrame.onLoad, "No load entry for type " .. specificDraft.TY);
 
+	TRP3_ExtendedTutorial.loadStructure(nil);
+
 	-- Show selected
 	setBackground(selectedPageData.background or 1);
 	displayRootInfo(rootClassID, rootDraft, fullClassID, specificClassID, specificDraft);
@@ -323,12 +344,13 @@ function goToPage(fullClassID, forceDraftReload)
 	toolFrame.currentEditor.onLoad();
 	toolFrame.currentEditor:Show();
 
+
 	toolFrame.actions.save:Disable();
 	if TRP3_Tools_DB[rootClassID] then
 		toolFrame.actions.save:Enable();
 	end
-	setTooltipForSameFrame(toolFrame.actions.save, "TOP", 0, 5, SAVE, loc("EDITOR_SAVE_TT"):format(TRP3_API.inventory.getItemLink(rootDraft)));
-	setTooltipForSameFrame(toolFrame.actions.cancel, "TOP", 0, 5, CANCEL, loc("EDITOR_CANCEL_TT"):format(TRP3_API.inventory.getItemLink(rootDraft)));
+	setTooltipForSameFrame(toolFrame.actions.save, "TOP", 0, 5, SAVE, loc("EDITOR_SAVE_TT"):format(TRP3_API.inventory.getItemLink(rootDraft, rootClassID)));
+	setTooltipForSameFrame(toolFrame.actions.cancel, "TOP", 0, 5, CANCEL, loc("EDITOR_CANCEL_TT"):format(TRP3_API.inventory.getItemLink(rootDraft, rootClassID)));
 
 	-- Create buttons up to the target
 	NavBar_Reset(toolFrame.navBar);
@@ -360,15 +382,26 @@ function goToPage(fullClassID, forceDraftReload)
 end
 TRP3_API.extended.tools.goToPage = goToPage;
 
+function TRP3_API.extended.tools.saveTab(fullClassID, tab)
+	TRP3_Tools_Parameters.editortabs[fullClassID] = tab;
+end
+
+function TRP3_API.extended.tools.getSaveTab(fullClassID, maxTabSize)
+	local savedTab = TRP3_Tools_Parameters.editortabs[fullClassID];
+	if savedTab and savedTab <= maxTabSize then
+		return savedTab;
+	else
+		return 1;
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.extended.tools.showFrame(reset)
+function TRP3_API.extended.tools.showFrame()
 	toolFrame:Show();
-	if reset then
-		goToListPage();
-	end
+	toolFrame:Raise();
 end
 
 local function onStart()
@@ -376,14 +409,6 @@ local function onStart()
 	-- Events
 	Events.ON_OBJECT_UPDATED = "ON_OBJECT_UPDATED";
 	Events.registerEvent(Events.ON_OBJECT_UPDATED);
-
-	-- Register locales
-	for localeID, localeStructure in pairs(TRP3_EXTENDED_TOOL_LOCALE) do
-		local locale = TRP3_API.locale.getLocale(localeID);
-		for localeKey, text in pairs(localeStructure) do
-			locale.localeContent[localeKey] = text;
-		end
-	end
 
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.root, loc("ROOT_TITLE"), 150);
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.actions, loc("DB_ACTIONS"), 100);
@@ -409,7 +434,6 @@ local function onStart()
 	PAGE_BY_TYPE[TRP3_DB.types.ITEM].loc = loc("TYPE_ITEM");
 	PAGE_BY_TYPE[TRP3_DB.types.DOCUMENT].loc = loc("TYPE_DOCUMENT");
 	PAGE_BY_TYPE[TRP3_DB.types.DIALOG].loc = loc("TYPE_DIALOG");
-	PAGE_BY_TYPE[TRP3_DB.types.LOOT].loc = loc("TYPE_LOOT");
 
 	toolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
 
@@ -442,6 +466,21 @@ local function onStart()
 		end);
 	end);
 
+	-- Root panel locale selection
+	local template = "|T%s:11:16|t";
+	local types = {
+		{loc("DB_LOCALE")},
+		{template:format(getObjectLocaleImage("en")), "en"},
+		{template:format(getObjectLocaleImage("fr")), "fr"},
+		{template:format(getObjectLocaleImage("es")), "es"},
+		{template:format(getObjectLocaleImage("de")), "de"},
+	}
+	TRP3_API.ui.listbox.setupListBox(toolFrame.root.select, types, function(value)
+		if toolFrame.rootDraft and toolFrame.rootDraft.MD then
+			toolFrame.rootDraft.MD.LO = value;
+		end
+	end, nil, 40, true);
+
 	-- Tab bar init
 	local homeData = {
 		name = loc("DB"),
@@ -462,17 +501,36 @@ local function onStart()
 	setTooltipForSameFrame(toolFrame.navBar.home, "TOP", 0, 5, loc("DB"), loc("DB_WARNING"));
 	NavBar_Initialize(toolFrame.navBar, "NavButtonTemplate", homeData, toolFrame.navBar.home, toolFrame.navBar.overflow);
 
-	-- Init tabs
+	-- Init effects and operands
+	local effectMenu = TRP3_API.extended.tools.getEffectOperandLocale();
 	TRP3_API.extended.tools.initBaseEffects();
-	TRP3_API.extended.tools.initScript(toolFrame);
-	TRP3_InnerObjectEditor.init(toolFrame);
-	TRP3_API.extended.tools.initDocument(toolFrame);
-	TRP3_API.extended.tools.initItems(toolFrame);
-	TRP3_API.extended.tools.initList(toolFrame);
+	TRP3_API.extended.tools.initCampaignEffects();
+	TRP3_API.extended.tools.initItemEffects();
 
-	goToListPage();
+	-- Init editors
+	TRP3_API.extended.tools.initScript(toolFrame, effectMenu);
+	TRP3_InnerObjectEditor.init(toolFrame);
+	TRP3_LinksEditor.init(toolFrame);
+	TRP3_API.extended.tools.initDocument(toolFrame);
+	TRP3_API.extended.tools.initCampaign(toolFrame);
+	TRP3_API.extended.tools.initQuest(toolFrame);
+	TRP3_API.extended.tools.initStep(toolFrame)
+	TRP3_API.extended.tools.initItems(toolFrame);
+	TRP3_API.extended.tools.initCutscene(toolFrame);
+	TRP3_API.extended.tools.initList(toolFrame);
+	TRP3_ExtendedTutorial.init(toolFrame);
 
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
+
+	-- Bindings
+
+	BINDING_NAME_TRP3_EXTENDED_TOOLS = loc("TB_TOOLS");
+
+	Events.listenToEvent(Events.WORKFLOW_ON_FINISH, function()
+		goToListPage();
+	end);
+
+	TRP3_API.ui.frame.setupMove(toolFrame);
 end
 
 local function onInit()
@@ -485,18 +543,21 @@ local function onInit()
 	if not TRP3_Tools_Parameters.editortabs then
 		TRP3_Tools_Parameters.editortabs = {};
 	end
+	if not TRP3_Tools_Flags then
+		TRP3_Tools_Flags = {};
+	end
 end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended Tools",
 	["description"] = "Total RP 3 extended tools: item, document and campaign creation.",
-	["version"] = 0.2,
+	["version"] = Globals.extended_version,
 	["id"] = "trp3_extended_tools",
 	["onStart"] = onStart,
 	["onInit"] = onInit,
-	["minVersion"] = 14,
+	["minVersion"] = 26,
 	["requiredDeps"] = {
-		{"trp3_extended", 0.2},
+		{"trp3_extended", Globals.extended_version},
 	}
 };
 

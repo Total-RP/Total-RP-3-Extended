@@ -27,45 +27,6 @@ local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended
 local tooltip = TRP3_NPCTooltip;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- NPC API
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function getCurrentNPCLog()
-	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	if playerQuestLog.currentCampaign then
-		local campaignLog = playerQuestLog[playerQuestLog.currentCampaign];
-		if campaignLog and campaignLog.NPC then
-			return campaignLog.NPC;
-		end
-	end
-end
-
-local function getCurrentNPCLogStrict()
-	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign, "Try to register NPC but no active campaign.");
-	local campaignLog = playerQuestLog[playerQuestLog.currentCampaign];
-	assert(campaignLog, "Trying to register NPC from an unstarted campaign.");
-	if not campaignLog.NPC then
-		campaignLog.NPC = {};
-	end
-	return campaignLog.NPC;
-end
-
-local function registerNPCs(NPCs)
-	local npcLog = getCurrentNPCLogStrict();
-	for npcID, npcData in pairs(NPCs) do
-		if not npcLog[npcID] then
-			npcLog[npcID] = {};
-		end
-		npcLog[npcID].IC = npcData.IC;
-		npcLog[npcID].NA = npcData.NA;
-		npcLog[npcID].DE = npcData.DE;
-	end
-end
-
-TRP3_API.quest.registerNPCs = registerNPCs;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- On target
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -74,9 +35,9 @@ local getUnitDataFromGUID = Utils.str.getUnitDataFromGUID;
 local function onTargetChanged()
 	local unitType, npcID = getUnitDataFromGUID("target");
 	if unitType == "Creature" and npcID then
-		local npcLog = getCurrentNPCLog();
-		if npcLog and npcLog[npcID] then
-			local npcData = npcLog[npcID];
+		local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+		if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
+			local npcData = campaignClass.ND[npcID];
 			if npcData.NA then
 				TargetFrameTextureFrameName:SetText(npcData.NA);
 			end
@@ -98,17 +59,17 @@ local function showIcon()
 	return true;
 end
 
-local function showOriginalTexts()
-	return true;
+local function embedOriginal()
+	return false;
 end
 
 local function onMouseOver()
 	tooltip:Hide();
 	local unitType, npcID = getUnitDataFromGUID("mouseover");
 	if unitType == "Creature" and npcID then
-		local npcLog = getCurrentNPCLog();
-		if npcLog and npcLog[npcID] then
-			local npcData = npcLog[npcID];
+		local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+		if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
+			local npcData = campaignClass.ND[npcID];
 			local originalName = UnitName("mouseover");
 			local originalTexts = TRP3_API.ui.tooltip.getGameTooltipTexts(GameTooltip);
 
@@ -131,6 +92,8 @@ local function onMouseOver()
 
 			npcTooltipBuilder:AddLine(leftIcons .. (npcData.NA or originalName), 1, 1, 1, TRP3_API.ui.tooltip.getMainLineFontSize());
 
+			npcTooltipBuilder:AddLine("< " .. loc("QE_NPC") .. " >", 0, 1, 0, TRP3_API.ui.tooltip.getSubLineFontSize());
+
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 			-- Description
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -140,6 +103,7 @@ local function onMouseOver()
 				if text:len() > getCurrentMaxSize() then
 					text = text:sub(1, getCurrentMaxSize()) .. "…";
 				end
+				npcTooltipBuilder:AddSpace();
 				npcTooltipBuilder:AddLine("\"" .. text .. "\"", 1, 0.75, 0, TRP3_API.ui.tooltip.getSmallLineFontSize(), true);
 			end
 
@@ -147,7 +111,7 @@ local function onMouseOver()
 			-- Original text
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-			if showOriginalTexts() then
+			if embedOriginal() then
 				npcTooltipBuilder:AddSpace();
 				for _, text in pairs(originalTexts) do
 					npcTooltipBuilder:AddLine(text, 1, 1, 1, TRP3_API.ui.tooltip.getSmallLineFontSize());
@@ -160,7 +124,7 @@ local function onMouseOver()
 
 			npcTooltipBuilder:Build();
 
-			if TRP3_API.ui.tooltip.shouldHideGameTooltip() then
+			if embedOriginal() then
 				GameTooltip:Hide();
 			end
 			tooltip:ClearAllPoints();
@@ -181,6 +145,21 @@ local function onTooltipUpdate(self, elapsed)
 			end
 		end
 	end
+end
+
+local UnitExists = UnitExists;
+
+function TRP3_API.quest.UnitIsCampaignNPC(unit)
+	if UnitExists(unit) then
+		local unitType, npcID = getUnitDataFromGUID(unit);
+		if unitType == "Creature" and npcID then
+			local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+			if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
+				return true;
+			end
+		end
+	end
+	return false;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

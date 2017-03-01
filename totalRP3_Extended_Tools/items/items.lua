@@ -40,6 +40,7 @@ local function createItem(data, ID)
 	end
 
 	TRP3_DB.my[ID] = data;
+	TRP3_API.security.computeSecurity(ID, data);
 	registerItem(ID, data);
 
 	return ID, data;
@@ -92,17 +93,13 @@ local function onLoad()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
 	toolFrame.item.normal:Hide();
-	if TRP3_DB.modes.EXPERT ~= (toolFrame.specificDraft.MO or TRP3_DB.modes.NORMAL) then
-		toolFrame.item.normal:Show();
-		toolFrame.item.normal.loadItem();
-	end
+	toolFrame.item.normal:Show();
+	toolFrame.item.normal.loadItem();
 end
 
 local function onSave()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
-	if TRP3_DB.modes.EXPERT ~= (toolFrame.specificDraft.MO or TRP3_DB.modes.NORMAL) then
-		toolFrame.item.normal.saveToDraft();
-	end
+	toolFrame.item.normal.saveToDraft();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

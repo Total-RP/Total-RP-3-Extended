@@ -16,10 +16,22 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs = pairs;
+local pairs, strsplit = pairs, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local loc = TRP3_API.locale.getText;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Tooltip func
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.extended.getTTAction(method, action, notFirst)
+	local text = "|cffffff00" .. method .. ": |cffff9900" .. action;
+	if notFirst then
+		text = "\n" .. text;
+	end
+	return text;
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTILS func
@@ -34,8 +46,6 @@ local function isContainerByClassID(itemID)
 	return itemID == "main" or isContainerByClass(getClass(itemID));
 end
 TRP3_API.inventory.isContainerByClassID = isContainerByClassID;
-
-
 
 local function isUsableByClass(item)
 	return item and item.BA and item.BA.US;
@@ -105,9 +115,29 @@ local function getQualityColorRGB(quality)
 end
 TRP3_API.inventory.getQualityColorRGB = getQualityColorRGB;
 
-local function getItemLink(itemClass)
-	local _, name, qa = getBaseClassDataSafe(itemClass);
-	return getQualityColorText(qa) .. "[" .. name .. "]|r";
+local function getItemLink(itemClass, id, complete)
+	local ids = {strsplit(TRP3_API.extended.ID_SEPARATOR, id or "???")};
+	local name, color;
+	if itemClass.TY == TRP3_DB.types.DOCUMENT or itemClass.TY == TRP3_DB.types.QUEST_STEP or itemClass.TY == TRP3_DB.types.DIALOG then
+		color = "|cffffffff";
+		name = ids[#ids];
+	else
+		local _, n, qa = getBaseClassDataSafe(itemClass);
+		color = getQualityColorText(qa);
+		name = n;
+	end
+
+	if #ids == 1 or not complete then
+		return color .. "[" .. name .. "]|r";
+	else
+		local totalLink = getItemLink(getClass(ids[1]), ids[1]);
+		local idReconstruct = ids[1];
+		for i=2, #ids do
+			idReconstruct = idReconstruct .. TRP3_API.extended.ID_SEPARATOR .. ids[i];
+			totalLink = totalLink .. "|cff00ff00 > " .. getItemLink(getClass(idReconstruct), idReconstruct);
+		end
+		return totalLink;
+	end
 end
 TRP3_API.inventory.getItemLink = getItemLink;
 
@@ -135,7 +165,7 @@ local function countItemInstances(container, itemID)
 	local count = 0;
 
 	for _, slot in pairs(container.content or EMPTY) do
-		if slot.id == itemID then
+		if itemID:len() == 0 or slot.id == itemID then
 			count = count + (slot.count or 1);
 		end
 		if isContainerByClassID(slot.id) then
@@ -148,18 +178,36 @@ end
 TRP3_API.inventory.countItemInstances = countItemInstances;
 
 local function searchForFirstInstance(container, itemID)
+	local foundContainer, foundIndex;
+
 	for slotIndex, slot in pairs(container.content or EMPTY) do
 		if slot.id == itemID then
-			return container, slotIndex;
+			foundContainer, foundIndex = container, slotIndex;
+		elseif isContainerByClassID(slot.id) then
+			foundContainer, foundIndex = searchForFirstInstance(slot, itemID);
+		end
+
+		if foundIndex then
+			break;
 		end
 	end
-	for _, slot in pairs(container.content or EMPTY) do
-		if isContainerByClassID(slot.id) then
-			return searchForFirstInstance(slot, itemID);
-		end
-	end
+
+	return foundContainer, foundIndex;
 end
 TRP3_API.inventory.searchForFirstInstance = searchForFirstInstance;
+
+local function countUsedSlot(containerClass, container)
+	local slotCount = (containerClass.CO.SR or 5) * (containerClass.CO.SC or 4);
+	local total = 0;
+	for i=1, slotCount do
+		local index = tostring(i);
+		if (container.content or EMPTY)[index] then
+			total = total + 1;
+		end
+	end
+	return total;
+end
+TRP3_API.inventory.countUsedSlot = countUsedSlot;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Units

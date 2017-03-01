@@ -39,7 +39,7 @@
 			</Layer>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Right" inherits="GameFontNormal" justifyH="RIGHT" text="[Line text]">
-					<Size x="300" y="10" />
+					<Size x="0" y="10" />
 					<Anchors>
 						<Anchor point="RIGHT" x="-15" y="0" />
 					</Anchors>
@@ -102,8 +102,8 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Frame name="TRP3_Tools_ListTemplate" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<TileSize><AbsValue val="380"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
@@ -130,25 +130,31 @@
 					</Frame>
 
 					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
-						<Size x="260" y="18"/>
+						<Size x="160" y="18"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="23" y="-10"/>
 						</Anchors>
 					</EditBox>
 
 					<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
-						<Size x="260" y="18"/>
+						<Size x="160" y="18"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.name" x="30" y="0"/>
 						</Anchors>
 					</EditBox>
 
 					<EditBox parentKey="owner" inherits="TRP3_TitledHelpEditBox">
-						<Size x="260" y="18"/>
+						<Size x="160" y="18"/>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.id" x="0" y="17"/>
 						</Anchors>
 					</EditBox>
+
+					<Frame parentKey="locale" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentLocale">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.owner" x="0" y="5"/>
+						</Anchors>
+					</Frame>
 
 					<Button parentKey="search" inherits="TRP3_CommonButton">
 						<Anchors>
@@ -180,7 +186,7 @@
 
 					<Button parentKey="item" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
-							<Anchor point="CENTER" x="-275" y="0"/>
+							<Anchor point="LEFT" x="125" y="0"/>
 						</Anchors>
 						<Frames>
 							<Frame parentKey="templates" inherits="TRP3_ItemTemplates" hidden="true"/>
@@ -188,6 +194,18 @@
 					</Button>
 
 					<Button parentKey="campaign" inherits="TRP3_QuestButtonTemplate">
+						<Anchors>
+							<Anchor point="CENTER" x="125" y="0"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="import" inherits="TRP3_QuestButtonTemplate">
+						<Anchors>
+							<Anchor point="LEFT" x="125" y="0"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="importFull" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
 							<Anchor point="CENTER" x="125" y="0"/>
 						</Anchors>
@@ -220,7 +238,7 @@
 							<Anchor point="TOP" x="0" y="-15"/>
 							<Anchor point="RIGHT" x="35" y="0"/>
 							<Anchor point="LEFT" x="20" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="15"/>
+							<Anchor point="BOTTOM" x="0" y="25"/>
 						</Anchors>
 						<Frames>
 							<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
@@ -244,7 +262,260 @@
 							</Frame>
 						</ScrollChild>
 					</ScrollFrame>
+
+					<Button parentKey="hardsave" inherits="TRP3_CommonButton">
+						<Size x="150" y="20"/>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						</Anchors>
+					</Button>
+
+					<Frame parentKey="export" name="$parentExport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+						<Size x="500" y="300"/>
+
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+									<Size x="0" y="30"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-10"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+							</Layer>
+						</Layers>
+
+						<Frames>
+							<Button parentKey="Close" inherits="UIPanelCloseButton">
+								<Anchors>
+									<Anchor point="TOPRIGHT" x="0" y="0"/>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										self:GetParent():Hide();
+									</OnClick>
+								</Scripts>
+							</Button>
+
+							<Frame parentKey="content" inherits="TRP3_TextArea">
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="10" y="12"/>
+												<Anchor point="TOPRIGHT" x="0" y="12"/>
+											</Anchors>
+											<Color r="0.95" g="0.75" b="0.1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
+									<Anchor point="RIGHT" x="-30" y="0"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="30"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+					</Frame>
+
+					<Frame parentKey="import" name="$parentExport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+						<Size x="500" y="300"/>
+
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+									<Size x="0" y="30"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-10"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+							</Layer>
+						</Layers>
+
+						<Frames>
+							<Button parentKey="Close" inherits="UIPanelCloseButton">
+								<Anchors>
+									<Anchor point="TOPRIGHT" x="0" y="0"/>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										self:GetParent():Hide();
+									</OnClick>
+								</Scripts>
+							</Button>
+
+							<Button parentKey="save" inherits="TRP3_CommonButton">
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="20"/>
+								</Anchors>
+							</Button>
+
+							<Frame parentKey="content" inherits="TRP3_TextArea">
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="10" y="12"/>
+												<Anchor point="TOPRIGHT" x="0" y="12"/>
+											</Anchors>
+											<Color r="0.95" g="0.75" b="0.1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
+									<Anchor point="RIGHT" x="-30" y="0"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+									<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.save" x="0" y="5"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+					</Frame>
+
 				</Frames>
+			</Frame>
+
+			<!-- *_*_*_*_*_*_*_*_*_*  -->
+			<!--     Backers list     -->
+			<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+			<ScrollFrame name="$parentBackers" parentKey="backers" inherits="UIPanelScrollFrameCodeTemplate">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-15"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="15"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture parentKey="telkos" file="Interface\Glues\CREDITS\Draenei2">
+							<Size x="200" y="200"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+						<Texture file="Interface\Glues\CREDITS\Draenei1">
+							<Size x="200" y="200"/>
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.telkos" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+						<Texture file="Interface\Glues\CREDITS\Draenei4">
+							<Size x="200" y="200"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" relativePoint="BOTTOMLEFT" relativeKey="$parent.telkos" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+						<Texture file="Interface\Glues\CREDITS\Draenei5">
+							<Size x="200" y="200"/>
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.telkos" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<Texture parentKey="ellypse" file="Interface\Glues\CREDITS\BloodElf_Priestess_Master2">
+							<Size x="200" y="200"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" relativePoint="BOTTOMLEFT" relativeKey="$parent.telkos" x="0" y="25"/>
+							</Anchors>
+						</Texture>
+						<Texture file="Interface\Glues\CREDITS\BloodElf_Priestess_Master1">
+							<Size x="200" y="200"/>
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.ellypse" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+						<Texture file="Interface\Glues\CREDITS\BloodElf_Priestess_Master4">
+							<Size x="200" y="200"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" relativePoint="BOTTOMLEFT" relativeKey="$parent.ellypse" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+						<Texture file="Interface\Glues\CREDITS\BloodElf_Priestess_Master5">
+							<Size x="200" y="200"/>
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.ellypse" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="0" y="-17"/>
+							<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+				<ScrollChild>
+					<Frame name="$parentScrollChild" parentKey="child">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+						</Anchors>
+						<Frames>
+							<SimpleHTML name="$parentHTML" parentKey="HTML">
+								<Size x="800" y="200"/>
+								<Anchors>
+									<Anchor point="TOPLEFT" x="5" y="-5"/>
+								</Anchors>
+								<FontStringHeader1 inherits="GameFontNormalHuge3"/>
+								<FontStringHeader2 inherits="GameFontNormalHuge"/>
+								<FontStringHeader3 inherits="GameFontNormalLarge"/>
+								<FontString inherits="GameFontNormal">
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+							</SimpleHTML>
+						</Frames>
+					</Frame>
+				</ScrollChild>
+			</ScrollFrame>
+
+			<Frame parentKey="disclaimer" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="false" setAllPoints="true">
+
+				<Frames>
+					<SimpleHTML parentKey="html">
+						<Size x="500" y="500"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-30"/>
+						</Anchors>
+						<FontStringHeader1 inherits="GameFontNormalHuge3"/>
+						<FontStringHeader2 inherits="GameFontNormalHuge"/>
+						<FontStringHeader3 inherits="GameFontNormalLarge"/>
+						<FontString inherits="GameFontNormal">
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+						<Frames>
+							<Button parentKey="ok" inherits="TRP3_CommonButton">
+								<Size x="300" y="20"/>
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="30"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</SimpleHTML>
+				</Frames>
+
 			</Frame>
 
 		</Frames>

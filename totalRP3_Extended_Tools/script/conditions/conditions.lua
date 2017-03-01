@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, _G, type, tinsert, wipe, assert, tostring = pairs, _G, type, tinsert, wipe, assert, tostring;
+local pairs, _G, type, tinsert, wipe, assert, tostring, strtrim = pairs, _G, type, tinsert, wipe, assert, tostring, strtrim;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -26,6 +26,7 @@ local initList = TRP3_API.ui.list.initList;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
+local getTTAction = TRP3_API.extended.getTTAction;
 
 local editor = TRP3_ConditionEditor;
 local operandEditor = editor.operand.editor;
@@ -45,8 +46,11 @@ local function registerOperandEditor(operandID, operandStructure)
 end
 TRP3_API.extended.tools.registerOperandEditor = registerOperandEditor;
 
+local defaultInfo = {
+	getText = function() return "?" end
+}
 local function getOperandEditorInfo(operandID)
-	return OPERANDS[operandID] or Globals.empty;
+	return OPERANDS[operandID] or defaultInfo;
 end
 TRP3_API.extended.tools.getOperandEditorInfo = getOperandEditorInfo;
 
@@ -124,6 +128,7 @@ local function loadOperandEditor(operandInfo, list)
 
 	if operandInfo.editor then
 		list.args:Show();
+		list.args:SetFrameLevel(operandEditor:GetFrameLevel() + 20);
 		list.args.title:SetText(operandInfo.title);
 		operandInfo.editor:SetParent(list.args);
 		operandInfo.editor:SetAllPoints(list.args);
@@ -163,6 +168,7 @@ local function onOperandSelected(operandID, list, loadEditor)
 
 	setTooltipForSameFrame(list, "TOP", 0, 0);
 
+	local hasPreview = false;
 	local operandInfo = getOperandEditorInfo(operandID);
 	if operandInfo ~= EMPTY then
 		fullText = operandInfo.getText and operandInfo.getText(list.argsData) or operandInfo.title;
@@ -174,6 +180,7 @@ local function onOperandSelected(operandID, list, loadEditor)
 		end
 		if not operandInfo.noPreview then
 			list.preview:Enable();
+			hasPreview = false;
 		end
 		local returnType = type(operandInfo.returnType);
 		local returnTypeText;
@@ -193,6 +200,8 @@ local function onOperandSelected(operandID, list, loadEditor)
 
 	_G[list:GetName() .. "Text"]:SetText(fullText);
 	checkNumeric();
+
+	return hasPreview;
 end
 
 local function onOperandEditClick(button)
@@ -250,7 +259,7 @@ local function openOperandEditor(expressionIndex)
 	operandEditor.comparator:SetSelectedValue(comparator);
 
 	operandEditor.left.argsData = leftOperand.a;
-	onOperandSelected(leftOperand.i, operandEditor.left);
+	local hasPreview = onOperandSelected(leftOperand.i, operandEditor.left);
 
 	if rightOperand.v ~= nil then
 		operandEditor.right.argsData = rightOperand.v;
@@ -264,7 +273,7 @@ local function openOperandEditor(expressionIndex)
 			onOperandSelected("boolean_false", operandEditor.right);
 		end
 	else
-		operandEditor.right.argsData = leftOperand.a;
+		operandEditor.right.argsData = rightOperand.a;
 		onOperandSelected(rightOperand.i, operandEditor.right, rightOperand.a);
 	end
 
@@ -272,6 +281,7 @@ local function openOperandEditor(expressionIndex)
 	operandEditor.right.args:Hide();
 
 	editor.operand:Show();
+	editor.operand:SetFrameLevel(editor:GetFrameLevel() + 10);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -324,6 +334,7 @@ local function addExpression()
 end
 
 local TEST_ACTION_REMOVE = 1;
+local TEST_ACTION_DUPLICATE = 2;
 
 local function onTestAction(value, line)
 	local index = line:GetParent().index;
@@ -335,37 +346,50 @@ local function onTestAction(value, line)
 			table.remove(editor.scriptData, index);
 		end
 		listCondition();
+	elseif value == TEST_ACTION_DUPLICATE then
+		local origin = editor.scriptData[index];
+		tinsert(editor.scriptData, "+");
+		tinsert(editor.scriptData, {});
+		Utils.table.copy(editor.scriptData[#editor.scriptData], origin);
+		listCondition();
 	end
 end
 
-local function onComparatorAction(value, line)
+local function switchComparator(line)
 	local index = line:GetParent().index;
-	editor.scriptData[index] = value;
+	if editor.scriptData[index] == "*" then
+		editor.scriptData[index] = "+";
+	else
+		editor.scriptData[index] = "*";
+	end
 	listCondition();
 end
 
 local function onTestLineClick(line, button)
 	local index = line:GetParent().index;
 	local expression = editor.scriptData[index];
-	local values = {};
 
 	if type(expression) == "string" then
-		tinsert(values, {loc("OP_COMPA_SEL"), nil});
-		if expression == "+" then
-			tinsert(values, {loc("OP_AND_SWITCH"), "*"});
-		else
-			tinsert(values, {loc("OP_OR_SWITCH"), "+"});
-		end
-		TRP3_API.ui.listbox.displayDropDown(line, values, onComparatorAction, 0, true);
+		switchComparator(line);
 	elseif type(expression) == "table" then
 		if button == "LeftButton" then
-			openOperandEditor(index);
-		else
-			tinsert(values, {"Test", nil});
-			if #editor.scriptData > 1 then
-				tinsert(values, {loc("OP_REMOVE_TEST"), TEST_ACTION_REMOVE});
+			if IsControlKeyDown() then
+				onTestAction(TEST_ACTION_DUPLICATE, line);
+			else
+				openOperandEditor(index);
 			end
-			TRP3_API.ui.listbox.displayDropDown(line, values, onTestAction, 0, true);
+		elseif button == "MiddleButton" then
+			if #editor.scriptData > 1 then
+				onTestAction(TEST_ACTION_REMOVE, line);
+			end
+		elseif button == "RightButton" then
+			local context = {};
+			tinsert(context, {loc("COND_TEST_EDITOR")});
+			tinsert(context, {loc("CA_NPC_AS"), TEST_ACTION_DUPLICATE});
+			if #editor.scriptData > 1 then
+				tinsert(context, {loc("CM_REMOVE"), TEST_ACTION_REMOVE});
+			end
+			TRP3_API.ui.listbox.displayDropDown(line, context, onTestAction, 0, true);
 		end
 	end
 end
@@ -375,9 +399,11 @@ local function getExpressionText(expression)
 	local leftOperand = expression[1];
 	local comparator = getComparatorText(expression[2]);
 	local rightOperand = expression[3];
+	local leftInfo = getOperandEditorInfo(leftOperand.i);
+	local rightInfo = getOperandEditorInfo(rightOperand.i);
 
-	local leftText = leftOperand.i and getOperandEditorInfo(leftOperand.i).getText(leftOperand.a) or getValueString(leftOperand.v);
-	local rightText = rightOperand.i and getOperandEditorInfo(rightOperand.i).getText(rightOperand.a) or getValueString(rightOperand.v);
+	local leftText = leftOperand.i and leftInfo.getText(leftOperand.a) or getValueString(leftOperand.v);
+	local rightText = rightOperand.i and rightInfo.getText(rightOperand.a) or getValueString(rightOperand.v);
 	return "|cffffff00" .. leftText .. "  |cff00ff00" .. comparator .. "  |cffffff00" .. rightText;
 end
 
@@ -389,11 +415,18 @@ local function decorateConditionLine(line, index)
 		line.text:SetText("?");
 		if expression == "+" then
 			line.text:SetText(loc("OP_AND"));
+			setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("OP_AND"), getTTAction(loc("CM_CLICK"), loc("OP_OR_SWITCH")));
 		elseif expression == "*" then
 			line.text:SetText(loc("OP_OR"));
+			setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("OP_OR"), getTTAction(loc("CM_CLICK"), loc("OP_AND_SWITCH")));
 		end
 	elseif type(expression) == "table" then
 		line.text:SetText("|cffff9900" .. ((index + 1) / 2) .. ".  " .. getExpressionText(expression));
+		local tooltip = getTTAction(loc("CM_CLICK"), loc("CM_EDIT")) .. getTTAction(loc("CM_CTRL") .. " + " .. loc("CM_CLICK"), loc("CA_NPC_AS"), true);
+		if #editor.scriptData > 1 then
+			tooltip = tooltip .. getTTAction(loc("CM_M_CLICK"), loc("CM_REMOVE"), true);
+		end
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("COND_TEST_EDITOR"), tooltip);
 	end
 end
 
@@ -410,16 +443,127 @@ end
 -- Load and save
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function editor.save(scriptData)
+function editor.save(scriptData, branchingStepData)
 	wipe(scriptData);
 	Utils.table.copy(scriptData, editor.scriptData);
+	if branchingStepData then
+		branchingStepData.failMessage = stEtN(strtrim(editor.failMessage:GetText()));
+		branchingStepData.failWorkflow = stEtN(strtrim(editor.failWorkflow:GetText()));
+	end
 end
 
-function editor.load(scriptData)
+function editor.load(scriptData, branchingStepData)
 	wipe(editor.scriptData);
 	Utils.table.copy(editor.scriptData, scriptData);
+	editor.failMessage:Hide();
+	editor.failWorkflow:Hide();
+	if branchingStepData then
+		editor.failMessage:Show();
+		editor.failMessage:SetText(branchingStepData.failMessage or "");
+		editor.failWorkflow:Show();
+		editor.failWorkflow:SetText(branchingStepData.failWorkflow or "");
+	end
 	listCondition();
 end
+
+local getEvaluatedOperands = function(structure)
+	local evaluatedOperands = {
+		[loc("OP_UNIT_VALUE")] = {
+			"unit_name",
+			"unit_id",
+			"unit_npc_id",
+			"unit_guild",
+			"unit_guild_rank",
+			"unit_classification",
+			"unit_sex",
+			"unit_class",
+			"unit_race",
+			"unit_faction",
+			"unit_health",
+			"unit_level",
+			"unit_speed",
+			"unit_position_x",
+			"unit_position_y",
+			"unit_distance_point",
+			"unit_distance_me",
+		},
+		[loc("OP_UNIT_TEST")] = {
+			"unit_is_player",
+			"unit_exists",
+			"unit_is_dead",
+			"unit_distance_trade",
+			"unit_distance_inspect",
+		},
+		[CHARACTER] = {
+			"char_falling",
+			"char_stealth",
+			"char_flying",
+			"char_mounted",
+			"char_resting",
+			"char_swimming",
+			"char_facing",
+			"char_zone",
+			"char_subzone",
+			"char_minimap",
+			"char_cam_distance",
+		},
+		--		["Pets and companions"] = { -- TODO: locals
+		--			"pet_battle_name",
+		--			"pet_pet_name",
+		--			"pet_mount_name",
+		--		},
+		[loc("INV_PAGE_CHARACTER_INV")] = {
+			"inv_item_count",
+			--			"inv_durability",
+			--			"inv_weight",
+			--			"inv_empty_slot",
+		},
+		[loc("EFFECT_CAT_CAMPAIGN")] = {
+			"quest_is_step",
+			"quest_obj",
+			"quest_obj_current",
+			"quest_obj_all",
+			"quest_is_npc",
+		},
+		["Expert"] = {-- TODO: locals
+			"var_check",
+			"var_check_n",
+			"check_event_var",
+			"check_event_var_n",
+		},
+		["Others"] = {-- TODO: locals
+			"random",
+		},
+	}
+
+	local evaluatedOrder = {
+		loc("OP_UNIT_VALUE"),
+		loc("OP_UNIT_TEST"),
+		CHARACTER,
+		--		"Pets and companions", -- TODO: locals
+		loc("INV_PAGE_CHARACTER_INV"),
+		loc("EFFECT_CAT_CAMPAIGN"),
+		"Others", -- TODO: locals
+		"",
+		"Expert", -- TODO: locals
+	}
+
+	wipe(structure);
+	tinsert(structure, {loc("OP_EVAL_VALUE")});
+	for _, group in pairs(evaluatedOrder) do
+		local subStructure = {};
+		tinsert(subStructure, {group});
+
+		for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
+			local operandInfo = getOperandEditorInfo(operandID);
+			tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
+		end
+
+		tinsert(structure, {group, subStructure});
+	end
+	return structure;
+end
+TRP3_API.extended.tools.getEvaluatedOperands = getEvaluatedOperands;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -430,16 +574,21 @@ function editor.init()
 
 	editor.listheader:SetText(loc("COND_TESTS"));
 	editor.fullheader:SetText(loc("COND_COMPLETE"));
-	editor.add:SetText("Add test");
-
+	editor.add:SetText(loc("OP_ADD_TEST"));
 	editor.add:SetScript("OnClick", addExpression);
 
+	editor.failMessage.title:SetText(loc("OP_FAIL"));
+	setTooltipForSameFrame(editor.failMessage.help, "TOP", 0, 0, loc("OP_FAIL"), loc("OP_FAIL_TT"));
+
+	editor.failWorkflow.title:SetText(loc("OP_FAIL_W"));
+	setTooltipForSameFrame(editor.failWorkflow.help, "TOP", 0, 0, loc("OP_FAIL_W"), loc("OP_FAIL_W_TT"));
+
 	editor.widgetTab = {};
-	for i=1, 8 do
+	for i=1, 6 do
 		local line = editor["line" .. i];
 		tinsert(editor.widgetTab, line);
 		line.click:SetScript("OnClick", onTestLineClick);
-		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp");
 	end
 	editor.decorate = decorateConditionLine;
 	handleMouseWheel(editor, editor.slider);
@@ -470,97 +619,11 @@ function editor.init()
 	}
 	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, checkNumeric, nil, 175, true);
 
-	local evaluatedOperands = {
-		[loc("OP_UNIT_VALUE")] = {
-			"unit_name",
-			"unit_id",
-			"unit_npc_id",
-			"unit_guild",
-			"unit_guild_rank",
-			"unit_classification",
-			"unit_sex",
-			"unit_class",
-			"unit_race",
-			"unit_faction",
-			"unit_health",
-			"unit_level",
-			"unit_speed",
-		},
-		[loc("OP_UNIT_TEST")] = {
-			"unit_is_player",
---			"unit_range",
-			"unit_exists",
-			"unit_is_dead",
---			"unit_mounted",
---			"unit_flying",
-		},
---		["Character"] = { -- TODO: locals
---			"char_falling",
---			"char_stealth",
---			"char_swimming",
---			"char_can_fly",
---			"char_coord",
---			"char_zone",
---			"char_subzone",
---			"char_facing",
---		},
---		["Pets and companions"] = { -- TODO: locals
---			"pet_battle_name",
---			"pet_pet_name",
---			"pet_mount_name",
---		},
---		["Campaign and quests"] = { -- TODO: locals
---			"campaign_started",
---			"campaign_quest_started",
---		},
-		[loc("INV_PAGE_CHARACTER_INV")] = {
-			"inv_item_count",
-			"inv_item_count_con",
---			"inv_durability",
---			"inv_weight",
---			"inv_empty_slot",
-		},
---		["Expert"] = {-- TODO: locals
---			"var_workflow",
---			"var_object",
---		},
---		["Others"] = {-- TODO: locals
---			"random",
---		},
-	}
-
-	local evaluatedOrder = {
-		loc("OP_UNIT_VALUE"),
-		loc("OP_UNIT_TEST"),
---		"Character", -- TODO: locals
---		"Pets and companions", -- TODO: locals
---		"Campaign and quests", -- TODO: locals
-		loc("INV_PAGE_CHARACTER_INV"),
---		"Others", -- TODO: locals
-	}
-
-	local getEvaluatedOperands = function(structure)
-		wipe(structure);
-		tinsert(structure, {loc("OP_EVAL_VALUE")});
-		for _, group in pairs(evaluatedOrder) do
-			local subStructure = {};
-			tinsert(subStructure, {group});
-
-			for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
-				local operandInfo = getOperandEditorInfo(operandID);
-				tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
-			end
-
-			tinsert(structure, {group, subStructure});
-		end
-		return structure;
-	end
-
 	TRP3_API.ui.listbox.setupListBox(operandEditor.left, getEvaluatedOperands(leftListStructure), function(operandID, list)
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
-	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, false, operandEditor.left);
+	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, true, operandEditor.left);
 	operandEditor.left.preview:SetText(loc("OP_PREVIEW"));
 	operandEditor.left.edit:SetText(loc("OP_CONFIGURE"));
 	operandEditor.left.args.confirm:SetText(loc("EDITOR_CONFIRM"));
@@ -586,7 +649,7 @@ function editor.init()
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
-	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, false, operandEditor.right);
+	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, true, operandEditor.right);
 	operandEditor.right.preview:SetText(loc("OP_PREVIEW"));
 	operandEditor.right.edit:SetText(loc("OP_CONFIGURE"));
 	operandEditor.right.args.confirm:SetText(loc("EDITOR_CONFIRM"));

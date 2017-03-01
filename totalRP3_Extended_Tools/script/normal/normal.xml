@@ -19,22 +19,6 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_EditorTitledFrame" inherits="TRP3_AltHoveredFrame" virtual="true">
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
-					<Size x="0" y="30"/>
-					<Anchors>
-						<Anchor point="TOP" x="0" y="-10"/>
-						<Anchor point="RIGHT" x="-20" y="0"/>
-						<Anchor point="LEFT" x="20" y="0"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
-				</FontString>
-			</Layer>
-		</Layers>
-	</Frame>
-
 	<Frame name="TRP3_EditorWorkflowLine" virtual="true">
 		<Size x="0" y="22" />
 		<Layers>
@@ -76,7 +60,7 @@
 	</Frame>
 
 	<Frame name="TRP3_EditorEffectFrame" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="24" />
 			</EdgeSize>
@@ -111,22 +95,22 @@
 					<Anchor point="TOPRIGHT" x="0" y="0"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="moveup">
-				<Size x="32" y="32"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="15" relativePoint="BOTTOM" relativeKey="$parent.remove"/>
-				</Anchors>
-				<NormalTexture file="Interface\Buttons\UI-Panel-CollapseButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
-			</Button>
 			<Button parentKey="movedown">
 				<Size x="32" y="32"/>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="15" relativePoint="BOTTOM" relativeKey="$parent.moveup"/>
+					<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeKey="$parent.remove"/>
 				</Anchors>
 				<NormalTexture file="Interface\Buttons\UI-Panel-ExpandButton-Up"/>
 				<PushedTexture file="Interface\Buttons\UI-Panel-ExpandButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+			<Button parentKey="moveup">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeKey="$parent.movedown"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-CollapseButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 		</Frames>
@@ -204,7 +188,7 @@
 						</FontString>
 
 						<FontString parentKey="description" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="75"/>
+							<Size x="0" y="85"/>
 							<Anchors>
 								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.script" x="0" y="-20"/>
 								<Anchor point="RIGHT" x="-20" y="0"/>
@@ -224,73 +208,76 @@
 				</Layers>
 
 				<Frames>
-					<Frame parentKey="line1" inherits="TRP3_ConditionEditorLine">
+
+					<Frame parentKey="sub" name="$parentSub" inherits="TRP3_InnerFrame">
+						<Size x="0" y="200"/>
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.description" x="0" y="-50"/>
-							<Anchor point="LEFT" x="40" y="0"/>
-							<Anchor point="RIGHT" x="-40" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.description" x="0" y="-40"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
 						</Anchors>
-					</Frame>
-					<Frame parentKey="line2" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line1" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line1"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line1"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="line3" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line2" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line2"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line2"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="line4" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line3" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line3"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line3"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="line5" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line4" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line4"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line4"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="line6" inherits="TRP3_ConditionEditorLine">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line5" relativePoint="BOTTOM"/>
-							<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line5"/>
-							<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line5"/>
-						</Anchors>
+
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="empty" inherits="GameFontNormalLarge">
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Frame parentKey="line1" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10"/>
+									<Anchor point="LEFT" x="5" y="0"/>
+									<Anchor point="RIGHT" x="-20" y="0"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line2" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line1" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line1"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line1"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line3" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line2" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line2"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line2"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line4" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line3" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line3"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line3"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line5" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line4" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line4"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line4"/>
+								</Anchors>
+							</Frame>
+							<Frame parentKey="line6" inherits="TRP3_ConditionEditorLine">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line5" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line5"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line5"/>
+								</Anchors>
+							</Frame>
+							<Slider parentKey="slider" name="$parentSlider" inherits="TRP3_Scrollbar"/>
+						</Frames>
 					</Frame>
 					<Button parentKey="add" inherits="TRP3_CommonButton">
 						<Size x="150" y="20"/>
 						<Anchors>
-							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" x="0" y="-10"/>
+							<Anchor point="TOP" relativeKey="$parent.sub" relativePoint="BOTTOM" x="0" y="-10"/>
 						</Anchors>
 					</Button>
-					<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
-						<Size x="15" y="0" />
-						<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.line1"/>
-							<Anchor point="TOP" x="0" y="0" relativeKey="$parent.line1"/>
-							<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line8"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								local name = self:GetName();
-								_G[name .. "Text"]:SetText("");
-								_G[name .. "High"]:SetText("");
-								_G[name .. "Low"]:SetText("");
-								self:SetMinMaxValues(0, 6);
-								self:SetValueStep(1);
-								self:SetOrientation("VERTICAL");
-							</OnLoad>
-						</Scripts>
-					</Slider>
 				</Frames>
 
 			</Frame>
@@ -305,11 +292,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame parentKey="container" name="$parentContainer">
-						<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\GuildBankFrame\GuildVaultBG">
-							<EdgeSize><AbsValue val="32"/></EdgeSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-						</Backdrop>
+					<Frame parentKey="container" name="$parentContainer" inherits="TRP3_InnerFrame">
 
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-25" relativePoint="BOTTOM" relativeKey="$parent.title"/>
@@ -357,7 +340,7 @@
 							</ScrollFrame>
 
 							<Button parentKey="add" inherits="TRP3_CommonButton">
-								<Size x="200" y="20"/>
+								<Size x="250" y="20"/>
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="-5"/>
 								</Anchors>
@@ -382,9 +365,9 @@
 
 			</Frame>
 
-			<Frame parentKey="element" hidden="true" toplevel="true" setAllPoints="true" enableMouse="true">
+			<Frame parentKey="element" hidden="true" setAllPoints="true" enableMouse="true" frameStrata="HIGH">
 
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="24" />
 					</EdgeSize>

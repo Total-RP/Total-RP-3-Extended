@@ -39,6 +39,8 @@
 	<Script file="locale\locale_frFR.lua"/>
 
 	<!-- Sub-Modules -->
+	<Script file="misc\utils.lua"/>
+	<Include file="misc\cast.xml"/>
 	<Include file="misc\sounds.xml"/>
 	<Include file="inventory\inventory.xml"/>
 	<Include file="quest\quest.xml"/>

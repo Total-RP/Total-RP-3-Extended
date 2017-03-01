@@ -25,8 +25,8 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Frame name="TRP3_Tools_DocumentEditorNormalTemplate" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<TileSize><AbsValue val="380"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
@@ -42,37 +42,18 @@
 
 				<Frames>
 
-					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
-						<Size x="0" y="18"/>
+					<Button parentKey="params" inherits="TRP3_CommonButton">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.title"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
-						</Anchors>
-					</EditBox>
-
-					<Button parentKey="params" inherits="TRP3_CommonButton">
-						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-10"/>
-							<Anchor point="LEFT" relativeKey="$parent.name" x="-5" y="0"/>
-							<Anchor point="RIGHT" relativeKey="$parent.name" x="5" y="0"/>
 						</Anchors>
 					</Button>
 
 					<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
-							<Anchor point="LEFT" relativePoint="CENTER" x="17" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="-20" y="0"/>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-17"/>
 						</Anchors>
-						<Layers>
-							<Layer level="ARTWORK">
-								<Texture parentKey="Quest" file="Interface\ContainerFrame\UI-Icon-QuestBang">
-									<Size x="36" y="36"/>
-									<Anchors>
-										<Anchor point="CENTER" x="0" y="0"/>
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
 					</Button>
 
 				</Frames>
@@ -209,6 +190,7 @@
 					</Button>
 
 					<Button parentKey="add" inherits="TRP3_CommonButton">
+						<Size x="200" y="20" />
 						<Anchors>
 							<Anchor point="TOP" relativePoint="CENTER" x="0" y="-25"/>
 						</Anchors>

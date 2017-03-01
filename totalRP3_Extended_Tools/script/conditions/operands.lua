@@ -19,29 +19,20 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local tonumber, tostring, type, tinsert, wipe, strtrim = tonumber, tostring, type, tinsert, wipe, strtrim;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
-local getClass = TRP3_API.extended.getClass;
-local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
-local initList = TRP3_API.ui.list.initList;
-local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-
 local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
 local getUnitText = TRP3_API.extended.tools.getUnitText;
 
 local unitTypeEditor, stringEditor, numericEditor = TRP3_OperandEditorUnitType, TRP3_OperandEditorString, TRP3_OperandEditorNumeric;
-local itemSelectionEditor = TRP3_OperandEditorItemSelection;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Shared editors
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local unitType;
+
 local function initEnitTypeEditor()
-	local unitType = {
-		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_PLAYER")), "player"},
-		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_TARGET")), "target"},
-		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_NPC")), "npc"},
-	}
 	TRP3_API.ui.listbox.setupListBox(unitTypeEditor.type, unitType, nil, nil, 180, true);
 
 	function unitTypeEditor.load(args)
@@ -50,27 +41,6 @@ local function initEnitTypeEditor()
 
 	function unitTypeEditor.save()
 		return {unitTypeEditor.type:GetSelectedValue() or "target"};
-	end
-end
-
-local function initItemSelectionEditor()
-
-	itemSelectionEditor.browse:SetText(BROWSE);
-	itemSelectionEditor.browse:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = itemSelectionEditor, point = "RIGHT", parentPoint = "LEFT"}, {function(id)
-			itemSelectionEditor.id:SetText(id);
-		end, TRP3_DB.types.ITEM});
-	end);
-
-	-- Text
-	itemSelectionEditor.id.title:SetText(loc("ITEM_ID"));
-
-	function itemSelectionEditor.load(args)
-		itemSelectionEditor.id:SetText((args or EMPTY)[1] or "");
-	end
-
-	function itemSelectionEditor.save()
-		return {strtrim(itemSelectionEditor.id:GetText()) or ""};
 	end
 end
 
@@ -308,6 +278,78 @@ local function unit_speed_init()
 	});
 end
 
+local function unit_position_x_init()
+	registerOperandEditor("unit_position_x", {
+		title = loc("OP_OP_UNIT_POSITION_X"),
+		description = loc("OP_OP_UNIT_POSITION_X_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_POSITION_X") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_position_y_init()
+	registerOperandEditor("unit_position_y", {
+		title = loc("OP_OP_UNIT_POSITION_Y"),
+		description = loc("OP_OP_UNIT_POSITION_Y_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_POSITION_Y") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_distance_point_init()
+	local editor = TRP3_OperandEditorDistancePoint;
+	registerOperandEditor("unit_distance_point", {
+		title = loc("OP_OP_DISTANCE_POINT"),
+		description = loc("OP_OP_DISTANCE_POINT_TT"),
+		returnType = 0,
+		getText = function(args)
+			args = args or EMPTY;
+			return loc("OP_OP_DISTANCE_POINT_PREVIEW"):format(args[1] or "target", args[2] or 0, args[3] or 0);
+		end,
+		editor = editor,
+	});
+
+	TRP3_API.ui.listbox.setupListBox(editor.type, unitType, nil, nil, 180, true);
+
+	editor.x.title:SetText(loc("OP_OP_DISTANCE_X"));
+	editor.y.title:SetText(loc("OP_OP_DISTANCE_Y"));
+	editor.current:SetText(loc("OP_OP_DISTANCE_CURRENT"));
+	editor.current:SetScript("OnClick", function()
+		local uX, uY = UnitPosition("player");
+		editor.x:SetText(string.format("%.2f", uX or 0));
+		editor.y:SetText(string.format("%.2f", uY or 0));
+	end);
+
+	function editor.load(args)
+		editor.type:SetSelectedValue((args or EMPTY)[1] or "target");
+		editor.x:SetText((args or EMPTY)[2] or "0");
+		editor.y:SetText((args or EMPTY)[3] or "0");
+	end
+
+	function editor.save()
+		return {editor.type:GetSelectedValue() or "target", tonumber(strtrim(editor.x:GetText())) or 0, tonumber(strtrim(editor.y:GetText())) or 0};
+	end
+
+	registerOperandEditor("unit_distance_me", {
+		title = loc("OP_OP_DISTANCE_ME"),
+		description = loc("OP_OP_DISTANCE_ME_TT"),
+		returnType = 0,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_DISTANCE_ME") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Unit checks operands
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -351,33 +393,283 @@ local function unit_is_dead_init()
 	});
 end
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Inventory
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function inv_item_count_init()
-	registerOperandEditor("inv_item_count", {
-		title = loc("OP_OP_INV_COUNT"),
-		description = loc("OP_OP_INV_COUNT_TT"),
-		returnType = 0,
+local function unit_distance_trade_init()
+	registerOperandEditor("unit_distance_trade", {
+		title = loc("OP_OP_UNIT_DISTANCE_TRADE"),
+		description = loc("OP_OP_UNIT_DISTANCE_TRADE_TT"),
+		returnType = true,
 		getText = function(args)
-			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_INV_COUNT_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id)) .. "|cffffff00");
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_DISTANCE_TRADE") .. " (" .. getUnitText(unitID) .. ")";
 		end,
-		editor = itemSelectionEditor,
+		editor = unitTypeEditor,
 	});
 end
 
-local function inv_item_count_con_init()
-	registerOperandEditor("inv_item_count_con", {
-		title = loc("OP_OP_INV_COUNT_CON"),
-		description = loc("OP_OP_INV_COUNT_CON_TT"),
+local function unit_distance_inspect_init()
+	registerOperandEditor("unit_distance_inspect", {
+		title = loc("OP_OP_UNIT_DISTANCE_INSPECT"),
+		description = loc("OP_OP_UNIT_DISTANCE_INSPECT_TT"),
+		returnType = true,
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc("OP_OP_UNIT_DISTANCE_INSPECT") .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Character operands
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function char_facing_init()
+	registerOperandEditor("char_facing", {
+		title = loc("OP_OP_CHAR_FACING"),
+		description = loc("OP_OP_CHAR_FACING_TT"),
 		returnType = 0,
 		getText = function(args)
-			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_INV_COUNT_CON_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id)) .. "|cffffff00");
+			return loc("OP_OP_CHAR_FACING");
 		end,
-		editor = itemSelectionEditor,
+	});
+end
+
+local function char_falling_init()
+	registerOperandEditor("char_falling", {
+		title = loc("OP_OP_CHAR_FALLING"),
+		description = loc("OP_OP_CHAR_FALLING_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_FALLING");
+		end,
+	});
+end
+
+local function char_stealth_init()
+	registerOperandEditor("char_stealth", {
+		title = loc("OP_OP_CHAR_STEALTH"),
+		description = loc("OP_OP_CHAR_STEALTH_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_STEALTH");
+		end,
+	});
+end
+
+local function char_flying_init()
+	registerOperandEditor("char_flying", {
+		title = loc("OP_OP_CHAR_FLYING"),
+		description = loc("OP_OP_CHAR_FLYING_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_FLYING");
+		end,
+	});
+end
+
+local function char_mounted_init()
+	registerOperandEditor("char_mounted", {
+		title = loc("OP_OP_CHAR_MOUNTED"),
+		description = loc("OP_OP_CHAR_MOUNTED_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_MOUNTED");
+		end,
+	});
+end
+
+local function char_resting_init()
+	registerOperandEditor("char_resting", {
+		title = loc("OP_OP_CHAR_RESTING"),
+		description = loc("OP_OP_CHAR_RESTING_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_RESTING");
+		end,
+	});
+end
+
+local function char_swimming_init()
+	registerOperandEditor("char_swimming", {
+		title = loc("OP_OP_CHAR_SWIMMING"),
+		description = loc("OP_OP_CHAR_SWIMMING_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_CHAR_SWIMMING");
+		end,
+	});
+end
+
+local function char_zone_init()
+	registerOperandEditor("char_zone", {
+		title = loc("OP_OP_CHAR_ZONE"),
+		description = loc("OP_OP_CHAR_ZONE_TT"),
+		returnType = "",
+		getText = function(args)
+			return loc("OP_OP_CHAR_ZONE");
+		end,
+	});
+end
+
+local function char_subzone_init()
+	registerOperandEditor("char_subzone", {
+		title = loc("OP_OP_CHAR_SUBZONE"),
+		description = loc("OP_OP_CHAR_SUBZONE_TT"),
+		returnType = "",
+		getText = function(args)
+			return loc("OP_OP_CHAR_SUBZONE");
+		end,
+	});
+end
+
+local function char_minimap_init()
+	registerOperandEditor("char_minimap", {
+		title = loc("OP_OP_CHAR_MINIMAP"),
+		description = loc("OP_OP_CHAR_MINIMAP_TT"),
+		returnType = "",
+		getText = function(args)
+			return loc("OP_OP_CHAR_MINIMAP");
+		end,
+	});
+end
+
+local function char_cam_distance_init()
+	registerOperandEditor("char_cam_distance", {
+		title = loc("OP_OP_CHAR_CAM_DISTANCE"),
+		description = loc("OP_OP_CHAR_CAM_DISTANCE_TT"),
+		returnType = 1,
+		getText = function(args)
+			return loc("OP_OP_CHAR_CAM_DISTANCE");
+		end,
+	});
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Check vars
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function check_var_init()
+	local editor = TRP3_OperandEditorCheckVar;
+
+	local sourcesText = {
+		w = loc("EFFECT_SOURCE_WORKFLOW"),
+		o = loc("EFFECT_SOURCE_OBJECT"),
+		c = loc("EFFECT_SOURCE_CAMPAIGN")
+	}
+
+	registerOperandEditor("var_check", {
+		title = loc("OP_OP_CHECK_VAR"),
+		description = loc("OP_OP_CHECK_VAR_TT"),
+		returnType = "",
+		noPreview = true,
+		getText = function(args)
+			local source = sourcesText[(args or EMPTY)[1]] or sourcesText.w;
+			local varName = tostring((args or EMPTY)[2] or "var");
+			return loc("OP_OP_CHECK_VAR_PREVIEW"):format(source, varName);
+		end,
+		editor = editor,
+	});
+
+	-- Source
+	local sources = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_WORKFLOW")), "w", loc("EFFECT_SOURCE_WORKFLOW_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 200, true);
+
+	-- Var name
+	editor.var.title:SetText(loc("EFFECT_VAR"))
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+
+	function editor.load(args)
+		editor.source:SetSelectedValue((args or EMPTY)[1] or "w");
+		editor.var:SetText((args or EMPTY)[2] or "var");
+	end
+
+	function editor.save()
+		return {editor.source:GetSelectedValue() or "w", strtrim(editor.var:GetText()) or "var"};
+	end
+
+	registerOperandEditor("var_check_n", {
+		title = loc("OP_OP_CHECK_VAR_N"),
+		description = loc("OP_OP_CHECK_VAR_N_TT"),
+		returnType = 0,
+		getText = function(args)
+			local source = sourcesText[(args or EMPTY)[1]] or sourcesText.w;
+			local varName = tostring((args or EMPTY)[2] or "var");
+			return loc("OP_OP_CHECK_VAR_N_PREVIEW"):format(source, varName);
+		end,
+		editor = editor,
+	});
+end
+
+local function check_event_var_init()
+	local editor = TRP3_OperandEditorCheckEventArg;
+
+	-- Var name
+	editor.index.title:SetText(loc("EFFECT_VAR_INDEX"));
+	setTooltipForSameFrame(editor.index.help, "RIGHT", 0, 5, loc("EFFECT_VAR_INDEX"), loc("EFFECT_VAR_INDEX_TT"));
+
+	function editor.load(args)
+		editor.index:SetText((args or EMPTY)[1] or "1");
+	end
+
+	function editor.save()
+		return {tonumber(strtrim(editor.index:GetText())) or 1};
+	end
+
+	registerOperandEditor("check_event_var", {
+		title = loc("OP_OP_CHECK_EVENT_VAR"),
+		description = loc("OP_OP_CHECK_EVENT_VAR_TT"),
+		returnType = "",
+		noPreview = true,
+		getText = function(args)
+			local varName = tostring((args or EMPTY)[1] or "1");
+			return loc("OP_OP_CHECK_EVENT_VAR_PREVIEW"):format(varName);
+		end,
+		editor = editor,
+	});
+
+	registerOperandEditor("check_event_var_n", {
+		title = loc("OP_OP_CHECK_EVENT_VAR_N"),
+		description = loc("OP_OP_CHECK_EVENT_VAR_N_TT"),
+		returnType = 0,
+		noPreview = true,
+		getText = function(args)
+			local varName = tostring((args or EMPTY)[1] or "1");
+			return loc("OP_OP_CHECK_EVENT_VAR_N_PREVIEW"):format(varName);
+		end,
+		editor = editor,
+	});
+end
+
+local function random_init()
+	local editor = TRP3_OperandEditorRandom;
+
+	-- From
+	editor.from.title:SetText(loc("OP_OP_RANDOM_FROM"));
+	editor.to.title:SetText(loc("OP_OP_RANDOM_TO"));
+
+	function editor.load(args)
+		editor.from:SetText((args or EMPTY)[1] or "1");
+		editor.to:SetText((args or EMPTY)[2] or "100");
+	end
+
+	function editor.save()
+		return {tonumber(strtrim(editor.from:GetText())) or 1, tonumber(strtrim(editor.to:GetText())) or 100};
+	end
+
+	registerOperandEditor("random", {
+		title = loc("OP_OP_RANDOM"),
+		description = loc("OP_OP_RANDOM_TT"),
+		returnType = 1,
+		getText = function(args)
+			local from = tostring((args or EMPTY)[1] or "1");
+			local to = tostring((args or EMPTY)[2] or "100");
+			return loc("OP_OP_RANDOM_PREVIEW"):format(from, to);
+		end,
+		editor = editor,
 	});
 end
 
@@ -387,12 +679,22 @@ end
 
 function TRP3_ConditionEditor.initOperands()
 
+	unitType = {
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_PLAYER")), "player"},
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_TARGET")), "target"},
+		{TRP3_API.formats.dropDownElements:format(loc("OP_UNIT"), loc("OP_UNIT_NPC")), "npc"},
+	}
+
 	initEnitTypeEditor();
-	initItemSelectionEditor();
 
 	string_init();
 	boolean_init();
 	numeric_init();
+
+	random_init();
+
+	check_var_init();
+	check_event_var_init();
 
 	-- Unit string
 	unit_name_init();
@@ -410,13 +712,28 @@ function TRP3_ConditionEditor.initOperands()
 	unit_health_init();
 	unit_level_init();
 	unit_speed_init();
+	unit_position_x_init();
+	unit_position_y_init();
+	unit_distance_point_init();
 
 	-- Unit checks
 	unit_exists_init();
 	unit_is_player_init();
 	unit_is_dead_init();
+	unit_distance_trade_init();
+	unit_distance_inspect_init();
 
-	-- Inventory
-	inv_item_count_init();
-	inv_item_count_con_init();
+	-- Character values
+	char_facing_init();
+	char_falling_init();
+	char_stealth_init();
+	char_flying_init();
+	char_mounted_init();
+	char_resting_init();
+	char_swimming_init();
+	char_zone_init();
+	char_subzone_init();
+	char_minimap_init();
+	char_cam_distance_init();
+
 end

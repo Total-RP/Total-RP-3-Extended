@@ -17,6 +17,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tonumber = tonumber;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -38,7 +39,7 @@ TRP3_API.inventory.EFFECTS = {
 			if args[1] == "DAMAGE" then
 				amount = - amount;
 			end
-			return ("lastEffectReturn = changeContainerDurability(args.%s, %s);"):format(target, amount);
+			return ("args.LAST = changeContainerDurability(args.%s, %s);"):format(target, amount);
 		end,
 		env = {
 			changeContainerDurability = "TRP3_API.inventory.changeContainerDurability",
@@ -48,7 +49,7 @@ TRP3_API.inventory.EFFECTS = {
 	["item_sheath"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function ()
-			return "ToggleSheath(); lastEffectReturn = 0;"
+			return "ToggleSheath(); args.LAST = 0;"
 		end,
 		env = {
 			ToggleSheath = "ToggleSheath",
@@ -59,7 +60,7 @@ TRP3_API.inventory.EFFECTS = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
 			local amount = tonumber(args[1]) or 1;
-			return ("lastEffectReturn = consumeItem(args.object, args.container, %s);"):format(amount);
+			return ("args.LAST = consumeItem(args.object, args.container, %s);"):format(amount);
 		end,
 		env = {
 			consumeItem = "TRP3_API.inventory.consumeItem",
@@ -80,7 +81,7 @@ TRP3_API.inventory.EFFECTS = {
 			local id = args[1] or "";
 			local count = tonumber(args[2]) or 1;
 			local madeBy = args[3] or false;
-			return ("lastEffectReturn = addItem(%s, \"%s\", {count = %d, madeBy = %s});"):format(targetContainer, id, count, tostring(madeBy));
+			return ("args.LAST = addItem(%s, \"%s\", {count = %d, madeBy = %s}, true);"):format(targetContainer, id, count, tostring(madeBy));
 		end,
 		env = {
 			addItem = "TRP3_API.inventory.addItem",
@@ -100,7 +101,7 @@ TRP3_API.inventory.EFFECTS = {
 			else
 				source = "nil";
 			end
-			return ("lastEffectReturn = removeItem(\"%s\", %d, %s);"):format(id, count, source);
+			return ("args.LAST = removeItem(\"%s\", %d, %s);"):format(id, count, source);
 		end,
 		env = {
 			removeItem = "TRP3_API.inventory.removeItem",
@@ -111,7 +112,7 @@ TRP3_API.inventory.EFFECTS = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
 			local duration = tonumber(args[1]) or 1;
-			return ("lastEffectReturn = startCooldown(args.object, %d, args.container);"):format(duration);
+			return ("args.LAST = startCooldown(args.object, %d, args.container);"):format(duration);
 		end,
 		env = {
 			startCooldown = "TRP3_API.inventory.startCooldown",
@@ -121,12 +122,56 @@ TRP3_API.inventory.EFFECTS = {
 	["item_loot"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		codeReplacementFunc = function (args)
-			local lootID = args[1];
-			return ("lastEffectReturn = presentLoot(\"%s\");"):format(lootID);
+			local lootInfo = args[1];
+			local isDrop = lootInfo[4] or false;
+			local lootID = Utils.str.id();
+			TRP3_API.inventory.storeLoot(lootID, lootInfo);
+			if not isDrop then
+				return ("args.LAST = presentLootID(\"%s\", nil, args.dialogStepClass and args.dialogStepClass.LO);"):format(lootID);
+			else
+				return ("args.LAST = dropLoot(\"%s\");"):format(lootID);
+			end
 		end,
 		env = {
-			presentLoot = "TRP3_API.inventory.presentLoot",
+			presentLootID = "TRP3_API.inventory.presentLootID",
+			dropLoot = "TRP3_API.inventory.dropLoot",
 		}
+	},
+
+	["item_use"] = {
+		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
+		codeReplacementFunc = function (args)
+			local slotID = tostring(tonumber(args[1] or 0) or 0);
+			return ("args.LAST = useContainerSlotID(args.object, \"%s\");"):format(slotID);
+		end,
+		env = {
+			useContainerSlotID = "TRP3_API.inventory.useContainerSlotID",
+		}
+	},
+
+	["item_roll_dice"] = {
+		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
+		codeReplacementFunc = function (args)
+			local roll = tostring(args[1]) or "1d100";
+			local serial = strjoin("\", args), var(\"", strsplit(" ", roll));
+			return ("args.LAST = rollDices(var(\"%s\", args));"):format(serial);
+		end,
+		env = {
+			rollDices = "TRP3_API.slash.rollDices",
+		}
+	},
+
+	["run_item_workflow"] = {
+		codeReplacementFunc = function (args)
+			local source = args[1] or "p";
+			local id = args[2] or "";
+			local slotID = args[3] or "";
+			return ("runWorkflow(args, \"%s\", \"%s\", \"%s\"); args.LAST = 0;"):format(source, id, slotID);
+		end,
+		env = {
+			runWorkflow = "TRP3_API.script.runWorkflow",
+		},
+		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 	},
 
 }

@@ -51,20 +51,82 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_OperandEditorItemSelection" hidden="true">
+	<Frame name="TRP3_OperandEditorCheckVar" hidden="true">
 		<Frames>
-			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-40"/>
+					<Anchor point="TOP" x="0" y="-45"/>
+				</Anchors>
+			</Frame>
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.source" x="0" y="-10"/>
 					<Anchor point="LEFT" x="15" y="0"/>
 					<Anchor point="RIGHT" x="-15" y="0"/>
 				</Anchors>
 			</EditBox>
-			<Button parentKey="browse" inherits="TRP3_CommonButton">
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorCheckEventArg" hidden="true">
+		<Frames>
+			<EditBox parentKey="index" inherits="TRP3_TitledHelpEditBox">
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+					<Anchor point="TOP" x="0" y="-45"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorDistancePoint" hidden="true">
+		<Frames>
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-25"/>
+				</Anchors>
+			</Frame>
+			<EditBox parentKey="x" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-10"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+				</Anchors>
+			</EditBox>
+			<EditBox parentKey="y" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-10"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+			<Button parentKey="current" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.x" x="0" y="-5"/>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.y" x="0" y="-5"/>
 				</Anchors>
 			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorRandom" hidden="true">
+		<Frames>
+			<EditBox parentKey="from" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-45"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="to" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.from" x="0" y="-10"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
 		</Frames>
 	</Frame>
 

@@ -16,8 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tostring, tinsert, tonumber = wipe, pairs, tostring, tinsert, tonumber;
+local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
+local wipe, pairs, strsplit, tinsert, tonumber, strtrim = wipe, pairs, strsplit, tinsert, tonumber, strtrim;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -30,16 +30,28 @@ local delayEditor = TRP3_ScriptEditorDelay;
 -- Delay
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+function delayEditor.decorate(scriptStep)
+	if scriptStep.c == 2 then
+		return ("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_CAST"), scriptStep.d or 0, loc("WO_DELAY_SECONDS"));
+	else
+		return ("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_WAIT"), scriptStep.d or 0, loc("WO_DELAY_SECONDS"));
+	end
+end
+
 function delayEditor.save(scriptStepStructure)
 	scriptStepStructure.d = tonumber(delayEditor.duration:GetText()) or 1;
+	scriptStepStructure.s = tonumber(delayEditor.sound:GetText()) or 0;
 	scriptStepStructure.c = delayEditor.type:GetSelectedValue() or 1;
 	scriptStepStructure.i = delayEditor.interrupt:GetSelectedValue() or 1;
+	scriptStepStructure.x = stEtN(strtrim(delayEditor.text:GetText() or ""));
 end
 
 function delayEditor.load(scriptStepStructure)
 	delayEditor.type:SetSelectedValue(scriptStepStructure.c or 1);
 	delayEditor.interrupt:SetSelectedValue(scriptStepStructure.i or 1);
 	delayEditor.duration:SetText(scriptStepStructure.d or 0);
+	delayEditor.sound:SetText(scriptStepStructure.s or 0);
+	delayEditor.text:SetText(scriptStepStructure.x or "");
 end
 
 function delayEditor.init()
@@ -47,15 +59,33 @@ function delayEditor.init()
 	delayEditor.duration.title:SetText(loc("WO_DELAY_DURATION"));
 	setTooltipForSameFrame(delayEditor.duration.help, "RIGHT", 0, 5, loc("WO_DELAY_DURATION"), loc("WO_DELAY_DURATION_TT"));
 
+	-- Cast sound
+	delayEditor.sound.title:SetText(loc("WO_DELAY_CAST_SOUND"));
+	setTooltipForSameFrame(delayEditor.sound.help, "RIGHT", 0, 5, loc("WO_DELAY_CAST_SOUND"), loc("WO_DELAY_CAST_SOUND_TT"));
+
+	-- Cast text
+	delayEditor.text.title:SetText(loc("WO_DELAY_CAST_TEXT"));
+	setTooltipForSameFrame(delayEditor.text.help, "RIGHT", 0, 5, loc("WO_DELAY_CAST_TEXT"), loc("WO_DELAY_CAST_TEXT_TT"));
+
 	-- Delay type
 	local type = {
-		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_1")), 1}
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_1")), 1, loc("WO_DELAY_TYPE_1_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_2")), 2, loc("WO_DELAY_TYPE_2_TT")}
 	}
-	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, nil, nil, 200, true);
+	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, function(value)
+		if value == 2 then
+			delayEditor.sound:Show();
+			delayEditor.text:Show();
+		else
+			delayEditor.sound:Hide();
+			delayEditor.text:Hide();
+		end
+	end, nil, 200, true);
 
 	-- Interruption
 	local type = {
-		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_1")), 1}
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_1")), 1},
+		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_2")), 2}
 	}
 	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, type, nil, nil, 200, true);
 end
@@ -76,22 +106,61 @@ local function onBrowserClose()
 	objectBrowser:Hide();
 end
 
-local function onBrowserIconClick(frame)
+local function onBrowserLineClick(frame)
 	onBrowserClose();
 	if objectBrowser.onSelectCallback then
 		objectBrowser.onSelectCallback(frame.objectID);
 	end
 end
 
-local function decorateBrowserIcon(frame, index)
+local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
+local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
+local color = "|cffffff00";
+local fieldFormat = "%s: " .. color .. "%s|r";
+
+local function decorateBrowserLine(frame, index)
 	local objectID = filteredObjectList[index];
 	local class = getClass(objectID);
 	local icon, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
-	local link = TRP3_API.inventory.getItemLink(class);
+	local fullLink = TRP3_API.inventory.getItemLink(class, objectID, true);
+	local link = TRP3_API.inventory.getItemLink(class, objectID);
 
-	frame:SetNormalTexture("Interface\\ICONS\\" .. icon);
-	frame:SetPushedTexture("Interface\\ICONS\\" .. icon);
-	setTooltipForSameFrame(frame, "TOP", 0, 5, link, objectID);
+	_G[frame:GetName().."Text"]:SetText(fullLink);
+
+	local text = "";
+	local title = fullLink;
+	local parts = {strsplit(ID_SEPARATOR, objectID)};
+	local rootClass = getClass(parts[1]);
+	local metadata = rootClass.MD or EMPTY;
+
+	text = text .. fieldFormat:format(loc("TYPE"), getTypeLocale(class.TY));
+	text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
+	text = text .. "\n" .. fieldFormat:format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
+
+	if class.TY == TRP3_DB.types.ITEM then
+		local base = class.BA or EMPTY;
+
+		text = text .. "\n";
+
+		text = text .. "\n" .. Utils.str.icon(base.IC or "temp", 25) .. " " .. link;
+		if base.LE or base.RI then
+			if base.LE and not base.RI then
+				text = text .. "\n|cffffffff" .. base.LE;
+			elseif base.RI and not base.LE then
+				text = text .. "\n|cffffffff" .. base.RI;
+			else
+				text = text .. "\n|cffffffff" .. base.LE .. " - " .. base.RI;
+			end
+		end
+		if base.DE then
+			text = text .. "\n|cffff9900\"" .. base.DE .. "\"";
+		end
+		text = text .. "\n|cffffffff" .. TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0);
+
+	end
+
+	setTooltipForSameFrame(frame, "TOP", 0, 5, title, text);
+
 	frame.objectID = objectID;
 end
 
@@ -110,32 +179,37 @@ local function filteredObjectBrowser()
 	local total, count = 0, 0;
 	for objectFullID, class in pairs(TRP3_DB.global) do
 		if not class.hideFromList and class.TY == objectBrowser.type then
-			local _, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
-			if filterMatch(filter, objectFullID) or filterMatch(filter, name) then
-				tinsert(filteredObjectList, objectFullID);
-				count = count + 1;
+			if not objectBrowser.itemFilter or class.TY ~= TRP3_DB.types.ITEM or not class.BA or not class.BA.PA then
+				local _, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
+				if filterMatch(filter, objectFullID) or filterMatch(filter, name) then
+					tinsert(filteredObjectList, objectFullID);
+					count = count + 1;
+				end
+				total = total + 1;
 			end
-			total = total + 1;
 		end
 	end
 	objectBrowser.filter.total:SetText( (#filteredObjectList) .. " / " .. total );
 
+	table.sort(filteredObjectList);
+
 	initList(
 		{
 			widgetTab = objectBrowser.widgetTab,
-			decorate = decorateBrowserIcon
+			decorate = decorateBrowserLine
 		},
 		filteredObjectList,
 		objectBrowser.content.slider
 	);
 end
 
-local function showObjectBrowser(onSelectCallback, type)
-	objectBrowser.title:SetText(loc("DB_BROWSER") .. " (" .. TRP3_API.extended.tools.getTypeLocale(type) .. ")")
+local function showObjectBrowser(onSelectCallback, type, itemFilter)
+	objectBrowser.title:SetText(loc("DB_BROWSER") .. " (" .. getTypeLocale(type) .. ")")
 	objectBrowser.onSelectCallback = onSelectCallback;
 	objectBrowser.type = type;
 	objectBrowser.filter.box:SetText("");
 	objectBrowser.filter.box:SetFocus();
+	objectBrowser.itemFilter = itemFilter;
 	filteredObjectBrowser();
 end
 
@@ -144,17 +218,14 @@ function objectBrowser.init()
 	objectBrowser.content.slider:SetValue(0);
 
 	-- Create icons
-	local row, column;
 	objectBrowser.widgetTab = {};
 
-	for row = 0, 5 do
-		for column = 0, 7 do
-			local button = CreateFrame("Button", "TRP3_ObjectBrowserButton_"..row.."_"..column, objectBrowser.content, "TRP3_IconBrowserButton");
-			button:ClearAllPoints();
-			button:SetPoint("TOPLEFT", objectBrowser.content, "TOPLEFT", 15 + (column * 45), -15 + (row * (-45)));
-			button:SetScript("OnClick", onBrowserIconClick);
-			tinsert(objectBrowser.widgetTab, button);
-		end
+	-- Create lines
+	for line = 0, 8 do
+		local button = CreateFrame("Button", "TRP3_ObjectBrowserButton_" .. line, objectBrowser.content, "TRP3_MusicBrowserLine");
+		button:SetPoint("TOP", objectBrowser.content, "TOP", 0, -10 + (line * (-31)));
+		button:SetScript("OnClick", onBrowserLineClick);
+		tinsert(objectBrowser.widgetTab, button);
 	end
 
 	objectBrowser.filter.box:SetScript("OnTextChanged", filteredObjectBrowser);

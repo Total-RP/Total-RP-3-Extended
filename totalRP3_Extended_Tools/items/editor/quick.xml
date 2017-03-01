@@ -99,7 +99,7 @@
 				<FontString parentKey="gameplay" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
 					<Size x="0" y="16"/>
 					<Anchors>
-						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.display" x="0" y="-150"/>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.display" x="0" y="-185"/>
 						<Anchor point="RIGHT" x="-10" y="0"/>
 						<Anchor point="LEFT" x="25" y="0"/>
 					</Anchors>
@@ -153,11 +153,11 @@
 				</Anchors>
 			</EditBox>
 
-			<CheckButton parentKey="component" inherits="TRP3_CheckBox" name="$parentComponent">
+			<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="-8" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.description"/>
+					<Anchor point="CENTER" x="0" y="-45"/>
 				</Anchors>
-			</CheckButton>
+			</Button>
 
 			<EditBox parentKey="value" inherits="TRP3_TitledHelpEditBox" numeric="true">
 				<Size x="0" y="18"/>
@@ -175,11 +175,11 @@
 				</Anchors>
 			</EditBox>
 
-			<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
+			<CheckButton parentKey="wearable" inherits="TRP3_CheckBox" name="$parentWearable">
 				<Anchors>
-					<Anchor point="BOTTOM" x="0" y="50"/>
+					<Anchor point="TOPLEFT" x="-5" y="-8" relativePoint="BOTTOMLEFT" relativeKey="$parent.value"/>
 				</Anchors>
-			</Button>
+			</CheckButton>
 
 			<!-- *_*_*_*_*_*_*_*_*_*  -->
 			<!--  Widget  -->

@@ -40,13 +40,14 @@ local function injectUIData(data)
 	data.BA.VA = tonumber(editor.value:GetText());
 	data.BA.WE = tonumber(editor.weight:GetText());
 	data.BA.IC = editor.preview.selectedIcon;
-	data.BA.CO = editor.component:GetChecked();
+	data.BA.WA = editor.wearable:GetChecked();
 	return data;
 end
 
 local function onSave(toMode)
 	local ID, data;
 	if editor.classID then
+		ID = editor.classID;
 		-- Edition
 		data = getClass(editor.classID);
 		injectUIData(data);
@@ -54,6 +55,7 @@ local function onSave(toMode)
 		data.MD.SD = date("%d/%m/%y %H:%M:%S");
 		data.MD.SB = Globals.player_id;
 		data.MD.MO = toMode or TRP3_DB.modes.QUICK;
+		TRP3_API.extended.unregisterObject(ID);
 	else
 		-- New item
 		data = TRP3_API.extended.tools.getBlankItemData(toMode);
@@ -64,6 +66,10 @@ local function onSave(toMode)
 		onCreatedCallback(ID, data);
 	end
 	editor:Hide();
+
+	TRP3_API.security.computeSecurity(ID, data);
+	TRP3_API.extended.registerObject(ID, data, 0);
+
 	Events.fireEvent(Events.ON_OBJECT_UPDATED, ID, TRP3_DB.types.ITEM);
 	return ID;
 end
@@ -85,20 +91,37 @@ local function loadData(data)
 	editor.right:SetText(data.BA.RI or "");
 	editor.value:SetText(data.BA.VA or "0");
 	editor.weight:SetText(data.BA.WE or "0");
-	editor.component:SetChecked(data.BA.CO or false);
+	editor.wearable:SetChecked(data.BA.WA or false);
 	onIconSelected(data.BA.IC);
 end
 
-function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, classID)
+function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, classID, fromInv, noSave)
 	onCreatedCallback = callback;
 	editor.classID = classID;
+	editor.convert:Hide();
+	editor.save:Disable();
+	if not fromInv and not noSave then
+		editor.convert:Show();
+	end
+	if not noSave then
+		editor.save:Enable();
+	end
+
 	if classID then
 		editor.title:SetText(loc("IT_QUICK_EDITOR_EDIT"));
-		TRP3_API.ui.frame.configureHoverFrame(editor, toolFrame, "CENTER", 0, 5, false);
+		if not fromInv then
+			TRP3_API.ui.frame.configureHoverFrame(editor, toolFrame, "CENTER", 0, 5, false);
+		else
+			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "CENTER", 0, 0, false);
+		end
 		loadData(getClass(classID));
 	else
 		editor.title:SetText(loc("IT_QUICK_EDITOR"));
-		TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "BOTTOM", 0, 5, false);
+		if not fromInv then
+			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "BOTTOM", 0, 5, false);
+		else
+			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "CENTER", 0, 0, false);
+		end
 		loadData({
 			BA = {
 				NA = loc("IT_NEW_NAME"),
@@ -109,7 +132,9 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 end
 
 local function onQuickCreatedFromList(classID, _)
-	TRP3_API.inventory.addItem(nil, classID);
+	TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(classID))), function(value)
+		TRP3_API.inventory.addItem(nil, classID, {count = value or 1});
+	end, nil, 1);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -121,6 +146,10 @@ local getQualityColorText = TRP3_API.inventory.getQualityColorText;
 
 function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame = ToolFrame;
+
+	editor:SetScript("OnHide", function(self)
+		self:Hide();
+	end);
 
 	-- Name
 	editor.name.title:SetText(loc("IT_FIELD_NAME"));
@@ -134,8 +163,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_RARE) .. ITEM_QUALITY3_DESC, LE_ITEM_QUALITY_RARE},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_EPIC) .. ITEM_QUALITY4_DESC, LE_ITEM_QUALITY_EPIC},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_LEGENDARY) .. ITEM_QUALITY5_DESC, LE_ITEM_QUALITY_LEGENDARY},
+		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_ARTIFACT) .. ITEM_QUALITY6_DESC, LE_ITEM_QUALITY_ARTIFACT},
 		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_HEIRLOOM) .. ITEM_QUALITY7_DESC, LE_ITEM_QUALITY_HEIRLOOM},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_WOW_TOKEN) .. ITEM_QUALITY8_DESC, LE_ITEM_QUALITY_WOW_TOKEN},
 	};
 	setupListBox(editor.quality, editor.qualityList, nil, nil, 165, true);
 
@@ -151,9 +180,9 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	editor.description.title:SetText(loc("IT_TT_DESCRIPTION"));
 	setTooltipForSameFrame(editor.description.help, "RIGHT", 0, 5, loc("IT_TT_DESCRIPTION"), loc("IT_TT_DESCRIPTION_TT"));
 
-	-- Component
-	editor.component.Text:SetText(loc("IT_TT_REAGENT"));
-	setTooltipForSameFrame(editor.component, "RIGHT", 0, 5, loc("IT_TT_REAGENT"), loc("IT_TT_REAGENT_TT"));
+	-- Wearable
+	editor.wearable.Text:SetText(loc("IT_WEARABLE"));
+	setTooltipForSameFrame(editor.wearable, "RIGHT", 0, 5, loc("IT_WEARABLE"), loc("IT_WEARABLE_TT"));
 
 	-- Value
 	editor.value.title:SetText(loc("IT_TT_VALUE_FORMAT"):format(Utils.str.texture("Interface\\MONEYFRAME\\UI-CopperIcon", 15)));

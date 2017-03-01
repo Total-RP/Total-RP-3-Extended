@@ -138,50 +138,40 @@
 					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line5"/>
 				</Anchors>
 			</Frame>
-			<Frame parentKey="line7" inherits="TRP3_ConditionEditorLine">
+			<Slider parentKey="slider" name="$parentSlider" inherits="TRP3_Scrollbar">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line6" relativePoint="BOTTOM"/>
-					<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line6"/>
-					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line6"/>
-				</Anchors>
-			</Frame>
-			<Frame parentKey="line8" inherits="TRP3_ConditionEditorLine">
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-10" relativeKey="$parent.line7" relativePoint="BOTTOM"/>
-					<Anchor point="LEFT" x="0" y="0" relativeKey="$parent.line7"/>
-					<Anchor point="RIGHT" x="0" y="0" relativeKey="$parent.line7"/>
-				</Anchors>
-			</Frame>
-			<Slider parentKey="slider" name="$parentSlider" inherits="OptionsSliderTemplate">
-				<Size x="15" y="0" />
-				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.line1"/>
+					<Anchor point="RIGHT" relativePoint="RIGHT" x="25" y="0" relativeKey="$parent.line1"/>
 					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.line1"/>
-					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line8"/>
+					<Anchor point="BOTTOM" x="0" y="0" relativeKey="$parent.line6"/>
 				</Anchors>
-				<Scripts>
-					<OnLoad>
-						local name = self:GetName();
-						_G[name .. "Text"]:SetText("");
-						_G[name .. "High"]:SetText("");
-						_G[name .. "Low"]:SetText("");
-						self:SetMinMaxValues(0, 6);
-						self:SetValueStep(1);
-						self:SetOrientation("VERTICAL");
-					</OnLoad>
-				</Scripts>
 			</Slider>
 
 			<Button parentKey="add" inherits="TRP3_CommonButton">
 				<Size x="150" y="20"/>
 				<Anchors>
-					<Anchor point="TOP" relativeKey="$parent.line8" relativePoint="BOTTOM" x="0" y="-10"/>
+					<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" x="0" y="-10"/>
 				</Anchors>
 			</Button>
 
-			<Frame parentKey="operand" hidden="true" toplevel="true" setAllPoints="true" enableMouse="true">
+			<EditBox parentKey="failMessage" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.add" x="0" y="-25"/>
+					<Anchor point="LEFT" x="35" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
 
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EditBox parentKey="failWorkflow" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.add" x="0" y="-25"/>
+					<Anchor point="RIGHT" x="-35" y="0"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="15" y="0"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="operand" hidden="true" setAllPoints="true" enableMouse="true">
+
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="24" />
 					</EdgeSize>
@@ -195,7 +185,7 @@
 
 				<Frames>
 
-					<Frame parentKey="editor" inherits="TRP3_EditorEffectTemplate" toplevel="true">
+					<Frame parentKey="editor" inherits="TRP3_EditorEffectTemplate">
 						<Size x="750" y="250"/>
 						<Anchors>
 							<Anchor point="CENTER"/>
@@ -236,7 +226,7 @@
 								</Anchors>
 								<Frames>
 									<Frame parentKey="args" inherits="TRP3_HoveredFrame" hidden="true" name="$parentArgs" enableMouse="true">
-										<Size x="230" y="130"/>
+										<Size x="230" y="160"/>
 										<Layers>
 											<Layer level="OVERLAY">
 												<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[Line text]">
@@ -282,7 +272,7 @@
 								</Anchors>
 								<Frames>
 									<Frame parentKey="args" inherits="TRP3_HoveredFrame" hidden="true" name="$parentArgs" enableMouse="true">
-										<Size x="230" y="130"/>
+										<Size x="230" y="160"/>
 										<Layers>
 											<Layer level="OVERLAY">
 												<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[Line text]">

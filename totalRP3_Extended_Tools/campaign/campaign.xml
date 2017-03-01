@@ -1,0 +1,253 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	
+<!--
+	Total RP 3
+	Copyright 2014-2016 Sylvain Cossement (telkostrasz@totalrp3.info)
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--     Imports      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Script file="campaign/campaign.lua"/>
+
+	<Include file="campaign/editor/actions.xml"/>
+	<Script file="campaign/editor/actions.lua"/>
+
+	<Include file="campaign/editor/normal.xml"/>
+	<Script file="campaign/editor/normal.lua"/>
+
+	<Include file="campaign/editor/quest.xml"/>
+	<Script file="campaign/editor/quest.lua"/>
+
+	<Include file="campaign/editor/step.xml"/>
+	<Script file="campaign/editor/step.lua"/>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--      Base frame      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_Tools_CampaignTemplate" virtual="true">
+		<Frames>
+			<Frame inherits="TRP3_Tools_CampaignEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
+		</Frames>
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--     EFFECTS AND OPERANDS     -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorQuestStart" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="275"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorGoToStep" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="275"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorQuestObjReveal" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="275"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
+			<EditBox parentKey="obj" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-10"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorQuestVarSet" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-10"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="value" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorQuestVarInc" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-10"/>
+				</Anchors>
+			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorQuestVar" hidden="true">
+		<Frames>
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-40"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-10"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorQuestObj" hidden="true">
+		<Frames>
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-40"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+			<EditBox parentKey="obj" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-10"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_OperandEditorQuestSelection" hidden="true">
+		<Frames>
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-40"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Script file="campaign/effects.lua"/>
+</Ui>

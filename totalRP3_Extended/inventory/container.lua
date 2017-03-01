@@ -25,7 +25,8 @@ local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inven
 local getClass, isContainerByClassID = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID;
 local getQualityColorRGB, getQualityColorText = TRP3_API.inventory.getQualityColorRGB, TRP3_API.inventory.getQualityColorText;
 local EMPTY = TRP3_API.globals.empty;
-local parseObjectArgs = TRP3_API.script.parseObjectArgs;
+local color = Utils.str.color;
+local getItemLink = TRP3_API.inventory.getItemLink;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Slot management
@@ -51,43 +52,52 @@ local function incrementLineIfFirst(first, line)
 	return first, line;
 end
 
+local function parseArgs(text, info)
+	return TRP3_API.script.parseArgs(text, info);
+end
+
 local function getItemTooltipLines(slotInfo, class, forceAlt)
 	local title, left, right, text1, text2,  extension1, extension2;
 	local icon, name = getBaseClassDataSafe(class);
+	local rootClassID = TRP3_API.extended.getRootClassID(slotInfo.id);
+	local rootClass = TRP3_API.extended.classExists(rootClassID) and getClass(rootClassID);
+	local argsStructure = {object = slotInfo};
 	title = getQualityColorText(class.BA.QA) .. name;
 
 	if class.BA.LE then
-		left = Utils.str.color("w") .. parseObjectArgs(class.BA.LE, slotInfo.vars);
+		left = color("w") .. parseArgs(class.BA.LE, argsStructure);
 	end
 	if class.BA.RI then
-		right = Utils.str.color("w") .. parseObjectArgs(class.BA.RI, slotInfo.vars);
+		right = color("w") .. parseArgs(class.BA.RI, argsStructure);
 	end
 
 	text1 = "";
 	if class.BA.QE then
-		text1 = Utils.str.color("w") .. ITEM_BIND_QUEST;
+		text1 = color("w") .. ITEM_BIND_QUEST;
 	end
 	if class.BA.SB then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. ITEM_SOULBOUND;
+		text1 = text1 .. color("w") .. ITEM_SOULBOUND;
 	end
 	if isContainerByClass(class) then
+		local slotCount = (class.CO.SR or 5) * (class.CO.SC or 4);
+		local slotUsed = TRP3_API.inventory.countUsedSlot(class, slotInfo);
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. CONTAINER_SLOTS:format((class.CO.SR or 5) * (class.CO.SC or 4), BAGSLOT);
+		text1 = text1 .. color("w") .. loc("IT_CON_TT"):format(slotUsed, slotCount);
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. class.BA.UN .. ")";
+		text1 = text1 .. color("w") .. ITEM_UNIQUE .. " (" .. class.BA.UN .. ")";
 	end
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("o") .. "\"" .. parseObjectArgs(class.BA.DE, slotInfo.vars) .. "\"";
+		text1 = text1 .. color("o") .. "\"" .. parseArgs(class.BA.DE, argsStructure) .. "\"";
 	end
 
 	if class.US and class.US.AC then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("g") .. USE .. ": " .. parseObjectArgs(class.US.AC, slotInfo.vars);
+		text1 = text1 .. color("g") .. USE .. ": " .. parseArgs(class.US.AC, argsStructure);
 	end
 
 	if class.BA.CO then
@@ -100,18 +110,24 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		text1 = text1 .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
 	end
 
-	if IsAltKeyDown() or forceAlt then
+	if not slotInfo.noAlt and (IsAltKeyDown() or forceAlt) then
 
 		extension1 = "";
 		local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * (class.BA.WE or 0));
 		local formatedWeight = TRP3_API.extended.formatWeight(weight);
-		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. formatedWeight;
+		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. color("w") .. " " .. formatedWeight;
 
-		if (class.BA.VA or 0) > 0 then
+		if (class.BA.VA or 0) > 0 or (isContainerByClass(class) and (slotInfo.totalValue or 0) > 0) then
 			extension2 = "";
-			local value = class.BA.VA or 0;
-			local formatedValue = GetCoinTextureString(value);
-			extension2 = extension2 .. Utils.str.color("w") .. formatedValue;
+			local value;
+			if isContainerByClass(class) and slotInfo.totalValue then
+				value = slotInfo.totalValue;
+			else
+				value = (class.BA.VA or 0) * (slotInfo.count or 1);
+			end
+			value = GetCoinTextureString(value);
+			extension2 = extension2 .. color("w") .. value;
+
 		end
 
 		text2 = "";
@@ -119,20 +135,45 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		if not forceAlt then
 			if isUsableByClass(class) then
 				text2 = text2 .. "\n";
-				text2 = text2 .. Utils.str.color("y") .. loc("CM_R_CLICK") .. ": " .. Utils.str.color("o") .. USE;
+				text2 = text2 .. color("y") .. loc("CM_R_CLICK") .. ":|cffff9900 " .. USE;
 			end
 
 			if isContainerByClass(class) then
 				text2 = text2 .. "\n";
-				text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. loc("IT_CON_OPEN");
+				text2 = text2 .. color("y") .. loc("CM_DOUBLECLICK") .. ":|cffff9900 " .. loc("IT_CON_OPEN");
+			end
+
+			if class.missing then
+				text2 = text2 .. "\n";
+				text2 = text2 .. color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ":|cffff9900 " .. slotInfo.id;
+			else
+				if TRP3_DB.exchange[rootClassID] or TRP3_DB.my[rootClassID] then
+					text2 = text2 .. "\n";
+					text2 = text2 .. color("y") .. loc("SEC_TT_COMBO");
+				end
+				if TRP3_DB.exchange[rootClassID] and TRP3_API.security.atLeastOneBlocked(rootClassID) then
+					text2 = text2 .. "\n\n";
+					text2 = text2 .. color("o") .. loc("SET_TT_SECURED");
+				end
+				if not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
+					text2 = text2 .. "\n\n";
+					text2 = text2 .. color("o") .. loc("SET_TT_OLD"):format(rootClass.MD.tV ~= nil and TRP3_API.extended.tools.formatVersion(rootClass.MD.tV) or "?");
+				end
 			end
 		end
-
+	else
+		local alertCount = 0;
 		if class.missing then
-			text2 = text2 .. "\n";
-			text2 = text2 .. Utils.str.color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ": " .. Utils.str.color("o") .. slotInfo.id;
+			alertCount = alertCount + 1;
+		else
+			if TRP3_DB.exchange[rootClassID] and TRP3_API.security.atLeastOneBlocked(rootClassID) then
+				alertCount = alertCount + 1;
+			end
 		end
-
+		if alertCount > 0 then
+			extension1 = color("y") .. loc("SET_TT_DETAILS_2"):format(alertCount);
+			extension2 = color("y") .. loc("SET_TT_DETAILS_1");
+		end
 	end
 
 	return title, left, right, text1, text2, extension1, extension2;
@@ -226,10 +267,7 @@ local function containerSlotUpdate(self, elapsed)
 			self.Icon:SetVertexColor(0.85, 0.85, 0.85);
 			self.Container:Show();
 		end
-		if self.additionalOnUpdateHandler then
-			self.additionalOnUpdateHandler(self, elapsed);
-		end
-		if self:IsDragging() or TRP3_API.inventory.isInTransaction(self.info) then
+		if self:IsDragging() or TRP3_API.inventory.isInTransaction(self.info) or self:GetParent().sync then
 			self.Icon:SetDesaturated(true);
 		end
 		if self.info.cooldown then
@@ -242,7 +280,11 @@ local function containerSlotUpdate(self, elapsed)
 			end
 		end
 	end
+	if self.additionalOnUpdateHandler then
+		self.additionalOnUpdateHandler(self, elapsed);
+	end
 end
+TRP3_API.inventory.containerSlotUpdate = containerSlotUpdate;
 
 local function slotOnEnter(self)
 	if self.info then
@@ -273,69 +315,164 @@ local function slotOnDragStart(self)
 		if self.additionalOnDragHandler then
 			self.additionalOnDragHandler(self);
 		end
+		if self.class then
+			TRP3_API.ui.misc.playSoundKit(self.class.BA.PS or 1186, "SFX");
+		end
+	end
+end
+
+local function doPickUpLoot(slotFrom, containerTo, slotIDTo, itemCount)
+	assert(slotFrom.info, "No info from origin loot");
+	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
+	slotFrom.info.count = slotFrom.info.count or 1;
+	local containerFromFrame = slotFrom:GetParent();
+
+	local lootInfo = {};
+	Utils.table.copy(lootInfo, slotFrom.info);
+	lootInfo.count = itemCount;
+
+	local returnCode, count = TRP3_API.inventory.addItem(containerTo, lootInfo.id, lootInfo, nil, slotIDTo);
+
+	slotFrom.info.count = slotFrom.info.count - count;
+
+	if slotFrom.info.count <= 0 then
+		slotFrom.info = nil;
+		slotFrom.class = nil;
+	end
+
+	if containerFromFrame.onLootCallback then
+		containerFromFrame.onLootCallback(slotFrom.info, count, slotFrom);
+	end
+
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, containerTo);
+
+	if not containerFromFrame.info.stash then
+		for index, slot in pairs(lootFrame.slots) do
+			if slot.info then
+				return;
+			end
+		end
+		lootFrame.forceLoot = nil;
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
+		lootFrame:Hide();
 	end
 end
 
 local function pickUpLoot(slotFrom, container, slotID)
 	assert(slotFrom.info, "No info from origin loot");
 	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
+	slotFrom.info.count = slotFrom.info.count or 1;
+
 	local lootInfo = slotFrom.info;
 	local itemID = lootInfo.id;
-	local count = lootInfo.count;
+	local itemCount = slotFrom.info.count;
 
-	local returnCode, count = TRP3_API.inventory.addItem(container, itemID, {count = count});
-	if returnCode == 0 then
-		slotFrom.info = nil;
-		slotFrom.class = nil;
+	if itemCount == 1 then
+		doPickUpLoot(slotFrom, container, slotID, itemCount);
 	else
-		slotFrom.info.count = (slotFrom.info.count or 1) - count;
+		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(itemID))), function(value)
+			value = math.min(value or 1, itemCount);
+			if slotFrom and slotFrom.info and value > 0 and value <= itemCount then
+				doPickUpLoot(slotFrom, container, slotID, value or 1);
+			end
+		end, nil, itemCount);
 	end
-
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-
-	for index, slot in pairs(lootFrame.slots) do
-		if slot.info then
-			return;
-		end
-	end
-	lootFrame:Hide();
 end
 
-local UnitExists, CheckInteractDistance = UnitExists, CheckInteractDistance;
+local function discardLoot(slotFrom, containerFrame)
+	assert(slotFrom.info, "No info from origin loot");
+	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
+	local lootInfo = slotFrom.info;
+
+	Utils.message.displayMessage(loc("DR_DELETED"):format(getItemLink(slotFrom.class), lootInfo.count or 1));
+
+	lootInfo.count = 0;
+
+	slotFrom.info = nil;
+	slotFrom.class = nil;
+
+	if containerFrame.onDiscardCallback then
+		containerFrame.onDiscardCallback(lootInfo, slotFrom);
+	end
+
+	if containerFrame.info and not containerFrame.info.stash then
+		for index, slot in pairs(containerFrame.slots) do
+			if slot.info then
+				return;
+			end
+		end
+		containerFrame.forceLoot = nil;
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
+		containerFrame:Hide();
+	end
+end
+
+local UnitExists, CheckInteractDistance, UnitIsPlayer = UnitExists, CheckInteractDistance, UnitIsPlayer;
 
 local function slotOnDragStop(slotFrom)
 	ResetCursor();
 	if slotFrom.info and not TRP3_API.inventory.isInTransaction(slotFrom.info) then
 		local slotTo = GetMouseFocus();
-		local container1, slot1;
-		slot1 = slotFrom.slotID;
+		local container1, slot1ID;
+		slot1ID = slotFrom.slotID;
 		container1 = slotFrom:GetParent().info;
+
+		local class = getClass(slotFrom.info.id);
+		if class then
+			TRP3_API.ui.misc.playSoundKit(class.BA.DS or 1203, "SFX");
+		end
 		if slotTo:GetName() == "WorldFrame" then
 			if not slotFrom.loot then
-				if UnitExists("mouseover") and CheckInteractDistance("mouseover", 2) then
-					TRP3_API.inventory.addToExchange(container1, slot1);
+				if UnitExists("mouseover") and UnitIsPlayer("mouseover") and CheckInteractDistance("mouseover", 2) then
+					if class and not class.BA.SB then
+						TRP3_API.inventory.addToExchange(container1, slot1ID);
+					else
+						Utils.message.displayMessage(ERR_TRADE_BOUND_ITEM, Utils.message.type.ALERT_MESSAGE);
+					end
 				else
 					local itemClass = getClass(slotFrom.info.id);
-					TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function()
-						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
+					local itemLink = getItemLink(itemClass);
+
+					TRP3_API.inventory.dropOrDestroy(itemClass, function()
+						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1ID, slotFrom.info, true);
+					end, function()
+						TRP3_API.inventory.dropItem(container1, slot1ID, slotFrom.info);
 					end);
 				end
 			else
-				Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
+				if slotFrom.deletable then
+					TRP3_API.popup.showConfirmPopup(loc("DR_POPUP_REMOVE_TEXT"), function()
+						discardLoot(slotFrom, slotFrom:GetParent());
+					end);
+				else
+					Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
+				end
 			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, ("TRP3_ExchangeFrame"):len()) == "TRP3_ExchangeFrame" then
-			TRP3_API.inventory.addToExchange(container1, slot1);
+			if not container1.loot then
+				TRP3_API.inventory.addToExchange(container1, slot1ID);
+			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
 			if TRP3_API.inventory.isInTransaction(slotTo.info or EMPTY) then
 				return;
 			end
-			local container2, slot2;
-			slot2 = slotTo.slotID;
+			local container2, slot2ID;
+			slot2ID = slotTo.slotID;
 			container2 = slotTo:GetParent().info;
 			if not container1.loot then
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
-			else
-				pickUpLoot(slotFrom, container2, slot2);
+				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1ID, container2, slot2ID);
+			elseif slotFrom:GetParent() == TRP3_StashContainer and TRP3_StashContainer.sharedData then
+				if not slotFrom:GetParent().sync then
+					TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2ID);
+				else
+					Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
+				end
+			elseif not container2.loot then
+				pickUpLoot(slotFrom, container2, slot2ID);
+			end
+		elseif slotTo:GetName() and slotTo:GetName():sub(1, 19) == "TRP3_StashContainer" then
+			if not container1.loot then
+				TRP3_API.inventory.stashSlot(slotFrom, container1, slot1ID);
 			end
 		else
 			Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_HERE"), Utils.message.type.ALERT_MESSAGE);
@@ -353,77 +490,108 @@ local function splitStack(slot, quantity)
 	end
 end
 
+local IsShiftKeyDown, IsControlKeyDown, OpenStackSplitFrame = IsShiftKeyDown, IsControlKeyDown, OpenStackSplitFrame;
 local COLUMN_SPACING = 43;
 local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
 TRP3_API.inventory.CONTAINER_SLOT_UPDATE_FREQUENCY = CONTAINER_SLOT_UPDATE_FREQUENCY;
 
-local function initContainerSlot(slot, simpleLeftClick)
+local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 	createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
 	slot:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-	slot:RegisterForDrag("LeftButton");
-	slot:SetScript("OnDragStart", slotOnDragStart);
-	slot:SetScript("OnDragStop", slotOnDragStop);
-	slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 	slot:SetScript("OnEnter", slotOnEnter);
 	slot:SetScript("OnLeave", slotOnLeave);
-	slot:SetScript("OnClick", function(self, button)
-		if not self.loot and self.info and not TRP3_API.inventory.isInTransaction(self.info) then
-			if button == "LeftButton" then
-				if IsShiftKeyDown() and (self.info.count or 1) > 1 then
-					OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
-				elseif simpleLeftClick then
-					simpleLeftClick(self);
-				end
-			elseif button == "RightButton" then
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
-			end
-		end
-	end);
-	slot:SetScript("OnDoubleClick", function(self, button)
-		if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
-			switchContainerByRef(self.info, self:GetParent());
-			slotOnEnter(self);
-		end
-		if self.additionalDoubleClickHandler then
-			self.additionalDoubleClickHandler(self, button);
-		end
-	end);
-	slot.SplitStack = splitStack;
 
-	-- Listen to refresh event
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
-		if slot.info == slotInfo then
-			slot.info = nil;
-			slot.class = nil;
-			containerSlotUpdate(slot);
-			if TRP3_ItemTooltip.ref == slot then
-				TRP3_ItemTooltip.ref = nil;
-				TRP3_ItemTooltip:Hide();
+	if not lootBuilder then
+		slot:RegisterForDrag("LeftButton");
+		slot:SetScript("OnDragStart", slotOnDragStart);
+		slot:SetScript("OnDragStop", slotOnDragStop);
+		slot:SetScript("OnReceiveDrag", slotOnDragReceive);
+
+		slot:SetScript("OnClick", function(self, button)
+			if not self.loot and self.info and not TRP3_API.inventory.isInTransaction(self.info) then
+				if button == "LeftButton" then
+					if IsShiftKeyDown() and (self.info.count or 1) > 1 then
+						OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
+					elseif simpleLeftClick then
+						simpleLeftClick(self);
+					end
+				elseif button == "RightButton" then
+					if IsAltKeyDown() then
+						local rootClass = TRP3_API.extended.getRootClassID(self.info.id);
+						if TRP3_DB.exchange[rootClass] or TRP3_DB.my[rootClass] then
+							TRP3_API.security.showSecurityDetailFrame(rootClass);
+						end
+					else
+						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+					end
+				end
+			elseif self.loot and self.info and button == "RightButton" then
+				if self:GetParent() == TRP3_StashContainer and TRP3_StashContainer.sharedData then
+					if not self:GetParent().sync then
+						TRP3_API.inventory.unstashSlot(self);
+					else
+						Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
+					end
+				else
+					pickUpLoot(self);
+				end
 			end
-		end
-	end);
+			if self.additionalClickHandler then
+				self.additionalClickHandler(self, button);
+			end
+		end);
+		slot:SetScript("OnDoubleClick", function(self, button)
+			if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
+				switchContainerByRef(self.info, self:GetParent());
+				slotOnEnter(self);
+			end
+			if self.additionalDoubleClickHandler then
+				self.additionalDoubleClickHandler(self, button);
+			end
+		end);
+		slot.SplitStack = splitStack;
+
+		-- Listen to refresh event
+		TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
+			if slot.info == slotInfo then
+				slot.info = nil;
+				slot.class = nil;
+				containerSlotUpdate(slot);
+				if TRP3_ItemTooltip.ref == slot then
+					TRP3_ItemTooltip.ref = nil;
+					TRP3_ItemTooltip:Hide();
+				end
+			end
+		end);
+	else
+		slot:SetScript("OnClick", lootBuilder);
+	end
 end
 TRP3_API.inventory.initContainerSlot = initContainerSlot;
 
-local function initContainerSlots(containerFrame, rowCount, colCount, loot)
+local function initContainerSlots(containerFrame, rowCount, colCount, loot, lootBuilder)
 	local slotNum = 1;
 	local rowY = -58;
 	containerFrame.slots = {};
 	for row = 1, rowCount do
 		local colX = 22;
 		for col = 1, colCount do
-			local slot = CreateFrame("Button", containerFrame:GetName() .. "Slot" .. slotNum, containerFrame, "TRP3_ContainerSlotTemplate");
+			local slot = CreateFrame("Button",
+				containerFrame:GetName() .. "Slot" .. slotNum,
+				containerFrame, "TRP3_ContainerSlotTemplate");
 			tinsert(containerFrame.slots, slot);
-			initContainerSlot(slot);
+			initContainerSlot(slot, false, lootBuilder);
 			slot:SetPoint("TOPLEFT", colX, rowY);
 			slot.loot = loot;
+			slot.index = slotNum;
 			colX = colX + COLUMN_SPACING;
 			slotNum = slotNum + 1;
 		end
 		rowY = rowY - ROW_SPACING;
 	end
 end
+TRP3_API.inventory.initContainerSlots = initContainerSlots;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Container
@@ -451,7 +619,7 @@ end
 TRP3_API.inventory.loadContainerPageSlots = loadContainerPageSlots;
 
 local function containerFrameUpdate(self, elapsed)
-	if not self.info or not self.class then
+	if not self.info or not self.info.id or not TRP3_API.extended.classExists(self.info.id) then
 		self:Hide();
 		return;
 	end
@@ -508,7 +676,7 @@ local function lockOnContainer(self, originContainer)
 		end
 		originContainer.lockedBy = self;
 		if originContainer.info.id ~= "main" then
-			self:SetPoint("TOPLEFT", originContainer, "TOPRIGHT", originContainer.lockX or 0, originContainer.lockY or 0);
+			self:SetPoint("BOTTOM", originContainer, "TOP", originContainer.lockX or 0, originContainer.lockY or 42);
 			containerFrameUpdate(originContainer);
 		else
 			self:SetPoint("TOPLEFT", originContainer, "TOPRIGHT", originContainer.lockX or 20, originContainer.lockY or 0);
@@ -572,6 +740,7 @@ local function onContainerShow(self)
 	lockOnContainer(self, self.originContainer);
 	decorateContainer(self, self.class, self.info);
 	loadContainerPageSlots(self);
+	TRP3_API.ui.misc.playSoundKit(12206, "SFX");
 end
 
 local function onContainerHide(self)
@@ -583,6 +752,8 @@ local function onContainerHide(self)
 		slot.info = nil;
 		slot.class = nil;
 	end
+	self:Hide();
+	TRP3_API.ui.misc.playSoundKit(12206, "SFX");
 end
 
 local CONTAINER_UPDATE_FREQUENCY = 0.15;
@@ -685,19 +856,25 @@ end
 -- Loot
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function presentLoot(lootID)
-	local loot = getClass(lootID);
-	if loot and loot.IT then
-		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
-		lootFrame.Title:SetText((loot.NA or loc("LOOT")));
+local lootDB = {};
+
+local function presentLoot(loot, onLootCallback, forceLoot, checker, onDiscardCallback)
+	if lootFrame:IsVisible() and lootFrame:GetParent() == TRP3_DialogFrame and lootFrame.forceLoot then
+		Utils.message.displayMessage(loc("IT_LOOT_ERROR"), 4);
+		return;
+	end
+	if loot then
+		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.BA.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
+		lootFrame.Title:SetText((loot.BA.NA or loc("LOOT")));
 
 		local slotCounter = 1;
-		lootFrame.info.content = loot.IT;
+		lootFrame.info.content = loot.IT or EMPTY;
 		for index, slot in pairs(lootFrame.slots) do
 			slot.slotID = tostring(slotCounter);
-			if loot.IT[slot.slotID] then
-				slot.info = loot.IT[slot.slotID];
-				slot.class = getClass(loot.IT[slot.slotID].id);
+			if lootFrame.info.content[slot.slotID] then
+				slot.info = lootFrame.info.content[slot.slotID];
+				slot.class = getClass(lootFrame.info.content[slot.slotID].id);
+				slot.deletable = onDiscardCallback ~= nil;
 			else
 				slot.info = nil;
 				slot.class = nil;
@@ -706,32 +883,74 @@ local function presentLoot(lootID)
 			slotCounter = slotCounter + 1;
 		end
 
-		lootFrame:Show();
 		lootFrame:ClearAllPoints();
-		if TRP3_MainFrame:IsVisible() then
-			lootFrame:SetPoint("TOPLEFT", TRP3_MainFrame, "TOPRIGHT", 0, 0);
+		lootFrame.close:Enable();
+		lootFrame.onDiscardCallback = onDiscardCallback;
+		lootFrame.forceLoot = forceLoot;
+		lootFrame.checker = checker;
+		if TRP3_DialogFrame:IsVisible() then
+			lootFrame:SetParent(TRP3_DialogFrame);
+			lootFrame:SetPoint("TOP", 0, -75);
+			lootFrame:SetFrameLevel(TRP3_DialogFrame:GetFrameLevel() + 20);
+			if forceLoot then
+				lootFrame.close:Disable();
+			end
 		else
-			lootFrame:SetPoint("CENTER");
+			lootFrame:SetParent(UIParent);
+			if TRP3_MainFrame:IsVisible() then
+				lootFrame:SetPoint("TOPLEFT", TRP3_MainFrame, "TOPRIGHT", 0, 0);
+			else
+				lootFrame:SetPoint("CENTER");
+			end
 		end
 
+		lootFrame:Show();
 		lootFrame:Raise();
+		lootFrame.onLootCallback = onLootCallback;
 		return 0;
-	else
-		Log.log("Cannot find lootID: " .. tostring(lootID));
 	end
 end
 TRP3_API.inventory.presentLoot = presentLoot;
 
-function TRP3_API.inventory.initLootFrame()
-	lootFrame = CreateFrame("Frame", "TRP3_LootFrame", UIParent, "TRP3_Container5x4Template");
+local function presentLootID(lootID, callback, forceLoot)
+	presentLoot(lootDB[lootID], callback, forceLoot);
+end
+TRP3_API.inventory.presentLootID = presentLootID;
 
+function TRP3_API.inventory.getLoot(lootID)
+	return lootDB[lootID];
+end
+
+function TRP3_API.inventory.storeLoot(lootID, lootData)
+	local loot = {
+		IT = {},
+		BA = {
+			IC = lootData[2],
+			NA = lootData[1]
+		}
+	}
+	for index, slot in pairs(lootData[3] or EMPTY) do
+		loot.IT[tostring(index)] = {
+			id = slot.classID,
+			count = slot.count or 1
+		}
+	end
+	lootDB[lootID] = loot;
+end
+
+function TRP3_API.inventory.initLootFrame()
+	lootFrame = CreateFrame("Frame", "TRP3_LootFrame", UIParent, "TRP3_Container2x4Template");
 	lootFrame.LockIcon:Hide();
 
 	local lootDragStart = function(self)
-		self:StartMoving();
+		if not lootFrame.forceLoot then
+			self:StartMoving();
+		end
 	end
 	local lootDragStop = function(self)
-		self:StopMovingOrSizing();
+		if not lootFrame.forceLoot then
+			self:StopMovingOrSizing();
+		end
 	end
 
 	lootFrame.info = {loot = true};
@@ -740,18 +959,19 @@ function TRP3_API.inventory.initLootFrame()
 	lootFrame:RegisterForDrag("LeftButton");
 	lootFrame:SetScript("OnDragStart", lootDragStart);
 	lootFrame:SetScript("OnDragStop", lootDragStop);
-	lootFrame.IconButton:SetScript("OnDragStart", function(self)
-		lootDragStart(self:GetParent());
-	end);
-	lootFrame.IconButton:SetScript("OnDragStop", function(self)
-		lootDragStop(self:GetParent());
-	end);
+	lootFrame:SetScript("OnHide", function(self) self:Hide(); end);
 
 	lootFrame.Bottom:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 	lootFrame.Middle:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 	lootFrame.Top:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 
-	initContainerSlots(lootFrame, 5, 4, true);
+	initContainerSlots(lootFrame, 2, 4, true);
+
+	createRefreshOnFrame(lootFrame, CONTAINER_UPDATE_FREQUENCY, function(self)
+		if self.checker and not self.checker() then
+			self:Hide();
+		end
+	end);
 
 	-- Tooltip
 	createRefreshOnFrame(TRP3_ItemTooltip, CONTAINER_UPDATE_FREQUENCY, function(self)
@@ -763,4 +983,29 @@ function TRP3_API.inventory.initLootFrame()
 		self.ref = nil;
 	end);
 
+	-- Inventory button
+	local inventory = CreateFrame("Button", "TRP3_LootFrameInventory", TRP3_LootFrame, "TRP3_CommonButton");
+	inventory:SetPoint("TOP", TRP3_LootFrame, "BOTTOM", 0, -25);
+	inventory:SetSize(140, 20);
+	inventory:SetText(loc("INV_PAGE_INV_OPEN"));
+	inventory:SetScript("OnClick", function()
+		local playerInventory = TRP3_API.inventory.getInventory();
+		local quickSlot = playerInventory.content[TRP3_API.inventory.QUICK_SLOT_ID];
+		if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
+			TRP3_API.inventory.switchContainerBySlotID(playerInventory, TRP3_API.inventory.QUICK_SLOT_ID);
+			return;
+		end
+	end);
+
+	local lootAll = CreateFrame("Button", "TRP3_LootFrameLootAll", TRP3_LootFrame, "TRP3_CommonButton");
+	lootAll:SetPoint("TOP", TRP3_LootFrameInventory, "BOTTOM", 0, -5);
+	lootAll:SetSize(140, 20);
+	lootAll:SetText(loc("INV_PAGE_LOOT_ALL"));
+	lootAll:SetScript("OnClick", function()
+		for _, slot in pairs(lootFrame.slots) do
+			if slot.info then
+				pickUpLoot(slot);
+			end
+		end
+	end);
 end

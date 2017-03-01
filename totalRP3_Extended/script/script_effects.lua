@@ -19,7 +19,47 @@
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local loc = TRP3_API.locale.getText;
-local getSpeechPrefixText = TRP3_API.ui.misc.getSpeechPrefixText;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- NPC speech
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local SPEECH_PREFIX = {
+	SAYS = "/s",
+	YELLS = "/y",
+	WHISPERS = "/w",
+	EMOTES = "/e"
+}
+TRP3_API.ui.misc.SPEECH_PREFIX = SPEECH_PREFIX;
+
+local SPEECH_CHANNEL = {
+	[SPEECH_PREFIX.SAYS] = "SAY",
+	[SPEECH_PREFIX.YELLS] = "YELL",
+	[SPEECH_PREFIX.EMOTES] = "EMOTE",
+}
+
+local function getSpeechPrefixText(speechPrefix, npcName, text)
+	if speechPrefix == SPEECH_PREFIX.SAYS then
+		return ("%s %s: %s"):format(npcName, loc("NPC_SAYS"), text);
+	elseif speechPrefix == SPEECH_PREFIX.YELLS then
+		return ("%s %s: %s"):format(npcName, loc("NPC_YELLS"), text);
+	elseif speechPrefix == SPEECH_PREFIX.WHISPERS then
+		return ("%s %s: %s"):format(npcName, loc("NPC_WHISPERS"), text);
+	elseif speechPrefix == SPEECH_PREFIX.EMOTES then
+		return ("%s %s"):format(npcName, text);
+	end
+	return "(error in getSpeechPrefixText: " .. tostring(speechPrefix) .. ")";
+end
+TRP3_API.ui.misc.getSpeechPrefixText = getSpeechPrefixText;
+
+local function getSpeechChannel(speechPrefix)
+	return SPEECH_CHANNEL[speechPrefix or SPEECH_PREFIX.SAYS] or "SAY";
+end
+
+local function getSpeech(text, speechPrefix)
+	return getSpeechPrefixText(speechPrefix, UnitName("player"), text);
+end
+TRP3_API.ui.misc.getSpeech = getSpeech;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effetc structure
@@ -31,7 +71,7 @@ local EFFECTS = {
 
 	["MISSING"] = {
 		codeReplacementFunc = function (_, id)
-			return ("message(\"|cffff0000" .. loc("SCRIPT_UNKNOWN_EFFECT") .. ": %s\", 1); lastEffectReturn = nil;"):format(id);
+			return ("message(\"|cffff0000" .. loc("SCRIPT_UNKNOWN_EFFECT") .. ": %s\", 1); args.LAST = nil;"):format(id);
 		end,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -44,7 +84,7 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local text = args[1] or "";
 			local type = tonumber(args[2]) or 1;
-			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(text, type);
+			return ("message(var(\"%s\", args), %s); args.LAST = 0;"):format(text, type);
 		end,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -56,14 +96,14 @@ local EFFECTS = {
 	["speech_env"] = {
 		codeReplacementFunc = function (args)
 			local text = args[1] or "";
-			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); lastEffectReturn = 0;"):format(text);
+			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); args.LAST = 0;"):format(text);
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
 		},
 		securedCodeReplacementFunc = function (args)
 			local text = args[1] or "";
-			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(text, 1);
+			return ("message(var(\"%s\", args), %s); args.LAST = 0;"):format(text, 1);
 		end,
 		securedEnv = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -75,7 +115,7 @@ local EFFECTS = {
 			local name = args[1] or "";
 			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
-			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text));
+			return ("SendChatMessage(var(\"|| %s\", args), 'EMOTE'); args.LAST = 0;"):format(getSpeechPrefixText(type, name, text));
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
@@ -84,7 +124,26 @@ local EFFECTS = {
 			local name = args[1] or "";
 			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
-			return ("message(var(\"%s\", args), %s); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text), 1);
+			return ("message(var(\"%s\", args), %s); args.LAST = 0;"):format(getSpeechPrefixText(type, name, text), 1);
+		end,
+		securedEnv = {
+			message = "TRP3_API.utils.message.displayMessage",
+		},
+		secured = security.LOW,
+	},
+	["speech_player"] = {
+		codeReplacementFunc = function (args)
+			local channel = getSpeechChannel(args[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS);
+			local text = args[2] or "";
+			return ("SendChatMessage(var(\"%s\", args), \"%s\"); args.LAST = 0;"):format(text, channel);
+		end,
+		env = {
+			SendChatMessage = "SendChatMessage",
+		},
+		securedCodeReplacementFunc = function (args)
+			local prefix = args[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
+			local text = getSpeech(args[2] or "", prefix);
+			return ("message(var(\"%s\", args), %s); args.LAST = 0;"):format(text, 1);
 		end,
 		securedEnv = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -93,28 +152,35 @@ local EFFECTS = {
 	},
 
 	-- Expert
-	["var_set_execenv"] = {
+	["var_object"] = {
 		codeReplacementFunc = function (args)
-			local varName = args[1] or "var";
-			local varValue = args[2] or "";
-			local initOnly = tostring(args[3] or false);
-			return ("setWorkflowVar(args.custom, \"%s\", var(\"%s\", args), %s); lastEffectReturn = 0;"):format(varName, varValue, initOnly);
+			local source = args[1] or "w";
+			local operationType = args[2] or "i";
+			local varName = args[3] or "var";
+			local varValue = args[4] or "0";
+			return ("setVar(args, \"%s\", \"%s\", \"%s\", var(\"%s\", args)); args.LAST = 0;"):format(source, operationType, varName, varValue);
 		end,
 		env = {
-			setWorkflowVar = "TRP3_API.script.setWorkflowVar",
+			setVar = "TRP3_API.script.setVar",
 		},
 		secured = security.HIGH,
 	},
 
-	["var_set_object"] = {
+	["var_operand"] = {
 		codeReplacementFunc = function (args)
 			local varName = args[1] or "var";
-			local varValue = args[2] or "";
-			local initOnly = tostring(args[3] or false);
-			return ("setObjectVar(args.object, \"%s\", var(\"%s\", args), %s); lastEffectReturn = 0;"):format(varName, varValue, initOnly);
+			local source = args[2] or "w";
+			local operandID = args[3] or "random";
+			local operandArgs = args[4];
+			local operand = TRP3_API.script.getOperand(operandID);
+			local code = "";
+			if operand and operand.codeReplacement then
+				code = operand.codeReplacement(operandArgs);
+			end
+			return ("setVar(args, \"%s\", \"=\", \"%s\", tostring(%s)); args.LAST = 0;"):format(source, varName, code), operand.env;
 		end,
 		env = {
-			setObjectVar = "TRP3_API.script.setObjectVar",
+			setVar = "TRP3_API.script.setVar",
 		},
 		secured = security.HIGH,
 	},
@@ -123,10 +189,22 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local varName = args[1] or "";
 			local varValue = args[2] or "";
-			return ("sendSignal(\"%s\", var(\"%s\", args)); lastEffectReturn = 0;"):format(varName, varValue);
+			return ("sendSignal(\"%s\", var(\"%s\", args)); args.LAST = 0;"):format(varName, varValue);
 		end,
 		env = {
 			sendSignal = "TRP3_API.extended.sendSignal",
+		},
+		secured = security.HIGH,
+	},
+
+	["run_workflow"] = {
+		codeReplacementFunc = function (args)
+			local source = args[1] or "o";
+			local id = args[2] or "";
+			return ("runWorkflow(args, \"%s\", \"%s\"); args.LAST = 0;"):format(source, id);
+		end,
+		env = {
+			runWorkflow = "TRP3_API.script.runWorkflow",
 		},
 		secured = security.HIGH,
 	},
@@ -137,7 +215,7 @@ local EFFECTS = {
 			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
 			local source = "Script"; -- TODO: get source
-			return ("lastEffectReturn = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
+			return ("args.LAST = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
 		end,
 		env = {
 			playSoundID = "TRP3_API.utils.music.playSoundID",
@@ -148,7 +226,7 @@ local EFFECTS = {
 	["sound_music_self"] = {
 		codeReplacementFunc = function (args)
 			local path = (args[1] or ""):gsub("\\", "\\\\");
-			return ("lastEffectReturn = playMusic(\"%s\");"):format(path);
+			return ("args.LAST = playMusic(\"%s\");"):format(path);
 		end,
 		env = {
 			playMusic = "TRP3_API.utils.music.playMusic",
@@ -158,7 +236,7 @@ local EFFECTS = {
 
 	["sound_music_stop"] = {
 		codeReplacementFunc = function ()
-			return "stopMusic(); lastEffectReturn = 0;";
+			return "stopMusic(); args.LAST = 0;";
 		end,
 		env = {
 			stopMusic = "TRP3_API.utils.music.stopMusic",
@@ -172,7 +250,7 @@ local EFFECTS = {
 			local channel = args[1] or "SFX";
 			local distance = tonumber(args[3] or 0);
 			local source = "Script"; -- TODO: get source
-			return ("lastEffectReturn = playLocalSoundID(%s, \"%s\", %s, \"%s\");"):format(soundID, channel, distance, source);
+			return ("args.LAST = playLocalSoundID(%s, \"%s\", %s, \"%s\");"):format(soundID, channel, distance, source);
 		end,
 		env = {
 			playLocalSoundID = "TRP3_API.utils.music.playLocalSoundID",
@@ -181,7 +259,7 @@ local EFFECTS = {
 			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
 			local source = "Script"; -- TODO: get source
-			return ("lastEffectReturn = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
+			return ("args.LAST = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
 		end,
 		securedEnv = {
 			playSoundID = "TRP3_API.utils.music.playSoundID",
@@ -194,14 +272,14 @@ local EFFECTS = {
 			local musicPath = (args[1] or ""):gsub("\\", "\\\\");
 			local distance = tonumber(args[2] or 0);
 			local source = "Script"; -- TODO: get source
-			return ("lastEffectReturn = playLocalMusic(\"%s\", %s, \"%s\");"):format(musicPath, distance, source);
+			return ("args.LAST = playLocalMusic(\"%s\", %s, \"%s\");"):format(musicPath, distance, source);
 		end,
 		env = {
 			playLocalMusic = "TRP3_API.utils.music.playLocalMusic",
 		},
 		securedCodeReplacementFunc = function (args)
 			local path = (args[1] or ""):gsub("\\", "\\\\");
-			return ("lastEffectReturn = playMusic(\"%s\");"):format(path);
+			return ("args.LAST = playMusic(\"%s\");"):format(path);
 		end,
 		securedEnv = {
 			playMusic = "TRP3_API.utils.music.playMusic",
@@ -210,23 +288,22 @@ local EFFECTS = {
 	},
 
 	-- Companions
-
 	["companion_dismiss_mount"] = {
 		codeReplacementFunc = function ()
-			return "DismissCompanion(\"MOUNT\"); lastEffectReturn = 0;"
+			return "DismissCompanion(\"MOUNT\"); args.LAST = 0;"
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
 		},
 		securedCodeReplacementFunc = function ()
-			return "lastEffectReturn = 0;";
+			return "args.LAST = 0;";
 		end,
 		secured = security.MEDIUM,
 	},
 
 	["companion_dismiss_critter"] = {
 		codeReplacementFunc = function ()
-			return "DismissCompanion(\"CRITTER\"); lastEffectReturn = 0;"
+			return "DismissCompanion(\"CRITTER\"); args.LAST = 0;"
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
@@ -236,12 +313,26 @@ local EFFECTS = {
 
 	["companion_random_critter"] = {
 		codeReplacementFunc = function ()
-			return "SummonRandomPet(); lastEffectReturn = 0;"
+			return "SummonRandomPet(); args.LAST = 0;"
 		end,
 		env = {
 			SummonRandomPet = "C_PetJournal.SummonRandomPet",
 		},
 		secured = security.HIGH,
+	},
+
+	["companion_summon_mount"] = {
+		codeReplacementFunc = function (args)
+			local mountId = tonumber(args[1] or 0);
+			return ("SummonByID(%s); args.LAST = 0;"):format(mountId);
+		end,
+		env = {
+			SummonByID = "C_MountJournal.SummonByID",
+		},
+		securedCodeReplacementFunc = function ()
+			return "args.LAST = 0;";
+		end,
+		secured = security.MEDIUM,
 	},
 
 	-- DEBUG EFFECTs
@@ -263,6 +354,48 @@ local EFFECTS = {
 		end,
 		env = {
 			dump = "TRP3_API.utils.table.dump",
+		},
+		secured = security.HIGH,
+	},
+
+	-- Camera effects
+	["cam_zoom_in"] = {
+		codeReplacementFunc = function (args)
+			local distance = args[1] or "0";
+			return ("CameraZoomIn(tonumber(var(\"%s\", args)) or 0); args.LAST = 0;"):format(distance);
+		end,
+		env = {
+			CameraZoomIn = "CameraZoomIn",
+		},
+		secured = security.HIGH,
+	},
+	["cam_zoom_out"] = {
+		codeReplacementFunc = function (args)
+			local distance = args[1] or "0";
+			return ("CameraZoomOut(tonumber(var(\"%s\", args)) or 0); args.LAST = 0;"):format(distance);
+		end,
+		env = {
+			CameraZoomOut = "CameraZoomOut",
+		},
+		secured = security.HIGH,
+	},
+	["cam_save"] = {
+		codeReplacementFunc = function (args)
+			local slot = tonumber(args[1]) or 1;
+			return ("SaveView(%s); args.LAST = 0;"):format(slot);
+		end,
+		env = {
+			SaveView = "SaveView",
+		},
+		secured = security.HIGH,
+	},
+	["cam_load"] = {
+		codeReplacementFunc = function (args)
+			local slot = tonumber(args[1]) or 1;
+			return ("SetView(%s); args.LAST = 0;"):format(slot);
+		end,
+		env = {
+			SetView = "SetView",
 		},
 		secured = security.HIGH,
 	},

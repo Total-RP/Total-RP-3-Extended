@@ -22,6 +22,8 @@ local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass = TRP3_API.extended.getClass;
+local UnitExists = UnitExists;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
 local dialogFrame = TRP3_DialogFrame;
 local CHAT_MARGIN = 70;
@@ -33,49 +35,66 @@ local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_COD
 local scalingLib = LibStub:GetLibrary("TRP-Dialog-Scaling-DB");
 local animationLib = LibStub:GetLibrary("TRP-Dialog-Animation-DB");
 
+local historyFrame = TRP3_DialogFrameHistory;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Models and animations
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local modelMe, modelYou, image = dialogFrame.Models.Me, dialogFrame.Models.You, dialogFrame.Image;
+local modelLeft, modelRight, image = dialogFrame.Models.Me, dialogFrame.Models.You, dialogFrame.Image;
 local generateID = Utils.str.id;
 
+local function loadScalingParameters(data, model, facing)
+	scalingLib:SetModelHeight(data.scale, model);
+	scalingLib:SetModelFeet(data.feet, model);
+	scalingLib:SetModelOffset(data.offset, model, facing);
+	scalingLib:SetModelFacing(data.facing, model, facing);
+end
+
+local function playTextAnim(context)
+	if not dialogFrame.textLineToken or not dialogFrame.ND or dialogFrame.ND == "NONE" then
+		return;
+	end
+--	Log.log("AnimWithToken: " .. context);
+
+	-- Animations
+	local targetModel = dialogFrame.ND == "LEFT" and modelLeft or modelRight;
+	local animTab = targetModel.animTab;
+	local delay = 0;
+	for _, sequence in pairs(animTab) do
+		delay = animationLib:PlayAnimationDelay(targetModel, sequence, animationLib:GetAnimationDuration(targetModel.model, sequence), delay, dialogFrame.textLineToken);
+	end
+	dialogFrame.textLineToken = nil;
+end
+
 local function modelsLoaded()
-	if modelMe.modelLoaded and modelYou.modelLoaded then
+	if modelRight.modelLoaded and modelLeft.modelLoaded then
 
-		local modelMePath = modelMe:GetModel();
-		local modelYouPath = modelYou:GetModel();
-		local modelScalingMe, modelScalingYou, isInverted = scalingLib:GetModelScaling(modelMePath, modelYouPath);
+		dialogFrame.loaded = true;
 
-		modelMe.model = modelMePath;
-		if modelMePath:len() > 0 then
-			scalingLib:SetModelHeight(modelScalingMe.scale, modelMe);
-			scalingLib:SetModelFeet(modelScalingMe.feet, modelMe);
-			scalingLib:SetModelOffset(modelScalingMe.offset, modelMe, true);
-			scalingLib:SetModelFacing(modelScalingMe.facing, modelMe, true);
-
-			-- Play animations
-			local delay = 0;
-			local textLineToken = generateID();
-			for _, sequence in pairs(modelMe.animTab) do
-				delay = animationLib:PlayAnimationDelay(modelMe, sequence, animationLib:GetAnimationDuration(modelMe.model, sequence), delay, textLineToken);
-			end
+		modelLeft.model = modelLeft:GetModelFileID();
+		if modelLeft.model then
+			modelLeft.model = tostring(modelLeft.model);
 		end
 
-		modelYou.model = modelYouPath;
-		if modelYouPath:len() > 0 then
-			scalingLib:SetModelHeight(modelScalingYou.scale, modelYou);
-			scalingLib:SetModelFeet(modelScalingYou.feet, modelYou);
-			scalingLib:SetModelOffset(modelScalingYou.offset, modelYou, false);
-			scalingLib:SetModelFacing(modelScalingYou.facing, modelYou, false);
-
-			-- Play animations
-			local delay = 0;
-			local textLineToken = generateID();
-			for _, sequence in pairs(modelYou.animTab) do
-				delay = animationLib:PlayAnimationDelay(modelYou, sequence, animationLib:GetAnimationDuration(modelYou.model, sequence), delay, textLineToken);
-			end
+		modelRight.model = modelRight:GetModelFileID();
+		if modelRight.model then
+			modelRight.model = tostring(modelRight.model);
 		end
+
+		local dataLeft, dataRight = scalingLib:GetModelCoupleProperties(modelLeft.model, modelRight.model);
+
+		-- Configuration for model left.
+		if modelLeft.model then
+			loadScalingParameters(dataLeft, modelLeft, true);
+		end
+
+		-- Configuration for model right
+		if modelRight.model then
+			loadScalingParameters(dataRight, modelRight, false);
+		end
+
+		playTextAnim("On model loaded");
 	end
 end
 
@@ -95,7 +114,8 @@ end
 -- TEXT ANIMATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local ANIMATION_TEXT_SPEED = 80;
+local ANIMATION_TEXT_SPEED = 160;
+local UnitPosition, sqrt = UnitPosition, sqrt;
 
 local function onUpdateChatText(self, elapsed)
 	if self.start and dialogFrame.Chat.Text:GetText() and dialogFrame.Chat.Text:GetText():len() > 0 then
@@ -106,6 +126,13 @@ local function onUpdateChatText(self, elapsed)
 			dialogFrame.Chat.Text:SetAlphaGradient(dialogFrame.Chat.Text:GetText():len(), 1);
 		else
 			dialogFrame.Chat.Text:SetAlphaGradient(self.start, 30);
+		end
+	end
+	if dialogFrame.distanceLimit > 0 then
+		local posY, posX = UnitPosition("player");
+		local distance = sqrt((posY - dialogFrame.posY) ^ 2 + (posX - dialogFrame.posX) ^ 2);
+		if distance >= dialogFrame.distanceLimit then
+			dialogFrame:Hide();
 		end
 	end
 end
@@ -122,198 +149,318 @@ local after = C_Timer.After;
 
 local function finishDialog()
 	dialogFrame:Hide();
+	if dialogFrame.classID and dialogFrame.class.LI and dialogFrame.class.LI.OE and dialogFrame.class.SC then
+		local retCode = TRP3_API.script.executeClassScript(dialogFrame.class.LI.OE, dialogFrame.class.SC, {}, dialogFrame.classID);
+	end
 end
 
 local function setupChoices(choices)
-	for choiceIndex, choiceData in pairs(choices) do
-		local choiceButton = modelMe.choices[choiceIndex];
-		choiceButton.Text:SetText(choiceData.TX);
-		choiceButton.Click:SetScript("OnClick", function()
-			dialogFrame.stepIndex = choiceData.N;
-			processDialogStep();
-		end);
-		choiceButton:Show();
+	local index = 1;
+	for _, choiceData in pairs(choices) do
+		local choiceButton = modelLeft.choices[index];
+		if TRP3_API.script.generateAndRunCondition(choiceData.C, dialogFrame.args) then
+			local text = TRP3_API.script.parseArgs(choiceData.TX or "", dialogFrame.args);
+			choiceButton.Text:SetText(text);
+			choiceButton.Click:SetScript("OnClick", function()
+				if choiceData.N and choiceData.N ~= 0 and (dialogFrame.class.DS or EMPTY)[choiceData.N] then
+					dialogFrame.stepIndex = choiceData.N;
+					processDialogStep();
+				else
+					finishDialog();
+				end
+			end);
+			choiceButton:Show();
+			index = index + 1;
+		end
 	end
+end
+
+local resizeChat = function()
+	dialogFrame.Chat.Text:SetWidth(dialogFrame:GetWidth() - 150);
+	dialogFrame.Chat:SetHeight(dialogFrame.Chat.Text:GetHeight() + CHAT_MARGIN + 5);
 end
 
 -- Called to play one text
 local function playDialogStep()
-	local data = dialogFrame.stepTab[dialogFrame.stepDialogIndex];
 	local dialogClass = dialogFrame.class;
+	local dialogStepClass = dialogFrame.dialogStepClass;
+	local text = dialogFrame.texts[dialogFrame.stepDialogIndex];
+	text = TRP3_API.script.parseArgs(text or "", dialogFrame.args);
+	wipe(modelLeft.animTab);
+	wipe(modelRight.animTab);
+	modelLeft.token = nil;
+	modelRight.token = nil;
 
 	-- Choices
-	for _, choiceButton in pairs(modelMe.choices) do
+	for _, choiceButton in pairs(modelLeft.choices) do
 		choiceButton:Hide();
 	end
 
-	-- Names
-	dialogFrame.Chat.Right:Hide();
-	dialogFrame.Chat.Left:Hide();
-	if data.nameDirection == "RIGHT" then
-		dialogFrame.Chat.Right:Show();
-		dialogFrame.Chat.Right.Name:SetText(data.youName);
-		dialogFrame.Chat.Right:SetWidth(dialogFrame.Chat.Right.Name:GetStringWidth() + 20);
-	else
-		dialogFrame.Chat.Left:Show();
-		dialogFrame.Chat.Left.Name:SetText(data.meName);
-		dialogFrame.Chat.Left:SetWidth(dialogFrame.Chat.Left.Name:GetStringWidth() + 20);
-	end
+	-- Animations
+	local targetModel = dialogFrame.ND == "LEFT" and modelLeft or modelRight;
+	local animTab = targetModel.animTab;
 
-	-- Texts
-	local text = data.text;
-	if text:byte() == 60 then
+	-- Text color (emote)
+	if text:byte() == 60 or text:byte() == 42 then
 		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
 		text = text:gsub("<", color):gsub(">", "|r");
-	end
-	dialogFrame.Chat.Text:SetText(text);
-
-	-- Background
-	dialogFrame.BG:SetTexture(data.BG);
-
-	-- Display
-	modelYou:Hide();
-	modelMe:Hide();
-	image:Hide();
-	if data.image then
-		image:Show();
-
-		if not image.previous then
-			image:SetTexture(data.image.UR);
-			image:SetSize(data.image.WI, data.image.HE);
-			image:SetAlpha(0);
-			TRP3_API.ui.misc.playAnimation(image.FadeIn);
-		elseif image.previous and image.previous ~= data.image.UR then
-			image:SetAlpha(1);
-			TRP3_API.ui.misc.playAnimation(image.FadeOut);
-			after(1, function()
-				image:SetTexture(data.image.UR);
-				image:SetSize(data.image.WI, data.image.HE);
-				image:SetAlpha(0);
-				TRP3_API.ui.misc.playAnimation(image.FadeIn);
-			end)
-		end
-		image.previous = data.image.UR;
+		text = text:gsub("^%*", color):gsub("%*$", "|r");
 	else
-		image.previous = nil;
-		modelYou:Show();
-		modelMe:Show();
-		-- Animation cut
-		wipe(modelYou.animTab);
-		wipe(modelMe.animTab);
-		local targetModel = data.nameDirection == "RIGHT" and modelYou or modelMe;
-		local animTab = targetModel.animTab;
-		data.text:gsub("[%.%?%!]+", function(finder)
+		text:gsub("[%.%?%!]+", function(finder)
 			animTab[#animTab + 1] = animationLib:GetDialogAnimation(targetModel.model, finder:sub(1, 1));
 			animTab[#animTab + 1] = 0;
 		end);
-		if #animTab == 0 then
-			animTab[1] = 0;
-		end
+	end
 
-		-- Load models
-		loadModel(modelMe, data.meUnit);
-		loadModel(modelYou, data.youUnit);
+	-- Animation
+	if #animTab == 0 then
+		animTab[1] = 0;
+	end
+	dialogFrame.textLineToken = Utils.str.id();
+	if dialogFrame.loaded then
+		playTextAnim("On step");
 	end
 
 	-- Play text
-	dialogFrame.Chat.start = 0;
+	dialogFrame.Chat.Text:SetText(text);
+	dialogFrame.Chat.start = 0; -- Automatically starts the fade-in animation for text
+
+	dialogFrame.Chat.Next:SetText(loc("DI_NEXT"));
+	dialogFrame.Chat.NextButton:Enable();
+	if not dialogFrame.isPreview and dialogFrame.LO then
+		dialogFrame.Chat.NextButton:Disable();
+		dialogFrame.Chat.Next:SetText(loc("DI_WAIT_LOOT"));
+	end
 
 	-- What to do next
-	if dialogFrame.stepTab[dialogFrame.stepDialogIndex + 1] then -- Next in same step
+	if dialogFrame.texts[dialogFrame.stepDialogIndex + 1] then
+		-- If there is a text next in the same step
 		dialogFrame.Chat.NextButton:SetScript("OnClick", function()
 			dialogFrame.stepDialogIndex = dialogFrame.stepDialogIndex + 1;
 			playDialogStep();
 		end);
 	else
-		-- Choice
-		if data.choices then
-			setupChoices(data.choices);
-			dialogFrame.Chat.NextButton:SetScript("OnClick", nil);
+		-- If there is a choice to make
+		if dialogStepClass.CH then
+			setupChoices(dialogStepClass.CH);
+			dialogFrame.Chat.NextButton:Disable();
 		else
-			-- Next step
-			dialogFrame.stepIndex = data.next or (dialogFrame.stepIndex + 1);
-
-			if (dialogClass.ST or EMPTY)[dialogFrame.stepIndex] then
-				-- Next
-				dialogFrame.Chat.NextButton:SetScript("OnClick", function()
-					processDialogStep();
-				end);
-			else
-				-- Finish
+			if dialogStepClass.EP then
+				-- End point
 				dialogFrame.Chat.NextButton:SetScript("OnClick", finishDialog);
+			else
+				dialogFrame.stepIndex = dialogStepClass.N or (dialogFrame.stepIndex + 1);
+
+				-- Else go to the next step if exists
+				if (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] then
+					dialogFrame.Chat.NextButton:SetScript("OnClick", function()
+						processDialogStep();
+					end);
+				else
+					-- Or finish the cutscene
+					dialogFrame.Chat.NextButton:SetScript("OnClick", finishDialog);
+				end
 			end
 		end
+	end
+
+	-- History
+	if dialogFrame.ND ~= "NONE" then
+		if dialogFrame.NA == "${trp:player:full}" then
+			historyFrame.container:AddMessage(("|cff00ff00[%s]|r %s"):format(dialogFrame.NA_PARSED or UNKNOWN, text));
+		else
+			historyFrame.container:AddMessage(("|cffff9900[%s]|r %s"):format(dialogFrame.NA_PARSED or UNKNOWN, text));
+		end
+	else
+		historyFrame.container:AddMessage(text, 1, 0.75, 0);
+	end
+
+
+	resizeChat();
+end
+
+local function onLootAll()
+	if dialogFrame:IsVisible() and dialogFrame.LO then
+		dialogFrame.Chat.NextButton:GetScript("OnClick")(dialogFrame.Chat.NextButton, "LeftButton");
 	end
 end
 
 -- Prepare all the texts for a step
 function processDialogStep()
-	wipe(dialogFrame.stepTab);
+	wipe(dialogFrame.texts);
 	local dialogClass = dialogFrame.class;
-	local dialogStepClass  = (dialogClass.ST or EMPTY)[dialogFrame.stepIndex] or EMPTY;
-	local meUnitStep = dialogStepClass.MM or dialogClass.MM or "player";
-	local youUnitStep = dialogStepClass.MY or dialogClass.MY or "target";
-	local meNameStep = dialogStepClass.NM or dialogClass.NM or "player";
-	local youNameStep = dialogStepClass.NY or dialogClass.NY or "target";
-	local BG = dialogStepClass.BG or dialogClass.BG or DEFAULT_BG;
-	if youNameStep == "player" or youNameStep == "target" then
-		youNameStep = UnitName(youNameStep);
+	local dialogStepClass  = (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] or EMPTY;
+
+	-- Names
+	dialogFrame.ND = dialogStepClass.ND or dialogFrame.ND or "NONE";
+	dialogFrame.NA = dialogStepClass.NA or dialogFrame.NA or "${trp:player:full}";
+	dialogFrame.NA_PARSED = TRP3_API.script.parseArgs(dialogFrame.NA, dialogFrame.args);
+	dialogFrame.Chat.Right:Hide();
+	dialogFrame.Chat.Left:Hide();
+	if dialogFrame.ND == "RIGHT" then
+		dialogFrame.Chat.Right:Show();
+		dialogFrame.Chat.Right.Name:SetText(dialogFrame.NA_PARSED);
+		dialogFrame.Chat.Right:SetWidth(dialogFrame.Chat.Right.Name:GetStringWidth() + 20);
+	elseif dialogFrame.ND == "LEFT" then
+		dialogFrame.Chat.Left:Show();
+		dialogFrame.Chat.Left.Name:SetText(dialogFrame.NA_PARSED);
+		dialogFrame.Chat.Left:SetWidth(dialogFrame.Chat.Left.Name:GetStringWidth() + 20);
 	end
-	if meNameStep == "player" or meNameStep == "target" then
-		meNameStep = UnitName(meNameStep);
+
+	-- Wait for loot
+	dialogFrame.LO = dialogStepClass.LO;
+
+	-- Background
+	dialogFrame.BG = dialogStepClass.BG or dialogFrame.BG or DEFAULT_BG;
+	local setBackground;
+	setBackground = function(forceNoFade)
+		if dialogFrame.background.current ~= dialogFrame.BG then
+			if forceNoFade or dialogFrame.background.current == nil then
+				dialogFrame.background:SetTexture(dialogFrame.BG);
+				dialogFrame.background.current = dialogFrame.BG;
+				if not forceNoFade then
+					dialogFrame.background:SetAlpha(0);
+					TRP3_API.ui.misc.playAnimation(dialogFrame.background.FadeIn);
+				end
+			else
+				dialogFrame.background.current = nil;
+				TRP3_API.ui.misc.playAnimation(dialogFrame.background.FadeOut);
+				after(0.5, function()
+					setBackground();
+				end)
+			end
+		end
 	end
-	local nameDirectionStep = dialogStepClass.ND or dialogClass.ND or "RIGHT";
-
-	-- Process text
-	if dialogStepClass.TX then
-		if type(dialogStepClass.TX) == "string" then
-			local fullText = dialogStepClass.TX;
-
-			fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
-			fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
-
-			local texts = { strsplit("\n", fullText) };
-			-- If last is empty, remove last
-			if texts[#texts]:len() == 0 then
-				texts[#texts] = nil;
-			end
-
-			for _, text in pairs(texts) do
-				tinsert(dialogFrame.stepTab, {
-					meUnit = meUnitStep,
-					youUnit = youUnitStep,
-					meName = meNameStep,
-					youName = youNameStep,
-					nameDirection = nameDirectionStep,
-					text = text,
-					next = dialogStepClass.N,
-					choices = dialogStepClass.CH,
-					image = dialogStepClass.IM,
-					BG = BG,
-				});
-			end
+	if dialogFrame.BG then
+		setBackground(dialogFrame.stepIndex == 1);
+	end
 
 
-		elseif type(dialogStepClass.TX) == "table" then
-			-- Complex dialog step
+	-- Image
+	image:Hide();
+	dialogFrame.IM = dialogStepClass.IM or dialogFrame.IM;
+	local setImage = function()
+		image:SetTexture(dialogFrame.IM.UR);
+		image:SetTexCoord(dialogFrame.IM.LE or 0, dialogFrame.IM.RI or 1, dialogFrame.IM.TO or 0, dialogFrame.IM.BO or 1);
+		image:SetSize(dialogFrame.IM.WI or 256, dialogFrame.IM.HE or 256);
+		TRP3_API.ui.misc.playAnimation(image.FadeIn);
+	end
+	if dialogFrame.IM then
+		image:Show();
+		if not image.previous then
+			setImage();
+		elseif image.previous and image.previous ~= dialogFrame.IM.UR then
+			TRP3_API.ui.misc.playAnimation(image.FadeOut);
+			after(1, function()
+				setImage();
+			end)
+		end
+		image.previous = dialogFrame.IM.UR;
+	end
+
+	-- Models
+	dialogFrame.loaded = false;
+
+	modelLeft.modelLoaded = false;
+	modelLeft:Hide();
+	modelLeft.model = "";
+	dialogFrame.LU = dialogStepClass.LU or dialogFrame.LU or "player";
+	if dialogFrame.LU:len() == 0 then
+		modelLeft.modelLoaded = true;
+	elseif dialogFrame.LU ~= "target" or UnitExists("target") then
+		modelLeft:Show();
+		if dialogFrame.LU == "target" or dialogFrame.LU == "player" then
+			modelLeft:SetUnit(dialogFrame.LU, true);
+		else
+			modelLeft:SetDisplayInfo(tonumber(dialogFrame.LU) or 0);
 		end
 	end
 
+	modelRight.modelLoaded = false;
+	modelRight:Hide();
+	modelRight.model = "";
+	dialogFrame.RU = dialogStepClass.RU or dialogFrame.RU or "player";
+	if dialogFrame.RU:len() == 0 then
+		modelRight.modelLoaded = true;
+	elseif dialogFrame.RU ~= "target" or UnitExists("target") then
+		modelRight:Show();
+		if dialogFrame.RU == "target" or dialogFrame.RU == "player" then
+			modelRight:SetUnit(dialogFrame.RU, false);
+		else
+			modelRight:SetDisplayInfo(tonumber(dialogFrame.RU) or 0);
+		end
+	end
+
+	-- Process text
+	if dialogStepClass.TX then
+		local fullText = dialogStepClass.TX;
+		fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
+		fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
+
+		local texts = { strsplit("\n", fullText) };
+		-- If last is empty, remove last
+		if texts[#texts]:len() == 0 then
+			texts[#texts] = nil;
+		end
+
+		dialogFrame.texts = texts;
+	end
+
 	dialogFrame.stepDialogIndex = 1;
+	dialogFrame.dialogStepClass = dialogStepClass;
+
+	if dialogFrame.classID and dialogStepClass.WO then
+		local retCode = TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC, {}, dialogFrame.classID);
+	end
+
 	playDialogStep();
 end
 
-local function startDialog(dialogID)
-	local dialogClass = getClass(dialogID);
+local function startDialog(dialogID, class, args)
+	local dialogClass = dialogID and getClass(dialogID) or class;
 	-- By default, launch the step 1
 	image.previous = nil;
+	dialogFrame.classID = dialogID;
+	dialogFrame.background.current = nil;
+	dialogFrame.isPreview = dialogID == nil;
 	dialogFrame.class = dialogClass;
-	dialogFrame.stepIndex = dialogClass.FS or 1;
-	processDialogStep(dialogClass);
+	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
+	dialogFrame.distanceLimit = dialogClass.BA.DI or 0;
+	dialogFrame.posY, dialogFrame.posX = UnitPosition("player");
+	dialogFrame.args = args;
+
+	if dialogID and dialogClass.LI and dialogClass.LI.OS and dialogClass.SC then
+		local retCode = TRP3_API.script.executeClassScript(dialogClass.LI.OS, dialogClass.SC, {}, dialogID);
+	end
+
+	historyFrame.container:AddMessage("---------------------------------------------------------------");
+	processDialogStep();
+
 	dialogFrame:Show();
+	dialogFrame:Raise();
+
+	dialogFrame:SetSize(dialogFrame.width or 950, dialogFrame.height or 670);
+	resizeChat();
 end
 
 TRP3_API.extended.dialog.startDialog = startDialog;
+
+function TRP3_API.extended.dialog.startQuickDialog(text)
+	local class = {
+		TY = TRP3_DB.types.DIALOG,
+		BA = {},
+		DS = {
+			{
+				["TX"] = text,
+				["ND"] = "RIGHT",
+				["NA"] = "target",
+				["LU"] = "player",
+				["RU"] = "target",
+			},
+		}
+	}
+	startDialog(nil, class)
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -326,13 +473,15 @@ end
 function TRP3_API.extended.dialog.onStart()
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
+	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_LOOT_ALL, onLootAll);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects({
 		dialog_start = {
+			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function(args)
 				local dialogID = args[1];
-				return ("lastEffectReturn = startDialog(\"%s\");"):format(dialogID);
+				return ("args.LAST = startDialog(\"%s\", nil, args);"):format(dialogID);
 			end,
 			env = {
 				startDialog = "TRP3_API.extended.dialog.startDialog",
@@ -340,39 +489,45 @@ function TRP3_API.extended.dialog.onStart()
 		},
 	});
 
-	modelMe.animTab = {};
-	modelYou.animTab = {};
-	dialogFrame.stepTab = {};
+	TRP3_API.script.registerEffects({
+		dialog_quick = {
+			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
+			codeReplacementFunc = function(args)
+				local dialogText = args[1];
+				return ("args.LAST = startQuickDialog(\"%s\");"):format(dialogText);
+			end,
+			env = {
+				startQuickDialog = "TRP3_API.extended.dialog.startQuickDialog",
+			}
+		},
+	});
+
+	modelLeft.animTab = {};
+	modelRight.animTab = {};
+	dialogFrame.texts = {};
 	dialogFrame.Chat:SetScript("OnUpdate", onUpdateChatText);
 	dialogFrame:SetScript("OnHide", function()
-		reinitModel(modelMe);
-		reinitModel(modelYou);
+		reinitModel(modelLeft);
+		reinitModel(modelRight);
 	end);
 
 	-- 3D models loaded
-	modelMe:SetScript("OnModelLoaded", function()
-		modelMe.modelLoaded = true;
+	modelLeft:SetScript("OnModelLoaded", function()
+		modelLeft.modelLoaded = true;
 		modelsLoaded();
 	end);
-	modelYou:SetScript("OnModelLoaded", function()
-		modelYou.modelLoaded = true;
+	modelRight:SetScript("OnModelLoaded", function()
+		modelRight.modelLoaded = true;
 		modelsLoaded();
 	end);
 
 	-- Resizing
-	local resizeChat = function()
-		dialogFrame.Chat.Text:SetWidth(dialogFrame:GetWidth() - 150);
-		dialogFrame.Chat:SetHeight(dialogFrame.Chat.Text:GetHeight() + CHAT_MARGIN + 5);
---		Storyline_NPCFrameGossipChoices:SetWidth(Storyline_NPCFrame:GetWidth() - 400);
-	end
 	dialogFrame.Chat.Text:SetWidth(550);
 	dialogFrame.Resize.onResizeStop = function(width, height)
 		resizeChat();
 		dialogFrame.width = width;
 		dialogFrame.height = height;
 	end;
-	dialogFrame:SetSize(dialogFrame.width or 950, dialogFrame.height or 670);
-	resizeChat();
 
 	-- Choices
 	local setupButton = function(button, iconIndex)
@@ -382,11 +537,41 @@ function TRP3_API.extended.dialog.onStart()
 		local xOffset = mod(iconIndex, QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
 		button.Number:SetTexCoord(xOffset, xOffset + QUEST_POI_ICON_SIZE, yOffset, yOffset + QUEST_POI_ICON_SIZE);
 	end
-	setupButton(modelMe.Choice1.Num, 0);
-	setupButton(modelMe.Choice2.Num, 1);
-	setupButton(modelMe.Choice3.Num, 2);
-	setupButton(modelMe.Choice4.Num, 3);
-	setupButton(modelMe.Choice5.Num, 4);
-	modelMe.choices = {modelMe.Choice1, modelMe.Choice2, modelMe.Choice3, modelMe.Choice4, modelMe.Choice5}
+	setupButton(modelLeft.Choice1.Num, 0);
+	setupButton(modelLeft.Choice2.Num, 1);
+	setupButton(modelLeft.Choice3.Num, 2);
+	setupButton(modelLeft.Choice4.Num, 3);
+	setupButton(modelLeft.Choice5.Num, 4);
+	modelLeft.choices = { modelLeft.Choice1, modelLeft.Choice2, modelLeft.Choice3, modelLeft.Choice4, modelLeft.Choice5 }
 
+	-- History
+	local function showHistory()
+		historyFrame:Show();
+	end
+	setTooltipAll(dialogFrame.Chat.HistoryButton, "RIGHT", 0, 5, loc("DI_HISTORY"), loc("DI_HISTORY_TT"));
+	dialogFrame.Chat.HistoryButton:SetScript("OnClick", function()
+		showHistory();
+	end);
+	historyFrame.title:SetText(loc("DI_HISTORY"));
+	historyFrame.Close:SetScript("OnClick", function()
+		historyFrame:Hide();
+	end);
+	historyFrame:SetScript("OnMouseWheel",function(self, delta)
+		if delta == -1 then
+			historyFrame.container:ScrollDown();
+		elseif delta == 1 then
+			historyFrame.container:ScrollUp();
+		end
+	end);
+	historyFrame:EnableMouseWheel(1);
+
+	historyFrame.bottom:SetScript("OnClick", function()
+		historyFrame.container:ScrollToBottom();
+	end);
+
+	historyFrame.container:SetFontObject(ChatFontNormal);
+	historyFrame.container:SetJustifyH("LEFT");
+
+	TRP3_API.ui.frame.setupMove(historyFrame);
+	TRP3_API.ui.frame.setupMove(dialogFrame);
 end

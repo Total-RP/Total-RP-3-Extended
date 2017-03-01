@@ -19,26 +19,52 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_ScriptEditorDelay" hidden="true">
+	<Button inherits="TRP3_QuestButtonTemplate" name="TRP3_WorkflowLinkButton" virtual="true">
+		<Frames>
+			<Frame parentKey="select" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSelect">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Name" x="-20" y="-5"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Button>
+
+	<Frame name="TRP3_ScriptEditorDelay" hidden="true" inherits="TRP3_EditorEffectTemplate">
+
+		<Size x="400" y="290"/>
 
 		<Frames>
 
 			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="-110" y="-65"/>
+					<Anchor point="TOP" x="-5" y="-65"/>
 				</Anchors>
 			</Frame>
+
+			<EditBox parentKey="sound" inherits="TRP3_TitledHelpEditBox">
+				<Size x="205" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-10"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="205" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.sound" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
 
 			<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
 				<Size x="205" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.text" x="0" y="-20"/>
 				</Anchors>
 			</EditBox>
 
 			<Frame parentKey="interrupt" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentInterrupt">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-20" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-20" y="-15"/>
 					<Anchor point="RIGHT" x="-35" y="0"/>
 				</Anchors>
 			</Frame>
@@ -49,12 +75,12 @@
 
 	<!-- Icon browser  -->
 	<Frame name="TRP3_ObjectBrowser" hidden="true" enableMouse="true">
-		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 
-		<Size x="420" y="400"/>
+		<Size x="550" y="400"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -87,14 +113,17 @@
 			</Button>
 
 			<Frame parentKey="content">
-				<Size x="390" y="295"/>
+				<Size x="0" y="295"/>
 
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
+
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-35"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
 
 				<Frames>
@@ -122,8 +151,8 @@
 			<!-- Filter section -->
 			<Frame parentKey="filter">
 				<Size x="0" y="60"/>
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
 				<Anchors>

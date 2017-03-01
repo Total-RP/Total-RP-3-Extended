@@ -45,13 +45,19 @@ end
 
 local campaignHandlers = {};
 
-local function onCampaignCallback(campaignID, campaignClass, scriptID, ...)
-	if campaignClass and campaignClass.SC and campaignClass.SC[scriptID] then
-		local retCode = TRP3_API.script.executeClassScript(scriptID, campaignClass.SC, { campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID] });
+local function onCampaignCallback(campaignID, scriptID, condition, ...)
+	local class = getClass(campaignID);
+	if class and class.SC and class.SC[scriptID] then
+		local args = { object = playerQuestLog[campaignID], event = {...} };
+		if TRP3_API.script.generateAndRunCondition(condition, args) then
+			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, campaignID);
+		end
 	end
 end
 
 local function clearCampaignHandlers()
+	Log.log("clearCampaignHandlers", Log.level.DEBUG);
+
 	for handlerID, _ in pairs(campaignHandlers) do
 		Utils.event.unregisterHandler(handlerID);
 	end
@@ -60,16 +66,17 @@ local function clearCampaignHandlers()
 end
 
 local function activateCampaignHandlers(campaignID, campaignClass)
-	for eventID, scriptID in pairs(campaignClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(eventID, function(...)
-			onCampaignCallback(campaignID, campaignClass, scriptID, ...);
+	Log.log("activateCampaignHandlers: " .. campaignID, Log.level.DEBUG);
+	for _, event in pairs(campaignClass.HA or EMPTY) do
+		local handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onCampaignCallback(campaignID, event.SC, event.CO, ...);
 		end);
-		campaignHandlers[handlerID] = eventID;
+		campaignHandlers[handlerID] = event.EV;
 	end
 	-- Active handlers for known quests
 	for questID, questClass in pairs(campaignClass.QE or EMPTY) do
-		if playerQuestLog[campaignID][questID] and not playerQuestLog[campaignID][questID].DO then
-			TRP3_API.quest.activateQuestHandlers(campaignID, campaignClass, questID, questClass);
+		if playerQuestLog[campaignID].QUEST[questID] and playerQuestLog[campaignID].QUEST[questID].FI == nil then
+			TRP3_API.quest.activateQuestHandlers(campaignID, questID, questClass);
 		end
 	end
 end
@@ -102,14 +109,14 @@ local function activateCampaign(campaignID, force)
 	end
 
 	if not TRP3_API.extended.classExists(campaignID) then
-		Log.log("Unknown campaignID, abord activateCampaign: " .. tostring(campaignID));
+		Log.log("Unknown campaignID, abord activateCampaign: " .. tostring(campaignID), Log.level.WARNING);
 		return;
 	end
 
 	local campaignClass = getClass(campaignID);
 	local _, campaignName = getClassDataSafe(campaignClass);
 
-	local init;
+	local init = false;
 	if not playerQuestLog[campaignID] then
 		init = true;
 
@@ -124,21 +131,22 @@ local function activateCampaign(campaignID, force)
 		Utils.message.displayMessage(loc("QE_CAMPAIGN_RESUME"):format(campaignName), Utils.message.type.CHAT_FRAME);
 	end
 
+	Log.log("Activated campaign: " .. campaignID .. " with init at " .. tostring(init), Log.level.DEBUG);
 	activateCampaignHandlers(campaignID, campaignClass);
 
 	playerQuestLog.currentCampaign = campaignID;
 
 	if init then
 
-		-- Register NPC
-		if campaignClass.ND then
-			TRP3_API.quest.registerNPCs(campaignClass.ND);
+		-- Initial script
+		if campaignClass.LI and campaignClass.LI.OS then
+			local retCode = TRP3_API.script.executeClassScript(campaignClass.LI.OS, campaignClass.SC, { object = playerQuestLog[campaignID] }, campaignID);
 		end
 
-		-- Initial script
-		if campaignClass.OS then
-			local retCode = TRP3_API.script.executeClassScript(campaignClass.OS, campaignClass.SC,
-				{ campaignID = campaignID, campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID] });
+		for questID, quest in pairs(campaignClass.QE or EMPTY) do
+			if quest.BA.IN then
+				TRP3_API.quest.startQuest(campaignID, questID, init);
+			end
 		end
 
 	end
@@ -154,20 +162,40 @@ local function resetCampaign(campaignID)
 	if playerQuestLog.currentCampaign == campaignID then
 		activateCampaign(campaignID, true);
 	end
+	Events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 end
 
 TRP3_API.quest.resetCampaign = resetCampaign;
+
+local function getCurrentCampaignID()
+	return playerQuestLog and playerQuestLog.currentCampaign;
+end
+
+local function getCurrentCampaignClass()
+	if getCurrentCampaignID() then
+		return getClass(getCurrentCampaignID());
+	end
+end
+TRP3_API.quest.getCurrentCampaignClass = getCurrentCampaignClass;
+
+local function getActiveCampaignLog()
+	return playerQuestLog and playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign];
+end
+TRP3_API.quest.getActiveCampaignLog = getActiveCampaignLog;
+
+local function getCampaignVarStorage()
+	local storage = playerQuestLog and playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign];
+	if storage and storage.vars then
+		return {object = storage};
+	end
+end
+TRP3_API.quest.getCampaignVarStorage = getCampaignVarStorage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- /run TRP3_API.quest.activateCampaign("myFirstCampaign");
--- /run TRP3_API.quest.deactivateCurrentCampaign();
--- /run TRP3_API.quest.resetCampaign("myFirstCampaign");
--- /run TRP3_API.utils.table.dump(TRP3_API.quest.getQuestLog());
-
-local function init()
+function TRP3_API.quest.campaignInit()
 	local refreshQuestLog = function()
 		playerQuestLog = TRP3_API.quest.getQuestLog();
 	end
@@ -179,8 +207,53 @@ local function init()
 
 	-- Resuming last campaign
 	if playerQuestLog.currentCampaign then
+		Log.log("Init campaign on launch: " .. playerQuestLog.currentCampaign, Log.level.DEBUG);
 		activateCampaign(playerQuestLog.currentCampaign, true); -- Force reloading the current campaign
 	end
-end
 
-TRP3_API.quest.campaignInit = init;
+	TRP3_API.quest.EVENT_REFRESH_CAMPAIGN = "EVENT_REFRESH_CAMPAIGN";
+	Events.registerEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
+		if getActiveCampaignLog() and not TRP3_API.extended.classExists(playerQuestLog.currentCampaign) then
+			deactivateCurrentCampaign();
+		end
+		clearCampaignHandlers();
+		if getCurrentCampaignClass() then
+			activateCampaignHandlers(playerQuestLog.currentCampaign, getCurrentCampaignClass());
+		end
+	end);
+
+	-- Emote event (yes, I put it here because I'm the boss)
+	TRP3_API.extended.EMOTE_EVENT = "TRP3_EMOTE";
+	hooksecurefunc("DoEmote", function(emote, arg2, arg3)
+		Utils.event.fireEvent(TRP3_API.extended.EMOTE_EVENT, emote);
+	end);
+
+	-- Helpers
+	TRP3_API.slash.registerCommand({
+		id = "debug_quest_step",
+		helpLine = " " .. loc("DEBUG_QUEST_STEP"),
+		handler = function(questID, stepID)
+			if questID and stepID then
+				if getCurrentCampaignID() then
+					TRP3_API.quest.goToStep(getCurrentCampaignID(), questID, stepID);
+				end
+			else
+				Utils.message.displayMessage(loc("DEBUG_QUEST_STEP_USAGE"));
+			end
+		end
+	});
+	TRP3_API.slash.registerCommand({
+		id = "debug_quest_start",
+		helpLine = " " .. loc("DEBUG_QUEST_START"),
+		handler = function(questID)
+			if questID then
+				if getCurrentCampaignID() then
+					TRP3_API.quest.startQuest(getCurrentCampaignID(), questID);
+				end
+			else
+				Utils.message.displayMessage(loc("DEBUG_QUEST_START_USAGE"));
+			end
+		end
+	});
+end

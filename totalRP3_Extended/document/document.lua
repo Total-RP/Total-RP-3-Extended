@@ -38,7 +38,7 @@ local function setFrameSize(width, height)
 end
 
 local function setFrameHTML(html)
-	HTMLFrame.html = Utils.str.toHTML(html);
+	HTMLFrame.html = Utils.str.toHTML(html, true);
 	HTMLFrame:SetText(HTMLFrame.html);
 end
 
@@ -53,7 +53,8 @@ TRP3_API.extended.document.BorderType = {
 local function loadPage(page)
 	assert(documentFrame.class, "documentFrame.class is nil");
 	local data = documentFrame.class;
-	local total = #data.PA;
+	local pages = data.PA or EMPTY;
+	local total = #pages;
 
 	documentFrame.next:Disable();
 	documentFrame.previous:Disable();
@@ -64,15 +65,18 @@ local function loadPage(page)
 		documentFrame.next:Enable();
 	end
 
-	setFrameHTML(data.PA[page].TX or "");
+	local text = TRP3_API.script.parseArgs(pages[page] and pages[page].TX or "", documentFrame.parentArgs);
+
+	setFrameHTML(text);
 	documentFrame.current = page;
 end
 
-local function showDocumentClass(document, documentID)
+local function showDocumentClass(document, documentID, parentArgs)
 	documentFrame:Hide();
 
 	documentFrame.ID = documentID;
 	documentFrame.class = document;
+	documentFrame.parentArgs = parentArgs;
 
 	if document.BT == true then
 		documentFrame.bTile:Show();
@@ -83,8 +87,6 @@ local function showDocumentClass(document, documentID)
 		documentFrame.bNotTile:SetTexture(TRP3_API.ui.frame.getTiledBackground(document.BCK or 8));
 		documentFrame.bTile:Hide();
 	end
-
-	setFrameSize(document.WI or 450, document.HE or 600);
 
 	if document.FR then
 		documentFrame.Resize:Show();
@@ -114,32 +116,49 @@ local function showDocumentClass(document, documentID)
 	loadPage(1);
 
 	documentFrame:Show();
+
+	setFrameSize(document.WI or 450, document.HE or 600);
+
+	if documentFrame.ID then
+		if document.LI and document.LI.OO and document.SC and document.SC[document.LI.OO] then
+			local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC, {}, documentFrame.ID);
+		end
+	end
 end
 TRP3_API.extended.document.showDocumentClass = showDocumentClass;
 
-local function showDocument(documentID)
+local function showDocument(documentID, parentArgs)
 	local document = getClass(documentID);
 	if document == TRP3_DB.missing then
 		Utils.message.displayMessage(loc("DOC_UNKNOWN_ALERT"), Utils.message.type.ALERT_MESSAGE);
 	else
-		showDocumentClass(document, documentID);
+		showDocumentClass(document, documentID, parentArgs);
 	end
 end
 TRP3_API.extended.document.showDocument = showDocument;
 
 local function onLinkClicked(self, url)
-	if documentFrame.class and documentFrame.class.AC and documentFrame.class.AC[url] and documentFrame.class.SC then
-		local scriptID = documentFrame.class.AC[url];
-		local retCode = TRP3_API.script.executeClassScript(scriptID, documentFrame.class.SC,
-			{
-				documentID = documentFrame.ID, documentClass = documentFrame.class
-			});
+	if documentFrame.ID and documentFrame.class then
+		local document = documentFrame.class;
+		if document.SC and document.SC[url] then
+			local retCode = TRP3_API.script.executeClassScript(url, document.SC, {}, documentFrame.ID);
+		end
 	end
 end
 
-local function closeDocument(documentID)
-	if documentFrame:IsVisible() and documentFrame.ID == documentID then
-		documentFrame:Hide();
+local function closeDocumentFrame()
+	documentFrame:Hide();
+	if documentFrame.ID and documentFrame.class then
+		local document = documentFrame.class;
+		if document.LI and document.LI.OC and document.SC and document.SC[document.LI.OC] then
+			local retCode = TRP3_API.script.executeClassScript(document.LI.OC, document.SC, {}, documentFrame.ID);
+		end
+	end
+end
+
+local function closeDocument()
+	if documentFrame:IsVisible() then
+		closeDocumentFrame();
 	end
 end
 TRP3_API.extended.document.closeDocument = closeDocument;
@@ -150,14 +169,7 @@ TRP3_API.extended.document.closeDocument = closeDocument;
 
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
-local function onLoaded()
-
-end
-
 function TRP3_API.extended.document.onStart()
-
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
-
 	documentFrame.Resize.resizableFrame = documentFrame;
 
 	-- Customize HTML
@@ -169,6 +181,7 @@ function TRP3_API.extended.document.onStart()
 	documentFrame.previous:SetText("<");
 	documentFrame.previous:SetScript("OnClick", function() loadPage(documentFrame.current - 1); end);
 	documentFrame.next:SetScript("OnClick", function() loadPage(documentFrame.current + 1); end);
+	documentFrame.Close:SetScript("OnClick", function() closeDocumentFrame(); end);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects({
@@ -176,7 +189,7 @@ function TRP3_API.extended.document.onStart()
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
 				local documentID = args[1];
-				return ("lastEffectReturn = showDocument(\"%s\");"):format(documentID);
+				return ("args.LAST = showDocument(\"%s\", args);"):format(documentID);
 			end,
 			env = {
 				showDocument = "TRP3_API.extended.document.showDocument",
@@ -186,12 +199,13 @@ function TRP3_API.extended.document.onStart()
 		document_close = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
-				local documentID = args[1];
-				return ("lastEffectReturn = closeDocument(\"%s\");"):format(documentID);
+				return "args.LAST = closeDocument();";
 			end,
 			env = {
 				closeDocument = "TRP3_API.extended.document.closeDocument",
 			}
 		}
 	});
+
+	TRP3_API.ui.frame.setupMove(documentFrame);
 end

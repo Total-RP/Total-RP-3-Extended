@@ -85,18 +85,8 @@ local function reloadDownloads()
 			elseif classExists(rootClassId) and getClass(rootClassId).MD.V >= rootClassVersion then
 				local class = getItemClass(rootClassId);
 				if class.securityLevel ~= SECURITY_LEVEL.HIGH then
-					-- Determine if there is at least one blocked effect
-					local secDetails = TRP3_API.security.computeSecurity(rootClassId);
-					local atLeastOneBlock = false;
-					for effectGroupID, _ in pairs(secDetails) do
-						if not TRP3_API.security.resolveEffectGroupSecurity(rootClassId, effectGroupID) then
-							atLeastOneBlock = true;
-							break;
-						end
-					end
-
 					-- If at least one effectgroup is blocked, only then we bother the user
-					if atLeastOneBlock then
+					if TRP3_API.security.atLeastOneBlocked(rootClassId) then
 						local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
 						slot.details:SetText("|cffff0000" .. loc("SEC_EFFECT_BLOCKED"));
 						slot.security:Show();
@@ -251,8 +241,7 @@ local function drawUI()
 		exchangeFrame.right.confirm:Show();
 	end
 
-	exchangeFrame.left.name:SetText(Globals.player_id);
-	exchangeFrame.right.name:SetText(exchangeFrame.targetID);
+	exchangeFrame.target:SetText(TRP3_API.register.getUnitRPNameWithID(exchangeFrame.targetID));
 
 	reloadDownloads();
 
@@ -293,8 +282,10 @@ local function addToExchange(container, slotID)
 
 	-- Can't exchange an non-empty bag for now
 	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slotInfo.content or EMPTY) > 0 then
-		Utils.message.displayMessage(ERR_TRADE_BAG, Utils.message.type.ALERT_MESSAGE);
-		return;
+		if not itemClass.CO.OI then
+			Utils.message.displayMessage(loc("IT_CON_ERROR_TRADE"), Utils.message.type.ALERT_MESSAGE);
+			return;
+		end
 	end
 
 	if not exchangeFrame.targetID then
@@ -409,7 +400,7 @@ local function lootTransaction()
 		local index = tostring(i);
 		if exchangeFrame.yourData[index] then
 			local slotData = exchangeFrame.yourData[index];
-			TRP3_API.inventory.addItem(nil, slotData.c.id, slotData.c);
+			TRP3_API.inventory.addItem(nil, slotData.c.id, slotData.c, true);
 		end
 	end
 
@@ -471,10 +462,13 @@ local function receivedDataResponse(response, sender)
 	if not classExists(classID) or getClass(classID).MD.V < class.MD.V then
 		TRP3_DB.exchange[classID] = class;
 		TRP3_API.security.computeSecurity(classID, class);
+		TRP3_API.extended.unregisterObject(classID);
 		TRP3_API.extended.registerObject(classID, class, 0);
 		TRP3_API.script.clearRootCompilation(classID);
 		TRP3_API.security.registerSender(classID, sender);
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+		TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+		TRP3_API.events.fireEvent(Events.ON_OBJECT_UPDATED);
 	end
 
 	currentDownloads[classID] = nil;
@@ -587,11 +581,14 @@ function exchangeFrame.init()
 
 	exchangeFrame.left.empty:SetText(loc("IT_EX_EMPTY_DRAG"));
 	exchangeFrame.right.empty:SetText(loc("IT_EX_EMPTY"));
+	exchangeFrame.title:SetText(TRADE);
 
 	exchangeFrame.cancel:SetText(CANCEL);
 	exchangeFrame.cancel:SetScript("OnClick", function() cancelExchange() end);
 	exchangeFrame.ok:SetText(TRADE);
 	exchangeFrame.ok:SetScript("OnClick", function() confirmExchangeAction() end);
+
+	exchangeFrame.Background:SetTexture("Interface\\BankFrame\\Bank-Background", true, true);
 
 	-- Register prefix for data exchange
 	Comm.registerProtocolPrefix(UPDATE_EXCHANGE_QUERY_PREFIX, receivedUpdate);
@@ -606,4 +603,6 @@ function exchangeFrame.init()
 			reloadDownloads();
 		end
 	end);
+
+	TRP3_API.ui.frame.setupMove(exchangeFrame);
 end

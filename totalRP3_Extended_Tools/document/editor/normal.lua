@@ -17,13 +17,20 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, max, tonumber, tremove, strtrim, assert = wipe, math.max, tonumber, tremove, strtrim, assert;
+local pairs, max, tonumber, tremove, strtrim, assert, tinsert = pairs, math.max, tonumber, tremove, strtrim, assert, tinsert;
+local tContains = tContains;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolFrame, main, pages, params, manager;
+local toolFrame, main, pages, params, manager, linksStructure;
+
+local TABS = {
+	MAIN = 1,
+	WORKFLOWS = 2,
+	EXPERT = 3,
+}
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -109,6 +116,80 @@ local function removePage()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Script tab
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function loadDataScript()
+	-- Load workflows
+	if not toolFrame.specificDraft.SC then
+		toolFrame.specificDraft.SC = {};
+	end
+	TRP3_ScriptEditorNormal.loadList(TRP3_DB.types.DOCUMENT);
+end
+
+local function storeDataScript()
+	-- TODO: compute all workflow order
+	for workflowID, workflow in pairs(toolFrame.specificDraft.SC) do
+		TRP3_ScriptEditorNormal.linkElements(workflow);
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- TABS
+-- Tabs in the list section are just pre-filters
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local currentTab, tabGroup;
+
+local function onTabChanged(tabWidget, tab)
+	assert(toolFrame.fullClassID, "fullClassID is nil");
+
+	-- Hide all
+	currentTab = tab or TABS.MAIN;
+	main:Hide();
+	params:Hide();
+	pages:Hide();
+	manager:Hide();
+	TRP3_ScriptEditorNormal:Hide();
+	TRP3_LinksEditor:Hide();
+	TRP3_ExtendedTutorial.loadStructure(nil);
+
+	-- Show tab
+	if currentTab == TABS.MAIN then
+		main:Show();
+		params:Show();
+		pages:Show();
+		manager:Show();
+	elseif currentTab == TABS.WORKFLOWS then
+		TRP3_ScriptEditorNormal:SetParent(toolFrame.document.normal);
+		TRP3_ScriptEditorNormal:SetAllPoints();
+		TRP3_ScriptEditorNormal:Show();
+	elseif currentTab == TABS.EXPERT then
+		TRP3_LinksEditor:SetParent(toolFrame.document.normal);
+		TRP3_LinksEditor:SetAllPoints();
+		TRP3_LinksEditor:Show();
+		TRP3_LinksEditor.load(linksStructure);
+	end
+
+	TRP3_API.extended.tools.saveTab(toolFrame.fullClassID, currentTab);
+end
+
+local function createTabBar()
+	local frame = CreateFrame("Frame", "TRP3_ToolFrameDocumentNormalTabPanel", toolFrame.document.normal);
+	frame:SetSize(400, 30);
+	frame:SetPoint("BOTTOMLEFT", frame:GetParent(), "TOPLEFT", 15, 0);
+
+	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+		{
+			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
+			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
+			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
+		},
+		onTabChanged
+	);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Load ans save
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -126,8 +207,6 @@ local function load()
 		data.BA = {};
 	end
 
-	main.name:SetText(data.BA.NA or "");
-
 	-- Temp
 	params.title:SetText(loc("DO_PARAMS_GLOBAL"));
 	params.background:SetSelectedValue(data.BCK or 8);
@@ -143,13 +222,17 @@ local function load()
 
 	manager.current = nil;
 	loadPage(1);
+
+	loadDataScript();
+	TRP3_LinksEditor.load(linksStructure);
+
+	tabGroup:SelectTab(TRP3_API.extended.tools.getSaveTab(toolFrame.fullClassID, tabGroup:Size()));
 end
 
 local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
 	local data = toolFrame.specificDraft;
-	data.BA.NA = stEtN(strtrim(main.name:GetText()));
 	data.BCK = params.background:GetSelectedValue() or 8;
 	data.BO = params.border:GetSelectedValue() or TRP3_API.extended.document.BorderType.PARCHMENT;
 	data.HE = tonumber(params.height:GetText()) or 600;
@@ -162,6 +245,8 @@ local function saveToDraft()
 	data.FR = params.resizable:GetChecked();
 
 	saveCurrentPage();
+
+	storeDataScript();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -173,13 +258,11 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	toolFrame.document.normal.load = load;
 	toolFrame.document.normal.saveToDraft = saveToDraft;
 
+	createTabBar();
+
 	-- Main
 	main = toolFrame.document.normal.main;
 	main.title:SetText(loc("TYPE_DOCUMENT"));
-
-	-- Name
-	main.name.title:SetText(loc("DO_NAME"));
-	setTooltipForSameFrame(main.name.help, "RIGHT", 0, 5, loc("DO_NAME"), loc("DO_NAME_TT"));
 
 	-- Default params button
 	main.params:SetText(loc("DO_PARAMS_GLOBAL"));
@@ -193,10 +276,9 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	main.preview.Name:SetText(loc("EDITOR_PREVIEW"));
 	main.preview.InfoText:SetText(loc("DO_PREVIEW"));
 	main.preview.Icon:SetTexture("Interface\\ICONS\\inv_darkmoon_eye");
-	main.preview.Quest:Hide();
 	main.preview:SetScript("OnClick", function(self)
 		saveToDraft();
-		TRP3_API.extended.document.showDocumentClass(toolFrame.specificDraft);
+		TRP3_API.extended.document.showDocumentClass(toolFrame.specificDraft, nil);
 	end);
 
 	-- Params
@@ -273,4 +355,21 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	manager.previous:SetScript("OnClick", function() loadPage(manager.current - 1); end);
 	manager.next:SetScript("OnClick", function() loadPage(manager.current + 1); end);
 	manager.last:SetScript("OnClick", function() loadPage(#toolFrame.specificDraft.PA); end);
+
+	-- Workflows links
+	linksStructure = {
+		{
+			text = loc("DO_LINKS_ONOPEN"),
+			tt = loc("DO_LINKS_ONOPEN_TT"),
+			icon = "Interface\\ICONS\\inv_inscription_scrollofwisdom_01",
+			field = "OO",
+		},
+		{
+			text = loc("DO_LINKS_ONCLOSE"),
+			tt = loc("DO_LINKS_ONCLOSE_TT"),
+			icon = "Interface\\ICONS\\inv_inscription_scrollofwisdom_02",
+			field = "OC",
+		}
+	}
+
 end

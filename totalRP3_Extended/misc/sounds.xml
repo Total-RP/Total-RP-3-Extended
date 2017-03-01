@@ -19,9 +19,11 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_SoundsHistoryFrame" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true">
-		<Size x="500" y="200"/>
-
+	<Frame name="TRP3_SoundsHistoryFrame" parent="UIParent" inherits="TRP3_AltHoveredFrame" toplevel="true" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+		<Size x="600" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER">
@@ -58,15 +60,29 @@
 				</Anchors>
 			</Button>
 
-			<ScrollingMessageFrame parentKey="container" displayDuration="120.0" maxLines="128" insertMode="TOP" enableMouse="true">
+			<ScrollingMessageFrame parentKey="container" displayDuration="120.0" maxLines="128" insertMode="BOTTOM" enableMouse="true">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
 					<Anchor point="RIGHT" x="-20" y="0"/>
 					<Anchor point="LEFT" x="20" y="0"/>
-					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.stop" x="0" y="0"/>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.stop" x="0" y="5"/>
 				</Anchors>
-				<FontString inherits="ChatFontNormal" justifyH="LEFT" indented="true" nonspacewrap="true"/>
 			</ScrollingMessageFrame>
+
+			<Button parentKey="bottom">
+				<Size x="32" y="32"/>
+				<NormalTexture file="Interface\Buttons\UI-Panel-ExpandButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-ExpandButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.container" x="0" y="3"/>
+				</Anchors>
+				<Scripts>
+					<PostClick>
+						TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+					</PostClick>
+				</Scripts>
+			</Button>
 
 			<!-- CLOSE FRAME -->
 			<Button parentKey="Close" inherits="UIPanelCloseButton">

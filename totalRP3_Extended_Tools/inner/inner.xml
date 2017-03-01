@@ -21,7 +21,7 @@
 
 	<!-- line  -->
 	<Button name="TRP3_InnerObjectEditorLine" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
@@ -42,17 +42,25 @@
 				</FontString>
 			</Layer>
 		</Layers>
-		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+
+		<Frames>
+			<Frame name="$parentHighlight" parentKey="Highlight" inherits="GlowBorderTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="5" y="-2"/>
+					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetAlpha(0.55);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>
+
 		<Scripts>
 			<OnLoad>
 				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 			</OnLoad>
-			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
-			</OnEnter>
-			<OnLeave>
-				TRP3_MainTooltip:Hide();
-			</OnLeave>
 		</Scripts>
 	</Button>
 
@@ -96,10 +104,10 @@
 
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString parentKey="addText" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+						<FontString parentKey="addText" text="[placeholder_line]" inherits="GameFontNormal" justifyH="CENTER" justifyV="TOP">
 							<Size x="0" y="10"/>
 							<Anchors>
-								<Anchor point="BOTTOM" x="0" y="70"/>
+								<Anchor point="BOTTOM" x="0" y="90"/>
 								<Anchor point="LEFT" x="30" y="0"/>
 								<Anchor point="RIGHT" x="-30" y="0"/>
 							</Anchors>
@@ -111,14 +119,10 @@
 				<Frames>
 
 					<!-- Content -->
-					<Frame parentKey="container">
+					<Frame parentKey="container" inherits="TRP3_InnerFrame">
 						<Size x="0" y="295"/>
-						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-							<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-						</Backdrop>
 						<Anchors>
-							<Anchor point="CENTER" x="0" y="0"/>
+							<Anchor point="TOP" x="0" y="-65"/>
 							<Anchor point="RIGHT" x="-15" y="0"/>
 							<Anchor point="LEFT" x="15" y="0"/>
 						</Anchors>
@@ -130,43 +134,25 @@
 							</Layer>
 						</Layers>
 						<Frames>
-							<Slider parentKey="slider" name="TRP3_InnerObjectEditorSlider" inherits="OptionsSliderTemplate">
-								<Size x="15" y="0"/>
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-5"/>
-									<Anchor point="RIGHT" x="0" y="0"/>
-									<Anchor point="BOTTOM" x="0" y="5"/>
-								</Anchors>
-								<Scripts>
-									<OnLoad>
-										TRP3_InnerObjectEditorSliderText:SetText("");
-										TRP3_InnerObjectEditorSliderHigh:SetText("");
-										TRP3_InnerObjectEditorSliderLow:SetText("");
-										self:SetMinMaxValues(0, 6);
-										self:SetValueStep(1);
-										self:SetOrientation("VERTICAL");
-									</OnLoad>
-								</Scripts>
-							</Slider>
+							<Slider parentKey="slider" name="TRP3_InnerObjectEditorSlider" inherits="TRP3_Scrollbar"/>
 						</Frames>
 					</Frame>
 
 					<Button parentKey="add" inherits="TRP3_CommonButton">
-						<Size x="100" y="20"/>
+						<Size x="200" y="20"/>
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.addText" x="0" y="-18"/>
-							<Anchor point="RIGHT" x="-30" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.addText" x="0" y="-15"/>
+							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Button>
 
-					<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
-						<Size x="260" y="18"/>
+					<Button parentKey="addcopy" inherits="TRP3_CommonButton">
+						<Size x="200" y="20"/>
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.addText" x="0" y="-20"/>
-							<Anchor point="LEFT" x="35" y="0"/>
-							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.add" x="-30" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.add" x="0" y="-5"/>
+							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
-					</EditBox>
+					</Button>
 
 				</Frames>
 

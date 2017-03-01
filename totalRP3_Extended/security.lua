@@ -55,9 +55,11 @@ local effectGroupDefaultLevel = {
 local transposition = {
 	speech_env = "SEC_REASON_TALK",
 	speech_npc = "SEC_REASON_TALK",
+	speech_player = "SEC_REASON_TALK",
 	sound_id_local = "SEC_REASON_SOUND",
 	sound_music_local = "SEC_REASON_SOUND",
 	companion_dismiss_mount = "SEC_REASON_DISMOUNT",
+	companion_summon_mount = "SEC_REASON_DISMOUNT",
 }
 
 local function resolveEffectGroupSecurity(classID, effectGroupID)
@@ -128,6 +130,8 @@ local function computeSecurity(rootObjectID, rootObject, details)
 	rootObject.securityLevel = minSecurity;
 	rootObject.details = details;
 
+	Utils.log.log(("Security: found %d security issu in %s (%s)."):format(Utils.table.size(details), rootObjectID, minSecurity));
+
 	return details;
 end
 TRP3_API.security.computeSecurity = computeSecurity;
@@ -172,7 +176,7 @@ local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local securityFrame = TRP3_SecurityFrame;
-local NORMAL_HEIGHT = 280;
+local NORMAL_HEIGHT = 310;
 
 local ACTION_FLAG_THIS = "1";
 local ACTION_FLAG_ALL = "2";
@@ -183,10 +187,10 @@ local function onLineActionSelected(value, button)
 
 	if action == ACTION_FLAG_THIS then
 		TRP3_API.security.acceptSpecificEffectGroup(securityFrame.classID, effectGroup, not (securityVault.specific[securityFrame.classID] and securityVault.specific[securityFrame.classID][effectGroup]));
-		showSecurityDetailFrame(securityFrame.classID);
+		showSecurityDetailFrame(securityFrame.classID, securityFrame.frameFrom);
 	elseif action == ACTION_FLAG_ALL then
 		TRP3_API.security.acceptEffectGroup(effectGroup, not securityVault.global[effectGroup]);
-		showSecurityDetailFrame(securityFrame.classID);
+		showSecurityDetailFrame(securityFrame.classID, securityFrame.frameFrom);
 	end
 end
 
@@ -222,10 +226,11 @@ end
 function showSecurityDetailFrame(classID, frameFrom)
 	local class = getClass(classID);
 
-	securityFrame.securityDetails = class.details;
+	securityFrame.securityDetails = class.details or computeSecurity(classID, class);
 
 	local height = NORMAL_HEIGHT;
 
+	securityFrame.frameFrom = frameFrom;
 	securityFrame.empty:Hide();
 	if tsize(securityFrame.securityDetails) == 0 then
 		securityFrame.empty:Show();
@@ -233,31 +238,25 @@ function showSecurityDetailFrame(classID, frameFrom)
 	end
 
 	securityFrame.classID = classID;
-	securityFrame.sender = securityVault.sender[classID];
+	securityFrame.sender = securityVault.sender[classID] or UNKNOWN;
 
-	securityFrame.save:Show();
 	securityFrame.whitelist:Show();
-	if classID and TRP3_DB.my and TRP3_DB.my[classID] then
-		securityFrame.save:Hide();
+	if (classID and TRP3_DB.my and TRP3_DB.my[classID]) or securityFrame.sender == Globals.player_id then
 		securityFrame.whitelist:Hide();
-		securityFrame.sender = Globals.player_id;
 		height = height - 50;
 	else
 		securityFrame.whitelist:SetChecked(securityVault.whitelist[securityFrame.sender]);
 		securityFrame.whitelist.Text:SetText(loc("SEC_LEVEL_DETAILS_FROM"):format("|cff00ff00" .. securityFrame.sender));
 	end
 
-
 	initList(securityFrame, securityFrame.securityDetails, securityFrame.slider);
 
-	securityFrame.subtitle:SetText(loc("SEC_LEVEL_DETAILS_TT"):format(TRP3_API.inventory.getItemLink(class)));
+	securityFrame.subtitle:SetText(loc("SEC_LEVEL_DETAILS_TT"):format(TRP3_API.inventory.getItemLink(class), class.MD.CB, securityFrame.sender));
 
 	securityFrame:SetHeight(height);
+	securityFrame:ClearAllPoints();
+	securityFrame:SetPoint("CENTER", frameFrom or UIParent, "CENTER", 0, 0);
 	securityFrame:Show();
-	if frameFrom then
-		securityFrame:ClearAllPoints();
-		securityFrame:SetPoint("CENTER", frameFrom, "CENTER", 0, 0);
-	end
 end
 TRP3_API.security.showSecurityDetailFrame = showSecurityDetailFrame;
 
@@ -270,6 +269,17 @@ local function getSecurityDetailText(level)
 	return securityLevelDetailText[level or SECURITY_LEVEL.LOW] or "?";
 end
 TRP3_API.security.getSecurityDetailText = getSecurityDetailText;
+
+local function atLeastOneBlocked(rootClassID)
+	local secDetails = getClass(rootClassID).details or EMPTY;
+	for effectGroupID, _ in pairs(secDetails) do
+		if not TRP3_API.security.resolveEffectGroupSecurity(rootClassID, effectGroupID) then
+			return true;
+		end
+	end
+	return false;
+end
+TRP3_API.security.atLeastOneBlocked = atLeastOneBlocked;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -293,7 +303,6 @@ function TRP3_API.security.initSecurity()
 
 	securityFrame.title:SetText(loc("SEC_LEVEL_DETAILS"));
 	securityFrame.empty:SetText(loc("SEC_LEVEL_DETAILS_SECURED"));
-	securityFrame.save.Text:SetText(loc("SEC_LEVEL_DETAILS_REMIND"));
 
 	securityFrame.reasons = {};
 	securityFrame.reasons["SEC_REASON_TALK"] = "|cffffffff" .. loc("SEC_REASON_TALK_WHY");
@@ -312,9 +321,11 @@ function TRP3_API.security.initSecurity()
 
 	securityFrame.whitelist:SetScript("OnClick", function(self)
 		TRP3_API.security.whitelistSender(securityFrame.sender, self:GetChecked());
-		showSecurityDetailFrame(securityFrame.classID);
+		showSecurityDetailFrame(securityFrame.classID, securityFrame.frameFrom);
 	end);
 
 	TRP3_API.security.EVENT_SECURITY_CHANGED = "EVENT_SECURITY_CHANGED";
 	TRP3_API.events.registerEvent(TRP3_API.security.EVENT_SECURITY_CHANGED);
+
+	TRP3_API.ui.frame.setupMove(securityFrame);
 end

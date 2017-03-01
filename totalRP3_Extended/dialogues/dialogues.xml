@@ -61,30 +61,38 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_DialogFrame" inherits="TRP3_StandardParchmentFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
-		<TitleRegion setAllPoints="true"/>
+	<Frame name="TRP3_DialogFrameTemplate" inherits="TRP3_StandardParchmentFrame" virtual="true">
 
+		<Size x="100" y="100" />
 		<Layers>
 			<Layer level="BORDER">
-				<Texture parentKey="BG" alpha="0.5">
+				<Texture parentKey="background" alpha="0.5">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="20" y="-20"/>
 						<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
 					</Anchors>
+					<Animations>
+						<AnimationGroup parentKey="FadeIn" setToFinalAlpha="true">
+							<Alpha toAlpha="0.5" fromAlpha="0" duration="0.5"/>
+						</AnimationGroup>
+						<AnimationGroup parentKey="FadeOut" setToFinalAlpha="true">
+							<Alpha toAlpha="0" fromAlpha="0.5" duration="0.5"/>
+						</AnimationGroup>
+					</Animations>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
 				<Texture parentKey="Image">
 					<Size x="512" y="256"/>
 					<Anchors>
-						<Anchor point="CENTER" x="0" y="0"/>
+						<Anchor point="TOP" x="0" y="-100"/>
 					</Anchors>
 					<Animations>
 						<AnimationGroup parentKey="FadeIn" setToFinalAlpha="true">
-							<Alpha change="1" duration="1"/>
+							<Alpha toAlpha="1" fromAlpha="0" duration="1"/>
 						</AnimationGroup>
 						<AnimationGroup parentKey="FadeOut" setToFinalAlpha="true">
-							<Alpha change="-1" duration="1"/>
+							<Alpha toAlpha="0" fromAlpha="1" duration="1"/>
 						</AnimationGroup>
 					</Animations>
 				</Texture>
@@ -163,7 +171,7 @@
 			</Frame>
 
 			<Frame parentKey="Chat" frameLevel="4">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="16"/>
 					</EdgeSize>
@@ -198,7 +206,7 @@
 				</Layers>
 				<Frames>
 					<Frame parentKey="Left" frameLevel="5">
-						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 							<EdgeSize><AbsValue val="16"/></EdgeSize>
 							<TileSize><AbsValue val="100"/></TileSize>
 							<BackgroundInsets><AbsInset left="4" right="2" top="2" bottom="2"/></BackgroundInsets>
@@ -229,7 +237,7 @@
 					</Frame>
 
 					<Frame parentKey="Right" frameLevel="5">
-						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 							<EdgeSize><AbsValue val="16"/></EdgeSize>
 							<TileSize><AbsValue val="100"/></TileSize>
 							<BackgroundInsets><AbsInset left="4" right="2" top="2" bottom="2"/></BackgroundInsets>
@@ -280,13 +288,13 @@
 							</OnLeave>
 						</Scripts>
 					</Button>
-					<Button parentKey="PreviousButton" frameLevel="8">
+					<Button parentKey="HistoryButton" frameLevel="8">
 						<Size x="35" y="35"/>
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
 						</Anchors>
-						<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up" />
-						<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
+						<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up" />
+						<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
 						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
 					</Button>
 				</Frames>
@@ -315,6 +323,63 @@
 
 		</Frames>
 
+	</Frame>
+
+	<Frame name="TRP3_DialogFrame" inherits="TRP3_DialogFrameTemplate" toplevel="true" parent="UIParent" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+	</Frame>
+
+	<Frame name="TRP3_DialogFrameHistory" parent="UIParent" inherits="TRP3_AltHoveredFrame" toplevel="true" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+		<Size x="600" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+						<Anchor point="RIGHT" x="-10" y="0"/>
+						<Anchor point="LEFT" x="10" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<ScrollingMessageFrame parentKey="container" displayDuration="120.0" maxLines="256" insertMode="BOTTOM" enableMouse="true">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="35"/>
+				</Anchors>
+			</ScrollingMessageFrame>
+
+			<Button parentKey="bottom">
+				<Size x="32" y="32"/>
+				<NormalTexture file="Interface\Buttons\UI-Panel-ExpandButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-ExpandButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.container" x="0" y="3"/>
+				</Anchors>
+				<Scripts>
+					<PostClick>
+						TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+					</PostClick>
+				</Scripts>
+			</Button>
+
+			<!-- CLOSE FRAME -->
+			<Button parentKey="Close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
 	</Frame>
 
 	<Script file="dialogues.lua"/>

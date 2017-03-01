@@ -40,7 +40,11 @@ editor.browser.container.lines = {};
 local function createInnerObject(innerID, innerType, innerData)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
 	assert(innerID and innerID:len() > 0, "Bad inner ID");
-	assert(not toolFrame.specificDraft.IN[innerID], "Inner ID not available.");
+
+	if toolFrame.specificDraft.IN[innerID] then
+		Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), 4);
+		return;
+	end
 
 	if innerType == TRP3_DB.types.ITEM then
 		toolFrame.specificDraft.IN[innerID] = innerData or {
@@ -63,14 +67,12 @@ local function createInnerObject(innerID, innerType, innerData)
 			},
 			BT = true,
 		}
+	elseif innerType == TRP3_DB.types.DIALOG then
+		toolFrame.specificDraft.IN[innerID] = innerData or TRP3_API.extended.tools.getCutsceneData();
 	elseif innerType == "quick" then
 		toolFrame.specificDraft.IN[innerID] = innerData;
 	end
 
-end
-
-local function checkID(ID)
-	return ID:lower():gsub("[^%w%_]", "_");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -82,16 +84,8 @@ local function idExists(id)
 	return toolFrame.specificDraft.IN[id];
 end
 
-local function onIDChanged(self)
-	local id = checkID(self:GetText()) or "";
-	if id:len() == 0 or idExists(id) then
-		editor.browser.add:Disable();
-	else
-		editor.browser.add:Enable();
-	end
-end
-
 local function onLineEnter(line)
+	line.Highlight:Show();
 	refreshTooltipForFrame(line);
 	local class = toolFrame.specificDraft.IN[line.objectID];
 	if class.TY == TRP3_DB.types.ITEM then
@@ -99,7 +93,8 @@ local function onLineEnter(line)
 	end
 end
 
-local function onLineLeave()
+local function onLineLeave(line)
+	line.Highlight:Hide();
 	TRP3_MainTooltip:Hide();
 	TRP3_ItemTooltip:Hide();
 end
@@ -109,7 +104,7 @@ local function decorateLine(line, innerID)
 	local innerObject = toolFrame.specificDraft.IN[innerID];
 	local _, name, _ = TRP3_API.extended.tools.getClassDataSafeByType(innerObject);
 	local typeLocale = getTypeLocale(innerObject.TY) or UNKNOWN;
-	local text = ("|cff00ff00%s: |r\"%s|r\" |cff00ffff(ID: %s)"):format(typeLocale, name or UNKNOWN, innerID);
+	local text = ("|cff00ff00%s:|cff00ffff %s:|r \"%s\""):format(typeLocale, innerID, name or UNKNOWN);
 	line.objectID = innerID;
 	line.text:SetText(text);
 
@@ -123,8 +118,6 @@ end
 
 local function refresh()
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-	editor.browser.id:SetText("");
-	onIDChanged(editor.browser.id);
 	editor.browser.container.empty:Hide();
 	if tsize(toolFrame.specificDraft.IN) == 0 then
 		editor.browser.container.empty:Show();
@@ -143,6 +136,28 @@ editor.refresh = refresh;
 local LINE_ACTION_DELETE = 1;
 local LINE_ACTION_ID = 2;
 local LINE_ACTION_COPY = 3;
+local LINE_ACTION_PASTE = 4;
+local type, tremove = type, tremove;
+
+---
+-- Recursivity is bad, people.
+-- Always use a stack when you have to parse large structures. :)
+--
+local function adaptIDs(oldID, newID, object)
+	local stack = {object};
+	while #stack ~= 0 do
+		local current = tremove(stack);
+		if type(current) == "table" then
+			for index, value in pairs(current) do
+				if type(value) == "table" then
+					tinsert(stack, value);
+				elseif type(value) == "string" then
+					current[index] = value:gsub(oldID, newID);
+				end
+			end
+		end
+	end
+end
 
 local function onLineAction(action, line)
 	assert(toolFrame.specificDraft.IN[line.objectID]);
@@ -160,7 +175,7 @@ local function onLineAction(action, line)
 		end);
 	elseif action == LINE_ACTION_ID then
 		TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ID"):format(name or UNKNOWN, id), function(newID)
-			newID = checkID(newID);
+			newID = TRP3_API.extended.checkID(newID);
 			if toolFrame.specificDraft.IN[newID] then
 				Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), 4);
 			elseif newID and newID:len() > 0 then
@@ -169,10 +184,26 @@ local function onLineAction(action, line)
 				refresh();
 			end
 		end, nil, id);
+	elseif action == LINE_ACTION_COPY then
+		wipe(editor.copy);
+		Utils.table.copy(editor.copy, innerObject);
+		editor.copy_fullClassID = toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id;
+	elseif action == LINE_ACTION_PASTE then
+		if editor.copy and editor.copy.TY == innerObject.TY then
+			TRP3_API.popup.showConfirmPopup(loc("IN_INNER_PASTE_CONFIRM"), function()
+				wipe(innerObject);
+				Utils.table.copy(innerObject, editor.copy);
+				adaptIDs(editor.copy_fullClassID, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id, innerObject);
+				refresh();
+			end);
+		end
 	end
 end
 
 local function onLineClicked(line, button)
+	local id = line.objectID;
+	local innerObject = toolFrame.specificDraft.IN[id];
+
 	if button == "LeftButton" then
 		TRP3_API.extended.tools.goToPage(getFullID(toolFrame.fullClassID, line.objectID));
 	else
@@ -180,15 +211,32 @@ local function onLineClicked(line, button)
 		tinsert(values, {line.text:GetText(), nil});
 		tinsert(values, {DELETE, LINE_ACTION_DELETE, loc("IN_INNER_DELETE_TT")});
 		tinsert(values, {loc("IN_INNER_ID_ACTION"), LINE_ACTION_ID});
+		tinsert(values, {loc("IN_INNER_COPY_ACTION"), LINE_ACTION_COPY});
+		if editor.copy.TY == innerObject.TY then
+			tinsert(values, {loc("IN_INNER_PASTE_ACTION"), LINE_ACTION_PASTE});
+		end
 		TRP3_API.ui.listbox.displayDropDown(line, values, onLineAction, 0, true);
 	end
 end
 
-local function addInnerObject(type)
+local function addInnerObject(type, self)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-	local innerID = checkID(editor.browser.id:GetText());
-	createInnerObject(innerID, type);
-	refresh();
+	TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ENTER_ID") .. "\n\n" .. loc("IN_INNER_ENTER_ID_TT"), function(innerID)
+		if not innerID or innerID:len() == 0 then
+			return;
+		elseif self == editor.browser.add then
+			createInnerObject(innerID, type);
+			refresh();
+		elseif self == editor.browser.addcopy then
+			TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "CENTER", parentPoint = "CENTER"}, {function(id)
+				local class = getClass(id);
+				local template = {};
+				Utils.table.copy(template, class);
+				createInnerObject(innerID, type, template);
+				refresh();
+			end, type});
+		end
+	end, nil, "");
 end
 
 local function onAddClicked(self)
@@ -196,8 +244,7 @@ local function onAddClicked(self)
 	tinsert(values, {"Select inner object type", nil});
 	tinsert(values, {loc("TYPE_ITEM"), TRP3_DB.types.ITEM});
 	tinsert(values, {loc("TYPE_DOCUMENT"), TRP3_DB.types.DOCUMENT});
-	tinsert(values, {loc("TYPE_LOOT") .. " [WIP]", nil}); --TRP3_DB.types.LOOT});
-	tinsert(values, {loc("TYPE_DIALOG") .. " [WIP]", nil}); --TRP3_DB.types.DIALOG});
+	tinsert(values, {loc("TYPE_DIALOG"), TRP3_DB.types.DIALOG});
 	TRP3_API.ui.listbox.displayDropDown(self, values, addInnerObject, 0, true);
 end
 
@@ -208,13 +255,13 @@ end
 function editor.init(ToolFrame)
 	toolFrame = ToolFrame;
 
+	editor.copy = {};
 	editor.browser.title:SetText(loc("IN_INNER_LIST"));
 	editor.help.title:SetText(loc("IN_INNER_HELP_TITLE"));
 	editor.help.text:SetText(loc("IN_INNER_HELP"));
-	editor.browser.add:SetText(ADD);
+	editor.browser.add:SetText(loc("IN_INNER_ADD_NEW"));
+	editor.browser.addcopy:SetText(loc("IN_INNER_ADD_COPY"));
 	editor.browser.addText:SetText(loc("IN_INNER_ADD"));
-	editor.browser.id.title:SetText(loc("IN_INNER_ENTER_ID"));
-	setTooltipForSameFrame(editor.browser.id.help, "RIGHT", 0, 5, loc("IN_INNER_ENTER_ID"), loc("IN_INNER_ENTER_ID_TT"));
 	editor.browser.container.empty:SetText(loc("IN_INNER_EMPTY"));
 
 	handleMouseWheel(editor.browser.container, editor.browser.container.slider);
@@ -230,10 +277,6 @@ function editor.init(ToolFrame)
 	end
 
 	editor.browser.add:SetScript("OnClick", onAddClicked);
-	editor.browser.id:SetScript("OnTextChanged", onIDChanged)
-	editor.browser.id:SetScript("OnEnterPressed", function()
-		if editor.browser.add:IsEnabled() then
-			editor.browser.add:GetScript("OnClick")(editor.browser.add);
-		end
-	end)
+	editor.browser.addcopy:SetScript("OnClick", onAddClicked);
+
 end

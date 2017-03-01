@@ -37,562 +37,696 @@ Marshal McBride
 -- CAMPAIGN DB
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local demoCampaign = {
-	TY = TRP3_DB.types.CAMPAIGN,
-
-	-- Base information, common to the whole campaign
-	BA = {
-		IC = "achievement_zone_elwynnForest",
-		NA = "Save Northshire Valley",
-		DE = "Take the arms and defend the abbey.",
-		RA = { 1, 5 },
+local coinCampaign = {
+	["AC"] = {
+		{
+			["TY"] = "TALK",
+			["SC"] = "on_bad_talk",
+			["CO"] = {
+				{
+					{
+						["i"] = "unit_npc_id",
+						["a"] = {
+							"target", -- [1]
+						},
+					}, -- [1]
+					"==", -- [2]
+					{
+						["v"] = 37776,
+					}, -- [3]
+				}, -- [1]
+				"*", -- [2]
+				{
+					{
+						["i"] = "unit_npc_id",
+						["a"] = {
+							"target", -- [1]
+						},
+					}, -- [1]
+					"==", -- [2]
+					{
+						["v"] = 88501,
+					}, -- [3]
+				}, -- [3]
+				"*", -- [4]
+				{
+					{
+						["i"] = "unit_npc_id",
+						["a"] = {
+							"target", -- [1]
+						},
+					}, -- [1]
+					"==", -- [2]
+					{
+						["v"] = 88502,
+					}, -- [3]
+				}, -- [5]
+				"*", -- [6]
+				{
+					{
+						["i"] = "unit_npc_id",
+						["a"] = {
+							"target", -- [1]
+						},
+					}, -- [1]
+					"==", -- [2]
+					{
+						["v"] = 7292,
+					}, -- [3]
+				}, -- [7]
+				"*", -- [8]
+				{
+					{
+						["i"] = "unit_npc_id",
+						["a"] = {
+							"target", -- [1]
+						},
+					}, -- [1]
+					"==", -- [2]
+					{
+						["v"] = 64153,
+					}, -- [3]
+				}, -- [9]
+				"*", -- [10]
+				{
+					{
+						["i"] = "unit_npc_id",
+						["a"] = {
+							"target", -- [1]
+						},
+					}, -- [1]
+					"==", -- [2]
+					{
+						["v"] = 65578,
+					}, -- [3]
+				}, -- [11]
+			},
+		}, -- [1]
+		{
+			["TY"] = "TALK",
+			["SC"] = "on_talk",
+			["CO"] = {
+				{
+					{
+						["i"] = "quest_is_npc",
+						["a"] = {
+							"target", -- [1]
+						},
+					}, -- [1]
+					"==", -- [2]
+					{
+						["v"] = true,
+					}, -- [3]
+				}, -- [1]
+			},
+		}, -- [2]
 	},
-
-	QE = {
-		["quest1"] = {
-			TY = TRP3_DB.types.QUEST,
-
-			-- Base information, common to the whole quest
-			BA = {
-				IC = "ability_warrior_strengthofarms",
-				NA = "To arms!",
-				DE = "Succeed the registration test.",
-			},
-
-			-- Initial campaign NPC declaration
-			ND = {
-				["196"] = {
-					IC = "inv_misc_1h_lumberaxe_a_01",
-					NA = "Mysterious lumberjack",
-					DE = "Who could be this guy ?"
-				}
-			},
-
-			-- Objectives
-			OB = {
+	["BA"] = {
+		["IC"] = "inv_misc_coinbag_special",
+		["RA"] = "1 - 110",
+		["DE"] = "This campaign allows you to talk to bankers in order to get coins.",
+		["IM"] = "GarrZoneAbility-TradingPost",
+		["NA"] = "Currency",
+	},
+	["SC"] = {
+		["on_talk"] = {
+			["ST"] = {
 				["1"] = {
-					TX = "Talk to a Stormwind Army Registrar",
-				},
-			},
-
-			-- Inner objects
-			IN = {
-				recruitementDoc = {
-					TY = TRP3_DB.types.DOCUMENT,
-					BA = {
-						NA = "Recruitement missive"
-					},
-					PA = {
+					["e"] = {
 						{
-							TX = DB_TEXTS.doc1,
-						}
+							["id"] = "dialog_quick",
+							["args"] = {
+								"Ho! You are here for your money, right? Here, take whatever you want.", -- [1]
+							},
+						}, -- [1]
 					},
-				}
-			},
-
-			-- Scripts for quest
-			SC = {
-				["QUEST_START"] = {
-					ST = {
-						["1"] = {
-							t = "list",
-							e = {
-								{
-									id = "document_show",
-									args = { "demoCampaign quest1 recruitementDoc" }
-								},
-								{
-									id = "quest_goToStep",
-									args = { "demoCampaign", "quest1", "1" }
-								},
-							}
-						},
-					},
+					["t"] = "list",
+					["n"] = "2",
 				},
-			},
-
-			-- OnStart inner handler
-			OS = "QUEST_START",
-
-			-- Quest steps
-			ST = {
-				--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-				-- Quest step 1: Talk to a registrar
-				--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-				["1"] = {
-					TY = TRP3_DB.types.QUEST_STEP,
-
-					-- Quest step log information ONCE IN STEP
-					TX = "I should talk to a |cffffff00[Stormwind Army Registrar]|r in front of the Northshire Abbey.",
-					-- Quest step log information ONCE FINISHED
-					DX = "I talked to an Army Registrar.",
-
-					AC = {
-						TALK = { "REGISTRAR_TALK" },
-					},
-
-					-- Scripts for quest
-					SC = {
-						["STEP_START"] = {
-							ST = {
-								["1"] = {
-									t = "list",
-									e = {
-										{
-											id = "quest_revealObjective",
-											args = { "demoCampaign", "quest1", "1" }
-										},
-									}
-								},
-							},
-						},
-						["REGISTRAR_TALK"] = {
-							ST = {
-								["1"] = {
-									t = "list",
-									e = {
-										{
-											id = "dialog_start",
-											args = { "demoCampaign quest1 1 dialog" }
-										},
-										{
-											id = "quest_goToStep",
-											args = { "demoCampaign", "quest1", "2" }
-										},
-									}
-								},
-							},
-						},
-					},
-					IN = {
-						history = {
-							TY = TRP3_DB.types.DIALOG,
-							BG = "Interface\\ARCHEOLOGY\\Arch-BookCompletedLeft",
-							NM = "The Elder's Voice",
-							ST = {
-								{
-									TX = "<And when the child put his hand on the stone, it glowed like a thousand fire ...>\n<But he knew he would be curse if he'd had taken the scepter.>",
-									IM = {
-										UR = "Interface\\ARCHEOLOGY\\ArchRare-TheInnKeepersDaughter",
-										WI = 1024,
-										HE = 512
-									},
-									ND = "LEFT",
-								},
-
-								{
-									TX = "<As the Scepter is filled with black magic.>",
-									IM = {
-										UR = "Interface\\ARCHEOLOGY\\ArchRare-StaffofSorcererThanThaurissan",
-										WI = 512,
-										HE = 256
-									},
-									ND = "LEFT",
-								},
-
-								{
-									TX = "<Only queen Azshara did succeed in handling such terrible power.>\n<And everobody knows how it ended...>",
-									IM = {
-										UR = "Interface\\ARCHEOLOGY\\ArchRare-QueenAzsharaGown",
-										WI = 1024,
-										HE = 512
-									},
-									ND = "LEFT",
-								},
-							},
-						},
-						dialog = {
-							TY = TRP3_DB.types.DIALOG,
-							ST = {
-								{
-									-- 1
-									TX = "Hello, I'm here for the job.",
-									ND = "LEFT"
-								},
-
-								{
-									-- 2
-									TX = "Ah yes, the job about the orcs. We need to kill them all and free Northshire.\nBut it won't be an easy task.\nFirst we need wood to be able to craft some weapons. Could you talk to John ? He's a lumberjack here in Northshire.",
-								},
-							}
-						}
-					},
-
-					-- OnStart inner handler
-					OS = "STEP_START",
-				},
-
 				["2"] = {
-					TY = TRP3_DB.types.QUEST_STEP,
-
-					-- Quest step log information ONCE IN STEP
-					TX = "I should talk to the |cffffff00[Lumber jack]|r in front of the Northshire Abbey.",
-
-					-- Initial campaign NPC declaration
-					ND = {
-						["196"] = {
-							IC = "inv_misc_1h_lumberaxe_a_01",
-							NA = "Jack",
-							DE = "It's Jack the lumberjack!\n(pun intended)"
-						}
+					["e"] = {
+						{
+							["id"] = "item_loot",
+							["args"] = {
+								{
+									"The bank", -- [1]
+									"inv_misc_coinbag_special", -- [2]
+									{
+										{
+											["classID"] = "coinCampaign copper",
+											["count"] = 10,
+										}, -- [1]
+										{
+											["classID"] = "coinCampaign silver",
+											["count"] = 10,
+										}, -- [2]
+										{
+											["classID"] = "coinCampaign gold",
+											["count"] = 10,
+										}, -- [3]
+										{
+											["classID"] = "coinCampaign copper",
+											["count"] = 100,
+										}, -- [4]
+										{
+											["classID"] = "coinCampaign silver",
+											["count"] = 100,
+										}, -- [5]
+										{
+											["classID"] = "coinCampaign gold",
+											["count"] = 100,
+										}, -- [6]
+									}, -- [3]
+								}, -- [1]
+								{
+								}, -- [2]
+							},
+						}, -- [1]
 					},
-				}
+					["t"] = "list",
+				},
 			},
 		},
-	},
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Actions & script
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	-- Scripts for campaign
-	SC = {
-		["CAMPAIGN_START"] = {
-			ST = {
+		["on_bad_talk"] = {
+			["ST"] = {
 				["1"] = {
-					t = "list",
-					e = {
+					["e"] = {
 						{
-							id = "quest_start",
-							args = { "demoCampaign", "quest1" }
-						},
-					}
+							["id"] = "dialog_quick",
+							["args"] = {
+								"Hello. What? No, I don't have your money. You should ask one of the banker instead.", -- [1]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
 				},
 			},
 		},
 	},
-
-	-- OnStart inner handler
-	OS = "CAMPAIGN_START",
+	["securityLevel"] = 3,
+	["NT"] = "This campaign shows how a campaign can be used more as a shop/event system than a set of quests.\n\nThis shouldn't be consider as an IC method to get money. ;)\n\nWe suggest that all creators use these coins if there are transactions to be done in their quests.",
+	["MD"] = {
+		["CD"] = "25/08/16 10:37:19",
+		["LO"] = "en",
+		["CB"] = "Ellypse-CultedelaRivenoire",
+		["SB"] = "Ellÿpse-KirinTor",
+		["MO"] = "NO",
+		["SD"] = "18/09/16 10:55:14",
+		["V"] = 58,
+	},
+	["ND"] = {
+		["29282"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins, if you can catch their attention behind the bars...",
+		},
+		["98842"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["88468"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["8123"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["45661"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["4209"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["44852"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["64023"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["88471"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43840"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["85957"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["16617"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Bloodelf",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2455"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["63971"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43723"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["46618"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["63967"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["95966"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["88472"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2460"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["95974"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["4550"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Scourge",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["63969"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43819"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["17632"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Bloodelf",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43724"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["7292"] = {
+			["IC"] = "Achievement_Character_Dwarf_Female",
+			["DE"] = "She is the vault administrator, she must know where your money is.",
+		},
+		["98841"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["63966"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["63970"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["8357"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Tauren",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["45662"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2625"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43824"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43692"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["30605"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["16710"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43820"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["45081"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["17631"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Bloodelf",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["4549"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Scourge",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["44770"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["44854"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["96819"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2461"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["30606"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins, if you can catch their attention behind the bars...",
+		},
+		["43822"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2457"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["46621"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["28675"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["8356"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Tauren",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2996"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Tauren",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["88501"] = {
+			["IC"] = "Achievement_Character_Dwarf_Male",
+			["DE"] = "He's right next to a pile of gold. Does he have your money?",
+		},
+		["96821"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2458"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Scourge",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["63965"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["46620"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["16616"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Bloodelf",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["96818"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["96822"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["28677"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["17773"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43725"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["96817"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["44856"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["88502"] = {
+			["IC"] = "Achievement_Character_Dwarf_Female",
+			["DE"] = "She's sitting on a chest. Does it contain your money?",
+		},
+		["44853"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2456"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["64024"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43825"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["64153"] = {
+			["IC"] = "Achievement_Character_Gnome_Female",
+			["DE"] = "She's counting money. Is it yours?",
+		},
+		["96823"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["63968"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["37776"] = {
+			["IC"] = "Achievement_KirinTor_Offensive",
+			["DE"] = "Is she a banker?",
+		},
+		["28676"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["65578"] = {
+			["IC"] = "INV_Helmet_47",
+			["DE"] = "This guy looks shady. Does he have your money?",
+		},
+		["4208"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["2459"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Scourge",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["4155"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["16615"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Bloodelf",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["30604"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["5099"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["17633"] = {
+			["IC"] = "Inv_Misc_Tournaments_banner_Bloodelf",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["63964"] = {
+			["IC"] = "Ability_Racial_PackHobgoblin",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["30608"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins, if you can catch their attention behind the bars...",
+		},
+		["85958"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["88469"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["18350"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["43823"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Alliance",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["46619"] = {
+			["IC"] = "Battleground_Strongbox_Gold_Horde",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+		["30607"] = {
+			["IC"] = "inv_misc_coinbag_special",
+			["DE"] = "Talk to this person to get some coins.",
+		},
+	},
+	["TY"] = "CA",
+	["HA"] = {
+	},
+	["IN"] = {
+		["silver"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["QA"] = 1,
+				["ST"] = 999,
+				["DE"] = "A silver coin used for transactions around the world. Worth 100 coppers.",
+				["SB"] = false,
+				["WA"] = false,
+				["QE"] = false,
+				["US"] = false,
+				["CR"] = false,
+				["IC"] = "INV_Misc_Coin_18",
+				["UN"] = false,
+				["LE"] = "Currency",
+				["CO"] = false,
+				["VA"] = 100,
+				["NA"] = "Silver coin",
+				["CT"] = false,
+				["WE"] = 10,
+			},
+			["SC"] = {
+			},
+			["CO"] = {
+				["OI"] = false,
+				["MW"] = 0,
+				["DU"] = 0,
+				["SC"] = "4",
+				["SI"] = "5x4",
+				["SR"] = "5",
+			},
+			["IN"] = {
+			},
+			["MD"] = {
+				["MO"] = "QU",
+			},
+			["TY"] = "IT",
+		},
+		["copper"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["QA"] = 1,
+				["ST"] = 999,
+				["DE"] = "A copper coin used for transactions around the world.",
+				["SB"] = false,
+				["WA"] = false,
+				["QE"] = false,
+				["IC"] = "INV_Misc_Coin_19",
+				["CR"] = false,
+				["US"] = false,
+				["UN"] = false,
+				["LE"] = "Currency",
+				["CO"] = false,
+				["VA"] = 1,
+				["NA"] = "Copper coin",
+				["CT"] = false,
+				["WE"] = 5,
+			},
+			["SC"] = {
+			},
+			["CO"] = {
+				["OI"] = false,
+				["MW"] = 0,
+				["DU"] = 0,
+				["SC"] = "4",
+				["SI"] = "5x4",
+				["SR"] = "5",
+			},
+			["IN"] = {
+			},
+			["MD"] = {
+				["MO"] = "QU",
+			},
+			["TY"] = "IT",
+		},
+		["gold"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["QA"] = 1,
+				["ST"] = 999,
+				["DE"] = "A gold coin used for transactions around the world. Worth 100 silvers.",
+				["SB"] = false,
+				["WA"] = false,
+				["QE"] = false,
+				["US"] = false,
+				["CR"] = false,
+				["IC"] = "INV_Misc_Coin_17",
+				["UN"] = false,
+				["LE"] = "Currency",
+				["CO"] = false,
+				["VA"] = 10000,
+				["NA"] = "Gold coin",
+				["CT"] = false,
+				["WE"] = 15,
+			},
+			["SC"] = {
+			},
+			["CO"] = {
+				["OI"] = false,
+				["MW"] = 0,
+				["DU"] = 0,
+				["SC"] = "4",
+				["SI"] = "5x4",
+				["SR"] = "5",
+			},
+			["IN"] = {
+			},
+			["MD"] = {
+				["MO"] = "QU",
+			},
+			["TY"] = "IT",
+		},
+	},
+	["LI"] = {
+	},
+	["details"] = {
+	},
+	["QE"] = {
+	},
 };
---TRP3_DB.inner.demoCampaign = demoCampaign;
-
-local myFirstCampaign = {
-	TY = TRP3_DB.types.CAMPAIGN,
-
-	-- Base information, common to the whole campaign
-	BA = {
-		IC = "achievement_reputation_05",
-		NA = "A dangerous friendship",
-		DE = "Looking for some easy money?\Be careful, some friendship can became dangerous...",
-	},
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Quest list
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	QE = {
-		["quest1"] = {
-			TY = TRP3_DB.types.QUEST,
-
-			-- Base information, common to the whole quest
-			BA = {
-				IC = "INV_jewelcrafting_Empyreansapphire_02",
-				NA = "The first job",
-				DE = "An Night Elf in Stormwind asks for help, so it's the good time to work.",
-			},
-
-			-- Different objective from all steps
-			-- OB only contains information, no script trigger !
-			OB = {
-				-- Boolean objective: simple activation
-				["1"] = {
-					TX = "Find Kyle Radue.",
-				},
-				["2"] = {
-					TX = "Read and sign the contract.",
-				},
-
-				-- Count objective: do something a certain amount of time
-				["x"] = {
-					TX = "{val} / {obj} kobold killed",
-					CT = 25,
-				},
-
-				-- Component objective: must possess a certain amount of a component
-				["xx"] = {
-					TX = "My seconde objective: {cur} / {obj}",
-					CO = "quest1	2	jewel", -- tabs separate the id domains
-					CT = 5,
-				},
-			},
-
-			-- Scripts for quest
-			SC = {
-				["QUEST_START"] = {
-					ST = {
-						["1"] = {
-							t = "list",
-							e = {
-								{
-									id = "quest_goToStep",
-									args = { "myFirstCampaign", "quest1", "1" }
-								},
-							}
-						},
-					},
-				},
-			},
-
-			-- OnStart inner handler
-			OS = "QUEST_START",
-
-			-- Quest steps
-			ST = {
-				--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-				-- Quest step 1: Found the elf
-				--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-				["1"] = {
-					TY = TRP3_DB.types.QUEST_STEP,
-
-					-- Quest step log information ONCE IN STEP
-					TX = "I should find the Night Elf. He's name is Kyle Radue. He should be in the Canals in Stormwind.",
-
-					-- Quest step log information ONCE FINISHED
-					DX = "I found the Elf in the Storwind Canals.",
-					AC = {
-						TALK = { "FOUND_KYLE" },
-					},
-
-					-- Scripts for this step
-					SC = {
-						["STEP_START"] = {
-							ST = {
-								-- 1: add objective 1
-								["1"] = {
-									t = "list",
-									e = {
-										{
-											id = "quest_revealObjective",
-											args = { "myFirstCampaign", "quest1", "1" }
-										},
-									}
-								},
-							},
-						},
-						["FOUND_KYLE"] = {
-							ST = {
-								-- 1: add objective 1
-								["1"] = {
-									t = "branch",
-									b = {
-										{
-											cond = { { { i = "tar_name" }, "==", { v = "Kyle Radue" } } },
-											n = "2"
-										}
-									},
-								},
-								["2"] = {
-									t = "list",
-									e = {
-										{
-											id = "quest_markObjDone",
-											args = { "myFirstCampaign", "quest1", "1" }
-										},
-										{
-											id = "quest_goToStep",
-											args = { "myFirstCampaign", "quest1", "2" }
-										},
-									}
-								},
-							},
-						}
-					},
-
-					-- Inner object
-					IN = {
-						firstPay = {
-							TY = TRP3_DB.types.LOOT,
-							IC = "inv_box_01",
-							NA = "A first pay",
-							IT = {
-								["1"] = {
-									id = "coin1",
-									count = 10,
-								}
-							}
-						}
-					},
-
-					-- OnStart inner handler
-					OS = "STEP_START",
-				},
-
-				--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-				-- Quest step 2: Read the contract and sign it
-				--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-				["2"] = {
-					TY = TRP3_DB.types.QUEST_STEP,
-
-					-- Quest step log information ONCE IN STEP
-					TX = "Kyle gave me a contract that I should read carefully and sign.",
-
-					-- Quest step log information ONCE FINISHED
-					DX = "I signed the contract.",
-
-					-- Scripts for this step
-					SC = {
-						["STEP_START"] = {
-							ST = {
-								-- 1: add objective 1
-								["1"] = {
-									t = "list",
-									e = {
-										{
-											id = "text",
-											args = { "Kyle says: Hello, take this contract and sign it.", 1 }
-										},
-										{
-											id = "quest_revealObjective",
-											args = { "myFirstCampaign", "quest1", "2" }
-										},
-										{
-											id = "item_loot",
-											args = { "myFirstCampaign quest1 2 contractLoot" }
-										},
-									}
-								},
-							},
-						},
-					},
-					AC = {
-						TALK = { "STEP_START" },
-					},
-
-					-- OnStart inner handler
-					OS = "STEP_START",
-
-					-- Inner objects
-					IN = {
-						contractLoot = {
-							TY = TRP3_DB.types.LOOT,
-							IC = "inv_box_01",
-							NA = "Quickloot",
-							IT = {
-								["1"] = {
-									id = "myFirstCampaign quest1 2 contractItem",
-									count = 1,
-								}
-							}
-						},
-
-						-- Document item
-						contractItem = {
-							TY = TRP3_DB.types.ITEM,
-							BA = {
-								IC = "inv_misc_toy_05",
-								NA = "Contract",
-								DE = "A simple contract, written on paper.",
-								UN = 1,
-								WE = 0.1,
-							},
-							US = {
-								AC = "Read the contract",
-								SC = "quest"
-							},
-							SC = {
-								quest = {
-									ST = {
-										["1"] = {
-											t = "list",
-											e = {
-												{
-													id = "document_show",
-													args = { "myFirstCampaign quest1 2 contractDoc" }
-												},
-											}
-										}
-									}
-								}
-							}
-						},
-
-						-- Document
-						contractDoc = {
-							TY = TRP3_DB.types.DOCUMENT,
-							BA = {
-								NA = "Contract"
-							},
-							PA = {
-								{
-									TX = DB_TEXTS.doc1,
-								}
-							},
-							AC = {
-								sign = "sign",
-							},
-							SC = {
-								["sign"] = {
-									ST = {
-										["1"] = {
-											t = "list",
-											e = {
-												{
-													id = "document_close",
-													args = { "myFirstCampaign quest1 2 contractDoc" }
-												},
-												{
-													id = "quest_markObjDone",
-													args = { "myFirstCampaign", "quest1", "2" }
-												},
-												{
-													id = "quest_goToStep",
-													args = { "myFirstCampaign", "quest1", "3" }
-												},
-											}
-										},
-									},
-								},
-							}
-						}
-					},
-				},
-
-				--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-				-- Quest step 3: Reward
-				--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-				["3"] = {
-					TY = TRP3_DB.types.QUEST_STEP,
-
-					-- Scripts for this step
-					SC = {
-						["STEP_START"] = {-- 1: Show dialog REWARD
-						},
-					},
-
-					-- OnStart inner handler
-					--						OS = "STEP_START",
-				},
-			},
-		}
-	},
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Actions & script
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	-- Scripts for campaign
-	SC = {
-		["CAMPAIGN_START"] = {
-			ST = {
-				["1"] = {
-					t = "list",
-					e = {
-						{
-							id = "quest_start",
-							args = { "myFirstCampaign", "quest1" }
-						},
-					}
-				},
-			},
-		},
-	},
-
-	-- OnStart inner handler
-	OS = "CAMPAIGN_START",
-};
---TRP3_DB.inner.myFirstCampaign = myFirstCampaign;
+TRP3_DB.inner.coinCampaign = coinCampaign;

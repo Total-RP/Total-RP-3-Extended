@@ -23,8 +23,8 @@ local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolFrame, currentTab, display, gameplay, notes, container, tabGroup;
+local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
+local toolFrame, currentTab, display, gameplay, notes, container, tabGroup, linksStructure;
 
 local TABS = {
 	MAIN = 1,
@@ -33,6 +33,8 @@ local TABS = {
 	INNER = 4,
 	EXPERT = 5
 }
+
+local TUTORIAL, CONTAINER_TUTORIAL;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main tab
@@ -85,7 +87,7 @@ local function loadDataMain()
 	end
 
 	display.name:SetText(data.BA.NA or "");
-	display.description:SetText(data.BA.DE or "");
+	display.description.scroll.text:SetText(data.BA.DE or "");
 	display.quality:SetSelectedValue(data.BA.QA or LE_ITEM_QUALITY_COMMON);
 	display.left:SetText(data.BA.LE or "");
 	display.right:SetText(data.BA.RI or "");
@@ -105,6 +107,9 @@ local function loadDataMain()
 	gameplay.usetext:SetText(data.US.AC or "");
 	gameplay.wearable:SetChecked(data.BA.WA or false);
 	gameplay.container:SetChecked(data.BA.CT or false);
+	gameplay.noAdd:SetChecked(data.BA.PA or false);
+	gameplay.pickSound:SetSelectedValue(data.BA.PS or 1186);
+	gameplay.dropSound:SetSelectedValue(data.BA.DS or 1203);
 
 	notes.frame.scroll.text:SetText(data.NT or "");
 
@@ -114,7 +119,7 @@ end
 local function storeDataMain()
 	local data = toolFrame.specificDraft;
 	data.BA.NA = stEtN(strtrim(display.name:GetText()));
-	data.BA.DE = stEtN(strtrim(display.description:GetText()));
+	data.BA.DE = stEtN(strtrim(display.description.scroll.text:GetText()));
 	data.BA.LE = stEtN(strtrim(display.left:GetText()));
 	data.BA.RI = stEtN(strtrim(display.right:GetText()));
 	data.BA.QA = display.quality:GetSelectedValue() or LE_ITEM_QUALITY_COMMON;
@@ -129,10 +134,14 @@ local function storeDataMain()
 	data.BA.ST = gameplay.stack:GetChecked() and tonumber(gameplay.stackcount:GetText());
 	data.BA.WA = gameplay.wearable:GetChecked();
 	data.BA.CT = gameplay.container:GetChecked();
+	data.BA.PA = gameplay.noAdd:GetChecked();
 	data.BA.US = gameplay.use:GetChecked();
 	data.US.AC = stEtN(strtrim(gameplay.usetext:GetText()));
 	data.US.SC = "onUse";
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
+	data.BA.PS = gameplay.pickSound:GetSelectedValue() or 1186;
+	data.BA.DS = gameplay.dropSound:GetSelectedValue() or 1203;
+
 	return data;
 end
 
@@ -183,6 +192,7 @@ local function loadDataContainer()
 	container.type:SetSelectedValue(containerData.SI or "5x4");
 	container.durability:SetText(containerData.DU or "0");
 	container.maxweight:SetText(containerData.MW or "0");
+	container.onlyinner:SetChecked(containerData.OI or false);
 
 	onContainerResize(container.type:GetSelectedValue() or "5x4");
 end
@@ -195,6 +205,7 @@ local function storeDataContainer()
 	data.CO.SC = column;
 	data.CO.DU = tonumber(container.durability:GetText());
 	data.CO.MW = tonumber(container.maxweight:GetText());
+	data.CO.OI = container.onlyinner:GetChecked() or false;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -213,7 +224,7 @@ local function loadDataScript()
 	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
 
 	end
-	TRP3_ScriptEditorNormal.refreshWorkflowList();
+	TRP3_ScriptEditorNormal.loadList(TRP3_DB.types.ITEM);
 end
 
 local function storeDataScript()
@@ -247,12 +258,15 @@ local function onTabChanged(tabWidget, tab)
 	container:Hide();
 	TRP3_ScriptEditorNormal:Hide();
 	TRP3_InnerObjectEditor:Hide();
+	TRP3_LinksEditor:Hide();
+	TRP3_ExtendedTutorial.loadStructure(nil);
 
 	-- Show tab
 	if currentTab == TABS.MAIN then
 		display:Show();
 		gameplay:Show();
 		notes:Show();
+		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
 	elseif currentTab == TABS.EFFECTS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.item.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
@@ -260,13 +274,19 @@ local function onTabChanged(tabWidget, tab)
 	elseif currentTab == TABS.CONTAINER then
 		decorateContainerPreview(storeDataMain());
 		container:Show();
+		TRP3_ExtendedTutorial.loadStructure(CONTAINER_TUTORIAL);
 	elseif currentTab == TABS.INNER then
 		TRP3_InnerObjectEditor:SetParent(toolFrame.item.normal);
 		TRP3_InnerObjectEditor:SetAllPoints();
 		TRP3_InnerObjectEditor:Show();
+	elseif currentTab == TABS.EXPERT then
+		TRP3_LinksEditor:SetParent(toolFrame.item.normal);
+		TRP3_LinksEditor:SetAllPoints();
+		TRP3_LinksEditor:Show();
+		TRP3_LinksEditor.load(linksStructure);
 	end
 
-	TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] = currentTab;
+	TRP3_API.extended.tools.saveTab(toolFrame.fullClassID, currentTab);
 end
 
 local function createTabBar()
@@ -280,7 +300,7 @@ local function createTabBar()
 			{ loc("WO_WORKFLOW"), TABS.EFFECTS, 150 },
 			{ loc("IT_CON"), TABS.CONTAINER, 150 },
 			{ loc("IN_INNER"), TABS.INNER, 150 },
-			{ loc("WO_EXPERT"), TABS.EXPERT, 150 },
+			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -299,11 +319,13 @@ local function loadItem()
 	if not toolFrame.specificDraft.BA then
 		toolFrame.specificDraft.BA = {};
 	end
+	gameplay.mute = true;
 	loadDataMain();
 	loadDataScript();
 	loadDataContainer();
 	loadDataInner();
-	tabGroup:SelectTab(TRP3_Tools_Parameters.editortabs[toolFrame.fullClassID] or TABS.MAIN);
+	tabGroup:SelectTab(TRP3_API.extended.tools.getSaveTab(toolFrame.fullClassID, tabGroup:Size()));
+	gameplay.mute = false;
 end
 
 local function saveToDraft()
@@ -315,6 +337,46 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function createTutorialStructure()
+	TUTORIAL = {
+		{
+			box = toolFrame, title = "DB", text = "TU_IT_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+		{
+			box = display, title = "TU_IT_2", text = "TU_IT_2_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+		{
+			box = gameplay, title = "TU_IT_4", text = "TU_IT_4_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+		{
+			box = notes, title = "TU_IT_3", text = "TU_IT_3_TEXT",
+			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
+			callback = function()
+				tabGroup:SelectTab(1);
+			end
+		},
+	}
+
+	CONTAINER_TUTORIAL = {
+		{
+			box = toolFrame, title = "IT_CON", text = "TU_CO_1_TEXT",
+			arrow = "DOWN", x = 0, y = 100, anchor = "CENTER", textWidth = 400,
+		},
+	}
+end
 
 function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	toolFrame = ToolFrame;
@@ -347,7 +409,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 
 	-- Description
 	display.description.title:SetText(loc("IT_TT_DESCRIPTION"));
-	setTooltipForSameFrame(display.description.help, "RIGHT", 0, 5, loc("IT_TT_DESCRIPTION"), loc("IT_TT_DESCRIPTION_TT"));
+	setTooltipAll(display.description.dummy, "RIGHT", 0, 5, loc("IT_TT_DESCRIPTION"), loc("IT_TT_DESCRIPTION_TT"));
 
 	-- Component
 	display.component.Text:SetText(loc("IT_TT_REAGENT"));
@@ -426,6 +488,33 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	gameplay.container.Text:SetText(loc("IT_CON"));
 	setTooltipForSameFrame(gameplay.container, "RIGHT", 0, 5, loc("IT_CON"), loc("IT_CONTAINER_TT"));
 
+	-- No add
+	gameplay.noAdd.Text:SetText(loc("IT_NO_ADD"));
+	setTooltipForSameFrame(gameplay.noAdd, "RIGHT", 0, 5, loc("IT_NO_ADD"), loc("IT_NO_ADD_TT"));
+
+	-- Pick up sound
+	local pickUpList = {};
+	for i = 1183, 1199 do
+		tinsert(pickUpList, {loc("IT_PU_SOUND") .. ": |cff00ff00" .. loc("IT_PU_SOUND_" .. i), i});
+	end
+	tinsert(pickUpList, {loc("IT_PU_SOUND") .. ": |cff00ff00" .. loc("IT_PU_SOUND_" .. 1221), 1221});
+	TRP3_API.ui.listbox.setupListBox(gameplay.pickSound, pickUpList, function(value)
+		if not gameplay.mute then
+			TRP3_API.ui.misc.playSoundKit(value, "SFX");
+		end
+	end, nil, 200, true);
+
+	-- Drop sound
+	local dropList = {};
+	for i = 1200, 1217 do
+		tinsert(dropList, {loc("IT_DR_SOUND") .. ": |cff00ff00" .. loc("IT_DR_SOUND_" .. i), i});
+	end
+	TRP3_API.ui.listbox.setupListBox(gameplay.dropSound, dropList, function(value)
+		if not gameplay.mute then
+			TRP3_API.ui.misc.playSoundKit(value, "SFX");
+		end
+	end, nil, 200, true);
+
 	local onCheckClicked = function()
 		refreshCheck();
 	end
@@ -463,9 +552,13 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	container.durability.title:SetText(loc("IT_CO_DURABILITY"));
 	setTooltipForSameFrame(container.durability.help, "RIGHT", 0, 5, loc("IT_CO_DURABILITY"), loc("IT_CO_DURABILITY_TT"));
 
-	-- Unique count
+	-- Max weight
 	container.maxweight.title:SetText(loc("IT_CO_MAX"));
 	setTooltipForSameFrame(container.maxweight.help, "RIGHT", 0, 5, loc("IT_CO_MAX"), loc("IT_CO_MAX_TT"));
+
+	-- Component
+	container.onlyinner.Text:SetText(loc("IT_CO_ONLY_INNER"));
+	setTooltipForSameFrame(container.onlyinner, "RIGHT", 0, 5, loc("IT_CO_ONLY_INNER"), loc("IT_CO_ONLY_INNER_TT"));
 
 	-- Preview
 	for _, size in pairs({"5x4", "2x4", "1x4"}) do
@@ -476,4 +569,21 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 		TRP3_API.ui.frame.createRefreshOnFrame(preview, 0.25, onContainerFrameUpdate);
 	end
 
+	-- Expert
+	linksStructure = {
+		{
+			text = loc("IT_TRIGGER_ON_USE"),
+			tt = loc("IT_TRIGGER_ON_USE_TT"),
+			icon = "Interface\\ICONS\\ability_paladin_handoflight",
+			field = "OU",
+		},
+		{
+			text = loc("IT_TRIGGER_ON_DESTROY"),
+			tt = loc("IT_TRIGGER_ON_DESTROY_TT"),
+			icon = "Interface\\ICONS\\spell_sandexplosion",
+			field = "OD",
+		},
+	}
+
+	createTutorialStructure();
 end

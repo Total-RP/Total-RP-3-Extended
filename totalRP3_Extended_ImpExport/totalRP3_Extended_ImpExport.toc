@@ -1,0 +1,9 @@
+﻿## Interface: 70100
+## Title: Total RP 3: Extended Import/Export
+## Author: Telkostrasz & Ellypse
+## Notes: Import/Export for Total RP 3 Extended
+## URL: http://extended.totalrp3.info
+## RequiredDeps: totalRP3, totalRP3_Extended, totalRP3_Extended_Tools
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: TRP3_Extended_ImpExport

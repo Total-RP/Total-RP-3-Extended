@@ -35,10 +35,11 @@ TRP3_API.inventory.CONTAINER_SLOT_MAX = CONTAINER_SLOT_MAX;
 local QUICK_SLOT_ID = "17";
 TRP3_API.inventory.QUICK_SLOT_ID = QUICK_SLOT_ID;
 
-local function onItemAddEnd(container, ...)
+local function onItemAddEnd(container, itemClass, returnType, count, ...)
+	Utils.message.displayMessage(loc("IT_INV_GOT"):format(getItemLink(itemClass), count));
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	TRP3_API.inventory.recomputeAllInventory();
-	return ...;
+	return returnType, count, ...;
 end
 
 local function getItemCount(classID, container)
@@ -50,13 +51,49 @@ local function getItemCount(classID, container)
 end
 TRP3_API.inventory.getItemCount = getItemCount;
 
+local function copySlotContent(slot, itemClass, itemData)
+	if itemClass.CO and itemClass.CO.IT then
+		slot.content = {};
+		Utils.table.copy(slot.content, itemClass.CO.IT);
+	end
+	if itemData.madeBy then
+		if type(itemData.madeBy) == "string" then
+			slot.madeBy = itemData.madeBy;
+		else
+			slot.madeBy = Globals.player_id;
+		end
+	end
+	if itemData.vars then
+		if not slot.vars then
+			slot.vars = {};
+		end
+		tcopy(slot.vars, itemData.vars);
+	end
+	if itemData.content then
+		if not slot.content then
+			slot.content = {};
+		end
+		tcopy(slot.content, itemData.content);
+	end
+end
+
+local function dropMeBecauseIMFull(itemClass, itemData, toAdd, classID)
+	local dropSlot = {
+		count = toAdd or 1,
+		id = classID,
+	};
+	copySlotContent(dropSlot, itemClass, itemData);
+	TRP3_API.inventory.dropItemDirect(dropSlot);
+end
+
 --- Add an item to a container.
 -- Returns:
 -- 0 if OK
 -- 1 if container full
 -- 2 if too many item already possessed (unique)
 -- 3 if givenContainer is not a container
-function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
+-- 4 if container can't contain the item
+function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFull, toSlot)
 	-- Get the best container
 	local container = givenContainer or playerInventory;
 	if givenContainer == nil then
@@ -73,6 +110,11 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	local containerClass = getClass(container.id);
 	local itemClass = getClass(classID);
 
+	if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container.id, classID) then
+		Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.ALERT_MESSAGE);
+		return 4;
+	end
+
 	checkContainerInstance(container);
 	itemData = itemData or EMPTY;
 
@@ -85,25 +127,32 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 		local freeSlot, stackSlot;
 
 		-- Check unicity
-		if itemClass.UN then
+		if itemClass.BA.UN then
 			local currentCount = getItemCount(classID);
-			if currentCount + 1 > itemClass.UN then
+			if currentCount + 1 > itemClass.BA.UN then
 				Utils.message.displayMessage(loc("IT_INV_ERROR_MAX"):format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
-				return onItemAddEnd(2, count);
+				if dropIfFull then
+					dropMeBecauseIMFull(itemClass, itemData, toAdd - count, classID);
+				end
+				return onItemAddEnd(container, itemClass, 2, count);
 			end
 		end
 
-		-- Finding an empty slot
-		for i = 1, ((containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)) do
-			local slotID = tostring(i);
-			if not freeSlot and not container.content[slotID] then
-				freeSlot = slotID;
-			elseif canStack and container.content[slotID] and classID == container.content[slotID].id then
-				if not TRP3_API.inventory.isInTransaction(container.content[slotID]) then
-					local expectedCount = (container.content[slotID].count or 1) + 1;
-					if expectedCount <= (itemClass.BA.ST) then
-						stackSlot = slotID;
-						break;
+		if toSlot and not container.content[toSlot] then
+			freeSlot = toSlot;
+		else
+			-- Finding an empty slot
+			for i = 1, ((containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)) do
+				local slotID = tostring(i);
+				if not freeSlot and not container.content[slotID] then
+					freeSlot = slotID;
+				elseif canStack and container.content[slotID] and classID == container.content[slotID].id then
+					if not TRP3_API.inventory.isInTransaction(container.content[slotID]) then
+						local expectedCount = (container.content[slotID].count or 1) + 1;
+						if expectedCount <= (itemClass.BA.ST) then
+							stackSlot = slotID;
+							break;
+						end
 					end
 				end
 			end
@@ -113,12 +162,11 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 
 		-- Container is full
 		if not slot then
-			if givenContainer then
-				Utils.message.displayMessage(loc("IT_INV_ERROR_FULL"):format(getItemLink(containerClass)), Utils.message.type.ALERT_MESSAGE);
-			else
-				Utils.message.displayMessage(ERR_INV_FULL, Utils.message.type.ALERT_MESSAGE);
+			Utils.message.displayMessage(loc("IT_INV_ERROR_FULL"):format(getItemLink(containerClass)), Utils.message.type.ALERT_MESSAGE);
+			if dropIfFull then
+				dropMeBecauseIMFull(itemClass, itemData, toAdd - count, classID);
 			end
-			return onItemAddEnd(1, count);
+			return onItemAddEnd(container, itemClass, 1, count);
 		end
 
 		-- Adding item
@@ -127,23 +175,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 				id = classID,
 			};
 			local slot = container.content[slot];
-			if itemClass.CO and itemClass.CO.IT then
-				slot.content = {};
-				Utils.table.copy(slot.content, itemClass.CO.IT);
-			end
-			if itemData.madeBy then
-				if type(itemData.madeBy) == "string" then
-					slot.madeBy = itemData.madeBy;
-				else
-					slot.madeBy = Globals.player_id;
-				end
-			end
-			if itemData.vars then
-				if not slot.vars then
-					slot.vars = {};
-				end
-				tcopy(slot.vars, itemData.vars);
-			end
+			copySlotContent(slot, itemClass, itemData);
 		end
 		if stackSlot then
 			container.content[slot].count = (container.content[slot].count or 1) + 1;
@@ -151,7 +183,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 
 	end
 
-	return onItemAddEnd(container, 0, toAdd);
+	return onItemAddEnd(container, itemClass, 0, toAdd);
 end
 
 function TRP3_API.inventory.getItem(container, slotID)
@@ -216,6 +248,22 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 			return;
 		end
 
+		-- Check if containers can contain this type of item
+		if slot1Data and slot1Data.id then
+			local containerClass = getClass(container2.id);
+			if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container2.id, slot1Data.id) then
+				Utils.message.displayMessage(loc("IT_CON_ERROR_TYPE"), Utils.message.type.ALERT_MESSAGE);
+				return;
+			end
+		end
+		if slot2Data and slot2Data.id then
+			local containerClass = getClass(container1.id);
+			if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container1.id, slot2Data.id) then
+				Utils.message.displayMessage(loc("IT_CON_ERROR_TYPE"), Utils.message.type.ALERT_MESSAGE);
+				return;
+			end
+		end
+
 		container2.content[slot2] = slot1Data;
 		container1.content[slot1] = slot2Data;
 	end
@@ -224,6 +272,21 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container1);
 	if container1 ~= container2 then
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container2);
+	end
+end
+
+local function doUseSlot(info, class, container)
+	if info.cooldown then
+		Utils.message.displayMessage(ERR_ITEM_COOLDOWN, Utils.message.type.ALERT_MESSAGE);
+	else
+		local useWorkflow = class.US.SC;
+		if class.LI and class.LI.OU then
+			useWorkflow = class.LI.OU;
+		end
+		local retCode = TRP3_API.script.executeClassScript(useWorkflow, class.SC,
+			{object = info, container = container, class = class}, info.id);
+		Utils.event.fireEvent(TRP3_API.extended.ITEM_USED_EVENT, info.id, retCode);
+		return retCode;
 	end
 end
 
@@ -236,11 +299,18 @@ local function useContainerSlot(slotButton, containerFrame)
 			end
 			containerFrame.info.content[slotButton.slotID] = nil;
 		elseif slotButton.class and isUsableByClass(slotButton.class) then
-			if slotButton.info.cooldown then
-				Utils.message.displayMessage(ERR_ITEM_COOLDOWN, Utils.message.type.ALERT_MESSAGE);
-			else
-				local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, object = slotButton.info, container = containerFrame.info}, slotButton.info.id);
-			end
+			doUseSlot(slotButton.info, slotButton.class, containerFrame.info);
+		end
+	end
+end
+
+function TRP3_API.inventory.useContainerSlotID(container, slotID)
+	if container and container.content and container.content[slotID] and container.content[slotID].id then
+		local info = container.content[slotID];
+		local id = info.id;
+		local class = getClass(id);
+		if class and isUsableByClass(class) then
+			return doUseSlot(info, class, container);
 		end
 	end
 end
@@ -293,15 +363,28 @@ function TRP3_API.inventory.startCooldown(slotInfo, duration, container)
 	end
 end
 
-local function removeSlotContent(container, slotID, slotInfo)
+local function removeSlotContent(container, slotID, slotInfo, manuallyDestroyed)
 	-- Check that nothing has changed
 	if container.content[slotID] == slotInfo then
+		local count = slotInfo.count or 1;
+		local class = getClass(slotInfo.id);
+		local link = getItemLink(class);
+
+		if manuallyDestroyed then
+			if class.LI and class.LI.OD then
+				local retCode = TRP3_API.script.executeClassScript(class.LI.OD, class.SC,
+					{object = slotInfo, container = container}, slotInfo.id);
+			end
+			Utils.message.displayMessage(loc("DR_DELETED"):format(link, count));
+		end
+
 		wipe(container.content[slotID]);
 		container.content[slotID] = nil;
 		TRP3_API.inventory.recomputeAllInventory();
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	end
 end
+TRP3_API.inventory.removeSlotContent = removeSlotContent;
 
 local function splitSlot(slot, container, quantity)
 	local containerClass = getClass(container.id);
@@ -346,33 +429,43 @@ function TRP3_API.inventory.getInventory()
 	return playerInventory;
 end
 
-local function recomputeContainerWeight(container)
+local function recomputeContainerWeightValue(container)
 	assert(container, "Nil container");
-	local weight = 0;
+	local weight, value = 0, 0;
 
-	-- Add container own weight
-	local containerClass = getClass(container.id);
-	if containerClass and containerClass.BA then
-		weight = weight + (containerClass.BA.WE or 0);
-	end
+	if TRP3_API.extended.classExists(container.id) then
+		-- Add container own weight
+		local containerClass = getClass(container.id);
+		if containerClass and containerClass.BA then
+			weight = weight + (containerClass.BA.WE or 0);
+			value = value + (containerClass.BA.VA or 0);
+		end
 
-	-- Add content weight
-	for slotID, slotInfo in pairs(container.content or EMPTY) do
-		if isContainerByClassID(slotInfo.id) then
-			weight = weight + recomputeContainerWeight(slotInfo);
-		else
-			local class = getClass(slotInfo.id);
-			if class and class.BA then
-				weight = weight + ((class.BA.WE or 0) * (slotInfo.count or 1));
+		-- Add content weight
+		for slotID, slotInfo in pairs(container.content or EMPTY) do
+			if TRP3_API.extended.classExists(slotInfo.id) then
+				if  isContainerByClassID(slotInfo.id) then
+					local subWeight, subValue = recomputeContainerWeightValue(slotInfo);
+					weight = weight + subWeight;
+					value = value + subValue;
+				else
+					local class = getClass(slotInfo.id);
+					if class and class.BA then
+						weight = weight + ((class.BA.WE or 0) * (slotInfo.count or 1));
+						value = value + ((class.BA.VA or 0) * (slotInfo.count or 1));
+					end
+				end
 			end
 		end
 	end
+
+	container.totalValue = value;
 	container.totalWeight = weight;
-	return weight;
+	return weight, value;
 end
 
 function TRP3_API.inventory.recomputeAllInventory()
-	recomputeContainerWeight(playerInventory);
+	recomputeContainerWeightValue(playerInventory);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -383,24 +476,37 @@ function TRP3_API.inventory.onStart()
 	local refreshInventory = function()
 		playerInventory = TRP3_API.inventory.getInventory();
 		TRP3_API.inventory.closeBags();
-		-- Recompute weight
-		recomputeContainerWeight(playerInventory);
+		-- Check if init
+		if not playerInventory.init then
+			if not playerInventory.content["17"] then
+				playerInventory.content["17"] = {
+					["content"] = {},
+					["id"] = "bag",
+				};
+			end
+			playerInventory.init = true;
+		end
+		-- Recompute weight and value
+		recomputeContainerWeightValue(playerInventory);
 	end
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
 	refreshInventory();
 
+	TRP3_API.extended.ITEM_USED_EVENT = "TRP3_ITEM_USED";
 	TRP3_API.inventory.EVENT_ON_SLOT_USE = "EVENT_ON_SLOT_USE";
 	TRP3_API.inventory.EVENT_ON_SLOT_SWAP = "EVENT_ON_SLOT_SWAP";
 	TRP3_API.inventory.EVENT_DETACH_SLOT = "EVENT_DETACH_SLOT";
 	TRP3_API.inventory.EVENT_REFRESH_BAG = "EVENT_REFRESH_BAG";
 	TRP3_API.inventory.EVENT_ON_SLOT_REMOVE = "EVENT_ON_SLOT_REMOVE";
 	TRP3_API.inventory.EVENT_SPLIT_SLOT = "EVENT_SPLIT_SLOT";
+	TRP3_API.inventory.EVENT_LOOT_ALL = "EVENT_LOOT_ALL";
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_DETACH_SLOT);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_SPLIT_SLOT);
+	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, swapContainersSlots);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, useContainerSlot);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, removeSlotContent);
@@ -412,8 +518,14 @@ function TRP3_API.inventory.onStart()
 	-- Inventory page
 	TRP3_API.inventory.initInventoryPage();
 
+	-- Inspection
+	TRP3_InspectionFrame.init();
+
 	-- Inventory exchange
 	TRP3_ExchangeFrame.init();
+
+	-- Drop system
+	TRP3_DropSearchFrame.init();
 
 	-- UI
 	TRP3_API.inventory.initLootFrame();
@@ -424,4 +536,8 @@ function TRP3_API.inventory.onStart()
 			StackSplitFrameRight_Click();
 		end
 	end);
+
+	BINDING_NAME_TRP3_INVENTORY = loc("BINDING_NAME_TRP3_INVENTORY");
+	BINDING_NAME_TRP3_MAIN_CONTAINER = loc("BINDING_NAME_TRP3_MAIN_CONTAINER");
+	BINDING_NAME_TRP3_SEARCH_FOR_ITEMS = loc("BINDING_NAME_TRP3_SEARCH_FOR_ITEMS");
 end
