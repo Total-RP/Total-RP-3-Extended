@@ -921,21 +921,17 @@ function dropFrame.init()
 	end
 
 	-- Migrate (1.0.2)
-	local i = 1;
-	while i < 200 do
-		if TRP3_Drop[i] then
-			tinsert(dropData, TRP3_Drop[i]);
-			TRP3_Drop[i] = nil;
+	for k, _ in pairs(TRP3_Drop) do
+		if type(k) == "number" then
+			tinsert(dropData, TRP3_Drop[k]);
+			TRP3_Drop[k] = nil;
 		end
-		i = i + 1;
 	end
-	i = 1;
-	while i < 200 do
-		if TRP3_Stashes[i] then
-			tinsert(stashesData, TRP3_Stashes[i]);
-			TRP3_Stashes[i] = nil;
+	for k, _ in pairs(TRP3_Stashes) do
+		if type(k) == "number" then
+			tinsert(stashesData, TRP3_Stashes[k]);
+			TRP3_Stashes[k] = nil;
 		end
-		i = i + 1;
 	end
 
 	initScans();
