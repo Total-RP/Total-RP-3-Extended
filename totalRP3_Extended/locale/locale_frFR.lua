@@ -16,7 +16,11 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-TRP3_EXTENDED_LOCALE["frFR"] = {
+TRP3_EXTENDED_LOCALE["frFR"] =
+	--@localization(locale="frFR", format="lua_table", handle-unlocalized="ignore")@
+
+	--@do-not-package@
+{
 	["ALL"] = "Tous",
 	["BINDING_NAME_TRP3_INVENTORY"] = "Ouvrir l'inventaire du personnage",
 	["BINDING_NAME_TRP3_MAIN_CONTAINER"] = "Ouvrir le contenant principal",
@@ -1583,4 +1587,6 @@ Ici vous pouvez définir tous les processus de votre création et les lier à de
 	["WO_SECURITY_NORMAL_DETAILS"] = "Cet effet est sécurisé mais peut causer des inconveniences. Pour cette raison, il est possible qu'une autorisation soit demandée à l'utilisateur, en fonction de ses paramètres de sécurité.",
 	["WO_WO_SECURITY"] = "Sécurité du processus",
 	["WO_WORKFLOW"] = "Processus"
-};
+}
+	--@end-do-not-package@
+;

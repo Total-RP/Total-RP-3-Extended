@@ -3,6 +3,7 @@
 ## Author: Telkostrasz & Ellypse
 ## Notes: Creation tools for Total RP 3 Extended
 ## URL: http://extended.totalrp3.info
+## Version: @project-version@
 ## RequiredDeps: totalRP3, totalRP3_Extended
 ## OptionalDeps: totalRP3_Extended_ImpExport
 ## DefaultState: Enabled
