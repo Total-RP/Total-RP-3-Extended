@@ -183,11 +183,11 @@ function inspectionFrame.init()
 	end
 	TRP3_API.inventory.initContainerInstance(inspectionFrame.Main, 16);
 
-	inspectionFrame.Main.Model:HookScript("OnUpdateModel", function(self)
-		if self.sequence then
-			self:SetSequenceTime(self.sequence, self.sequenceTime);
+	inspectionFrame.Main.Model.setAnimation = function(self, sequence, sequenceTime)
+		if sequence then
+			self:FreezeAnimation(sequence, 0, sequenceTime);
 		end
-	end);
+	end
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		inspectionFrame:Hide();

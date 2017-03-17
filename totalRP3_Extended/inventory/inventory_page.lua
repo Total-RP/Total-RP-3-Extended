@@ -44,6 +44,7 @@ local function resetEquip(Main, Model)
 	model.Marker:Hide();
 	model.Line:Hide();
 	model.sequence = nil;
+	model:SetAnimation(0, 0);
 end
 TRP3_API.inventory.resetWearable = resetEquip;
 
@@ -89,6 +90,7 @@ local function setButtonModelPosition(self, force, frame)
 			pos = pos or EMPTY;
 			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
 			model.sequenceTime = pos.sequenceTime or DEFAULT_TIME;
+			model:setAnimation(model.sequence, model.sequenceTime);
 			setModelPosition(model, pos.rotation or 0);
 			moveMarker(model.Marker, pos.x or 0, pos.y or 0, 0, 0, quality, model);
 			if main.Equip then
@@ -375,11 +377,11 @@ function TRP3_API.inventory.initInventoryPage()
 	end);
 
 	createRefreshOnFrame(main, 0.15, containerFrameUpdate);
-	model:HookScript("OnUpdateModel", function(self)
-		if self.sequence then
-			self:SetSequenceTime(self.sequence or DEFAULT_SEQUENCE, self.sequenceTime or DEFAULT_TIME);
+	model.setAnimation = function(self, sequence, sequenceTime)
+		if sequence then
+			self:FreezeAnimation(sequence, 0, sequenceTime or DEFAULT_TIME);
 		end
-	end);
+	end
 
 	-- Create model slots
 	main.lockX = 110;
@@ -491,9 +493,11 @@ function TRP3_API.inventory.initInventoryPage()
 
 	main.Equip.time:SetScript("OnValueChanged", function(self)
 		model.sequenceTime = self:GetValue();
+		model:setAnimation(model.sequence, model.sequenceTime);
 	end);
 	local onChange = function(self)
 		model.sequence = tonumber(self:GetText()) or DEFAULT_SEQUENCE;
+		model:setAnimation(model.sequence, model.sequenceTime);
 	end;
 	main.Equip.sequence:SetScript("OnTextChanged", onChange);
 	main.Equip.sequence:SetScript("OnEnterPressed", onChange);
