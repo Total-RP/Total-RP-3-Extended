@@ -39,6 +39,17 @@ local tabGroup, currentTab, linksStructure;
 
 local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
 
+local stageAttributeDependecies;
+
+local function onStageAttributesChanged()
+	for attr, check in pairs(stageAttributeDependecies) do
+		attr:Hide();
+		if check:GetChecked() then
+			attr:Show()
+		end
+	end
+end
+
 local function refreshConditions()
 	for i=1, 5 do
 		local line = editor.choicesEditor["line" .. i];
@@ -59,6 +70,7 @@ local function editStep(stepID)
 	editor.next:SetText(data.N or "");
 	editor.loot:SetChecked(data.LO or false);
 	editor.endpoint:SetChecked(data.EP or false);
+
 	editor.direction:SetChecked(data.ND ~= nil);
 	editor.directionValue:SetSelectedValue(data.ND or "NONE");
 	editor.name:SetChecked(data.NA ~= nil);
@@ -98,6 +110,7 @@ local function editStep(stepID)
 
 	refreshStepList();
 	refreshConditions();
+	onStageAttributesChanged();
 end
 
 local function decorateStepLine(line, stepID)
@@ -400,7 +413,6 @@ local function createTabBar()
 	);
 end
 
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -475,7 +487,7 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	TRP3_API.ui.list.handleMouseWheel(step.list, step.list.slider);
 	step.list.slider:SetValue(0);
 	step.list.add:SetText(loc("DI_STEP_ADD"));
-	step.list.add:SetScript("OnClick", function() addStep() end);
+	step.list.add:SetScript("OnClick", function() saveStep(editor.stepID); addStep(); end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Editor
@@ -487,6 +499,10 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	editor.text.title:SetText(loc("DI_STEP_TEXT"));
 	editor.attributes:SetText(loc("DI_ATTRIBUTE"));
 
+	-- Force loot
+	editor.loot.Text:SetText(loc("DI_LOOT"));
+	setTooltipForSameFrame(editor.loot, "RIGHT", 0, 5, loc("DI_LOOT"), loc("DI_LOOT_TT"));
+
 	-- Direction
 	editor.direction.section:SetText(loc("DI_DIALOG"));
 	editor.direction.Text:SetText(loc("DI_NAME_DIRECTION"));
@@ -497,10 +513,6 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		{loc("CM_RIGHT"), "RIGHT"},
 		{loc("REG_RELATION_NONE"), "NONE"}
 	}, nil, nil, 195, true);
-
-	-- Force loot
-	editor.loot.Text:SetText(loc("DI_LOOT"));
-	setTooltipForSameFrame(editor.loot, "RIGHT", 0, 5, loc("DI_LOOT"), loc("DI_LOOT_TT"));
 
 	-- Name
 	editor.name.Text:SetText(loc("DI_NAME"));
@@ -571,6 +583,21 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		end);
 		line.index = i;
 	end
+
+	-- Checks
+	local checks = {editor.direction, editor.name, editor.background, editor.image, editor.leftUnit, editor.rightUnit};
+	for _, check in pairs(checks) do
+		check:SetScript("OnClick", onStageAttributesChanged);
+	end
+	stageAttributeDependecies = {
+		[editor.directionValue] = editor.direction,
+		[editor.nameValue] = editor.name,
+		[editor.backgroundValue] = editor.background,
+		[editor.imageValue] = editor.image,
+		[editor.imageMore] = editor.image,
+		[editor.leftUnitValue] = editor.leftUnit,
+		[editor.rightUnitValue] = editor.rightUnit
+	}
 
 	-- Next
 	editor.next.title:SetText(loc("DI_NEXT"));

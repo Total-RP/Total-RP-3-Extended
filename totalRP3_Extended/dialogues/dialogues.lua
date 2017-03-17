@@ -364,8 +364,8 @@ function processDialogStep()
 	modelLeft.modelLoaded = false;
 	modelLeft:Hide();
 	modelLeft.model = "";
-	dialogFrame.LU = dialogStepClass.LU or dialogFrame.LU or "player";
-	if dialogFrame.LU:len() == 0 then
+	dialogFrame.LU = dialogStepClass.LU or dialogFrame.LU;
+	if not dialogFrame.LU or dialogFrame.LU:len() == 0 then
 		modelLeft.modelLoaded = true;
 	elseif dialogFrame.LU ~= "target" or UnitExists("target") then
 		modelLeft:Show();
@@ -379,8 +379,8 @@ function processDialogStep()
 	modelRight.modelLoaded = false;
 	modelRight:Hide();
 	modelRight.model = "";
-	dialogFrame.RU = dialogStepClass.RU or dialogFrame.RU or "player";
-	if dialogFrame.RU:len() == 0 then
+	dialogFrame.RU = dialogStepClass.RU or dialogFrame.RU;
+	if not dialogFrame.RU or dialogFrame.RU:len() == 0 then
 		modelRight.modelLoaded = true;
 	elseif dialogFrame.RU ~= "target" or UnitExists("target") then
 		modelRight:Show();
@@ -428,6 +428,13 @@ local function startDialog(dialogID, class, args)
 	dialogFrame.distanceLimit = dialogClass.BA.DI or 0;
 	dialogFrame.posY, dialogFrame.posX = UnitPosition("player");
 	dialogFrame.args = args;
+	-- Reset attributes from previous play
+	local ATTRIBUTES_KEY = {
+		"NA", "ND", "BG", "IM", "LU", "RU"
+	}
+	for _, key in pairs(ATTRIBUTES_KEY) do
+		dialogFrame[key] = nil;
+	end
 
 	if dialogID and dialogClass.LI and dialogClass.LI.OS and dialogClass.SC then
 		local retCode = TRP3_API.script.executeClassScript(dialogClass.LI.OS, dialogClass.SC, {}, dialogID);

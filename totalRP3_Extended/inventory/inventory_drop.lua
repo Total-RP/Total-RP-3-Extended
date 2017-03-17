@@ -886,11 +886,17 @@ function dropFrame.init()
 	if not TRP3_Drop then
 		TRP3_Drop = {};
 	end
-	dropData = TRP3_Drop;
+	if not TRP3_Drop[Globals.player_realm] then
+		TRP3_Drop[Globals.player_realm] = {};
+	end
+	dropData = TRP3_Drop[Globals.player_realm];
 	if not TRP3_Stashes then
 		TRP3_Stashes = {};
 	end
-	stashesData = TRP3_Stashes;
+	if not TRP3_Stashes[Globals.player_realm] then
+		TRP3_Stashes[Globals.player_realm] = {};
+	end
+	stashesData = TRP3_Stashes[Globals.player_realm];
 
 	-- Cleanup
 	for index, dropData in pairs(dropData) do
@@ -911,6 +917,20 @@ function dropFrame.init()
 			else
 				stashItem.count = 1;
 			end
+		end
+	end
+
+	-- Migrate (1.0.2)
+	for k, _ in pairs(TRP3_Drop) do
+		if type(k) == "number" then
+			tinsert(dropData, TRP3_Drop[k]);
+			TRP3_Drop[k] = nil;
+		end
+	end
+	for k, _ in pairs(TRP3_Stashes) do
+		if type(k) == "number" then
+			tinsert(stashesData, TRP3_Stashes[k]);
+			TRP3_Stashes[k] = nil;
 		end
 	end
 

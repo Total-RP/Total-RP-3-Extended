@@ -50,9 +50,7 @@ function TRP3_API.extended.tools.getCutsceneData()
 			SD = date("%d/%m/%y %H:%M:%S");
 			SB = Globals.player_id,
 		},
-		BA = {
-
-		},
+		BA = {},
 		DS = {
 			{
 				TX = "Text."
