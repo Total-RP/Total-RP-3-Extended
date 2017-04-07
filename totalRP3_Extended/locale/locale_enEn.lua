@@ -600,6 +600,17 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_DELAY_INTERRUPT_2 = "Interrupt on move",
 
 	-- Effects editors
+	EFFECT_SCRIPT = "Execute lua script",
+	EFFECT_SCRIPT_TT = "Execute a lua script in a safe environment.",
+	EFFECT_SCRIPT_SCRIPT = "Lua code",
+	EFFECT_SCRIPT_SCRIPT_TT = [[This script will be executed in a safe environment where you can have access to all lua synthax and API (table, string, math...) and the Extended |cff00ff00playEffect|r function.
+
+|cffff9900You don't have access to the game API here!|r
+
+A custom lua script will always be less efficient than a workflow effect, as it is compiled each time, in opposition to a workflow effect being compiled once.
+
+|cffff9900So keep the script to the minimum and only use this script effect if necessary.]],
+
 	EFFECT_CAT_SOUND = "Sound and music",
 	EFFECT_CAT_SPEECH = "Speech and emotes",
 	EFFECT_CAT_CAMPAIGN = "Campaign and quest",

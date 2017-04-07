@@ -82,6 +82,7 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"signal_send",
 			"run_workflow",
 			"run_item_workflow",
+			"script"
 		},
 		order = {
 			loc("WO_EFFECT_CAT_COMMON"),

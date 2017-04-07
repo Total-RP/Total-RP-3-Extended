@@ -570,12 +570,13 @@ function TRP3_API.script.clearAllCompilations()
 end
 
 function TRP3_API.script.generateAndRun(code, args, env)
-	code = "local func = function(args) " .. code .. " end setfenv(func, {}); return func;";
+	code = "local func = function(args)\n" .. code .. "\nend setfenv(func, {}); return func;";
 
-	for alias, global in pairs(env or EMPTY) do
+	env = env or {};
+	tableCopy(env, BASE_ENV);
+	for alias, global in pairs(env) do
 		code = "\n" .. IMPORT_PATTERN:format(alias, global) .. code;
 	end
-	code = "\n" .. IMPORT_PATTERN:format("var", "TRP3_API.script.parseArgs") .. code;
 
 	if DEBUG then
 		print(code);
@@ -590,6 +591,23 @@ function TRP3_API.script.generateAndRun(code, args, env)
 
 	-- Execute
 	return func()(args or EMPTY);
+end
+
+local LUA_ENV = {
+	["string"] = "string",
+	["table"] = "table",
+	["math"] = "math",
+	["pairs"] = "pairs",
+	["ipairs"] = "ipairs",
+	["next"] = "next",
+	["select"] = "select",
+	["unpack"] = "unpack",
+	["type"] = "type",
+};
+function TRP3_API.script.runLuaScriptEffect(code, args)
+	local env = {};
+	tableCopy(env, LUA_ENV);
+	TRP3_API.script.generateAndRun(code, args, env);
 end
 
 local directConditionTemplate = [[return %s;]]

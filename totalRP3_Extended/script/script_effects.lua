@@ -399,6 +399,18 @@ local EFFECTS = {
 		},
 		secured = security.HIGH,
 	},
+
+	-- SCRIPT
+	["script"] = {
+		codeReplacementFunc = function (args)
+			local value = tostring(args[1]);
+			return ("script(\"%s\", args);"):format(value);
+		end,
+		env = {
+			script = "TRP3_API.script.runLuaScriptEffect",
+		},
+		secured = security.HIGH,
+	},
 }
 
 
