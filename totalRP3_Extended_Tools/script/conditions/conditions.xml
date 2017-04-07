@@ -59,7 +59,7 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ConditionEditor" hidden="true" inherits="TRP3_EditorEffectTemplate">
+	<Frame name="TRP3_ConditionEditor" hidden="true" inherits="TRP3_EditorEffectTemplate" enableMouse="true">
 		<Size x="850" y="450"/>
 
 		<Layers>

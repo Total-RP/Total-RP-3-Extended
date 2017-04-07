@@ -525,6 +525,10 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_END = "End of workflow",
 	WO_ELEMENT = "Element edition",
 	WO_ELEMENT_EDIT = "Click to edit element",
+	WO_ELEMENT_EDIT_RIGHT = "Right-click for more operations",
+	WO_ELEMENT_COND = "Edit effect condition",
+	WO_ELEMENT_COND_TT = "Adds a condition to this single effect.",
+	WO_ELEMENT_COND_NO = "Remove effect condition",
 	WO_EFFECT = "Effect",
 	WO_EFFECT_TT = "Plays an effect.\nIt can be playind sounds, displaying text ...etc",
 	WO_EFFECT_SELECT = "Select an effect",
@@ -1008,6 +1012,8 @@ We should begin with some examples:
 
 	-- Test
 	COND_EDITOR = "Condition editor",
+	COND_EDITOR_EFFECT = "Effect condition editor",
+	COND_CONDITIONED = "Conditioned",
 	COND_PREVIEW_TEST = "Preview test",
 	COND_PREVIEW_TEST_TT = "Prints in the chat frame the evaluation of this test based on the current situation.",
 	COND_TESTS = "Condition tests",

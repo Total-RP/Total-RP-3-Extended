@@ -128,9 +128,17 @@
 					<Size x="0" y="10" />
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.icon" x="5" y="5" />
-						<Anchor point="RIGHT" x="-25" y="0" />
+						<Anchor point="RIGHT" x="-110" y="0" />
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10" />
+				</FontString>
+				<FontString parentKey="conditioned" inherits="GameFontNormalSmall" justifyH="RIGHT" text="[CONDITIONNED]">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.icon" x="5" y="5" />
+						<Anchor point="RIGHT" x="-10" y="0" />
+					</Anchors>
+					<Color r="0" g="0.95" b="0" />
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
@@ -164,6 +172,22 @@
 	<Frame name="TRP3_ScriptEditorNormal" hidden="true">
 
 		<Frames>
+
+			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true">
+
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="24" />
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="418" />
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+				</Backdrop>
+
+			</Frame>
 
 			<Frame parentKey="list" inherits="TRP3_EditorTitledFrame">
 
