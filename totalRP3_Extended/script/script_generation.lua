@@ -269,7 +269,7 @@ local function writeEffect(effectStructure)
 				CURRENT_ENVIRONMENT[map] = g;
 			end
 		end
-		local code, supEnv = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
+		local code, supEnv = effectInfo.codeReplacementFunc(effectInfo, escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
 		effectCode = code;
 		if supEnv then
 			for map, g in pairs(supEnv) do
@@ -283,7 +283,7 @@ local function writeEffect(effectStructure)
 				CURRENT_ENVIRONMENT[map] = g;
 			end
 		end
-		effectCode = effectInfo.securedCodeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
+		effectCode = effectInfo.securedCodeReplacementFunc(effectInfo, escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
 	else
 		-- TODO: better than that
 		effectCode = "print('Effect blocked: " .. effectStructure.id  .. "')";
@@ -593,23 +593,6 @@ function TRP3_API.script.generateAndRun(code, args, env)
 	return func()(args or EMPTY);
 end
 
-local LUA_ENV = {
-	["string"] = "string",
-	["table"] = "table",
-	["math"] = "math",
-	["pairs"] = "pairs",
-	["ipairs"] = "ipairs",
-	["next"] = "next",
-	["select"] = "select",
-	["unpack"] = "unpack",
-	["type"] = "type",
-};
-function TRP3_API.script.runLuaScriptEffect(code, args)
-	local env = {};
-	tableCopy(env, LUA_ENV);
-	TRP3_API.script.generateAndRun(code, args, env);
-end
-
 local directConditionTemplate = [[return %s;]]
 
 local function generateAndRunCondition(conditionStructure, args)
@@ -857,4 +840,67 @@ function TRP3_API.script.eventVarCheckN(args, index)
 		return tonumber(args.event[index] or 0);
 	end
 	return 0;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Script parsing
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function playEffect(effectID, secured, eArgs, ...)
+	local cArgs = {...};
+	local effectInfo = getEffectInfo(effectID);
+	if effectInfo then
+		if secured and effectInfo.securedMethod then
+			effectInfo.securedMethod(effectInfo, cArgs, eArgs);
+		elseif effectInfo.method then
+			effectInfo.method(effectInfo, cArgs, eArgs);
+		else
+			error("This effect ID is unknown or can't be used in script: " .. effectID);
+		end
+	end
+end
+
+local function effect(effectID, eArgs, ...)
+	playEffect(effectID, false, eArgs, ...);
+end
+
+local function securedEffect(effectID, eArgs, ...)
+	playEffect(effectID, true, eArgs, ...);
+end
+
+local LUA_ENV = {
+	["string"] = "string",
+	["table"] = "table",
+	["math"] = "math",
+	["pairs"] = "pairs",
+	["ipairs"] = "ipairs",
+	["next"] = "next",
+	["select"] = "select",
+	["unpack"] = "unpack",
+	["type"] = "type",
+};
+function TRP3_API.script.runLuaScriptEffect(code, args, secured)
+	code = "return function(args)\n" .. code .. "\nend;";
+
+	local env = {};
+	tableCopy(env, LUA_ENV);
+	if secured then
+		env["effect"] = securedEffect;
+	else
+		env["effect"] = effect;
+	end
+
+	-- Compile
+	local factory, errorMessage = loadstring(code, "Generated code");
+	if not factory then
+		error("Error in script effect:\n" .. errorMessage);
+	end
+
+	-- Create
+	setfenv(factory, env);
+	local func = factory();
+	setfenv(func, env);
+
+	-- Execute
+	return func(args or EMPTY);
 end

@@ -452,7 +452,7 @@ end
 
 TRP3_API.extended.dialog.startDialog = startDialog;
 
-function TRP3_API.extended.dialog.startQuickDialog(text)
+local function startQuickDialog(text)
 	local class = {
 		TY = TRP3_DB.types.DIALOG,
 		BA = {},
@@ -468,6 +468,7 @@ function TRP3_API.extended.dialog.startQuickDialog(text)
 	}
 	startDialog(nil, class)
 end
+TRP3_API.extended.dialog.startQuickDialog = startQuickDialog;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -490,6 +491,10 @@ function TRP3_API.extended.dialog.onStart()
 				local dialogID = args[1];
 				return ("args.LAST = startDialog(\"%s\", nil, args);"):format(dialogID);
 			end,
+			method = function(structure, cArgs, eArgs)
+				local dialogID = cArgs[1];
+				eArgs.LAST = startDialog(dialogID, nil, eArgs);
+			end,
 			env = {
 				startDialog = "TRP3_API.extended.dialog.startDialog",
 			}
@@ -502,6 +507,10 @@ function TRP3_API.extended.dialog.onStart()
 			codeReplacementFunc = function(args)
 				local dialogText = args[1];
 				return ("args.LAST = startQuickDialog(\"%s\");"):format(dialogText);
+			end,
+			method = function(structure, cArgs, eArgs)
+				local dialogText = cArgs[1];
+				eArgs.LAST = startQuickDialog(dialogText);
 			end,
 			env = {
 				startQuickDialog = "TRP3_API.extended.dialog.startQuickDialog",

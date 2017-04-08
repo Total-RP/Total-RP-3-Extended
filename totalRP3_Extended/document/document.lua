@@ -191,6 +191,10 @@ function TRP3_API.extended.document.onStart()
 				local documentID = args[1];
 				return ("args.LAST = showDocument(\"%s\", args);"):format(documentID);
 			end,
+			method = function(structure, cArgs, eArgs)
+				local documentID = cArgs[1];
+				eArgs.LAST = showDocument(documentID, eArgs);
+			end,
 			env = {
 				showDocument = "TRP3_API.extended.document.showDocument",
 			},
@@ -200,6 +204,9 @@ function TRP3_API.extended.document.onStart()
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			codeReplacementFunc = function (args)
 				return "args.LAST = closeDocument();";
+			end,
+			method = function(structure, cArgs, eArgs)
+				eArgs.LAST = closeDocument();
 			end,
 			env = {
 				closeDocument = "TRP3_API.extended.document.closeDocument",

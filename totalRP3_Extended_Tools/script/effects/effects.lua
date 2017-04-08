@@ -95,6 +95,7 @@ local function script_init()
 
 	-- Text
 	setTooltipAll(editor.script.dummy, "RIGHT", 0, 5, loc("EFFECT_SCRIPT_SCRIPT"), loc("EFFECT_SCRIPT_SCRIPT_TT"));
+	editor.script.scroll.text:SetFontObject(GameFontNormalLarge);
 
 	registerEffectEditor("script", {
 		title = loc("EFFECT_SCRIPT"),
