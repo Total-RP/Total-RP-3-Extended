@@ -96,101 +96,101 @@ end
 
 local function initScans()
 	TRP3_API.map.registerScan({
-								  id = "inv_scan_self",
-								  buttonText = loc("IT_INV_SCAN_MY_ITEMS"),
-								  scanTitle = loc("TYPE_ITEMS"),
-								  scan = function(saveStructure)
-									  local mapID = GetCurrentMapAreaID();
-									  for index, drop in pairs(dropData) do
-										  if drop.mapID == mapID then
-											  saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
-										  end
-									  end
-								  end,
-								  canScan = function()
-									  local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
-									  return x ~= nil and y ~= nil;
-								  end,
-								  scanMarkerDecorator = function(index, entry, marker)
-									  local drop = dropData[index];
-									  local item = getClass(drop.item.id);
-									  marker.scanLine = TRP3_API.inventory.getItemLink(item) .. " x" .. (drop.item.count or 1);
-									  marker.Icon:SetTexCoord(0.125, 0.250, 0.250, 0.375);
-								  end,
-								  noAnim = true,
-							  });
+		id = "inv_scan_self",
+		buttonText = loc("IT_INV_SCAN_MY_ITEMS"),
+		scanTitle = loc("TYPE_ITEMS"),
+		scan = function(saveStructure)
+			local mapID = GetCurrentMapAreaID();
+			for index, drop in pairs(dropData) do
+				if drop.mapID == mapID then
+					saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
+				end
+			end
+		end,
+		canScan = function()
+			local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
+			return x ~= nil and y ~= nil;
+		end,
+		scanMarkerDecorator = function(index, entry, marker)
+			local drop = dropData[index];
+			local item = getClass(drop.item.id);
+			marker.scanLine = TRP3_API.inventory.getItemLink(item) .. " x" .. (drop.item.count or 1);
+			marker.Icon:SetTexCoord(0.125, 0.250, 0.250, 0.375);
+		end,
+		noAnim = true,
+	});
 
 	TRP3_API.map.registerScan({
-								  id = "stashes_scan_self",
-								  buttonText = loc("DR_STASHES_SCAN_MY"),
-								  scanTitle = loc("DR_STASHES"),
-								  scan = function(saveStructure)
-									  local mapID = GetCurrentMapAreaID();
-									  for index, drop in pairs(stashesData) do
-										  if drop.mapID == mapID then
-											  saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
-										  end
-									  end
-								  end,
-								  canScan = function()
-									  local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
-									  return x ~= nil and y ~= nil;
-								  end,
-								  scanMarkerDecorator = function(index, entry, marker)
-									  local stash = stashesData[index] or EMPTY;
-									  local total = 0;
-									  for index, slot in pairs(stash.item) do
-										  total = total + 1;
-									  end
-									  local line = Utils.str.icon(stash.BA.IC) .. " " .. getItemLink(stash);
-									  marker.scanLine = line .. " - |cffff9900" .. total .. "/8";
-									  marker.Icon:SetTexCoord(0.250, 0.375, 0.625, 0.750);
-								  end,
-								  noAnim = true,
-							  });
+		id = "stashes_scan_self",
+		buttonText = loc("DR_STASHES_SCAN_MY"),
+		scanTitle = loc("DR_STASHES"),
+		scan = function(saveStructure)
+			local mapID = GetCurrentMapAreaID();
+			for index, drop in pairs(stashesData) do
+				if drop.mapID == mapID then
+					saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
+				end
+			end
+		end,
+		canScan = function()
+			local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
+			return x ~= nil and y ~= nil;
+		end,
+		scanMarkerDecorator = function(index, entry, marker)
+			local stash = stashesData[index] or EMPTY;
+			local total = 0;
+			for index, slot in pairs(stash.item) do
+				total = total + 1;
+			end
+			local line = Utils.str.icon(stash.BA.IC) .. " " .. getItemLink(stash);
+			marker.scanLine = line .. " - |cffff9900" .. total .. "/8";
+			marker.Icon:SetTexCoord(0.250, 0.375, 0.625, 0.750);
+		end,
+		noAnim = true,
+	});
 
 	local STASHES_SCAN_COMMAND = "SSCAN";
 
 	TRP3_API.map.registerScan({
-								  id = "stashes_scan_other",
-								  buttonText = loc("DR_STASHES_SCAN"),
-								  scan = function()
-									  local mapID = GetCurrentMapAreaID();
-									  broadcast.broadcast(STASHES_SCAN_COMMAND, mapID);
-								  end,
-								  scanTitle = loc("DR_STASHES"),
-								  scanCommand = STASHES_SCAN_COMMAND,
-								  scanResponder = function(sender, requestMapID)
-									  for _, stash in pairs(stashesData) do
-										  if stash.mapID == tonumber(requestMapID) and not stash.BA.NS then
-											  local total = 0;
-											  for index, slot in pairs(stash.item) do
-												  total = total + 1;
-											  end
-											  broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc("DR_STASHES_NAME"), stash.BA.IC or "TEMP", total);
-										  end
-									  end
-								  end,
-								  canScan = function(currentlyScanning)
-									  local posY, posX = UnitPosition("player");
-									  return posY ~= nil and posY ~= nil and not currentlyScanning;
-								  end,
-								  scanAssembler = function(saveStructure, sender, mapX, mapY, NA, IC, total)
-									  local i = 1;
-									  while saveStructure[sender .. i] do
-										  i = i + 1;
-									  end
-									  saveStructure[sender .. i] = { x = mapX, y = mapY, BA = { NA = NA, IC = IC }, sender = sender, total = total };
-								  end,
-								  scanComplete = function(saveStructure)
-								  end,
-								  scanMarkerDecorator = function(index, entry, marker)
-									  local line = Utils.str.icon(entry.BA.IC) .. " " .. getItemLink(entry);
-									  marker.scanLine = line .. " - |cffff9900" .. entry.total .. "/8 |cff00ff00- " .. entry.sender;
-									  marker.Icon:SetTexCoord(0.250, 0.375, 0.625, 0.750);
-								  end,
-								  scanDuration = 2.5;
-							  });
+		id = "stashes_scan_other",
+		buttonText = loc("DR_STASHES_SCAN"),
+		scan = function()
+			local mapID = GetCurrentMapAreaID();
+			broadcast.broadcast(STASHES_SCAN_COMMAND, mapID);
+		end,
+		scanTitle = loc("DR_STASHES"),
+		scanCommand = STASHES_SCAN_COMMAND,
+		scanResponder = function(sender, requestMapID)
+			for _, stash in pairs(stashesData) do
+				if stash.mapID == tonumber(requestMapID) and not stash.BA.NS then
+					local total = 0;
+					for index, slot in pairs(stash.item) do
+						total = total + 1;
+					end
+					broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc("DR_STASHES_NAME"), stash.BA.IC or "TEMP", total);
+				end
+			end
+		end,
+		canScan = function(currentlyScanning)
+			local posY, posX = UnitPosition("player");
+			return posY ~= nil and posY ~= nil and not currentlyScanning;
+		end,
+		scanAssembler = function(saveStructure, sender, mapX, mapY, NA, IC, total)
+			local i = 1;
+			while saveStructure[sender .. i] do
+				i = i + 1;
+			end
+			saveStructure[sender .. i] = { x = mapX, y = mapY, BA = { NA = NA, IC = IC }, sender = sender, total = total };
+		end,
+		scanComplete = function(saveStructure)
+		end,
+		scanMarkerDecorator = function(index, entry, marker)
+			local line = Utils.str.icon(entry.BA.IC) .. " " .. getItemLink(entry);
+			marker.scanLine = line .. " - |cffff9900" .. entry.total .. "/8 |cff00ff00- " .. entry.sender;
+			marker.Icon:SetTexCoord(0.250, 0.375, 0.625, 0.750);
+		end,
+		scanDuration = 2.5;
+	});
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -988,8 +988,8 @@ function dropFrame.init()
 	setTooltipForSameFrame(stashEditFrame.icon, "RIGHT", 0, 5, loc("EDITOR_ICON"));
 	stashEditFrame.icon:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
-								 { parent = stashEditFrame.icon, point = "LEFT", parentPoint = "RIGHT", x = 15 },
-								 { iconHandler });
+			{ parent = stashEditFrame.icon, point = "LEFT", parentPoint = "RIGHT", x = 15 },
+			{ iconHandler });
 	end);
 	stashEditFrame.hidden.Text:SetText(loc("DR_STASHES_HIDE"));
 	setTooltipForSameFrame(stashEditFrame.hidden, "RIGHT", 0, 5, loc("DR_STASHES_HIDE"), loc("DR_STASHES_HIDE_TT"));

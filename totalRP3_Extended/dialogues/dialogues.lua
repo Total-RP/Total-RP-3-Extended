@@ -43,7 +43,6 @@ local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local modelLeft, modelRight, image = dialogFrame.Models.Me, dialogFrame.Models.You, dialogFrame.Image;
-local generateID = Utils.str.id;
 
 local function loadScalingParameters(data, model, facing)
 	scalingLib:SetModelHeight(data.scale, model);
@@ -116,7 +115,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local ANIMATION_TEXT_SPEED = 160;
-local UnitPosition, sqrt = UnitPosition, sqrt;
+local sqrt = sqrt;
 
 local function onUpdateChatText(self, elapsed)
 	if self.start and dialogFrame.Chat.Text:GetText() and dialogFrame.Chat.Text:GetText():len() > 0 then
