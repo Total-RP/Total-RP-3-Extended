@@ -36,6 +36,7 @@ local scalingLib = LibStub:GetLibrary("TRP-Dialog-Scaling-DB");
 local animationLib = LibStub:GetLibrary("TRP-Dialog-Animation-DB");
 
 local historyFrame = TRP3_DialogFrameHistory;
+local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Models and animations

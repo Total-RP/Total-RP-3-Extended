@@ -18,10 +18,12 @@
 
 local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
 local pairs, strsplit, floor, sqrt, tonumber = pairs, strsplit, math.floor, sqrt, tonumber;
-local UnitPosition, EJ_GetCurrentInstance = UnitPosition, EJ_GetCurrentInstance;
+local EJ_GetCurrentInstance = EJ_GetCurrentInstance;
 local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.locale.getText;
 local Log = TRP3_API.utils.log;
+
+local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Local sounds

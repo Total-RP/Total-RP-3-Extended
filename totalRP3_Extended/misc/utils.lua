@@ -25,19 +25,19 @@ local sqrt, pow = math.sqrt, math.pow;
 -- Distances
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function getUnitPositionSafe(unit)
-	local uX, uY = UnitPosition(unit);
-	return uX or 0, uY or 0;
+function TRP3_API.extended.getUnitPositionSafe(unit)
+	local uX, uY, uZ, instanceID = UnitPosition(unit);
+	return uX or 0, uY or 0, uZ or 0, instanceID;
 end
 
 function TRP3_API.extended.unitDistancePoint(unit, x, y)
-	local uX, uY = getUnitPositionSafe(unit);
+	local uX, uY = TRP3_API.extended.getUnitPositionSafe(unit);
 	return sqrt(pow(x - uX, 2) + pow(y - uY, 2));
 end
 
 function TRP3_API.extended.unitDistanceMe(unit)
 	if not UnitExists(unit) then return 0; end
-	local uX, uY = getUnitPositionSafe(unit);
-	local mX, mY = getUnitPositionSafe("player");
+	local uX, uY = TRP3_API.extended.getUnitPositionSafe(unit);
+	local mX, mY = TRP3_API.extended.getUnitPositionSafe("player");
 	return sqrt(pow(mX - uX, 2) + pow(mY - uY, 2));
 end
