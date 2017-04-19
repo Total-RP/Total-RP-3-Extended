@@ -388,6 +388,12 @@
 							<Anchor point="RIGHT" x="-35" y="0"/>
 						</Anchors>
 					</EditBox>
+					<Button parentKey="getTarget" inherits="TRP3_CommonButton">
+						<Size x="50" y="20" />
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="BOTTOM" relativeKey="rightUnitValue" x="5"/>
+						</Anchors>
+					</Button>
 
 				</Frames>
 

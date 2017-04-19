@@ -36,6 +36,26 @@ local tabGroup, currentTab, linksStructure;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+local onModelLoadedCallback;
+local rightModel = TRP3_DialogFrame.Models.You;
+
+---Get the target's display info ID
+---Since we need to use a model widget as a proxy to get the display info
+---and that the model gets loaded asynchronously we provide a callback to this function
+---that will be called with the display info ID when the model is loaded.
+---@param callback function
+local function getTargetDispalyInfoID(callback)
+	onModelLoadedCallback = callback;
+	rightModel:SetUnit("target");
+end
+
+rightModel:SetScript("OnModelLoaded", function()
+	if onModelLoadedCallback then
+		onModelLoadedCallback(rightModel:GetDisplayInfo())
+		onModelLoadedCallback = nil;
+		rightModel:SetUnit(nil);
+	end
+end);
 
 local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
 
@@ -549,6 +569,13 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	-- Right unit
 	editor.rightUnit.Text:SetText(loc("DI_RIGHT_UNIT"));
 	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc("DI_RIGHT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+
+	editor.getTarget:SetText("Target's ID");
+	editor.getTarget:SetScript("OnClick", function()
+		getTargetDispalyInfoID(function(displayInfoID)
+			editor.rightUnitValue:SetText(displayInfoID);
+		end)
+	end);
 
 	-- End point
 	editor.endpoint.Text:SetText(loc("DI_END"));
