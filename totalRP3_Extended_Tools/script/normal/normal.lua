@@ -195,12 +195,54 @@ end
 -- Workflow
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local IsControlKeyDown = IsControlKeyDown;
+
+local function openEffectCondition(scriptStep)
+	local conditionData = scriptStep.cond;
+	if not conditionData then
+		conditionData = {
+			{ { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } }
+		};
+	end
+	editor.overlay:Show();
+	editor.overlay:SetFrameLevel(editor:GetFrameLevel() + 20);
+	TRP3_ConditionEditor:SetParent(editor);
+	TRP3_ConditionEditor:ClearAllPoints();
+	TRP3_ConditionEditor:SetPoint("CENTER", 0, 0);
+	TRP3_ConditionEditor:SetFrameLevel(editor.list:GetFrameLevel() + 20);
+	TRP3_ConditionEditor:Show();
+	TRP3_ConditionEditor.load(conditionData);
+	TRP3_ConditionEditor:SetScript("OnHide", function()
+		TRP3_ConditionEditor:Hide();
+		editor.overlay:Hide();
+		refreshElementList();
+	end);
+	TRP3_ConditionEditor.confirm:SetScript("OnClick", function()
+		TRP3_ConditionEditor.save(conditionData);
+		scriptStep.cond = conditionData;
+		TRP3_ConditionEditor:Hide();
+	end);
+	TRP3_ConditionEditor.close:SetScript("OnClick", function()
+		TRP3_ConditionEditor:Hide();
+	end);
+	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
+	TRP3_ConditionEditor.title:SetText(loc("COND_EDITOR_EFFECT"));
+end
+
+local function removeEffectCondition(scriptStep)
+	wipe(scriptStep.cond or EMPTY);
+	scriptStep.cond = nil;
+	refreshElementList();
+end
+
 editor.list.listElement = {};
 local ELEMENT_DELAY_ICON = "spell_mage_altertime";
 local ELEMENT_EFFECT_ICON = "inv_misc_enggizmos_37";
 local ELEMENT_CONDITION_ICON = "Ability_druid_balanceofpower";
 local ELEMENT_LINE_ACTION_COPY = "ELEMENT_LINE_ACTION_COPY";
 local ELEMENT_LINE_ACTION_PASTE = "ELEMENT_LINE_ACTION_PASTE";
+local ELEMENT_LINE_ACTION_COND = "ELEMENT_LINE_ACTION_COND";
+local ELEMENT_LINE_ACTION_COND_NO = "ELEMENT_LINE_ACTION_COND_NO";
 
 local function onElementLineAction(action, self)
 	assert(self.scriptStepData, "No stepData in frame");
@@ -219,6 +261,10 @@ local function onElementLineAction(action, self)
 			Utils.table.copy(self.scriptStepData, editor.elemCopy);
 			refreshElementList();
 		end
+	elseif action == ELEMENT_LINE_ACTION_COND then
+		openEffectCondition(scriptStep.e[1]);
+	elseif action == ELEMENT_LINE_ACTION_COND_NO then
+		removeEffectCondition(scriptStep.e[1]);
 	end
 end
 
@@ -230,13 +276,17 @@ local function onElementClick(self, button)
 	if button == "LeftButton" then
 		editor.element.scriptStep = scriptStep;
 		if scriptStep.t == ELEMENT_TYPE.EFFECT then
-			local scriptData = scriptStep.e[1];
-			local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(scriptData.id);
-			if effectInfo.editor then
-				setCurrentElementFrame(effectInfo.editor, effectInfo.title);
-				effectInfo.editor.load(scriptData);
+			if IsControlKeyDown() then
+				openEffectCondition(scriptStep.e[1]);
 			else
-				return; -- No editor => No selection
+				local scriptData = scriptStep.e[1];
+				local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(scriptData.id);
+				if effectInfo.editor then
+					setCurrentElementFrame(effectInfo.editor, effectInfo.title);
+					effectInfo.editor.load(scriptData);
+				else
+					return; -- No editor => No selection
+				end
 			end
 		elseif scriptStep.t == ELEMENT_TYPE.DELAY then
 			setCurrentElementFrame(TRP3_ScriptEditorDelay, loc("WO_DELAY"));
@@ -250,13 +300,23 @@ local function onElementClick(self, button)
 		self.highlight:Show();
 		self.lock = true;
 	else
-		local values = {};
-		tinsert(values, {self.title:GetText(), nil});
-		tinsert(values, {loc("WO_ELEMENT_COPY"), ELEMENT_LINE_ACTION_COPY});
-		if editor.elemCopy and editor.elemCopy.t == scriptStep.t then
-			tinsert(values, {loc("WO_ELEMENT_PASTE"), ELEMENT_LINE_ACTION_PASTE});
+		if scriptStep.t == ELEMENT_TYPE.EFFECT and IsControlKeyDown() then
+			-- Remove condition
+			removeEffectCondition(scriptStep.e[1]);
+		else
+			-- Show menu
+			local values = {};
+			tinsert(values, {self.title:GetText(), nil});
+			tinsert(values, {loc("WO_ELEMENT_COPY"), ELEMENT_LINE_ACTION_COPY});
+			if editor.elemCopy and editor.elemCopy.t == scriptStep.t then
+				tinsert(values, {loc("WO_ELEMENT_PASTE"), ELEMENT_LINE_ACTION_PASTE});
+			end
+			if scriptStep.t == ELEMENT_TYPE.EFFECT then
+				tinsert(values, {loc("WO_ELEMENT_COND"), ELEMENT_LINE_ACTION_COND, loc("WO_ELEMENT_COND_TT")});
+				tinsert(values, {loc("WO_ELEMENT_COND_NO"), ELEMENT_LINE_ACTION_COND_NO});
+			end
+			TRP3_API.ui.listbox.displayDropDown(self, values, onElementLineAction, 0, true);
 		end
-		TRP3_API.ui.listbox.displayDropDown(self, values, onElementLineAction, 0, true);
 	end
 end
 
@@ -318,10 +378,17 @@ local function decorateEffect(scriptStepFrame, effectData)
 	else
 		tooltip = tooltip .. "\n\n|cffffff00" .. loc("WO_EFFECT_NO_EDITOR");
 	end
+	tooltip = tooltip .. "\n" .. loc("WO_ELEMENT_EDIT_RIGHT");
+
 	setTooltipForSameFrame(scriptStepFrame, "TOP", 0, 5, title, tooltip);
 
 	if effectInfo.effectFrameDecorator then
 		effectInfo.effectFrameDecorator(scriptStepFrame, effectData.args);
+	end
+
+	scriptStepFrame.conditioned:Hide();
+	if effectData.cond then
+		scriptStepFrame.conditioned:Show();
 	end
 	return title;
 end
@@ -379,6 +446,7 @@ function refreshElementList()
 		local scriptStepFrame = editor.list.listElement[stepID];
 		if not scriptStepFrame then
 			scriptStepFrame = CreateFrame("Frame", "TRP3_EditorEffectFrame" .. stepID, editor.workflow.container.scroll.list, "TRP3_EditorEffectFrame");
+			scriptStepFrame.conditioned:SetText(loc("COND_CONDITIONED"));
 			scriptStepFrame:SetScript("OnMouseUp", onElementClick);
 			scriptStepFrame.remove:SetScript("OnClick", onRemoveClick);
 			setTooltipAll(scriptStepFrame.moveup, "TOP", 0, 0, loc("CM_MOVE_UP"));

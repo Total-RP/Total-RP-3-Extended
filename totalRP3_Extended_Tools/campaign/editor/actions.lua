@@ -146,7 +146,10 @@ local function openActionCondition(actionIndex)
 	TRP3_ConditionEditor:SetFrameLevel(editor.overlay:GetFrameLevel() + 20);
 	TRP3_ConditionEditor:Show();
 	TRP3_ConditionEditor.load(scriptData);
-	TRP3_ConditionEditor:SetScript("OnHide", function() editor.overlay:Hide() end);
+	TRP3_ConditionEditor:SetScript("OnHide", function()
+		TRP3_ConditionEditor:Hide();
+		editor.overlay:Hide()
+	end);
 	TRP3_ConditionEditor.confirm:SetScript("OnClick", function()
 		TRP3_ConditionEditor.save(scriptData);
 		toolFrame.specificDraft.AC[actionIndex].CO = scriptData;
