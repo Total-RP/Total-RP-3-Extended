@@ -36,26 +36,6 @@ local tabGroup, currentTab, linksStructure;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-local onModelLoadedCallback;
-local rightModel = TRP3_DialogFrame.Models.You;
-
----Get the target's display info ID
----Since we need to use a model widget as a proxy to get the display info
----and that the model gets loaded asynchronously we provide a callback to this function
----that will be called with the display info ID when the model is loaded.
----@param callback function
-local function getTargetDispalyInfoID(callback)
-	onModelLoadedCallback = callback;
-	rightModel:SetUnit("target");
-end
-
-rightModel:SetScript("OnModelLoaded", function()
-	if onModelLoadedCallback then
-		onModelLoadedCallback(rightModel:GetDisplayInfo())
-		onModelLoadedCallback = nil;
-		rightModel:SetUnit(nil);
-	end
-end);
 
 local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
 
@@ -566,15 +546,18 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	editor.leftUnit.Text:SetText(loc("DI_LEFT_UNIT"));
 	setTooltipForSameFrame(editor.leftUnit, "RIGHT", 0, 5, loc("DI_LEFT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 
+	editor.getLeftTarget:SetText("Target ID");
+	editor.getLeftTarget:SetScript("OnClick", function()
+		editor.leftUnitValue:SetText(Utils.str.getUnitNPCID("target"));
+	end);
+
 	-- Right unit
 	editor.rightUnit.Text:SetText(loc("DI_RIGHT_UNIT"));
 	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc("DI_RIGHT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 
-	editor.getTarget:SetText("Target's ID");
-	editor.getTarget:SetScript("OnClick", function()
-		getTargetDispalyInfoID(function(displayInfoID)
-			editor.rightUnitValue:SetText(displayInfoID);
-		end)
+	editor.getRightTarget:SetText("Target ID");
+	editor.getRightTarget:SetScript("OnClick", function()
+		editor.rightUnitValue:SetText(Utils.str.getUnitNPCID("target"));
 	end);
 
 	-- End point
@@ -623,7 +606,9 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		[editor.imageValue] = editor.image,
 		[editor.imageMore] = editor.image,
 		[editor.leftUnitValue] = editor.leftUnit,
-		[editor.rightUnitValue] = editor.rightUnit
+		[editor.rightUnitValue] = editor.rightUnit,
+		[editor.getLeftTarget] = editor.leftUnit,
+		[editor.getRightTarget] = editor.rightUnit
 	}
 
 	-- Next

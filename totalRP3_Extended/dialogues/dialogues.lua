@@ -372,7 +372,7 @@ function processDialogStep()
 		if dialogFrame.LU == "target" or dialogFrame.LU == "player" then
 			modelLeft:SetUnit(dialogFrame.LU, true);
 		else
-			modelLeft:SetDisplayInfo(tonumber(dialogFrame.LU) or 0);
+			modelLeft:SetCreature(tonumber(dialogFrame.LU) or 0);
 		end
 	end
 
@@ -387,7 +387,7 @@ function processDialogStep()
 		if dialogFrame.RU == "target" or dialogFrame.RU == "player" then
 			modelRight:SetUnit(dialogFrame.RU, false);
 		else
-			modelRight:SetDisplayInfo(tonumber(dialogFrame.RU) or 0);
+			modelRight:SetCreature(tonumber(dialogFrame.RU) or 0);
 		end
 	end
 
