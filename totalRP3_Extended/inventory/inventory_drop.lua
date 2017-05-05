@@ -21,7 +21,7 @@ local Comm = TRP3_API.communication;
 local type, tremove = type, tremove;
 local tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber = tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
-local UnitPosition, SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition = UnitPosition, SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition;
+local SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition = SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition;
 local loc = TRP3_API.locale.getText;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -30,6 +30,8 @@ local broadcast = TRP3_API.communication.broadcast;
 local dropFrame, stashEditFrame, stashFoundFrame = TRP3_DropSearchFrame, TRP3_StashEditFrame, TRP3_StashFoundFrame;
 local callForStashRefresh;
 local dropData, stashesData;
+
+local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Drop

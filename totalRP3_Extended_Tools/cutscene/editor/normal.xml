@@ -375,6 +375,12 @@
 							<Anchor point="RIGHT" x="-35" y="0"/>
 						</Anchors>
 					</EditBox>
+					<Button parentKey="getLeftTarget" inherits="TRP3_CommonButton">
+						<Size x="80" y="20" />
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.leftUnitValue" x="-3"/>
+						</Anchors>
+					</Button>
 
 					<CheckButton parentKey="rightUnit" inherits="TRP3_CheckBox" name="$parentRightUnit">
 						<Anchors>
@@ -388,6 +394,12 @@
 							<Anchor point="RIGHT" x="-35" y="0"/>
 						</Anchors>
 					</EditBox>
+					<Button parentKey="getRightTarget" inherits="TRP3_CommonButton">
+						<Size x="80" y="20" />
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.rightUnitValue" x="-3"/>
+						</Anchors>
+					</Button>
 
 				</Frames>
 

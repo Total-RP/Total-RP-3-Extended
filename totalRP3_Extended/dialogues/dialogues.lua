@@ -36,13 +36,13 @@ local scalingLib = LibStub:GetLibrary("TRP-Dialog-Scaling-DB");
 local animationLib = LibStub:GetLibrary("TRP-Dialog-Animation-DB");
 
 local historyFrame = TRP3_DialogFrameHistory;
+local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Models and animations
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local modelLeft, modelRight, image = dialogFrame.Models.Me, dialogFrame.Models.You, dialogFrame.Image;
-local generateID = Utils.str.id;
 
 local function loadScalingParameters(data, model, facing)
 	scalingLib:SetModelHeight(data.scale, model);
@@ -115,7 +115,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local ANIMATION_TEXT_SPEED = 160;
-local UnitPosition, sqrt = UnitPosition, sqrt;
+local sqrt = sqrt;
 
 local function onUpdateChatText(self, elapsed)
 	if self.start and dialogFrame.Chat.Text:GetText() and dialogFrame.Chat.Text:GetText():len() > 0 then
@@ -372,7 +372,7 @@ function processDialogStep()
 		if dialogFrame.LU == "target" or dialogFrame.LU == "player" then
 			modelLeft:SetUnit(dialogFrame.LU, true);
 		else
-			modelLeft:SetDisplayInfo(tonumber(dialogFrame.LU) or 0);
+			modelLeft:SetCreature(tonumber(dialogFrame.LU) or 0);
 		end
 	end
 
@@ -387,7 +387,7 @@ function processDialogStep()
 		if dialogFrame.RU == "target" or dialogFrame.RU == "player" then
 			modelRight:SetUnit(dialogFrame.RU, false);
 		else
-			modelRight:SetDisplayInfo(tonumber(dialogFrame.RU) or 0);
+			modelRight:SetCreature(tonumber(dialogFrame.RU) or 0);
 		end
 	end
 

@@ -26,9 +26,10 @@ local sqrt, pow = math.sqrt, math.pow;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getUnitPositionSafe(unit)
-	local uX, uY = UnitPosition(unit);
-	return uX or 0, uY or 0;
+	local uX, uY, uZ, instanceID = UnitPosition(unit);
+	return uX or 0, uY or 0, uZ or 0, instanceID or "0";
 end
+TRP3_API.extended.getUnitPositionSafe = getUnitPositionSafe;
 
 function TRP3_API.extended.unitDistancePoint(unit, x, y)
 	local uX, uY = getUnitPositionSafe(unit);
