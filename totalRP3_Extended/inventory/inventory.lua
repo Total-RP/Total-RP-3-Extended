@@ -51,6 +51,11 @@ local function getItemCount(classID, container)
 end
 TRP3_API.inventory.getItemCount = getItemCount;
 
+local function getContainerWeight(container)
+	return (container or playerInventory).totalWeight;
+end
+TRP3_API.inventory.getContainerWeight = getContainerWeight;
+
 local function copySlotContent(slot, itemClass, itemData)
 	if itemClass.CO and itemClass.CO.IT then
 		slot.content = {};

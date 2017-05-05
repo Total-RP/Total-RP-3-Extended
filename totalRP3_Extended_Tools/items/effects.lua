@@ -598,6 +598,37 @@ local function inv_item_count_init()
 	end
 end
 
+local function inv_item_weight_init()
+	local editor = TRP3_OperandEditorItemWeight;
+
+	registerOperandEditor("inv_item_weight", {
+		title = loc("OP_OP_INV_WEIGHT"),
+		description = loc("OP_OP_INV_WEIGHT_TT"),
+		returnType = 0,
+		getText = function(args)
+			local data = args or EMPTY;
+			local source = data[1] or "inventory";
+			return loc("OP_OP_INV_WEIGHT_PREVIEW"):format(inventorySourcesLocals[source] or "?");
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {"inventory"};
+		end,
+	});
+
+	-- Source
+	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 185, true);
+
+	function editor.load(args)
+		local data = args or EMPTY;
+		editor.source:SetSelectedValue(data[1] or "inventory");
+	end
+
+	function editor.save()
+		return {editor.source:GetSelectedValue() or "inventory"};
+	end
+end
+
 function TRP3_API.extended.tools.initItemEffects()
 
 	inventorySources = {
@@ -628,4 +659,5 @@ function TRP3_API.extended.tools.initItemEffects()
 
 	-- Operands
 	inv_item_count_init();
+	inv_item_weight_init();
 end

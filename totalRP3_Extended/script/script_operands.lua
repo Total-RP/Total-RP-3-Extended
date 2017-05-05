@@ -400,6 +400,22 @@ local OPERANDS = {
 		},
 	},
 
+	["inv_item_weight"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			local source = "nil";
+			if args[1] == "parent" then
+				source = "args.container";
+			elseif args[1] == "self" then
+				source = "args.object";
+			end
+			return ("getContainerWeight(%s)"):format(source);
+		end,
+		env = {
+			["getContainerWeight"] = "TRP3_API.inventory.getContainerWeight",
+		},
+	},
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- QUEST
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

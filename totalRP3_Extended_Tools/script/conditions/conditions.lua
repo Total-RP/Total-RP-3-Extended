@@ -514,8 +514,8 @@ local getEvaluatedOperands = function(structure)
 		--		},
 		[loc("INV_PAGE_CHARACTER_INV")] = {
 			"inv_item_count",
+			"inv_item_weight"
 			--			"inv_durability",
-			--			"inv_weight",
 			--			"inv_empty_slot",
 		},
 		[loc("EFFECT_CAT_CAMPAIGN")] = {
