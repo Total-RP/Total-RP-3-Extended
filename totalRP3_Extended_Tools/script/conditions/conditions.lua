@@ -533,6 +533,8 @@ local getEvaluatedOperands = function(structure)
 		},
 		["Others"] = {-- TODO: locals
 			"random",
+			"time_hour",
+			"time_minute",
 		},
 	}
 

@@ -544,6 +544,30 @@ local OPERANDS = {
 	["last_return"] = {
 		codeReplacement = "tostring(args.LAST)",
 	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Time
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	["time_hour"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "({GetGameTime()})[1]";
+		end,
+		env = {
+			["GetGameTime"] = "GetGameTime",
+		},
+	},
+
+	["time_minute"] = {
+		numeric = true,
+		codeReplacement = function(args)
+			return "({GetGameTime()})[2]";
+		end,
+		env = {
+			["GetGameTime"] = "GetGameTime",
+		},
+	},
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -674,6 +674,28 @@ local function random_init()
 	});
 end
 
+local function time_hour_init()
+	registerOperandEditor("time_hour", {
+		title = loc("OP_OP_TIME_HOUR"),
+		description = loc("OP_OP_TIME_HOUR_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_TIME_HOUR");
+		end,
+	});
+end
+
+local function time_minute_init()
+	registerOperandEditor("time_minute", {
+		title = loc("OP_OP_TIME_MINUTE"),
+		description = loc("OP_OP_TIME_MINUTE_TT"),
+		returnType = true,
+		getText = function(args)
+			return loc("OP_OP_TIME_MINUTE");
+		end,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -736,5 +758,8 @@ function TRP3_ConditionEditor.initOperands()
 	char_subzone_init();
 	char_minimap_init();
 	char_cam_distance_init();
+
+	time_hour_init();
+	time_minute_init();
 
 end

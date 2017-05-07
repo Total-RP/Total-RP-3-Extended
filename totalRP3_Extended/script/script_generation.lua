@@ -26,7 +26,7 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = true;
+local DEBUG = false;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -109,7 +109,7 @@ local function operand(operandID, eArgs, ...)
 		local code = "return function(args)\nreturn " .. operandInfo.codeReplacement(escapeArguments(cArgs)) .. "\nend;";
 		-- Compile
 		-- TODO: with proper method
-		local factory, errorMessage = loadstring(code, "Generated operand code");
+		local factory, errorMessage = loadstring(code, "Generated direct operand code");
 		if not factory then
 			error("Error in script effect:\n" .. errorMessage);
 		end

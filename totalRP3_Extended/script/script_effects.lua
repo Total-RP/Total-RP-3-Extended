@@ -176,7 +176,7 @@ local EFFECTS = {
 		end,
 		method = function(structure, cArgs, eArgs)
 			local source, varName, code, operand = structure.getCArgs(cArgs);
-			code = "return function(args)\n return " .. code .. "\nend;";
+			code = "return function(args)\nreturn " .. code .. ";\nend;";
 			-- Generating factory
 			local func, errorMessage = loadstring(code, "Generated operand code");
 			if not func then

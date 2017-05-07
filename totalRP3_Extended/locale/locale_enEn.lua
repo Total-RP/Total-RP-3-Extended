@@ -1022,7 +1022,10 @@ We should begin with some examples:
 	OP_OP_CHAR_MINIMAP_TT = "Returns the minimap zone text.\n\nThe game event \"MINIMAP_ZONE_CHANGED\" is triggered, when the text changes. So you can test it in a game event link in a campaign or a quest.",
 	OP_OP_CHAR_CAM_DISTANCE = "Camera distance",
 	OP_OP_CHAR_CAM_DISTANCE_TT = "The camera distance from the player. 0 if in first person view.",
-
+	OP_OP_TIME_HOUR = "Time: Hour",
+	OP_OP_TIME_HOUR_TT = "The current hour of the day, server time.",
+	OP_OP_TIME_MINUTE = "Time: Minute",
+	OP_OP_TIME_MINUTE_TT = "The current minute of the hour, server time.",
 
 	-- Test
 	COND_EDITOR = "Condition editor",
