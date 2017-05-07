@@ -98,6 +98,20 @@ local function playEffect(effectID, secured, eArgs, ...)
 end
 TRP3_API.script.playEffect = playEffect;
 
+local function getTestOperande(id)
+	return TRP3_API.script.getOperand(id);
+end
+
+local function operand(operandID, eArgs, ...)
+	local cArgs = {...};
+	local operandInfo = getTestOperande(operandID);
+	if operandInfo then
+		return true; --TODO: finish
+	else
+		error("This operand ID is unknown or can't be used in script: " .. operandID);
+	end
+end
+
 local function effect(effectID, eArgs, ...)
 	playEffect(effectID, false, eArgs, ...);
 end
@@ -153,10 +167,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LEVEL 1 : Test
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function getTestOperande(id)
-	return TRP3_API.script.getOperand(id);
-end
 
 local function writeOperand(testStructure, comparatorType, env)
 	local code;
@@ -900,6 +910,8 @@ function TRP3_API.script.runLuaScriptEffect(code, args, secured)
 	else
 		env["effect"] = effect;
 	end
+
+	env["op"] = operand;
 
 	-- Compile
 	local factory, errorMessage = loadstring(code, "Generated code");
