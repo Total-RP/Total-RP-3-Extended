@@ -600,6 +600,17 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_DELAY_INTERRUPT_2 = "Interrupt on move",
 
 	-- Effects editors
+	EFFECT_SCRIPT = "Execute restricted lua script",
+	EFFECT_SCRIPT_TT = "Execute a lua script in a restricted safe environment.",
+	EFFECT_SCRIPT_SCRIPT = "Lua code",
+	EFFECT_SCRIPT_SCRIPT_TT = [[This script will be executed in a safe environment where you can have access to all lua synthax and API (table, string, math...) and the Extended |cff00ff00effect|r function.
+
+|cffff0000You don't have access to the game API here!|r
+
+A custom lua script will always be less efficient than a workflow effect, as it is compiled each time, in opposition to a workflow effect being compiled once.
+
+|cffff9900So keep the script to the minimum and only use this script effect if necessary.]],
+
 	EFFECT_CAT_SOUND = "Sound and music",
 	EFFECT_CAT_SPEECH = "Speech and emotes",
 	EFFECT_CAT_CAMPAIGN = "Campaign and quest",
@@ -607,7 +618,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	EFFECT_TEXT_TT = "Displays a text.\nDifferent outputs are possible.",
 	EFFECT_TEXT_PREVIEW = "Displayed text",
 	EFFECT_TEXT_TEXT = "Text",
-	EFFECT_TEXT_TEXT_DEFAULT = "Your text",
+	EFFECT_TEXT_TEXT_DEFAULT = "Hello.\nHow are you?",
 	EFFECT_TEXT_TEXT_TT = "The text to display.",
 	EFFECT_TEXT_TYPE = "Text type",
 	EFFECT_TEXT_TYPE_1 = "Chat frame text",

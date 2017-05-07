@@ -701,7 +701,7 @@ Fonctionne uniquement si l'objet courant est un conteneur !]=],
 	["EFFECT_TEXT"] = "Afficher du texte",
 	["EFFECT_TEXT_PREVIEW"] = "Texte affiché",
 	["EFFECT_TEXT_TEXT"] = "Texte",
-	["EFFECT_TEXT_TEXT_DEFAULT"] = "Votre texte",
+	["EFFECT_TEXT_TEXT_DEFAULT"] = "Bonjour.\nComment allez-vous ?",
 	["EFFECT_TEXT_TEXT_TT"] = "Le texte à afficher.",
 	["EFFECT_TEXT_TT"] = [=[Affiche un texte.
 Différents affichages sont disponibles.]=],

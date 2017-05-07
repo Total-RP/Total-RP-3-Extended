@@ -26,17 +26,17 @@ local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 local loc = TRP3_API.locale.getText;
 
-local DEBUG = false;
+local DEBUG = true;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function escapeString(value)
-	return value:gsub("\"", "\\\""):gsub("\n", "\\n");
+	return value:gsub("\\", "\\\\"):gsub("\"", "\\\""):gsub("\n", "\\n");
 end
 
--- Escape " in string argument, to avoid script injection
+-- Escape string arguments, to avoid script injection
 local function escapeArguments(args)
 	if not args then return end
 	local escaped = {};
@@ -71,6 +71,60 @@ TRP3_API.script.cast = function(delay, func)
 			after(delay, func);
 		end
 	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Script parsing
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local EFFECT_MISSING_ID = "MISSING";
+
+local function getEffectInfo(id)
+	return TRP3_API.script.getEffect(id) or TRP3_API.script.getEffect(EFFECT_MISSING_ID);
+end
+
+local function playEffect(effectID, secured, eArgs, ...)
+	local cArgs = {...};
+	local effectInfo = getEffectInfo(effectID);
+	if effectInfo then
+		if secured and effectInfo.securedMethod then
+			effectInfo.securedMethod(effectInfo, cArgs, eArgs);
+		elseif effectInfo.method then
+			effectInfo.method(effectInfo, cArgs, eArgs);
+		else
+			error("This effect ID is unknown or can't be used in script: " .. effectID);
+		end
+	end
+end
+TRP3_API.script.playEffect = playEffect;
+
+local function getTestOperande(id)
+	return TRP3_API.script.getOperand(id);
+end
+
+local function operand(operandID, eArgs, ...)
+	local cArgs = {...};
+	local operandInfo = getTestOperande(operandID);
+	if operandInfo then
+		local code = "return function(args)\nreturn " .. operandInfo.codeReplacement(escapeArguments(cArgs)) .. "\nend;";
+		-- Compile
+		-- TODO: with proper method
+		local factory, errorMessage = loadstring(code, "Generated operand code");
+		if not factory then
+			error("Error in script effect:\n" .. errorMessage);
+		end
+		return factory()(eArgs);
+	else
+		error("This operand ID is unknown or can't be used in script: " .. operandID);
+	end
+end
+
+local function effect(effectID, eArgs, ...)
+	playEffect(effectID, false, eArgs, ...);
+end
+
+local function securedEffect(effectID, eArgs, ...)
+	playEffect(effectID, true, eArgs, ...);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -120,10 +174,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LEVEL 1 : Test
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function getTestOperande(id)
-	return TRP3_API.script.getOperand(id);
-end
 
 local function writeOperand(testStructure, comparatorType, env)
 	local code;
@@ -242,10 +292,26 @@ TRP3_API.script.getConditionCode = writeCondition;
 -- LEVEL 3 : Effect
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local EFFECT_MISSING_ID = "MISSING";
-
-local function getEffectInfo(id)
-	return TRP3_API.script.getEffect(id) or TRP3_API.script.getEffect(EFFECT_MISSING_ID);
+local function getTableAsString(table)
+	local str = "{";
+	for i, v in pairs(table) do
+		if type(i) == "string" then
+			str = str .. "[\"" .. i .. "\"] = ";
+		end
+		if type(v) == "string" then
+			str = str .. "\"" .. v .. "\"";
+		elseif type(v) == "table" then
+			local escaped = escapeArguments(v);
+			str = str .. getTableAsString(escaped);
+		else
+			str = str .. tostring(v);
+		end
+		if type(i) == "string" or i < #table then
+			str = str .. ", ";
+		end
+	end
+	str = str .. "}";
+	return str;
 end
 
 local function writeEffect(effectStructure)
@@ -262,33 +328,23 @@ local function writeEffect(effectStructure)
 		secured = TRP3_API.security.resolveEffectSecurity(CURRENT_CLASS_ID, effectStructure.id);
 	end
 
-	if secured then
-		-- Register operand environment
-		if effectInfo.env then
-			for map, g in pairs(effectInfo.env) do
-				CURRENT_ENVIRONMENT[map] = g;
-			end
+	-- Secured
+	effectCode = "effect(\"" .. effectStructure.id .. "\", " .. tostring(not secured) .. ", args";
+
+	-- Compilation args
+	local cArgs = escapeArguments(effectStructure.args) or EMPTY;
+	for i, v in pairs(cArgs) do
+		effectCode = effectCode .. ", ";
+		if type(v) == "string" then
+			effectCode = effectCode .. "\"" .. v .. "\"";
+		elseif type(v) == "table" then
+			local escaped = escapeArguments(v);
+			effectCode = effectCode .. getTableAsString(escaped);
+		else
+			effectCode = effectCode .. tostring(v);
 		end
-		local code, supEnv = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
-		effectCode = code;
-		if supEnv then
-			for map, g in pairs(supEnv) do
-				CURRENT_ENVIRONMENT[map] = g;
-			end
-		end
-	elseif effectInfo.securedCodeReplacementFunc and effectInfo.securedEnv then
-		-- Register operand environment
-		if effectInfo.securedEnv then
-			for map, g in pairs(effectInfo.securedEnv) do
-				CURRENT_ENVIRONMENT[map] = g;
-			end
-		end
-		effectCode = effectInfo.securedCodeReplacementFunc(escapeArguments(effectStructure.args) or EMPTY, effectStructure.id);
-	else
-		-- TODO: better than that
-		effectCode = "print('Effect blocked: " .. effectStructure.id  .. "')";
-		CURRENT_ENVIRONMENT["print"] = "print";
 	end
+	effectCode = effectCode .. ");";
 
 	if effectStructure.cond and #effectStructure.cond > 0 then
 		startIf(writeCondition(effectStructure.cond, effectStructure.condID));
@@ -434,8 +490,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-local BASE_ENV = { ["tostring, EMPTY, delayed, eval, tonumber, var"]
-	= "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval, tonumber, TRP3_API.script.parseArgs" };
+local BASE_ENV = { ["tostring, EMPTY, delayed, eval, tonumber, var, effect"]
+= "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval, tonumber, TRP3_API.script.parseArgs, TRP3_API.script.playEffect" };
 
 local IMPORT_PATTERN = "local %s = %s;";
 
@@ -570,12 +626,13 @@ function TRP3_API.script.clearAllCompilations()
 end
 
 function TRP3_API.script.generateAndRun(code, args, env)
-	code = "local func = function(args) " .. code .. " end setfenv(func, {}); return func;";
+	code = "local func = function(args)\n" .. code .. "\nend setfenv(func, {}); return func;";
 
-	for alias, global in pairs(env or EMPTY) do
+	env = env or {};
+	tableCopy(env, BASE_ENV);
+	for alias, global in pairs(env) do
 		code = "\n" .. IMPORT_PATTERN:format(alias, global) .. code;
 	end
-	code = "\n" .. IMPORT_PATTERN:format("var", "TRP3_API.script.parseArgs") .. code;
 
 	if DEBUG then
 		print(code);
@@ -623,29 +680,27 @@ function TRP3_API.script.runWorkflow(args, source, workflowID, slotID)
 		if args.container and args.container.id then
 			local containerClass = TRP3_API.extended.getClass(args.container.id);
 			if containerClass and containerClass.SC then
-				-- Problem here
+				-- TODO: Problem here
 				args.object = args.container;
 				-- args.container = ???
 				executeClassScript(workflowID, containerClass.SC, args, args.object.id);
 			end
 		end
-	elseif source == "c" then
+	elseif source == "ch" then
 		if args.object and args.object.content and args.object.content[slotID] then
 			local itemSlot = args.object.content[slotID];
 			local itemClass = TRP3_API.extended.getClass(itemSlot.id);
 			if itemClass and itemClass.SC then
-				-- Problem here
 				args.container = args.object;
 				args.object = itemSlot;
 				executeClassScript(workflowID, itemClass.SC, args, args.object.id);
 			end
 		end
-	elseif source == "s" then
+	elseif source == "si" then
 		if args.container and args.container.content and args.container.content[slotID] then
 			local itemSlot = args.container.content[slotID];
 			local itemClass = TRP3_API.extended.getClass(itemSlot.id);
 			if itemClass and itemClass.SC then
-				-- Problem here
 				args.object = itemSlot;
 				executeClassScript(workflowID, itemClass.SC, args, args.object.id);
 			end
@@ -839,4 +894,43 @@ function TRP3_API.script.eventVarCheckN(args, index)
 		return tonumber(args.event[index] or 0);
 	end
 	return 0;
+end
+
+local LUA_ENV = {
+	["string"] = "string",
+	["table"] = "table",
+	["math"] = "math",
+	["pairs"] = "pairs",
+	["ipairs"] = "ipairs",
+	["next"] = "next",
+	["select"] = "select",
+	["unpack"] = "unpack",
+	["type"] = "type",
+};
+function TRP3_API.script.runLuaScriptEffect(code, args, secured)
+	code = "return function(args)\n" .. code .. "\nend;";
+
+	local env = {};
+	tableCopy(env, LUA_ENV);
+	if secured then
+		env["effect"] = securedEffect;
+	else
+		env["effect"] = effect;
+	end
+
+	env["op"] = operand;
+
+	-- Compile
+	local factory, errorMessage = loadstring(code, "Generated code");
+	if not factory then
+		error("Error in script effect:\n" .. errorMessage);
+	end
+
+	-- Create
+	setfenv(factory, env);
+	local func = factory();
+	setfenv(func, env);
+
+	-- Execute
+	return func(args or EMPTY);
 end

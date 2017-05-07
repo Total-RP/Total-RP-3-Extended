@@ -490,8 +490,8 @@ local function run_item_workflow_init()
 	-- Source
 	local sources = {
 --		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_PARENT")), "p", loc("EFFECT_SOURCE_PARENT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_SLOT")), "c", loc("EFFECT_SOURCE_SLOT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_SLOT_B")), "s", loc("EFFECT_SOURCE_SLOT_B_TT")}
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_SLOT")), "ch", loc("EFFECT_SOURCE_SLOT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_SLOT_B")), "si", loc("EFFECT_SOURCE_SLOT_B_TT")}
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
 
@@ -524,14 +524,14 @@ local function run_item_workflow_init()
 			local source = args[1];
 			local id = tostring(args[2]);
 			local slot = tostring(args[3]);
-			if source == "c" then
+			if source == "ch" then
 				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_WORKFLOW_PREVIEW_C"):format("|cff00ff00".. id .."|r", "|cff00ff00".. slot .."|r"));
 			else
 				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_WORKFLOW_PREVIEW_S"):format("|cff00ff00".. id .."|r", "|cff00ff00".. slot .."|r"));
 			end
 		end,
 		getDefaultArgs = function()
-			return {"c", "id", "1"};
+			return {"ch", "id", "1"};
 		end,
 		editor = editor,
 		context = {TRP3_DB.types.ITEM},

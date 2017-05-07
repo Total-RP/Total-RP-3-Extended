@@ -23,6 +23,7 @@ local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effect structure
@@ -44,12 +45,14 @@ end
 -- Commons
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local text_editor = TRP3_EffectEditorText;
+
 
 local function text_init()
 
+	local editor = TRP3_EffectEditorText;
+
 	-- Text
-	setTooltipForSameFrame(text_editor.text, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_TEXT_TEXT_TT"));
+	setTooltipAll(editor.text.dummy, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_TEXT_TEXT_TT"));
 
 
 	-- Type
@@ -59,7 +62,7 @@ local function text_init()
 		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_3")), Utils.message.type.RAID_ALERT},
 		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_4")), Utils.message.type.ALERT_MESSAGE}
 	}
-	TRP3_API.ui.listbox.setupListBox(text_editor.type, outputs, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.type, outputs, nil, nil, 250, true);
 
 	registerEffectEditor("text", {
 		title = loc("EFFECT_TEXT"),
@@ -71,18 +74,46 @@ local function text_init()
 		getDefaultArgs = function()
 			return {loc("EFFECT_TEXT_TEXT_DEFAULT"), 1};
 		end,
-		editor = text_editor,
+		editor = editor,
 	});
 
-	function text_editor.load(scriptData)
+	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
-		text_editor.text.scroll.text:SetText(data[1] or "");
-		text_editor.type:SetSelectedValue(data[2] or Utils.message.type.CHAT_FRAME);
+		editor.text.scroll.text:SetText(data[1] or "");
+		editor.type:SetSelectedValue(data[2] or Utils.message.type.CHAT_FRAME);
 	end
 
-	function text_editor.save(scriptData)
-		scriptData.args[1] = stEtN(strtrim(text_editor.text.scroll.text:GetText()));
-		scriptData.args[2] = text_editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.text.scroll.text:GetText()));
+		scriptData.args[2] = editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
+	end
+end
+
+local function script_init()
+
+	local editor = TRP3_EffectEditorScript;
+
+	-- Text
+	setTooltipAll(editor.script.dummy, "RIGHT", 0, 5, loc("EFFECT_SCRIPT_SCRIPT"), loc("EFFECT_SCRIPT_SCRIPT_TT"));
+	editor.script.scroll.text:SetFontObject(GameFontNormalLarge);
+
+	registerEffectEditor("script", {
+		title = loc("EFFECT_SCRIPT"),
+		icon = "inv_inscription_scroll_fortitude",
+		description = loc("EFFECT_SCRIPT_TT"),
+		getDefaultArgs = function()
+			return {"-- Your script here"};
+		end,
+		editor = editor,
+	});
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.script.scroll.text:SetText(data[1] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.script.scroll.text:GetText()));
 	end
 end
 
@@ -821,6 +852,7 @@ end
 
 function TRP3_API.extended.tools.initBaseEffects()
 	text_init();
+	script_init();
 
 	companion_dismiss_mount_init();
 	companion_dismiss_critter_init();

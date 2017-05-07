@@ -187,23 +187,17 @@ function TRP3_API.extended.document.onStart()
 	TRP3_API.script.registerEffects({
 		document_show = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			codeReplacementFunc = function (args)
-				local documentID = args[1];
-				return ("args.LAST = showDocument(\"%s\", args);"):format(documentID);
+			method = function(structure, cArgs, eArgs)
+				local documentID = cArgs[1];
+				eArgs.LAST = showDocument(documentID, eArgs);
 			end,
-			env = {
-				showDocument = "TRP3_API.extended.document.showDocument",
-			},
 		},
 
 		document_close = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			codeReplacementFunc = function (args)
-				return "args.LAST = closeDocument();";
+			method = function(structure, cArgs, eArgs)
+				eArgs.LAST = closeDocument();
 			end,
-			env = {
-				closeDocument = "TRP3_API.extended.document.closeDocument",
-			}
 		}
 	});
 

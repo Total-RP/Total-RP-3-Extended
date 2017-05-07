@@ -386,7 +386,6 @@ local function decorateEffect(scriptStepFrame, effectData)
 		effectInfo.effectFrameDecorator(scriptStepFrame, effectData.args);
 	end
 
-	scriptStepFrame.conditioned:Hide();
 	if effectData.cond then
 		scriptStepFrame.conditioned:Show();
 	end
@@ -397,6 +396,7 @@ local function decorateElement(scriptStepFrame)
 	local scriptStep = scriptStepFrame.scriptStepData;
 	local stepFormat = "%s. %s"
 	scriptStepFrame.description:SetText("");
+	scriptStepFrame.conditioned:Hide();
 	if scriptStep.t == ELEMENT_TYPE.EFFECT then
 		local title = decorateEffect(scriptStepFrame, scriptStep.e[1]);
 		scriptStepFrame.title:SetText(stepFormat:format(scriptStepFrame.scriptStepID, title));
