@@ -106,7 +106,14 @@ local function operand(operandID, eArgs, ...)
 	local cArgs = {...};
 	local operandInfo = getTestOperande(operandID);
 	if operandInfo then
-		return true; --TODO: finish
+		local code = "return function(args)\nreturn " .. operandInfo.codeReplacement(escapeArguments(cArgs)) .. "\nend;";
+		-- Compile
+		-- TODO: with proper method
+		local factory, errorMessage = loadstring(code, "Generated operand code");
+		if not factory then
+			error("Error in script effect:\n" .. errorMessage);
+		end
+		return factory()(eArgs);
 	else
 		error("This operand ID is unknown or can't be used in script: " .. operandID);
 	end
