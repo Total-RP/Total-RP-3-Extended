@@ -32,17 +32,10 @@ TRP3_API.quest.EFFECTS = {
 			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
 			return campaignID, questID;
 		end,
-		codeReplacementFunc = function (structure, cArgs)
-			local campaignID, questID = structure.getCArgs(cArgs);
-			return ("args.LAST = startQuest(\"%s\", \"%s\");"):format(campaignID, questID);
-		end,
 		method = function(structure, cArgs, eArgs)
 			local campaignID, questID = structure.getCArgs(cArgs);
 			eArgs.LAST = TRP3_API.quest.startQuest(campaignID, questID);
 		end,
-		env = {
-			startQuest = "TRP3_API.quest.startQuest",
-		}
 	},
 
 	["quest_goToStep"] = {
@@ -51,17 +44,10 @@ TRP3_API.quest.EFFECTS = {
 			local campaignID, questID, stepID = TRP3_API.extended.splitID(args[1] or "");
 			return campaignID, questID, stepID;
 		end,
-		codeReplacementFunc = function (structure, cArgs)
-			local campaignID, questID, stepID = structure.getCArgs(cArgs);
-			return ("args.LAST = goToStep(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, stepID);
-		end,
 		method = function(structure, cArgs, eArgs)
 			local campaignID, questID, stepID = structure.getCArgs(cArgs);
 			eArgs.LAST = RP3_API.quest.goToStep(campaignID, questID, stepID);
 		end,
-		env = {
-			goToStep = "TRP3_API.quest.goToStep",
-		}
 	},
 
 	["quest_revealObjective"] = {
@@ -71,17 +57,10 @@ TRP3_API.quest.EFFECTS = {
 			local objectiveID = args[2];
 			return campaignID, questID, objectiveID;
 		end,
-		codeReplacementFunc = function (structure, cArgs)
-			local campaignID, questID, objectiveID = structure.getCArgs(cArgs);
-			return ("args.LAST = revealObjective(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, objectiveID);
-		end,
 		method = function(structure, cArgs, eArgs)
 			local campaignID, questID, objectiveID = structure.getCArgs(cArgs);
 			eArgs.LAST = TRP3_API.quest.revealObjective(campaignID, questID, objectiveID);
 		end,
-		env = {
-			revealObjective = "TRP3_API.quest.revealObjective",
-		}
 	},
 
 	["quest_markObjDone"] = {
@@ -91,17 +70,10 @@ TRP3_API.quest.EFFECTS = {
 			local objectiveID = args[2];
 			return campaignID, questID, objectiveID;
 		end,
-		codeReplacementFunc = function (structure, cArgs)
-			local campaignID, questID, objectiveID = structure.getCArgs(cArgs);
-			return ("args.LAST = markObjectiveDone(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, objectiveID);
-		end,
 		method = function(structure, cArgs, eArgs)
 			local campaignID, questID, objectiveID = structure.getCArgs(cArgs);
 			eArgs.LAST = TRP3_API.quest.markObjectiveDone(campaignID, questID, objectiveID);
 		end,
-		env = {
-			markObjectiveDone = "TRP3_API.quest.markObjectiveDone",
-		}
 	},
 
 }
