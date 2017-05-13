@@ -83,11 +83,11 @@ local function getEffectInfo(id)
 	return TRP3_API.script.getEffect(id) or TRP3_API.script.getEffect(EFFECT_MISSING_ID);
 end
 
-local function playEffect(effectID, secured, eArgs, ...)
+local function playEffect(effectID, shouldBeSecured, eArgs, ...)
 	local cArgs = {...};
 	local effectInfo = getEffectInfo(effectID);
 	if effectInfo then
-		if secured and effectInfo.securedMethod then
+		if shouldBeSecured and effectInfo.securedMethod then
 			effectInfo.securedMethod(effectInfo, cArgs, eArgs);
 		elseif effectInfo.method then
 			effectInfo.method(effectInfo, cArgs, eArgs);
@@ -320,16 +320,16 @@ local function writeEffect(effectStructure)
 	local effectInfo = getEffectInfo(effectStructure.id);
 	assert(effectInfo, "Unknown effect ID: " .. effectStructure.id);
 
-	local effectCode, secured;
+	local effectCode, isSecure;
 
 	if TRP3_DB.inner[CURRENT_CLASS_ID] ~= nil or not effectInfo.secured or effectInfo.secured == TRP3_API.security.SECURITY_LEVEL.HIGH then
-		secured = true;
+		isSecure = true;
 	elseif effectInfo.secured ~= TRP3_API.security.SECURITY_LEVEL.HIGH then
-		secured = TRP3_API.security.resolveEffectSecurity(CURRENT_CLASS_ID, effectStructure.id);
+		isSecure = TRP3_API.security.resolveEffectSecurity(CURRENT_CLASS_ID, effectStructure.id);
 	end
 
 	-- Secured
-	effectCode = "effect(\"" .. effectStructure.id .. "\", " .. tostring(not secured) .. ", args";
+	effectCode = "effect(\"" .. effectStructure.id .. "\", " .. tostring(not isSecure) .. ", args";
 
 	-- Compilation args
 	local cArgs = escapeArguments(effectStructure.args) or EMPTY;

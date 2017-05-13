@@ -46,13 +46,8 @@ TRP3_API.security.RESOLUTION_REASON = RESOLUTION_REASON;
 -- LOGIC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local effectGroupDefaultLevel = {
-	SEC_REASON_TALK = SECURITY_LEVEL.LOW,
-	SEC_REASON_SOUND = SECURITY_LEVEL.NORMAL,
-	SEC_REASON_DISMOUNT = SECURITY_LEVEL.NORMAL,
-}
-
 local transposition = {
+	script = "SEC_REASON_SCRIPT",
 	speech_env = "SEC_REASON_TALK",
 	speech_npc = "SEC_REASON_TALK",
 	speech_player = "SEC_REASON_TALK",
@@ -308,6 +303,7 @@ function TRP3_API.security.initSecurity()
 	securityFrame.reasons["SEC_REASON_TALK"] = "|cffffffff" .. loc("SEC_REASON_TALK_WHY");
 	securityFrame.reasons["SEC_REASON_SOUND"] = "|cffffffff" .. loc("SEC_REASON_SOUND_WHY");
 	securityFrame.reasons["SEC_REASON_DISMOUNT"] = "|cffffffff" .. loc("SEC_REASON_DISMOUNT_WHY");
+	securityFrame.reasons["SEC_REASON_SCRIPT"] = "|cffffffff" .. loc("SEC_REASON_SCRIPT_WHY");
 
 	securityFrame.securityDetails = {};
 	securityFrame.widgetTab = {};

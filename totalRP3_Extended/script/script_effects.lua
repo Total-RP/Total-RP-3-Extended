@@ -261,7 +261,7 @@ local EFFECTS = {
 			local soundID, channel, distance, source = structure.getCArgs(cArgs);
 			eArgs.LAST = TRP3_API.utils.music.playLocalSoundID(soundID, channel, distance, source);
 		end,
-		methodSecured = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs)
 			local soundID, channel, _, source = structure.getCArgs(cArgs);
 			eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
 		end,
@@ -279,7 +279,7 @@ local EFFECTS = {
 			local musicPath, distance, source = structure.getCArgs(cArgs);
 			eArgs.LAST = TRP3_API.utils.music.playLocalMusic(musicPath, distance, source);
 		end,
-		methodSecured = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs)
 			local musicPath = structure.getCArgs(cArgs);
 			eArgs.LAST = TRP3_API.utils.music.playMusic(musicPath);
 		end,
@@ -292,7 +292,7 @@ local EFFECTS = {
 			DismissCompanion("MOUNT");
 			eArgs.LAST = 0;
 		end,
-		methodSecured = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs)
 			eArgs.LAST = 0;
 		end,
 		secured = security.MEDIUM,
@@ -322,7 +322,7 @@ local EFFECTS = {
 			SummonByID(mountId);
 			eArgs.LAST = 0;
 		end,
-		methodSecured = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs)
 			eArgs.LAST = 0;
 		end,
 		secured = security.MEDIUM,
@@ -369,7 +369,7 @@ local EFFECTS = {
 			TRP3_API.script.runLuaScriptEffect(value, eArgs, false);
 			eArgs.LAST = 0;
 		end,
-		methodSecured = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs)
 			local value = tostring(cArgs[1]);
 			TRP3_API.script.runLuaScriptEffect(value, eArgs, true);
 			eArgs.LAST = 0;
