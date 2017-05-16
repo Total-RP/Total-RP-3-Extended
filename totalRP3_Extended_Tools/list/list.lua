@@ -476,6 +476,7 @@ function onLineActionSelected(value, button)
 	elseif action == ACTION_FLAG_EXPORT then
 		local class = getClass(objectID);
 		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class});
+		serial = serial:gsub("|", "||");
 		if serial:len() < 20000 then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
 			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
@@ -755,6 +756,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.container.import.save:SetText(loc("DB_IMPORT_WORD"));
 	ToolFrame.list.container.import.save:SetScript("OnClick", function()
 		local code = ToolFrame.list.container.import.content.scroll.text:GetText();
+		code = code:gsub("||", "|");
 		local object = Utils.serial.safeDeserialize(code);
 		if object and type(object) == "table" and #object == 3 then
 			local version = object[1];
