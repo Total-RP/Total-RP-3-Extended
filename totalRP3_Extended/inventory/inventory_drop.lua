@@ -98,7 +98,7 @@ local function initScans()
 	TRP3_API.map.registerScan({
 		id = "inv_scan_self",
 		buttonText = loc("IT_INV_SCAN_MY_ITEMS"),
-		buttonIcon = "inv_misc_5potionbag_special",
+		buttonIcon = "inv_misc_bag_16",
 		scanTitle = loc("TYPE_ITEMS"),
 		scan = function(saveStructure)
 			local mapID = GetCurrentMapAreaID();
