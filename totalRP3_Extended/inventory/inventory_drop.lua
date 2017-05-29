@@ -98,6 +98,7 @@ local function initScans()
 	TRP3_API.map.registerScan({
 		id = "inv_scan_self",
 		buttonText = loc("IT_INV_SCAN_MY_ITEMS"),
+		buttonIcon = "inv_misc_5potionbag_special",
 		scanTitle = loc("TYPE_ITEMS"),
 		scan = function(saveStructure)
 			local mapID = GetCurrentMapAreaID();
@@ -123,6 +124,7 @@ local function initScans()
 	TRP3_API.map.registerScan({
 		id = "stashes_scan_self",
 		buttonText = loc("DR_STASHES_SCAN_MY"),
+		buttonIcon = "Inv_misc_map_01",
 		scanTitle = loc("DR_STASHES"),
 		scan = function(saveStructure)
 			local mapID = GetCurrentMapAreaID();
@@ -154,6 +156,7 @@ local function initScans()
 	TRP3_API.map.registerScan({
 		id = "stashes_scan_other",
 		buttonText = loc("DR_STASHES_SCAN"),
+		buttonIcon = "Icon_treasuremap",
 		scan = function()
 			local mapID = GetCurrentMapAreaID();
 			broadcast.broadcast(STASHES_SCAN_COMMAND, mapID);
