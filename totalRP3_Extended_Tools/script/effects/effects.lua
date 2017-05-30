@@ -440,6 +440,35 @@ local function run_workflow_init()
 	});
 end
 
+local function var_prompt_init()
+	local editor = TRP3_EffectEditorPrompt;
+
+	-- Text
+	editor.text.title:SetText(loc("EFFECT_PROMPT_TEXT"));
+	setTooltipForSameFrame(editor.text.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_TEXT"), loc("EFFECT_PROMPT_TEXT_TT"));
+
+	registerEffectEditor("var_prompt", {
+		title = loc("EFFECT_PROMPT"),
+		icon = "inv_gizmo_electrifiedether",
+		description = loc("EFFECT_PROMPT_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+
+			scriptStepFrame.description:SetText(loc("EFFECT_PROMPT"));
+		end,
+		getDefaultArgs = function()
+			return {"Please enter some input", "input", "o", "callback", "o"};
+		end,
+		editor = editor
+	});
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+	end
+
+	function editor.save(scriptData)
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Speechs
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -666,7 +695,7 @@ local function sound_id_local_init()
 		description = loc("EFFECT_SOUND_ID_LOCAL_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_ID_LOCAL_PREVIEW"):format(
-				"|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[3]) .. "|r"
+			"|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[3]) .. "|r"
 			));
 		end,
 		getDefaultArgs = function()
@@ -717,7 +746,7 @@ local function sound_music_local_init()
 		description = loc("EFFECT_SOUND_MUSIC_LOCAL_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_MUSIC_LOCAL_PREVIEW"):format(
-				"|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[2]) .. "|cffffff00"
+			"|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[2]) .. "|cffffff00"
 			));
 		end,
 		getDefaultArgs = function()
@@ -873,6 +902,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	var_set_operand_init();
 	signal_send_init();
 	run_workflow_init();
+	var_prompt_init();
 
 	cam_zoom_init();
 	cam_save_init();

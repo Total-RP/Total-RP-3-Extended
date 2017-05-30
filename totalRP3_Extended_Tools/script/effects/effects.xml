@@ -468,4 +468,55 @@
 
 	</Frame>
 
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--       Prompt         -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorPrompt" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="365"/>
+		<Frames>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.text" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-20" y="-20"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="0" y="-20"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="workflow" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="w_source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentWSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.workflow" x="-20" y="-20"/>
+				</Anchors>
+			</Frame>
+
+		</Frames>
+
+	</Frame>
+
 </Ui>
