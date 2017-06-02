@@ -46,7 +46,7 @@ TRP3_API.quest.EFFECTS = {
 		end,
 		method = function(structure, cArgs, eArgs)
 			local campaignID, questID, stepID = structure.getCArgs(cArgs);
-			eArgs.LAST = RP3_API.quest.goToStep(campaignID, questID, stepID);
+			eArgs.LAST = TRP3_API.quest.goToStep(campaignID, questID, stepID);
 		end,
 	},
 
