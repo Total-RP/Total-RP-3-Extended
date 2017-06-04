@@ -121,7 +121,9 @@ local function showDocumentClass(document, documentID, parentArgs)
 
 	if documentFrame.ID then
 		if document.LI and document.LI.OO and document.SC and document.SC[document.LI.OO] then
-			local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC, {}, documentFrame.ID);
+			local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC, {
+				object = parentArgs.object
+			}, documentFrame.ID);
 		end
 	end
 end
@@ -140,25 +142,31 @@ TRP3_API.extended.document.showDocument = showDocument;
 local function onLinkClicked(self, url)
 	if documentFrame.ID and documentFrame.class then
 		local document = documentFrame.class;
+		local parentArgs = documentFrame.parentArgs;
 		if document.SC and document.SC[url] then
-			local retCode = TRP3_API.script.executeClassScript(url, document.SC, {}, documentFrame.ID);
+			local retCode = TRP3_API.script.executeClassScript(url, document.SC, {
+				object = parentArgs.object
+			}, documentFrame.ID);
 		end
 	end
 end
 
-local function closeDocumentFrame()
+local function closeDocumentFrame(parentArgs)
 	documentFrame:Hide();
 	if documentFrame.ID and documentFrame.class then
 		local document = documentFrame.class;
+		local parentArgs = documentFrame.parentArgs;
 		if document.LI and document.LI.OC and document.SC and document.SC[document.LI.OC] then
-			local retCode = TRP3_API.script.executeClassScript(document.LI.OC, document.SC, {}, documentFrame.ID);
+			local retCode = TRP3_API.script.executeClassScript(document.LI.OC, document.SC, {
+				object = parentArgs.object
+			}, documentFrame.ID);
 		end
 	end
 end
 
-local function closeDocument()
+local function closeDocument(parentArgs)
 	if documentFrame:IsVisible() then
-		closeDocumentFrame();
+		closeDocumentFrame(parentArgs);
 	end
 end
 TRP3_API.extended.document.closeDocument = closeDocument;
@@ -196,7 +204,7 @@ function TRP3_API.extended.document.onStart()
 		document_close = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 			method = function(structure, cArgs, eArgs)
-				eArgs.LAST = closeDocument();
+				eArgs.LAST = closeDocument(eArgs);
 			end,
 		}
 	});
