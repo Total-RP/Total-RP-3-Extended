@@ -285,6 +285,27 @@ local function onLootAll()
 	end
 end
 
+local function setModel(model, dialogStepClass, field)
+	model.modelLoaded = false;
+	model:Hide();
+	model.model = "";
+	dialogFrame[field] = dialogStepClass[field] or dialogFrame[field];
+	local modelID = dialogFrame[field];
+
+	if not modelID or modelID:len() == 0 or (modelID == "target" and not UnitExists("target")) then
+		model.modelLoaded = true;
+	else
+		model:Show();
+		if modelID == "target" or modelID == "player" then
+			model:SetUnit(modelID, true);
+		elseif modelID:sub(1, 3) == "DID" then
+			model:SetDisplayInfo(tonumber(modelID:sub(4, modelID:len())) or 0);
+		else
+			model:SetCreature(tonumber(modelID) or 0);
+		end
+	end
+end
+
 -- Prepare all the texts for a step
 function processDialogStep()
 	wipe(dialogFrame.texts);
@@ -360,36 +381,8 @@ function processDialogStep()
 
 	-- Models
 	dialogFrame.loaded = false;
-
-	modelLeft.modelLoaded = false;
-	modelLeft:Hide();
-	modelLeft.model = "";
-	dialogFrame.LU = dialogStepClass.LU or dialogFrame.LU;
-	if not dialogFrame.LU or dialogFrame.LU:len() == 0 then
-		modelLeft.modelLoaded = true;
-	elseif dialogFrame.LU ~= "target" or UnitExists("target") then
-		modelLeft:Show();
-		if dialogFrame.LU == "target" or dialogFrame.LU == "player" then
-			modelLeft:SetUnit(dialogFrame.LU, true);
-		else
-			modelLeft:SetCreature(tonumber(dialogFrame.LU) or 0);
-		end
-	end
-
-	modelRight.modelLoaded = false;
-	modelRight:Hide();
-	modelRight.model = "";
-	dialogFrame.RU = dialogStepClass.RU or dialogFrame.RU;
-	if not dialogFrame.RU or dialogFrame.RU:len() == 0 then
-		modelRight.modelLoaded = true;
-	elseif dialogFrame.RU ~= "target" or UnitExists("target") then
-		modelRight:Show();
-		if dialogFrame.RU == "target" or dialogFrame.RU == "player" then
-			modelRight:SetUnit(dialogFrame.RU, false);
-		else
-			modelRight:SetCreature(tonumber(dialogFrame.RU) or 0);
-		end
-	end
+	setModel(modelLeft, dialogStepClass, "LU");
+	setModel(modelRight, dialogStepClass, "RU");
 
 	-- Process text
 	if dialogStepClass.TX then

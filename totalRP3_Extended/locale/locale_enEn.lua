@@ -1174,6 +1174,9 @@ We should begin with some examples:
 	DI_LINKS_ONSTART_TT = "Triggered when the cutscene is played.\n\n|cffff9900Note that this workflow will be played BEFORE showing the first step.",
 	DI_LINKS_ONEND = "On cutscene end",
 	DI_LINKS_ONEND_TT = "Triggered when the cutscene is ended.\n\n|cff00ff00This can be done by reaching the end of last step or by allowing the player to select a choice with an empty or unknown 'go to step'.\n\n|cffff0000This is NOT triggered if the player cancels the cutscene by manually closing the frame.",
+	DI_GET_ID = "Target ID",
+	DI_GET_ID_TT = "Copy the target's NPC ID. Only works if your current target is an NPC.",
+
 
 	DEBUG_QUEST_STEP = "Go to a quest step.",
 	DEBUG_QUEST_STEP_USAGE = "Usage: /trp3 debug_quest_step questID stepID",
