@@ -187,6 +187,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_ACTION = "Quest action",
 	QE_MACRO = "Create macro",
 	QE_MACRO_TT = "Creates a macro for this action type and pickup the macro on your cursor to be placed in any action bars.",
+	QE_MACRO_MAX = "You can't have more macro. Please free a macro slot before trying again.",
 	QE_PROGRESS = "Campaign progression",
 	DI_NEXT = "Next",
 	DI_WAIT_LOOT = "Please loot all items",
