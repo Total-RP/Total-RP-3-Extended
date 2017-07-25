@@ -61,6 +61,7 @@ local function copySlotContent(slot, itemClass, itemData)
 		slot.content = {};
 		Utils.table.copy(slot.content, itemClass.CO.IT);
 	end
+	slot.cooldown = itemData.cooldown;
 	if itemData.madeBy then
 		if type(itemData.madeBy) == "string" then
 			slot.madeBy = itemData.madeBy;
