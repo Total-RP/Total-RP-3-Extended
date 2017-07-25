@@ -710,7 +710,8 @@ function TRP3_API.script.runWorkflow(args, source, workflowID, slotID)
 	end
 end
 
-local directReplacement = {
+local directReplacement;
+directReplacement = {
 	["wow:target"] = function()
 		return UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
@@ -750,6 +751,37 @@ local directReplacement = {
 	end,
 	["trp:player:last"] = function()
 		return TRP3_API.profile.getData("player/characteristics").LN or "";
+	end,
+
+	["trp:player:class"] = function()
+		local defaultClass = UnitClass("player");
+		return TRP3_API.profile.getData("player/characteristics").CL or defaultClass or UNKNOWN;
+	end,
+	["trp:player:race"] = function()
+		local defaultRace = UnitRace("player");
+		return TRP3_API.profile.getData("player/characteristics").RA or defaultRace or UNKNOWN;
+	end,
+	["trp:target:class"] = function()
+		if UnitIsUnit("target", "player") then
+			return directReplacement["trp:player:class"]();
+		end
+		local defaultClass = UnitClass("target");
+		local profile = TRP3_API.register.getUnitCurrentProfile("target");
+		if profile and profile.characteristics and profile.characteristics.CL then
+			return profile.characteristics.CL;
+		end
+		return defaultClass or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
+	["trp:target:race"] = function()
+		if UnitIsUnit("target", "player") then
+			return directReplacement["trp:player:race"]();
+		end
+		local defaultRace = UnitClass("target");
+		local profile = TRP3_API.register.getUnitCurrentProfile("target");
+		if profile and profile.characteristics and profile.characteristics.RA then
+			return profile.characteristics.RA;
+		end
+		return defaultRace or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["last.return"] = function(args)
 		return args and args.LAST or "";
