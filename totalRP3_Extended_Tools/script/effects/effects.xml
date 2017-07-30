@@ -503,16 +503,10 @@
 				</Anchors>
 			</Frame>
 
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="0" y="-20"/>
-				</Anchors>
-			</Frame>
-
 			<EditBox parentKey="workflow" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="20" y="-20"/>
 				</Anchors>
 			</EditBox>
 

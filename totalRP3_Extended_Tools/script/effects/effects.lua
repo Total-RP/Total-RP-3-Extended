@@ -459,25 +459,56 @@ local function var_prompt_init()
 	editor.text.title:SetText(loc("EFFECT_PROMPT_TEXT"));
 	setTooltipForSameFrame(editor.text.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_TEXT"), loc("EFFECT_PROMPT_TEXT_TT"));
 
+	-- Variable
+	editor.var.title:SetText(loc("EFFECT_PROMPT_VAR"));
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_VAR"), loc("EFFECT_PROMPT_VAR_TT"));
+
+	-- Source var
+	local sourcesVar = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sourcesVar, nil, nil, 250, true);
+
+	-- Workflow callback
+	editor.workflow.title:SetText(loc("EFFECT_PROMPT_CALLBACK"));
+	setTooltipForSameFrame(editor.workflow.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_CALLBACK"), loc("EFFECT_PROMPT_CALLBACK_TT"));
+
+	-- Source workflow
+	local workflowSource = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_W_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_W_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.w_source, workflowSource, nil, nil, 250, true);
+
 	registerEffectEditor("var_prompt", {
 		title = loc("EFFECT_PROMPT"),
-		icon = "inv_gizmo_electrifiedether",
+		icon = "inv_gizmo_hardenedadamantitetube",
 		description = loc("EFFECT_PROMPT_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
-
-			scriptStepFrame.description:SetText(loc("EFFECT_PROMPT"));
+			scriptStepFrame.description:SetText(loc("EFFECT_PROMPT_PREVIEW"):format(args[2] or ""));
 		end,
 		getDefaultArgs = function()
-			return {"Please enter some input", "input", "o", "callback", "o"};
+			return {"Please enter some input", "input", "o", "", "o"};
 		end,
 		editor = editor
 	});
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
+		editor.text:SetText(data[1] or "");
+		editor.var:SetText(data[2] or "var");
+		editor.source:SetSelectedValue(data[3] or "o");
+		editor.workflow:SetText(data[4] or "");
+		editor.w_source:SetSelectedValue(data[5] or "o");
 	end
 
 	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.text:GetText())) or "";
+		scriptData.args[2] = stEtN(strtrim(editor.var:GetText())) or "var";
+		scriptData.args[3] = editor.source:GetSelectedValue() or "o";
+		scriptData.args[4] = stEtN(strtrim(editor.workflow:GetText())) or "";
+		scriptData.args[5] = editor.w_source:GetSelectedValue() or "o";
 	end
 end
 
