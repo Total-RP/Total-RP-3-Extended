@@ -613,7 +613,18 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 A custom lua script will always be less efficient than a workflow effect, as it is compiled each time, in opposition to a workflow effect being compiled once.
 
 |cffff9900So keep the script to the minimum and only use this script effect if necessary.]],
+	EFFECT_SCRIPT_I_EFFECT = "Insert effect",
+	EFFECT_SCRIPT_I_EFFECT_TT = [[Insert an effect function where the cursor is in the code.
 
+The function is in the form of:
+|cff00ffffeffect( effectID, args, arg1, arg2, ...);|r
+- |cff00ffffEffect ID|r: the effect ID, you can find it by looking at the addon source code.
+- |cff00ffffargs|r: The execution arguments: should always be the args variable.
+- |cff00ffffEffect arguments argX|r: All effects arguments can be found in the addon source code.
+
+|cffffff00Please always keep the 'args' as second parameters, |rit is needed by the effect function and contains all workflows arguments.
+
+|cff00ff00We won't, for now, heavily document all effect ID and arguments as we consider this effect restricted to users capable of looking at the addon source code. ;)]],
 	EFFECT_CAT_SOUND = "Sound and music",
 	EFFECT_CAT_SPEECH = "Speech and emotes",
 	EFFECT_CAT_CAMPAIGN = "Campaign and quest",

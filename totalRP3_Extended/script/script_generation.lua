@@ -929,15 +929,15 @@ function TRP3_API.script.eventVarCheckN(args, index)
 end
 
 local LUA_ENV = {
-	["string"] = "string",
-	["table"] = "table",
-	["math"] = "math",
-	["pairs"] = "pairs",
-	["ipairs"] = "ipairs",
-	["next"] = "next",
-	["select"] = "select",
-	["unpack"] = "unpack",
-	["type"] = "type",
+	["string"] = string,
+	["table"] = table,
+	["math"] = math,
+	["pairs"] = pairs,
+	["ipairs"] = ipairs,
+	["next"] = next,
+	["select"] = select,
+	["unpack"] = unpack,
+	["type"] = type,
 };
 function TRP3_API.script.runLuaScriptEffect(code, args, secured)
 	code = "return function(args)\n" .. code .. "\nend;";

@@ -97,6 +97,18 @@ local function script_init()
 	setTooltipAll(editor.script.dummy, "RIGHT", 0, 5, loc("EFFECT_SCRIPT_SCRIPT"), loc("EFFECT_SCRIPT_SCRIPT_TT"));
 	editor.script.scroll.text:SetFontObject(GameFontNormalLarge);
 
+	-- Insert effect function
+	editor.script.insertEffect:SetText(loc("EFFECT_SCRIPT_I_EFFECT"));
+	setTooltipAll(editor.script.insertEffect, "RIGHT", 0, 5, loc("EFFECT_SCRIPT_I_EFFECT"), loc("EFFECT_SCRIPT_I_EFFECT_TT"));
+	editor.script.insertEffect:SetScript("OnClick", function()
+		local index = editor.script.scroll.text:GetCursorPosition();
+		local text = editor.script.scroll.text:GetText();
+		local pre = text:sub(1, index);
+		local post = text:sub(index + 1);
+		text = strconcat(pre, "effect(\"text\", args, \"hello\", 2);", post);
+		editor.script.scroll.text:SetText(text);
+	end);
+
 	registerEffectEditor("script", {
 		title = loc("EFFECT_SCRIPT"),
 		icon = "inv_inscription_scroll_fortitude",
