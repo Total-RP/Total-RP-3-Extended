@@ -1,3 +1,9 @@
+## Bug fixes
+
+- Fixed an issue with the Go to step quest effect.
+
+# Previous change-log, for version 1.0.3
+
 ## New features
 
 - You can now add a condition for each individual effect of a workflow, that won't stop the entire workflow. You can right-click on a workflow element to add/remove such condition.

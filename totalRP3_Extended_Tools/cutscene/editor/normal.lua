@@ -473,7 +473,7 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("DI_STEP"),
-			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+							   ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
 
 		-- Up/down
 		line.movedown:SetFrameLevel(line.click:GetFrameLevel() + 10);
@@ -546,19 +546,25 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	editor.leftUnit.Text:SetText(loc("DI_LEFT_UNIT"));
 	setTooltipForSameFrame(editor.leftUnit, "RIGHT", 0, 5, loc("DI_LEFT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 
-	editor.getLeftTarget:SetText("Target ID");
+	editor.getLeftTarget:SetText(loc("DI_GET_ID"));
 	editor.getLeftTarget:SetScript("OnClick", function()
-		editor.leftUnitValue:SetText(Utils.str.getUnitNPCID("target"));
+		if Utils.str.getUnitNPCID("target") then
+			editor.leftUnitValue:SetText(Utils.str.getUnitNPCID("target"));
+		end
 	end);
+	setTooltipForSameFrame(editor.getLeftTarget, "RIGHT", 0, 5, loc("DI_GET_ID"), loc("DI_GET_ID_TT"));
 
 	-- Right unit
 	editor.rightUnit.Text:SetText(loc("DI_RIGHT_UNIT"));
 	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc("DI_RIGHT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
 
-	editor.getRightTarget:SetText("Target ID");
+	editor.getRightTarget:SetText(loc("DI_GET_ID"));
 	editor.getRightTarget:SetScript("OnClick", function()
-		editor.rightUnitValue:SetText(Utils.str.getUnitNPCID("target"));
+		if Utils.str.getUnitNPCID("target") then
+			editor.rightUnitValue:SetText(Utils.str.getUnitNPCID("target"));
+		end
 	end);
+	setTooltipForSameFrame(editor.getRightTarget, "RIGHT", 0, 5, loc("DI_GET_ID"), loc("DI_GET_ID_TT"));
 
 	-- End point
 	editor.endpoint.Text:SetText(loc("DI_END"));

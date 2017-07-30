@@ -451,17 +451,24 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Frame name="TRP3_EffectEditorScript" inherits="TRP3_EditorEffectTemplate" hidden="true">
-		<Size x="650" y="350"/>
+		<Size x="650" y="365"/>
 		<Frames>
 
 			<Frame parentKey="script" inherits="TRP3_TextArea">
-				<Size x="260" y="0"/>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-45"/>
+					<Anchor point="TOP" x="0" y="-60"/>
 					<Anchor point="BOTTOM" x="0" y="40"/>
 					<Anchor point="LEFT" x="25"/>
 					<Anchor point="RIGHT" x="-25"/>
 				</Anchors>
+				<Frames>
+					<Button parentKey="insertEffect" inherits="TRP3_CommonButton">
+						<Size x="125" y="20"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="22"/>
+						</Anchors>
+					</Button>
+				</Frames>
 			</Frame>
 
 		</Frames>

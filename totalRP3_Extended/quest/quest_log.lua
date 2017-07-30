@@ -641,26 +641,30 @@ local function init()
 			TRP3_API.quest.ACTION_TYPES.TALK, loc("QE_MACRO_TT")});
 
 		TRP3_API.ui.listbox.displayDropDown(button, values, function(action)
-			if action == TRP3_API.quest.ACTION_TYPES.LISTEN then
-				if GetMacroIndexByName("TRP3_Listen") == 0 then
-					CreateMacro("TRP3_Listen", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.LISTEN), "/script TRP3_API.quest.listen();", 1);
+			if GetNumMacros() <= 120 then
+				if action == TRP3_API.quest.ACTION_TYPES.LISTEN then
+					if GetMacroIndexByName("TRP3_Listen") == 0 then
+						CreateMacro("TRP3_Listen", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.LISTEN), "/script TRP3_API.quest.listen();", 1);
+					end
+					PickupMacro("TRP3_Listen");
+				elseif action == TRP3_API.quest.ACTION_TYPES.LOOK then
+					if GetMacroIndexByName("TRP3_Look") == 0 then
+						CreateMacro("TRP3_Look", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.LOOK), "/script TRP3_API.quest.inspect();", 1);
+					end
+					PickupMacro("TRP3_Look");
+				elseif action == TRP3_API.quest.ACTION_TYPES.ACTION then
+					if GetMacroIndexByName("TRP3_Interract") == 0 then
+						CreateMacro("TRP3_Interract", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.ACTION), "/script TRP3_API.quest.interract();", 1);
+					end
+					PickupMacro("TRP3_Interract");
+				elseif action == TRP3_API.quest.ACTION_TYPES.TALK then
+					if GetMacroIndexByName("TRP3_Talk") == 0 then
+						CreateMacro("TRP3_Talk", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.TALK), "/script TRP3_API.quest.talk();", 1);
+					end
+					PickupMacro("TRP3_Talk");
 				end
-				PickupMacro("TRP3_Listen");
-			elseif action == TRP3_API.quest.ACTION_TYPES.LOOK then
-				if GetMacroIndexByName("TRP3_Look") == 0 then
-					CreateMacro("TRP3_Look", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.LOOK), "/script TRP3_API.quest.inspect();", 1);
-				end
-				PickupMacro("TRP3_Look");
-			elseif action == TRP3_API.quest.ACTION_TYPES.ACTION then
-				if GetMacroIndexByName("TRP3_Interract") == 0 then
-					CreateMacro("TRP3_Interract", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.ACTION), "/script TRP3_API.quest.interract();", 1);
-				end
-				PickupMacro("TRP3_Interract");
-			elseif action == TRP3_API.quest.ACTION_TYPES.TALK then
-				if GetMacroIndexByName("TRP3_Talk") == 0 then
-					CreateMacro("TRP3_Talk", TRP3_API.quest.getActionTypeIcon(TRP3_API.quest.ACTION_TYPES.TALK), "/script TRP3_API.quest.talk();", 1);
-				end
-				PickupMacro("TRP3_Talk");
+			else
+				Utils.message.displayMessage(loc("QE_MACRO_MAX"), 4);
 			end
 		end, 0, true);
 	end);
