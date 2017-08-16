@@ -65,6 +65,13 @@ TRP3_API.ui.misc.getSpeech = getSpeech;
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local operandCode = [[local func = function(args)
+	return %s;
+end;
+setfenv(func, {});
+return func;]];
+local IMPORT_PATTERN = "local %s = %s;";
+
 local security = TRP3_API.security.SECURITY_LEVEL;
 
 local EFFECTS = {
@@ -176,7 +183,10 @@ local EFFECTS = {
 		end,
 		method = function(structure, cArgs, eArgs)
 			local source, varName, code, operand = structure.getCArgs(cArgs);
-			code = "return function(args)\nreturn " .. code .. ";\nend;";
+			code = operandCode:format(code);
+			for alias, global in pairs(operand.env) do
+				code = IMPORT_PATTERN:format(alias, global) .. "\n" .. code;
+			end
 			-- Generating factory
 			local func, errorMessage = loadstring(code, "Generated operand code");
 			if not func then
