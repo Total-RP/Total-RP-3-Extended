@@ -1,13 +1,10 @@
-# Version 1.0.4 (Release)
+# Version 1.0.5 (Beta)
 
 ## New features
 
-- New "Prompt for input" effect (under the "Expert" category) allowing you to prompt the user for an input, store it in an object variable (or a campaign variable) and call a workflow afterward.
-- New text tags for TRP3 race and class. Check [the guide](https://wow.curseforge.com/projects/total-rp-3-extended/pages/tutorials/variable-tags)
+- There is now the possibility to give a default value to variables text tags, used when the variable can't be resolved. [Text tags guide](https://wow.curseforge.com/projects/total-rp-3-extended/pages/tutorials/variable-tags) — [Ticket #77](https://wow.curseforge.com/projects/total-rp-3-extended/issues/77)
 
 ## Bug fixes
 
-- Fixed: Actions macros when character macros are full. — [Ticket #65](https://wow.curseforge.com/projects/total-rp-3-extended/issues/65)
-- Fixed: Campaign listening to an event while paused. — [Ticket #67](https://wow.curseforge.com/projects/total-rp-3-extended/issues/67)
-- Fixed: Cooldown issue on an item. — [Ticket #69](https://wow.curseforge.com/projects/total-rp-3-extended/issues/69)
-- Fixed: Restricted lua environment variables (string, math, pairs, type, etc.) are all strings in the environment. — [Ticket #71](https://wow.curseforge.com/projects/total-rp-3-extended/issues/71)
+- Fixed: Numeric comparisons in conditions not working. — [Ticket #78](https://wow.curseforge.com/projects/total-rp-3-extended/issues/78)
+- Fixed: Item count in a container not working. — [Ticket #79](https://wow.curseforge.com/projects/total-rp-3-extended/issues/79)
