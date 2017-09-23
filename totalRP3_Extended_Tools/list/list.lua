@@ -16,6 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- Fixed inner item display bug (issue #82) (Paul Corlay)
+
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, strsplit, tinsert, table, strtrim = wipe, pairs, strsplit, tinsert, table, strtrim;
 local stEtN = Utils.str.emptyToNil;
@@ -83,7 +85,7 @@ local function objectHasChildren(class)
 end
 
 local function isChild(parentID, childID)
-	return childID ~= parentID and childID:sub(1, parentID:len()) == parentID;
+	return childID ~= parentID and childID:sub(1, parentID:len() + 1) == parentID .. " ";
 end
 
 local function isFirstLevelChild(parentID, childID)
@@ -105,7 +107,7 @@ end
 
 local function removeChildrenFromPool(parentID)
 	for objectID, _ in pairs(TRP3_DB.global) do
-		if objectID ~= parentID and objectID:sub(1, parentID:len()) == parentID then
+		if objectID ~= parentID and objectID:sub(1, parentID:len() + 1) == parentID .. " " then
 			Utils.table.remove(idList, objectID);
 		end
 	end
@@ -193,7 +195,7 @@ function refresh()
 		local parts = {strsplit(ID_SEPARATOR, objectID)};
 		local rootClass = getClass(parts[1]);
 		local depth = #parts;
-		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len()) == objectID;
+		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len() + 1) == objectID .. " ";
 		local hasChildren = isOpen or objectHasChildren(class);
 		local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
 		local link = TRP3_API.inventory.getItemLink(class, objectID);
