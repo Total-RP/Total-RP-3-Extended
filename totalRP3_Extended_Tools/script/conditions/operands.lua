@@ -580,7 +580,13 @@ local function char_achievement_init()
 		getText = function(args)
 			local achievementType = typesText[(args or EMPTY)[1]] or typesText.account;
 			local achievementID = (args or EMPTY)[2] or "0";
-			return loc("OP_OP_CHAR_ACHIEVEMENT_PREVIEW"):format(achievementID, achievementType);
+			local _, achievementName = GetAchievementInfo(tonumber(achievementID));
+			if achievementName == nil then
+				achievementName = "|cffff0000[WRONG ID]|r"
+			else
+				achievementName = "|cffffff00[" .. achievementName .. "]|r"
+			end
+			return loc("OP_OP_CHAR_ACHIEVEMENT_PREVIEW"):format(achievementName, achievementType);
 		end,
 		editor = editor,
 	});

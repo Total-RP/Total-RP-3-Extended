@@ -1058,7 +1058,7 @@ We should begin with some examples:
 	OP_OP_CHAR_ACHIEVEMENT_ACC_TT = "Checks if any character from this account has completed the achievement",
 	OP_OP_CHAR_ACHIEVEMENT_CHAR = "Character",
 	OP_OP_CHAR_ACHIEVEMENT_CHAR_TT = "Checks if the current character has completed the achievement",
-	OP_OP_CHAR_ACHIEVEMENT_PREVIEW = "Achievement |cff00ff00%s|r completed by |cffff9900%s",
+	OP_OP_CHAR_ACHIEVEMENT_PREVIEW = "%s completed by |cffff9900%s",
 	OP_OP_TIME_HOUR = "Time: Hour",
 	OP_OP_TIME_HOUR_TT = "The current hour of the day, server time.",
 	OP_OP_TIME_MINUTE = "Time: Minute",
