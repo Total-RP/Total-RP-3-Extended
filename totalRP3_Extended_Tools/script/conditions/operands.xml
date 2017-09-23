@@ -130,4 +130,21 @@
 		</Frames>
 	</Frame>
 
+	<Frame name="TRP3_OperandEditorAchievementSelection" hidden="true">
+		<Frames>
+			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-25"/>
+				</Anchors>
+			</Frame>
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.type" x="0" y="-10"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+	
 </Ui>
