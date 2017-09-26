@@ -17,6 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- Fixed the issue when trying to roll multiple dices and only rolling the first ones (Paul Corlay)
+
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tonumber = tonumber;
 
@@ -153,7 +155,7 @@ TRP3_API.inventory.EFFECTS = {
 		end,
 		method = function(structure, cArgs, eArgs)
 			local serial = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.slash.rollDices(TRP3_API.script.parseArgs(serial, eArgs));
+			eArgs.LAST = TRP3_API.slash.rollDices(strsplit(" ",TRP3_API.script.parseArgs(serial, eArgs)));
 		end,
 	},
 
