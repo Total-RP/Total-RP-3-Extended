@@ -17,6 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- Added achievement condition (Paul Corlay)
+
 local assert, type, tonumber = assert, type, tonumber;
 
 local OPERANDS = {
@@ -378,7 +380,7 @@ local OPERANDS = {
 	},
 	
 	["char_achievement"] = {
-		numeric = true,
+		numeric = false,
 		codeReplacement = function(args)
 			local completedByIndex = 4;
 			if args[1] == "account" then
