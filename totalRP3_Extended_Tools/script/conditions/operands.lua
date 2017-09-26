@@ -545,6 +545,53 @@ local function char_cam_distance_init()
 	});
 end
 
+local function char_achievement_init()
+	local editor = TRP3_OperandEditorAchievementSelection;
+	
+	local typesText = {
+		account = loc("OP_OP_CHAR_ACHIEVEMENT_ACC"),
+		character = loc("OP_OP_CHAR_ACHIEVEMENT_CHAR")
+	}
+	
+	-- Achievement ID
+	editor.id.title:SetText(loc("OP_OP_CHAR_ACHIEVEMENT_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("OP_OP_CHAR_ACHIEVEMENT_ID"), loc("OP_OP_CHAR_ACHIEVEMENT_ID_TT"));
+	
+	local types = {
+		{TRP3_API.formats.dropDownElements:format(loc("OP_OP_CHAR_ACHIEVEMENT_WHO"), loc("OP_OP_CHAR_ACHIEVEMENT_ACC")), "account", loc("OP_OP_CHAR_ACHIEVEMENT_ACC_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("OP_OP_CHAR_ACHIEVEMENT_WHO"), loc("OP_OP_CHAR_ACHIEVEMENT_CHAR")), "character", loc("OP_OP_CHAR_ACHIEVEMENT_CHAR_TT")}
+	}
+	
+	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 200, true);
+	
+	function editor.load(args)
+		editor.type:SetSelectedValue((args or EMPTY)[1] or "account");
+		editor.id:SetText((args or EMPTY)[2] or "");
+	end
+
+	function editor.save()
+		return {editor.type:GetSelectedValue() or "account", tonumber(strtrim(editor.id:GetText())) or 0};
+	end
+	
+	registerOperandEditor("char_achievement" , {
+		title = loc("OP_OP_CHAR_ACHIEVEMENT"),
+		description = loc("OP_OP_CHAR_ACHIEVEMENT_TT"),
+		returnType = true,
+		getText = function(args)
+			local achievementType = typesText[(args or EMPTY)[1]] or typesText.account;
+			local achievementID = (args or EMPTY)[2] or "0";
+			local _, achievementName = GetAchievementInfo(tonumber(achievementID));
+			if achievementName == nil then
+				achievementName = "|cffff0000[WRONG ID]|r"
+			else
+				achievementName = "|cffffff00[" .. achievementName .. "]|r"
+			end
+			return loc("OP_OP_CHAR_ACHIEVEMENT_PREVIEW"):format(achievementName, achievementType);
+		end,
+		editor = editor,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Check vars
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -758,6 +805,7 @@ function TRP3_ConditionEditor.initOperands()
 	char_subzone_init();
 	char_minimap_init();
 	char_cam_distance_init();
+	char_achievement_init();
 
 	time_hour_init();
 	time_minute_init();
