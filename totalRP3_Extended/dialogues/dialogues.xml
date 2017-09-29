@@ -126,33 +126,6 @@
 									<Anchor point="RIGHT" relativePoint="CENTER" relativeKey="$parent.Point" x="-75" y="0"/>
 								</Anchors>
 							</Button>
-
-							<Button parentKey="Choice1" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
-								<Anchors>
-									<Anchor point="CENTER" x="0" y="50"/>
-								</Anchors>
-							</Button>
-							<Button parentKey="Choice2" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
-								<Anchors>
-									<Anchor point="CENTER" x="0" y="25"/>
-								</Anchors>
-							</Button>
-							<Button parentKey="Choice3" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
-								<Anchors>
-									<Anchor point="CENTER" x="0" y="0"/>
-								</Anchors>
-							</Button>
-							<Button parentKey="Choice4" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
-								<Anchors>
-									<Anchor point="CENTER" x="0" y="-25"/>
-								</Anchors>
-							</Button>
-							<Button parentKey="Choice5" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
-								<Anchors>
-									<Anchor point="CENTER" x="0" y="-50"/>
-								</Anchors>
-							</Button>
-
 						</Frames>
 					</CinematicModel>
 					<CinematicModel parentKey="You" setAllPoints="true" frameLevel="3">
@@ -326,6 +299,33 @@
 	</Frame>
 
 	<Frame name="TRP3_DialogFrame" inherits="TRP3_DialogFrameTemplate" toplevel="true" parent="UIParent" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+		<Frames>
+			<Button parentKey="Choice1" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="50"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="Choice2" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="25"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="Choice3" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="0"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="Choice4" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="-25"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="Choice5" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="-50"/>
+				</Anchors>
+			</Button>
+		</Frames>
 	</Frame>
 
 	<Frame name="TRP3_DialogFrameHistory" parent="UIParent" inherits="TRP3_AltHoveredFrame" toplevel="true" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
