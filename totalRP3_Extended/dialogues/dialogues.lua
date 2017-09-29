@@ -157,7 +157,7 @@ end
 local function setupChoices(choices)
 	local index = 1;
 	for _, choiceData in pairs(choices) do
-		local choiceButton = modelLeft.choices[index];
+		local choiceButton = dialogFrame.choices[index];
 		if TRP3_API.script.generateAndRunCondition(choiceData.C, dialogFrame.args) then
 			local text = TRP3_API.script.parseArgs(choiceData.TX or "", dialogFrame.args);
 			choiceButton.Text:SetText(text);
@@ -192,7 +192,7 @@ local function playDialogStep()
 	modelRight.token = nil;
 
 	-- Choices
-	for _, choiceButton in pairs(modelLeft.choices) do
+	for _, choiceButton in pairs(dialogFrame.choices) do
 		choiceButton:Hide();
 	end
 
@@ -532,12 +532,12 @@ function TRP3_API.extended.dialog.onStart()
 		local xOffset = mod(iconIndex, QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
 		button.Number:SetTexCoord(xOffset, xOffset + QUEST_POI_ICON_SIZE, yOffset, yOffset + QUEST_POI_ICON_SIZE);
 	end
-	setupButton(modelLeft.Choice1.Num, 0);
-	setupButton(modelLeft.Choice2.Num, 1);
-	setupButton(modelLeft.Choice3.Num, 2);
-	setupButton(modelLeft.Choice4.Num, 3);
-	setupButton(modelLeft.Choice5.Num, 4);
-	modelLeft.choices = { modelLeft.Choice1, modelLeft.Choice2, modelLeft.Choice3, modelLeft.Choice4, modelLeft.Choice5 }
+	setupButton(dialogFrame.Choice1.Num, 0);
+	setupButton(dialogFrame.Choice2.Num, 1);
+	setupButton(dialogFrame.Choice3.Num, 2);
+	setupButton(dialogFrame.Choice4.Num, 3);
+	setupButton(dialogFrame.Choice5.Num, 4);
+	dialogFrame.choices = { dialogFrame.Choice1, dialogFrame.Choice2, dialogFrame.Choice3, dialogFrame.Choice4, dialogFrame.Choice5 }
 
 	-- History
 	local function showHistory()
