@@ -162,6 +162,20 @@ function TRP3_API.quest.UnitIsCampaignNPC(unit)
 	return false;
 end
 
+function TRP3_API.quest.GetCampaignNPCName(unit)
+	local unitType, npcID = getUnitDataFromGUID(unit);
+	if unitType == "Creature" and npcID then
+		local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+		if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
+			local npcData = campaignClass.ND[npcID];
+			if npcData.NA then
+				return npcData.NA;
+			end
+		end
+	end
+	return nil;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
