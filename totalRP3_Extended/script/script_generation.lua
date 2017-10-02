@@ -744,7 +744,7 @@ directReplacement = {
 		return TRP3_API.register.getPlayerCompleteName(true) or "";
 	end,
 	["trp:target:full"] = function()
-		return TRP3_API.r.name("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+		return TRP3_API.quest.GetCampaignNPCName("target") or TRP3_API.r.name("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["trp:player:first"] = function()
 		return TRP3_API.profile.getData("player/characteristics").FN or "";

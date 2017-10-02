@@ -169,7 +169,7 @@ local OPERANDS = {
 		numeric = true,
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
-			return ("{UnitPosition(\"%s\")}[1]"):format(unitID);
+			return ("({UnitPosition(\"%s\")})[2]"):format(unitID);
 		end,
 		env = {
 			["UnitPosition"] = "UnitPosition",
@@ -180,7 +180,7 @@ local OPERANDS = {
 		numeric = true,
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
-			return ("{UnitPosition(\"%s\")}[2]"):format(unitID);
+			return ("({UnitPosition(\"%s\")})[1]"):format(unitID);
 		end,
 		env = {
 			["UnitPosition"] = "UnitPosition",

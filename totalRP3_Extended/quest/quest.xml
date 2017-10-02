@@ -19,6 +19,8 @@
 	limitations under the License.
 -->
 
+	<!-- Made quest log progression text bigger to fit 2-digit percentages (Paul Corlay) -->
+
 	<!-- NPC tooltip -->
 	<GameTooltip name="TRP3_NPCTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
 		<Scripts>
@@ -146,7 +148,7 @@
 				</FontString>
 
 				<FontString name="$parentRange" inherits="GameFontNormal" justifyH="CENTER" parentKey="range" text="[LVL]">
-					<Size x="100" y="12"/>
+					<Size x="120" y="12"/>
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.banner" x="0" y="30"/>
 					</Anchors>
@@ -267,7 +269,7 @@
 				</FontString>
 
 				<FontString name="$parentRange" font="SystemFont_Med1" justifyH="LEFT" parentKey="range" text="[LVL]">
-					<Size x="100" y="12"/>
+					<Size x="120" y="12"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="30" y="-25"/>
 					</Anchors>
