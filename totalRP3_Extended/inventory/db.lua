@@ -761,9 +761,9 @@ TRP3_DB.inner.arcanocasino = {
 			["BA"] = {
 				["DE"] = "Its existence is a myth !",
 				["PS"] = 1221,
-				["IC"] = "INV_Jewelcrafting_ArgusGemCut_Yellow_MiscIcons",
+				["IC"] = "inv_datacrystal04",
 				["CO"] = false,
-				["NA"] = "The Golden Eye",
+				["NA"] = "Unstable Arcanocrystal",
 				["ST"] = 200,
 				["QA"] = 6,
 				["PA"] = true,
@@ -846,7 +846,7 @@ TRP3_DB.inner.arcanocasino = {
 		},
 	},
 	["BA"] = {
-		["DE"] = "Boxes opened : ${opened::0}\nWhitium : ${white::0}\nGreenite : ${green::0}\nBlueoid : ${blue::0}\nPurplian : ${purple::0}\nOrangyl : ${orange::0}\nThe Golden Eye : ${artifact::0}",
+		["DE"] = "Boxes opened : ${opened::0}\nWhitium : ${white::0}\nGreenite : ${green::0}\nBlueoid : ${blue::0}\nPurplian : ${purple::0}\nOrangyl : ${orange::0}\nArcanocrystal : ${artifact::0}",
 		["PS"] = 1221,
 		["IC"] = "Hunter_PVP_DiamondIce",
 		["CO"] = false,
