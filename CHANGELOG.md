@@ -1,10 +1,17 @@
-# Version 1.0.5
+# Version 1.0.6
 
-## New features
+By Solanya
 
-- There is now the possibility to give a default value to variables text tags, used when the variable can't be resolved. [Text tags guide](https://wow.curseforge.com/projects/total-rp-3-extended/pages/tutorials/variable-tags) — [Ticket #77](https://wow.curseforge.com/projects/total-rp-3-extended/issues/77)
+## New features / enhancements
+
+- Added achievement condition operand
+- Increased quest log progression size
+- {trp:target:full} text tag now tries also to use campaign NPCs names
 
 ## Bug fixes
 
-- Fixed: Numeric comparisons in conditions not working. — [Ticket #78](https://wow.curseforge.com/projects/total-rp-3-extended/issues/78)
-- Fixed: Item count in a container not working. — [Ticket #79](https://wow.curseforge.com/projects/total-rp-3-extended/issues/79)
+- Fixed an issue with rolling multiple dices
+- Fixed "Summon Mount" effect
+- Fixed an issue with inner item display
+- Fixed an issue with "Player choices" in cutscenes when there was no left model
+- Fixed X & Y position condition operands
