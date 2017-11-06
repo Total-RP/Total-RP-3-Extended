@@ -167,11 +167,10 @@ local OPERANDS = {
 		numeric = true,
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
-			return ("select(1, UnitPosition(\"%s\"))"):format(unitID);
+			return ("{UnitPosition(\"%s\")}[1]"):format(unitID);
 		end,
 		env = {
 			["UnitPosition"] = "UnitPosition",
-			["select"] = "select",
 		},
 	},
 
@@ -179,11 +178,10 @@ local OPERANDS = {
 		numeric = true,
 		codeReplacement = function(args)
 			local unitID = args[1] or "target";
-			return ("select(2, UnitPosition(\"%s\"))"):format(unitID);
+			return ("{UnitPosition(\"%s\")}[2]"):format(unitID);
 		end,
 		env = {
 			["UnitPosition"] = "UnitPosition",
-			["select"] = "select",
 		},
 	},
 

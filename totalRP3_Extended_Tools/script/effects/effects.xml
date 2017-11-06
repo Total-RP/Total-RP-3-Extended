@@ -451,16 +451,68 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Frame name="TRP3_EffectEditorScript" inherits="TRP3_EditorEffectTemplate" hidden="true">
-		<Size x="650" y="350"/>
+		<Size x="650" y="365"/>
 		<Frames>
 
 			<Frame parentKey="script" inherits="TRP3_TextArea">
-				<Size x="260" y="0"/>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-45"/>
+					<Anchor point="TOP" x="0" y="-60"/>
 					<Anchor point="BOTTOM" x="0" y="40"/>
 					<Anchor point="LEFT" x="25"/>
 					<Anchor point="RIGHT" x="-25"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="insertEffect" inherits="TRP3_CommonButton">
+						<Size x="125" y="20"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="22"/>
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+
+		</Frames>
+
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--       Prompt         -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_EffectEditorPrompt" inherits="TRP3_EditorEffectTemplate" hidden="true">
+		<Size x="500" y="365"/>
+		<Frames>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</EditBox>
+
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.text" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-20" y="-20"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="workflow" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="w_source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentWSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.workflow" x="-20" y="-20"/>
 				</Anchors>
 			</Frame>
 

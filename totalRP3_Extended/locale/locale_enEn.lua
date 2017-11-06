@@ -187,6 +187,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_ACTION = "Quest action",
 	QE_MACRO = "Create macro",
 	QE_MACRO_TT = "Creates a macro for this action type and pickup the macro on your cursor to be placed in any action bars.",
+	QE_MACRO_MAX = "You can't have more macro. Please free a macro slot before trying again.",
 	QE_PROGRESS = "Campaign progression",
 	DI_NEXT = "Next",
 	DI_WAIT_LOOT = "Please loot all items",
@@ -612,7 +613,18 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 A custom lua script will always be less efficient than a workflow effect, as it is compiled each time, in opposition to a workflow effect being compiled once.
 
 |cffff9900So keep the script to the minimum and only use this script effect if necessary.]],
+	EFFECT_SCRIPT_I_EFFECT = "Insert effect",
+	EFFECT_SCRIPT_I_EFFECT_TT = [[Insert an effect function where the cursor is in the code.
 
+The function is in the form of:
+|cff00ffffeffect( effectID, args, arg1, arg2, ...);|r
+- |cff00ffffEffect ID|r: the effect ID, you can find it by looking at the addon source code.
+- |cff00ffffargs|r: The execution arguments: should always be the args variable.
+- |cff00ffffEffect arguments argX|r: All effects arguments can be found in the addon source code.
+
+|cffffff00Please always keep the 'args' as second parameters, |rit is needed by the effect function and contains all workflows arguments.
+
+|cff00ff00We won't, for now, heavily document all effect ID and arguments as we consider this effect restricted to users capable of looking at the addon source code. ;)]],
 	EFFECT_CAT_SOUND = "Sound and music",
 	EFFECT_CAT_SPEECH = "Speech and emotes",
 	EFFECT_CAT_CAMPAIGN = "Campaign and quest",
@@ -646,6 +658,8 @@ A custom lua script will always be less efficient than a workflow effect, as it 
 	EFFECT_VAR_OPERAND_CONFIG_NO = "No configuration for this value",
 	EFFECT_VAR = "Variable name",
 	EFFECT_SOURCE = "Source",
+	EFFECT_SOURCE_V = "Variable source",
+	EFFECT_SOURCE_W = "Workflow source",
 	EFFECT_SOURCE_WORKFLOW = "Workflow",
 	EFFECT_SOURCE_WORKFLOW_TT = "Search the variable in the workflow execution. The scope for this variable is limited to the workflow execution and will be discarded afterward.",
 	EFFECT_SOURCE_OBJECT = "Object",
@@ -770,6 +784,17 @@ A custom lua script will always be less efficient than a workflow effect, as it 
 	EFFECT_ITEM_DICE_ROLL_TT = "Enter a roll configuration similar to the /trp3 roll command.\n\n|cff00ff00Example: 1d20, 3d6 ..etc.",
 	EFFECT_RUN_WORKFLOW_SLOT = "Slot ID",
 	EFFECT_RUN_WORKFLOW_SLOT_TT = "The index of the container slot to trigger. Slots are indexed from top left to bottom right beginning with slot 1.",
+	EFFECT_PROMPT = "Prompt for input",
+	EFFECT_PROMPT_PREVIEW = "Prompt user for an input to store in variable |cff00ff00%s|r.",
+	EFFECT_PROMPT_TT = "Ask the user for an input and store it in a variable. Then optionally trigger a workflow.\n\n|cffff0000WARNING, this effect execution is asynchronous.",
+	EFFECT_PROMPT_TEXT = "Popup text",
+	EFFECT_PROMPT_TEXT_TT = "The text that will be presented to the user in the input popup.",
+	EFFECT_PROMPT_DEFAULT = "Default value",
+	EFFECT_PROMPT_DEFAULT_TT = "The default value for the input.",
+	EFFECT_PROMPT_VAR = "Variable name",
+	EFFECT_PROMPT_VAR_TT = "The name of the variable storing the user input.",
+	EFFECT_PROMPT_CALLBACK = "Workflow callback (optional)",
+	EFFECT_PROMPT_CALLBACK_TT = "The workflow name to call after the user input.\n\nThis is optional. Leave empty to not use any callback.\n\nIs given, the workflow will be called with the input as workflow variable with the proper name.\n\n|cffffff00Warning: the callback is called even if the player click 'Cancel' in the prompt popup. In that case the variable will be left untouched if it exists.",
 	EFFECT_USE_SLOT = "Container slot number",
 	EFFECT_USE_SLOT_TT = "The container slots number are assigned from left to right and top to bottom.",
 	EFFECT_QUEST_START = "Reveal quest",

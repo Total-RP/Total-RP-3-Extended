@@ -710,7 +710,8 @@ function TRP3_API.script.runWorkflow(args, source, workflowID, slotID)
 	end
 end
 
-local directReplacement = {
+local directReplacement;
+directReplacement = {
 	["wow:target"] = function()
 		return UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
@@ -751,6 +752,37 @@ local directReplacement = {
 	["trp:player:last"] = function()
 		return TRP3_API.profile.getData("player/characteristics").LN or "";
 	end,
+
+	["trp:player:class"] = function()
+		local defaultClass = UnitClass("player");
+		return TRP3_API.profile.getData("player/characteristics").CL or defaultClass or UNKNOWN;
+	end,
+	["trp:player:race"] = function()
+		local defaultRace = UnitRace("player");
+		return TRP3_API.profile.getData("player/characteristics").RA or defaultRace or UNKNOWN;
+	end,
+	["trp:target:class"] = function()
+		if UnitIsUnit("target", "player") then
+			return directReplacement["trp:player:class"]();
+		end
+		local defaultClass = UnitClass("target");
+		local profile = TRP3_API.register.getUnitCurrentProfile("target");
+		if profile and profile.characteristics and profile.characteristics.CL then
+			return profile.characteristics.CL;
+		end
+		return defaultClass or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
+	["trp:target:race"] = function()
+		if UnitIsUnit("target", "player") then
+			return directReplacement["trp:player:race"]();
+		end
+		local defaultRace = UnitClass("target");
+		local profile = TRP3_API.register.getUnitCurrentProfile("target");
+		if profile and profile.characteristics and profile.characteristics.RA then
+			return profile.characteristics.RA;
+		end
+		return defaultRace or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
 	["last.return"] = function(args)
 		return args and args.LAST or "";
 	end,
@@ -759,6 +791,11 @@ local directReplacement = {
 function TRP3_API.script.parseArgs(text, args)
 	args = args or EMPTY;
 	text = text:gsub("%$%{(.-)%}", function(capture)
+		local default;
+		if capture:find("::") then
+			default = capture:sub(capture:find("::") + 2);
+			capture = capture:sub(1, capture:find("::") - 1);
+		end
 		if directReplacement[capture] then
 			return directReplacement[capture](args);
 		elseif capture:match("gender%:%w+%:[^%:]+%:[^%:]+") then
@@ -777,7 +814,7 @@ function TRP3_API.script.parseArgs(text, args)
 		elseif TRP3_API.extended.classExists(capture) then
 			return TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(capture), capture);
 		end
-		return capture;
+		return default or capture;
 	end);
 	return text;
 end
@@ -897,15 +934,15 @@ function TRP3_API.script.eventVarCheckN(args, index)
 end
 
 local LUA_ENV = {
-	["string"] = "string",
-	["table"] = "table",
-	["math"] = "math",
-	["pairs"] = "pairs",
-	["ipairs"] = "ipairs",
-	["next"] = "next",
-	["select"] = "select",
-	["unpack"] = "unpack",
-	["type"] = "type",
+	["string"] = string,
+	["table"] = table,
+	["math"] = math,
+	["pairs"] = pairs,
+	["ipairs"] = ipairs,
+	["next"] = next,
+	["select"] = select,
+	["unpack"] = unpack,
+	["type"] = type,
 };
 function TRP3_API.script.runLuaScriptEffect(code, args, secured)
 	code = "return function(args)\n" .. code .. "\nend;";

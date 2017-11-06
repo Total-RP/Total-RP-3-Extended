@@ -58,6 +58,7 @@ local function clearAllQuestHandlers()
 	for questFullID, _ in pairs(questHandlers) do
 		clearQuestHandlers(questFullID);
 	end
+	TRP3_API.quest.clearAllStepHandlers();
 end
 TRP3_API.quest.clearAllQuestHandlers = clearAllQuestHandlers;
 

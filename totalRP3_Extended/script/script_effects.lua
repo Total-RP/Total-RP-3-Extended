@@ -65,6 +65,13 @@ TRP3_API.ui.misc.getSpeech = getSpeech;
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local operandCode = [[local func = function(args)
+	return %s;
+end;
+setfenv(func, {});
+return func;]];
+local IMPORT_PATTERN = "local %s = %s;";
+
 local security = TRP3_API.security.SECURITY_LEVEL;
 
 local EFFECTS = {
@@ -176,7 +183,10 @@ local EFFECTS = {
 		end,
 		method = function(structure, cArgs, eArgs)
 			local source, varName, code, operand = structure.getCArgs(cArgs);
-			code = "return function(args)\nreturn " .. code .. ";\nend;";
+			code = operandCode:format(code);
+			for alias, global in pairs(operand.env) do
+				code = IMPORT_PATTERN:format(alias, global) .. "\n" .. code;
+			end
 			-- Generating factory
 			local func, errorMessage = loadstring(code, "Generated operand code");
 			if not func then
@@ -210,8 +220,8 @@ local EFFECTS = {
 			return source, id;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local varName, varValue = structure.getCArgs(cArgs);
-			TRP3_API.script.runWorkflow(eArgs, varName, varValue);
+			local workflowSource, workflowID = structure.getCArgs(cArgs);
+			TRP3_API.script.runWorkflow(eArgs, workflowSource, workflowID);
 			eArgs.LAST = 0;
 		end,
 		secured = security.HIGH,
@@ -375,6 +385,27 @@ local EFFECTS = {
 			eArgs.LAST = 0;
 		end,
 		secured = security.LOW,
+	},
+
+	-- PROMPT
+	["var_prompt"] = {
+		method = function(structure, cArgs, eArgs)
+			TRP3_API.popup.showTextInputPopup(cArgs[1] or "",
+			function(value)
+				TRP3_API.script.setVar(eArgs, cArgs[3] or "o", "=", cArgs[2] or "var", value);
+				if cArgs[4] then
+					TRP3_API.script.setVar(eArgs, "w", "=", cArgs[2] or "var", value);
+					TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4]);
+				end
+			end,
+			function(value)
+				if cArgs[4] then
+					TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4]);
+				end
+			end, "");
+			eArgs.LAST = 0;
+		end,
+		secured = security.HIGH,
 	},
 }
 

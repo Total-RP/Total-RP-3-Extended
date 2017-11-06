@@ -97,6 +97,18 @@ local function script_init()
 	setTooltipAll(editor.script.dummy, "RIGHT", 0, 5, loc("EFFECT_SCRIPT_SCRIPT"), loc("EFFECT_SCRIPT_SCRIPT_TT"));
 	editor.script.scroll.text:SetFontObject(GameFontNormalLarge);
 
+	-- Insert effect function
+	editor.script.insertEffect:SetText(loc("EFFECT_SCRIPT_I_EFFECT"));
+	setTooltipAll(editor.script.insertEffect, "RIGHT", 0, 5, loc("EFFECT_SCRIPT_I_EFFECT"), loc("EFFECT_SCRIPT_I_EFFECT_TT"));
+	editor.script.insertEffect:SetScript("OnClick", function()
+		local index = editor.script.scroll.text:GetCursorPosition();
+		local text = editor.script.scroll.text:GetText();
+		local pre = text:sub(1, index);
+		local post = text:sub(index + 1);
+		text = strconcat(pre, "effect(\"text\", args, \"hello\", 2);", post);
+		editor.script.scroll.text:SetText(text);
+	end);
+
 	registerEffectEditor("script", {
 		title = loc("EFFECT_SCRIPT"),
 		icon = "inv_inscription_scroll_fortitude",
@@ -440,6 +452,66 @@ local function run_workflow_init()
 	});
 end
 
+local function var_prompt_init()
+	local editor = TRP3_EffectEditorPrompt;
+
+	-- Text
+	editor.text.title:SetText(loc("EFFECT_PROMPT_TEXT"));
+	setTooltipForSameFrame(editor.text.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_TEXT"), loc("EFFECT_PROMPT_TEXT_TT"));
+
+	-- Variable
+	editor.var.title:SetText(loc("EFFECT_PROMPT_VAR"));
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_VAR"), loc("EFFECT_PROMPT_VAR_TT"));
+
+	-- Source var
+	local sourcesVar = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sourcesVar, nil, nil, 250, true);
+
+	-- Workflow callback
+	editor.workflow.title:SetText(loc("EFFECT_PROMPT_CALLBACK"));
+	setTooltipForSameFrame(editor.workflow.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_CALLBACK"), loc("EFFECT_PROMPT_CALLBACK_TT"));
+
+	-- Source workflow
+	local workflowSource = {
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_W_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_W_CAMPAIGN_TT")}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.w_source, workflowSource, nil, nil, 250, true);
+
+	registerEffectEditor("var_prompt", {
+		title = loc("EFFECT_PROMPT"),
+		icon = "inv_gizmo_hardenedadamantitetube",
+		description = loc("EFFECT_PROMPT_TT"),
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(loc("EFFECT_PROMPT_PREVIEW"):format(args[2] or ""));
+		end,
+		getDefaultArgs = function()
+			return {"Please enter some input", "input", "o", "", "o"};
+		end,
+		editor = editor
+	});
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.text:SetText(data[1] or "");
+		editor.var:SetText(data[2] or "var");
+		editor.source:SetSelectedValue(data[3] or "o");
+		editor.workflow:SetText(data[4] or "");
+		editor.w_source:SetSelectedValue(data[5] or "o");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.text:GetText())) or "";
+		scriptData.args[2] = stEtN(strtrim(editor.var:GetText())) or "var";
+		scriptData.args[3] = editor.source:GetSelectedValue() or "o";
+		scriptData.args[4] = stEtN(strtrim(editor.workflow:GetText())) or "";
+		scriptData.args[5] = editor.w_source:GetSelectedValue() or "o";
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Speechs
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -666,7 +738,7 @@ local function sound_id_local_init()
 		description = loc("EFFECT_SOUND_ID_LOCAL_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_ID_LOCAL_PREVIEW"):format(
-				"|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[3]) .. "|r"
+			"|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[3]) .. "|r"
 			));
 		end,
 		getDefaultArgs = function()
@@ -717,7 +789,7 @@ local function sound_music_local_init()
 		description = loc("EFFECT_SOUND_MUSIC_LOCAL_TT"),
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_MUSIC_LOCAL_PREVIEW"):format(
-				"|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[2]) .. "|cffffff00"
+			"|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[2]) .. "|cffffff00"
 			));
 		end,
 		getDefaultArgs = function()
@@ -873,6 +945,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	var_set_operand_init();
 	signal_send_init();
 	run_workflow_init();
+	var_prompt_init();
 
 	cam_zoom_init();
 	cam_save_init();

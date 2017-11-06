@@ -79,6 +79,7 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 		[loc("MODE_EXPERT")] = {
 			"var_object",
 			"var_operand",
+			"var_prompt",
 			"signal_send",
 			"run_workflow",
 			"run_item_workflow",
