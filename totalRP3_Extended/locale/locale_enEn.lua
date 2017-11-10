@@ -39,6 +39,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	BINDING_NAME_TRP3_QUEST_LISTEN = "Quest action: listen",
 	BINDING_NAME_TRP3_QUEST_ACTION = "Quest action: interact",
 	BINDING_NAME_TRP3_QUEST_TALK = "Quest action: talk",
+	ERROR_MISSING_ARG = "Missing argument %1$s when trying to call function %2$s.",
 
 	-- INVENTORY
 	IT_CON = "Container",
