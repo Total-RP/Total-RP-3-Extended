@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, assert, tostring, tinsert, wipe, pairs, time = _G, assert, tostring, tinsert, wipe, pairs, time;
-local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
+local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local loc = TRP3_API.locale.getText;
 local Log = Utils.log;
@@ -260,7 +260,7 @@ local function containerSlotUpdate(self, elapsed)
 			self.Quantity:Show();
 			self.Quantity:SetText(self.info.count);
 		end
-		if MouseIsOver(self) then
+		if GetMouseFocus() == self then
 			showItemTooltip(self, self.info, self.class);
 		end
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
