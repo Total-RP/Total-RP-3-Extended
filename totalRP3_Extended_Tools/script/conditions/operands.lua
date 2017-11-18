@@ -313,7 +313,7 @@ local function unit_distance_point_init()
 		returnType = 0,
 		getText = function(args)
 			args = args or EMPTY;
-			return loc("OP_OP_DISTANCE_POINT_PREVIEW"):format(args[1] or "target", args[2] or 0, args[3] or 0);
+			return loc("OP_OP_DISTANCE_POINT_PREVIEW"):format(args[1] or "target", args[3] or 0, args[2] or 0);	-- See editor.load
 		end,
 		editor = editor,
 	});
@@ -329,14 +329,15 @@ local function unit_distance_point_init()
 		editor.y:SetText(string.format("%.2f", uY or 0));
 	end);
 
+	-- To make the coordinates fix compatible with old items, I'm just switching x and y in display and execution, saved data remains the same.
 	function editor.load(args)
 		editor.type:SetSelectedValue((args or EMPTY)[1] or "target");
-		editor.x:SetText((args or EMPTY)[2] or "0");
-		editor.y:SetText((args or EMPTY)[3] or "0");
+		editor.x:SetText((args or EMPTY)[3] or "0");
+		editor.y:SetText((args or EMPTY)[2] or "0");
 	end
 
 	function editor.save()
-		return {editor.type:GetSelectedValue() or "target", tonumber(strtrim(editor.x:GetText())) or 0, tonumber(strtrim(editor.y:GetText())) or 0};
+		return {editor.type:GetSelectedValue() or "target", tonumber(strtrim(editor.y:GetText())) or 0, tonumber(strtrim(editor.x:GetText())) or 0};
 	end
 
 	registerOperandEditor("unit_distance_me", {
