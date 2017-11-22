@@ -570,3 +570,774 @@ TRP3_DB.inner.diceexample = {
 	},
 	["TY"] = "IT",
 };
+
+TRP3_DB.inner.arcanocasino = {
+	securityLevel = 3,
+	["IN"] = {
+		["itemPurple"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "Worth a hefty sum.",
+				["PS"] = 1221,
+				["IC"] = "INV_Misc_Gem_X4_Rare_Cut_Purple",
+				["CO"] = false,
+				["NA"] = "Purplian",
+				["ST"] = 200,
+				["QA"] = 4,
+				["PA"] = true,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = false,
+				["DS"] = 1204,
+				["US"] = false,
+				["QE"] = false,
+				["UN"] = false,
+				["SB"] = true,
+				["CT"] = false,
+				["WE"] = 0,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["SR"] = "5",
+				["SI"] = "5x4",
+				["SC"] = "4",
+				["DU"] = 0,
+				["MW"] = 0,
+			},
+			["TY"] = "IT",
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["IN"] = {
+			},
+		},
+		["itemWhite"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "Very little value.",
+				["PS"] = 1221,
+				["IC"] = "INV_Ore_TrilliumWhite",
+				["CO"] = false,
+				["NA"] = "Whitium",
+				["ST"] = 200,
+				["QA"] = 1,
+				["PA"] = true,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = false,
+				["DS"] = 1204,
+				["US"] = false,
+				["QE"] = false,
+				["UN"] = false,
+				["SB"] = true,
+				["CT"] = false,
+				["WE"] = 0,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["SR"] = "5",
+				["SI"] = "5x4",
+				["SC"] = "4",
+				["DU"] = 0,
+				["MW"] = 0,
+			},
+			["TY"] = "IT",
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["IN"] = {
+			},
+		},
+		["itemBlue"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "You can get a good price from it.",
+				["PS"] = 1221,
+				["IC"] = "INV_Jewelcrafting_70_CutGem03_Blue",
+				["CO"] = false,
+				["NA"] = "Blueoid",
+				["ST"] = 200,
+				["QA"] = 3,
+				["PA"] = true,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = false,
+				["DS"] = 1204,
+				["US"] = false,
+				["QE"] = false,
+				["UN"] = false,
+				["SB"] = true,
+				["CT"] = false,
+				["WE"] = 0,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["SR"] = "5",
+				["SI"] = "5x4",
+				["SC"] = "4",
+				["DU"] = 0,
+				["MW"] = 0,
+			},
+			["TY"] = "IT",
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["IN"] = {
+			},
+		},
+		["itemGreen"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "A bit more valuable.",
+				["PS"] = 1221,
+				["IC"] = "INV_Jewelcrafting_ArgusGemUncut_Green_MiscIcons",
+				["CO"] = false,
+				["NA"] = "Greenite",
+				["ST"] = 200,
+				["QA"] = 2,
+				["PA"] = true,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = false,
+				["DS"] = 1204,
+				["US"] = false,
+				["QE"] = false,
+				["UN"] = false,
+				["SB"] = true,
+				["CT"] = false,
+				["WE"] = 0,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["SR"] = "5",
+				["SI"] = "5x4",
+				["SC"] = "4",
+				["DU"] = 0,
+				["MW"] = 0,
+			},
+			["TY"] = "IT",
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["IN"] = {
+			},
+		},
+		["itemArtifact"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "Its existence is a myth !",
+				["PS"] = 1221,
+				["IC"] = "inv_datacrystal04",
+				["CO"] = false,
+				["NA"] = "Unstable Arcanocrystal",
+				["ST"] = 200,
+				["QA"] = 6,
+				["PA"] = true,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = false,
+				["DS"] = 1204,
+				["US"] = false,
+				["QE"] = false,
+				["UN"] = false,
+				["SB"] = true,
+				["CT"] = false,
+				["WE"] = 0,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["SR"] = "5",
+				["SI"] = "5x4",
+				["SC"] = "4",
+				["DU"] = 0,
+				["MW"] = 0,
+			},
+			["TY"] = "IT",
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["IN"] = {
+			},
+		},
+		["itemOrange"] = {
+			["US"] = {
+				["SC"] = "onUse",
+			},
+			["BA"] = {
+				["DE"] = "A treasure worth a fortune !",
+				["PS"] = 1221,
+				["IC"] = "INV_jewelcrafting_ImmacTaladite_Orange",
+				["CO"] = false,
+				["NA"] = "Orangyl",
+				["ST"] = 200,
+				["QA"] = 5,
+				["PA"] = true,
+				["WA"] = false,
+				["VA"] = 0,
+				["CR"] = false,
+				["DS"] = 1204,
+				["US"] = false,
+				["QE"] = false,
+				["UN"] = false,
+				["SB"] = true,
+				["CT"] = false,
+				["WE"] = 0,
+			},
+			["SC"] = {
+				["onUse"] = {
+					["ST"] = {
+					},
+				},
+			},
+			["CO"] = {
+				["OI"] = false,
+				["SR"] = "5",
+				["SI"] = "5x4",
+				["SC"] = "4",
+				["DU"] = 0,
+				["MW"] = 0,
+			},
+			["TY"] = "IT",
+			["MD"] = {
+				["MO"] = "NO",
+			},
+			["IN"] = {
+			},
+		},
+	},
+	["BA"] = {
+		["DE"] = "Boxes opened : ${opened::0}\nWhitium : ${white::0}\nGreenite : ${green::0}\nBlueoid : ${blue::0}\nPurplian : ${purple::0}\nOrangyl : ${orange::0}\nArcanocrystal : ${artifact::0}",
+		["PS"] = 1221,
+		["IC"] = "Hunter_PVP_DiamondIce",
+		["CO"] = false,
+		["NA"] = "Arcano-Casino",
+		["ST"] = false,
+		["QA"] = 7,
+		["PA"] = false,
+		["WA"] = false,
+		["QE"] = false,
+		["CR"] = false,
+		["DS"] = 1204,
+		["US"] = true,
+		["VA"] = 0,
+		["SB"] = true,
+		["UN"] = 1,
+		["CT"] = false,
+		["WE"] = 0,
+	},
+	["SC"] = {
+		["onUse"] = {
+			["ST"] = {
+				["1"] = {
+					["i"] = 2,
+					["x"] = "Opening Arcano-Box...",
+					["s"] = 46890,
+					["t"] = "delay",
+					["d"] = 1,
+					["c"] = 2,
+					["n"] = "2",
+				},
+				["3"] = {
+					["e"] = {
+						{
+							["id"] = "var_operand",
+							["args"] = {
+								"dropRate", -- [1]
+								"o", -- [2]
+								"random", -- [3]
+								{
+									1, -- [1]
+									1000000, -- [2]
+								}, -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "4",
+				},
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "var_object",
+							["args"] = {
+								"o", -- [1]
+								"+", -- [2]
+								"opened", -- [3]
+								"1", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "3",
+				},
+				["5"] = {
+					["b"] = {
+						{
+							["failWorkflow"] = "openOrange",
+							["cond"] = {
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"o", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									">", -- [2]
+									{
+										["v"] = 100,
+									}, -- [3]
+								}, -- [1]
+							},
+							["n"] = "6",
+						}, -- [1]
+					},
+					["t"] = "branch",
+				},
+				["4"] = {
+					["b"] = {
+						{
+							["failWorkflow"] = "openArtifact",
+							["cond"] = {
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"o", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									">", -- [2]
+									{
+										["v"] = 1,
+									}, -- [3]
+								}, -- [1]
+							},
+							["n"] = "5",
+						}, -- [1]
+					},
+					["t"] = "branch",
+				},
+				["7"] = {
+					["b"] = {
+						{
+							["failWorkflow"] = "openBlue",
+							["cond"] = {
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"o", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									">", -- [2]
+									{
+										["v"] = 100000,
+									}, -- [3]
+								}, -- [1]
+							},
+							["n"] = "8",
+						}, -- [1]
+					},
+					["t"] = "branch",
+				},
+				["6"] = {
+					["b"] = {
+						{
+							["failWorkflow"] = "openPurple",
+							["cond"] = {
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"o", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									">", -- [2]
+									{
+										["v"] = 10000,
+									}, -- [3]
+								}, -- [1]
+							},
+							["n"] = "7",
+						}, -- [1]
+					},
+					["t"] = "branch",
+				},
+				["9"] = {
+					["e"] = {
+						{
+							["id"] = "run_workflow",
+							["args"] = {
+								"o", -- [1]
+								"openWhite", -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+				["8"] = {
+					["b"] = {
+						{
+							["failWorkflow"] = "openGreen",
+							["cond"] = {
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"o", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									">", -- [2]
+									{
+										["v"] = 350000,
+									}, -- [3]
+								}, -- [1]
+							},
+							["n"] = "9",
+						}, -- [1]
+					},
+					["t"] = "branch",
+				},
+			},
+		},
+		["openPurple"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "sound_id_self",
+							["args"] = {
+								"SFX", -- [1]
+								44322, -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "2",
+				},
+				["3"] = {
+					["e"] = {
+						{
+							["id"] = "item_add",
+							["args"] = {
+								"1002191523rXIYX itemPurple", -- [1]
+								1, -- [2]
+								true, -- [3]
+								"parent", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "var_object",
+							["args"] = {
+								"o", -- [1]
+								"+", -- [2]
+								"purple", -- [3]
+								"1", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "3",
+				},
+			},
+		},
+		["openOrange"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "sound_id_self",
+							["args"] = {
+								"SFX", -- [1]
+								44332, -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "2",
+				},
+				["3"] = {
+					["e"] = {
+						{
+							["id"] = "item_add",
+							["args"] = {
+								"1002191523rXIYX itemOrange", -- [1]
+								1, -- [2]
+								true, -- [3]
+								"parent", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "var_object",
+							["args"] = {
+								"o", -- [1]
+								"+", -- [2]
+								"orange", -- [3]
+								"1", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "3",
+				},
+			},
+		},
+		["openArtifact"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "sound_id_self",
+							["args"] = {
+								"SFX", -- [1]
+								38322, -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "2",
+				},
+				["3"] = {
+					["e"] = {
+						{
+							["id"] = "item_add",
+							["args"] = {
+								"1002191523rXIYX itemArtifact", -- [1]
+								1, -- [2]
+								true, -- [3]
+								"parent", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "var_object",
+							["args"] = {
+								"o", -- [1]
+								"+", -- [2]
+								"artifact", -- [3]
+								"1", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "3",
+				},
+			},
+		},
+		["openGreen"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "sound_id_self",
+							["args"] = {
+								"SFX", -- [1]
+								43502, -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "2",
+				},
+				["3"] = {
+					["e"] = {
+						{
+							["id"] = "item_add",
+							["args"] = {
+								"1002191523rXIYX itemGreen", -- [1]
+								1, -- [2]
+								true, -- [3]
+								"parent", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "var_object",
+							["args"] = {
+								"o", -- [1]
+								"+", -- [2]
+								"green", -- [3]
+								"1", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "3",
+				},
+			},
+		},
+		["openBlue"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "sound_id_self",
+							["args"] = {
+								"SFX", -- [1]
+								44330, -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "2",
+				},
+				["3"] = {
+					["e"] = {
+						{
+							["id"] = "item_add",
+							["args"] = {
+								"1002191523rXIYX itemBlue", -- [1]
+								1, -- [2]
+								true, -- [3]
+								"parent", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "var_object",
+							["args"] = {
+								"o", -- [1]
+								"+", -- [2]
+								"blue", -- [3]
+								"1", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "3",
+				},
+			},
+		},
+		["openWhite"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "var_object",
+							["args"] = {
+								"o", -- [1]
+								"+", -- [2]
+								"white", -- [3]
+								"1", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "2",
+				},
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "item_add",
+							["args"] = {
+								"1002191523rXIYX itemWhite", -- [1]
+								1, -- [2]
+								true, -- [3]
+								"parent", -- [4]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+				},
+			},
+		},
+	},
+	["details"] = {
+	},
+	["LI"] = {
+		["OU"] = "onUse",
+	},
+	["MD"] = {
+		["SD"] = "02/10/17 20:42:17",
+		["SB"] = "Solanya-KirinTor",
+		["CD"] = "02/10/17 19:15:23",
+		["CB"] = "Solanya-KirinTor",
+		["tV"] = 1005,
+		["MO"] = "EX",
+		["LO"] = "en",
+		["V"] = 36,
+	},
+	["NT"] = "Made by Solanya as part of the Total RP 3 Extended Kickstarter backers rewards.",
+	["HA"] = {
+	},
+	["TY"] = "IT",
+	["US"] = {
+		["SC"] = "onUse",
+		["AC"] = "Open an Arcano-Box !",
+	},
+	["securityLevel"] = 3,
+	["CO"] = {
+		["OI"] = false,
+		["MW"] = 0,
+		["DU"] = 0,
+		["SC"] = "4",
+		["SI"] = "5x4",
+		["SR"] = "5",
+	},
+};

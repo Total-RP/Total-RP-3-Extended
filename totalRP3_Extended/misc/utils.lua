@@ -26,7 +26,7 @@ local sqrt, pow = math.sqrt, math.pow;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getUnitPositionSafe(unit)
-	local uX, uY, uZ, instanceID = UnitPosition(unit);
+	local uY, uX, uZ, instanceID = UnitPosition(unit);	-- It's not a typo.
 	return uX or 0, uY or 0, uZ or 0, instanceID or "0";
 end
 TRP3_API.extended.getUnitPositionSafe = getUnitPositionSafe;

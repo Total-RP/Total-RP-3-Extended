@@ -476,8 +476,8 @@ local function var_prompt_init()
 
 	-- Source workflow
 	local workflowSource = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_W_OBJECT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_W_CAMPAIGN_TT")}
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_W"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_W_OBJECT_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_W"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_W_CAMPAIGN_TT")}
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.w_source, workflowSource, nil, nil, 250, true);
 
