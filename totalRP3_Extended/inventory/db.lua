@@ -1064,7 +1064,7 @@ TRP3_DB.inner.arcanocasino = {
 						{
 							["id"] = "item_add",
 							["args"] = {
-								"1002191523rXIYX itemPurple", -- [1]
+								"arcanocasino itemPurple", -- [1]
 								1, -- [2]
 								true, -- [3]
 								"parent", -- [4]
@@ -1110,7 +1110,7 @@ TRP3_DB.inner.arcanocasino = {
 						{
 							["id"] = "item_add",
 							["args"] = {
-								"1002191523rXIYX itemOrange", -- [1]
+								"arcanocasino itemOrange", -- [1]
 								1, -- [2]
 								true, -- [3]
 								"parent", -- [4]
@@ -1156,7 +1156,7 @@ TRP3_DB.inner.arcanocasino = {
 						{
 							["id"] = "item_add",
 							["args"] = {
-								"1002191523rXIYX itemArtifact", -- [1]
+								"arcanocasino itemArtifact", -- [1]
 								1, -- [2]
 								true, -- [3]
 								"parent", -- [4]
@@ -1202,7 +1202,7 @@ TRP3_DB.inner.arcanocasino = {
 						{
 							["id"] = "item_add",
 							["args"] = {
-								"1002191523rXIYX itemGreen", -- [1]
+								"arcanocasino itemGreen", -- [1]
 								1, -- [2]
 								true, -- [3]
 								"parent", -- [4]
@@ -1248,7 +1248,7 @@ TRP3_DB.inner.arcanocasino = {
 						{
 							["id"] = "item_add",
 							["args"] = {
-								"1002191523rXIYX itemBlue", -- [1]
+								"arcanocasino itemBlue", -- [1]
 								1, -- [2]
 								true, -- [3]
 								"parent", -- [4]
@@ -1296,7 +1296,7 @@ TRP3_DB.inner.arcanocasino = {
 						{
 							["id"] = "item_add",
 							["args"] = {
-								"1002191523rXIYX itemWhite", -- [1]
+								"arcanocasino itemWhite", -- [1]
 								1, -- [2]
 								true, -- [3]
 								"parent", -- [4]
