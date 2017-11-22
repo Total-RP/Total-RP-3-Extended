@@ -1,6 +1,6 @@
-# Version 1.0.6-beta2
+# Version 1.0.6
 
-With the help of Solanya
+With the help of @Solanya_
 
 ## New features / enhancements
 
