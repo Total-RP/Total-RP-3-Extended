@@ -94,19 +94,17 @@ local function startQuest(campaignID, questID)
 	assert(campaignID, loc("ERROR_MISSING_ARG"):format("campaignID", "startQuest(campaignID, questID)"));
 	assert(questID, loc("ERROR_MISSING_ARG"):format("questID", "startQuest(campaignID, questID)"));
 
-	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	if playerQuestLog.currentCampaign ~= campaignID then
-		Utils.message.displayMessage("|cffff0000[Error] Can't 'start quest' because current campaign is not " .. campaignID);
-		return 2;
-	end
-	local campaignLog = playerQuestLog[campaignID];
-	if not campaignLog then
-		Utils.message.displayMessage("|cffff0000[Error] Trying to 'start quest' from an unstarted campaign: " .. campaignID);
-		return 2;
-	end
 	if not TRP3_API.extended.classExists(campaignID, questID) then
 		Utils.message.displayMessage("|cffff0000[Error] 'start quest': Unknown quest: " .. campaignID .. " " .. questID);
 		return 2;
+	end
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	if playerQuestLog.currentCampaign ~= campaignID then
+		TRP3_API.quest.activateCampaign(campaignID, false);
+	end
+	local campaignLog = playerQuestLog[campaignID];
+	if not campaignLog then
+		TRP3_API.quest.activateCampaign(campaignID, false);
 	end
 
 	Log.log("Starting quest " .. campaignID .. " " .. questID);
