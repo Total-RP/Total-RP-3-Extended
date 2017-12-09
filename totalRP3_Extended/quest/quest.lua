@@ -103,7 +103,10 @@ local function startQuest(campaignID, questID)
 	local campaignLog = playerQuestLog[campaignID];
 
 	if playerQuestLog.currentCampaign ~= campaignID or not campaignLog then
-		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
+		local campaignClass = getClass(campaignID);
+		local _, campaignName = getClassDataSafe(campaignClass);
+		local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
 			TRP3_API.quest.activateCampaign(campaignID, false);
 			TRP3_API.quest.startQuestForReal(campaignID, questID);
 		end);
@@ -303,7 +306,10 @@ local function goToStep(campaignID, questID, stepID)
 	end
 
 	if playerQuestLog.currentCampaign ~= campaignID or not campaignLog then
-		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
+		local campaignClass = getClass(campaignID);
+		local _, campaignName = getClassDataSafe(campaignClass);
+		local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
 			TRP3_API.quest.activateCampaign(campaignID, false);
 			TRP3_API.quest.goToStepForReal(campaignID, questID, stepID);
 		end);
@@ -393,7 +399,10 @@ local function revealObjective(campaignID, questID, objectiveID)
 	end
 
 	if playerQuestLog.currentCampaign ~= campaignID or not campaignLog then
-		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
+		local campaignClass = getClass(campaignID);
+		local _, campaignName = getClassDataSafe(campaignClass);
+		local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
 			TRP3_API.quest.activateCampaign(campaignID, false);
 			TRP3_API.quest.revealObjectiveForReal(campaignID, questID, objectiveID);
 		end);
@@ -461,7 +470,10 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 	end
 
 	if playerQuestLog.currentCampaign ~= campaignID or not campaignLog then
-		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
+		local campaignClass = getClass(campaignID);
+		local _, campaignName = getClassDataSafe(campaignClass);
+		local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
 			TRP3_API.quest.activateCampaign(campaignID, false);
 			TRP3_API.quest.markObjectiveDoneForReal(campaignID, questID, objectiveID);
 		end);
