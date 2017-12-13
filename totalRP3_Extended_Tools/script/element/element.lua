@@ -153,7 +153,8 @@ local function decorateBrowserLine(frame, index)
 			end
 		end
 		if base.DE then
-			text = text .. "\n|cffff9900\"" .. base.DE .. "\"";
+			local argsStructure = {object = {id = objectID}};
+			text = text .. "\n|cffff9900\"" .. TRP3_API.script.parseArgs(base.DE .. "\"", argsStructure);
 		end
 		text = text .. "\n|cffffffff" .. TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0);
 
