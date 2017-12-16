@@ -57,7 +57,7 @@ local function parseArgs(text, info)
 end
 
 local function getItemTooltipLines(slotInfo, class, forceAlt)
-	local title, left, right, text1, text2,  extension1, extension2;
+	local title, left, right, text1, text1_lower, text2,  extension1, extension2;
 	local icon, name = getBaseClassDataSafe(class);
 	local rootClassID = TRP3_API.extended.getRootClassID(slotInfo.id);
 	local rootClass = TRP3_API.extended.classExists(rootClassID) and getClass(rootClassID);
@@ -92,22 +92,22 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. color("o") .. "\"" .. parseArgs(class.BA.DE, argsStructure) .. "\"";
+		text1 = text1 .. "|r" .. "\"" .. parseArgs(class.BA.DE, argsStructure) .. "\"";		-- no color as it is the default color for that part of the tooltip
 	end
 
+	text1_lower = "";
 	if class.US and class.US.AC then
-		text1 = incrementLine(text1);
-		text1 = text1 .. color("g") .. USE .. ": " .. parseArgs(class.US.AC, argsStructure);
+		text1_lower = text1_lower .. USE .. ": " .. parseArgs(class.US.AC, argsStructure);	-- no color as it is the default color for that part of the tooltip
 	end
 
 	if class.BA.CO then
-		text1 = incrementLine(text1);
-		text1 = text1 .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
+		text1_lower = incrementLine(text1_lower);
+		text1_lower = text1_lower .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
 	end
 
 	if class.BA.CR and slotInfo.madeBy then
-		text1 = incrementLine(text1);
-		text1 = text1 .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
+		text1_lower = incrementLine(text1_lower);
+		text1_lower = text1_lower .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
 	end
 
 	if not slotInfo.noAlt and (IsAltKeyDown() or forceAlt) then
@@ -176,7 +176,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		end
 	end
 
-	return title, left, right, text1, text2, extension1, extension2;
+	return title, left, right, text1, text1_lower, text2, extension1, extension2;
 end
 
 local TRP3_ItemTooltip = TRP3_ItemTooltip;
@@ -184,7 +184,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	TRP3_ItemTooltip:Hide();
 	TRP3_ItemTooltip:SetOwner(frame, anchor or (frame.tooltipRight and "ANCHOR_RIGHT") or "ANCHOR_LEFT", 0, 0);
 
-	local title, left, right, text1, text2,  extension1, extension2 = getItemTooltipLines(slotInfo, itemClass, forceAlt);
+	local title, left, right, text1, text1_lower, text2,  extension1, extension2 = getItemTooltipLines(slotInfo, itemClass, forceAlt);
 
 	local i = 1;
 	if title and title:len() > 0 then
@@ -204,7 +204,15 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text1 and text1:len() > 0 then
-		TRP3_ItemTooltip:AddLine(text1, 1, 1, 1,true);
+		TRP3_ItemTooltip:AddLine(text1, 1, 0.67, 0,true);		-- corresponds to color("o") = FFAA00 for the description
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		i = i + 1;
+	end
+
+	if text1_lower and text1_lower:len() > 0 then
+		TRP3_ItemTooltip:AddLine(text1_lower, 0, 1, 0,true);	-- corresponds to color("g") = 00FF00 for the use text
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
