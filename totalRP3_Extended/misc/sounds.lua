@@ -32,7 +32,7 @@ local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 local LOCAL_SOUND_COMMAND = "PLS";
 
 local function getPosition()
-	local posY, posX, posZ, instanceID = UnitPosition("player");
+	local posX, posY, posZ, instanceID = UnitPosition("player");
 	instanceID = instanceID	.. ',' .. EJ_GetCurrentInstance();
 	posY = floor(posY + 0.5);
 	posX = floor(posX + 0.5);
@@ -78,7 +78,7 @@ local function initSharedSound()
 					end
 				else
 					-- Get current position
-					local myPosY, myPosX, myPosZ, myInstanceID = UnitPosition("player");
+					local myPosX, myPosY, myPosZ, myInstanceID = UnitPosition("player");
 					myInstanceID = myInstanceID	.. ',' .. EJ_GetCurrentInstance();
 					myPosY = floor(myPosY + 0.5);
 					myPosX = floor(myPosX + 0.5);
