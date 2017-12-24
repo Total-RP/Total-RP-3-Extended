@@ -129,7 +129,7 @@ local function onUpdateChatText(self, elapsed)
 		end
 	end
 	if dialogFrame.distanceLimit > 0 then
-		local posX, posY = UnitPosition("player");
+		local posY, posX = UnitPosition("player");
 		local distance = sqrt((posY - dialogFrame.posY) ^ 2 + (posX - dialogFrame.posX) ^ 2);
 		if distance >= dialogFrame.distanceLimit then
 			dialogFrame:Hide();
@@ -419,7 +419,7 @@ local function startDialog(dialogID, class, args)
 	dialogFrame.class = dialogClass;
 	dialogFrame.stepIndex = dialogClass.BA.FS or 1;
 	dialogFrame.distanceLimit = dialogClass.BA.DI or 0;
-	dialogFrame.posX, dialogFrame.posY = UnitPosition("player");
+	dialogFrame.posY, dialogFrame.posX = UnitPosition("player");
 	dialogFrame.args = args;
 	-- Reset attributes from previous play
 	local ATTRIBUTES_KEY = {

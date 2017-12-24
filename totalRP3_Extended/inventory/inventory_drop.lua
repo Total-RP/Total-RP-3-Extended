@@ -39,7 +39,7 @@ local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
 local function dropCommon(lootInfo)
 	-- Proper coordinates
-	local posX, posY, posZ = UnitPosition("player");
+	local posY, posX, posZ = UnitPosition("player");
 
 	-- We still need map position for potential marker placement
 	SetMapToCurrentZone();
@@ -175,8 +175,8 @@ local function initScans()
 			end
 		end,
 		canScan = function(currentlyScanning)
-			local posX, posY = UnitPosition("player");
-			return posX ~= nil and posY ~= nil and not currentlyScanning;
+			local posY, posX = UnitPosition("player");
+			return posY ~= nil and posY ~= nil and not currentlyScanning;
 		end,
 		scanAssembler = function(saveStructure, sender, mapX, mapY, NA, IC, total)
 			local i = 1;
@@ -220,7 +220,7 @@ end
 function searchForItems()
 	-- Proper coordinates
 	SetMapToCurrentZone();
-	local posX, posY = UnitPosition("player");
+	local posY, posX = UnitPosition("player");
 	local mapID = GetCurrentMapAreaID();
 
 	local searchResults = {};
@@ -248,7 +248,7 @@ function searchForItems()
 		end
 		loot.BA.NA = loc("DR_RESULTS"):format(total);
 		TRP3_API.inventory.presentLoot(loot, onLooted, nil, function()
-			local posX2, posY2 = UnitPosition("player");
+			local posY2, posX2 = UnitPosition("player");
 			local isInRad = isInRadius(MAX_SEARCH_DISTANCE / 2, posY, posX, posY2, posX2);
 			if not isInRad then
 				Utils.message.displayMessage(loc("LOOT_DISTANCE"), 4);
@@ -323,7 +323,7 @@ local function saveStash()
 	stash.BA.NS = stashEditFrame.hidden:GetChecked();
 
 	-- Proper coordinates
-	local posX, posY, posZ = UnitPosition("player");
+	local posY, posX, posZ = UnitPosition("player");
 	SetMapToCurrentZone();
 	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
 
@@ -461,7 +461,7 @@ local function initStashContainer()
 	TRP3_API.inventory.initContainerSlots(stashContainer, 2, 4, true);
 
 	createRefreshOnFrame(stashContainer, 0.15, function(self)
-		local posX, posY = UnitPosition("player");
+		local posY, posX = UnitPosition("player");
 		if (not posY or not posX) or not self.stashInfo or not isInRadius(MAX_SEARCH_DISTANCE, posY, posX, self.stashInfo.posY, self.stashInfo.posX) then
 			self:Hide();
 			Utils.message.displayMessage(loc("DR_STASHES_TOO_FAR"), 4);
@@ -737,7 +737,7 @@ local function decorateStashSlot(slot, index)
 	slot.info = stashResponse;
 	slot:SetScript("OnClick", function(self)
 		stashFoundFrame:Hide();
-		local posX, posY, posZ = UnitPosition("player");
+		local posY, posX, posZ = UnitPosition("player");
 		local stashInfo = {
 			id = self.info[2],
 			owner = self.info[1],
@@ -759,7 +759,7 @@ local function displayStashesResponse()
 	if total == 0 then
 		Utils.message.displayMessage(loc("DR_STASHES_NOTHING"), 4);
 	else
-		local posX, posY = UnitPosition("player");
+		local posY, posX = UnitPosition("player");
 		stashFoundFrame.posX = posX;
 		stashFoundFrame.posY = posY;
 		stashFoundFrame.title:SetText(loc("DR_STASHES_FOUND"):format(#stashResponse));
@@ -770,7 +770,7 @@ end
 
 local function startStashesRequest()
 	SetMapToCurrentZone();
-	local posX, posY = UnitPosition("player");
+	local posY, posX = UnitPosition("player");
 	local mapID = GetCurrentMapAreaID();
 	if posX and posY then
 		stashFoundFrame:Hide();
@@ -847,7 +847,7 @@ end
 
 local function onToolbarButtonClick(button, mouseButton)
 	SetMapToCurrentZone();
-	local posX, posY = UnitPosition("player");
+	local posY, posX = UnitPosition("player");
 	local mapID = GetCurrentMapAreaID();
 
 	local dropdownItems = {};
@@ -1003,7 +1003,7 @@ function dropFrame.init()
 
 	TRP3_API.ui.frame.setupMove(stashFoundFrame);
 	createRefreshOnFrame(stashFoundFrame, 0.15, function(self)
-		local posX, posY = UnitPosition("player");
+		local posY, posX = UnitPosition("player");
 		if (not posY or not posX) or not isInRadius(MAX_SEARCH_DISTANCE / 2, posY, posX, self.posY, self.posX) then
 			self:Hide();
 			Utils.message.displayMessage(loc("DR_STASHES_TOO_FAR"), 4);
