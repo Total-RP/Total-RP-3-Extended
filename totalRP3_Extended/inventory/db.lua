@@ -574,24 +574,24 @@ TRP3_DB.inner.diceexample = {
 TRP3_DB.inner.arcanocasino = {
 	securityLevel = 3,
 	["IN"] = {
-		["itemPurple"] = {
+		["itemWhite"] = {
 			["US"] = {
 				["SC"] = "onUse",
 			},
 			["BA"] = {
-				["DE"] = "Worth a hefty sum.",
+				["DE"] = "Very little value.",
 				["PS"] = 1221,
-				["IC"] = "INV_Misc_Gem_X4_Rare_Cut_Purple",
+				["US"] = false,
 				["CO"] = false,
-				["NA"] = "Purplian",
+				["NA"] = "Whitium",
 				["ST"] = 200,
-				["QA"] = 4,
+				["QA"] = 1,
 				["PA"] = true,
 				["WA"] = false,
 				["VA"] = 0,
 				["CR"] = false,
 				["DS"] = 1204,
-				["US"] = false,
+				["IC"] = "INV_Ore_TrilliumWhite",
 				["QE"] = false,
 				["UN"] = false,
 				["SB"] = true,
@@ -619,24 +619,24 @@ TRP3_DB.inner.arcanocasino = {
 			["IN"] = {
 			},
 		},
-		["itemWhite"] = {
+		["itemPurple"] = {
 			["US"] = {
 				["SC"] = "onUse",
 			},
 			["BA"] = {
-				["DE"] = "Very little value.",
+				["DE"] = "Worth a hefty sum.",
 				["PS"] = 1221,
-				["IC"] = "INV_Ore_TrilliumWhite",
+				["US"] = false,
 				["CO"] = false,
-				["NA"] = "Whitium",
+				["NA"] = "Purplian",
 				["ST"] = 200,
-				["QA"] = 1,
+				["QA"] = 4,
 				["PA"] = true,
 				["WA"] = false,
 				["VA"] = 0,
 				["CR"] = false,
 				["DS"] = 1204,
-				["US"] = false,
+				["IC"] = "INV_Misc_Gem_X4_Rare_Cut_Purple",
 				["QE"] = false,
 				["UN"] = false,
 				["SB"] = true,
@@ -671,7 +671,7 @@ TRP3_DB.inner.arcanocasino = {
 			["BA"] = {
 				["DE"] = "You can get a good price from it.",
 				["PS"] = 1221,
-				["IC"] = "INV_Jewelcrafting_70_CutGem03_Blue",
+				["US"] = false,
 				["CO"] = false,
 				["NA"] = "Blueoid",
 				["ST"] = 200,
@@ -681,7 +681,7 @@ TRP3_DB.inner.arcanocasino = {
 				["VA"] = 0,
 				["CR"] = false,
 				["DS"] = 1204,
-				["US"] = false,
+				["IC"] = "INV_Jewelcrafting_70_CutGem03_Blue",
 				["QE"] = false,
 				["UN"] = false,
 				["SB"] = true,
@@ -716,7 +716,7 @@ TRP3_DB.inner.arcanocasino = {
 			["BA"] = {
 				["DE"] = "A bit more valuable.",
 				["PS"] = 1221,
-				["IC"] = "INV_Jewelcrafting_ArgusGemUncut_Green_MiscIcons",
+				["US"] = false,
 				["CO"] = false,
 				["NA"] = "Greenite",
 				["ST"] = 200,
@@ -726,7 +726,7 @@ TRP3_DB.inner.arcanocasino = {
 				["VA"] = 0,
 				["CR"] = false,
 				["DS"] = 1204,
-				["US"] = false,
+				["IC"] = "INV_Jewelcrafting_ArgusGemUncut_Green_MiscIcons",
 				["QE"] = false,
 				["UN"] = false,
 				["SB"] = true,
@@ -761,7 +761,7 @@ TRP3_DB.inner.arcanocasino = {
 			["BA"] = {
 				["DE"] = "Its existence is a myth !",
 				["PS"] = 1221,
-				["IC"] = "inv_datacrystal04",
+				["US"] = false,
 				["CO"] = false,
 				["NA"] = "Unstable Arcanocrystal",
 				["ST"] = 200,
@@ -771,7 +771,7 @@ TRP3_DB.inner.arcanocasino = {
 				["VA"] = 0,
 				["CR"] = false,
 				["DS"] = 1204,
-				["US"] = false,
+				["IC"] = "inv_datacrystal04",
 				["QE"] = false,
 				["UN"] = false,
 				["SB"] = true,
@@ -806,7 +806,7 @@ TRP3_DB.inner.arcanocasino = {
 			["BA"] = {
 				["DE"] = "A treasure worth a fortune !",
 				["PS"] = 1221,
-				["IC"] = "INV_jewelcrafting_ImmacTaladite_Orange",
+				["US"] = false,
 				["CO"] = false,
 				["NA"] = "Orangyl",
 				["ST"] = 200,
@@ -816,7 +816,7 @@ TRP3_DB.inner.arcanocasino = {
 				["VA"] = 0,
 				["CR"] = false,
 				["DS"] = 1204,
-				["US"] = false,
+				["IC"] = "INV_jewelcrafting_ImmacTaladite_Orange",
 				["QE"] = false,
 				["UN"] = false,
 				["SB"] = true,
@@ -848,7 +848,7 @@ TRP3_DB.inner.arcanocasino = {
 	["BA"] = {
 		["DE"] = "Boxes opened : ${opened::0}\nWhitium : ${white::0}\nGreenite : ${green::0}\nBlueoid : ${blue::0}\nPurplian : ${purple::0}\nOrangyl : ${orange::0}\nArcanocrystal : ${artifact::0}",
 		["PS"] = 1221,
-		["IC"] = "Hunter_PVP_DiamondIce",
+		["US"] = true,
 		["CO"] = false,
 		["NA"] = "Arcano-Casino",
 		["ST"] = false,
@@ -858,7 +858,7 @@ TRP3_DB.inner.arcanocasino = {
 		["QE"] = false,
 		["CR"] = false,
 		["DS"] = 1204,
-		["US"] = true,
+		["IC"] = "Hunter_PVP_DiamondIce",
 		["VA"] = 0,
 		["SB"] = true,
 		["UN"] = 1,
@@ -883,7 +883,7 @@ TRP3_DB.inner.arcanocasino = {
 							["id"] = "var_operand",
 							["args"] = {
 								"dropRate", -- [1]
-								"o", -- [2]
+								"w", -- [2]
 								"random", -- [3]
 								{
 									1, -- [1]
@@ -911,39 +911,15 @@ TRP3_DB.inner.arcanocasino = {
 					["n"] = "3",
 				},
 				["5"] = {
-					["b"] = {
+					["e"] = {
 						{
-							["failWorkflow"] = "openOrange",
+							["id"] = "run_workflow",
 							["cond"] = {
 								{
 									{
 										["i"] = "var_check_n",
 										["a"] = {
-											"o", -- [1]
-											"dropRate", -- [2]
-										},
-									}, -- [1]
-									">", -- [2]
-									{
-										["v"] = 100,
-									}, -- [3]
-								}, -- [1]
-							},
-							["n"] = "6",
-						}, -- [1]
-					},
-					["t"] = "branch",
-				},
-				["4"] = {
-					["b"] = {
-						{
-							["failWorkflow"] = "openArtifact",
-							["cond"] = {
-								{
-									{
-										["i"] = "var_check_n",
-										["a"] = {
-											"o", -- [1]
+											"w", -- [1]
 											"dropRate", -- [2]
 										},
 									}, -- [1]
@@ -952,46 +928,68 @@ TRP3_DB.inner.arcanocasino = {
 										["v"] = 1,
 									}, -- [3]
 								}, -- [1]
-							},
-							["n"] = "5",
-						}, -- [1]
-					},
-					["t"] = "branch",
-				},
-				["7"] = {
-					["b"] = {
-						{
-							["failWorkflow"] = "openBlue",
-							["cond"] = {
+								"+", -- [2]
 								{
 									{
 										["i"] = "var_check_n",
 										["a"] = {
-											"o", -- [1]
+											"w", -- [1]
 											"dropRate", -- [2]
 										},
 									}, -- [1]
-									">", -- [2]
+									"<=", -- [2]
 									{
-										["v"] = 100000,
+										["v"] = 100,
 									}, -- [3]
-								}, -- [1]
+								}, -- [3]
 							},
-							["n"] = "8",
+							["args"] = {
+								"o", -- [1]
+								"openOrange", -- [2]
+							},
 						}, -- [1]
 					},
-					["t"] = "branch",
+					["t"] = "list",
+					["n"] = "6",
 				},
-				["6"] = {
-					["b"] = {
+				["4"] = {
+					["e"] = {
 						{
-							["failWorkflow"] = "openPurple",
+							["id"] = "run_workflow",
 							["cond"] = {
 								{
 									{
 										["i"] = "var_check_n",
 										["a"] = {
-											"o", -- [1]
+											"w", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									"==", -- [2]
+									{
+										["v"] = 1,
+									}, -- [3]
+								}, -- [1]
+							},
+							["args"] = {
+								"o", -- [1]
+								"openArtifact", -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "5",
+				},
+				["7"] = {
+					["e"] = {
+						{
+							["id"] = "run_workflow",
+							["cond"] = {
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"w", -- [1]
 											"dropRate", -- [2]
 										},
 									}, -- [1]
@@ -1000,34 +998,82 @@ TRP3_DB.inner.arcanocasino = {
 										["v"] = 10000,
 									}, -- [3]
 								}, -- [1]
+								"+", -- [2]
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"w", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									"<=", -- [2]
+									{
+										["v"] = 100000,
+									}, -- [3]
+								}, -- [3]
 							},
-							["n"] = "7",
-						}, -- [1]
-					},
-					["t"] = "branch",
-				},
-				["9"] = {
-					["e"] = {
-						{
-							["id"] = "run_workflow",
 							["args"] = {
 								"o", -- [1]
-								"openWhite", -- [2]
+								"openBlue", -- [2]
 							},
 						}, -- [1]
 					},
 					["t"] = "list",
+					["n"] = "8",
 				},
-				["8"] = {
-					["b"] = {
+				["6"] = {
+					["e"] = {
 						{
-							["failWorkflow"] = "openGreen",
+							["id"] = "run_workflow",
 							["cond"] = {
 								{
 									{
 										["i"] = "var_check_n",
 										["a"] = {
-											"o", -- [1]
+											"w", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									">", -- [2]
+									{
+										["v"] = 100,
+									}, -- [3]
+								}, -- [1]
+								"+", -- [2]
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"w", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									"<=", -- [2]
+									{
+										["v"] = 10000,
+									}, -- [3]
+								}, -- [3]
+							},
+							["args"] = {
+								"o", -- [1]
+								"openPurple", -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "7",
+				},
+				["9"] = {
+					["e"] = {
+						{
+							["id"] = "run_workflow",
+							["cond"] = {
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"w", -- [1]
 											"dropRate", -- [2]
 										},
 									}, -- [1]
@@ -1037,10 +1083,55 @@ TRP3_DB.inner.arcanocasino = {
 									}, -- [3]
 								}, -- [1]
 							},
-							["n"] = "9",
+							["args"] = {
+								"o", -- [1]
+								"openWhite", -- [2]
+							},
 						}, -- [1]
 					},
-					["t"] = "branch",
+					["t"] = "list",
+				},
+				["8"] = {
+					["e"] = {
+						{
+							["id"] = "run_workflow",
+							["cond"] = {
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"w", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									">", -- [2]
+									{
+										["v"] = 100000,
+									}, -- [3]
+								}, -- [1]
+								"+", -- [2]
+								{
+									{
+										["i"] = "var_check_n",
+										["a"] = {
+											"w", -- [1]
+											"dropRate", -- [2]
+										},
+									}, -- [1]
+									"<=", -- [2]
+									{
+										["v"] = 350000,
+									}, -- [3]
+								}, -- [3]
+							},
+							["args"] = {
+								"o", -- [1]
+								"openGreen", -- [2]
+							},
+						}, -- [1]
+					},
+					["t"] = "list",
+					["n"] = "9",
 				},
 			},
 		},
@@ -1308,30 +1399,30 @@ TRP3_DB.inner.arcanocasino = {
 			},
 		},
 	},
-	["details"] = {
-	},
+	["securityLevel"] = 3,
 	["LI"] = {
 		["OU"] = "onUse",
 	},
 	["MD"] = {
-		["SD"] = "02/10/17 20:42:17",
-		["SB"] = "Solanya-KirinTor",
-		["CD"] = "02/10/17 19:15:23",
-		["CB"] = "Solanya-KirinTor",
-		["tV"] = 1005,
-		["MO"] = "EX",
 		["LO"] = "en",
-		["V"] = 36,
+		["SD"] = "26/12/17 10:20:08",
+		["CD"] = "26/12/17 10:08:06",
+		["SB"] = "Solanya-KirinTor",
+		["tV"] = 1006,
+		["MO"] = "EX",
+		["CB"] = "Solanya-KirinTor",
+		["V"] = 3,
 	},
-	["NT"] = "Made by Solanya as part of the Total RP 3 Extended Kickstarter backers rewards.",
+	["details"] = {
+	},
 	["HA"] = {
 	},
+	["NT"] = "Made by Solanya as part of the Total RP 3 Extended Kickstarter backers rewards.",
 	["TY"] = "IT",
 	["US"] = {
 		["SC"] = "onUse",
 		["AC"] = "Open an Arcano-Box !",
 	},
-	["securityLevel"] = 3,
 	["CO"] = {
 		["OI"] = false,
 		["MW"] = 0,
