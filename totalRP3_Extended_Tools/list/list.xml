@@ -197,6 +197,9 @@
 						<Anchors>
 							<Anchor point="CENTER" x="125" y="0"/>
 						</Anchors>
+						<Frames>
+							<Frame parentKey="templates" inherits="TRP3_CampaignTemplates" hidden="true"/>
+						</Frames>
 					</Button>
 
 					<Button parentKey="import" inherits="TRP3_QuestButtonTemplate">
