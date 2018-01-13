@@ -67,6 +67,26 @@
 		</Layers>
 	</Frame>
 
+	<!-- *_*_*_*_*_*_*_*_*_*_*_*  -->
+	<!--    Campaign templates    -->
+	<!-- *_*_*_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_CampaignTemplates" inherits="TRP3_AltHoveredFrame" enableMouse="true" virtual="true">
+		<Size x="450" y="200"/>
+		<Frames>
+			<Button parentKey="blank" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="-40"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="from" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="-110"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--  Item quick editor   -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
