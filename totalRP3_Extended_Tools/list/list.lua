@@ -398,7 +398,23 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.container:Hide();
 		ToolFrame.list.filters:Hide();
 		ToolFrame.list.backers:Show();
-		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion())));
+
+		local PATREON_SUPPORTERS = {
+			"Connor Macleod",
+			"Bas (AstaLawl)",
+			"Vlad",
+		}
+		table.sort(PATREON_SUPPORTERS);
+
+		local patreonMessage = "";
+		for _, patreonSupporter in pairs(PATREON_SUPPORTERS) do
+			patreonMessage = strconcat(patreonMessage, "- ", patreonSupporter, "\n");
+		end
+
+		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion(), patreonMessage)));
+		ToolFrame.list.backers.child.HTML:SetScript("OnHyperlinkClick", function(self, url, text, button)
+			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+		end)
 	end
 
 	filterList();

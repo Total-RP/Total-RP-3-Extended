@@ -1639,4 +1639,9 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Zack Wannemacher
 - Zencore
 
-##  You are the best!]];
+##  You are the best!
+
+## Total RP 3: Extended is also maintained thanks Ellype's [Patreon](http://patreon.com/Ellypse) supporters:
+
+%s
+]];
