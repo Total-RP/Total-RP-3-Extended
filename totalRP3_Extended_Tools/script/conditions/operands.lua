@@ -324,7 +324,7 @@ local function unit_distance_point_init()
 	editor.y.title:SetText(loc("OP_OP_DISTANCE_Y"));
 	editor.current:SetText(loc("OP_OP_DISTANCE_CURRENT"));
 	editor.current:SetScript("OnClick", function()
-		local uX, uY = UnitPosition("player");
+		local uY, uX = UnitPosition("player");
 		editor.x:SetText(string.format("%.2f", uX or 0));
 		editor.y:SetText(string.format("%.2f", uY or 0));
 	end);
