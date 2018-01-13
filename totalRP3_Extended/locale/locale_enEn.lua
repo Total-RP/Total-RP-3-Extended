@@ -535,6 +535,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_ELEMENT = "Element edition",
 	WO_ELEMENT_EDIT = "Click to edit element",
 	WO_ELEMENT_EDIT_RIGHT = "Right-click for more operations",
+	WO_ELEMENT_EDIT_CTRL = "Control-click to condition this instruction",
 	WO_ELEMENT_COND = "Edit effect condition",
 	WO_ELEMENT_COND_TT = "Adds a condition to this single effect.",
 	WO_ELEMENT_COND_NO = "Remove effect condition",

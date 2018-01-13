@@ -379,6 +379,7 @@ local function decorateEffect(scriptStepFrame, effectData)
 		tooltip = tooltip .. "\n\n|cffffff00" .. loc("WO_EFFECT_NO_EDITOR");
 	end
 	tooltip = tooltip .. "\n" .. loc("WO_ELEMENT_EDIT_RIGHT");
+	tooltip = tooltip .. "\n" .. loc("WO_ELEMENT_EDIT_CTRL");
 
 	setTooltipForSameFrame(scriptStepFrame, "TOP", 0, 5, title, tooltip);
 
