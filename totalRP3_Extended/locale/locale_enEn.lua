@@ -172,6 +172,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_BUTTON = "Open quest log",
 	QE_NPC = "Campaign NPC",
 	QE_RESET_CONFIRM = "Reset this campaign?\n\nThis will lose all your progression for ALL the quests in this campaign.\n\nNote that you will keep all items you gained through this campaign.",
+	QE_AUTORESUME_CONFIRM = "An effect was called for the campaign |cff00ff00[%s]|r.\n\nActivate this campaign ?\n(If you already have an active campaign, it will be paused and your progress will be saved.)",
 	QE_ACTIONS_TYPE_LOOK = "Inspect",
 	QE_ACTIONS_TYPE_TALK = "Talk",
 	QE_ACTIONS_TYPE_LISTEN = "Listen",
