@@ -232,6 +232,7 @@ local function addInnerObject(type, self)
 				local class = getClass(id);
 				local template = {};
 				Utils.table.copy(template, class);
+				TRP3_API.extended.tools.replaceID(template, id, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. innerID);
 				createInnerObject(innerID, type, template);
 				refresh();
 			end, type});
