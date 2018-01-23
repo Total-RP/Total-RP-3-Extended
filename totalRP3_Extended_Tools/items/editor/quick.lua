@@ -137,11 +137,11 @@ local function onQuickCreatedFromList(classID, _)
 	end, nil, 1);
 end
 
-local function replaceID(dataToUpdate, oldID, newID)
+function TRP3_API.extended.tools.replaceID(dataToUpdate, oldID, newID)
 	if type(dataToUpdate) == "table" then
 		for key, value in pairs(dataToUpdate) do
 			if type(value) == "table" then
-				replaceID(value, oldID, newID);
+				TRP3_API.extended.tools.replaceID(value, oldID, newID);
 			elseif type(value) == "string" then
 				dataToUpdate[key] = value:gsub(oldID, newID);
 			end
@@ -330,7 +330,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 				SD = date("%d/%m/%y %H:%M:%S");
 				SB = Globals.player_id,
 			};
-			replaceID(copiedData, fromID, id);
+			TRP3_API.extended.tools.replaceID(copiedData, fromID, id);
 			local ID, _ = TRP3_API.extended.tools.createItem(copiedData, id);
 			TRP3_API.extended.tools.goToPage(ID);
 		end, TRP3_DB.types.ITEM});
@@ -360,7 +360,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 				SD = date("%d/%m/%y %H:%M:%S");
 				SB = Globals.player_id,
 			};
-			replaceID(copiedData, fromID, id);
+			TRP3_API.extended.tools.replaceID(copiedData, fromID, id);
 			local ID, _ = TRP3_API.extended.tools.createItem(copiedData, id);
 			TRP3_API.extended.tools.goToPage(ID);
 		end, TRP3_DB.types.CAMPAIGN});
