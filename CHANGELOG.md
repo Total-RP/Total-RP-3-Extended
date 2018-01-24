@@ -14,6 +14,7 @@ Our thanks again to [Solanya](http://twitter.com/Solanya_) for his help on this 
 - Variable interpolation for the active campaign (using a `${var}` tag to get the value of a variable stored in the active campaign.)
 - You are now prompted to enable a campaign when an effect from this campaign tried to be executed.
 - When creating a new campaign you now have the option to copy an existing campaign.
+- When copying a creation, it will now update workflows in that copy to use the new ID instead of the original creation ID.
 - Added indication in the tooltip that you can Ctrl + Click on an effect in a workflow to condition that specific instruction's execution.
 - Added thank you message for Ellypse's [Patreon](http://patreon.com/Ellypse) supporters.
 
