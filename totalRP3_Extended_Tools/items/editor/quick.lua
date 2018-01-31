@@ -137,6 +137,18 @@ local function onQuickCreatedFromList(classID, _)
 	end, nil, 1);
 end
 
+function TRP3_API.extended.tools.replaceID(dataToUpdate, oldID, newID)
+	if type(dataToUpdate) == "table" then
+		for key, value in pairs(dataToUpdate) do
+			if type(value) == "table" then
+				TRP3_API.extended.tools.replaceID(value, oldID, newID);
+			elseif type(value) == "string" then
+				dataToUpdate[key] = value:gsub(oldID, newID);
+			end
+		end
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -245,6 +257,11 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame.list.bottom.item.templates.from.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_FROM"));
 	toolFrame.list.bottom.item.templates.from.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_FROM_TT"));
 
+	toolFrame.list.bottom.campaign.templates.blank.Name:SetText(loc("DB_CREATE_CAMPAIGN_TEMPLATES_BLANK"));
+	toolFrame.list.bottom.campaign.templates.blank.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TEMPLATES_BLANK_TT"));
+	toolFrame.list.bottom.campaign.templates.from.Name:SetText(loc("DB_CREATE_CAMPAIGN_TEMPLATES_FROM"));
+	toolFrame.list.bottom.campaign.templates.from.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TEMPLATES_FROM_TT"));
+
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.container, "inv_misc_bag_36");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.blank, "inv_inscription_scroll");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.document, "inv_misc_book_16");
@@ -252,10 +269,21 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.from, "spell_nature_mirrorimage");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item, "inv_garrison_blueprints1");
 
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.campaign.templates.blank, "inv_inscription_scroll");
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.campaign.templates.from, "spell_nature_mirrorimage");
+
 	toolFrame.list.bottom.item:SetScript("OnClick", function(self)
 		if TRP3_ItemQuickEditor:IsVisible() then
 			TRP3_ItemQuickEditor:Hide();
 		elseif self.templates:IsVisible() then
+			self.templates:Hide();
+		else
+			TRP3_API.ui.frame.configureHoverFrame(self.templates, self, "BOTTOM", 0, 5, false);
+		end
+	end);
+
+	toolFrame.list.bottom.campaign:SetScript("OnClick", function(self)
+		if self.templates:IsVisible() then
 			self.templates:Hide();
 		else
 			TRP3_API.ui.frame.configureHoverFrame(self.templates, self, "BOTTOM", 0, 5, false);
@@ -302,9 +330,40 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 				SD = date("%d/%m/%y %H:%M:%S");
 				SB = Globals.player_id,
 			};
+			TRP3_API.extended.tools.replaceID(copiedData, fromID, id);
 			local ID, _ = TRP3_API.extended.tools.createItem(copiedData, id);
 			TRP3_API.extended.tools.goToPage(ID);
 		end, TRP3_DB.types.ITEM});
+
+	end);
+
+	toolFrame.list.bottom.campaign.templates.blank:SetScript("OnClick", function()
+		toolFrame.list.bottom.campaign.templates:Hide();
+		local ID = Utils.str.id();
+		local ID, _ = TRP3_API.extended.tools.createCampaign(TRP3_API.extended.tools.getCampaignData(ID), ID);
+		TRP3_API.extended.tools.goToPage(ID);
+	end);
+
+	toolFrame.list.bottom.campaign.templates.from:SetScript("OnClick", function()
+
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = toolFrame.list.bottom.campaign.templates, point = "LEFT", parentPoint = "RIGHT"}, {function(fromID)
+			toolFrame.list.bottom.campaign.templates:Hide();
+			local fromClass = getClass(fromID);
+			local copiedData = {};
+			local id = Utils.str.id();
+			Utils.table.copy(copiedData, fromClass);
+			copiedData.MD = {
+				MO = copiedData.MD.MO,
+				V = 1,
+				CD = date("%d/%m/%y %H:%M:%S");
+				CB = Globals.player_id,
+				SD = date("%d/%m/%y %H:%M:%S");
+				SB = Globals.player_id,
+			};
+			TRP3_API.extended.tools.replaceID(copiedData, fromID, id);
+			local ID, _ = TRP3_API.extended.tools.createItem(copiedData, id);
+			TRP3_API.extended.tools.goToPage(ID);
+		end, TRP3_DB.types.CAMPAIGN});
 
 	end);
 

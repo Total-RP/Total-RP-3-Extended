@@ -313,7 +313,7 @@ local function unit_distance_point_init()
 		returnType = 0,
 		getText = function(args)
 			args = args or EMPTY;
-			return loc("OP_OP_DISTANCE_POINT_PREVIEW"):format(args[1] or "target", args[2] or 0, args[3] or 0);
+			return loc("OP_OP_DISTANCE_POINT_PREVIEW"):format(args[1] or "target", args[3] or 0, args[2] or 0);	-- See editor.load
 		end,
 		editor = editor,
 	});
@@ -324,19 +324,20 @@ local function unit_distance_point_init()
 	editor.y.title:SetText(loc("OP_OP_DISTANCE_Y"));
 	editor.current:SetText(loc("OP_OP_DISTANCE_CURRENT"));
 	editor.current:SetScript("OnClick", function()
-		local uX, uY = UnitPosition("player");
+		local uY, uX = UnitPosition("player");
 		editor.x:SetText(string.format("%.2f", uX or 0));
 		editor.y:SetText(string.format("%.2f", uY or 0));
 	end);
 
+	-- To make the coordinates fix compatible with old items, I'm just switching x and y in display and execution, saved data remains the same.
 	function editor.load(args)
 		editor.type:SetSelectedValue((args or EMPTY)[1] or "target");
-		editor.x:SetText((args or EMPTY)[2] or "0");
-		editor.y:SetText((args or EMPTY)[3] or "0");
+		editor.x:SetText((args or EMPTY)[3] or "0");
+		editor.y:SetText((args or EMPTY)[2] or "0");
 	end
 
 	function editor.save()
-		return {editor.type:GetSelectedValue() or "target", tonumber(strtrim(editor.x:GetText())) or 0, tonumber(strtrim(editor.y:GetText())) or 0};
+		return {editor.type:GetSelectedValue() or "target", tonumber(strtrim(editor.y:GetText())) or 0, tonumber(strtrim(editor.x:GetText())) or 0};
 	end
 
 	registerOperandEditor("unit_distance_me", {
@@ -542,6 +543,53 @@ local function char_cam_distance_init()
 		getText = function(args)
 			return loc("OP_OP_CHAR_CAM_DISTANCE");
 		end,
+	});
+end
+
+local function char_achievement_init()
+	local editor = TRP3_OperandEditorAchievementSelection;
+	
+	local typesText = {
+		account = loc("OP_OP_CHAR_ACHIEVEMENT_ACC"),
+		character = loc("OP_OP_CHAR_ACHIEVEMENT_CHAR")
+	}
+	
+	-- Achievement ID
+	editor.id.title:SetText(loc("OP_OP_CHAR_ACHIEVEMENT_ID"));
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("OP_OP_CHAR_ACHIEVEMENT_ID"), loc("OP_OP_CHAR_ACHIEVEMENT_ID_TT"));
+	
+	local types = {
+		{TRP3_API.formats.dropDownElements:format(loc("OP_OP_CHAR_ACHIEVEMENT_WHO"), loc("OP_OP_CHAR_ACHIEVEMENT_ACC")), "account", loc("OP_OP_CHAR_ACHIEVEMENT_ACC_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc("OP_OP_CHAR_ACHIEVEMENT_WHO"), loc("OP_OP_CHAR_ACHIEVEMENT_CHAR")), "character", loc("OP_OP_CHAR_ACHIEVEMENT_CHAR_TT")}
+	}
+	
+	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 200, true);
+	
+	function editor.load(args)
+		editor.type:SetSelectedValue((args or EMPTY)[1] or "account");
+		editor.id:SetText((args or EMPTY)[2] or "");
+	end
+
+	function editor.save()
+		return {editor.type:GetSelectedValue() or "account", tonumber(strtrim(editor.id:GetText())) or 0};
+	end
+	
+	registerOperandEditor("char_achievement" , {
+		title = loc("OP_OP_CHAR_ACHIEVEMENT"),
+		description = loc("OP_OP_CHAR_ACHIEVEMENT_TT"),
+		returnType = true,
+		getText = function(args)
+			local achievementType = typesText[(args or EMPTY)[1]] or typesText.account;
+			local achievementID = (args or EMPTY)[2] or "0";
+			local _, achievementName = GetAchievementInfo(tonumber(achievementID));
+			if achievementName == nil then
+				achievementName = "|cffff0000[WRONG ID]|r"
+			else
+				achievementName = "|cffffff00[" .. achievementName .. "]|r"
+			end
+			return loc("OP_OP_CHAR_ACHIEVEMENT_PREVIEW"):format(achievementName, achievementType);
+		end,
+		editor = editor,
 	});
 end
 
@@ -758,6 +806,7 @@ function TRP3_ConditionEditor.initOperands()
 	char_subzone_init();
 	char_minimap_init();
 	char_cam_distance_init();
+	char_achievement_init();
 
 	time_hour_init();
 	time_minute_init();

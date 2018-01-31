@@ -17,6 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- Fixed the "Summon Mount" effect (Paul Corlay)
+
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local loc = TRP3_API.locale.getText;
 
@@ -329,7 +331,7 @@ local EFFECTS = {
 	["companion_summon_mount"] = {
 		method = function(structure, cArgs, eArgs)
 			local mountId = tonumber(cArgs[1] or 0);
-			SummonByID(mountId);
+			C_MountJournal.SummonByID(mountId);
 			eArgs.LAST = 0;
 		end,
 		securedMethod = function(structure, cArgs, eArgs)

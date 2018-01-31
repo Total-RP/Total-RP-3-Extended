@@ -744,7 +744,7 @@ directReplacement = {
 		return TRP3_API.register.getPlayerCompleteName(true) or "";
 	end,
 	["trp:target:full"] = function()
-		return TRP3_API.r.name("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+		return TRP3_API.quest.GetCampaignNPCName("target") or TRP3_API.r.name("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["trp:player:first"] = function()
 		return TRP3_API.profile.getData("player/characteristics").FN or "";
@@ -811,6 +811,8 @@ function TRP3_API.script.parseArgs(text, args)
 			return (args.event or EMPTY)[index] or capture;
 		elseif (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture] then
 			return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture];
+		elseif ((TRP3_API.quest.getActiveCampaignLog() or EMPTY).vars or EMPTY)[capture] then
+			return ((TRP3_API.quest.getActiveCampaignLog() or EMPTY).vars or EMPTY)[capture];
 		elseif TRP3_API.extended.classExists(capture) then
 			return TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(capture), capture);
 		end

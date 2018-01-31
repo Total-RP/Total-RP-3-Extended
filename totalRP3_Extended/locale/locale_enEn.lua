@@ -39,6 +39,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	BINDING_NAME_TRP3_QUEST_LISTEN = "Quest action: listen",
 	BINDING_NAME_TRP3_QUEST_ACTION = "Quest action: interact",
 	BINDING_NAME_TRP3_QUEST_TALK = "Quest action: talk",
+	ERROR_MISSING_ARG = "Missing argument %1$s when trying to call function %2$s.",
 
 	-- INVENTORY
 	IT_CON = "Container",
@@ -171,6 +172,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_BUTTON = "Open quest log",
 	QE_NPC = "Campaign NPC",
 	QE_RESET_CONFIRM = "Reset this campaign?\n\nThis will lose all your progression for ALL the quests in this campaign.\n\nNote that you will keep all items you gained through this campaign.",
+	QE_AUTORESUME_CONFIRM = "An effect was called for the campaign |cff00ff00[%s]|r.\n\nActivate this campaign ?\n(If you already have an active campaign, it will be paused and your progress will be saved.)",
 	QE_ACTIONS_TYPE_LOOK = "Inspect",
 	QE_ACTIONS_TYPE_TALK = "Talk",
 	QE_ACTIONS_TYPE_LISTEN = "Listen",
@@ -362,6 +364,10 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	DB_TO_EXPERT = "Convert to expert mode",
 	DB_CREATE_CAMPAIGN = "Create campaign",
 	DB_CREATE_CAMPAIGN_TT = "Start creating a campaign",
+	DB_CREATE_CAMPAIGN_TEMPLATES_BLANK = "Blank campaign",
+	DB_CREATE_CAMPAIGN_TEMPLATES_BLANK_TT = "A blank template.\nFor those who like to start from scratch.",
+	DB_CREATE_CAMPAIGN_TEMPLATES_FROM = "Create from ...",
+	DB_CREATE_CAMPAIGN_TEMPLATES_FROM_TT = "Create a copy of an existing campaign.",
 	DB_REMOVE_OBJECT_POPUP = "Please confirm the removal of the object:\nID: |cff00ffff\"%s\"|r\n|cff00ff00[%s]|r\n\n|cffff9900Warning: This action cannot be reverted!.",
 	DB_ADD_COUNT = "How many units of %s do you want to add to your inventory?",
 	DB_IMPORT_ITEM = "Import item",
@@ -437,7 +443,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_UNIQUE_COUNT = "Max units",
 	IT_UNIQUE_COUNT_TT = "Sets the maximum units that a character can possessed. Should be greater than 0.",
 	IT_CRAFTED = "Crafted",
-	IT_CRAFTED_TT = "When a unit of this item will be added to your bag or created by another item, it will indicates you as creator in the tooltip.",
+	IT_CRAFTED_TT = "A crafted item will display in the tooltip the name of the player who crafted it. The player who craft the item is the player making the action of creating one instance of this item, manually or through a workflow.",
 	IT_STACK = "Stackable",
 	IT_STACK_TT = "Allow units for this item to be stacked in a same container slot.",
 	IT_STACK_COUNT = "Max units per stack",
@@ -529,6 +535,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_ELEMENT = "Element edition",
 	WO_ELEMENT_EDIT = "Click to edit element",
 	WO_ELEMENT_EDIT_RIGHT = "Right-click for more operations",
+	WO_ELEMENT_EDIT_CTRL = "Control-click to condition this instruction",
 	WO_ELEMENT_COND = "Edit effect condition",
 	WO_ELEMENT_COND_TT = "Adds a condition to this single effect.",
 	WO_ELEMENT_COND_NO = "Remove effect condition",
@@ -750,7 +757,7 @@ The function is in the form of:
 	EFFECT_ITEM_ADD_QT = "Amount",
 	EFFECT_ITEM_ADD_QT_TT = "The number of item to add.\n\n|cff00ff00Note that the addon will do his best to reach this amount but it is possible that not all items will be added: for example if the bag becomes full or if the item has a maximum of units the character can have ('Unique' attribute).",
 	EFFECT_ITEM_ADD_CRAFTED = "Crafted",
-	EFFECT_ITEM_ADD_CRAFTED_TT = "Mark the added items as \"Crafted by xxx\" where xxx will be the player name.",
+	EFFECT_ITEM_ADD_CRAFTED_TT = "When checked, and if the added items are craftable (have the crafted flag in their display attributes), will display \"Crafted by xxx\" in the items tooltip where xxx will be the player name.",
 	EFFECT_ITEM_REMOVE = "Destroy item",
 	EFFECT_ITEM_REMOVE_TT = "Destroy items from your inventory.",
 	EFFECT_ITEM_REMOVE_PREVIEW = "Destroys %sx %s",
@@ -1049,6 +1056,16 @@ We should begin with some examples:
 	OP_OP_CHAR_MINIMAP_TT = "Returns the minimap zone text.\n\nThe game event \"MINIMAP_ZONE_CHANGED\" is triggered, when the text changes. So you can test it in a game event link in a campaign or a quest.",
 	OP_OP_CHAR_CAM_DISTANCE = "Camera distance",
 	OP_OP_CHAR_CAM_DISTANCE_TT = "The camera distance from the player. 0 if in first person view.",
+	OP_OP_CHAR_ACHIEVEMENT = "Achievement",
+	OP_OP_CHAR_ACHIEVEMENT_TT = "Checks if the account has completed the specified achievement.",
+	OP_OP_CHAR_ACHIEVEMENT_ID = "Achievement ID",
+	OP_OP_CHAR_ACHIEVEMENT_ID_TT = "The numeric ID of the achievement you want to check.",
+	OP_OP_CHAR_ACHIEVEMENT_WHO = "Completed by",
+	OP_OP_CHAR_ACHIEVEMENT_ACC = "Account",
+	OP_OP_CHAR_ACHIEVEMENT_ACC_TT = "Checks if any character from this account has completed the achievement",
+	OP_OP_CHAR_ACHIEVEMENT_CHAR = "Character",
+	OP_OP_CHAR_ACHIEVEMENT_CHAR_TT = "Checks if the current character has completed the achievement",
+	OP_OP_CHAR_ACHIEVEMENT_PREVIEW = "%s completed by |cffff9900%s",
 	OP_OP_TIME_HOUR = "Time: Hour",
 	OP_OP_TIME_HOUR_TT = "The current hour of the day, server time.",
 	OP_OP_TIME_MINUTE = "Time: Minute",
@@ -1622,4 +1639,9 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Zack Wannemacher
 - Zencore
 
-##  You are the best!]];
+##  You are the best!
+
+## Total RP 3: Extended is also maintained thanks Ellype's [Patreon](http://patreon.com/Ellypse) supporters:
+
+%s
+]];

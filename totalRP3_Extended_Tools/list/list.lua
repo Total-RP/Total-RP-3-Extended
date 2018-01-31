@@ -16,6 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- Fixed inner item display bug (issue #82) (Paul Corlay)
+
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, strsplit, tinsert, table, strtrim = wipe, pairs, strsplit, tinsert, table, strtrim;
 local stEtN = Utils.str.emptyToNil;
@@ -83,7 +85,7 @@ local function objectHasChildren(class)
 end
 
 local function isChild(parentID, childID)
-	return childID ~= parentID and childID:sub(1, parentID:len()) == parentID;
+	return childID ~= parentID and childID:sub(1, parentID:len() + 1) == parentID .. " ";
 end
 
 local function isFirstLevelChild(parentID, childID)
@@ -105,7 +107,7 @@ end
 
 local function removeChildrenFromPool(parentID)
 	for objectID, _ in pairs(TRP3_DB.global) do
-		if objectID ~= parentID and objectID:sub(1, parentID:len()) == parentID then
+		if objectID ~= parentID and objectID:sub(1, parentID:len() + 1) == parentID .. " " then
 			Utils.table.remove(idList, objectID);
 		end
 	end
@@ -193,7 +195,7 @@ function refresh()
 		local parts = {strsplit(ID_SEPARATOR, objectID)};
 		local rootClass = getClass(parts[1]);
 		local depth = #parts;
-		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len()) == objectID;
+		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len() + 1) == objectID .. " ";
 		local hasChildren = isOpen or objectHasChildren(class);
 		local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
 		local link = TRP3_API.inventory.getItemLink(class, objectID);
@@ -370,6 +372,7 @@ local function onTabChanged(tabWidget, tab)
 	ToolFrame.list.bottom.item:Hide();
 	ToolFrame.list.bottom.campaign:Hide();
 	ToolFrame.list.bottom.item.templates:Hide();
+	ToolFrame.list.bottom.campaign.templates:Hide();
 	ToolFrame.list.bottom.import:Hide();
 	ToolFrame.list.bottom.importFull:Hide();
 	ToolFrame.list.bottom:Show();
@@ -395,7 +398,23 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.container:Hide();
 		ToolFrame.list.filters:Hide();
 		ToolFrame.list.backers:Show();
-		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion())));
+
+		local PATREON_SUPPORTERS = {
+			"Connor Macleod",
+			"Bas (AstaLawl)",
+			"Vlad",
+		}
+		table.sort(PATREON_SUPPORTERS);
+
+		local patreonMessage = "";
+		for _, patreonSupporter in pairs(PATREON_SUPPORTERS) do
+			patreonMessage = strconcat(patreonMessage, "- ", patreonSupporter, "\n");
+		end
+
+		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion(), patreonMessage)));
+		ToolFrame.list.backers.child.HTML:SetScript("OnHyperlinkClick", function(self, url, text, button)
+			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+		end)
 	end
 
 	filterList();
@@ -453,8 +472,9 @@ function onLineActionSelected(value, button)
 			onTabChanged(nil, currentTab);
 		end);
 	elseif action == ACTION_FLAG_ADD then
-		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(objectID))), function(value)
-			TRP3_API.inventory.addItem(nil, objectID, {count = value or 1});
+		local class = TRP3_API.extended.getClass(objectID);
+		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(class)), function(value)
+			TRP3_API.inventory.addItem(nil, objectID, {count = value or 1, madeBy = class.BA and class.BA.CR});
 		end, nil, 1);
 	elseif action == ACTION_FLAG_COPY_ID then
 		TRP3_API.popup.showTextInputPopup(loc("EDITOR_ID_COPY_POPUP"), nil, nil, objectID);
@@ -631,11 +651,6 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.bottom.campaign.Name:SetText(loc("DB_CREATE_CAMPAIGN"));
 	ToolFrame.list.bottom.campaign.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TT"));
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.campaign, "achievement_quests_completed_07");
-	ToolFrame.list.bottom.campaign:SetScript("OnClick", function()
-		local ID = Utils.str.id();
-		local ID, _ = TRP3_API.extended.tools.createCampaign(TRP3_API.extended.tools.getCampaignData(ID), ID);
-		TRP3_API.extended.tools.goToPage(ID);
-	end);
 
 	-- Events
 	Events.listenToEvent(Events.ON_OBJECT_UPDATED, function(objectID, objectType)

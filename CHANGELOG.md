@@ -1,10 +1,42 @@
-# Version 1.0.5
+# Changelog
 
-## New features
+## [1.0.7](https://github.com/Ellypse/Total-RP-3/compare/1.0.6...1.0.7) - 2018-01-31
 
-- There is now the possibility to give a default value to variables text tags, used when the variable can't be resolved. [Text tags guide](https://wow.curseforge.com/projects/total-rp-3-extended/pages/tutorials/variable-tags) — [Ticket #77](https://wow.curseforge.com/projects/total-rp-3-extended/issues/77)
+Our thanks again to [Solanya](http://twitter.com/Solanya_) for his help on this release.
 
-## Bug fixes
+### Fixed
 
-- Fixed: Numeric comparisons in conditions not working. — [Ticket #78](https://wow.curseforge.com/projects/total-rp-3-extended/issues/78)
-- Fixed: Item count in a container not working. — [Ticket #79](https://wow.curseforge.com/projects/total-rp-3-extended/issues/79)
+- Fixed an issue in the Arcano-Casino backers creation and improve workflow execution.
+- Fixed an issue in the coordinates system that would make some features not backward compatible.
+- Copying a creation now updates all the workflows in the creation to use the new copy ID instead of the original creation ID
+
+### Added
+
+- Variable interpolation for the active campaign (using a `${var}` tag to get the value of a variable stored in the active campaign.)
+- You are now prompted to enable a campaign when an effect from this campaign tried to be executed.
+- When creating a new campaign you now have the option to copy an existing campaign.
+- When copying a creation, it will now update workflows in that copy to use the new ID instead of the original creation ID.
+- Added indication in the tooltip that you can Ctrl + Click on an effect in a workflow to condition that specific instruction's execution.
+- Added thank you message for Ellypse's [Patreon](http://patreon.com/Ellypse) supporters.
+
+## 1.0.6  - 2017-11-22
+
+With the help of @Solanya_
+
+### New features / enhancements
+
+- Added achievement condition operand
+- Increased quest log progression size
+- {trp:target:full} text tag now tries also to use campaign NPCs names
+- Included a new backer's creation
+
+### Bug fixes
+
+- Fixed an issue with rolling multiple dices
+- Fixed "Summon Mount" effect
+- Fixed an issue with inner item display
+- Fixed an issue with "Player choices" in cutscenes when there was no left model
+- Fixed X & Y position condition operands
+- Fixed second scrolling menu display on the prompt effect
+- Fixed item tooltip showing on top on frames
+- Fixed "crafted" flag when manually added, and changed the english locale to better reflect that.

@@ -91,26 +91,40 @@ TRP3_API.quest.activateQuestHandlers = activateQuestHandlers;
 
 local function startQuest(campaignID, questID)
 	-- Checks
-	assert(campaignID and questID, "Illegal args");
-	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	if playerQuestLog.currentCampaign ~= campaignID then
-		Utils.message.displayMessage("|cffff0000[Error] Can't 'start quest' because current campaign is not " .. campaignID);
-		return 2;
-	end
-	local campaignLog = playerQuestLog[campaignID];
-	if not campaignLog then
-		Utils.message.displayMessage("|cffff0000[Error] Trying to 'start quest' from an unstarted campaign: " .. campaignID);
-		return 2;
-	end
+	assert(campaignID, loc("ERROR_MISSING_ARG"):format("campaignID", "startQuest(campaignID, questID)"));
+	assert(questID, loc("ERROR_MISSING_ARG"):format("questID", "startQuest(campaignID, questID)"));
+
 	if not TRP3_API.extended.classExists(campaignID, questID) then
 		Utils.message.displayMessage("|cffff0000[Error] 'start quest': Unknown quest: " .. campaignID .. " " .. questID);
 		return 2;
 	end
 
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	local campaignLog = playerQuestLog[campaignID];
+
+	if playerQuestLog.currentCampaign ~= campaignID or not campaignLog then
+		local campaignClass = getClass(campaignID);
+		local _, campaignName = getClassDataSafe(campaignClass);
+		local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
+			TRP3_API.quest.activateCampaign(campaignID, false);
+			TRP3_API.quest.startQuestForReal(campaignID, questID);
+		end);
+	else
+		TRP3_API.quest.startQuestForReal(campaignID, questID);
+	end
+
+	return 1;
+end
+TRP3_API.quest.startQuest = startQuest;
+
+local function startQuestForReal(campaignID, questID)
 	Log.log("Starting quest " .. campaignID .. " " .. questID);
 
 	local campaignClass = getClass(campaignID);
 	local questClass = getClass(campaignID, questID);
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	local campaignLog = playerQuestLog[campaignID];
 
 	campaignLog.QUEST[questID] = {
 		OB = {},
@@ -149,12 +163,12 @@ local function startQuest(campaignID, questID)
 	TRP3_QuestToast:Show();
 
 	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
-	return 1;
 end
-TRP3_API.quest.startQuest = startQuest;
+TRP3_API.quest.startQuestForReal = startQuestForReal;
 
 function TRP3_API.quest.getQuestCurrentStep(campaignID, questID)
-	assert(campaignID and questID, "Illegal args");
+	assert(campaignID, loc("ERROR_MISSING_ARG"):format("campaignID", "TRP3_API.quest.getQuestCurrentStep(campaignID, questID)"));
+	assert(questID, loc("ERROR_MISSING_ARG"):format("questID", "TRP3_API.quest.getQuestCurrentStep(campaignID, questID)"));
 	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
 	if campaignLog then
 		local questLog = campaignLog.QUEST[questID];
@@ -178,7 +192,8 @@ function TRP3_API.quest.isQuestObjectiveDone(campaignID, questID, objectiveID)
 end
 
 function TRP3_API.quest.isAllQuestObjectiveDone(campaignID, questID, all)
-	assert(campaignID and questID, "Illegal args");
+	assert(campaignID, loc("ERROR_MISSING_ARG"):format("campaignID", "TRP3_API.quest.isAllQuestObjectiveDone(campaignID, questID, all)"));
+	assert(questID, loc("ERROR_MISSING_ARG"):format("questID", "TRP3_API.quest.isAllQuestObjectiveDone(campaignID, questID, all)"));
 	local campaignLog = TRP3_API.quest.getQuestLog()[campaignID];
 	if campaignLog then
 		local questLog = campaignLog.QUEST[questID];
@@ -273,26 +288,56 @@ TRP3_API.quest.activateStepHandlers = activateStepHandlers;
 
 local function goToStep(campaignID, questID, stepID)
 	-- Checks
-	assert(campaignID and questID and stepID, "Illegal args");
-	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	if playerQuestLog.currentCampaign ~= campaignID then
-		Utils.message.displayMessage("|cffff0000[Error] Can't 'go to step' because current campaign is not " .. campaignID);
-		return 2;
-	end
-	local campaignLog = playerQuestLog[campaignID];
-	if not campaignLog then
-		Utils.message.displayMessage("|cffff0000[Error] Trying to 'go to step' from an unstarted campaign: " .. campaignID);
-		return 2;
-	end
-	local questLog = campaignLog.QUEST[questID];
-	if not questLog then
-		Utils.message.displayMessage("|cffff0000[Error] Trying to 'go to step' from an unstarted quest: " .. campaignID .. " " .. questID);
-		return 2;
-	end
+	assert(campaignID, loc("ERROR_MISSING_ARG"):format("campaignID", "TRP3_API.quest.goToStep(campaignID, questID, stepID)"));
+	assert(questID, loc("ERROR_MISSING_ARG"):format("questID", "TRP3_API.quest.goToStep(campaignID, questID, stepID)"));
+	assert(stepID, loc("ERROR_MISSING_ARG"):format("stepID", "TRP3_API.quest.goToStep(campaignID, questID, stepID)"));
+
 	if not TRP3_API.extended.classExists(campaignID, questID, stepID) then
 		Utils.message.displayMessage("|cffff0000[Error] 'go to step': Unknown quest step: " .. campaignID .. " " .. questID .. " " .. stepID);
 		return 2;
 	end
+
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	local campaignLog = playerQuestLog[campaignID];
+
+	if not campaignLog then
+		local campaignClass = getClass(campaignID);
+		local _, campaignName = getClassDataSafe(campaignClass);
+		local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
+			TRP3_API.quest.activateCampaign(campaignID, false);
+			TRP3_API.quest.goToStep(campaignID, questID, stepID);
+		end);
+		return 3;
+	else
+		local questLog = campaignLog.QUEST[questID];
+
+		if not questLog then
+			Utils.message.displayMessage("|cffff0000[Error] Trying to 'go to step' from an unstarted quest: " .. campaignID .. " " .. questID);
+			return 2;
+		end
+
+		if playerQuestLog.currentCampaign ~= campaignID then
+			local campaignClass = getClass(campaignID);
+			local _, campaignName = getClassDataSafe(campaignClass);
+			local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+			TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
+				TRP3_API.quest.activateCampaign(campaignID, false);
+				TRP3_API.quest.goToStepForReal(campaignID, questID, stepID);
+			end);
+		else
+			TRP3_API.quest.goToStepForReal(campaignID, questID, stepID);
+		end
+		return 1;
+	end
+end
+TRP3_API.quest.goToStep = goToStep;
+
+local function goToStepForReal(campaignID, questID, stepID)
+
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	local campaignLog = playerQuestLog[campaignID];
+	local questLog = campaignLog.QUEST[questID];
 
 	-- Change the current step
 	if questLog.CS then
@@ -302,7 +347,7 @@ local function goToStep(campaignID, questID, stepID)
 		-- Triggers current step On Leave
 		if currentStepClass and currentStepClass.LI and currentStepClass.LI.OL then
 			local retCode = TRP3_API.script.executeClassScript(currentStepClass.LI.OL, currentStepClass.SC,
-				{object = campaignLog, classID = stepID}, currentStepID);
+			{object = campaignLog, classID = stepID}, currentStepID);
 		end
 
 		if not questLog.PS then questLog.PS = {}; end
@@ -332,10 +377,8 @@ local function goToStep(campaignID, questID, stepID)
 	end
 
 	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
-
-	return 1;
 end
-TRP3_API.quest.goToStep = goToStep;
+TRP3_API.quest.goToStepForReal = goToStepForReal;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- OBJECTIVES
@@ -343,34 +386,65 @@ TRP3_API.quest.goToStep = goToStep;
 
 local function revealObjective(campaignID, questID, objectiveID)
 	-- Checks
-	assert(campaignID and questID and objectiveID, "Illegal args");
+	assert(campaignID, loc("ERROR_MISSING_ARG"):format("campaignID", "TRP3_API.quest.revealObjective(campaignID, questID, objectiveID)"));
+	assert(questID, loc("ERROR_MISSING_ARG"):format("questID", "TRP3_API.quest.revealObjective(campaignID, questID, objectiveID)"));
+	assert(objectiveID, loc("ERROR_MISSING_ARG"):format("objectiveID", "TRP3_API.quest.revealObjective(campaignID, questID, objectiveID)"));
+
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	if playerQuestLog.currentCampaign ~= campaignID then
-		Utils.message.displayMessage("|cffff0000[Error] Can't 'reveal objective' because current campaign is not " .. campaignID);
-		return 2;
-	end
 	local campaignLog = playerQuestLog[campaignID];
-	if not campaignLog then
-		Utils.message.displayMessage("|cffff0000[Error] Trying to 'reveal objective' from an unstarted campaign: " .. campaignID);
-		return 2;
-	end
-	local questLog = campaignLog.QUEST[questID];
-	if not questLog then
-		Utils.message.displayMessage("|cffff0000[Error] Trying to 'reveal objective' from an unstarted quest: " .. campaignID .. " " .. questID);
-		return 2;
-	end
+	local questClass = getClass(campaignID, questID);
+	local objectiveClass = questClass.OB[objectiveID];
+
 	if not TRP3_API.extended.classExists(campaignID, questID) then
 		Utils.message.displayMessage("|cffff0000[Error] 'reveal objective': Unknown quest: " .. campaignID .. " " .. questID);
 		return 2;
 	end
-
-	local questClass = getClass(campaignID, questID);
-	local objectiveClass = questClass.OB[objectiveID];
-
 	if not objectiveClass then
 		Utils.message.displayMessage("|cffff0000[Error] 'reveal objective': Unknown objective: " .. campaignID .. " " .. questID .. " " .. objectiveID);
 		return 2;
 	end
+
+	if not campaignLog then
+		local campaignClass = getClass(campaignID);
+		local _, campaignName = getClassDataSafe(campaignClass);
+		local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
+			TRP3_API.quest.activateCampaign(campaignID, false);
+			TRP3_API.quest.revealObjective(campaignID, questID, objectiveID);
+		end);
+		return 3;
+	else
+		local questLog = campaignLog.QUEST[questID];
+
+		if not questLog then
+			Utils.message.displayMessage("|cffff0000[Error] Trying to 'reveal objective' from an unstarted quest: " .. campaignID .. " " .. questID);
+			return 2;
+		end
+
+		if playerQuestLog.currentCampaign ~= campaignID then
+			local campaignClass = getClass(campaignID);
+			local _, campaignName = getClassDataSafe(campaignClass);
+			local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+			TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
+				TRP3_API.quest.activateCampaign(campaignID, false);
+				TRP3_API.quest.revealObjectiveForReal(campaignID, questID, objectiveID);
+			end);
+		else
+			TRP3_API.quest.revealObjectiveForReal(campaignID, questID, objectiveID);
+		end
+
+		return 1;
+	end
+end
+TRP3_API.quest.revealObjective = revealObjective;
+
+local function revealObjectiveForReal(campaignID, questID, objectiveID)
+
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	local campaignLog = playerQuestLog[campaignID];
+	local questLog = campaignLog.QUEST[questID];
+	local questClass = getClass(campaignID, questID);
+	local objectiveClass = questClass.OB[objectiveID];
 
 	if not questLog.OB then questLog.OB = {} end
 
@@ -389,29 +463,18 @@ local function revealObjective(campaignID, questID, objectiveID)
 		Utils.message.displayMessage(loc("QE_QUEST_OBJ_UPDATED"):format(obectiveText), Utils.message.type.ALERT_MESSAGE);
 	end
 	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
-
-	return 1;
 end
-TRP3_API.quest.revealObjective = revealObjective;
+TRP3_API.quest.revealObjectiveForReal = revealObjectiveForReal;
 
 local function markObjectiveDone(campaignID, questID, objectiveID)
 	-- Checks
-	assert(campaignID and questID and objectiveID, "Illegal args");
+	assert(campaignID, loc("ERROR_MISSING_ARG"):format("campaignID", "TRP3_API.quest.markObjectiveDone(campaignID, questID, objectiveID)"));
+	assert(questID, loc("ERROR_MISSING_ARG"):format("questID", "TRP3_API.quest.markObjectiveDone(campaignID, questID, objectiveID)"));
+	assert(objectiveID, loc("ERROR_MISSING_ARG"):format("objectiveID", "TRP3_API.quest.markObjectiveDone(campaignID, questID, objectiveID)"));
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	if playerQuestLog.currentCampaign ~= campaignID then
-		Utils.message.displayMessage("|cffff0000[Error] Can't 'mark objective done' because current campaign is not " .. campaignID);
-		return 2;
-	end
+
 	local campaignLog = playerQuestLog[campaignID];
-	if not campaignLog then
-		Utils.message.displayMessage("|cffff0000[Error] Trying to 'mark objective done' from an unstarted campaign: " .. campaignID);
-		return 2;
-	end
-	local questLog = campaignLog.QUEST[questID];
-	if not questLog then
-		Utils.message.displayMessage("|cffff0000[Error] Trying to 'mark objective done' from an unstarted quest: " .. campaignID .. " " .. questID);
-		return 2;
-	end
+
 	if not TRP3_API.extended.classExists(campaignID, questID) then
 		Utils.message.displayMessage("|cffff0000[Error] 'mark objective done': Unknown quest: " .. campaignID .. " " .. questID);
 		return 2;
@@ -426,6 +489,47 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 		return 2;
 	end
 
+	if not campaignLog then
+		local campaignClass = getClass(campaignID);
+		local _, campaignName = getClassDataSafe(campaignClass);
+		local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
+			TRP3_API.quest.activateCampaign(campaignID, false);
+			TRP3_API.quest.markObjectiveDone(campaignID, questID, objectiveID);
+		end);
+		return 3;
+	else
+		local questLog = campaignLog.QUEST[questID];
+		if not questLog then
+			Utils.message.displayMessage("|cffff0000[Error] Trying to 'mark objective done' from an unstarted quest: " .. campaignID .. " " .. questID);
+			return 2;
+		end
+
+		if playerQuestLog.currentCampaign ~= campaignID then
+			local campaignClass = getClass(campaignID);
+			local _, campaignName = getClassDataSafe(campaignClass);
+			local autoResumeWarning = loc("QE_AUTORESUME_CONFIRM"):format(campaignName);
+			TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
+				TRP3_API.quest.activateCampaign(campaignID, false);
+				TRP3_API.quest.markObjectiveDoneForReal(campaignID, questID, objectiveID);
+			end);
+		else
+			TRP3_API.quest.markObjectiveDoneForReal(campaignID, questID, objectiveID);
+		end
+		return 1;
+	end
+end
+TRP3_API.quest.markObjectiveDone = markObjectiveDone;
+
+local function markObjectiveDoneForReal(campaignID, questID, objectiveID)
+
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	local campaignLog = playerQuestLog[campaignID];
+	local questLog = campaignLog.QUEST[questID];
+	local questFullID = TRP3_API.extended.getFullID(campaignID, questID);
+	local questClass = getClass(questFullID);
+	local objectiveClass = questClass.OB[objectiveID];
+
 	if not questLog.OB then questLog.OB = {} end
 
 	-- Message
@@ -439,10 +543,8 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 		local retCode = TRP3_API.script.executeClassScript(questClass.LI.OOC, questClass.SC,
 			{object = campaignLog, classID = questFullID}, questFullID);
 	end
-
-	return 1;
 end
-TRP3_API.quest.markObjectiveDone = markObjectiveDone;
+TRP3_API.quest.markObjectiveDoneForReal = markObjectiveDoneForReal;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- PLAYER ACTIONS

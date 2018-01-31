@@ -200,12 +200,14 @@ local function onSlotClickAction(action, slot)
 	if action == 1 then
 		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = main, point = "CENTER", parentPoint = "CENTER"}, {function(fromID)
 			TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(fromID))), function(value)
-				TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), fromID, {count = value or 1}, nil, slotID);
+				local class = TRP3_API.extended.getClass(fromID);
+				TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), fromID, {count = value or 1, madeBy = class.BA and class.BA.CR}, nil, slotID);
 			end, nil, 1);
 		end, TRP3_DB.types.ITEM, true});
 	elseif action == 2 then
 		TRP3_API.extended.tools.openItemQuickEditor(main, function(classID, _)
-			TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), classID, {count = 1}, nil, slotID);
+			local class = TRP3_API.extended.getClass(classID);
+			TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), classID, {count = 1, madeBy = class.BA and class.BA.CR}, nil, slotID);
 		end, nil, true);
 	end
 end
