@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.7](https://github.com/Ellypse/Total-RP-3/compare/1.0.6...1.0.7) - 2018-01-13
+## [1.0.7](https://github.com/Ellypse/Total-RP-3/compare/1.0.6...1.0.7) - 2018-01-31
 
 Our thanks again to [Solanya](http://twitter.com/Solanya_) for his help on this release.
 
@@ -8,6 +8,7 @@ Our thanks again to [Solanya](http://twitter.com/Solanya_) for his help on this 
 
 - Fixed an issue in the Arcano-Casino backers creation and improve workflow execution.
 - Fixed an issue in the coordinates system that would make some features not backward compatible.
+- Copying a creation now updates all the workflows in the creation to use the new copy ID instead of the original creation ID
 
 ### Added
 
