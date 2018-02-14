@@ -38,6 +38,8 @@ local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
 local SECURITY_LEVEL = TRP3_API.security.SECURITY_LEVEL;
 local hasImportExportModule = false;
 
+local SUPPOSED_SERIAL_SIZE_LIMIT = 500000; -- We suppose the text field can only handle 500k pastes
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: util methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -497,7 +499,7 @@ function onLineActionSelected(value, button)
 		local class = getClass(objectID);
 		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class});
 		serial = serial:gsub("|", "||");
-		if serial:len() < 20000 then
+		if serial:len() < SUPPOSED_SERIAL_SIZE_LIMIT then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
 			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
 			ToolFrame.list.container.export:Show();
