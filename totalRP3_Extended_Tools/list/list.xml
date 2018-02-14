@@ -176,7 +176,7 @@
 			<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 			<Frame name="$parentBottom" parentKey="bottom" inherits="TRP3_FieldSetFrame">
-				<Size x="0" y="85"/>
+				<Size x="0" y="160"/>
 				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
@@ -186,7 +186,7 @@
 
 					<Button parentKey="item" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
-							<Anchor point="LEFT" x="125" y="0"/>
+							<Anchor point="TOPLEFT" x="125" y="-25"/>
 						</Anchors>
 						<Frames>
 							<Frame parentKey="templates" inherits="TRP3_ItemTemplates" hidden="true"/>
@@ -195,7 +195,7 @@
 
 					<Button parentKey="campaign" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
-							<Anchor point="CENTER" x="125" y="0"/>
+							<Anchor point="TOPRIGHT" x="-400" y="-25"/>
 						</Anchors>
 						<Frames>
 							<Frame parentKey="templates" inherits="TRP3_CampaignTemplates" hidden="true"/>
@@ -204,13 +204,13 @@
 
 					<Button parentKey="import" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
-							<Anchor point="LEFT" x="125" y="0"/>
+							<Anchor point="BOTTOMLEFT" x="125" y="25"/>
 						</Anchors>
 					</Button>
 
 					<Button parentKey="importFull" inherits="TRP3_QuestButtonTemplate">
 						<Anchors>
-							<Anchor point="CENTER" x="125" y="0"/>
+							<Anchor point="BOTTOMRIGHT" x="-400" y="25"/>
 						</Anchors>
 					</Button>
 
@@ -306,6 +306,14 @@
 								</Scripts>
 							</Button>
 
+							<SimpleHTML parentKey="wagoInfo">
+								<Size y="30" x="450"/>
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.title" relativePoint="BOTTOM" y="-10"/>
+								</Anchors>
+								<FontString inherits="GameFontNormalSmall" justifyH="LEFT"/>
+							</SimpleHTML>
+
 							<Frame parentKey="content" inherits="TRP3_TextArea">
 								<Layers>
 									<Layer level="OVERLAY">
@@ -319,7 +327,7 @@
 									</Layer>
 								</Layers>
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-70"/>
 									<Anchor point="RIGHT" x="-30" y="0"/>
 									<Anchor point="LEFT" x="20" y="0"/>
 									<Anchor point="BOTTOM" x="0" y="30"/>
@@ -367,6 +375,14 @@
 								</Anchors>
 							</Button>
 
+							<SimpleHTML parentKey="wagoInfo">
+								<Size y="30" x="450"/>
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.title" relativePoint="BOTTOM" y="-10"/>
+								</Anchors>
+								<FontString inherits="GameFontNormalSmall" justifyH="LEFT"/>
+							</SimpleHTML>
+
 							<Frame parentKey="content" inherits="TRP3_TextArea">
 								<Layers>
 									<Layer level="OVERLAY">
@@ -380,7 +396,7 @@
 									</Layer>
 								</Layers>
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-61"/>
 									<Anchor point="RIGHT" x="-30" y="0"/>
 									<Anchor point="LEFT" x="20" y="0"/>
 									<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.save" x="0" y="5"/>

@@ -326,12 +326,15 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	DB_COPY_TT = "Copy all this object information and child objects to be pastable as inner objects in another object.",
 	DB_EXPORT = "Quick export object",
 	DB_EXPORT_TT = "Serializes the object content to be exchangeable outside the game.\n\nOnly works on small objects (lesser than 20 kB once serialized). For larger object, use the full export feature.",
+	DB_EXPORT_TT_2 = "Serializes the object content to be exchangeable outside the game.\n\n|cffff0000Note: Exporting large object may freeze the game for a few seconds.|r",
 	DB_EXPORT_TOO_LARGE = "This object is too large once serialized to be exported this way. Please use the full export feature.\n\nSize: %0.1f kB.",
 	DB_EXPORT_HELP = "Code for object %s (size: %0.1f kB)",
-	DB_WAGO_INFO = "New: You can now post your quick exports on the WeakAuras sharing website http://wago.io !\n\nPaste this export string on their website, add a description, a few screenshots and you will have a nice URL to share with your friends!",
+	DB_WAGO_INFO = [[|cffff0000New:|r You can now post your quick exports on the WeakAuras sharing website |cff00ff00[<a href="http://wago.io">wago.io</a>]|r !<br/>Paste this export string on their website, add a description, a few screenshots and you will have a nice URL to share with your friends!]],
 	DB_IMPORT = "Quick object import",
 	DB_IMPORT_TT = "Paste here a previously serialized object",
-	DB_IMPORT_TT_WAGO = "Don't have anything to paste? The WeakAuras sharing website http://wago.io now hosts Total RP 3: Extended creations. You can browse their website for other people's creations and paste them here.",
+	DB_IMPORT_TT_WAGO = [[Don't have anything to paste here? The WeakAuras sharing website |cff00ff00[<a href="http://wago.io">wago.io</a>]|r now hosts Total RP 3: Extended creations.
+<br/>
+You can browse their website for other people's creations and paste them here.]],
 	DB_IMPORT_WORD = "Import",
 	DB_IMPORT_ERROR1 = "The object could not be deserialized.",
 	DB_IMPORT_CONFIRM = "This object was serialized in a different version of Total RP 3 Extended than yours.\n\nImport TRP3E version: %s\nYour TRP3E version: %s\n\n|cffff9900This can lead to incompatibilities.\nContinue the import anyway?",

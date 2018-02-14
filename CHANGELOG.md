@@ -6,9 +6,9 @@ This update improve the quick export and quick import workflows. The WeakAuras s
 
 ### Changed
 
-- Increased the size limit for the quick export option to 500KB up from 16KB.
+- Increased the size limit for the quick export option to 500KB up from 16KB. Note that large import/export can freeze the game for a few seconds.
 - Added indications about the support of wago.io in the quick export and quick import UI.
-- Move the quick import button to be more accessible.
+- The import buttons are now always accessible.
 
 ## [1.0.7](https://github.com/Ellypse/Total-RP-3/compare/1.0.6...1.0.7) - 2018-01-31
 

@@ -371,12 +371,8 @@ local function onTabChanged(tabWidget, tab)
 	tabGroup.tabs[4]:SetText(loc("DB_FULL"):format(getDBSize()));
 
 	TRP3_ItemQuickEditor:Hide();
-	ToolFrame.list.bottom.item:Hide();
-	ToolFrame.list.bottom.campaign:Hide();
 	ToolFrame.list.bottom.item.templates:Hide();
 	ToolFrame.list.bottom.campaign.templates:Hide();
-	ToolFrame.list.bottom.import:Hide();
-	ToolFrame.list.bottom.importFull:Hide();
 	ToolFrame.list.bottom:Show();
 	ToolFrame.list.container:Show();
 	ToolFrame.list.filters:Show();
@@ -521,7 +517,7 @@ function onLineActionSelected(value, button)
 		serial = serial:gsub("|", "||");
 		if serial:len() < SUPPOSED_SERIAL_SIZE_LIMIT then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
-			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024) .. "\n" .. loc("DB_WAGO_INFO"));
+			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
 			ToolFrame.list.container.export:Show();
 		else
 			Utils.message.displayMessage(loc("DB_EXPORT_TOO_LARGE"):format(serial:len() / 1024), 2);
@@ -563,7 +559,7 @@ function onLineRightClick(lineWidget, data)
 		tinsert(values, {loc("IN_INNER_COPY_ACTION"), ACTION_FLAG_COPY .. data.fullID, loc("DB_COPY_TT")});
 	end
 	if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-		tinsert(values, {loc("DB_EXPORT"), ACTION_FLAG_EXPORT .. data.fullID, loc("DB_EXPORT_TT")});
+		tinsert(values, {loc("DB_EXPORT"), ACTION_FLAG_EXPORT .. data.fullID, loc("DB_EXPORT_TT_2")});
 		tinsert(values, {loc("DB_FULL_EXPORT"), ACTION_FLAG_FULL_EXPORT .. data.fullID, loc("DB_FULL_EXPORT_TT")});
 	end
 
@@ -728,9 +724,20 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	end);
 
 	-- Export
-	ToolFrame.list.container.export.title:SetText(loc("DB_EXPORT"));
+	do
+		ToolFrame.list.container.export.title:SetText(loc("DB_EXPORT"));
+
+		---@type SimpleHTML
+		local wagoInfo = ToolFrame.list.container.export.wagoInfo;
+		wagoInfo:SetText(HTML_START .. loc("DB_WAGO_INFO") .. HTML_END);
+		wagoInfo:SetScript("OnHyperlinkClick", function(self, url)
+			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+		end);
+	end
+
+	-- Quick import
 	ToolFrame.list.bottom.import.Name:SetText(loc("DB_IMPORT"));
-	ToolFrame.list.bottom.import.InfoText:SetText(loc("DB_IMPORT_TT") .. "\n" .. loc("DB_IMPORT_TT_WAGO"));
+	ToolFrame.list.bottom.import.InfoText:SetText(loc("DB_IMPORT_TT"));
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.import, "INV_Inscription_ScrollOfWisdom_02");
 
 	-- Import
@@ -784,6 +791,14 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			checkVersion();
 		end
 	end
+
+	---@type SimpleHTML
+	local wagoInfo = ToolFrame.list.container.import.wagoInfo;
+	wagoInfo:SetText(HTML_START .. loc("DB_IMPORT_TT_WAGO") .. HTML_END);
+	wagoInfo:SetScript("OnHyperlinkClick", function(self, url)
+		TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+	end);
+
 	ToolFrame.list.container.import.title:SetText(loc("DB_IMPORT"));
 	ToolFrame.list.container.import.content.title:SetText(loc("DB_IMPORT_TT"));
 	ToolFrame.list.bottom.import:SetScript("OnClick", function()
@@ -806,6 +821,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_FULL_CONFIRM"):format(type, link, by, objectVersion), function()
 				C_Timer.After(0.25, function()
 					importFunction(version, ID, data);
+					tabGroup:SelectTab(4); -- After importing go to full database, so we see what we have imported
 				end);
 			end);
 		else
