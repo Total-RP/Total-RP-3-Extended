@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.7.1](https://github.com/Ellypse/Total-RP-3/compare/1.0.7...1.0.7.1) - 2018-02-15
+## [1.0.8](https://github.com/Ellypse/Total-RP-3/compare/1.0.7...1.0.8) - 2018-02-14
 
 This update improve the quick export and quick import workflows. The WeakAuras sharing website [wago.io](http://wago.io) now support Total RP 3: Extended items and campaigns! Create a quick export string by right-clicking on your creation and choosing the quick export option and paste the generated string on the website. Give your creation a name, a description (they will be pre-populated using your items info!) and add a few screenshots to show exactly what it is (or even YouTube videos!) and get a nice URL to share with people where they can copy the import string to paste inside their own Total RP 3: Extended.
 
