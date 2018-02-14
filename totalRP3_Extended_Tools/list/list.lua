@@ -501,7 +501,7 @@ function onLineActionSelected(value, button)
 		serial = serial:gsub("|", "||");
 		if serial:len() < SUPPOSED_SERIAL_SIZE_LIMIT then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
-			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
+			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024) .. "\n" .. loc("DB_WAGO_INFO"));
 			ToolFrame.list.container.export:Show();
 		else
 			Utils.message.displayMessage(loc("DB_EXPORT_TOO_LARGE"):format(serial:len() / 1024), 2);
@@ -710,7 +710,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	-- Export
 	ToolFrame.list.container.export.title:SetText(loc("DB_EXPORT"));
 	ToolFrame.list.bottom.import.Name:SetText(loc("DB_IMPORT"));
-	ToolFrame.list.bottom.import.InfoText:SetText(loc("DB_IMPORT_TT"));
+	ToolFrame.list.bottom.import.InfoText:SetText(loc("DB_IMPORT_TT") .. "\n" .. loc("DB_IMPORT_TT_WAGO"));
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.import, "INV_Inscription_ScrollOfWisdom_02");
 
 	-- Import
