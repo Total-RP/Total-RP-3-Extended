@@ -400,17 +400,37 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.container:Hide();
 		ToolFrame.list.filters:Hide();
 		ToolFrame.list.backers:Show();
+		
+		---@type ColorMixin
+		local PURPLE = CreateColor(0.5, 0, 1);
+
+		local GOLDEN_SUPPORTERS = {
+			"Bas(AstaLawl)",
+			"Connor Macleod",
+			"Vlad",
+			"Mooncubus",
+		}
 
 		local PATREON_SUPPORTERS = {
-			"Connor Macleod",
-			"Bas (AstaLawl)",
-			"Vlad",
+			"Nikradical",
+			"Solanya",
+			"Ripperley",
+			"Keyboardturner",
+			"Petr Cihelka",
 		}
+
+		table.sort(GOLDEN_SUPPORTERS);
 		table.sort(PATREON_SUPPORTERS);
 
+		local LINE_FORMAT = "- %s\n";
+
 		local patreonMessage = "";
+		for _, patreonSupporter in pairs(GOLDEN_SUPPORTERS) do
+			patreonMessage = patreonMessage .. LINE_FORMAT:format(PURPLE:WrapTextInColorCode(patreonSupporter));
+		end
+		patreonMessage = patreonMessage .. "\n";
 		for _, patreonSupporter in pairs(PATREON_SUPPORTERS) do
-			patreonMessage = strconcat(patreonMessage, "- ", patreonSupporter, "\n");
+			patreonMessage = patreonMessage .. LINE_FORMAT:format(patreonSupporter);
 		end
 
 		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion(), patreonMessage)));
