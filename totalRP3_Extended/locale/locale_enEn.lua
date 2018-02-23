@@ -44,7 +44,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	-- INVENTORY
 	IT_CON = "Container",
 	IT_CON_TT = "Container (%d/%d slots used)",
-	IT_CON_ERROR_TYPE = "This container can't contain this kind of items.",
+	IT_CON_ERROR_TYPE = "This container can't contain that kind of item.",
 	IT_CON_ERROR_TRADE = "You can't drop this container if it's not empty.",
 	IT_CON_OPEN = "Open/Close container",
 	IT_CON_CAN_INNER = "Can't place a container inside itself!",
@@ -57,7 +57,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
     IT_INV_SCAN_MY_ITEMS = "Scan for my items",
 	IT_CON_TT_MISSING_CLASS = "Missing item class ID",
 	IT_EX_DOWNLOAD = "Download",
-	IT_EX_DOWNLOAD_TT = "|cffff9900This item is %s messages long and would take at minimum %.1f seconds to be downloaded (in the best condition).\n\n|cff00ff00Click to requests %s to send you all the data about this item.\n\n|cffff9900You can't finish a trade if you don't have all the updated information about all items you would receive.",
+	IT_EX_DOWNLOAD_TT = "|cffff9900This item is %s messages long and would take at minimum %.1f seconds to be downloaded (in the best condition).\n\n|cff00ff00Click to request %s to send you all the data about this item.\n\n|cffff9900You can't finish a trade if you don't have all the updated information about all items you would receive.",
 	IT_EX_EMPTY_DRAG = "You can drag and drop items here.",
 	IT_EX_EMPTY = "Nothing to trade",
 	IT_EX_SLOT_DOWNLOAD = "|rYou don't have the information about this item.\n\n|cff00ff00If the item is not too large, TRP3 will download it automatically from %s.\n\n|cffff9900If it is too large, you can manually request its information with the download button, but keep in mind that it could take some time to be downloaded.",
@@ -91,8 +91,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 
 	-- SEC
 	SEC_LEVEL = "Security level",
-	SEC_LEVEL_DETAIL = "Click to see a detail of the used unsecure scripts.",
-	SEC_LEVEL_DETAIL2 = "Click to see a detail of the used unsecure scripts and configure which one can be executed.",
+	SEC_LEVEL_DETAIL = "Click to see details of the unsecure scripts used.",
+	SEC_LEVEL_DETAIL2 = "Click to see details of the unsecure scripts used and configure which ones can be executed.",
 	SEC_LOW = "Low",
 	SEC_LOW_TT = "This item, or one of its related object, uses one or more unsecure scripts that can have malicious effects.",
 	SEC_MEDIUM = "Medium",
@@ -110,7 +110,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	SEC_REASON_SOUND = "Playing a sound",
 	SEC_REASON_SOUND_WHY = "This object could play a sound or a music that will be heard by the TRP3:E users around you.\n\n|cffff9900It may be undesirable for them if the sound is spammed or if the sound is particulary annoying. And if it's the case, they could blame you and block you.\n\n|cff00ff00If blocked, the sound/music will be played only for you.",
 	SEC_REASON_DISMOUNT = "Dismount",
-	SEC_REASON_DISMOUNT_WHY = "This object could force you to unmount.\n\n|cffff9900It may be undesirable for you... Especially if you are on a flying mount!",
+	SEC_REASON_DISMOUNT_WHY = "This object could force you to unmount.\n\n|cffff9900It may be undesirable for you... especially if you are on a flying mount!",
 	SEC_LEVEL_DETAILS_THIS = "Switch security for this objects",
 	SEC_LEVEL_DETAILS_THIS_TT = "Accept the execution of this effect for this object only.",
 	SEC_LEVEL_DETAILS_ALL = "Switch security for all objects",
@@ -126,7 +126,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	SET_TT_SECURED = "Some potentially malicious effects have been secured for your safety.\n|cff00ff00Alt + Right click for more details.",
 	SET_TT_DETAILS_1 = "Hold Alt key to show more",
 	SET_TT_DETAILS_2 = "%s warning(s)",
-	SET_TT_OLD = "This item has been created with an older version of Extended (v %s). Incompatibilities may occured.",
+	SET_TT_OLD = "This item has been created with an older version of Extended (v %s). Incompatibilities may occur.",
 
 	-- LOOT
 	LOOT = "Loot",
@@ -188,12 +188,12 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_NEW = "New quest revealed",
 	QE_ACTION = "Quest action",
 	QE_MACRO = "Create macro",
-	QE_MACRO_TT = "Creates a macro for this action type and pickup the macro on your cursor to be placed in any action bars.",
-	QE_MACRO_MAX = "You can't have more macro. Please free a macro slot before trying again.",
+	QE_MACRO_TT = "Creates a macro for this action type and puts the macro on your cursor to be placed on any action bar.",
+	QE_MACRO_MAX = "You can't have more macros. Please free a macro slot before trying again.",
 	QE_PROGRESS = "Campaign progression",
 	DI_NEXT = "Next",
 	DI_WAIT_LOOT = "Please loot all items",
-	QE_ACTION_NO_CURRENT = "You don't have any active campaign. You should activate a campaign before trying to do an action..",
+	QE_ACTION_NO_CURRENT = "You don't have any active campaigns. You should activate a campaign before trying to do an action..",
 	QE_CAMPAIGN_NO = "No started yet",
 	QE_CAMPAIGN_FULL = "Finished",
 
@@ -220,11 +220,11 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	CONF_SOUNDS_METHOD_2 = "Ask permission",
 	CONF_SOUNDS_METHOD_2_TT = "If you are in range, a link will be placed in the chat frame to ask you confirmation to play the sound/music.",
 	CONF_MUSIC_ACTIVE = "Play local musics",
-	CONF_MUSIC_ACTIVE_TT = "Local musics are musics played by other players (for example through an item) to a certain range in yards.\n\nTurn this off if you don't want to hear these musics at all.\n\n|cff00ff00Note that you will never hear musics from ignored players.\n\n|cff00ff00Note that all musics are interruptible via the Sound History in the TRP3 shortcuts bar.",
+	CONF_MUSIC_ACTIVE_TT = "Local musics are musics played by other players (for example through an item) to a certain range in yards.\n\nTurn this off if you don't want to hear these musics at all.\n\n|cff00ff00Note that you will never hear music from ignored players.\n\n|cff00ff00Note that all music is interruptible via the Sound History in the TRP3 shortcuts bar.",
 	CONF_MUSIC_METHOD = "Local music playback method",
-	CONF_MUSIC_METHOD_TT = "Determine how you will hear a local music when you are in range.",
+	CONF_MUSIC_METHOD_TT = "Determine how you will hear local music when you are in range.",
 	CONF_SOUNDS_MAXRANGE = "Playback maximum range",
-	CONF_SOUNDS_MAXRANGE_TT = "Set the maximum range (in yards) within which you will hear local sounds/musics.\n\n|cff00ff00Usefull to avoid people playing sounds through the whole contient.\n\n|cffff9900Zero means no limit!",
+	CONF_SOUNDS_MAXRANGE_TT = "Set the maximum range (in yards) within which you will hear local sounds/music.\n\n|cff00ff00Usefull to avoid people playing sounds through the whole continent.\n\n|cffff9900Zero means no limit!",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- SPEECH
@@ -319,17 +319,17 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	DB_FILTERS_CLEAR = "Clear",
 	DB_BROWSER = "Object browser",
 	DB_DELETE_TT = "Removes this object and all its children objects.",
-	DB_EXPERT_TT = "Switchs this object to expert mode, allowing more complex customizations.",
+	DB_EXPERT_TT = "Switches this object to expert mode, allowing more complex customizations.",
 	DB_SECURITY_TT = "Shows all security parameters for this object. From there you can allow or prevent certain undesirable effects.",
 	DB_ADD_ITEM_TT = "Adds units of this item in your primary container (or main inventory if you don't have any primary container on your character).",
 	DB_COPY_ID_TT = "Display the object ID in a popup to be copy/pastable.",
-	DB_COPY_TT = "Copy all this object information and child objects to be pastable as inner objects in another object.",
+	DB_COPY_TT = "Copy information for this object (and child objects) to be pastable as inner objects in another object.",
 	DB_EXPORT = "Quick export object",
 	DB_EXPORT_TT = "Serializes the object content to be exchangeable outside the game.\n\nOnly works on small objects (lesser than 20 kB once serialized). For larger object, use the full export feature.",
 	DB_EXPORT_TOO_LARGE = "This object is too large once serialized to be exported this way. Please use the full export feature.\n\nSize: %0.1f kB.",
 	DB_EXPORT_HELP = "Code for object %s (size: %0.1f kB)",
 	DB_IMPORT = "Quick object import",
-	DB_IMPORT_TT = "Paste here a previously serialized object",
+	DB_IMPORT_TT = "Paste a previously serialized object here",
 	DB_IMPORT_WORD = "Import",
 	DB_IMPORT_ERROR1 = "The object could not be deserialized.",
 	DB_IMPORT_CONFIRM = "This object was serialized in a different version of Total RP 3 Extended than yours.\n\nImport TRP3E version: %s\nYour TRP3E version: %s\n\n|cffff9900This can lead to incompatibilities.\nContinue the import anyway?",
@@ -345,19 +345,19 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	DB_IMPORT_DONE = "Object successfully imported!",
 	DB_BACKERS_LIST = "Credits",
 
-	DB_MY_EMPTY = "You don't have created any object yet.\nUse one of the buttons below to unleash your creativity!",
-	DB_OTHERS_EMPTY = "Here will be placed all objects created by other players.",
+	DB_MY_EMPTY = "You have not created any objects yet.\nUse one of the buttons below to unleash your creativity!",
+	DB_OTHERS_EMPTY = "Here all objects created by other players will be placed.",
 	DB_CREATE_ITEM = "Create item",
 	DB_CREATE_ITEM_TT = "Select a template for a new item",
 	DB_CREATE_ITEM_TEMPLATES = "Or select a template",
 	DB_CREATE_ITEM_TEMPLATES_QUICK = "Quick creation",
-	DB_CREATE_ITEM_TEMPLATES_QUICK_TT = "Quickly creates a simple item without any effect.\nThen adds one unit of this item in your primary bag.",
+	DB_CREATE_ITEM_TEMPLATES_QUICK_TT = "Quickly creates a simple item without any effect.\nThen adds one unit of this item into your primary bag.",
 	DB_CREATE_ITEM_TEMPLATES_DOCUMENT = "Document item",
 	DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT = "An item template with an inner document object.\nUseful to quickly create a book or a scroll.",
 	DB_CREATE_ITEM_TEMPLATES_BLANK = "Blank item",
 	DB_CREATE_ITEM_TEMPLATES_BLANK_TT = "A blank template.\nFor those who like to start from scratch.",
 	DB_CREATE_ITEM_TEMPLATES_CONTAINER = "Container item",
-	DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT = "A container template.\nContainer can hold other items.",
+	DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT = "A container template.\nContainers can hold other items.",
 	DB_CREATE_ITEM_TEMPLATES_FROM = "Create from ...",
 	DB_CREATE_ITEM_TEMPLATES_FROM_TT = "Create a copy of an existing item.",
 	DB_ADD_ITEM = "Add to main inventory",
@@ -437,13 +437,13 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_TT_VALUE_TT = "This value will be informed on the tooltip extension (hold Alt) or during transactions.\n\n|cffff7700If you think that this item is invaluable, please leave 0. Zero doesn't mean that is has no value, it means that the value is undefined.",
 	IT_TT_WEIGHT = "Item weight",
 	IT_TT_WEIGHT_FORMAT = "Item weight (in grams)",
-	IT_TT_WEIGHT_TT = "The weight influence the total weight of the container.\n\n|cffff7700Please enter the value in GRAMS, as it will be converted to the user selected unit on display.",
-	IT_SOULBOUND_TT = "This item will be bound to the player when put on his inventory and cannot be exchanged or dropped on the ground.",
+	IT_TT_WEIGHT_TT = "The weight influences the total weight of the container.\n\n|cffff7700Please enter the value in GRAMS, as it will be converted to the user selected unit on display.",
+	IT_SOULBOUND_TT = "This item will be bound to the player when put in their inventory and cannot be exchanged or dropped on the ground.",
 	IT_UNIQUE_TT = "When active, the maximum item units that can be possessed by a character will be limited.",
 	IT_UNIQUE_COUNT = "Max units",
 	IT_UNIQUE_COUNT_TT = "Sets the maximum units that a character can possessed. Should be greater than 0.",
 	IT_CRAFTED = "Crafted",
-	IT_CRAFTED_TT = "A crafted item will display in the tooltip the name of the player who crafted it. The player who craft the item is the player making the action of creating one instance of this item, manually or through a workflow.",
+	IT_CRAFTED_TT = "A crafted item will display in the tooltip the name of the player who crafted it. The player who crafted the item is the player making the action of creating one instance of this item, manually or through a workflow.",
 	IT_STACK = "Stackable",
 	IT_STACK_TT = "Allow units for this item to be stacked in a same container slot.",
 	IT_STACK_COUNT = "Max units per stack",
@@ -453,10 +453,10 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_ON_USE_TT = "This workflow will be triggered when the player uses this item.\n\n|cffff9900Note:|r If you want to have more workflows for this item, you can convert it to Expert mode through the Databases view (by right-clicking on it and select |cff00ff00Convert to Expert mode|r).",
 	IT_USE_TT = "Allow this item to be usable.\n\n|cff00ff00You can configure the item use effect in the 'Workflow' tab of this editor.",
 	IT_USE_TEXT = "Usage text",
-	IT_USE_TEXT_TT = "This text, explaining the effect for using this item, will appears in the tooltip.",
+	IT_USE_TEXT_TT = "This text, explaining the effect for using this item, will appear in the tooltip.",
 	IT_WEARABLE = "Wearable",
 	IT_WEARABLE_TT = "Enables this item for the inspection feature and allows you to precisely place it on your character.\n\n|cffff9900If this flag is checked people will be able to see this item on your inventory if they inspect you, even if you don't configure the item position.",
-	IT_CONTAINER_TT = "Sets this item to be a container. Container can hold other items.\n\n|cff00ff00The container can be configured in the 'Container' tab of this editor.",
+	IT_CONTAINER_TT = "Sets this item to be a container. Containers can hold other items.\n\n|cff00ff00The container can be configured in the 'Container' tab of this editor.",
 	IT_CO_DURABILITY = "Durability",
 	IT_CO_DURABILITY_TT = "Determine the overall max health for your container. A container can lose health over time or can be damaged. But it can also be repaired with the proper items.\n\n|cff00ff00Zero means invulnerable.",
 	IT_CO_MAX = "Max weight (in grams)",
@@ -464,16 +464,16 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_CO_SIZE = "Container size",
 	IT_CO_SIZE_COLROW = "%s |1row;rows; by %s columns",
 	IT_DOC_ACTION = "Read document",
-	IT_WARNING_1 = "Shouldn't make an item both stackable and craftable. (%s)",
-	IT_WARNING_2 = "Shouldn't make a stackable container. (%s)",
+	IT_WARNING_1 = "You should not make an item both stackable and craftable. (%s)",
+	IT_WARNING_2 = "You should not make a stackable container. (%s)",
 	IT_CO_ONLY_INNER = "Can only contain inner items",
-	IT_CO_ONLY_INNER_TT = "Marks this container to be able to contain only children items from the same root object.\n\nAs for now, only container with this option enabled can be traded while containing items.",
+	IT_CO_ONLY_INNER_TT = "Marks this container to be able to contain only children items from the same root object.\n\nAs for now, only containers with this option enabled can be traded while containing items.",
 	IT_TRIGGER_ON_USE = "On use",
 	IT_TRIGGER_ON_USE_TT = "Triggered each time the player use this item.\n\n|cff00ff00Don't forget to make your item usable in the main tab.",
 	IT_TRIGGER_ON_DESTROY = "On stack destroy",
-	IT_TRIGGER_ON_DESTROY_TT = "Triggered when the player destroy a stack of this item (drags & drops it out of his inventory and confirms the destruction).|cffff9900\n\nIt is triggered once per stack, and just before the actual stack destruction (so counting the item units in inventory in this workflow will still count the stack).",
+	IT_TRIGGER_ON_DESTROY_TT = "Triggered when the player destroys a stack of this item (drags & drops it out of their inventory and confirms the destruction).|cffff9900\n\nIt is triggered once per stack, and just before the actual stack destruction (so counting the item units in inventory in this workflow will still count the stack).",
 	IT_NO_ADD = "Prevent manual adding",
-	IT_NO_ADD_TT = "Prevent the player to manually adding the item to his inventory. Then it can only be added or looted through workflows.",
+	IT_NO_ADD_TT = "Prevent the player to manually adding the item to their inventory. Then it can only be added or looted through workflows.",
 	IT_PU_SOUND = "Pick up sound",
 	IT_PU_SOUND_1183 = "Bag",
 	IT_PU_SOUND_1184 = "Book",
@@ -504,9 +504,9 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	DO_PAGE_MANAGER = "Pages manager",
 	DO_PAGE_EDITOR = "Page editor: page %s",
 	DO_PAGE_HEIGHT = "Page height",
-	DO_PAGE_HEIGHT_TT = "The page height, in pixel. Please note that certain background support only a certain height/width ratio and can be deformed.",
+	DO_PAGE_HEIGHT_TT = "The page height, in pixels. Please note that certain backgrounds only support a certain height/width ratio and can be deformed.",
 	DO_PAGE_WIDTH = "Page width",
-	DO_PAGE_WIDTH_TT = "The page width, in pixel. Please note that certain background support only a certain height/width ratio and can be deformed.",
+	DO_PAGE_WIDTH_TT = "The page width, in pixels. Please note that certain backgrounds only support a certain height/width ratio and can be deformed.",
 	DO_PAGE_FONT = "%s font",
 	DO_PAGE_BORDER = "Border",
 	DO_PAGE_BORDER_1 = "Parchment",
@@ -527,7 +527,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_WORKFLOW = "Workflows",
 	WO_NO = "No workflows",
 	WO_EXECUTION = "Workflow execution",
-	WO_EMPTY = "You can start by adding an element to your workflow.\nThis can be an effect, a condition or a delay.",
+	WO_EMPTY = "You can start by adding an element to your workflow.\nThis can be an effect, condition or delay.",
 	WO_ELEMENT_ADD = "Add element to workflow",
 	WO_ELEMENT_COPY = "Copy element content",
 	WO_ELEMENT_PASTE = "Paste element content",
@@ -540,10 +540,10 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_ELEMENT_COND_TT = "Adds a condition to this single effect.",
 	WO_ELEMENT_COND_NO = "Remove effect condition",
 	WO_EFFECT = "Effect",
-	WO_EFFECT_TT = "Plays an effect.\nIt can be playind sounds, displaying text ...etc",
+	WO_EFFECT_TT = "Plays an effect.\nIt can be playing sounds, displaying text, etc...",
 	WO_EFFECT_SELECT = "Select an effect",
 	WO_EFFECT_CAT_COMMON = "Common",
-	WO_EFFECT_NO_EDITOR = "This effect can't be configured.",
+	WO_EFFECT_NO_EDITOR = "This effect cannot be configured.",
 	WO_CONDITION = "Condition",
 	WO_CONDITION_TT = "Evaluates a condition.\nStops the workflow if the condition fails.",
 	WO_DELAY = "Delay",
@@ -561,9 +561,9 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_SECURITY_HIGH = "High",
 	WO_SECURITY_HIGH_DETAILS = "This effect is secured and will not prompt security warning.",
 	WO_SECURITY_NORMAL = "Medium",
-	WO_SECURITY_NORMAL_DETAILS = "This effect is secured but could cause inconveniences. It will prompt security warning, based on the user security settings.",
+	WO_SECURITY_NORMAL_DETAILS = "This effect is secured but could cause inconveniences. It will prompt a security warning, based on the user security settings.",
 	WO_SECURITY_LOW = "Low",
-	WO_SECURITY_LOW_DETAILS = "This effect is not secured and could be malicious. It will prompt security warning and will ask for confirmation, based on the user security settings.",
+	WO_SECURITY_LOW_DETAILS = "This effect is not secured and could be malicious. It will prompt a security warning and will ask for confirmation, based on the user security settings.",
 	WO_EXPERT = "Expert mode",
 	WO_EXPERT_TT = "A workflow is a set of instructions that can make your object dynamic.\n\nHere you can define all your workflows for this object, then you can link them to an action in the event links tab.",
 	WO_EXPERT_DONE = "Switched %s to expert mode. Now unleash your creativity!",
@@ -595,7 +595,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_EVENT_EX_EDITOR = "Event link editor",
 	WO_EVENT_EX_CONDI = "Event link condition editor",
 	WO_EVENT_ID = "Event ID",
-	WO_EVENT_ID_TT = "The event ID.\n\nYou can see the whole events list on websites like wowwiki of wowpedia.\n\nHere as an example, PLAYER_REGEN_DISABLED is triggered when you enter a combat.",
+	WO_EVENT_ID_TT = "The event ID.\n\nYou can see the entire event list on websites like WoWWiki of Wowpedia.\n\nHere as an example, PLAYER_REGEN_DISABLED is triggered when you enter a combat.",
 
 	-- Delay editor
 	WO_DELAY_DURATION = "Duration",
@@ -610,14 +610,14 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	WO_DELAY_INTERRUPT_2 = "Interrupt on move",
 
 	-- Effects editors
-	EFFECT_SCRIPT = "Execute restricted lua script",
-	EFFECT_SCRIPT_TT = "Execute a lua script in a restricted safe environment.",
+	EFFECT_SCRIPT = "Execute restricted Lua script",
+	EFFECT_SCRIPT_TT = "Execute a Lua script in a restricted safe environment.",
 	EFFECT_SCRIPT_SCRIPT = "Lua code",
-	EFFECT_SCRIPT_SCRIPT_TT = [[This script will be executed in a safe environment where you can have access to all lua synthax and API (table, string, math...) and the Extended |cff00ff00effect|r function.
+	EFFECT_SCRIPT_SCRIPT_TT = [[This script will be executed in a safe environment where you can have access to all Lua synthax and API (table, string, math...) and the Extended |cff00ff00effect|r function.
 
 |cffff0000You don't have access to the game API here!|r
 
-A custom lua script will always be less efficient than a workflow effect, as it is compiled each time, in opposition to a workflow effect being compiled once.
+A custom Lua script will always be less efficient than a workflow effect, as it is compiled each time, in opposition to a workflow effect being compiled once.
 
 |cffff9900So keep the script to the minimum and only use this script effect if necessary.]],
 	EFFECT_SCRIPT_I_EFFECT = "Insert effect",
@@ -647,7 +647,7 @@ The function is in the form of:
 	EFFECT_TEXT_TYPE_3 = "Raid alert text",
 	EFFECT_TEXT_TYPE_4 = "Alert message",
 	EFFECT_DISMOUNT = "Dismiss mount",
-	EFFECT_DISMOUNT_TT = "Dismount the player from his current mount.",
+	EFFECT_DISMOUNT_TT = "Dismount the player from their current mount.",
 	EFFECT_DISPET = "Dismiss battle pet",
 	EFFECT_DISPET_TT = "Dismiss the currently invoked battle pet.",
 	EFFECT_RANDSUM = "Summon random battle pet",
@@ -718,12 +718,12 @@ The function is in the form of:
 	EFFECT_SOUND_ID_SELF_CHANNEL_SFX = "SFX",
 	EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT = "SFX is for effect sounds. It uses the sound volume game option.\n\nMultiple different SFX sounds can be played simultaneously.",
 	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE = "Ambience",
-	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT = "Ambience is for ambiant sound. It uses the ambience volume game option\n\nMultiple different ambience sounds can be played simultaneously.\n\n|cffff9900Please do not use this effect to play music as this won't stop the current game music and you would have musics overlaping each other. If you want to play a music use the proper music effect.",
+	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT = "Ambience is for ambient sound. It uses the ambience volume game option\n\nMultiple different ambience sounds can be played simultaneously.\n\n|cffff9900Please do not use this effect to play music as this won't stop the current game music and you would have musics overlaping each other. If you want to play a music use the proper music effect.",
 	EFFECT_SOUND_MUSIC_SELF = "Play music",
-	EFFECT_SOUND_MUSIC_SELF_TT = "Plays a music. Only the player will hear it.\n\nNote that the music will loop until the game plays a music of his own (when entering a zone for example), or until a \"stop music\" effect is played. Also the player can always manually stop the music through the sound history frame.",
+	EFFECT_SOUND_MUSIC_SELF_TT = "Plays music. Only the player will hear it.\n\nNote that the music will loop until the game plays a music of his own (when entering a zone for example), or until a \"stop music\" effect is played. Also the player can always manually stop the music through the sound history frame.",
 	EFFECT_SOUND_MUSIC_SELF_PREVIEW = "Plays music: %s",
 	EFFECT_SOUND_MUSIC_SELF_PATH = "Music path",
-	EFFECT_SOUND_MUSIC_SELF_PATH_TT = "The music path within the game files.\n\n|cffff9900It must not contains the Sounds\\Music\\ part of the path, nor the .mp3 at the end.",
+	EFFECT_SOUND_MUSIC_SELF_PATH_TT = "The music path within the game files.\n\n|cffff9900It must not contain the Sounds\\Music\\ part of the path, nor the .mp3 at the end.",
 	EFFECT_SOUND_MUSIC_STOP = "Stop music",
 	EFFECT_SOUND_MUSIC_STOP_TT = "If you use the \"play music\" effect, the music will loop until the game plays another music (for example: the player enters a new zone), or if the player stop it manually or until you use this effect.\n\n|cffff9900Note that this effect will only stop music played by the addon, and will not stop a music played by the game.",
 	EFFECT_SOUND_ID_LOCAL = "Play local sound",
@@ -784,7 +784,7 @@ The function is in the form of:
 	EFFECT_ITEM_WORKFLOW_PREVIEW_C = "Triggers workflow %s in child item in slot %s.",
 	EFFECT_ITEM_WORKFLOW = "Run item workflow",
 	EFFECT_ITEM_WORKFLOW_TT = "Run a workflow on the parent container or on an item in a specific child item (for container only).",
-	EFFECT_ITEM_DICE = "Roll dices",
+	EFFECT_ITEM_DICE = "Roll dice",
 	EFFECT_ITEM_DICE_TT = "They see me rollin', they hating.",
 	EFFECT_ITEM_DICE_PREVIEW = "Rollin' %s",
 	EFFECT_ITEM_DICE_ROLL = "Roll",
@@ -823,7 +823,7 @@ The function is in the form of:
 	EFFECT_QUEST_REVEAL_OBJ_DONE_TT = "Marks an objective as completed.\n\n|cffff9900Only works if the quest is part of the current active campaign, if the quest has already been revealed in the quest log and if the objective has already been revealed.",
 	EFFECT_QUEST_REVEAL_OBJ_DONE_PREVIEW = "Complete objective: %s for %s",
 	EFFECT_DIALOG_START = "Start cutscene",
-	EFFECT_DIALOG_START_TT = "Start a cutscene. If a cutscene is already played, it will be interrupted and replace by this one.",
+	EFFECT_DIALOG_START_TT = "Start a cutscene. If a cutscene is already played, it will be interrupted and replaced by this one.",
 	EFFECT_DIALOG_START_PREVIEW = "Start cutscene %s.",
 	EFFECT_DIALOG_ID = "Cutscene ID",
 	EFFECT_DIALOG_QUICK = "Quick cutscene",
@@ -889,11 +889,11 @@ We should begin with some examples:
 
 |rThe advantages of using inner objects are multiple:
 |cff00ff00
-- Inner objects data are really stored inside the parent object data. That mean they share the same version number, and their data are exchanged in the same time as the parent object data.
+- Inner objects data are really stored inside the parent object data. That means they share the same version number, and their data is exchanged in the same time as the parent object data.
 
 - You can freely determine the inner object ID, as it will use the parent object ID as prefix. You just can't have two inner objects having the same ID inside the same parent object.
 
-- Using inner objects brings better performances.
+- Using inner objects brings better performance.
 
 - It's easier to manage and navigate through your objects if they are stored in parent objects. You can really see a parent object as a folder in which you store files.
 
@@ -947,7 +947,7 @@ We should begin with some examples:
 	OP_CURRENT = "Current value",
 	OP_CURRENT_TT = "Prints in the chat frame the evaluation of this operand based on the current situation.",
 	OP_OP_UNIT_NAME = "Unit name",
-	OP_OP_UNIT_NAME_TT = "|cff00ff00The unit name, as returned by the first parameters of UnitName.\n\n|rWhen used on a player, it could equals |cff00ff00'player'|r or |cff00ff00'player-realm'|r. So if you want to be sure to have the form |cff00ff00'player-realm'|r use the |cff00ff00'Unit ID'|r operand.",
+	OP_OP_UNIT_NAME_TT = "|cff00ff00The unit name, as returned by the first parameters of UnitName.\n\n|rWhen used on a player, it could equal |cff00ff00'player'|r or |cff00ff00'player-realm'|r. So if you want to be sure to have the form |cff00ff00'player-realm'|r use the |cff00ff00'Unit ID'|r operand.",
 	OP_OP_UNIT_ID = "Unit ID",
 	OP_OP_UNIT_ID_TT = "|cff00ff00The unit id in the form |cff00ff00'player-realm'|r, as returned by UnitFullName. Ensure that there is always a realm part.",
 	OP_OP_UNIT_NPC_ID = "Unit NPC ID",
@@ -971,7 +971,7 @@ We should begin with some examples:
 	OP_OP_UNIT_LEVEL = "Unit level",
 	OP_OP_UNIT_LEVEL_TT = "|cff00ff00The level of the unit.",
 	OP_OP_UNIT_SPEED = "Unit speed",
-	OP_OP_UNIT_SPEED_TT = "|cff00ff00The current unit speed in yard per seconds. Walking is 2.5 and running without buff is 7.",
+	OP_OP_UNIT_SPEED_TT = "|cff00ff00The current unit speed in yards per second. Walking is 2.5 and running without buff is 7.",
 	OP_OP_UNIT_CLASSIFICATION = "Unit classification",
 	OP_OP_UNIT_CLASSIFICATION_TT = "|cff00ff00The unit classification IN ENGLISH LOWER CASE. Example: normal, elite, rare, worldboss, minus...\n\nAlways returns normal for players.",
 	OP_OP_UNIT_ISPLAYER = "Unit is player",
@@ -1082,7 +1082,7 @@ We should begin with some examples:
 	COND_TEST_EDITOR = "Test editor",
 	COND_LITT_COMP = "All comparison types",
 	COND_NUM_COMP = "Numeric comparison only",
-	COND_NUM_FAIL = "You must have two numeric operands if you uses a numeric comparator.",
+	COND_NUM_FAIL = "You must have two numeric operands if you use a numeric comparator.",
 
 	-- Campaign and quests
 	CA_NPC = "Campaign NPC list",
@@ -1180,7 +1180,7 @@ We should begin with some examples:
 	DI_STEP_TEXT = "Step text",
 	DI_ATTR_TT = "Only check this if you want to change this attribute relative to the previous cutscene step.",
 	DI_NAME_DIRECTION = "Change dialog direction",
-	DI_NAME_DIRECTION_TT = "Determines where to place the chat bubble and name and which model to animate. Select none to completely hide the chat bubble and name.",
+	DI_NAME_DIRECTION_TT = "Determines where to place the chat bubble/name and which model to animate. Select none to completely hide the chat bubble and name.",
 	DI_NAME = "Change speaker name",
 	DI_NAME_TT = "The name of the talking character.\n\nOnly necessary if the dialog direction above is not NONE.",
 	DI_LEFT_UNIT = "Change left model",
@@ -1238,15 +1238,15 @@ All add-ons in World of Warcraft can store data but there are limitations:
 • Kill the process, force-closing the game client (Alt+F4) or crashing can corrupt the add-on saved data.
 • Even if you exit the game correctly, there is always a chance that the game doesn't succeed to save the add-on data and corrupt it.
 
-In regards to all of that, we STRONGLY recommand to regularely backup your add-on saved data.
+In regards to all of that, we STRONGLY recommend to regularely backup your add-on saved data.
 
 You can find here a tutorial about finding all saved data:
-{link*https://totalrp3.info/documentation/how_to/saved_variables*Where are my information stored?}
+{link*https://totalrp3.info/documentation/how_to/saved_variables*Where is my information stored?}
 
 You can find here a tutorial about syncing your data to a cloud service:
 {link*https://totalrp3.info/documentation/how_to/backup_and_sync_profiles*How to backup and synchronize your add-ons settings using a cloud service}
 
-Please understand that we won't reply anymore to comment or ticket relative to a data wipe.
+Please understand we will no longer reply to comments or tickets relating to data wipes.
 It's not because we don't want to help but because we can't do anything to restore wiped data.
 
 Thank you, and enjoy Total RP 3 Extended!
@@ -1273,7 +1273,7 @@ An object contains all information about an item, a document, a campaign/quest/s
 |cff00ff00Backers database:|r it contains the objects created by the Kickstarter backers and the TRP3 team.
 
 |cff00ff00Full database:|r it contains all the previous databases content.]],
-	TU_DB_3_TEXT = [[You can filter more each database to find a specific object by changing the search filters and select |cff00ff00Search|r.
+	TU_DB_3_TEXT = [[You can filter each database to find a specific object by changing the search filters and select |cff00ff00Search|r.
 
 Without filters, the objects list follows a hierarchical presentation.
 
@@ -1295,7 +1295,7 @@ Examples:
 - A campaign with 4 quests: each quest is actually an inner object of the root campaign object.
 - A gun item firing bullet item: the bullet object would be an inner object of the root gun object.
 
-But don't worry, it will comes naturally !]],
+But don't worry, it will come naturally !]],
 	TU_DB_5 = "Root objects",
 	TU_DB_5_TEXT = "Only items and campaigns can be root objects.\n\nYou can use these two buttons to create an new item or campaign.",
 	TU_DB_6 = "Create an item",
@@ -1307,7 +1307,7 @@ Use the |cff00ff00blank item|r template if you want to start from scratch withou
 
 The |cff00ff00document item|r template will actually create two objects: an item object and its document inner object. It will also configure the item to show the document when used.
 
-The |cff00ff00container item|r template will create a configure an item object to be used as a container.
+The |cff00ff00container item|r template will create and configure an item object to be used as a container.
 
 Finally, the |cff00ff00create from|r allows you to duplicate an existing item.]],
 	TU_DB_7 = "Object line",
@@ -1344,7 +1344,7 @@ These notes can also help others that would want to start an item based on yours
 
 	TU_WO_1_TEXT = [[|cff00ff00Welcome to the workflow creation tutorial.|r
 
-A workflow is the mechanism that can bring life to your creation. It's here that you will be able to play effects like showing a text, playing a sound or looting an item to the player.]],
+A workflow is the mechanism that can bring life to your creation. It's here that you will be able to play effects like showing text, playing a sound or looting an item to the player.]],
 
 	TU_WO_2 = "Workflow list",
 	TU_WO_2_TEXT = [[On the left you have the |cff00ff00workflows list|r.
