@@ -30,6 +30,7 @@ local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LOCAL_SOUND_COMMAND = "PLS";
+local LOCAL_STOPSOUND_COMMAND = "STS";
 
 local function getPosition()
 	local posY, posX, posZ, instanceID = UnitPosition("player");
@@ -53,6 +54,14 @@ function Utils.music.playLocalMusic(soundID, distance, source)
 	if instanceID then
 		Comm.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, "Music" , distance, instanceID, posY, posX, posZ);
 	end
+end
+
+function Utils.music.stopLocalSoundID(soundID, channel)
+	Comm.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel);
+end
+
+function Utils.music.stopLocalMusic(soundID)
+	 Utils.music.stopLocalSoundID(soundID, "Music");
 end
 
 local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
@@ -102,6 +111,13 @@ local function initSharedSound()
 			end
 		end
 	end);
+
+	Comm.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
+			Utils.music.stopSoundID(soundID, channel, sender);
+		end
+	end);
+
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
