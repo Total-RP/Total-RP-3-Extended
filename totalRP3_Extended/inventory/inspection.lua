@@ -197,7 +197,7 @@ function inspectionFrame.init()
 				onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 				configText = loc("INV_PAGE_CHARACTER_INSPECTION"),
 				condition = function(_, unitID)
-					if UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) and CheckInteractDistance("target", 1) then
+					if UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) then
 						if TRP3_API.register.isUnitKnown("target") then
 							local character = TRP3_API.register.getUnitIDCharacter(Utils.str.getUnitID("target"));
 							return (tonumber(character.extended or 0) or 0) > 0;
