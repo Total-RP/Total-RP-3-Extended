@@ -1547,6 +1547,9 @@ You can easily see each quest current situation and what are the current objecti
 
 You can also see the history of previous steps, in case you forget something.]],
 
+	CL_ITEM = "Extended Item",
+	CL_IMPORT_ITEM_DB = "Import in database",
+	CL_IMPORT_ITEM_BAG = "Import in inventory",
 };
 
 TRP3_KS_BACKERS =

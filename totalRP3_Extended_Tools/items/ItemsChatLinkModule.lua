@@ -34,15 +34,17 @@ local loc = TRP3_API.loc;
 local Colors = Ellyb.ColorManager;
 local USED_FOR_PROFESSIONS_COLOR = Ellyb.Color("66BBFF"):Freeze();
 
-local ItemsChatLinkModule = TRP3_API.ChatLinks.InstantiateModule("Extended Item", "EXTENDED_DB_ITEM_LINK");
+local ItemsChatLinkModule = TRP3_API.ChatLinks.InstantiateModule(loc("CL_ITEM"), "EXTENDED_DB_ITEM_LINK");
 
 -- TODO 3rd argument should be the slot info from the bag. The system would handle having no slot info as an item coming from the DB
 function ItemsChatLinkModule:GetLinkData(fullID, rootID, canBeImported)
 	local itemData = TRP3_API.extended.getClass(fullID);
-	local tooltipData = {};
+	local tooltipData = {
+		class = {}
+	};
 	local _, itemName = TRP3_API.extended.getClassDataSafe(itemData);
 
-	tcopy(tooltipData, itemData);
+	tcopy(tooltipData.class, itemData);
 	tooltipData.fullID = fullID;
 	tooltipData.rootID = rootID;
 	tooltipData.canBeImported = canBeImported;
@@ -51,7 +53,8 @@ function ItemsChatLinkModule:GetLinkData(fullID, rootID, canBeImported)
 end
 
 -- TODO When we get slot info, use those info the parse the variables inside the fields
-function ItemsChatLinkModule:GetTooltipLines(class)
+function ItemsChatLinkModule:GetTooltipLines(tooltipData)
+	local class = tooltipData.class;
 
 	-- Get a new tooltipLines object that we will fill
 	local tooltipLines = TRP3_API.ChatLinkTooltipLines();
@@ -111,29 +114,9 @@ function ItemsChatLinkModule:GetTooltipLines(class)
 	return tooltipLines;
 end
 
-function ItemsChatLinkModule:GetCustomData(tooltipData)
-	return {
-		fullID = tooltipData.fullID,
-		rootID = tooltipData.rootID,
-	}
-end
+local ImportItemInDatabaseButton = ItemsChatLinkModule:NewActionButton("EXTENDED_IMPORT_DB_ITEM", loc("CL_IMPORT_ITEM_DB"), "EXT_DB_I_Q", "EXT_DB_I_A");
 
-local ImportItemInDatabaseButton = ItemsChatLinkModule:NewActionButton("EXTENDED_IMPORT_DB_ITEM", "Import in database");
-local LINK_COMMAND_IMPORT_DB_ITEM_Q = "EXT_DB_I_Q";
-local LINK_COMMAND_IMPORT_DB_ITEM_A = "EXT_DB_I_A";
-
-function ImportItemInDatabaseButton:OnClick(IDs, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_DB_ITEM_Q, IDs.rootID, sender);
-end
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_DB_ITEM_Q, function(rootID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_DB_ITEM_A, {
-		rootID = rootID,
-		class = TRP3_API.extended.getClass(rootID),
-	})
-end);
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_DB_ITEM_A, function(data, sender)
+function ImportItemInDatabaseButton:OnAnswerCommandReceived(data, sender)
 	local fromClass = data.class;
 	local copiedData = {};
 	local id = data.rootID;
@@ -143,8 +126,21 @@ TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_DB_ITEM_A, fun
 
 	local ID, _ = TRP3_API.extended.tools.createItem(copiedData, id);
 	TRP3_API.extended.tools.goToPage(ID);
-end);
+end
 
--- TODO Create import in bag button. Will additionaly insert a copy of the item into the main container.
+local ImportItemInInventoryButton = ItemsChatLinkModule:NewActionButton("EXTENDED_IMPORT_BAG_ITEM", loc("CL_IMPORT_ITEM_BAG"), "EXT_B_I_Q", "EXT_B_I_A");
+
+function ImportItemInInventoryButton:OnAnswerCommandReceived(data, sender)
+	local fromClass = data.class;
+	local copiedData = {};
+	local id = data.rootID;
+	TRP3_API.utils.table.copy(copiedData, fromClass);
+	copiedData.MD.SD = date("%d/%m/%y %H:%M:%S");
+	copiedData.MD.SB = TRP3_API.globals.player_id;
+
+	local ID, item = TRP3_API.extended.tools.createItem(copiedData, id);
+
+	TRP3_API.inventory.addItem(nil, ID, { count = 1, madeBy = item.BA and item.BA.CR });
+end
 
 TRP3_API.extended.ItemsChatLinkModule = ItemsChatLinkModule;
