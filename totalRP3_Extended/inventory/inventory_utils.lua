@@ -21,6 +21,9 @@ local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local loc = TRP3_API.locale.getText;
 
+-- Ellyb imports
+local Ellyb = TRP3_API.Ellyb;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tooltip func
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -89,20 +92,32 @@ function TRP3_API.inventory.getItemTextLine(itemClass)
 	return Utils.str.icon(icon, 25) .. " " .. name;
 end
 
-local neutral = {r = 0.95, g = 0.95, b = 0.95};
 local colorCodeFloatTab = Utils.color.colorCodeFloatTab;
-local itemColor = BAG_ITEM_QUALITY_COLORS;
+
+local ITEM_COLORS = {
+	[LE_ITEM_QUALITY_POOR] = Ellyb.ColorManager.ITEM_POOR,
+	[LE_ITEM_QUALITY_COMMON] = Ellyb.ColorManager.ITEM_COMMON,
+	[LE_ITEM_QUALITY_UNCOMMON] = Ellyb.ColorManager.ITEM_UNCOMMON,
+	[LE_ITEM_QUALITY_RARE] = Ellyb.ColorManager.ITEM_RARE,
+	[LE_ITEM_QUALITY_EPIC] = Ellyb.ColorManager.ITEM_EPIC,
+	[LE_ITEM_QUALITY_LEGENDARY] = Ellyb.ColorManager.ITEM_LEGENDARY,
+	[LE_ITEM_QUALITY_ARTIFACT] = Ellyb.ColorManager.ITEM_ARTIFACT,
+	[LE_ITEM_QUALITY_HEIRLOOM] = Ellyb.ColorManager.ITEM_HEIRLOOM,
+	[LE_ITEM_QUALITY_WOW_TOKEN] = Ellyb.ColorManager.ITEM_WOW_TOKEN,
+}
+local NEUTRAL_COLOR = ITEM_COLORS[LE_ITEM_QUALITY_COMMON];
 
 local function getQualityColorTab(quality)
-	-- Thanks again Blizz...
-	if quality == LE_ITEM_QUALITY_COMMON then
-		return neutral;
-	elseif quality == LE_ITEM_QUALITY_POOR then
-		return itemColor[LE_ITEM_QUALITY_COMMON];
-	end
-	return itemColor[quality or 0] or neutral;
+	---@type Color
+	local color = ITEM_COLORS[quality] or NEUTRAL_COLOR;
+	return color:GetRGBATable();
 end
 TRP3_API.inventory.getQualityColorTab = getQualityColorTab;
+
+---@return Color
+function TRP3_API.inventory.getQualityColor(quality)
+	return ITEM_COLORS[quality] or NEUTRAL_COLOR
+end
 
 local function getQualityColorText(quality)
 	return colorCodeFloatTab(getQualityColorTab(quality));

@@ -472,7 +472,7 @@ local MODULE_STRUCTURE = {
 	["id"] = "trp3_extended",
 	["onInit"] = onInit,
 	["onStart"] = onStart,
-	["minVersion"] = 34,
+	["minVersion"] = 40,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);

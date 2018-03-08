@@ -24,6 +24,7 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Script file="items/items.lua"/>
+	<Script file="items/ItemsChatLinkModule.lua"/>
 
 	<Include file="items/editor/quick.xml"/>
 	<Script file="items/editor/quick.lua"/>

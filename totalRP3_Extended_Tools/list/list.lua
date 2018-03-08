@@ -40,6 +40,10 @@ local hasImportExportModule = false;
 
 local SUPPOSED_SERIAL_SIZE_LIMIT = 500000; -- We suppose the text field can only handle 500k pastes
 
+-- Total RP 3 imports
+---@type ChatLinkModule
+local ItemsChatLinkModule = TRP3_API.extended.ItemsChatLinkModule;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: util methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -125,10 +129,15 @@ local function onLineClick(self, button)
 			onLineActionSelected("1" .. data.fullID);
 		end
 	else
-		if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
-			TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID, nil,  not TRP3_DB.my[data.rootID]);
+		if IsShiftKeyDown() then
+			-- If the shift key is down we want to insert a link for this item
+			ItemsChatLinkModule:InsertLink(data.fullID, data.rootID)
 		else
-			TRP3_API.extended.tools.goToPage(data.fullID, true);
+			if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
+				TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID, nil, not TRP3_DB.my[data.rootID]);
+			else
+				TRP3_API.extended.tools.goToPage(data.fullID, true);
+			end
 		end
 	end
 end
