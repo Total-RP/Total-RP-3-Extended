@@ -83,7 +83,7 @@ local function getCampaignProgression(campaignID)
 		end
 	end
 	if total ~= 0 then
-		return (completed / total) * 100;
+		return TRP3_API.extended.tools.truncateDecimals( (completed / total) * 100, 0);
 	else
 		return 0;
 	end
