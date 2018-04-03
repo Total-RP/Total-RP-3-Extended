@@ -20,7 +20,7 @@ local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_AP
 local assert, pairs, tinsert, wipe = assert, pairs, tinsert, wipe;
 local tsize = Utils.table.size;
 local iterateObject = TRP3_API.extended.iterateObject;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local getClass = TRP3_API.extended.getClass;
 local ELEMENT_TYPE = TRP3_DB.elementTypes;
 
@@ -193,24 +193,24 @@ local function onLineClick(lineWidgetClick)
 	local lineWidget = lineWidgetClick:GetParent();
 	local values = {};
 	tinsert(values, {lineWidget.text:GetText(), nil});
-	tinsert(values, {loc("SEC_LEVEL_DETAILS_THIS"), ACTION_FLAG_THIS .. lineWidget.effectGroup, loc("SEC_LEVEL_DETAILS_THIS_TT")});
-	tinsert(values, {loc("SEC_LEVEL_DETAILS_ALL"), ACTION_FLAG_ALL .. lineWidget.effectGroup, loc("SEC_LEVEL_DETAILS_ALL_TT")});
+	tinsert(values, {loc.SEC_LEVEL_DETAILS_THIS, ACTION_FLAG_THIS .. lineWidget.effectGroup, loc.SEC_LEVEL_DETAILS_THIS_TT});
+	tinsert(values, {loc.SEC_LEVEL_DETAILS_ALL, ACTION_FLAG_ALL .. lineWidget.effectGroup, loc.SEC_LEVEL_DETAILS_ALL_TT});
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
 end
 
 local function decorateLine(line, effectGroup)
 	line.effectGroup = effectGroup;
 	line.text:SetText(loc(effectGroup));
-	setTooltipForSameFrame(line.click, "BOTTOMRIGHT", 0, 0, loc("SEC_UNSECURED_WHY"), securityFrame.reasons[effectGroup] or "?");
+	setTooltipForSameFrame(line.click, "BOTTOMRIGHT", 0, 0, loc.SEC_UNSECURED_WHY, securityFrame.reasons[effectGroup] or "?");
 
 	line.click:SetScript("OnClick", onLineClick);
 
 	local accepted, reason = resolveEffectGroupSecurity(securityFrame.classID, effectGroup);
 	local stateText = "";
 	if accepted then
-		stateText = "|cff00ff00" .. loc("SEC_LEVEL_DETAILS_ACCEPTED");
+		stateText = "|cff00ff00" .. loc.SEC_LEVEL_DETAILS_ACCEPTED;
 	else
-		stateText = "|cffff0000" .. loc("SEC_LEVEL_DETAILS_BLOCKED")
+		stateText = "|cffff0000" .. loc.SEC_LEVEL_DETAILS_BLOCKED
 	end
 	if reason then
 		stateText = stateText .. " (" .. securityResolutionText[reason] .. ")"
@@ -241,12 +241,12 @@ function showSecurityDetailFrame(classID, frameFrom)
 		height = height - 50;
 	else
 		securityFrame.whitelist:SetChecked(securityVault.whitelist[securityFrame.sender]);
-		securityFrame.whitelist.Text:SetText(loc("SEC_LEVEL_DETAILS_FROM"):format("|cff00ff00" .. securityFrame.sender));
+		securityFrame.whitelist.Text:SetText(loc.SEC_LEVEL_DETAILS_FROM:format("|cff00ff00" .. securityFrame.sender));
 	end
 
 	initList(securityFrame, securityFrame.securityDetails, securityFrame.slider);
 
-	securityFrame.subtitle:SetText(loc("SEC_LEVEL_DETAILS_TT"):format(TRP3_API.inventory.getItemLink(class), class.MD.CB, securityFrame.sender));
+	securityFrame.subtitle:SetText(loc.SEC_LEVEL_DETAILS_TT:format(TRP3_API.inventory.getItemLink(class), class.MD.CB, securityFrame.sender));
 
 	securityFrame:SetHeight(height);
 	securityFrame:ClearAllPoints();
@@ -283,12 +283,12 @@ TRP3_API.security.atLeastOneBlocked = atLeastOneBlocked;
 function TRP3_API.security.initSecurity()
 	securityVault = TRP3_Security;
 
-	securityLevelText[SECURITY_LEVEL.LOW] = "|cffff0000" .. loc("SEC_LOW") .. "|r";
-	securityLevelText[SECURITY_LEVEL.MEDIUM] = "|cffff9900" .. loc("SEC_MEDIUM") .. "|r";
-	securityLevelText[SECURITY_LEVEL.HIGH] = "|cff00ff00" .. loc("SEC_HIGH") .. "|r";
-	securityLevelDetailText[SECURITY_LEVEL.LOW] = loc("SEC_LOW_TT");
-	securityLevelDetailText[SECURITY_LEVEL.MEDIUM] = loc("SEC_MEDIUM_TT");
-	securityLevelDetailText[SECURITY_LEVEL.HIGH] = loc("SEC_HIGH_TT");
+	securityLevelText[SECURITY_LEVEL.LOW] = "|cffff0000" .. loc.SEC_LOW .. "|r";
+	securityLevelText[SECURITY_LEVEL.MEDIUM] = "|cffff9900" .. loc.SEC_MEDIUM .. "|r";
+	securityLevelText[SECURITY_LEVEL.HIGH] = "|cff00ff00" .. loc.SEC_HIGH .. "|r";
+	securityLevelDetailText[SECURITY_LEVEL.LOW] = loc.SEC_LOW_TT;
+	securityLevelDetailText[SECURITY_LEVEL.MEDIUM] = loc.SEC_MEDIUM_TT;
+	securityLevelDetailText[SECURITY_LEVEL.HIGH] = loc.SEC_HIGH_TT;
 	securityResolutionText = {
 		"Whitelisted sender", --TODO: locasl
 		"For all objects", --TODO: locasl
@@ -296,14 +296,14 @@ function TRP3_API.security.initSecurity()
 		"You are the author", --TODO: locasl
 	};
 
-	securityFrame.title:SetText(loc("SEC_LEVEL_DETAILS"));
-	securityFrame.empty:SetText(loc("SEC_LEVEL_DETAILS_SECURED"));
+	securityFrame.title:SetText(loc.SEC_LEVEL_DETAILS);
+	securityFrame.empty:SetText(loc.SEC_LEVEL_DETAILS_SECURED);
 
 	securityFrame.reasons = {};
-	securityFrame.reasons["SEC_REASON_TALK"] = "|cffffffff" .. loc("SEC_REASON_TALK_WHY");
-	securityFrame.reasons["SEC_REASON_SOUND"] = "|cffffffff" .. loc("SEC_REASON_SOUND_WHY");
-	securityFrame.reasons["SEC_REASON_DISMOUNT"] = "|cffffffff" .. loc("SEC_REASON_DISMOUNT_WHY");
-	securityFrame.reasons["SEC_REASON_SCRIPT"] = "|cffffffff" .. loc("SEC_REASON_SCRIPT_WHY");
+	securityFrame.reasons["SEC_REASON_TALK"] = "|cffffffff" .. loc.SEC_REASON_TALK_WHY;
+	securityFrame.reasons["SEC_REASON_SOUND"] = "|cffffffff" .. loc.SEC_REASON_SOUND_WHY;
+	securityFrame.reasons["SEC_REASON_DISMOUNT"] = "|cffffffff" .. loc.SEC_REASON_DISMOUNT_WHY;
+	securityFrame.reasons["SEC_REASON_SCRIPT"] = "|cffffffff" .. loc.SEC_REASON_SCRIPT_WHY;
 
 	securityFrame.securityDetails = {};
 	securityFrame.widgetTab = {};

@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local Log = Utils.log;
 local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
@@ -132,7 +132,7 @@ TRP3_API.extended.document.showDocumentClass = showDocumentClass;
 local function showDocument(documentID, parentArgs)
 	local document = getClass(documentID);
 	if document == TRP3_DB.missing then
-		Utils.message.displayMessage(loc("DOC_UNKNOWN_ALERT"), Utils.message.type.ALERT_MESSAGE);
+		Utils.message.displayMessage(loc.DOC_UNKNOWN_ALERT, Utils.message.type.ALERT_MESSAGE);
 	else
 		showDocumentClass(document, documentID, parentArgs);
 	end
@@ -183,8 +183,8 @@ function TRP3_API.extended.document.onStart()
 	-- Customize HTML
 	HTMLFrame:SetScript("OnHyperlinkClick", onLinkClicked);
 
-	setTooltipForSameFrame(documentFrame.next, "BOTTOM", 0, -5, loc("DO_PAGE_NEXT"));
-	setTooltipForSameFrame(documentFrame.previous, "BOTTOM", 0, -5, loc("DO_PAGE_PREVIOUS"));
+	setTooltipForSameFrame(documentFrame.next, "BOTTOM", 0, -5, loc.DO_PAGE_NEXT);
+	setTooltipForSameFrame(documentFrame.previous, "BOTTOM", 0, -5, loc.DO_PAGE_PREVIOUS);
 	documentFrame.next:SetText(">");
 	documentFrame.previous:SetText("<");
 	documentFrame.previous:SetScript("OnClick", function() loadPage(documentFrame.current - 1); end);

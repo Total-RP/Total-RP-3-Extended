@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local tostring, strtrim, tinsert, table, tremove, assert, wipe = tostring, strtrim, tinsert, table, tremove, assert, wipe;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local stEtN = Utils.str.emptyToNil;
 
@@ -57,11 +57,11 @@ local function decorateEventLine(line, actionIndex)
 
 	line.Name:SetText(actionData.EV or UNKNOWN);
 	if actionData.CO then
-		line.Description:SetText("|cff00ff00" .. loc("CA_ACTIONS_COND_ON"));
+		line.Description:SetText("|cff00ff00" .. loc.CA_ACTIONS_COND_ON);
 	else
-		line.Description:SetText("|cffffff00" .. loc("CA_ACTIONS_COND_OFF"));
+		line.Description:SetText("|cffffff00" .. loc.CA_ACTIONS_COND_OFF);
 	end
-	line.ID:SetText("|cff00ff00" .. (stEtN(actionData.SC) or "|cffff9900" .. loc("WO_LINKS_NO_LINKS")));
+	line.ID:SetText("|cff00ff00" .. (stEtN(actionData.SC) or "|cffff9900" .. loc.WO_LINKS_NO_LINKS));
 	line.click.actionIndex = actionIndex;
 end
 
@@ -75,7 +75,7 @@ local function refreshList()
 end
 
 local function removeEvent(index)
-	TRP3_API.popup.showConfirmPopup(loc("CA_ACTION_REMOVE"), function()
+	TRP3_API.popup.showConfirmPopup(loc.CA_ACTION_REMOVE, function()
 		if toolFrame.specificDraft.HA[index] then
 			wipe(toolFrame.specificDraft.HA[index]);
 			tremove(toolFrame.specificDraft.HA, index);
@@ -160,8 +160,8 @@ local function openEventCondition(eventLink)
 	TRP3_ConditionEditor.close:SetScript("OnClick", function()
 		TRP3_ConditionEditor:Hide();
 	end);
-	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
-	TRP3_ConditionEditor.title:SetText(loc("WO_EVENT_EX_CONDI"));
+	TRP3_ConditionEditor.confirm:SetText(loc.EDITOR_CONFIRM);
+	TRP3_ConditionEditor.title:SetText(loc.WO_EVENT_EX_CONDI);
 end
 
 local function removeCondition(actionIndex)
@@ -212,8 +212,8 @@ function editor.init(ToolFrame)
 	-- OBJECT
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	editor.links.title:SetText(loc("WO_EVENT_LINKS"));
-	editor.links.triggers:SetText(loc("WO_LINKS_TRIGGERS"));
+	editor.links.title:SetText(loc.WO_EVENT_LINKS);
+	editor.links.triggers:SetText(loc.WO_LINKS_TRIGGERS);
 
 	-- List
 	editor.links.widgetTab = {};
@@ -230,8 +230,8 @@ function editor.init(ToolFrame)
 	-- GAME
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	gameLinksEditor.title:SetText(loc("WO_EVENT_EX_LINKS"));
-	gameLinksEditor.help:SetText(loc("WO_EVENT_EX_LINKS_TT"));
+	gameLinksEditor.title:SetText(loc.WO_EVENT_EX_LINKS);
+	gameLinksEditor.help:SetText(loc.WO_EVENT_EX_LINKS_TT);
 
 	-- List
 	gameLinksEditor.list.widgetTab = {};
@@ -264,24 +264,24 @@ function editor.init(ToolFrame)
 				self:GetParent().Highlight:Hide();
 			end);
 			line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-			setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("WO_EVENT_EX_LINK"),
-				("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
-						.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc("CM_CTRL"), loc("CM_CLICK"), loc("CA_ACTIONS_COND"))
-						.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc("CM_CTRL"), loc("CM_R_CLICK"), loc("CA_ACTIONS_COND_REMOVE"))
-						.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+			setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.WO_EVENT_EX_LINK,
+				("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT)
+						.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc.CM_CTRL, loc.CM_CLICK, loc.CA_ACTIONS_COND)
+						.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc.CM_CTRL, loc.CM_R_CLICK, loc.CA_ACTIONS_COND_REMOVE)
+						.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 		end
 	end
 	gameLinksEditor.list.decorate = decorateEventLine;
 	TRP3_API.ui.list.handleMouseWheel(gameLinksEditor.list, gameLinksEditor.list.slider);
 	gameLinksEditor.list.slider:SetValue(0);
-	gameLinksEditor.list.add:SetText(loc("WO_EVENT_EX_ADD"));
+	gameLinksEditor.list.add:SetText(loc.WO_EVENT_EX_ADD);
 	gameLinksEditor.list.add:SetScript("OnClick", function() openEvent() end);
-	gameLinksEditor.list.empty:SetText(loc("WO_EVENT_EX_NO"));
+	gameLinksEditor.list.empty:SetText(loc.WO_EVENT_EX_NO);
 
 	-- Editor
-	gameLinksEditor.editor.title:SetText(loc("WO_EVENT_EX_EDITOR"));
-	gameLinksEditor.editor.event.title:SetText(loc("WO_EVENT_ID"));
-	setTooltipForSameFrame(gameLinksEditor.editor.event.help, "RIGHT", 0, 5, loc("WO_EVENT_ID"), loc("WO_EVENT_ID_TT"));
+	gameLinksEditor.editor.title:SetText(loc.WO_EVENT_EX_EDITOR);
+	gameLinksEditor.editor.event.title:SetText(loc.WO_EVENT_ID);
+	setTooltipForSameFrame(gameLinksEditor.editor.event.help, "RIGHT", 0, 5, loc.WO_EVENT_ID, loc.WO_EVENT_ID_TT);
 	gameLinksEditor.editor.save:SetScript("OnClick", function(self)
 		onEventSaved();
 	end);

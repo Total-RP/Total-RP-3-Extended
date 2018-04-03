@@ -35,8 +35,7 @@
 	<Script file="script\script_effects.lua"/>
 	
 	<!-- Locales -->
-	<Script file="locale\locale_enEN.lua"/>
-	<Script file="locale\locale_frFR.lua"/>
+	<Script file="locale.lua"/>
 
 	<!-- Sub-Modules -->
 	<Script file="misc\utils.lua"/>

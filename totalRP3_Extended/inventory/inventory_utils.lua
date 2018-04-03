@@ -19,7 +19,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local pairs, strsplit = pairs, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tooltip func
@@ -234,9 +234,9 @@ function TRP3_API.extended.formatWeight(value)
 	elseif config == TRP3_API.extended.WEIGHT_UNITS.POTATOES then
 		value = value / 160; -- Average potatoe weight. :3
 		if value < 1 then
-			return ("%0.2f %s"):format(value * 24, loc("UNIT_FRIES")); -- Average fries quantity we can made out of one potatoe. :3
+			return ("%0.2f %s"):format(value * 24, loc.UNIT_FRIES); -- Average fries quantity we can made out of one potatoe. :3
 		else
-			return ("%0.2f %s"):format(value, loc("UNIT_POTATOES"));
+			return ("%0.2f %s"):format(value, loc.UNIT_POTATOES);
 		end
 	end
 end

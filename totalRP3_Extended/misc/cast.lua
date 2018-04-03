@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 local frame = TRP3_CastingBarFrame;
 
@@ -76,7 +76,7 @@ function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundI
 	elseif class and class.US and class.US.AC then
 		frame.Text:SetText(class.US.AC);
 	else
-		frame.Text:SetText(loc("IT_CAST"));
+		frame.Text:SetText(loc.IT_CAST);
 	end
 
 	CastingBarFrame_ApplyAlpha(frame, 1.0);

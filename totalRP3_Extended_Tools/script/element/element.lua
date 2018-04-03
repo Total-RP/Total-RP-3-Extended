@@ -21,7 +21,7 @@ local wipe, pairs, strsplit, tinsert, tonumber, strtrim = wipe, pairs, strsplit,
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local delayEditor = TRP3_ScriptEditorDelay;
@@ -32,9 +32,9 @@ local delayEditor = TRP3_ScriptEditorDelay;
 
 function delayEditor.decorate(scriptStep)
 	if scriptStep.c == 2 then
-		return ("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_CAST"), scriptStep.d or 0, loc("WO_DELAY_SECONDS"));
+		return ("%s: |cffffff00%s %s|r"):format(loc.WO_DELAY_CAST, scriptStep.d or 0, loc.WO_DELAY_SECONDS);
 	else
-		return ("%s: |cffffff00%s %s|r"):format(loc("WO_DELAY_WAIT"), scriptStep.d or 0, loc("WO_DELAY_SECONDS"));
+		return ("%s: |cffffff00%s %s|r"):format(loc.WO_DELAY_WAIT, scriptStep.d or 0, loc.WO_DELAY_SECONDS);
 	end
 end
 
@@ -56,21 +56,21 @@ end
 
 function delayEditor.init()
 	-- Duration
-	delayEditor.duration.title:SetText(loc("WO_DELAY_DURATION"));
-	setTooltipForSameFrame(delayEditor.duration.help, "RIGHT", 0, 5, loc("WO_DELAY_DURATION"), loc("WO_DELAY_DURATION_TT"));
+	delayEditor.duration.title:SetText(loc.WO_DELAY_DURATION);
+	setTooltipForSameFrame(delayEditor.duration.help, "RIGHT", 0, 5, loc.WO_DELAY_DURATION, loc.WO_DELAY_DURATION_TT);
 
 	-- Cast sound
-	delayEditor.sound.title:SetText(loc("WO_DELAY_CAST_SOUND"));
-	setTooltipForSameFrame(delayEditor.sound.help, "RIGHT", 0, 5, loc("WO_DELAY_CAST_SOUND"), loc("WO_DELAY_CAST_SOUND_TT"));
+	delayEditor.sound.title:SetText(loc.WO_DELAY_CAST_SOUND);
+	setTooltipForSameFrame(delayEditor.sound.help, "RIGHT", 0, 5, loc.WO_DELAY_CAST_SOUND, loc.WO_DELAY_CAST_SOUND_TT);
 
 	-- Cast text
-	delayEditor.text.title:SetText(loc("WO_DELAY_CAST_TEXT"));
-	setTooltipForSameFrame(delayEditor.text.help, "RIGHT", 0, 5, loc("WO_DELAY_CAST_TEXT"), loc("WO_DELAY_CAST_TEXT_TT"));
+	delayEditor.text.title:SetText(loc.WO_DELAY_CAST_TEXT);
+	setTooltipForSameFrame(delayEditor.text.help, "RIGHT", 0, 5, loc.WO_DELAY_CAST_TEXT, loc.WO_DELAY_CAST_TEXT_TT);
 
 	-- Delay type
 	local type = {
-		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_1")), 1, loc("WO_DELAY_TYPE_1_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_TYPE"), loc("WO_DELAY_TYPE_2")), 2, loc("WO_DELAY_TYPE_2_TT")}
+		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_TYPE, loc.WO_DELAY_TYPE_1), 1, loc.WO_DELAY_TYPE_1_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_TYPE, loc.WO_DELAY_TYPE_2), 2, loc.WO_DELAY_TYPE_2_TT}
 	}
 	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, function(value)
 		if value == 2 then
@@ -84,8 +84,8 @@ function delayEditor.init()
 
 	-- Interruption
 	local type = {
-		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_1")), 1},
-		{TRP3_API.formats.dropDownElements:format(loc("WO_DELAY_INTERRUPT"), loc("WO_DELAY_INTERRUPT_2")), 2}
+		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_INTERRUPT, loc.WO_DELAY_INTERRUPT_1), 1},
+		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_INTERRUPT, loc.WO_DELAY_INTERRUPT_2), 2}
 	}
 	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, type, nil, nil, 200, true);
 end
@@ -133,9 +133,9 @@ local function decorateBrowserLine(frame, index)
 	local rootClass = getClass(parts[1]);
 	local metadata = rootClass.MD or EMPTY;
 
-	text = text .. fieldFormat:format(loc("TYPE"), getTypeLocale(class.TY));
-	text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
-	text = text .. "\n" .. fieldFormat:format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
+	text = text .. fieldFormat:format(loc.TYPE, getTypeLocale(class.TY));
+	text = text .. "\n" .. fieldFormat:format(loc.ROOT_CREATED_BY, metadata.CB or "?");
+	text = text .. "\n" .. fieldFormat:format(loc.SEC_LEVEL, TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
 
 	if class.TY == TRP3_DB.types.ITEM then
 		local base = class.BA or EMPTY;
@@ -204,7 +204,7 @@ local function filteredObjectBrowser()
 end
 
 local function showObjectBrowser(onSelectCallback, type, itemFilter)
-	objectBrowser.title:SetText(loc("DB_BROWSER") .. " (" .. getTypeLocale(type) .. ")")
+	objectBrowser.title:SetText(loc.DB_BROWSER .. " (" .. getTypeLocale(type) .. ")")
 	objectBrowser.onSelectCallback = onSelectCallback;
 	objectBrowser.type = type;
 	objectBrowser.filter.box:SetText("");
@@ -231,7 +231,7 @@ function objectBrowser.init()
 	objectBrowser.filter.box:SetScript("OnTextChanged", filteredObjectBrowser);
 	objectBrowser.close:SetScript("OnClick", onBrowserClose);
 
-	objectBrowser.filter.box.title:SetText(loc("UI_FILTER"));
+	objectBrowser.filter.box.title:SetText(loc.UI_FILTER);
 
 	TRP3_API.popup.OBJECTS = "objects";
 	TRP3_API.popup.POPUPS[TRP3_API.popup.OBJECTS] = {

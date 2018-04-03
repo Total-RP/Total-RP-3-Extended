@@ -22,7 +22,7 @@ local wipe, pairs, error, assert, tinsert = wipe, pairs, error, assert, tinsert;
 local tsize = Utils.table.size;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
@@ -42,7 +42,7 @@ local function createInnerObject(innerID, innerType, innerData)
 	assert(innerID and innerID:len() > 0, "Bad inner ID");
 
 	if toolFrame.specificDraft.IN[innerID] then
-		Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), 4);
+		Utils.message.displayMessage(loc.IN_INNER_NO_AVAILABLE, 4);
 		return;
 	end
 
@@ -53,7 +53,7 @@ local function createInnerObject(innerID, innerType, innerData)
 				MO = TRP3_DB.modes.NORMAL,
 			},
 			BA = {
-				NA = loc("IT_NEW_NAME"),
+				NA = loc.IT_NEW_NAME,
 			},
 		}
 	elseif innerType == TRP3_DB.types.DOCUMENT then
@@ -63,7 +63,7 @@ local function createInnerObject(innerID, innerType, innerData)
 				MO = TRP3_DB.modes.NORMAL,
 			},
 			BA = {
-				NA = loc("DO_NEW_DOC"),
+				NA = loc.DO_NEW_DOC,
 			},
 			BT = true,
 		}
@@ -109,9 +109,9 @@ local function decorateLine(line, innerID)
 	line.text:SetText(text);
 
 	local tooltip = ("|cff00ffff%s"):format(innerID);
-	local tooltipsub = ("|cffffffff%s, |cff00ff00%s"):format(loc("IN_INNER_S"), typeLocale);
-	tooltipsub = tooltipsub .. "\n\n|cffffff00" .. loc("CM_CLICK") .. ": |cffff9900" .. loc("CM_OPEN");
-	tooltipsub = tooltipsub .. "\n|cffffff00" .. loc("CM_R_CLICK") .. ": |cffff9900" .. loc("DB_ACTIONS");
+	local tooltipsub = ("|cffffffff%s, |cff00ff00%s"):format(loc.IN_INNER_S, typeLocale);
+	tooltipsub = tooltipsub .. "\n\n|cffffff00" .. loc.CM_CLICK .. ": |cffff9900" .. loc.CM_OPEN;
+	tooltipsub = tooltipsub .. "\n|cffffff00" .. loc.CM_R_CLICK .. ": |cffff9900" .. loc.DB_ACTIONS;
 
 	setTooltipForSameFrame(line, "BOTTOMRIGHT", 0, 0, tooltip, tooltipsub);
 end
@@ -167,17 +167,17 @@ local function onLineAction(action, line)
 	local _, parentName, _ = TRP3_API.extended.tools.getClassDataSafeByType(toolFrame.specificDraft);
 
 	if action == LINE_ACTION_DELETE then
-		TRP3_API.popup.showConfirmPopup(loc("IN_INNER_DELETE_CONFIRM"):format(id, name or UNKNOWN, parentName or UNKNOWN), function()
+		TRP3_API.popup.showConfirmPopup(loc.IN_INNER_DELETE_CONFIRM:format(id, name or UNKNOWN, parentName or UNKNOWN), function()
 			local innerObject = toolFrame.specificDraft.IN[id];
 			wipe(innerObject);
 			toolFrame.specificDraft.IN[id] = nil;
 			refresh();
 		end);
 	elseif action == LINE_ACTION_ID then
-		TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ID"):format(name or UNKNOWN, id), function(newID)
+		TRP3_API.popup.showTextInputPopup(loc.IN_INNER_ID:format(name or UNKNOWN, id), function(newID)
 			newID = TRP3_API.extended.checkID(newID);
 			if toolFrame.specificDraft.IN[newID] then
-				Utils.message.displayMessage(loc("IN_INNER_NO_AVAILABLE"), 4);
+				Utils.message.displayMessage(loc.IN_INNER_NO_AVAILABLE, 4);
 			elseif newID and newID:len() > 0 then
 				toolFrame.specificDraft.IN[newID] = toolFrame.specificDraft.IN[id];
 				toolFrame.specificDraft.IN[id] = nil;
@@ -190,7 +190,7 @@ local function onLineAction(action, line)
 		editor.copy_fullClassID = toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id;
 	elseif action == LINE_ACTION_PASTE then
 		if editor.copy and editor.copy.TY == innerObject.TY then
-			TRP3_API.popup.showConfirmPopup(loc("IN_INNER_PASTE_CONFIRM"), function()
+			TRP3_API.popup.showConfirmPopup(loc.IN_INNER_PASTE_CONFIRM, function()
 				wipe(innerObject);
 				Utils.table.copy(innerObject, editor.copy);
 				adaptIDs(editor.copy_fullClassID, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id, innerObject);
@@ -209,11 +209,11 @@ local function onLineClicked(line, button)
 	else
 		local values = {};
 		tinsert(values, {line.text:GetText(), nil});
-		tinsert(values, {DELETE, LINE_ACTION_DELETE, loc("IN_INNER_DELETE_TT")});
-		tinsert(values, {loc("IN_INNER_ID_ACTION"), LINE_ACTION_ID});
-		tinsert(values, {loc("IN_INNER_COPY_ACTION"), LINE_ACTION_COPY});
+		tinsert(values, {DELETE, LINE_ACTION_DELETE, loc.IN_INNER_DELETE_TT});
+		tinsert(values, {loc.IN_INNER_ID_ACTION, LINE_ACTION_ID});
+		tinsert(values, {loc.IN_INNER_COPY_ACTION, LINE_ACTION_COPY});
 		if editor.copy.TY == innerObject.TY then
-			tinsert(values, {loc("IN_INNER_PASTE_ACTION"), LINE_ACTION_PASTE});
+			tinsert(values, {loc.IN_INNER_PASTE_ACTION, LINE_ACTION_PASTE});
 		end
 		TRP3_API.ui.listbox.displayDropDown(line, values, onLineAction, 0, true);
 	end
@@ -221,7 +221,7 @@ end
 
 local function addInnerObject(type, self)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-	TRP3_API.popup.showTextInputPopup(loc("IN_INNER_ENTER_ID") .. "\n\n" .. loc("IN_INNER_ENTER_ID_TT"), function(innerID)
+	TRP3_API.popup.showTextInputPopup(loc.IN_INNER_ENTER_ID .. "\n\n" .. loc.IN_INNER_ENTER_ID_TT, function(innerID)
 		if not innerID or innerID:len() == 0 then
 			return;
 		elseif self == editor.browser.add then
@@ -243,9 +243,9 @@ end
 local function onAddClicked(self)
 	local values = {};
 	tinsert(values, {"Select inner object type", nil});
-	tinsert(values, {loc("TYPE_ITEM"), TRP3_DB.types.ITEM});
-	tinsert(values, {loc("TYPE_DOCUMENT"), TRP3_DB.types.DOCUMENT});
-	tinsert(values, {loc("TYPE_DIALOG"), TRP3_DB.types.DIALOG});
+	tinsert(values, {loc.TYPE_ITEM, TRP3_DB.types.ITEM});
+	tinsert(values, {loc.TYPE_DOCUMENT, TRP3_DB.types.DOCUMENT});
+	tinsert(values, {loc.TYPE_DIALOG, TRP3_DB.types.DIALOG});
 	TRP3_API.ui.listbox.displayDropDown(self, values, addInnerObject, 0, true);
 end
 
@@ -257,13 +257,13 @@ function editor.init(ToolFrame)
 	toolFrame = ToolFrame;
 
 	editor.copy = {};
-	editor.browser.title:SetText(loc("IN_INNER_LIST"));
-	editor.help.title:SetText(loc("IN_INNER_HELP_TITLE"));
-	editor.help.text:SetText(loc("IN_INNER_HELP"));
-	editor.browser.add:SetText(loc("IN_INNER_ADD_NEW"));
-	editor.browser.addcopy:SetText(loc("IN_INNER_ADD_COPY"));
-	editor.browser.addText:SetText(loc("IN_INNER_ADD"));
-	editor.browser.container.empty:SetText(loc("IN_INNER_EMPTY"));
+	editor.browser.title:SetText(loc.IN_INNER_LIST);
+	editor.help.title:SetText(loc.IN_INNER_HELP_TITLE);
+	editor.help.text:SetText(loc.IN_INNER_HELP);
+	editor.browser.add:SetText(loc.IN_INNER_ADD_NEW);
+	editor.browser.addcopy:SetText(loc.IN_INNER_ADD_COPY);
+	editor.browser.addText:SetText(loc.IN_INNER_ADD);
+	editor.browser.container.empty:SetText(loc.IN_INNER_EMPTY);
 
 	handleMouseWheel(editor.browser.container, editor.browser.container.slider);
 	editor.browser.container.slider:SetValue(0);

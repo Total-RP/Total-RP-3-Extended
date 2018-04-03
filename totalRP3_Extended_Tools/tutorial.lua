@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, strsplit, tinsert, type, _G = wipe, pairs, strsplit, tinsert, type, _G;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 local ToolFrame, buttonWidget;
 
@@ -105,8 +105,8 @@ end
 function TRP3_ExtendedTutorial.init(toolFrame)
 	ToolFrame = toolFrame;
 
-	TRP3_API.ui.tooltip.setTooltipAll(ToolFrame.tutorial, "TOP", 0, 0, loc("UI_TUTO_BUTTON"), loc("UI_TUTO_BUTTON_TT"));
-	ToolFrame.tutoframe.title:SetText(loc("TU_TITLE"));
+	TRP3_API.ui.tooltip.setTooltipAll(ToolFrame.tutorial, "TOP", 0, 0, loc.UI_TUTO_BUTTON, loc.UI_TUTO_BUTTON_TT);
+	ToolFrame.tutoframe.title:SetText(loc.TU_TITLE);
 	ToolFrame.tutorial:SetScript("OnClick", function()
 		startTutorial(1);
 	end);

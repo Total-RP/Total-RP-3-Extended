@@ -19,7 +19,7 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local pairs, strjoin, tostring, strtrim, wipe, assert, strsplit = pairs, strjoin, tostring, strtrim, wipe, assert, strsplit;
 local EMPTY = TRP3_API.globals.empty;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local Log = Utils.log;
 
@@ -255,14 +255,14 @@ TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE = "extended_sounds_maxrange";
 
 local function initConfig()
 	local WEIGHT_UNIT_TAB = {
-		{loc("CONF_UNIT_WEIGHT_1"), TRP3_API.extended.WEIGHT_UNITS.GRAMS},
-		{loc("CONF_UNIT_WEIGHT_2"), TRP3_API.extended.WEIGHT_UNITS.POUNDS},
-		{loc("CONF_UNIT_WEIGHT_3"), TRP3_API.extended.WEIGHT_UNITS.POTATOES}
+		{loc.CONF_UNIT_WEIGHT_1, TRP3_API.extended.WEIGHT_UNITS.GRAMS},
+		{loc.CONF_UNIT_WEIGHT_2, TRP3_API.extended.WEIGHT_UNITS.POUNDS},
+		{loc.CONF_UNIT_WEIGHT_3, TRP3_API.extended.WEIGHT_UNITS.POTATOES}
 	}
 
 	local SOUND_METHOD_TAB = {
-		{loc("CONF_SOUNDS_METHOD_1"), TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY, loc("CONF_SOUNDS_METHOD_1_TT")},
-		{loc("CONF_SOUNDS_METHOD_2"), TRP3_API.extended.CONFIG_SOUNDS_METHODS.ASK_FOR_PERMISSION, loc("CONF_SOUNDS_METHOD_2_TT")},
+		{loc.CONF_SOUNDS_METHOD_1, TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY, loc.CONF_SOUNDS_METHOD_1_TT},
+		{loc.CONF_SOUNDS_METHOD_2, TRP3_API.extended.CONFIG_SOUNDS_METHODS.ASK_FOR_PERMISSION, loc.CONF_SOUNDS_METHOD_2_TT},
 	}
 
 	-- Config default value
@@ -276,60 +276,60 @@ local function initConfig()
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_extended",
-		menuText = loc("CONF_MAIN"),
-		pageText = loc("CONF_MAIN"),
+		menuText = loc.CONF_MAIN,
+		pageText = loc.CONF_MAIN,
 		elements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CONF_UNIT"),
+				title = loc.CONF_UNIT,
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationExtended_Units_Weight",
-				title = loc("CONF_UNIT_WEIGHT"),
+				title = loc.CONF_UNIT_WEIGHT,
 				listContent = WEIGHT_UNIT_TAB,
 				configKey = TRP3_API.extended.CONFIG_WEIGHT_UNIT,
 				listCancel = true,
-				help = loc("CONF_UNIT_WEIGHT_TT")
+				help = loc.CONF_UNIT_WEIGHT_TT
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CONF_SOUNDS"),
+				title = loc.CONF_SOUNDS,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CONF_SOUNDS_ACTIVE"),
+				title = loc.CONF_SOUNDS_ACTIVE,
 				configKey = TRP3_API.extended.CONFIG_SOUNDS_ACTIVE,
-				help = loc("CONF_SOUNDS_ACTIVE_TT"),
+				help = loc.CONF_SOUNDS_ACTIVE_TT,
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationExtended_Sounds_Methods",
-				title = loc("CONF_SOUNDS_METHOD"),
+				title = loc.CONF_SOUNDS_METHOD,
 				listContent = SOUND_METHOD_TAB,
 				configKey = TRP3_API.extended.CONFIG_SOUNDS_METHOD,
 				listCancel = true,
-				help = loc("CONF_SOUNDS_METHOD_TT")
+				help = loc.CONF_SOUNDS_METHOD_TT
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CONF_MUSIC_ACTIVE"),
+				title = loc.CONF_MUSIC_ACTIVE,
 				configKey = TRP3_API.extended.CONFIG_MUSIC_ACTIVE,
-				help = loc("CONF_MUSIC_ACTIVE_TT"),
+				help = loc.CONF_MUSIC_ACTIVE_TT,
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationExtended_MUSIC_Methods",
-				title = loc("CONF_MUSIC_METHOD"),
+				title = loc.CONF_MUSIC_METHOD,
 				listContent = SOUND_METHOD_TAB,
 				configKey = TRP3_API.extended.CONFIG_MUSIC_METHOD,
 				listCancel = true,
-				help = loc("CONF_MUSIC_METHOD_TT")
+				help = loc.CONF_MUSIC_METHOD_TT
 			},
 			{
 				inherit = "TRP3_ConfigSlider",
-				title = loc("CONF_SOUNDS_MAXRANGE"),
-				help = loc("CONF_SOUNDS_MAXRANGE_TT"),
+				title = loc.CONF_SOUNDS_MAXRANGE,
+				help = loc.CONF_SOUNDS_MAXRANGE_TT,
 				configKey = TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE,
 				min = 0,
 				max = 200,
@@ -357,6 +357,27 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local BAG_SOUNDS_MAPPING = {
+	IT_DR_SOUND_1200 = "IT_PU_SOUND_1183",
+	IT_DR_SOUND_1201 = "IT_PU_SOUND_1184",
+	IT_DR_SOUND_1202 = "IT_PU_SOUND_1185",
+	IT_DR_SOUND_1203 = "IT_PU_SOUND_1186",
+	IT_DR_SOUND_1204 = "IT_PU_SOUND_1221",
+	IT_DR_SOUND_1205 = "IT_PU_SOUND_1187",
+	IT_DR_SOUND_1206 = "IT_PU_SOUND_1188",
+	IT_DR_SOUND_1207 = "IT_PU_SOUND_1190",
+	IT_DR_SOUND_1208 = "IT_PU_SOUND_1189",
+	IT_DR_SOUND_1209 = "IT_PU_SOUND_1192",
+	IT_DR_SOUND_1210 = "IT_PU_SOUND_1193",
+	IT_DR_SOUND_1211 = "IT_PU_SOUND_1194",
+	IT_DR_SOUND_1212 = "IT_PU_SOUND_1195",
+	IT_DR_SOUND_1213 = "IT_PU_SOUND_1191",
+	IT_DR_SOUND_1214 = "IT_PU_SOUND_1196",
+	IT_DR_SOUND_1215 = "IT_PU_SOUND_1197",
+	IT_DR_SOUND_1216 = "IT_PU_SOUND_1199",
+	IT_DR_SOUND_1217 = "IT_PU_SOUND_1198",
+}
+
 local function onInit()
 	Globals.addon_name_me = Globals.addon_name_extended;
 
@@ -371,30 +392,11 @@ local function onInit()
 	TRP3_DB.exchange = TRP3_Exchange_DB;
 
 	-- Register locales
-	for localeID, localeStructure in pairs(TRP3_EXTENDED_LOCALE) do
-
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1200 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1183;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1201 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1184;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1202 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1185;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1203 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1186;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1204 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1221;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1205 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1187;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1206 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1188;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1207 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1190;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1208 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1189;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1209 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1192;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1210 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1193;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1211 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1194;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1212 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1195;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1213 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1191;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1214 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1196;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1215 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1197;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1216 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1199;
-		TRP3_EXTENDED_LOCALE[localeID].IT_DR_SOUND_1217 = TRP3_EXTENDED_LOCALE[localeID].IT_PU_SOUND_1198;
-
-		local locale = TRP3_API.locale.getLocale(localeID);
-		for localeKey, text in pairs(localeStructure) do
-			locale.localeContent[localeKey] = text;
+	for localeID, localeStructure in pairs(TRP3_API.loc:GetLocales()) do
+		for key, field in pairs(BAG_SOUNDS_MAPPING) do
+			if localeStructure:GetText(field) then
+				localeStructure:AddText(key, localeStructure:GetText(field))
+			end
 		end
 	end
 
@@ -472,7 +474,7 @@ local MODULE_STRUCTURE = {
 	["id"] = "trp3_extended",
 	["onInit"] = onInit,
 	["onStart"] = onStart,
-	["minVersion"] = 34,
+	["minVersion"] = 41,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);

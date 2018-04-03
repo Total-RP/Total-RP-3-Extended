@@ -24,7 +24,7 @@ local assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 local DEBUG = false;
 
@@ -567,7 +567,7 @@ local function executeFunction(func, args, scriptID)
 		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
 	else
-		TRP3_API.utils.message.displayMessage(loc("SEC_SCRIPT_ERROR"):format(scriptID or "preview"), 4);
+		TRP3_API.utils.message.displayMessage(loc.SEC_SCRIPT_ERROR:format(scriptID or "preview"), 4);
 		TRP3_API.utils.message.displayMessage("|cffff0000" .. tostring(ret));
 	end
 end
@@ -581,7 +581,7 @@ local function executeClassScript(scriptID, classScripts, args, fullID)
 
 
 	if not classScripts[scriptID] then
-		TRP3_API.utils.message.displayMessage("|cffff0000" .. loc("SEC_MISSING_SCRIPT"):format(scriptID), 4);
+		TRP3_API.utils.message.displayMessage("|cffff0000" .. loc.SEC_MISSING_SCRIPT:format(scriptID), 4);
 		return;
 	end
 

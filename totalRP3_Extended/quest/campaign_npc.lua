@@ -20,7 +20,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local CAMPAIGN_DB = TRP3_DB.campaign;
 local EMPTY = TRP3_API.globals.empty;
 local tostring, assert, pairs, wipe, tinsert = tostring, assert, pairs, wipe, tinsert;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local Log = Utils.log;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
@@ -92,7 +92,7 @@ local function onMouseOver()
 
 			npcTooltipBuilder:AddLine(leftIcons .. (npcData.NA or originalName), 1, 1, 1, TRP3_API.ui.tooltip.getMainLineFontSize());
 
-			npcTooltipBuilder:AddLine("< " .. loc("QE_NPC") .. " >", 0, 1, 0, TRP3_API.ui.tooltip.getSubLineFontSize());
+			npcTooltipBuilder:AddLine("< " .. loc.QE_NPC .. " >", 0, 1, 0, TRP3_API.ui.tooltip.getSubLineFontSize());
 
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 			-- Description
@@ -190,7 +190,7 @@ local function init()
 	-- Slash command to reset frames
 	TRP3_API.slash.registerCommand({
 		id = "getID",
-		helpLine = loc("COM_NPC_ID"),
+		helpLine = loc.COM_NPC_ID,
 		handler = function()
 			print(getUnitDataFromGUID("target"));
 		end

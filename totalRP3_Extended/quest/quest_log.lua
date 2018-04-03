@@ -18,7 +18,7 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
 local CreateFrame = CreateFrame;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
@@ -40,7 +40,7 @@ TRP3_QuestLogPage.TAB_STEPS = TAB_STEPS;
 local function onCampaignActionSelected(value, button)
 	assert(button.campaignID, "No campaign ID in button");
 	if value == 1 then
-		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
+		TRP3_API.popup.showConfirmPopup(loc.QE_RESET_CONFIRM, function()
 			TRP3_API.quest.resetCampaign(button.campaignID);
 		end);
 	elseif value == 2 then
@@ -58,8 +58,8 @@ local function onCampaignButtonClick(button, mouseButton)
 	else
 		local values = {};
 		tinsert(values, {campaignName});
-		tinsert(values, {loc("QE_CAMPAIGN_RESET"), 1});
-		tinsert(values, {loc("QE_CAMPAIGN_START_BUTTON"), 2});
+		tinsert(values, {loc.QE_CAMPAIGN_RESET, 1});
+		tinsert(values, {loc.QE_CAMPAIGN_START_BUTTON, 2});
 		TRP3_API.ui.listbox.displayDropDown(button, values, onCampaignActionSelected, 0, true);
 	end
 end
@@ -106,30 +106,30 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 		color = "|cff00ff00";
 	end
 	if not logEntry then
-		campaignButton.range:SetText(color .. loc("QE_CAMPAIGN_NO"));
+		campaignButton.range:SetText(color .. loc.QE_CAMPAIGN_NO);
 	elseif progression == 100 then
-		campaignButton.range:SetText(color .. loc("QE_CAMPAIGN_FULL"));
+		campaignButton.range:SetText(color .. loc.QE_CAMPAIGN_FULL);
 		campaignButton.Completed:Show();
 	else
-		campaignButton.range:SetText(color .. progress:format(loc("QE_PROGRESS"), progression));
+		campaignButton.range:SetText(color .. progress:format(loc.QE_PROGRESS, progression));
 	end
 
 	TRP3_API.ui.frame.setupIconButton(campaignButton, campaignIcon);
 
 	if current then
 		campaignButton.switchButton:SetNormalTexture("Interface\\TIMEMANAGER\\PauseButton");
-		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc("QE_CAMPAIGN_PAUSE"));
+		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc.QE_CAMPAIGN_PAUSE);
 	else
 		campaignButton.switchButton:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up");
-		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc("QE_CAMPAIGN_START_BUTTON"));
+		TRP3_API.ui.tooltip.setTooltipAll(campaignButton.switchButton, "TOP", 0, 0, loc.QE_CAMPAIGN_START_BUTTON);
 	end
 
 	if not noTooltip then
 		local createdBy = "|cff00ff00%s: %s|r\n\n";
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton, "TOPRIGHT", 0, 5, campaignName,
-			createdBy:format(loc("DB_FILTERS_OWNER"), author)
-			.. progress:format(loc("QE_PROGRESS"), progression)
-			.. ("|r\n\n|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_OPEN")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS"))
+			createdBy:format(loc.DB_FILTERS_OWNER, author)
+			.. progress:format(loc.QE_PROGRESS, progression)
+			.. ("|r\n\n|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_OPEN) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, loc.CM_ACTIONS)
 		);
 	else
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton);
@@ -168,9 +168,9 @@ local function onQuestButtonEnter(button)
 		if questClass.ST and questClass.ST[currentStep] then
 			stepText = questClass.ST[currentStep].BA.TX or "";
 		else
-			stepText = "|cffff0000" .. loc("QE_STEP_MISSING") .. "|r";
+			stepText = "|cffff0000" .. loc.QE_STEP_MISSING .. "|r";
 		end
-		stepText = loc("QE_QUEST_TT_STEP"):format(stepText);
+		stepText = loc.QE_QUEST_TT_STEP:format(stepText);
 	end
 
 	if objectives then
@@ -212,10 +212,10 @@ local function decorateQuestButton(questFrame, campaignID, questID, questInfo, q
 	questFrame.Completed:Hide();
 	if questInfo.FI == true then
 		questFrame.Completed:Show();
-		questFrame.Name:SetText(("%s |cff55ff55(%s)"):format(questName, loc("QE_COMPLETED")));
+		questFrame.Name:SetText(("%s |cff55ff55(%s)"):format(questName, loc.QE_COMPLETED));
 	elseif questInfo.FI == false then
 		questFrame.Completed:Show();
-		questFrame.Name:SetText(("%s |cff55ff55(%s)"):format(questName, loc("QE_FAILED")));
+		questFrame.Name:SetText(("%s |cff55ff55(%s)"):format(questName, loc.QE_FAILED));
 	end
 	questFrame:SetScript("OnClick", questClick);
 	questFrame:SetScript("OnEnter", onQuestButtonEnter);
@@ -269,12 +269,12 @@ local function refreshQuestList(campaignID)
 			TRP3_QuestLogPage.Quest.Empty:Hide();
 			TRP3_QuestLogPage.Quest.scroll.child.Content.Current:Show();
 		elseif Utils.table.size(getClass(campaignID).QE) == 0 then
-			TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_EMPTY"));
+			TRP3_QuestLogPage.Quest.Empty:SetText(loc.QE_CAMPAIGN_EMPTY);
 		else
-			TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_NOQUEST"));
+			TRP3_QuestLogPage.Quest.Empty:SetText(loc.QE_CAMPAIGN_NOQUEST);
 		end
 	else
-		TRP3_QuestLogPage.Quest.Empty:SetText(loc("QE_CAMPAIGN_UNSTARTED"));
+		TRP3_QuestLogPage.Quest.Empty:SetText(loc.QE_CAMPAIGN_UNSTARTED);
 	end
 end
 
@@ -328,9 +328,9 @@ local function refreshStepContent(campaignID, questID, questInfo)
 		if questClass.ST and questClass.ST[currentStep] then
 			currentStepText = questClass.ST[currentStep].BA.TX or "";
 		else
-			currentStepText = "|cffff0000" .. loc("QE_STEP_MISSING") .. "|r";
+			currentStepText = "|cffff0000" .. loc.QE_STEP_MISSING .. "|r";
 		end
-		html = html .. ("{h2}%s{/h2}"):format(loc("QE_OVERVIEW"));
+		html = html .. ("{h2}%s{/h2}"):format(loc.QE_OVERVIEW);
 		html = html .. ("\n%s\n\n"):format(currentStepText);
 	end
 
@@ -373,7 +373,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 			end
 		end
 
-		html = html .. ("{h2}%s{/h2}"):format(loc("QE_PREVIOUS_STEP"));
+		html = html .. ("{h2}%s{/h2}"):format(loc.QE_PREVIOUS_STEP);
 		html = html .. ("\n%s\n"):format(previousStepText);
 	end
 
@@ -461,7 +461,7 @@ local function createTutorialStructure()
 		},
 		button = {
 			x = 0, y = 0, anchor = "CENTER",
-			text = loc("QUEST_TU_1"),
+			text = loc.QUEST_TU_1,
 			textWidth = 400,
 			arrow = "LEFT"
 		}
@@ -475,7 +475,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("QUEST_TU_2"),
+				text = loc.QUEST_TU_2,
 				textWidth = 400,
 				arrow = "RIGHT"
 			}
@@ -489,7 +489,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("QUEST_TU_3"),
+				text = loc.QUEST_TU_3,
 				textWidth = 400,
 				arrow = "DOWN"
 			}
@@ -503,7 +503,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("QUEST_TU_4"),
+				text = loc.QUEST_TU_4,
 				textWidth = 400,
 				arrow = "RIGHT"
 			}
@@ -552,20 +552,20 @@ local function init()
 				icon = "achievement_quests_completed_06",
 				configText = QUEST_LOG,
 				tooltip = QUEST_LOG,
-				tooltipSub = ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("QE_BUTTON")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CM_ACTIONS")),
+				tooltipSub = ("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.QE_BUTTON) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, loc.CM_ACTIONS),
 				onClick = function(self, _, buttonType, _)
 					if buttonType == "LeftButton" then
 						TRP3_API.navigation.openMainFrame();
 						TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
 					else
 						local values = {};
-						tinsert(values, {loc("DI_HISTORY")});
-						tinsert(values, {loc("CM_OPEN"), 0});
-						tinsert(values, {loc("CM_ACTIONS")});
-						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)), TRP3_API.quest.ACTION_TYPES.LOOK});
-						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)), TRP3_API.quest.ACTION_TYPES.LISTEN});
-						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)), TRP3_API.quest.ACTION_TYPES.ACTION});
-						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_ACTION"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)), TRP3_API.quest.ACTION_TYPES.TALK});
+						tinsert(values, {loc.DI_HISTORY});
+						tinsert(values, {loc.CM_OPEN, 0});
+						tinsert(values, {loc.CM_ACTIONS});
+						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.QE_ACTION, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)), TRP3_API.quest.ACTION_TYPES.LOOK});
+						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.QE_ACTION, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)), TRP3_API.quest.ACTION_TYPES.LISTEN});
+						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.QE_ACTION, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)), TRP3_API.quest.ACTION_TYPES.ACTION});
+						tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.QE_ACTION, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)), TRP3_API.quest.ACTION_TYPES.TALK});
 						TRP3_API.ui.listbox.displayDropDown(self, values, function(action)
 							if action == 0 then
 								TRP3_DialogFrameHistory:Show();
@@ -583,7 +583,7 @@ local function init()
 
 	-- Tab bar init
 	local homeData = {
-		name = loc("QE_CAMPAIGNS"),
+		name = loc.QE_CAMPAIGNS,
 		OnClick = function()
 			goToPage(false, TAB_CAMPAIGNS);
 		end,
@@ -605,11 +605,11 @@ local function init()
 	TRP3_QuestLogPage.Campaign.slider:SetValue(0);
 
 	-- Quest page init
-	TRP3_QuestLogPage.Quest.scroll.child.Content.Current:SetText(loc("QE_STEP_LIST_CURRENT"));
+	TRP3_QuestLogPage.Quest.scroll.child.Content.Current:SetText(loc.QE_STEP_LIST_CURRENT);
 	TRP3_QuestLogPage.Quest.scroll.child.Content.frames = {};
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_QuestLogPage.Quest.PassButton, "TOP", 0, 0, loc("QE_CAMPAIGN_RESET"));
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_QuestLogPage.Quest.PassButton, "TOP", 0, 0, loc.QE_CAMPAIGN_RESET);
 	TRP3_QuestLogPage.Quest.PassButton:SetScript("OnClick", function(self)
-		TRP3_API.popup.showConfirmPopup(loc("QE_RESET_CONFIRM"), function()
+		TRP3_API.popup.showConfirmPopup(loc.QE_RESET_CONFIRM, function()
 			TRP3_API.quest.resetCampaign(self:GetParent().campaignID);
 		end);
 	end);
@@ -627,18 +627,18 @@ local function init()
 	end);
 
 	-- Navbar action
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_QuestLogPage.navBar.action, "TOP", 0, 0, loc("CM_ACTIONS"));
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_QuestLogPage.navBar.action, "TOP", 0, 0, loc.CM_ACTIONS);
 	TRP3_QuestLogPage.navBar.action:SetScript("OnClick", function(button)
 		local values = {};
-		tinsert(values, {loc("CM_ACTIONS")});
-		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_MACRO"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)),
-			TRP3_API.quest.ACTION_TYPES.LOOK, loc("QE_MACRO_TT")});
-		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_MACRO"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)),
-			TRP3_API.quest.ACTION_TYPES.LISTEN, loc("QE_MACRO_TT")});
-		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_MACRO"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)),
-			TRP3_API.quest.ACTION_TYPES.ACTION, loc("QE_MACRO_TT")});
-		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("QE_MACRO"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)),
-			TRP3_API.quest.ACTION_TYPES.TALK, loc("QE_MACRO_TT")});
+		tinsert(values, {loc.CM_ACTIONS});
+		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.QE_MACRO, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)),
+			TRP3_API.quest.ACTION_TYPES.LOOK, loc.QE_MACRO_TT});
+		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.QE_MACRO, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)),
+			TRP3_API.quest.ACTION_TYPES.LISTEN, loc.QE_MACRO_TT});
+		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.QE_MACRO, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)),
+			TRP3_API.quest.ACTION_TYPES.ACTION, loc.QE_MACRO_TT});
+		tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.QE_MACRO, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)),
+			TRP3_API.quest.ACTION_TYPES.TALK, loc.QE_MACRO_TT});
 
 		TRP3_API.ui.listbox.displayDropDown(button, values, function(action)
 			if GetNumMacros() <= 120 then
@@ -664,18 +664,18 @@ local function init()
 					PickupMacro("TRP3_Talk");
 				end
 			else
-				Utils.message.displayMessage(loc("QE_MACRO_MAX"), 4);
+				Utils.message.displayMessage(loc.QE_MACRO_MAX, 4);
 			end
 		end, 0, true);
 	end);
 
 	-- Bindings
 
-	BINDING_NAME_TRP3_QUESTLOG = loc("BINDING_NAME_TRP3_QUESTLOG");
-	BINDING_NAME_TRP3_QUEST_LOOK = loc("BINDING_NAME_TRP3_QUEST_LOOK");
-	BINDING_NAME_TRP3_QUEST_LISTEN = loc("BINDING_NAME_TRP3_QUEST_LISTEN");
-	BINDING_NAME_TRP3_QUEST_ACTION = loc("BINDING_NAME_TRP3_QUEST_ACTION");
-	BINDING_NAME_TRP3_QUEST_TALK = loc("BINDING_NAME_TRP3_QUEST_TALK");
+	BINDING_NAME_TRP3_QUESTLOG = loc.BINDING_NAME_TRP3_QUESTLOG;
+	BINDING_NAME_TRP3_QUEST_LOOK = loc.BINDING_NAME_TRP3_QUEST_LOOK;
+	BINDING_NAME_TRP3_QUEST_LISTEN = loc.BINDING_NAME_TRP3_QUEST_LISTEN;
+	BINDING_NAME_TRP3_QUEST_ACTION = loc.BINDING_NAME_TRP3_QUEST_ACTION;
+	BINDING_NAME_TRP3_QUEST_TALK = loc.BINDING_NAME_TRP3_QUEST_TALK;
 
 	-- Events
 	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function(rootClassID)

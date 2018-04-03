@@ -21,7 +21,7 @@ local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getCla
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
 local getItemLink = TRP3_API.inventory.getItemLink;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local tcopy = Utils.table.copy;
 
@@ -36,7 +36,7 @@ local QUICK_SLOT_ID = "17";
 TRP3_API.inventory.QUICK_SLOT_ID = QUICK_SLOT_ID;
 
 local function onItemAddEnd(container, itemClass, returnType, count, ...)
-	Utils.message.displayMessage(loc("IT_INV_GOT"):format(getItemLink(itemClass), count));
+	Utils.message.displayMessage(loc.IT_INV_GOT:format(getItemLink(itemClass), count));
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	TRP3_API.inventory.recomputeAllInventory();
 	return returnType, count, ...;
@@ -117,7 +117,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 	local itemClass = getClass(classID);
 
 	if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container.id, classID) then
-		Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.ALERT_MESSAGE);
+		Utils.message.displayMessage(loc.IT_CON_CAN_INNER, Utils.message.type.ALERT_MESSAGE);
 		return 4;
 	end
 
@@ -136,7 +136,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 		if itemClass.BA.UN then
 			local currentCount = getItemCount(classID);
 			if currentCount + 1 > itemClass.BA.UN then
-				Utils.message.displayMessage(loc("IT_INV_ERROR_MAX"):format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
+				Utils.message.displayMessage(loc.IT_INV_ERROR_MAX:format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
 				if dropIfFull then
 					dropMeBecauseIMFull(itemClass, itemData, toAdd - count, classID);
 				end
@@ -168,7 +168,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 
 		-- Container is full
 		if not slot then
-			Utils.message.displayMessage(loc("IT_INV_ERROR_FULL"):format(getItemLink(containerClass)), Utils.message.type.ALERT_MESSAGE);
+			Utils.message.displayMessage(loc.IT_INV_ERROR_FULL:format(getItemLink(containerClass)), Utils.message.type.ALERT_MESSAGE);
 			if dropIfFull then
 				dropMeBecauseIMFull(itemClass, itemData, toAdd - count, classID);
 			end
@@ -250,7 +250,7 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 
 	if not done then
 		if TRP3_API.inventory.isItemInContainer(container2, slot1Data) or TRP3_API.inventory.isItemInContainer(container1, slot2Data) then
-			Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.ALERT_MESSAGE);
+			Utils.message.displayMessage(loc.IT_CON_CAN_INNER, Utils.message.type.ALERT_MESSAGE);
 			return;
 		end
 
@@ -258,14 +258,14 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 		if slot1Data and slot1Data.id then
 			local containerClass = getClass(container2.id);
 			if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container2.id, slot1Data.id) then
-				Utils.message.displayMessage(loc("IT_CON_ERROR_TYPE"), Utils.message.type.ALERT_MESSAGE);
+				Utils.message.displayMessage(loc.IT_CON_ERROR_TYPE, Utils.message.type.ALERT_MESSAGE);
 				return;
 			end
 		end
 		if slot2Data and slot2Data.id then
 			local containerClass = getClass(container1.id);
 			if containerClass.CO.OI and not TRP3_API.extended.objectsAreRelated(container1.id, slot2Data.id) then
-				Utils.message.displayMessage(loc("IT_CON_ERROR_TYPE"), Utils.message.type.ALERT_MESSAGE);
+				Utils.message.displayMessage(loc.IT_CON_ERROR_TYPE, Utils.message.type.ALERT_MESSAGE);
 				return;
 			end
 		end
@@ -381,7 +381,7 @@ local function removeSlotContent(container, slotID, slotInfo, manuallyDestroyed)
 				local retCode = TRP3_API.script.executeClassScript(class.LI.OD, class.SC,
 					{object = slotInfo, container = container}, slotInfo.id);
 			end
-			Utils.message.displayMessage(loc("DR_DELETED"):format(link, count));
+			Utils.message.displayMessage(loc.DR_DELETED:format(link, count));
 		end
 
 		wipe(container.content[slotID]);
@@ -543,7 +543,7 @@ function TRP3_API.inventory.onStart()
 		end
 	end);
 
-	BINDING_NAME_TRP3_INVENTORY = loc("BINDING_NAME_TRP3_INVENTORY");
-	BINDING_NAME_TRP3_MAIN_CONTAINER = loc("BINDING_NAME_TRP3_MAIN_CONTAINER");
-	BINDING_NAME_TRP3_SEARCH_FOR_ITEMS = loc("BINDING_NAME_TRP3_SEARCH_FOR_ITEMS");
+	BINDING_NAME_TRP3_INVENTORY = loc.BINDING_NAME_TRP3_INVENTORY;
+	BINDING_NAME_TRP3_MAIN_CONTAINER = loc.BINDING_NAME_TRP3_MAIN_CONTAINER;
+	BINDING_NAME_TRP3_SEARCH_FOR_ITEMS = loc.BINDING_NAME_TRP3_SEARCH_FOR_ITEMS;
 end
