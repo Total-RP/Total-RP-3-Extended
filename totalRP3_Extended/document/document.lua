@@ -147,6 +147,8 @@ local function onLinkClicked(self, url)
 			local retCode = TRP3_API.script.executeClassScript(url, document.SC, {
 				object = parentArgs.object
 			}, documentFrame.ID);
+		else
+			TRP3_API.Ellyb.Popups:OpenURL(url, loc.UI_LINK_WARNING);
 		end
 	end
 end
