@@ -1583,19 +1583,23 @@ Localization:GetLocale("esES"):AddTexts(
 --@end-do-not-package@
 );
 
+--[[ Removed while CurseForge is malfunctioning
 Localization:GetLocale("esMX"):AddTexts(
 --@localization(locale="esMX", format="lua_table", handle-unlocalized="ignore")@
 --@do-not-package@
 	{}
 --@end-do-not-package@
 );
+]]
 
+--[[ Removed while CurseForge is malfunctioning
 Localization:GetLocale("itIT"):AddTexts(
 --@localization(locale="itIT", format="lua_table", handle-unlocalized="ignore")@
 --@do-not-package@
 	{}
 --@end-do-not-package@
 );
+]]
 
 Localization:GetLocale("koKR"):AddTexts(
 --@localization(locale="koKR", format="lua_table", handle-unlocalized="ignore")@
@@ -1604,12 +1608,14 @@ Localization:GetLocale("koKR"):AddTexts(
 --@end-do-not-package@
 );
 
+--[[ Removed while CurseForge is malfunctioning
 Localization:GetLocale("ptBR"):AddTexts(
 --@localization(locale="ptBR", format="lua_table", handle-unlocalized="ignore")@
 --@do-not-package@
 	{}
 --@end-do-not-package@
 );
+]]
 
 Localization:GetLocale("ruRU"):AddTexts(
 --@localization(locale="ruRU", format="lua_table", handle-unlocalized="ignore")@
@@ -1625,12 +1631,14 @@ Localization:GetLocale("zhCN"):AddTexts(
 --@end-do-not-package@
 );
 
+--[[ Removed while CurseForge is malfunctioning
 Localization:GetLocale("zhTW"):AddTexts(
 --@localization(locale="zhTW", format="lua_table", handle-unlocalized="ignore")@
 --@do-not-package@
 	{}
 --@end-do-not-package@
 );
+]]
 
 TRP3_KS_BACKERS =
 [[#Total RP 3: Extended (version %s)
