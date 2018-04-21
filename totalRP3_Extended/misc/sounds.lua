@@ -57,11 +57,12 @@ function Utils.music.playLocalMusic(soundID, distance, source)
 end
 
 function Utils.music.stopLocalSoundID(soundID, channel)
+	soundID = soundID or 0;
 	Comm.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel);
 end
 
 function Utils.music.stopLocalMusic(soundID)
-	 Utils.music.stopLocalSoundID(soundID, "Music");
+	Utils.music.stopLocalSoundID(soundID, "Music");
 end
 
 local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)

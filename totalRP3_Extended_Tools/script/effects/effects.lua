@@ -873,6 +873,9 @@ local function sound_id_local_stop_init()
 	function SoundIDLocalStopEditor.save(scriptData)
 		scriptData.args[1] = SoundIDLocalStopEditor.channel:GetSelectedValue() or "SFX";
 		scriptData.args[2] = tonumber(strtrim(SoundIDLocalStopEditor.id:GetText()));
+		if scriptData.args[2] == 0 then
+			scriptData.args[2] = nil;
+		end
 	end
 end
 
