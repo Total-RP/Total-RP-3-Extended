@@ -19,7 +19,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local _G, assert, tostring, tinsert, wipe, pairs, time = _G, assert, tostring, tinsert, wipe, pairs, time;
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local Log = Utils.log;
 local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inventory.getBaseClassDataSafe, TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.isUsableByClass;
 local getClass, isContainerByClassID = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID;
@@ -83,7 +83,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		local slotCount = (class.CO.SR or 5) * (class.CO.SC or 4);
 		local slotUsed = TRP3_API.inventory.countUsedSlot(class, slotInfo);
 		text1 = incrementLine(text1);
-		text1 = text1 .. color("w") .. loc("IT_CON_TT"):format(slotUsed, slotCount);
+		text1 = text1 .. color("w") .. loc.IT_CON_TT:format(slotUsed, slotCount);
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
@@ -135,29 +135,29 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		if not forceAlt then
 			if isUsableByClass(class) then
 				text2 = text2 .. "\n";
-				text2 = text2 .. color("y") .. loc("CM_R_CLICK") .. ":|cffff9900 " .. USE;
+				text2 = text2 .. color("y") .. loc.CM_R_CLICK .. ":|cffff9900 " .. USE;
 			end
 
 			if isContainerByClass(class) then
 				text2 = text2 .. "\n";
-				text2 = text2 .. color("y") .. loc("CM_DOUBLECLICK") .. ":|cffff9900 " .. loc("IT_CON_OPEN");
+				text2 = text2 .. color("y") .. loc.CM_DOUBLECLICK .. ":|cffff9900 " .. loc.IT_CON_OPEN;
 			end
 
 			if class.missing then
 				text2 = text2 .. "\n";
-				text2 = text2 .. color("y") .. loc("IT_CON_TT_MISSING_CLASS") .. ":|cffff9900 " .. slotInfo.id;
+				text2 = text2 .. color("y") .. loc.IT_CON_TT_MISSING_CLASS .. ":|cffff9900 " .. slotInfo.id;
 			else
 				if TRP3_DB.exchange[rootClassID] or TRP3_DB.my[rootClassID] then
 					text2 = text2 .. "\n";
-					text2 = text2 .. color("y") .. loc("SEC_TT_COMBO");
+					text2 = text2 .. color("y") .. loc.SEC_TT_COMBO;
 				end
 				if TRP3_DB.exchange[rootClassID] and TRP3_API.security.atLeastOneBlocked(rootClassID) then
 					text2 = text2 .. "\n\n";
-					text2 = text2 .. color("o") .. loc("SET_TT_SECURED");
+					text2 = text2 .. color("o") .. loc.SET_TT_SECURED;
 				end
 				if not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
 					text2 = text2 .. "\n\n";
-					text2 = text2 .. color("o") .. loc("SET_TT_OLD"):format(rootClass.MD.tV ~= nil and TRP3_API.extended.tools.formatVersion(rootClass.MD.tV) or "?");
+					text2 = text2 .. color("o") .. loc.SET_TT_OLD:format(rootClass.MD.tV ~= nil and TRP3_API.extended.tools.formatVersion(rootClass.MD.tV) or "?");
 				end
 			end
 		end
@@ -171,8 +171,8 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 			end
 		end
 		if alertCount > 0 then
-			extension1 = color("y") .. loc("SET_TT_DETAILS_2"):format(alertCount);
-			extension2 = color("y") .. loc("SET_TT_DETAILS_1");
+			extension1 = color("y") .. loc.SET_TT_DETAILS_2:format(alertCount);
+			extension2 = color("y") .. loc.SET_TT_DETAILS_1;
 		end
 	end
 
@@ -370,7 +370,7 @@ local function pickUpLoot(slotFrom, container, slotID)
 	if itemCount == 1 then
 		doPickUpLoot(slotFrom, container, slotID, itemCount);
 	else
-		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(itemID))), function(value)
+		TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(itemID))), function(value)
 			value = math.min(value or 1, itemCount);
 			if slotFrom and slotFrom.info and value > 0 and value <= itemCount then
 				doPickUpLoot(slotFrom, container, slotID, value or 1);
@@ -384,7 +384,7 @@ local function discardLoot(slotFrom, containerFrame)
 	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
 	local lootInfo = slotFrom.info;
 
-	Utils.message.displayMessage(loc("DR_DELETED"):format(getItemLink(slotFrom.class), lootInfo.count or 1));
+	Utils.message.displayMessage(loc.DR_DELETED:format(getItemLink(slotFrom.class), lootInfo.count or 1));
 
 	lootInfo.count = 0;
 
@@ -441,11 +441,11 @@ local function slotOnDragStop(slotFrom)
 				end
 			else
 				if slotFrom.deletable then
-					TRP3_API.popup.showConfirmPopup(loc("DR_POPUP_REMOVE_TEXT"), function()
+					TRP3_API.popup.showConfirmPopup(loc.DR_POPUP_REMOVE_TEXT, function()
 						discardLoot(slotFrom, slotFrom:GetParent());
 					end);
 				else
-					Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
+					Utils.message.displayMessage(loc.IT_INV_ERROR_CANT_DESTROY_LOOT, Utils.message.type.ALERT_MESSAGE);
 				end
 			end
 		elseif slotTo:GetName() and slotTo:GetName():sub(1, ("TRP3_ExchangeFrame"):len()) == "TRP3_ExchangeFrame" then
@@ -465,7 +465,7 @@ local function slotOnDragStop(slotFrom)
 				if not slotFrom:GetParent().sync then
 					TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2ID);
 				else
-					Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
+					Utils.message.displayMessage(loc.DR_STASHES_ERROR_SYNC, 4);
 				end
 			elseif not container2.loot then
 				pickUpLoot(slotFrom, container2, slot2ID);
@@ -475,7 +475,7 @@ local function slotOnDragStop(slotFrom)
 				TRP3_API.inventory.stashSlot(slotFrom, container1, slot1ID);
 			end
 		else
-			Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_HERE"), Utils.message.type.ALERT_MESSAGE);
+			Utils.message.displayMessage(loc.IT_INV_ERROR_CANT_HERE, Utils.message.type.ALERT_MESSAGE);
 		end
 	end
 end
@@ -531,7 +531,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 					if not self:GetParent().sync then
 						TRP3_API.inventory.unstashSlot(self);
 					else
-						Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), 4);
+						Utils.message.displayMessage(loc.DR_STASHES_ERROR_SYNC, 4);
 					end
 				else
 					pickUpLoot(self);
@@ -860,12 +860,12 @@ local lootDB = {};
 
 local function presentLoot(loot, onLootCallback, forceLoot, checker, onDiscardCallback)
 	if lootFrame:IsVisible() and lootFrame:GetParent() == TRP3_DialogFrame and lootFrame.forceLoot then
-		Utils.message.displayMessage(loc("IT_LOOT_ERROR"), 4);
+		Utils.message.displayMessage(loc.IT_LOOT_ERROR, 4);
 		return;
 	end
 	if loot then
 		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.BA.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
-		lootFrame.Title:SetText((loot.BA.NA or loc("LOOT")));
+		lootFrame.Title:SetText((loot.BA.NA or loc.LOOT));
 
 		local slotCounter = 1;
 		lootFrame.info.content = loot.IT or EMPTY;
@@ -954,7 +954,7 @@ function TRP3_API.inventory.initLootFrame()
 	end
 
 	lootFrame.info = {loot = true};
-	lootFrame.DurabilityText:SetText(loc("LOOT_CONTAINER"));
+	lootFrame.DurabilityText:SetText(loc.LOOT_CONTAINER);
 	lootFrame.WeightText:SetText("");
 	lootFrame:RegisterForDrag("LeftButton");
 	lootFrame:SetScript("OnDragStart", lootDragStart);
@@ -987,7 +987,7 @@ function TRP3_API.inventory.initLootFrame()
 	local inventory = CreateFrame("Button", "TRP3_LootFrameInventory", TRP3_LootFrame, "TRP3_CommonButton");
 	inventory:SetPoint("TOP", TRP3_LootFrame, "BOTTOM", 0, -25);
 	inventory:SetSize(140, 20);
-	inventory:SetText(loc("INV_PAGE_INV_OPEN"));
+	inventory:SetText(loc.INV_PAGE_INV_OPEN);
 	inventory:SetScript("OnClick", function()
 		local playerInventory = TRP3_API.inventory.getInventory();
 		local quickSlot = playerInventory.content[TRP3_API.inventory.QUICK_SLOT_ID];
@@ -1000,7 +1000,7 @@ function TRP3_API.inventory.initLootFrame()
 	local lootAll = CreateFrame("Button", "TRP3_LootFrameLootAll", TRP3_LootFrame, "TRP3_CommonButton");
 	lootAll:SetPoint("TOP", TRP3_LootFrameInventory, "BOTTOM", 0, -5);
 	lootAll:SetSize(140, 20);
-	lootAll:SetText(loc("INV_PAGE_LOOT_ALL"));
+	lootAll:SetText(loc.INV_PAGE_LOOT_ALL);
 	lootAll:SetScript("OnClick", function()
 		for _, slot in pairs(lootFrame.slots) do
 			if slot.info then

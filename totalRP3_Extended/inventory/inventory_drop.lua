@@ -22,7 +22,7 @@ local type, tremove = type, tremove;
 local tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber = tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition = SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local broadcast = TRP3_API.communication.broadcast;
@@ -65,7 +65,7 @@ function TRP3_API.inventory.dropItemDirect(slotInfo)
 	dropCommon(slotInfo);
 	local count = slotInfo.count or 1;
 	local link = getItemLink(getClass(slotInfo.id));
-	Utils.message.displayMessage(loc("DR_DROPED"):format(link, count));
+	Utils.message.displayMessage(loc.DR_DROPED:format(link, count));
 end
 
 function TRP3_API.inventory.dropLoot(lootID)
@@ -97,9 +97,9 @@ end
 local function initScans()
 	TRP3_API.map.registerScan({
 		id = "inv_scan_self",
-		buttonText = loc("IT_INV_SCAN_MY_ITEMS"),
+		buttonText = loc.IT_INV_SCAN_MY_ITEMS,
 		buttonIcon = "inv_misc_bag_16",
-		scanTitle = loc("TYPE_ITEMS"),
+		scanTitle = loc.TYPE_ITEMS,
 		scan = function(saveStructure)
 			local mapID = GetCurrentMapAreaID();
 			for index, drop in pairs(dropData) do
@@ -123,9 +123,9 @@ local function initScans()
 
 	TRP3_API.map.registerScan({
 		id = "stashes_scan_self",
-		buttonText = loc("DR_STASHES_SCAN_MY"),
+		buttonText = loc.DR_STASHES_SCAN_MY,
 		buttonIcon = "Inv_misc_map_01",
-		scanTitle = loc("DR_STASHES"),
+		scanTitle = loc.DR_STASHES,
 		scan = function(saveStructure)
 			local mapID = GetCurrentMapAreaID();
 			for index, drop in pairs(stashesData) do
@@ -155,13 +155,13 @@ local function initScans()
 
 	TRP3_API.map.registerScan({
 		id = "stashes_scan_other",
-		buttonText = loc("DR_STASHES_SCAN"),
+		buttonText = loc.DR_STASHES_SCAN,
 		buttonIcon = "Icon_treasuremap",
 		scan = function()
 			local mapID = GetCurrentMapAreaID();
 			broadcast.broadcast(STASHES_SCAN_COMMAND, mapID);
 		end,
-		scanTitle = loc("DR_STASHES"),
+		scanTitle = loc.DR_STASHES,
 		scanCommand = STASHES_SCAN_COMMAND,
 		scanResponder = function(sender, requestMapID)
 			for _, stash in pairs(stashesData) do
@@ -170,7 +170,7 @@ local function initScans()
 					for index, slot in pairs(stash.item) do
 						total = total + 1;
 					end
-					broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc("DR_STASHES_NAME"), stash.BA.IC or "TEMP", total);
+					broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total);
 				end
 			end
 		end,
@@ -246,24 +246,24 @@ function searchForItems()
 			loot.IT[tostring(index)] = result.item;
 			total = total + (result.item.count or 1);
 		end
-		loot.BA.NA = loc("DR_RESULTS"):format(total);
+		loot.BA.NA = loc.DR_RESULTS:format(total);
 		TRP3_API.inventory.presentLoot(loot, onLooted, nil, function()
 			local posY2, posX2 = UnitPosition("player");
 			local isInRad = isInRadius(MAX_SEARCH_DISTANCE / 2, posY, posX, posY2, posX2);
 			if not isInRad then
-				Utils.message.displayMessage(loc("LOOT_DISTANCE"), 4);
+				Utils.message.displayMessage(loc.LOOT_DISTANCE, 4);
 			end
 			return isInRad;
 		end, onLooted);
 	else
-		Utils.message.displayMessage(loc("DR_NOTHING"), 4);
+		Utils.message.displayMessage(loc.DR_NOTHING, 4);
 	end
 end
 
 TRP3_API.inventory.searchForItems = searchForItems;
 
 function TRP3_API.inventory.dropOrDestroy(itemClass, callbackDestroy, callbackDrop)
-	StaticPopupDialogs["TRP3_DROP_ITEM"].text = loc("DR_POPUP_ASK"):format(TRP3_API.inventory.getItemLink(itemClass));
+	StaticPopupDialogs["TRP3_DROP_ITEM"].text = loc.DR_POPUP_ASK:format(TRP3_API.inventory.getItemLink(itemClass));
 	local dialog = StaticPopup_Show("TRP3_DROP_ITEM");
 	if dialog then
 		dialog:ClearAllPoints();
@@ -290,14 +290,14 @@ end
 local function openStashEditor(stashIndex)
 	stashEditFrame.stashIndex = stashIndex;
 	if stashIndex then
-		stashEditFrame.title:SetText(loc("DR_STASHES_EDIT"));
+		stashEditFrame.title:SetText(loc.DR_STASHES_EDIT);
 		local stash = stashesData[stashIndex] or EMPTY;
-		stashEditFrame.name:SetText(stash.BA and stash.BA.NA or loc("DR_STASHES_NAME"));
+		stashEditFrame.name:SetText(stash.BA and stash.BA.NA or loc.DR_STASHES_NAME);
 		iconHandler(stash.BA and stash.BA.IC or "temp");
 		stashEditFrame.hidden:SetChecked(stash.BA.NS or false);
 	else
-		stashEditFrame.title:SetText(loc("DR_STASHES_CREATE"));
-		stashEditFrame.name:SetText(loc("DR_STASHES_NAME"));
+		stashEditFrame.title:SetText(loc.DR_STASHES_CREATE);
+		stashEditFrame.name:SetText(loc.DR_STASHES_NAME);
 		iconHandler("temp");
 		stashEditFrame.hidden:SetChecked(false);
 	end
@@ -319,7 +319,7 @@ local function saveStash()
 		index = #stashesData;
 	end
 	stash.BA.IC = stashEditFrame.icon.selectedIcon or "TEMP";
-	stash.BA.NA = stEtN(strtrim(stashEditFrame.name:GetText():sub(1, 50))) or loc("DR_STASHES_NAME");
+	stash.BA.NA = stEtN(strtrim(stashEditFrame.name:GetText():sub(1, 50))) or loc.DR_STASHES_NAME;
 	stash.BA.NS = stashEditFrame.hidden:GetChecked();
 
 	-- Proper coordinates
@@ -345,10 +345,10 @@ end
 function showStash(stashInfo, stashIndex, sharedData)
 	if stashInfo then
 		Utils.texture.applyRoundTexture(stashContainer.Icon, "Interface\\ICONS\\" .. (stashInfo.BA.IC or "TEMP"), "Interface\\ICONS\\TEMP");
-		stashContainer.Title:SetText((stashInfo.BA.NA or loc("DR_STASHES_NAME")));
+		stashContainer.Title:SetText((stashInfo.BA.NA or loc.DR_STASHES_NAME));
 
 		if not sharedData or not stashContainer.sync then
-			stashContainer.DurabilityText:SetText(loc("DR_STASHES_NAME"));
+			stashContainer.DurabilityText:SetText(loc.DR_STASHES_NAME);
 			stashContainer.WeightText:SetText("");
 			stashContainer.sync = false;
 		end
@@ -356,10 +356,10 @@ function showStash(stashInfo, stashIndex, sharedData)
 		local owner = stashInfo.owner or Globals.player_id;
 		local sub = "|cff00ff00" .. owner;
 		if stashIndex then
-			sub = sub .. "\n\n|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("CM_ACTIONS");
+			sub = sub .. "\n\n|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.CM_ACTIONS;
 		end
 
-		setTooltipForSameFrame(stashContainer.IconButton, "LEFT", 0, 5, Utils.str.icon(stashInfo.BA.IC or "TEMP") .. " " .. (stashInfo.BA.NA or loc("DR_STASHES_NAME")), sub);
+		setTooltipForSameFrame(stashContainer.IconButton, "LEFT", 0, 5, Utils.str.icon(stashInfo.BA.IC or "TEMP") .. " " .. (stashInfo.BA.NA or loc.DR_STASHES_NAME), sub);
 
 		local data = stashInfo.item or EMPTY;
 		for index, slot in pairs(stashContainer.slots) do
@@ -377,9 +377,9 @@ function showStash(stashInfo, stashIndex, sharedData)
 		end
 
 		if sharedData then
-			TRP3_API.ui.tooltip.setTooltipAll(stashContainer.IconButton, "TOP", 0, 0, loc("DR_STASHES_NAME"), loc("CM_CLICK") .. ": " .. loc("DR_STASHES_RESYNC"));
+			TRP3_API.ui.tooltip.setTooltipAll(stashContainer.IconButton, "TOP", 0, 0, loc.DR_STASHES_NAME, loc.CM_CLICK .. ": " .. loc.DR_STASHES_RESYNC);
 		else
-			TRP3_API.ui.tooltip.setTooltipAll(stashContainer.IconButton, "TOP", 0, 0, loc("DR_STASHES_NAME"), loc("CM_CLICK") .. ": " .. loc("CM_ACTIONS"));
+			TRP3_API.ui.tooltip.setTooltipAll(stashContainer.IconButton, "TOP", 0, 0, loc.DR_STASHES_NAME, loc.CM_CLICK .. ": " .. loc.CM_ACTIONS);
 		end
 
 		stashContainer:Show();
@@ -396,7 +396,7 @@ local function initStashContainer()
 	stashContainer.LockIcon:Hide();
 
 	stashContainer.info = { loot = true, stash = true };
-	stashContainer.DurabilityText:SetText(loc("DR_STASHES_NAME"));
+	stashContainer.DurabilityText:SetText(loc.DR_STASHES_NAME);
 	stashContainer.WeightText:SetText("");
 	stashContainer:RegisterForDrag("LeftButton");
 	stashContainer:SetScript("OnDragStart", function(self)
@@ -414,20 +414,20 @@ local function initStashContainer()
 	stashContainer.IconButton:SetScript("OnClick", function(self)
 		if stashContainer.stashIndex then
 			TRP3_API.ui.listbox.displayDropDown(self, {
-				{ stashContainer.stashInfo.BA.NA or loc("DR_STASHES_NAME") },
-				{ loc("DR_STASHES_EDIT"), 1 },
-				{ loc("DR_STASHES_REMOVE"), 2 }
+				{ stashContainer.stashInfo.BA.NA or loc.DR_STASHES_NAME },
+				{ loc.DR_STASHES_EDIT, 1 },
+				{ loc.DR_STASHES_REMOVE, 2 }
 			}, function(value)
 				if value == 1 then
 					openStashEditor(stashContainer.stashIndex);
 					stashContainer:Hide();
 				else
-					TRP3_API.popup.showConfirmPopup(loc("DR_STASHES_REMOVE_PP"), function()
+					TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_REMOVE_PP, function()
 						if stashContainer.stashIndex then
 							wipe(stashesData[stashContainer.stashIndex]);
 							tremove(stashesData, stashContainer.stashIndex);
 							stashContainer:Hide();
-							Utils.message.displayMessage(loc("DR_STASHES_REMOVED"), 1);
+							Utils.message.displayMessage(loc.DR_STASHES_REMOVED, 1);
 						end
 					end);
 				end
@@ -464,7 +464,7 @@ local function initStashContainer()
 		local posY, posX = UnitPosition("player");
 		if (not posY or not posX) or not self.stashInfo or not isInRadius(MAX_SEARCH_DISTANCE, posY, posX, self.stashInfo.posY, self.stashInfo.posX) then
 			self:Hide();
-			Utils.message.displayMessage(loc("DR_STASHES_TOO_FAR"), 4);
+			Utils.message.displayMessage(loc.DR_STASHES_TOO_FAR, 4);
 		end
 	end);
 end
@@ -493,7 +493,7 @@ local function doStashSlot(slotFrom, container, slotID, itemCount)
 					tinsert(stashData.item, stashedSlotInfo);
 					showStash(stashData, stashContainer.stashIndex, stashContainer.sharedData);
 
-					Utils.message.displayMessage(loc("DR_STASHED"):format(getItemLink(getClass(stashedSlotInfo.id)), itemCount));
+					Utils.message.displayMessage(loc.DR_STASHED:format(getItemLink(getClass(stashedSlotInfo.id)), itemCount));
 
 					-- Remove from inv
 					slotInfo.count = (slotInfo.count or 1) - itemCount;
@@ -504,10 +504,10 @@ local function doStashSlot(slotFrom, container, slotID, itemCount)
 						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 					end
 				else
-					Utils.message.displayMessage(loc("DR_STASHES_FULL"), Utils.message.type.ALERT_MESSAGE);
+					Utils.message.displayMessage(loc.DR_STASHES_FULL, Utils.message.type.ALERT_MESSAGE);
 				end
 			else
-				Utils.message.displayMessage(loc("DR_STASHES_ERROR_SYNC"), Utils.message.type.ALERT_MESSAGE);
+				Utils.message.displayMessage(loc.DR_STASHES_ERROR_SYNC, Utils.message.type.ALERT_MESSAGE);
 			end
 		end
 	end
@@ -532,21 +532,21 @@ function TRP3_API.inventory.stashSlot(slotFrom, container, slotID)
 	-- You can't stash non empty containers, to avoid uncalculable data transfer
 	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slotFrom.info.content or EMPTY) > 0 then
 		if not itemClass.CO.OI then
-			Utils.message.displayMessage(loc("IT_CON_ERROR_TRADE"), Utils.message.type.ALERT_MESSAGE);
+			Utils.message.displayMessage(loc.IT_CON_ERROR_TRADE, Utils.message.type.ALERT_MESSAGE);
 			return;
 		end
 	end
 
 	-- You can't drop item in someone else's stash (for now)
 	if stashContainer.sharedData then
-		Utils.message.displayMessage(loc("DR_STASHES_DROP"), Utils.message.type.ALERT_MESSAGE);
+		Utils.message.displayMessage(loc.DR_STASHES_DROP, Utils.message.type.ALERT_MESSAGE);
 		return;
 	end
 
 	if itemCount == 1 then
 		doStashSlot(slotFrom, container, slotID, itemCount);
 	else
-		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(itemID))), function(value)
+		TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(itemID))), function(value)
 			value = math.min(value or 1, itemCount);
 			if slotFrom and slotFrom.info and value > 0 and value <= itemCount then
 				doStashSlot(slotFrom, container, slotID, value or 1);
@@ -565,7 +565,7 @@ local STASH_ITEM_RESPONSE = "SIRS";
 local classExists = TRP3_API.extended.classExists;
 
 function callForStashRefresh(target, stashID)
-	stashContainer.DurabilityText:SetText(loc("DR_STASHES_SYNC"));
+	stashContainer.DurabilityText:SetText(loc.DR_STASHES_SYNC);
 	stashContainer.sync = true;
 	local reservedMessageID = Comm.getMessageIDAndIncrement();
 	stashContainer.WeightText:SetText("0 %");
@@ -607,7 +607,7 @@ local function onUnstashResponse(response, sender)
 		elseif response == "0" then
 			Utils.log.log("Stash out of sync: " .. response);
 			stashContainer:Hide();
-			Utils.message.displayMessage(loc("DR_STASHES_ERROR_OUT_SYNC"), 4);
+			Utils.message.displayMessage(loc.DR_STASHES_ERROR_OUT_SYNC, 4);
 		end
 		stashContainer.sync = false;
 		showStash(stashContainer.stashInfo, nil, stashContainer.sharedData);
@@ -673,7 +673,7 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 
 	stashContainer.toContainer = container2;
 	stashContainer.toSlot = slot2;
-	stashContainer.DurabilityText:SetText(loc("IT_EX_DOWNLOAD"));
+	stashContainer.DurabilityText:SetText(loc.IT_EX_DOWNLOAD);
 	stashContainer.sync = true;
 	local reservedMessageID = Comm.getMessageIDAndIncrement();
 	stashContainer.WeightText:SetText("0 %");
@@ -698,7 +698,7 @@ local function receiveStashResponse(response, sender)
 	else
 		Utils.log.log("Stash out of sync: " .. response);
 		stashContainer:Hide();
-		Utils.message.displayMessage(loc("DR_STASHES_ERROR_OUT_SYNC"), 4);
+		Utils.message.displayMessage(loc.DR_STASHES_ERROR_OUT_SYNC, 4);
 	end
 end
 
@@ -732,7 +732,7 @@ end
 local function decorateStashSlot(slot, index)
 	local stashResponse = stashResponse[index];
 	TRP3_API.ui.frame.setupIconButton(slot, stashResponse[4] or "Temp");
-	slot.Name:SetText((stashResponse[3] or loc("DR_STASHES_NAME")) .. "|cffff9900 (" .. (stashResponse[5] or 0) .. "/8)");
+	slot.Name:SetText((stashResponse[3] or loc.DR_STASHES_NAME) .. "|cffff9900 (" .. (stashResponse[5] or 0) .. "/8)");
 	slot.InfoText:SetText("|cff00ff00" .. stashResponse[1]);
 	slot.info = stashResponse;
 	slot:SetScript("OnClick", function(self)
@@ -744,7 +744,7 @@ local function decorateStashSlot(slot, index)
 			posY = posY,
 			posX = posX,
 			BA = {
-				NA = self.info[3] or loc("DR_STASHES_NAME"),
+				NA = self.info[3] or loc.DR_STASHES_NAME,
 				IC = self.info[4] or "Temp"
 			},
 			item = {}
@@ -757,12 +757,12 @@ end
 local function displayStashesResponse()
 	local total = #stashResponse;
 	if total == 0 then
-		Utils.message.displayMessage(loc("DR_STASHES_NOTHING"), 4);
+		Utils.message.displayMessage(loc.DR_STASHES_NOTHING, 4);
 	else
 		local posY, posX = UnitPosition("player");
 		stashFoundFrame.posX = posX;
 		stashFoundFrame.posY = posY;
-		stashFoundFrame.title:SetText(loc("DR_STASHES_FOUND"):format(#stashResponse));
+		stashFoundFrame.title:SetText(loc.DR_STASHES_FOUND:format(#stashResponse));
 		stashFoundFrame:Show();
 		TRP3_API.ui.list.initList(stashFoundFrame, stashResponse, stashFoundFrame.slider);
 	end
@@ -776,7 +776,7 @@ local function startStashesRequest()
 		stashFoundFrame:Hide();
 		stashEditFrame:Hide();
 		wipe(stashResponse);
-		local cID = TRP3_API.extended.showCastingBar(STASHES_REQUEST_DURATION, 2, nil, nil, loc("DR_STASHES_SCAN"));
+		local cID = TRP3_API.extended.showCastingBar(STASHES_REQUEST_DURATION, 2, nil, nil, loc.DR_STASHES_SCAN);
 		broadcast.broadcast(SEARCH_STASHES_COMMAND, mapID, posY, posX, cID);
 		C_Timer.After(STASHES_REQUEST_DURATION, function()
 			if TRP3_CastingBarFrame.castID == cID then
@@ -851,10 +851,10 @@ local function onToolbarButtonClick(button, mouseButton)
 	local mapID = GetCurrentMapAreaID();
 
 	local dropdownItems = {};
-	tinsert(dropdownItems, { loc("DR_SYSTEM"), nil });
-	tinsert(dropdownItems, { loc("DR_SEARCH_BUTTON"), getActionValue(ACTION_SEARCH_MY, posX, posY), loc("DR_SEARCH_BUTTON_TT") });
-	tinsert(dropdownItems, { loc("DR_STASHES_SEARCH"), getActionValue(ACTION_STASH_SEARCH, posX, posY), loc("DR_STASHES_SEARCH_TT") });
-	tinsert(dropdownItems, { loc("DR_STASHES_CREATE"), getActionValue(ACTION_STASH_CREATE, posX, posY), loc("DR_STASHES_CREATE_TT") });
+	tinsert(dropdownItems, { loc.DR_SYSTEM, nil });
+	tinsert(dropdownItems, { loc.DR_SEARCH_BUTTON, getActionValue(ACTION_SEARCH_MY, posX, posY), loc.DR_SEARCH_BUTTON_TT });
+	tinsert(dropdownItems, { loc.DR_STASHES_SEARCH, getActionValue(ACTION_STASH_SEARCH, posX, posY), loc.DR_STASHES_SEARCH_TT });
+	tinsert(dropdownItems, { loc.DR_STASHES_CREATE, getActionValue(ACTION_STASH_CREATE, posX, posY), loc.DR_STASHES_CREATE_TT });
 	if posX and posY then
 		local searchResults = {};
 		for stashIndex, stash in pairs(stashesData) do
@@ -869,7 +869,7 @@ local function onToolbarButtonClick(button, mouseButton)
 
 		if #searchResults > 0 then
 			tinsert(dropdownItems, { "" });
-			tinsert(dropdownItems, { loc("DR_STASHES_WITHIN"), nil });
+			tinsert(dropdownItems, { loc.DR_STASHES_WITHIN, nil });
 			for _, stashIndex in pairs(searchResults) do
 				tinsert(dropdownItems, { getItemLink(stashesData[stashIndex]), stashIndex });
 			end
@@ -948,9 +948,9 @@ function dropFrame.init()
 			local toolbarButton = {
 				id = "bb_extended_drop",
 				icon = "icon_treasuremap",
-				configText = loc("DR_SEARCH_BUTTON"),
-				tooltip = loc("DR_SYSTEM"),
-				tooltipSub = loc("DR_SYSTEM_TT"),
+				configText = loc.DR_SEARCH_BUTTON,
+				tooltip = loc.DR_SYSTEM,
+				tooltipSub = loc.DR_SYSTEM_TT,
 				onClick = function(Uibutton, buttonStructure, button)
 					onToolbarButtonClick(Uibutton, button);
 				end,
@@ -961,9 +961,9 @@ function dropFrame.init()
 	end);
 
 	StaticPopupDialogs["TRP3_DROP_ITEM"] = {
-		button1 = loc("DR_POPUP_REMOVE"),
+		button1 = loc.DR_POPUP_REMOVE,
 		button2 = CANCEL,
-		button3 = loc("DR_POPUP"),
+		button3 = loc.DR_POPUP,
 		OnAccept = function()
 			if dropFrame.callbackDestroy then
 				dropFrame.callbackDestroy();
@@ -987,15 +987,15 @@ function dropFrame.init()
 	stashEditFrame.ok:SetText(SAVE);
 	stashEditFrame.ok:SetScript("OnClick", function() saveStash() end);
 
-	stashEditFrame.name.title:SetText(loc("DR_STASHES_NAME") .. " (" .. loc("DR_STASHES_MAX") .. ")");
-	setTooltipForSameFrame(stashEditFrame.icon, "RIGHT", 0, 5, loc("EDITOR_ICON"));
+	stashEditFrame.name.title:SetText(loc.DR_STASHES_NAME .. " (" .. loc.DR_STASHES_MAX .. ")");
+	setTooltipForSameFrame(stashEditFrame.icon, "RIGHT", 0, 5, loc.EDITOR_ICON);
 	stashEditFrame.icon:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
 			{ parent = stashEditFrame.icon, point = "LEFT", parentPoint = "RIGHT", x = 15 },
 			{ iconHandler });
 	end);
-	stashEditFrame.hidden.Text:SetText(loc("DR_STASHES_HIDE"));
-	setTooltipForSameFrame(stashEditFrame.hidden, "RIGHT", 0, 5, loc("DR_STASHES_HIDE"), loc("DR_STASHES_HIDE_TT"));
+	stashEditFrame.hidden.Text:SetText(loc.DR_STASHES_HIDE);
+	setTooltipForSameFrame(stashEditFrame.hidden, "RIGHT", 0, 5, loc.DR_STASHES_HIDE, loc.DR_STASHES_HIDE_TT);
 
 	initStashContainer();
 	Comm.broadcast.registerCommand(SEARCH_STASHES_COMMAND, receivedStashesRequest);
@@ -1006,7 +1006,7 @@ function dropFrame.init()
 		local posY, posX = UnitPosition("player");
 		if (not posY or not posX) or not isInRadius(MAX_SEARCH_DISTANCE / 2, posY, posX, self.posY, self.posX) then
 			self:Hide();
-			Utils.message.displayMessage(loc("DR_STASHES_TOO_FAR"), 4);
+			Utils.message.displayMessage(loc.DR_STASHES_TOO_FAR, 4);
 		end
 	end);
 

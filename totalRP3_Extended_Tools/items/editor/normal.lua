@@ -22,7 +22,7 @@ local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local toolFrame, currentTab, display, gameplay, notes, container, tabGroup, linksStructure;
 
@@ -218,8 +218,8 @@ local function loadDataScript()
 		toolFrame.specificDraft.SC = {};
 	end
 	if toolFrame.specificDraft.MD.MO == TRP3_DB.modes.NORMAL then
-		TRP3_ScriptEditorNormal.scriptTitle = loc("IT_ON_USE");
-		TRP3_ScriptEditorNormal.scriptDescription = loc("IT_ON_USE_TT");
+		TRP3_ScriptEditorNormal.scriptTitle = loc.IT_ON_USE;
+		TRP3_ScriptEditorNormal.scriptDescription = loc.IT_ON_USE_TT;
 		TRP3_ScriptEditorNormal.workflowIDToLoad = "onUse";
 	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
 
@@ -296,11 +296,11 @@ local function createTabBar()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
-			{ loc("WO_WORKFLOW"), TABS.EFFECTS, 150 },
-			{ loc("IT_CON"), TABS.CONTAINER, 150 },
-			{ loc("IN_INNER"), TABS.INNER, 150 },
-			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
+			{ loc.EDITOR_MAIN, TABS.MAIN, 150 },
+			{ loc.WO_WORKFLOW, TABS.EFFECTS, 150 },
+			{ loc.IT_CON, TABS.CONTAINER, 150 },
+			{ loc.IN_INNER, TABS.INNER, 150 },
+			{ loc.WO_LINKS, TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -390,42 +390,42 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 
 	-- Display
 	display = toolFrame.item.normal.display;
-	display.title:SetText(loc("IT_DISPLAY_ATT"));
+	display.title:SetText(loc.IT_DISPLAY_ATT);
 
 	-- Name
-	display.name.title:SetText(loc("IT_FIELD_NAME"));
-	setTooltipForSameFrame(display.name.help, "RIGHT", 0, 5, loc("IT_FIELD_NAME"), loc("IT_FIELD_NAME_TT"));
+	display.name.title:SetText(loc.IT_FIELD_NAME);
+	setTooltipForSameFrame(display.name.help, "RIGHT", 0, 5, loc.IT_FIELD_NAME, loc.IT_FIELD_NAME_TT);
 
 	-- Quality
 	TRP3_API.ui.listbox.setupListBox(display.quality, TRP3_ItemQuickEditor.qualityList, nil, nil, 200, true);
 
 	-- Left attribute
-	display.left.title:SetText(loc("IT_TT_LEFT"));
-	setTooltipForSameFrame(display.left.help, "RIGHT", 0, 5, loc("IT_TT_LEFT"), loc("IT_TT_LEFT_TT"));
+	display.left.title:SetText(loc.IT_TT_LEFT);
+	setTooltipForSameFrame(display.left.help, "RIGHT", 0, 5, loc.IT_TT_LEFT, loc.IT_TT_LEFT_TT);
 
 	-- Right attribute
-	display.right.title:SetText(loc("IT_TT_RIGHT"));
-	setTooltipForSameFrame(display.right.help, "RIGHT", 0, 5, loc("IT_TT_RIGHT"), loc("IT_TT_RIGHT_TT"));
+	display.right.title:SetText(loc.IT_TT_RIGHT);
+	setTooltipForSameFrame(display.right.help, "RIGHT", 0, 5, loc.IT_TT_RIGHT, loc.IT_TT_RIGHT_TT);
 
 	-- Description
-	display.description.title:SetText(loc("IT_TT_DESCRIPTION"));
-	setTooltipAll(display.description.dummy, "RIGHT", 0, 5, loc("IT_TT_DESCRIPTION"), loc("IT_TT_DESCRIPTION_TT"));
+	display.description.title:SetText(loc.IT_TT_DESCRIPTION);
+	setTooltipAll(display.description.dummy, "RIGHT", 0, 5, loc.IT_TT_DESCRIPTION, loc.IT_TT_DESCRIPTION_TT);
 
 	-- Component
-	display.component.Text:SetText(loc("IT_TT_REAGENT"));
-	setTooltipForSameFrame(display.component, "RIGHT", 0, 5, loc("IT_TT_REAGENT"), loc("IT_TT_REAGENT_TT"));
+	display.component.Text:SetText(loc.IT_TT_REAGENT);
+	setTooltipForSameFrame(display.component, "RIGHT", 0, 5, loc.IT_TT_REAGENT, loc.IT_TT_REAGENT_TT);
 
 	-- Quest
-	display.quest.Text:SetText(loc("IT_QUEST"));
-	setTooltipForSameFrame(display.quest, "RIGHT", 0, 5, loc("IT_QUEST"), loc("IT_QUEST_TT"));
+	display.quest.Text:SetText(loc.IT_QUEST);
+	setTooltipForSameFrame(display.quest, "RIGHT", 0, 5, loc.IT_QUEST, loc.IT_QUEST_TT);
 
 	-- Crafted
-	display.crafted.Text:SetText(loc("IT_CRAFTED"));
-	setTooltipForSameFrame(display.crafted, "RIGHT", 0, 5, loc("IT_CRAFTED"), loc("IT_CRAFTED_TT"));
+	display.crafted.Text:SetText(loc.IT_CRAFTED);
+	setTooltipForSameFrame(display.crafted, "RIGHT", 0, 5, loc.IT_CRAFTED, loc.IT_CRAFTED_TT);
 
 	-- Preview
-	display.preview.Name:SetText(loc("EDITOR_PREVIEW"));
-	display.preview.InfoText:SetText(loc("EDITOR_ICON_SELECT"));
+	display.preview.Name:SetText(loc.EDITOR_PREVIEW);
+	display.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
 	display.preview:SetScript("OnEnter", function(self)
 		TRP3_API.inventory.showItemTooltip(self, {madeBy = Globals.player_id}, storeDataMain(), true);
 	end);
@@ -442,62 +442,62 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 
 	-- Gameplay
 	gameplay = toolFrame.item.normal.gameplay;
-	gameplay.title:SetText(loc("IT_GAMEPLAY_ATT"));
+	gameplay.title:SetText(loc.IT_GAMEPLAY_ATT);
 
 	-- Value
-	gameplay.value.title:SetText(loc("IT_TT_VALUE_FORMAT"):format(Utils.str.texture("Interface\\MONEYFRAME\\UI-CopperIcon", 15)));
-	setTooltipForSameFrame(gameplay.value.help, "RIGHT", 0, 5, loc("IT_TT_VALUE"), loc("IT_TT_VALUE_TT"));
+	gameplay.value.title:SetText(loc.IT_TT_VALUE_FORMAT:format(Utils.str.texture("Interface\\MONEYFRAME\\UI-CopperIcon", 15)));
+	setTooltipForSameFrame(gameplay.value.help, "RIGHT", 0, 5, loc.IT_TT_VALUE, loc.IT_TT_VALUE_TT);
 
 	-- Weight
-	gameplay.weight.title:SetText(loc("IT_TT_WEIGHT_FORMAT"));
-	setTooltipForSameFrame(gameplay.weight.help, "RIGHT", 0, 5, loc("IT_TT_WEIGHT"), loc("IT_TT_WEIGHT_TT"));
+	gameplay.weight.title:SetText(loc.IT_TT_WEIGHT_FORMAT);
+	setTooltipForSameFrame(gameplay.weight.help, "RIGHT", 0, 5, loc.IT_TT_WEIGHT, loc.IT_TT_WEIGHT_TT);
 
 	-- Soulbound
 	gameplay.soulbound.Text:SetText(ITEM_SOULBOUND);
-	setTooltipForSameFrame(gameplay.soulbound, "RIGHT", 0, 5, ITEM_SOULBOUND, loc("IT_SOULBOUND_TT"));
+	setTooltipForSameFrame(gameplay.soulbound, "RIGHT", 0, 5, ITEM_SOULBOUND, loc.IT_SOULBOUND_TT);
 
 	-- Unique
 	gameplay.unique.Text:SetText(ITEM_UNIQUE);
-	setTooltipForSameFrame(gameplay.unique, "RIGHT", 0, 5, ITEM_UNIQUE, loc("IT_UNIQUE_TT"));
+	setTooltipForSameFrame(gameplay.unique, "RIGHT", 0, 5, ITEM_UNIQUE, loc.IT_UNIQUE_TT);
 
 	-- Unique count
-	gameplay.uniquecount.title:SetText(loc("IT_UNIQUE_COUNT"));
-	setTooltipForSameFrame(gameplay.uniquecount.help, "RIGHT", 0, 5, loc("IT_UNIQUE_COUNT"), loc("IT_UNIQUE_COUNT_TT"));
+	gameplay.uniquecount.title:SetText(loc.IT_UNIQUE_COUNT);
+	setTooltipForSameFrame(gameplay.uniquecount.help, "RIGHT", 0, 5, loc.IT_UNIQUE_COUNT, loc.IT_UNIQUE_COUNT_TT);
 
 	-- Stack
-	gameplay.stack.Text:SetText(loc("IT_STACK"));
-	setTooltipForSameFrame(gameplay.stack, "RIGHT", 0, 5, loc("IT_STACK"), loc("IT_STACK_TT"));
+	gameplay.stack.Text:SetText(loc.IT_STACK);
+	setTooltipForSameFrame(gameplay.stack, "RIGHT", 0, 5, loc.IT_STACK, loc.IT_STACK_TT);
 
 	-- Stack count
-	gameplay.stackcount.title:SetText(loc("IT_STACK_COUNT"));
-	setTooltipForSameFrame(gameplay.stackcount.help, "RIGHT", 0, 5, loc("IT_STACK_COUNT"), loc("IT_STACK_COUNT_TT"));
+	gameplay.stackcount.title:SetText(loc.IT_STACK_COUNT);
+	setTooltipForSameFrame(gameplay.stackcount.help, "RIGHT", 0, 5, loc.IT_STACK_COUNT, loc.IT_STACK_COUNT_TT);
 
 	-- Use
-	gameplay.use.Text:SetText(loc("IT_USE"));
-	setTooltipForSameFrame(gameplay.use, "RIGHT", 0, 5, loc("IT_USE"), loc("IT_USE_TT"));
+	gameplay.use.Text:SetText(loc.IT_USE);
+	setTooltipForSameFrame(gameplay.use, "RIGHT", 0, 5, loc.IT_USE, loc.IT_USE_TT);
 
 	-- Use text
-	gameplay.usetext.title:SetText(loc("IT_USE_TEXT"));
-	setTooltipForSameFrame(gameplay.usetext.help, "RIGHT", 0, 5, loc("IT_USE_TEXT"), loc("IT_USE_TEXT_TT"));
+	gameplay.usetext.title:SetText(loc.IT_USE_TEXT);
+	setTooltipForSameFrame(gameplay.usetext.help, "RIGHT", 0, 5, loc.IT_USE_TEXT, loc.IT_USE_TEXT_TT);
 
 	-- Wearable
-	gameplay.wearable.Text:SetText(loc("IT_WEARABLE"));
-	setTooltipForSameFrame(gameplay.wearable, "RIGHT", 0, 5, loc("IT_WEARABLE"), loc("IT_WEARABLE_TT"));
+	gameplay.wearable.Text:SetText(loc.IT_WEARABLE);
+	setTooltipForSameFrame(gameplay.wearable, "RIGHT", 0, 5, loc.IT_WEARABLE, loc.IT_WEARABLE_TT);
 
 	-- Container
-	gameplay.container.Text:SetText(loc("IT_CON"));
-	setTooltipForSameFrame(gameplay.container, "RIGHT", 0, 5, loc("IT_CON"), loc("IT_CONTAINER_TT"));
+	gameplay.container.Text:SetText(loc.IT_CON);
+	setTooltipForSameFrame(gameplay.container, "RIGHT", 0, 5, loc.IT_CON, loc.IT_CONTAINER_TT);
 
 	-- No add
-	gameplay.noAdd.Text:SetText(loc("IT_NO_ADD"));
-	setTooltipForSameFrame(gameplay.noAdd, "RIGHT", 0, 5, loc("IT_NO_ADD"), loc("IT_NO_ADD_TT"));
+	gameplay.noAdd.Text:SetText(loc.IT_NO_ADD);
+	setTooltipForSameFrame(gameplay.noAdd, "RIGHT", 0, 5, loc.IT_NO_ADD, loc.IT_NO_ADD_TT);
 
 	-- Pick up sound
 	local pickUpList = {};
 	for i = 1183, 1199 do
-		tinsert(pickUpList, {loc("IT_PU_SOUND") .. ": |cff00ff00" .. loc("IT_PU_SOUND_" .. i), i});
+		tinsert(pickUpList, {loc.IT_PU_SOUND .. ": |cff00ff00" .. loc["IT_PU_SOUND_" .. i], i});
 	end
-	tinsert(pickUpList, {loc("IT_PU_SOUND") .. ": |cff00ff00" .. loc("IT_PU_SOUND_" .. 1221), 1221});
+	tinsert(pickUpList, {loc.IT_PU_SOUND .. ": |cff00ff00" .. loc["IT_PU_SOUND_".. 1221], 1221});
 	TRP3_API.ui.listbox.setupListBox(gameplay.pickSound, pickUpList, function(value)
 		if not gameplay.mute then
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
@@ -507,7 +507,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	-- Drop sound
 	local dropList = {};
 	for i = 1200, 1217 do
-		tinsert(dropList, {loc("IT_DR_SOUND") .. ": |cff00ff00" .. loc("IT_DR_SOUND_" .. i), i});
+		tinsert(dropList, {loc.IT_DR_SOUND .. ": |cff00ff00" .. loc["IT_DR_SOUND_" .. i], i});
 	end
 	TRP3_API.ui.listbox.setupListBox(gameplay.dropSound, dropList, function(value)
 		if not gameplay.mute then
@@ -530,7 +530,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 
 	-- Notes
 	notes = toolFrame.item.normal.notes;
-	notes.title:SetText(loc("EDITOR_NOTES"));
+	notes.title:SetText(loc.EDITOR_NOTES);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CONTAINER
@@ -538,27 +538,27 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 
 	-- container
 	container = toolFrame.item.normal.container;
-	container.title:SetText(loc("IT_CON"));
+	container.title:SetText(loc.IT_CON);
 
 	-- Type
 	container.containerTypes = {
-		{(loc("IT_CO_SIZE") .. ": |cff00ff00%s"):format(loc("IT_CO_SIZE_COLROW"):format(5, 4)), "5x4"},
-		{(loc("IT_CO_SIZE") .. ": |cff00ff00%s"):format(loc("IT_CO_SIZE_COLROW"):format(2, 4)), "2x4"},
-		{(loc("IT_CO_SIZE") .. ": |cff00ff00%s"):format(loc("IT_CO_SIZE_COLROW"):format(1, 4)), "1x4"},
+		{(loc.IT_CO_SIZE .. ": |cff00ff00%s"):format(loc.IT_CO_SIZE_COLROW:format(5, 4)), "5x4"},
+		{(loc.IT_CO_SIZE .. ": |cff00ff00%s"):format(loc.IT_CO_SIZE_COLROW:format(2, 4)), "2x4"},
+		{(loc.IT_CO_SIZE .. ": |cff00ff00%s"):format(loc.IT_CO_SIZE_COLROW:format(1, 4)), "1x4"},
 	};
 	TRP3_API.ui.listbox.setupListBox(container.type, container.containerTypes, onContainerResize, nil, 230, true);
 
 	-- Durability
-	container.durability.title:SetText(loc("IT_CO_DURABILITY"));
-	setTooltipForSameFrame(container.durability.help, "RIGHT", 0, 5, loc("IT_CO_DURABILITY"), loc("IT_CO_DURABILITY_TT"));
+	container.durability.title:SetText(loc.IT_CO_DURABILITY);
+	setTooltipForSameFrame(container.durability.help, "RIGHT", 0, 5, loc.IT_CO_DURABILITY, loc.IT_CO_DURABILITY_TT);
 
 	-- Max weight
-	container.maxweight.title:SetText(loc("IT_CO_MAX"));
-	setTooltipForSameFrame(container.maxweight.help, "RIGHT", 0, 5, loc("IT_CO_MAX"), loc("IT_CO_MAX_TT"));
+	container.maxweight.title:SetText(loc.IT_CO_MAX);
+	setTooltipForSameFrame(container.maxweight.help, "RIGHT", 0, 5, loc.IT_CO_MAX, loc.IT_CO_MAX_TT);
 
 	-- Component
-	container.onlyinner.Text:SetText(loc("IT_CO_ONLY_INNER"));
-	setTooltipForSameFrame(container.onlyinner, "RIGHT", 0, 5, loc("IT_CO_ONLY_INNER"), loc("IT_CO_ONLY_INNER_TT"));
+	container.onlyinner.Text:SetText(loc.IT_CO_ONLY_INNER);
+	setTooltipForSameFrame(container.onlyinner, "RIGHT", 0, 5, loc.IT_CO_ONLY_INNER, loc.IT_CO_ONLY_INNER_TT);
 
 	-- Preview
 	for _, size in pairs({"5x4", "2x4", "1x4"}) do
@@ -572,14 +572,14 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	-- Expert
 	linksStructure = {
 		{
-			text = loc("IT_TRIGGER_ON_USE"),
-			tt = loc("IT_TRIGGER_ON_USE_TT"),
+			text = loc.IT_TRIGGER_ON_USE,
+			tt = loc.IT_TRIGGER_ON_USE_TT,
 			icon = "Interface\\ICONS\\ability_paladin_handoflight",
 			field = "OU",
 		},
 		{
-			text = loc("IT_TRIGGER_ON_DESTROY"),
-			tt = loc("IT_TRIGGER_ON_DESTROY_TT"),
+			text = loc.IT_TRIGGER_ON_DESTROY,
+			tt = loc.IT_TRIGGER_ON_DESTROY_TT,
 			icon = "Interface\\ICONS\\spell_sandexplosion",
 			field = "OD",
 		},

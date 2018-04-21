@@ -22,7 +22,7 @@ local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local editor, toolFrame = TRP3_ItemQuickEditor;
 local onCreatedCallback;
@@ -108,7 +108,7 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 	end
 
 	if classID then
-		editor.title:SetText(loc("IT_QUICK_EDITOR_EDIT"));
+		editor.title:SetText(loc.IT_QUICK_EDITOR_EDIT);
 		if not fromInv then
 			TRP3_API.ui.frame.configureHoverFrame(editor, toolFrame, "CENTER", 0, 5, false);
 		else
@@ -116,7 +116,7 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 		end
 		loadData(getClass(classID));
 	else
-		editor.title:SetText(loc("IT_QUICK_EDITOR"));
+		editor.title:SetText(loc.IT_QUICK_EDITOR);
 		if not fromInv then
 			TRP3_API.ui.frame.configureHoverFrame(editor, anchoredFrame, "BOTTOM", 0, 5, false);
 		else
@@ -124,7 +124,7 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 		end
 		loadData({
 			BA = {
-				NA = loc("IT_NEW_NAME"),
+				NA = loc.IT_NEW_NAME,
 				QA = LE_ITEM_QUALITY_COMMON,
 			}
 		});
@@ -132,7 +132,7 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 end
 
 local function onQuickCreatedFromList(classID, _)
-	TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(classID))), function(value)
+	TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(classID))), function(value)
 		TRP3_API.inventory.addItem(nil, classID, {count = value or 1});
 	end, nil, 1);
 end
@@ -164,49 +164,49 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	end);
 
 	-- Name
-	editor.name.title:SetText(loc("IT_FIELD_NAME"));
-	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc("IT_FIELD_NAME"), loc("IT_FIELD_NAME_TT"));
+	editor.name.title:SetText(loc.IT_FIELD_NAME);
+	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc.IT_FIELD_NAME, loc.IT_FIELD_NAME_TT);
 
 	-- Quality
 	editor.qualityList = {
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_POOR) .. ITEM_QUALITY0_DESC, LE_ITEM_QUALITY_POOR},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_COMMON) .. ITEM_QUALITY1_DESC, LE_ITEM_QUALITY_COMMON},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_UNCOMMON) .. ITEM_QUALITY2_DESC, LE_ITEM_QUALITY_UNCOMMON},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_RARE) .. ITEM_QUALITY3_DESC, LE_ITEM_QUALITY_RARE},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_EPIC) .. ITEM_QUALITY4_DESC, LE_ITEM_QUALITY_EPIC},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_LEGENDARY) .. ITEM_QUALITY5_DESC, LE_ITEM_QUALITY_LEGENDARY},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_ARTIFACT) .. ITEM_QUALITY6_DESC, LE_ITEM_QUALITY_ARTIFACT},
-		{loc("IT_FIELD_QUALITY") .. ": " .. getQualityColorText(LE_ITEM_QUALITY_HEIRLOOM) .. ITEM_QUALITY7_DESC, LE_ITEM_QUALITY_HEIRLOOM},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_POOR) .. ITEM_QUALITY0_DESC, LE_ITEM_QUALITY_POOR},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_COMMON) .. ITEM_QUALITY1_DESC, LE_ITEM_QUALITY_COMMON},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_UNCOMMON) .. ITEM_QUALITY2_DESC, LE_ITEM_QUALITY_UNCOMMON},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_RARE) .. ITEM_QUALITY3_DESC, LE_ITEM_QUALITY_RARE},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_EPIC) .. ITEM_QUALITY4_DESC, LE_ITEM_QUALITY_EPIC},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_LEGENDARY) .. ITEM_QUALITY5_DESC, LE_ITEM_QUALITY_LEGENDARY},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_ARTIFACT) .. ITEM_QUALITY6_DESC, LE_ITEM_QUALITY_ARTIFACT},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_HEIRLOOM) .. ITEM_QUALITY7_DESC, LE_ITEM_QUALITY_HEIRLOOM},
 	};
 	setupListBox(editor.quality, editor.qualityList, nil, nil, 165, true);
 
 	-- Left attribute
-	editor.left.title:SetText(loc("IT_TT_LEFT"));
-	setTooltipForSameFrame(editor.left.help, "RIGHT", 0, 5, loc("IT_TT_LEFT"), loc("IT_TT_LEFT_TT"));
+	editor.left.title:SetText(loc.IT_TT_LEFT);
+	setTooltipForSameFrame(editor.left.help, "RIGHT", 0, 5, loc.IT_TT_LEFT, loc.IT_TT_LEFT_TT);
 
 	-- Right attribute
-	editor.right.title:SetText(loc("IT_TT_RIGHT"));
-	setTooltipForSameFrame(editor.right.help, "RIGHT", 0, 5, loc("IT_TT_RIGHT"), loc("IT_TT_RIGHT_TT"));
+	editor.right.title:SetText(loc.IT_TT_RIGHT);
+	setTooltipForSameFrame(editor.right.help, "RIGHT", 0, 5, loc.IT_TT_RIGHT, loc.IT_TT_RIGHT_TT);
 
 	-- Description
-	editor.description.title:SetText(loc("IT_TT_DESCRIPTION"));
-	setTooltipForSameFrame(editor.description.help, "RIGHT", 0, 5, loc("IT_TT_DESCRIPTION"), loc("IT_TT_DESCRIPTION_TT"));
+	editor.description.title:SetText(loc.IT_TT_DESCRIPTION);
+	setTooltipForSameFrame(editor.description.help, "RIGHT", 0, 5, loc.IT_TT_DESCRIPTION, loc.IT_TT_DESCRIPTION_TT);
 
 	-- Wearable
-	editor.wearable.Text:SetText(loc("IT_WEARABLE"));
-	setTooltipForSameFrame(editor.wearable, "RIGHT", 0, 5, loc("IT_WEARABLE"), loc("IT_WEARABLE_TT"));
+	editor.wearable.Text:SetText(loc.IT_WEARABLE);
+	setTooltipForSameFrame(editor.wearable, "RIGHT", 0, 5, loc.IT_WEARABLE, loc.IT_WEARABLE_TT);
 
 	-- Value
-	editor.value.title:SetText(loc("IT_TT_VALUE_FORMAT"):format(Utils.str.texture("Interface\\MONEYFRAME\\UI-CopperIcon", 15)));
-	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, loc("IT_TT_VALUE"), loc("IT_TT_VALUE_TT"));
+	editor.value.title:SetText(loc.IT_TT_VALUE_FORMAT:format(Utils.str.texture("Interface\\MONEYFRAME\\UI-CopperIcon", 15)));
+	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, loc.IT_TT_VALUE, loc.IT_TT_VALUE_TT);
 
 	-- Weight
-	editor.weight.title:SetText(loc("IT_TT_WEIGHT_FORMAT"));
-	setTooltipForSameFrame(editor.weight.help, "RIGHT", 0, 5, loc("IT_TT_WEIGHT"), loc("IT_TT_WEIGHT_TT"));
+	editor.weight.title:SetText(loc.IT_TT_WEIGHT_FORMAT);
+	setTooltipForSameFrame(editor.weight.help, "RIGHT", 0, 5, loc.IT_TT_WEIGHT, loc.IT_TT_WEIGHT_TT);
 
 	-- Preview
-	editor.preview.Name:SetText(loc("EDITOR_PREVIEW"));
-	editor.preview.InfoText:SetText(loc("EDITOR_ICON_SELECT"));
+	editor.preview.Name:SetText(loc.EDITOR_PREVIEW);
+	editor.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
 	editor.preview:SetScript("OnEnter", function(self)
 		TRP3_API.inventory.showItemTooltip(self, Globals.empty, injectUIData({BA={}}), true);
 	end);
@@ -232,35 +232,35 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		editor.value,
 		editor.weight,
 	});
-	editor.convert:SetText(loc("IT_CONVERT_TO_NORMAL"));
-	editor.title:SetText(loc("IT_QUICK_EDITOR"));
-	editor.display:SetText(loc("IT_DISPLAY_ATT"));
-	editor.gameplay:SetText(loc("IT_GAMEPLAY_ATT"));
-	editor.convert:SetText(loc("IT_CONVERT_TO_NORMAL"));
+	editor.convert:SetText(loc.IT_CONVERT_TO_NORMAL);
+	editor.title:SetText(loc.IT_QUICK_EDITOR);
+	editor.display:SetText(loc.IT_DISPLAY_ATT);
+	editor.gameplay:SetText(loc.IT_GAMEPLAY_ATT);
+	editor.convert:SetText(loc.IT_CONVERT_TO_NORMAL);
 	editor:SetScript("OnShow", function()
 		editor.name:SetFocus();
 	end);
-	setTooltipForSameFrame(editor.convert, "TOP", 0, 0, loc("IT_CONVERT_TO_NORMAL"), loc("IT_CONVERT_TO_NORMAL_TT"));
+	setTooltipForSameFrame(editor.convert, "TOP", 0, 0, loc.IT_CONVERT_TO_NORMAL, loc.IT_CONVERT_TO_NORMAL_TT);
 
 	-- Templates
-	toolFrame.list.bottom.item.Name:SetText(loc("DB_CREATE_ITEM"));
-	toolFrame.list.bottom.item.InfoText:SetText(loc("DB_CREATE_ITEM_TT"));
-	toolFrame.list.bottom.item.templates.title:SetText(loc("DB_CREATE_ITEM_TEMPLATES"));
-	toolFrame.list.bottom.item.templates.quick.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_QUICK"));
-	toolFrame.list.bottom.item.templates.quick.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_QUICK_TT"));
-	toolFrame.list.bottom.item.templates.document.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_DOCUMENT"));
-	toolFrame.list.bottom.item.templates.document.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT"));
-	toolFrame.list.bottom.item.templates.blank.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK"));
-	toolFrame.list.bottom.item.templates.blank.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_BLANK_TT"));
-	toolFrame.list.bottom.item.templates.container.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER"));
-	toolFrame.list.bottom.item.templates.container.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT"));
-	toolFrame.list.bottom.item.templates.from.Name:SetText(loc("DB_CREATE_ITEM_TEMPLATES_FROM"));
-	toolFrame.list.bottom.item.templates.from.InfoText:SetText(loc("DB_CREATE_ITEM_TEMPLATES_FROM_TT"));
+	toolFrame.list.bottom.item.Name:SetText(loc.DB_CREATE_ITEM);
+	toolFrame.list.bottom.item.InfoText:SetText(loc.DB_CREATE_ITEM_TT);
+	toolFrame.list.bottom.item.templates.title:SetText(loc.DB_CREATE_ITEM_TEMPLATES);
+	toolFrame.list.bottom.item.templates.quick.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_QUICK);
+	toolFrame.list.bottom.item.templates.quick.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_QUICK_TT);
+	toolFrame.list.bottom.item.templates.document.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_DOCUMENT);
+	toolFrame.list.bottom.item.templates.document.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT);
+	toolFrame.list.bottom.item.templates.blank.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_BLANK);
+	toolFrame.list.bottom.item.templates.blank.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_BLANK_TT);
+	toolFrame.list.bottom.item.templates.container.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_CONTAINER);
+	toolFrame.list.bottom.item.templates.container.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT);
+	toolFrame.list.bottom.item.templates.from.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_FROM);
+	toolFrame.list.bottom.item.templates.from.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_FROM_TT);
 
-	toolFrame.list.bottom.campaign.templates.blank.Name:SetText(loc("DB_CREATE_CAMPAIGN_TEMPLATES_BLANK"));
-	toolFrame.list.bottom.campaign.templates.blank.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TEMPLATES_BLANK_TT"));
-	toolFrame.list.bottom.campaign.templates.from.Name:SetText(loc("DB_CREATE_CAMPAIGN_TEMPLATES_FROM"));
-	toolFrame.list.bottom.campaign.templates.from.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TEMPLATES_FROM_TT"));
+	toolFrame.list.bottom.campaign.templates.blank.Name:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_BLANK);
+	toolFrame.list.bottom.campaign.templates.blank.InfoText:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_BLANK_TT);
+	toolFrame.list.bottom.campaign.templates.from.Name:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_FROM);
+	toolFrame.list.bottom.campaign.templates.from.InfoText:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_FROM_TT);
 
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.container, "inv_misc_bag_36");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.blank, "inv_inscription_scroll");

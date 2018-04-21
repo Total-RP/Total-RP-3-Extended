@@ -20,7 +20,7 @@ local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.
 local pairs, strsplit, floor, sqrt, tonumber = pairs, strsplit, math.floor, sqrt, tonumber;
 local EJ_GetCurrentInstance = EJ_GetCurrentInstance;
 local getConfigValue = TRP3_API.configuration.getValue;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local Log = TRP3_API.utils.log;
 
 local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
@@ -30,6 +30,7 @@ local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LOCAL_SOUND_COMMAND = "PLS";
+local LOCAL_STOPSOUND_COMMAND = "STS";
 
 local function getPosition()
 	local posY, posX, posZ, instanceID = UnitPosition("player");
@@ -53,6 +54,14 @@ function Utils.music.playLocalMusic(soundID, distance, source)
 	if instanceID then
 		Comm.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, "Music" , distance, instanceID, posY, posX, posZ);
 	end
+end
+
+function Utils.music.stopLocalSoundID(soundID, channel)
+	Comm.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel);
+end
+
+function Utils.music.stopLocalMusic(soundID)
+	 Utils.music.stopLocalSoundID(soundID, "Music");
 end
 
 local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
@@ -102,6 +111,13 @@ local function initSharedSound()
 			end
 		end
 	end);
+
+	Comm.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
+			Utils.music.stopSoundID(soundID, channel, sender);
+		end
+	end);
+
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -139,13 +155,13 @@ local function showHistory()
 	for _, handler in pairs(Utils.music.getHandlers()) do
 		historyFrame.empty:Hide();
 		local source = handler.source or UNKNOWN;
-		local string = ("%s) " .. loc("EX_SOUND_HISTORY_LINE")):format(handler.date,
+		local string = ("%s) " .. loc.EX_SOUND_HISTORY_LINE):format(handler.date,
 			"|Hsource:" .. source .. "|h|cff00ff00[" .. source .. "]|h|r",
 			"|cffffff00" .. handler.id .. "|r",
 			"|cffffffff" .. handler.channel .. " (" .. handler.handlerID .. ")|r"
 		);
-		string = string .. (" |Hstop:%s:%s|h|cffff0000[%s]|h"):format(handler.handlerID, handler.channel, loc("EX_SOUND_HISTORY_STOP"));
-		string = string .. (" |Hreplay:%s:%s|h|cffffff00[%s]|h"):format(handler.id, handler.channel, loc("EX_SOUND_HISTORY_REPLAY"));
+		string = string .. (" |Hstop:%s:%s|h|cffff0000[%s]|h"):format(handler.handlerID, handler.channel, loc.EX_SOUND_HISTORY_STOP);
+		string = string .. (" |Hreplay:%s:%s|h|cffffff00[%s]|h"):format(handler.id, handler.channel, loc.EX_SOUND_HISTORY_REPLAY);
 		historyFrame.container:AddMessage(string);
 	end
 end
@@ -168,9 +184,9 @@ local function initHistory()
 			local toolbarButton = {
 				id = "bb_extended_sounds",
 				icon = "trade_archaeology_delicatemusicbox",
-				configText = loc("EX_SOUND_HISTORY"),
-				tooltip = loc("EX_SOUND_HISTORY"),
-				tooltipSub = loc("EX_SOUND_HISTORY_TT"),
+				configText = loc.EX_SOUND_HISTORY,
+				tooltip = loc.EX_SOUND_HISTORY,
+				tooltipSub = loc.EX_SOUND_HISTORY_TT,
 				onClick = function(self, _, button)
 					if button == "LeftButton" then
 						if historyFrame:IsVisible() then
@@ -192,17 +208,17 @@ local function initHistory()
 	historyFrame.container:SetHyperlinksEnabled(true);
 	historyFrame.container:SetJustifyH("LEFT");
 
-	historyFrame.title:SetText(loc("EX_SOUND_HISTORY"));
-	historyFrame.empty:SetText(loc("EX_SOUND_HISTORY_EMPTY"));
+	historyFrame.title:SetText(loc.EX_SOUND_HISTORY);
+	historyFrame.empty:SetText(loc.EX_SOUND_HISTORY_EMPTY);
 	historyFrame.container:SetScript("OnHyperlinkClick", onLinkClicked);
 	historyFrame.Close:SetScript("OnClick", function()
 		historyFrame:Hide();
 	end);
 
-	historyFrame.stop:SetText(loc("EX_SOUND_HISTORY_STOP_ALL"));
+	historyFrame.stop:SetText(loc.EX_SOUND_HISTORY_STOP_ALL);
 	historyFrame.stop:SetScript("OnClick", stopAll);
 
-	historyFrame.clear:SetText(loc("EX_SOUND_HISTORY_CLEAR"));
+	historyFrame.clear:SetText(loc.EX_SOUND_HISTORY_CLEAR);
 	historyFrame.clear:SetScript("OnClick", function()
 		Utils.music.stopChannel();
 		Utils.music.clearHandlers();

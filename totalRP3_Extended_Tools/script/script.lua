@@ -21,33 +21,33 @@ local wipe, pairs, tinsert, sort, date = wipe, pairs, tinsert, table.sort, date;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local toolFrame;
 
 function TRP3_API.extended.tools.getEffectOperandLocale()
 	local effectMenu = {
-		[loc("WO_EFFECT_CAT_COMMON")] = {
+		[loc.WO_EFFECT_CAT_COMMON] = {
 			"text",
 		},
-		[loc("EFFECT_CAT_SOUND")] = {
+		[loc.EFFECT_CAT_SOUND] = {
 			"sound_id_self",
 			"sound_music_self",
 			"sound_music_stop",
 			"sound_id_local",
 			"sound_music_local",
 		},
-		[loc("EFFECT_CAT_SPEECH")] = {
+		[loc.EFFECT_CAT_SPEECH] = {
 			"speech_env",
 			"speech_npc",
 			"speech_player",
 		},
-		[loc("REG_COMPANIONS")] = {
+		[loc.REG_COMPANIONS] = {
 			"companion_dismiss_mount",
 			"companion_dismiss_critter",
 			"companion_random_critter",
 			"companion_summon_mount",
 		},
-		[loc("INV_PAGE_CHARACTER_INV")] = {
+		[loc.INV_PAGE_CHARACTER_INV] = {
 			"item_add",
 			"item_remove",
 			"item_sheath",
@@ -58,11 +58,11 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"item_loot",
 			"item_roll_dice",
 		},
-		[loc("TYPE_DOCUMENT")] = {
+		[loc.TYPE_DOCUMENT] = {
 			"document_show",
 			"document_close",
 		},
-		[loc("EFFECT_CAT_CAMPAIGN")] = {
+		[loc.EFFECT_CAT_CAMPAIGN] = {
 			"quest_start",
 			"quest_goToStep",
 			"quest_revealObjective",
@@ -70,13 +70,13 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"dialog_start",
 			"dialog_quick",
 		},
-		[loc("EFFECT_CAT_CAMERA")] = {
+		[loc.EFFECT_CAT_CAMERA] = {
 			"cam_zoom_in",
 			"cam_zoom_out",
 			"cam_save",
 			"cam_load",
 		},
-		[loc("MODE_EXPERT")] = {
+		[loc.MODE_EXPERT] = {
 			"var_object",
 			"var_operand",
 			"var_prompt",
@@ -86,16 +86,16 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"script"
 		},
 		order = {
-			loc("WO_EFFECT_CAT_COMMON"),
-			loc("EFFECT_CAT_SPEECH"),
-			loc("INV_PAGE_CHARACTER_INV"),
-			loc("TYPE_DOCUMENT"),
-			loc("EFFECT_CAT_CAMPAIGN"),
-			loc("EFFECT_CAT_SOUND"),
-			loc("REG_COMPANIONS"),
-			loc("EFFECT_CAT_CAMERA"),
+			loc.WO_EFFECT_CAT_COMMON,
+			loc.EFFECT_CAT_SPEECH,
+			loc.INV_PAGE_CHARACTER_INV,
+			loc.TYPE_DOCUMENT,
+			loc.EFFECT_CAT_CAMPAIGN,
+			loc.EFFECT_CAT_SOUND,
+			loc.REG_COMPANIONS,
+			loc.EFFECT_CAT_CAMERA,
 			"",
-			loc("MODE_EXPERT"),
+			loc.MODE_EXPERT,
 		}
 	}
 	return effectMenu;

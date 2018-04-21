@@ -21,7 +21,7 @@ local wipe, tinsert, error, assert, date = wipe, tinsert, error, assert, date;
 local tsize = Utils.table.size;
 local getClass, classExists = TRP3_API.extended.getClass, TRP3_API.extended.classExists;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -59,7 +59,7 @@ function TRP3_API.extended.tools.getBlankItemData(toMode)
 			SB = Globals.player_id,
 		},
 		BA = {
-			NA = loc("IT_NEW_NAME"),
+			NA = loc.IT_NEW_NAME,
 		},
 	};
 end
@@ -67,7 +67,7 @@ end
 function TRP3_API.extended.tools.getContainerItemData()
 	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
 	data.BA.CT = true;
-	data.BA.NA = loc("IT_NEW_NAME_CO");
+	data.BA.NA = loc.IT_NEW_NAME_CO;
 	data.BA.IC = "inv_misc_bag_36";
 	data.CO = {SR = 5, SC = 4};
 	return data;
@@ -75,10 +75,10 @@ end
 
 local function validator(classID, class, warnings)
 	if class.BA.ST and class.BA.ST > 1 and class.BA.CR then
-		tinsert(warnings, loc("IT_WARNING_1"):format(classID));
+		tinsert(warnings, loc.IT_WARNING_1:format(classID));
 	end
 	if class.BA.ST and class.BA.ST > 1 and class.BA.CT then
-		tinsert(warnings, loc("IT_WARNING_2"):format(classID));
+		tinsert(warnings, loc.IT_WARNING_2:format(classID));
 	end
 end
 

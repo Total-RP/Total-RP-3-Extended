@@ -21,7 +21,7 @@ local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonu
 local tsize = Utils.table.size;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color = Utils.str.color;
@@ -154,11 +154,11 @@ local function createTabBar()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
-			{ loc("IN_INNER"), TABS.INNER, 150 },
-			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
-			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
-			{ loc("CA_ACTIONS"), TABS.ACTIONS, 150 },
+			{ loc.EDITOR_MAIN, TABS.MAIN, 150 },
+			{ loc.IN_INNER, TABS.INNER, 150 },
+			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
+			{ loc.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.CA_ACTIONS, TABS.ACTIONS, 150 },
 		},
 		onTabChanged
 	);
@@ -181,33 +181,33 @@ function TRP3_API.extended.tools.initStep(ToolFrame)
 
 	-- Main
 	main = toolFrame.step.main;
-	main.title:SetText(loc("TYPE_QUEST_STEP"));
+	main.title:SetText(loc.TYPE_QUEST_STEP);
 
 	-- Pre
-	main.pre.title:SetText(loc("QE_ST_PRE"));
+	main.pre.title:SetText(loc.QE_ST_PRE);
 
 	-- Post
-	main.post.title:SetText(loc("QE_ST_POST"));
+	main.post.title:SetText(loc.QE_ST_POST);
 
 	-- Auto reveal
-	main.auto.Text:SetText(loc("QE_ST_AUTO_REVEAL"));
-	setTooltipForSameFrame(main.auto, "RIGHT", 0, 5, loc("QE_ST_AUTO_REVEAL"), loc("QE_ST_AUTO_REVEAL_TT"));
+	main.auto.Text:SetText(loc.QE_ST_AUTO_REVEAL);
+	setTooltipForSameFrame(main.auto, "RIGHT", 0, 5, loc.QE_ST_AUTO_REVEAL, loc.QE_ST_AUTO_REVEAL_TT);
 
 	-- Auto reveal
-	main.final.Text:SetText(loc("QE_ST_END"));
-	setTooltipForSameFrame(main.final, "RIGHT", 0, 5, loc("QE_ST_END"), loc("QE_ST_END_TT"));
+	main.final.Text:SetText(loc.QE_ST_END);
+	setTooltipForSameFrame(main.final, "RIGHT", 0, 5, loc.QE_ST_END, loc.QE_ST_END_TT);
 
 	-- Links
 	linksStructure = {
 		{
-			text = loc("QE_ST_LINKS_ON_START"),
-			tt = loc("QE_ST_LINKS_ON_START_TT"),
+			text = loc.QE_ST_LINKS_ON_START,
+			tt = loc.QE_ST_LINKS_ON_START_TT,
 			icon = "Interface\\ICONS\\achievement_quests_completed_03",
 			field = "OS",
 		},
 		{
-			text = loc("QE_ST_LINKS_ON_LEAVE"),
-			tt = loc("QE_ST_LINKS_ON_LEAVE_TT"),
+			text = loc.QE_ST_LINKS_ON_LEAVE,
+			tt = loc.QE_ST_LINKS_ON_LEAVE_TT,
 			icon = "Interface\\ICONS\\achievement_quests_completed_04",
 			field = "OL",
 		}

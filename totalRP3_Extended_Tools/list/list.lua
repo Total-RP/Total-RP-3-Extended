@@ -24,7 +24,7 @@ local stEtN = Utils.str.emptyToNil;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local Log = Utils.log;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
@@ -141,18 +141,18 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID)
 	local text = "";
 
 	if isRoot then
-		text = text .. fieldFormat:format(loc("ROOT_GEN_ID"), "|cff00ffff" .. rootID);
-		text = text .. "\n" .. fieldFormat:format(loc("ROOT_VERSION"), metadata.V or 1);
-		text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_BY"), metadata.CB or "?");
-		text = text .. "\n" .. fieldFormat:format(loc("ROOT_CREATED_ON"), metadata.CD or "?");
-		text = text .. "\n" .. fieldFormat:format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
+		text = text .. fieldFormat:format(loc.ROOT_GEN_ID, "|cff00ffff" .. rootID);
+		text = text .. "\n" .. fieldFormat:format(loc.ROOT_VERSION, metadata.V or 1);
+		text = text .. "\n" .. fieldFormat:format(loc.ROOT_CREATED_BY, metadata.CB or "?");
+		text = text .. "\n" .. fieldFormat:format(loc.ROOT_CREATED_ON, metadata.CD or "?");
+		text = text .. "\n" .. fieldFormat:format(loc.SEC_LEVEL, TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
 	else
-		text = text .. fieldFormat:format(loc("SPECIFIC_INNER_ID"), "|cff00ffff" .. innerID);
+		text = text .. fieldFormat:format(loc.SPECIFIC_INNER_ID, "|cff00ffff" .. innerID);
 	end
 
-	text = text .. "\n" .. fieldFormat:format(loc("SPECIFIC_MODE"), TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
-	text = text .. "\n\n|cffffff00" .. loc("CM_CLICK") .. ": |cffff9900" .. loc("CM_OPEN");
-	text = text .. "\n|cffffff00" .. loc("CM_R_CLICK") .. ": |cffff9900" .. loc("DB_ACTIONS");
+	text = text .. "\n" .. fieldFormat:format(loc.SPECIFIC_MODE, TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
+	text = text .. "\n\n|cffffff00" .. loc.CM_CLICK .. ": |cffff9900" .. loc.CM_OPEN;
+	text = text .. "\n|cffffff00" .. loc.CM_R_CLICK .. ": |cffff9900" .. loc.DB_ACTIONS;
 	return text;
 end
 
@@ -185,9 +185,9 @@ function refresh()
 	end
 
 	if ToolFrame.list.hasSearch then
-		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc("DB_RESULTS"), 200);
+		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc.DB_RESULTS, 200);
 	else
-		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc("DB_LIST"), 200);
+		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc.DB_LIST, 200);
 	end
 
 	table.sort(idList);
@@ -246,7 +246,7 @@ function refresh()
 			local totalPath = TRP3_API.inventory.getItemLink(getClass(idData.fullID), idData.fullID, true);
 			lineWidget.Right:SetText(totalPath .. locale);
 		else
-			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and loc("ROOT_GEN_ID") .. locale or idData.ID));
+			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and loc.ROOT_GEN_ID .. locale or idData.ID));
 		end
 
 
@@ -365,10 +365,10 @@ local function getDBSize(dbType)
 end
 
 local function onTabChanged(tabWidget, tab)
-	tabGroup.tabs[1]:SetText(loc("DB_MY"):format(getDBSize(TABS.MY_DB)));
-	tabGroup.tabs[2]:SetText(loc("DB_OTHERS"):format(getDBSize(TABS.OTHERS_DB)));
-	tabGroup.tabs[3]:SetText(loc("DB_BACKERS"):format(getDBSize(TABS.BACKERS_DB)));
-	tabGroup.tabs[4]:SetText(loc("DB_FULL"):format(getDBSize()));
+	tabGroup.tabs[1]:SetText(loc.DB_MY:format(getDBSize(TABS.MY_DB)));
+	tabGroup.tabs[2]:SetText(loc.DB_OTHERS:format(getDBSize(TABS.OTHERS_DB)));
+	tabGroup.tabs[3]:SetText(loc.DB_BACKERS:format(getDBSize(TABS.BACKERS_DB)));
+	tabGroup.tabs[4]:SetText(loc.DB_FULL:format(getDBSize()));
 
 	TRP3_ItemQuickEditor:Hide();
 	ToolFrame.list.bottom.item.templates:Hide();
@@ -383,9 +383,9 @@ local function onTabChanged(tabWidget, tab)
 	if currentTab == TABS.MY_DB then
 		ToolFrame.list.bottom.item:Show();
 		ToolFrame.list.bottom.campaign:Show();
-		ToolFrame.list.container.Empty:SetText(loc("DB_MY_EMPTY") .. "\n\n\n" .. Utils.str.icon("misc_arrowdown", 50));
+		ToolFrame.list.container.Empty:SetText(loc.DB_MY_EMPTY .. "\n\n\n" .. Utils.str.icon("misc_arrowdown", 50));
 	elseif currentTab == TABS.OTHERS_DB then
-		ToolFrame.list.container.Empty:SetText(loc("DB_OTHERS_EMPTY"));
+		ToolFrame.list.container.Empty:SetText(loc.DB_OTHERS_EMPTY);
 	elseif currentTab == TABS.BACKERS_DB then
 
 	elseif currentTab == TABS.FULL_DB then
@@ -396,42 +396,10 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.container:Hide();
 		ToolFrame.list.filters:Hide();
 		ToolFrame.list.backers:Show();
-		
-		---@type ColorMixin
-		local PURPLE = CreateColor(0.5, 0, 1);
 
-		local GOLDEN_SUPPORTERS = {
-			"Bas(AstaLawl)",
-			"Connor Macleod",
-			"Vlad",
-			"Mooncubus",
-		}
-
-		local PATREON_SUPPORTERS = {
-			"Nikradical",
-			"Solanya",
-			"Ripperley",
-			"Keyboardturner",
-			"Petr Cihelka",
-		}
-
-		table.sort(GOLDEN_SUPPORTERS);
-		table.sort(PATREON_SUPPORTERS);
-
-		local LINE_FORMAT = "- %s\n";
-
-		local patreonMessage = "";
-		for _, patreonSupporter in pairs(GOLDEN_SUPPORTERS) do
-			patreonMessage = patreonMessage .. LINE_FORMAT:format(PURPLE:WrapTextInColorCode(patreonSupporter));
-		end
-		patreonMessage = patreonMessage .. "\n";
-		for _, patreonSupporter in pairs(PATREON_SUPPORTERS) do
-			patreonMessage = patreonMessage .. LINE_FORMAT:format(patreonSupporter);
-		end
-
-		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion(), patreonMessage)));
+		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion(), TRP3_API.Ellyb:GetPatreonSupporters())));
 		ToolFrame.list.backers.child.HTML:SetScript("OnHyperlinkClick", function(self, url, text, button)
-			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+			TRP3_API.Ellyb.Popups:OpenURL(url);
 		end)
 	end
 
@@ -455,7 +423,7 @@ local function createTabBar()
 			{ "", TABS.OTHERS_DB, 241 },
 			{ "", TABS.BACKERS_DB, 221 },
 			{ "", TABS.FULL_DB, 221 },
-			{ loc("DB_BACKERS_LIST"), TABS.BACKERS_LIST, 160 },
+			{ loc.DB_BACKERS_LIST, TABS.BACKERS_LIST, 160 },
 		},
 		onTabChanged
 	);
@@ -485,17 +453,17 @@ function onLineActionSelected(value, button)
 	local objectID = value:sub(2);
 	if action == ACTION_FLAG_DELETE then
 		local _, name, _ = TRP3_API.extended.tools.getClassDataSafeByType(getClass(objectID));
-		TRP3_API.popup.showConfirmPopup(loc("DB_REMOVE_OBJECT_POPUP"):format(objectID, name or UNKNOWN), function()
+		TRP3_API.popup.showConfirmPopup(loc.DB_REMOVE_OBJECT_POPUP:format(objectID, name or UNKNOWN), function()
 			TRP3_API.extended.removeObject(objectID);
 			onTabChanged(nil, currentTab);
 		end);
 	elseif action == ACTION_FLAG_ADD then
 		local class = TRP3_API.extended.getClass(objectID);
-		TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(class)), function(value)
+		TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(class)), function(value)
 			TRP3_API.inventory.addItem(nil, objectID, {count = value or 1, madeBy = class.BA and class.BA.CR});
 		end, nil, 1);
 	elseif action == ACTION_FLAG_COPY_ID then
-		TRP3_API.popup.showTextInputPopup(loc("EDITOR_ID_COPY_POPUP"), nil, nil, objectID);
+		TRP3_API.popup.showTextInputPopup(loc.EDITOR_ID_COPY_POPUP, nil, nil, objectID);
 	elseif action == ACTION_FLAG_SECURITY then
 		TRP3_API.security.showSecurityDetailFrame(objectID);
 	elseif action == ACTION_FLAG_EXPERT then
@@ -505,7 +473,7 @@ function onLineActionSelected(value, button)
 			class.LI = {OU = "onUse"};
 		end
 		local link = TRP3_API.inventory.getItemLink(class, objectID);
-		Utils.message.displayMessage(loc("WO_EXPERT_DONE"):format(link));
+		Utils.message.displayMessage(loc.WO_EXPERT_DONE:format(link));
 		onTabChanged(nil, currentTab);
 	elseif action == ACTION_FLAG_COPY then
 		wipe(TRP3_InnerObjectEditor.copy);
@@ -517,10 +485,10 @@ function onLineActionSelected(value, button)
 		serial = serial:gsub("|", "||");
 		if serial:len() < SUPPOSED_SERIAL_SIZE_LIMIT then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
-			ToolFrame.list.container.export.content.title:SetText(loc("DB_EXPORT_HELP"):format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
+			ToolFrame.list.container.export.content.title:SetText(loc.DB_EXPORT_HELP:format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
 			ToolFrame.list.container.export:Show();
 		else
-			Utils.message.displayMessage(loc("DB_EXPORT_TOO_LARGE"):format(serial:len() / 1024), 2);
+			Utils.message.displayMessage(loc.DB_EXPORT_TOO_LARGE:format(serial:len() / 1024), 2);
 		end
 	elseif action == ACTION_FLAG_FULL_EXPORT then
 		if hasImportExportModule then
@@ -533,7 +501,7 @@ function onLineActionSelected(value, button)
 			TRP3_Tools_Flags.exportAlert = true;
 			ReloadUI();
 		else
-			Utils.message.displayMessage(loc("DB_EXPORT_MODULE_NOT_ACTIVE"), 2);
+			Utils.message.displayMessage(loc.DB_EXPORT_MODULE_NOT_ACTIVE, 2);
 		end
 	end
 end
@@ -542,25 +510,25 @@ function onLineRightClick(lineWidget, data)
 	local values = {};
 	tinsert(values, {data.text, nil});
 	if (TRP3_API.extended.isObjectMine(data.rootID) or TRP3_API.extended.isObjectExchanged(data.rootID)) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-		tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID, loc("DB_DELETE_TT")});
-		tinsert(values, {loc("SEC_LEVEL_DETAILS"), ACTION_FLAG_SECURITY .. data.rootID, loc("DB_SECURITY_TT")});
+		tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID, loc.DB_DELETE_TT});
+		tinsert(values, {loc.SEC_LEVEL_DETAILS, ACTION_FLAG_SECURITY .. data.rootID, loc.DB_SECURITY_TT});
 	end
 	if data.type == TRP3_DB.types.ITEM then
 		local class = getClass(data.fullID);
 		if class.BA and not class.BA.PA then
-			tinsert(values, {loc("DB_ADD_ITEM"), ACTION_FLAG_ADD .. data.fullID, loc("DB_ADD_ITEM_TT")});
+			tinsert(values, {loc.DB_ADD_ITEM, ACTION_FLAG_ADD .. data.fullID, loc.DB_ADD_ITEM_TT});
 		end
 		if data.mode == TRP3_DB.modes.NORMAL and not TRP3_DB.inner[data.rootID] then
-			tinsert(values, {loc("DB_TO_EXPERT"), ACTION_FLAG_EXPERT .. data.fullID, loc("DB_EXPERT_TT")});
+			tinsert(values, {loc.DB_TO_EXPERT, ACTION_FLAG_EXPERT .. data.fullID, loc.DB_EXPERT_TT});
 		end
 	end
-	tinsert(values, {loc("EDITOR_ID_COPY"), ACTION_FLAG_COPY_ID .. data.fullID, loc("DB_COPY_ID_TT")});
+	tinsert(values, {loc.EDITOR_ID_COPY, ACTION_FLAG_COPY_ID .. data.fullID, loc.DB_COPY_ID_TT});
 	if data.type == TRP3_DB.types.ITEM or data.type == TRP3_DB.types.DOCUMENT or data.type == TRP3_DB.types.DIALOG then
-		tinsert(values, {loc("IN_INNER_COPY_ACTION"), ACTION_FLAG_COPY .. data.fullID, loc("DB_COPY_TT")});
+		tinsert(values, {loc.IN_INNER_COPY_ACTION, ACTION_FLAG_COPY .. data.fullID, loc.DB_COPY_TT});
 	end
 	if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-		tinsert(values, {loc("DB_EXPORT"), ACTION_FLAG_EXPORT .. data.fullID, loc("DB_EXPORT_TT_2")});
-		tinsert(values, {loc("DB_FULL_EXPORT"), ACTION_FLAG_FULL_EXPORT .. data.fullID, loc("DB_FULL_EXPORT_TT")});
+		tinsert(values, {loc.DB_EXPORT, ACTION_FLAG_EXPORT .. data.fullID, loc.DB_EXPORT_TT_2});
+		tinsert(values, {loc.DB_FULL_EXPORT, ACTION_FLAG_FULL_EXPORT .. data.fullID, loc.DB_FULL_EXPORT_TT});
 	end
 
 	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
@@ -633,8 +601,8 @@ end
 
 function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame = toolFrame;
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, loc("DB_FILTERS"), 150);
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, loc("DB_ACTIONS"), 150);
+	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, loc.DB_FILTERS, 150);
+	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, loc.DB_ACTIONS, 150);
 
 	createTabBar();
 	createTutorialStructure();
@@ -649,9 +617,9 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			local toolbarButton = {
 				id = "bb_extended_tools",
 				icon = "Inv_gizmo_01",
-				configText = loc("TB_TOOLS"),
-				tooltip = loc("TB_TOOLS"),
-				tooltipSub = loc("TB_TOOLS_TT"),
+				configText = loc.TB_TOOLS,
+				tooltip = loc.TB_TOOLS,
+				tooltipSub = loc.TB_TOOLS_TT,
 				onClick = function()
 					if TRP3_ToolFrame:IsVisible() then
 						TRP3_ToolFrame:Hide();
@@ -666,8 +634,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	end);
 
 	-- My creation tab
-	ToolFrame.list.bottom.campaign.Name:SetText(loc("DB_CREATE_CAMPAIGN"));
-	ToolFrame.list.bottom.campaign.InfoText:SetText(loc("DB_CREATE_CAMPAIGN_TT"));
+	ToolFrame.list.bottom.campaign.Name:SetText(loc.DB_CREATE_CAMPAIGN);
+	ToolFrame.list.bottom.campaign.InfoText:SetText(loc.DB_CREATE_CAMPAIGN_TT);
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.campaign, "achievement_quests_completed_07");
 
 	-- Events
@@ -677,11 +645,11 @@ function TRP3_API.extended.tools.initList(toolFrame)
 
 	-- Filters
 	local goSearch = function() filterList(); end;
-	ToolFrame.list.filters.name.title:SetText(loc("DB_FILTERS_NAME"));
+	ToolFrame.list.filters.name.title:SetText(loc.DB_FILTERS_NAME);
 	ToolFrame.list.filters.name:SetScript("OnEnterPressed", goSearch);
-	ToolFrame.list.filters.id.title:SetText(loc("ROOT_ID"));
+	ToolFrame.list.filters.id.title:SetText(loc.ROOT_ID);
 	ToolFrame.list.filters.id:SetScript("OnEnterPressed", goSearch);
-	ToolFrame.list.filters.owner.title:SetText(loc("DB_FILTERS_OWNER"));
+	ToolFrame.list.filters.owner.title:SetText(loc.DB_FILTERS_OWNER);
 	ToolFrame.list.filters.owner:SetScript("OnEnterPressed", goSearch);
 	TRP3_API.ui.frame.setupEditBoxesNavigation({
 		ToolFrame.list.filters.owner,
@@ -689,31 +657,31 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		ToolFrame.list.filters.id,
 	})
 	local types = {
-		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("ALL")), 0},
-		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_CAMPAIGN")), TRP3_DB.types.CAMPAIGN},
-		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_QUEST")), TRP3_DB.types.QUEST},
-		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_QUEST_STEP")), TRP3_DB.types.QUEST_STEP},
-		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_ITEM")), TRP3_DB.types.ITEM},
-		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DOCUMENT")), TRP3_DB.types.DOCUMENT},
-		{TRP3_API.formats.dropDownElements:format(loc("TYPE"), loc("TYPE_DIALOG")), TRP3_DB.types.DIALOG},
+		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.ALL), 0},
+		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_CAMPAIGN), TRP3_DB.types.CAMPAIGN},
+		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_QUEST), TRP3_DB.types.QUEST},
+		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_QUEST_STEP), TRP3_DB.types.QUEST_STEP},
+		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_ITEM), TRP3_DB.types.ITEM},
+		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_DOCUMENT), TRP3_DB.types.DOCUMENT},
+		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_DIALOG), TRP3_DB.types.DIALOG},
 	}
 	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, function(value) filterList(value, nil) end, nil, 155, true);
 
 	local template = "|T%s:11:16|t";
 	local locales = {
-		{loc("DB_LOCALE")},
-		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), loc("ALL")), 0},
-		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), template:format(TRP3_API.extended.tools.getObjectLocaleImage("en"))), "en"},
-		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), template:format(TRP3_API.extended.tools.getObjectLocaleImage("fr"))), "fr"},
-		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), template:format(TRP3_API.extended.tools.getObjectLocaleImage("es"))), "es"},
-		{TRP3_API.formats.dropDownElements:format(loc("DB_LOCALE"), template:format(TRP3_API.extended.tools.getObjectLocaleImage("de"))), "de"},
+		{loc.DB_LOCALE},
+		{TRP3_API.formats.dropDownElements:format(loc.DB_LOCALE, loc.ALL), 0},
+		{TRP3_API.formats.dropDownElements:format(loc.DB_LOCALE, template:format(TRP3_API.extended.tools.getObjectLocaleImage("en"))), "en"},
+		{TRP3_API.formats.dropDownElements:format(loc.DB_LOCALE, template:format(TRP3_API.extended.tools.getObjectLocaleImage("fr"))), "fr"},
+		{TRP3_API.formats.dropDownElements:format(loc.DB_LOCALE, template:format(TRP3_API.extended.tools.getObjectLocaleImage("es"))), "es"},
+		{TRP3_API.formats.dropDownElements:format(loc.DB_LOCALE, template:format(TRP3_API.extended.tools.getObjectLocaleImage("de"))), "de"},
 	}
 	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.locale, locales, function(value) filterList(nil, value) end, nil, 155, true);
 	ToolFrame.list.filters.locale:SetSelectedValue(0);
 	ToolFrame.list.filters.type:SetSelectedValue(0);
 	ToolFrame.list.filters.search:SetText(SEARCH);
 	ToolFrame.list.filters.search:SetScript("OnClick", goSearch);
-	ToolFrame.list.filters.clear:SetText(loc("DB_FILTERS_CLEAR"));
+	ToolFrame.list.filters.clear:SetText(loc.DB_FILTERS_CLEAR);
 	ToolFrame.list.filters.clear:SetScript("OnClick", function()
 		ToolFrame.list.filters.type:SetSelectedValue(0);
 		ToolFrame.list.filters.locale:SetSelectedValue(0);
@@ -725,19 +693,19 @@ function TRP3_API.extended.tools.initList(toolFrame)
 
 	-- Export
 	do
-		ToolFrame.list.container.export.title:SetText(loc("DB_EXPORT"));
+		ToolFrame.list.container.export.title:SetText(loc.DB_EXPORT);
 
 		---@type SimpleHTML
 		local wagoInfo = ToolFrame.list.container.export.wagoInfo;
-		wagoInfo:SetText(HTML_START .. loc("DB_WAGO_INFO") .. HTML_END);
+		wagoInfo:SetText(HTML_START .. loc.DB_WAGO_INFO .. HTML_END);
 		wagoInfo:SetScript("OnHyperlinkClick", function(self, url)
-			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+			TRP3_API.popup.showTextInputPopup(loc.UI_LINK_WARNING, nil, nil, url);
 		end);
 	end
 
 	-- Quick import
-	ToolFrame.list.bottom.import.Name:SetText(loc("DB_IMPORT"));
-	ToolFrame.list.bottom.import.InfoText:SetText(loc("DB_IMPORT_TT"));
+	ToolFrame.list.bottom.import.Name:SetText(loc.DB_IMPORT);
+	ToolFrame.list.bottom.import.InfoText:SetText(loc.DB_IMPORT_TT);
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.import, "INV_Inscription_ScrollOfWisdom_02");
 
 	-- Import
@@ -764,7 +732,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			TRP3_API.security.registerSender(ID, author);
 			ToolFrame.list.container.import:Hide();
 			onTabChanged(nil, currentTab);
-			Utils.message.displayMessage(loc("DB_IMPORT_DONE"), 3);
+			Utils.message.displayMessage(loc.DB_IMPORT_DONE, 3);
 			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 			TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 
@@ -775,7 +743,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 
 		local checkVersion = function()
 			if TRP3_API.extended.classExists(ID) and getClass(ID).MD.V > objectVersion then
-				TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_VERSION"):format(objectVersion, getClass(ID).MD.V), function()
+				TRP3_API.popup.showConfirmPopup(loc.DB_IMPORT_VERSION:format(objectVersion, getClass(ID).MD.V), function()
 					C_Timer.After(0.25, import);
 				end);
 			else
@@ -784,7 +752,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		end
 
 		if version ~= Globals.extended_version then
-			TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_CONFIRM"):format(TRP3_API.extended.tools.formatVersion(version), TRP3_API.extended.tools.formatVersion()), function()
+			TRP3_API.popup.showConfirmPopup(loc.DB_IMPORT_CONFIRM:format(TRP3_API.extended.tools.formatVersion(version), TRP3_API.extended.tools.formatVersion()), function()
 				C_Timer.After(0.25, checkVersion);
 			end);
 		else
@@ -794,18 +762,18 @@ function TRP3_API.extended.tools.initList(toolFrame)
 
 	---@type SimpleHTML
 	local wagoInfo = ToolFrame.list.container.import.wagoInfo;
-	wagoInfo:SetText(HTML_START .. loc("DB_IMPORT_TT_WAGO") .. HTML_END);
+	wagoInfo:SetText(HTML_START .. loc.DB_IMPORT_TT_WAGO .. HTML_END);
 	wagoInfo:SetScript("OnHyperlinkClick", function(self, url)
-		TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+		TRP3_API.popup.showTextInputPopup(loc.UI_LINK_WARNING, nil, nil, url);
 	end);
 
-	ToolFrame.list.container.import.title:SetText(loc("DB_IMPORT"));
-	ToolFrame.list.container.import.content.title:SetText(loc("DB_IMPORT_TT"));
+	ToolFrame.list.container.import.title:SetText(loc.DB_IMPORT);
+	ToolFrame.list.container.import.content.title:SetText(loc.DB_IMPORT_TT);
 	ToolFrame.list.bottom.import:SetScript("OnClick", function()
 		ToolFrame.list.container.import.content.scroll.text:SetText("");
 		ToolFrame.list.container.import:Show();
 	end);
-	ToolFrame.list.container.import.save:SetText(loc("DB_IMPORT_WORD"));
+	ToolFrame.list.container.import.save:SetText(loc.DB_IMPORT_WORD);
 	ToolFrame.list.container.import.save:SetScript("OnClick", function()
 		local code = ToolFrame.list.container.import.content.scroll.text:GetText();
 		code = code:gsub("||", "|");
@@ -818,26 +786,26 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			local by = data.MD.CB;
 			local objectVersion = data.MD.V or 0;
 			local type = TRP3_API.extended.tools.getTypeLocale(data.TY);
-			TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_FULL_CONFIRM"):format(type, link, by, objectVersion), function()
+			TRP3_API.popup.showConfirmPopup(loc.DB_IMPORT_FULL_CONFIRM:format(type, link, by, objectVersion), function()
 				C_Timer.After(0.25, function()
 					importFunction(version, ID, data);
 					tabGroup:SelectTab(4); -- After importing go to full database, so we see what we have imported
 				end);
 			end);
 		else
-			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
+			Utils.message.displayMessage(loc.DB_IMPORT_ERROR1, 2);
 		end
 	end);
 
 	-- Disclaimer
-	ToolFrame.list.disclaimer.html:SetText(Utils.str.toHTML(loc("DISCLAIMER")));
-	ToolFrame.list.disclaimer.html.ok:SetText(loc("DISCLAIMER_OK"));
+	ToolFrame.list.disclaimer.html:SetText(Utils.str.toHTML(loc.DISCLAIMER));
+	ToolFrame.list.disclaimer.html.ok:SetText(loc.DISCLAIMER_OK);
 	ToolFrame.list.disclaimer.html.ok:SetScript("OnClick", function()
 		TRP3_Tools_Flags.has_seen_disclaimer = true;
 		ToolFrame.list.disclaimer:Hide();
 	end);
 	ToolFrame.list.disclaimer.html:SetScript("OnHyperlinkClick", function(_, link)
-		TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, link);
+		TRP3_API.popup.showTextInputPopup(loc.UI_LINK_WARNING, nil, nil, link);
 	end);
 	ToolFrame.list.disclaimer:Hide();
 	if not TRP3_Tools_Flags.has_seen_disclaimer then
@@ -852,11 +820,11 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		end
 		if TRP3_Tools_Flags.exportAlert then
 			TRP3_Tools_Flags.exportAlert = nil;
-			Utils.message.displayMessage(loc("DB_EXPORT_DONE"), 2);
+			Utils.message.displayMessage(loc.DB_EXPORT_DONE, 2);
 		end
 	end
-	ToolFrame.list.bottom.importFull.Name:SetText(loc("DB_IMPORT_FULL"));
-	ToolFrame.list.bottom.importFull.InfoText:SetText(loc("DB_IMPORT_FULL_TT"));
+	ToolFrame.list.bottom.importFull.Name:SetText(loc.DB_IMPORT_FULL);
+	ToolFrame.list.bottom.importFull.InfoText:SetText(loc.DB_IMPORT_FULL_TT);
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.importFull, "INV_Inscription_ScrollOfWisdom_01");
 	ToolFrame.list.bottom.importFull:SetScript("OnClick", function()
 		if hasImportExportModule then
@@ -868,23 +836,23 @@ function TRP3_API.extended.tools.initList(toolFrame)
 				local by = data.MD.CB;
 				local objectVersion = data.MD.V or 0;
 				local type = TRP3_API.extended.tools.getTypeLocale(data.TY);
-				TRP3_API.popup.showConfirmPopup(loc("DB_IMPORT_FULL_CONFIRM"):format(type, link, by, objectVersion), function()
+				TRP3_API.popup.showConfirmPopup(loc.DB_IMPORT_FULL_CONFIRM:format(type, link, by, objectVersion), function()
 					C_Timer.After(0.25, function()
 						importFunction(version, ID, data);
 					end);
 				end);
 			else
-				Utils.message.displayMessage(loc("DB_IMPORT_EMPTY"), 2);
+				Utils.message.displayMessage(loc.DB_IMPORT_EMPTY, 2);
 			end
 		else
-			Utils.message.displayMessage(loc("DB_EXPORT_MODULE_NOT_ACTIVE"), 2);
+			Utils.message.displayMessage(loc.DB_EXPORT_MODULE_NOT_ACTIVE, 2);
 		end
 	end);
 
 	-- Hard save
-	ToolFrame.list.container.hardsave:SetText(loc("DB_HARD_SAVE"));
+	ToolFrame.list.container.hardsave:SetText(loc.DB_HARD_SAVE);
 	ToolFrame.list.container.hardsave:SetScript("OnClick", function()
 		ReloadUI();
 	end);
-	setTooltipForSameFrame(ToolFrame.list.container.hardsave, "TOP", 0, 0, loc("DB_HARD_SAVE"), loc("DB_HARD_SAVE_TT"));
+	setTooltipForSameFrame(ToolFrame.list.container.hardsave, "TOP", 0, 0, loc.DB_HARD_SAVE, loc.DB_HARD_SAVE_TT);
 end

@@ -22,7 +22,7 @@ local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, st
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor;
@@ -35,16 +35,16 @@ local function quest_start_init()
 	local editor = TRP3_EffectEditorQuestStart;
 
 	registerEffectEditor("quest_start", {
-		title = loc("EFFECT_QUEST_START"),
+		title = loc.EFFECT_QUEST_START,
 		icon = "achievement_quests_completed_01",
-		description = loc("EFFECT_QUEST_START_TT"),
+		description = loc.EFFECT_QUEST_START_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
 				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
-			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_START_PREVIEW"):format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_QUEST_START_PREVIEW:format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -60,8 +60,8 @@ local function quest_start_init()
 	end);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_QUEST_START_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_START_ID"), loc("EFFECT_QUEST_START_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_QUEST_START_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_QUEST_START_ID, loc.EFFECT_QUEST_START_ID_TT);
 
 
 	function editor.load(scriptData)
@@ -78,16 +78,16 @@ local function quest_goToStep_init()
 	local editor = TRP3_EffectEditorGoToStep;
 
 	registerEffectEditor("quest_goToStep", {
-		title = loc("EFFECT_QUEST_GOTOSTEP"),
+		title = loc.EFFECT_QUEST_GOTOSTEP,
 		icon = "achievement_quests_completed_02",
-		description = loc("EFFECT_QUEST_GOTOSTEP_TT"),
+		description = loc.EFFECT_QUEST_GOTOSTEP_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
 				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
-			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_GOTOSTEP_PREVIEW"):format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_QUEST_GOTOSTEP_PREVIEW:format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -103,8 +103,8 @@ local function quest_goToStep_init()
 	end);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_QUEST_GOTOSTEP_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_GOTOSTEP_ID"), loc("EFFECT_QUEST_GOTOSTEP_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_QUEST_GOTOSTEP_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_QUEST_GOTOSTEP_ID, loc.EFFECT_QUEST_GOTOSTEP_ID_TT);
 
 
 	function editor.load(scriptData)
@@ -121,16 +121,16 @@ local function quest_revealObjective_init()
 	local editor = TRP3_EffectEditorQuestObjReveal;
 
 	registerEffectEditor("quest_revealObjective", {
-		title = loc("EFFECT_QUEST_REVEAL_OBJ"),
+		title = loc.EFFECT_QUEST_REVEAL_OBJ,
 		icon = "icon_treasuremap",
-		description = loc("EFFECT_QUEST_REVEAL_OBJ_TT"),
+		description = loc.EFFECT_QUEST_REVEAL_OBJ_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
 				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
-			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_REVEAL_OBJ_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_QUEST_REVEAL_OBJ_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -139,16 +139,16 @@ local function quest_revealObjective_init()
 	});
 
 	registerEffectEditor("quest_markObjDone", {
-		title = loc("EFFECT_QUEST_REVEAL_OBJ_DONE"),
+		title = loc.EFFECT_QUEST_REVEAL_OBJ_DONE,
 		icon = "inv_misc_map_01",
-		description = loc("EFFECT_QUEST_REVEAL_OBJ_DONE_TT"),
+		description = loc.EFFECT_QUEST_REVEAL_OBJ_DONE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
 				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
-			scriptStepFrame.description:SetText(loc("EFFECT_QUEST_REVEAL_OBJ_DONE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_QUEST_REVEAL_OBJ_DONE_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -164,12 +164,12 @@ local function quest_revealObjective_init()
 	end);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_QUEST_START_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_START_ID"), loc("EFFECT_QUEST_START_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_QUEST_START_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_QUEST_START_ID, loc.EFFECT_QUEST_START_ID_TT);
 
 	-- Obj
-	editor.obj.title:SetText(loc("EFFECT_QUEST_OBJ_ID"));
-	setTooltipForSameFrame(editor.obj.help, "RIGHT", 0, 5, loc("EFFECT_QUEST_OBJ_ID"), loc("EFFECT_QUEST_OBJ_ID_TT"));
+	editor.obj.title:SetText(loc.EFFECT_QUEST_OBJ_ID);
+	setTooltipForSameFrame(editor.obj.help, "RIGHT", 0, 5, loc.EFFECT_QUEST_OBJ_ID, loc.EFFECT_QUEST_OBJ_ID_TT);
 
 
 	function editor.load(scriptData)
@@ -194,13 +194,13 @@ local function quest_obj_init()
 	local editor = TRP3_OperandEditorQuestObj;
 
 	registerOperandEditor("quest_obj", {
-		title = loc("OP_OP_QUEST_OBJ"),
-		description = loc("OP_OP_QUEST_OBJ_TT"),
+		title = loc.OP_OP_QUEST_OBJ,
+		description = loc.OP_OP_QUEST_OBJ_TT,
 		returnType = true,
 		getText = function(args)
 			local id = (args or EMPTY)[1] or "";
 			local obj = (args or EMPTY)[2] or "";
-			return loc("OP_OP_QUEST_OBJ_PREVIEW"):format("|cffff9900" .. obj .. "|cffffff00", TRP3_API.inventory.getItemLink(getClass(id), id));
+			return loc.OP_OP_QUEST_OBJ_PREVIEW:format("|cffff9900" .. obj .. "|cffffff00", TRP3_API.inventory.getItemLink(getClass(id), id));
 		end,
 		editor = editor,
 	});
@@ -213,9 +213,9 @@ local function quest_obj_init()
 	end);
 
 	-- Text & obj
-	editor.id.title:SetText(loc("QUEST_ID"));
-	editor.obj.title:SetText(loc("QE_OBJ_ID"))
-	setTooltipForSameFrame(editor.obj.help, "RIGHT", 0, 5, loc("QE_OBJ_ID"), "");
+	editor.id.title:SetText(loc.QUEST_ID);
+	editor.obj.title:SetText(loc.QE_OBJ_ID)
+	setTooltipForSameFrame(editor.obj.help, "RIGHT", 0, 5, loc.QE_OBJ_ID, "");
 
 	function editor.load(args)
 		editor.id:SetText((args or EMPTY)[1] or "");
@@ -231,12 +231,12 @@ local function quest_is_step_init()
 	local editor = TRP3_OperandEditorQuestSelection;
 
 	registerOperandEditor("quest_is_step", {
-		title = loc("OP_OP_QUEST_STEP"),
-		description = loc("OP_OP_QUEST_STEP_TT"),
+		title = loc.OP_OP_QUEST_STEP,
+		description = loc.OP_OP_QUEST_STEP_TT,
 		returnType = "",
 		getText = function(args)
 			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_QUEST_STEP_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id), id));
+			return loc.OP_OP_QUEST_STEP_PREVIEW:format(TRP3_API.inventory.getItemLink(getClass(id), id));
 		end,
 		editor = editor,
 	});
@@ -249,7 +249,7 @@ local function quest_is_step_init()
 	end);
 
 	-- Text & var
-	editor.id.title:SetText(loc("QUEST_ID"));
+	editor.id.title:SetText(loc.QUEST_ID);
 
 	function editor.load(args)
 		editor.id:SetText((args or EMPTY)[1] or "");
@@ -264,23 +264,23 @@ local function quest_obj_all_init()
 	local editor = TRP3_OperandEditorQuestSelection;
 
 	registerOperandEditor("quest_obj_all", {
-		title = loc("OP_OP_QUEST_OBJ_ALL"),
-		description = loc("OP_OP_QUEST_OBJ_ALL_TT"),
+		title = loc.OP_OP_QUEST_OBJ_ALL,
+		description = loc.OP_OP_QUEST_OBJ_ALL_TT,
 		returnType = "",
 		getText = function(args)
 			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_QUEST_OBJ_ALL_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id), id));
+			return loc.OP_OP_QUEST_OBJ_ALL_PREVIEW:format(TRP3_API.inventory.getItemLink(getClass(id), id));
 		end,
 		editor = editor,
 	});
 
 	registerOperandEditor("quest_obj_current", {
-		title = loc("OP_OP_QUEST_OBJ_CURRENT"),
-		description = loc("OP_OP_QUEST_OBJ_CURRENT_TT"),
+		title = loc.OP_OP_QUEST_OBJ_CURRENT,
+		description = loc.OP_OP_QUEST_OBJ_CURRENT_TT,
 		returnType = "",
 		getText = function(args)
 			local id = (args or EMPTY)[1] or "";
-			return loc("OP_OP_QUEST_OBJ_CURRENT_PREVIEW"):format(TRP3_API.inventory.getItemLink(getClass(id), id));
+			return loc.OP_OP_QUEST_OBJ_CURRENT_PREVIEW:format(TRP3_API.inventory.getItemLink(getClass(id), id));
 		end,
 		editor = editor,
 	});
@@ -289,12 +289,12 @@ end
 
 local function quest_is_npc_init()
 	registerOperandEditor("quest_is_npc", {
-		title = loc("OP_OP_QUEST_NPC"),
-		description = loc("OP_OP_QUEST_NPC_TT"),
+		title = loc.OP_OP_QUEST_NPC,
+		description = loc.OP_OP_QUEST_NPC_TT,
 		returnType = true,
 		getText = function(args)
 			local unitID = (args or EMPTY)[1] or "target";
-			return loc("OP_OP_QUEST_NPC") .. " (" .. TRP3_API.extended.tools.getUnitText(unitID) .. ")";
+			return loc.OP_OP_QUEST_NPC .. " (" .. TRP3_API.extended.tools.getUnitText(unitID) .. ")";
 		end,
 		editor = TRP3_OperandEditorUnitType,
 	});
