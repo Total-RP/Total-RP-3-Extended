@@ -300,6 +300,33 @@
 
 	</Frame>
 
+	<Frame name="TRP3_EffectEditorSoundIDStop" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.channel" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="play" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.id" x="5" y="2"/>
+				</Anchors>
+			</Button>
+
+		</Frames>
+
+	</Frame>
+
 	<Frame name="TRP3_EffectEditorSoundIDLocal" hidden="true" inherits="TRP3_EditorEffectTemplate">
 		<Size x="500" y="250"/>
 		<Frames>
@@ -329,6 +356,33 @@
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-20"/>
 				</Anchors>
 			</EditBox>
+
+		</Frames>
+
+	</Frame>
+
+	<Frame name="TRP3_EffectEditorSoundIDLocalStop" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-65"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.channel" x="20" y="-20"/>
+				</Anchors>
+			</EditBox>
+
+			<Button parentKey="play" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.id" x="5" y="2"/>
+				</Anchors>
+			</Button>
 
 		</Frames>
 

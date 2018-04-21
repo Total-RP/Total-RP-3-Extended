@@ -112,7 +112,7 @@ local function initSharedSound()
 		end
 	end);
 
-	Comm.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
+	Comm.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel)
 		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
 			Utils.music.stopSoundID(soundID, channel, sender);
 		end

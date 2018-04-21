@@ -31,10 +31,13 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 		},
 		[loc.EFFECT_CAT_SOUND] = {
 			"sound_id_self",
+			"sound_id_stop",
 			"sound_music_self",
 			"sound_music_stop",
 			"sound_id_local",
+			"sound_id_local_stop",
 			"sound_music_local",
+			"sound_music_local_stop",
 		},
 		[loc.EFFECT_CAT_SPEECH] = {
 			"speech_env",
