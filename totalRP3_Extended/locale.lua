@@ -1566,18 +1566,31 @@ Localization:GetLocale("deDE"):AddTexts(localeContent);
 Localization:GetLocale("frFR"):AddTexts(localeContent);
 --@localization(locale="esES", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("esES"):AddTexts(localeContent);
+
+--[[ Removed while CurseForge is malfunctioning
 --@localization(locale="esMX", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("esMX"):AddTexts(localeContent);
+]]
+
 --@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("itIT"):AddTexts(localeContent);
+
 --@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("koKR"):AddTexts(localeContent);
+
+--[[ Removed while CurseForge is malfunctioning
 --@localization(locale="ptBR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("ptBR"):AddTexts(localeContent);
+]]
+
 --@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("ruRU"):AddTexts(localeContent);
+
+--[[ Removed while CurseForge is malfunctioning
 --@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("zhCN"):AddTexts(localeContent);
+]]
+
 --@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("zhTW"):AddTexts(localeContent);
 
