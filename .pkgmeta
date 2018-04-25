@@ -1,20 +1,9 @@
 package-as: totalRP3_Extended
 enable-nolib-creation: no
 
-externals:
-    # Our own scaling and animation lib
-    totalRP3_Extended/libs/TRP-Anim-DB:
-        url: git://github.com/Ellypse/TRP-Anim-DB.git
-
 ignore:
   - README.md
 
 manual-changelog:
   filename: CHANGELOG.md
   markup-type: markdown
-
-
-move-folders:
-  totalRP3_Extended/totalRP3_Extended: totalRP3_Extended
-  totalRP3_Extended/totalRP3_Extended_ImpExport: totalRP3_Extended_ImpExport
-  totalRP3_Extended/totalRP3_Extended_Tools: totalRP3_Extended_Tools

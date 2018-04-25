@@ -1554,91 +1554,32 @@ Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
 
 
 -- Register all locales into the localization system
--- Note the localization content is filled by CurseForge when the add-on is built
-Localization:GetLocale("enUS"):AddTexts(
---@localization(locale="enUS", format="lua_table")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+-- Note the localeContent is filled by the publishing script using CurseForge's localization tool when packaging builds
+-- See https://wow.curseforge.com/projects/total-rp-3/localization
+local localeContent = {};
 
-Localization:GetLocale("deDE"):AddTexts(
---@localization(locale="deDE", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-
-Localization:GetLocale("frFR"):AddTexts(
---@localization(locale="frFR", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-
-Localization:GetLocale("esES"):AddTexts(
---@localization(locale="esES", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-
---[[ Removed while CurseForge is malfunctioning
-Localization:GetLocale("esMX"):AddTexts(
---@localization(locale="esMX", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-]]
-
---[[ Removed while CurseForge is malfunctioning
-Localization:GetLocale("itIT"):AddTexts(
---@localization(locale="itIT", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-]]
-
-Localization:GetLocale("koKR"):AddTexts(
---@localization(locale="koKR", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-
---[[ Removed while CurseForge is malfunctioning
-Localization:GetLocale("ptBR"):AddTexts(
---@localization(locale="ptBR", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-]]
-
-Localization:GetLocale("ruRU"):AddTexts(
---@localization(locale="ruRU", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-
-Localization:GetLocale("zhCN"):AddTexts(
---@localization(locale="zhCN", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-
---[[ Removed while CurseForge is malfunctioning
-Localization:GetLocale("zhTW"):AddTexts(
---@localization(locale="zhTW", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
-]]
+--@localization(locale="enUS", format="lua_table", table-name="localeContent")@
+Localization:GetLocale("enUS"):AddTexts(localeContent);
+--@localization(locale="deDE", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("deDE"):AddTexts(localeContent);
+--@localization(locale="frFR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("frFR"):AddTexts(localeContent);
+--@localization(locale="esES", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("esES"):AddTexts(localeContent);
+--@localization(locale="esMX", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("esMX"):AddTexts(localeContent);
+--@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("itIT"):AddTexts(localeContent);
+--@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("koKR"):AddTexts(localeContent);
+--@localization(locale="ptBR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("ptBR"):AddTexts(localeContent);
+--@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("ruRU"):AddTexts(localeContent);
+--@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("zhCN"):AddTexts(localeContent);
+--@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+Localization:GetLocale("zhTW"):AddTexts(localeContent);
 
 TRP3_KS_BACKERS =
 [[#Total RP 3: Extended (version %s)
