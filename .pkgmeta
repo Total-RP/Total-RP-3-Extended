@@ -7,3 +7,8 @@ ignore:
 manual-changelog:
   filename: CHANGELOG.md
   markup-type: markdown
+
+move-folders:
+  totalRP3_Extended/totalRP3_Extended: totalRP3_Extended
+  totalRP3_Extended/totalRP3_Extended_ImpExport: totalRP3_Extended_ImpExport
+  totalRP3_Extended/totalRP3_Extended_Tools: totalRP3_Extended_Tools
