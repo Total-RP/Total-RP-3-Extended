@@ -1588,13 +1588,14 @@ Localization:GetLocale("ptBR"):AddTexts(localeContent);
 --@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("ruRU"):AddTexts(localeContent);
 
---[[ Removed while CurseForge is malfunctioning
+
 --@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("zhCN"):AddTexts(localeContent);
-]]
 
+--[[ Removed while CurseForge is malfunctioning
 --@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("zhTW"):AddTexts(localeContent);
+]]
 
 TRP3_KS_BACKERS =
 [[#Total RP 3: Extended (version %s)
