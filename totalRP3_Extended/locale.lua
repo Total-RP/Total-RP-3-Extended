@@ -1572,8 +1572,10 @@ Localization:GetLocale("esES"):AddTexts(localeContent);
 Localization:GetLocale("esMX"):AddTexts(localeContent);
 ]]
 
+--[[ Removed while CurseForge is malfunctioning
 --@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("itIT"):AddTexts(localeContent);
+]]
 
 --@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("koKR"):AddTexts(localeContent);
