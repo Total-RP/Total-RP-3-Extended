@@ -81,7 +81,7 @@ local function item_bag_durability_init()
 
 	function editor.save(scriptData)
 		scriptData.args[1] = editor.method:GetSelectedValue() or "HEAL";
-		scriptData.args[2] = tonumber(strtrim(editor.amount:GetText()));
+		scriptData.args[2] = strtrim(editor.amount:GetText());
 	end
 end
 
@@ -200,7 +200,7 @@ local function item_add_init()
 
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
-		scriptData.args[2] = tonumber(strtrim(editor.count:GetText())) or 1;
+		scriptData.args[2] = strtrim(editor.count:GetText()) or 1;
 		scriptData.args[3] = editor.crafted:GetChecked();
 		scriptData.args[4] = editor.source:GetSelectedValue() or "parent";
 	end
@@ -254,7 +254,7 @@ local function item_remove_init()
 
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
-		scriptData.args[2] = tonumber(strtrim(editor.count:GetText())) or 1;
+		scriptData.args[2] = strtrim(editor.count:GetText()) or 1;
 		scriptData.args[3] = editor.source:GetSelectedValue() or "inventory";
 	end
 end
@@ -286,7 +286,7 @@ local function item_cooldown_init()
 	end
 
 	function editor.save(scriptData)
-		scriptData.args[1] = tonumber(strtrim(editor.time:GetText())) or 0;
+		scriptData.args[1] = strtrim(editor.time:GetText()) or 0;
 	end
 end
 
