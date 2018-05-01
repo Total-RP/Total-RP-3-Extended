@@ -37,14 +37,16 @@ TRP3_API.inventory.EFFECTS = {
 			if args[3] == "self" then
 				target = "object";
 			end
-			local amount = tonumber(args[2]) or 0;
-			if args[1] == "DAMAGE" then
-				amount = - amount;
-			end
-			return target, amount;
+			local amount = args[2] or "0";
+			local type = args[1];
+			return target, amount, type;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local target, amount = structure.getCArgs(cArgs);
+			local target, amount, type = structure.getCArgs(cArgs);
+			amount = tonumber(TRP3_API.script.parseArgs(amount, eArgs));
+			if type == "DAMAGE" then
+				amount = - amount;
+			end
 			eArgs.LAST = TRP3_API.inventory.changeContainerDurability(eArgs[target], amount);
 		end,
 	},
@@ -69,12 +71,13 @@ TRP3_API.inventory.EFFECTS = {
 		getCArgs = function(args)
 			local targetContainer = args[4] or "parent";
 			local id = args[1] or "";
-			local count = tonumber(args[2]) or 1;
+			local count = args[2] or "1";
 			local madeBy = args[3] or false;
 			return targetContainer, id, count, madeBy;
 		end,
 		method = function(structure, cArgs, eArgs)
 			local targetContainer, id, count, madeBy = structure.getCArgs(cArgs);
+			count = tonumber(TRP3_API.script.parseArgs(count, eArgs));
 			if targetContainer == "parent" then
 				targetContainer = eArgs.container;
 			elseif targetContainer == "self" then
@@ -90,12 +93,13 @@ TRP3_API.inventory.EFFECTS = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		getCArgs = function(args)
 			local id = args[1] or "";
-			local count = tonumber(args[2]) or 1;
+			local count = args[2] or "1";
 			local source = args[3];
 			return id, count, source;
 		end,
 		method = function(structure, cArgs, eArgs)
 			local id, count, source = structure.getCArgs(cArgs);
+			count = tonumber(TRP3_API.script.parseArgs(count, eArgs));
 			if source == "parent" then
 				source = eArgs.container;
 			elseif source == "self" then
@@ -110,7 +114,7 @@ TRP3_API.inventory.EFFECTS = {
 	["item_cooldown"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
 		method = function(structure, cArgs, eArgs)
-			local duration = tonumber(cArgs[1]) or 1;
+			local duration = tonumber(TRP3_API.script.parseArgs(cArgs[1], eArgs)) or 1;
 			eArgs.LAST = TRP3_API.inventory.startCooldown(eArgs.object, duration, eArgs.container);
 		end,
 	},

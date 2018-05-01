@@ -104,7 +104,7 @@
 				</Anchors>
 			</Button>
 
-			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox" numeric="true">
+			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-50"/>
@@ -138,7 +138,7 @@
 				</Anchors>
 			</Button>
 
-			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox" numeric="true">
+			<EditBox parentKey="count" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-50"/>
