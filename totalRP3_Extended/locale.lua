@@ -1549,6 +1549,7 @@ You can easily see each quest current situation and what are the current objecti
 
 You can also see the history of previous steps, in case you forget something.]],
 
+	IN_INNER_ENTER_ID_NO_SPACE = "Object IDs can't contain spaces. Remember that this isn't the object's name !",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
