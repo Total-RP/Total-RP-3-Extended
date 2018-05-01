@@ -238,6 +238,7 @@
 		<Scripts>
 			<OnLoad>
 				self.IconButton:SetAllPoints(self.Icon);
+				tinsert(UISpecialFrames, self:GetName());
 			</OnLoad>
 		</Scripts>
 
@@ -278,6 +279,7 @@
 			<OnLoad>
 				self.Middle:SetTexCoord(0.24, 1, 0.43, 0.4875);
 				self.IconButton:SetAllPoints(self.Icon);
+				tinsert(UISpecialFrames, self:GetName());
 			</OnLoad>
 		</Scripts>
 	</Frame>
@@ -291,6 +293,7 @@
 			<OnLoad>
 				self.Middle:SetTexCoord(0.24, 1, 0.43, 0.4);
 				self.IconButton:SetAllPoints(self.Icon);
+				tinsert(UISpecialFrames, self:GetName());
 			</OnLoad>
 		</Scripts>
 	</Frame>
