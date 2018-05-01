@@ -244,10 +244,22 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 
+	["sound_id_stop"] = {
+		getCArgs = function(args)
+			local soundID = tonumber(args[2] or nil);
+			local channel = args[1] or "SFX";
+			return soundID, channel;
+		end,
+		method = function(structure, cArgs, eArgs)
+			local soundID, channel = structure.getCArgs(cArgs);
+			eArgs.LAST = TRP3_API.utils.music.stopSoundID(soundID, channel);
+		end,
+		secured = security.HIGH,
+	},
+
 	["sound_music_self"] = {
 		method = function(structure, cArgs, eArgs)
 			local path = cArgs[1] or "";
-			print(path);
 			eArgs.LAST = TRP3_API.utils.music.playMusic(path);
 		end,
 		secured = security.HIGH,
@@ -280,6 +292,19 @@ local EFFECTS = {
 		secured = security.MEDIUM,
 	},
 
+	["sound_id_local_stop"] = {
+		getCArgs = function(args)
+			local soundID = tonumber(args[2] or nil);
+			local channel = args[1] or "SFX";
+			return soundID, channel;
+		end,
+		method = function(structure, cArgs, eArgs)
+			local soundID, channel = structure.getCArgs(cArgs);
+			eArgs.LAST = TRP3_API.utils.music.stopLocalSoundID(soundID, channel);
+		end,
+		secured = security.HIGH,
+	},
+
 	["sound_music_local"] = {
 		getCArgs = function(args)
 			local musicPath = args[1] or "";
@@ -296,6 +321,14 @@ local EFFECTS = {
 			eArgs.LAST = TRP3_API.utils.music.playMusic(musicPath);
 		end,
 		secured = security.MEDIUM,
+	},
+
+	["sound_music_local_stop"] = {
+		method = function(structure, cArgs, eArgs)
+			TRP3_API.utils.music.stopLocalMusic();
+			eArgs.LAST = 0;
+		end,
+		secured = security.HIGH,
 	},
 
 	-- Companions

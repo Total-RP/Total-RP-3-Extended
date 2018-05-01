@@ -57,11 +57,12 @@ function Utils.music.playLocalMusic(soundID, distance, source)
 end
 
 function Utils.music.stopLocalSoundID(soundID, channel)
+	soundID = soundID or 0;
 	Comm.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel);
 end
 
 function Utils.music.stopLocalMusic(soundID)
-	 Utils.music.stopLocalSoundID(soundID, "Music");
+	Utils.music.stopLocalSoundID(soundID, "Music");
 end
 
 local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
@@ -112,7 +113,7 @@ local function initSharedSound()
 		end
 	end);
 
-	Comm.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
+	Comm.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel)
 		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
 			Utils.music.stopSoundID(soundID, channel, sender);
 		end
