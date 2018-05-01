@@ -396,6 +396,18 @@ function TRP3_API.extended.tools.getSaveTab(fullClassID, maxTabSize)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Misc functions
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.extended.tools.truncateDecimals(args, decimals)
+	if decimals and tonumber(args) then
+		local tenpow = 10 ^ decimals;
+		args = tostring( floor( tonumber(args) * tenpow + 0.5 ) / tenpow ) or "0";
+	end
+	return args;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

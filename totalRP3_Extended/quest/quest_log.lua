@@ -83,7 +83,7 @@ local function getCampaignProgression(campaignID)
 		end
 	end
 	if total ~= 0 then
-		return (completed / total) * 100;
+		return math.floor( (completed / total) * 100);
 	else
 		return 0;
 	end
