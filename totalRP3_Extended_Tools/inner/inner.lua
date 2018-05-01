@@ -224,6 +224,8 @@ local function addInnerObject(type, self)
 	TRP3_API.popup.showTextInputPopup(loc.IN_INNER_ENTER_ID .. "\n\n" .. loc.IN_INNER_ENTER_ID_TT, function(innerID)
 		if not innerID or innerID:len() == 0 then
 			return;
+		elseif innerID:find(" ") then
+			TRP3_API.popup.showAlertPopup(loc.IN_INNER_ENTER_ID_NO_SPACE);
 		elseif self == editor.browser.add then
 			createInnerObject(innerID, type);
 			refresh();
