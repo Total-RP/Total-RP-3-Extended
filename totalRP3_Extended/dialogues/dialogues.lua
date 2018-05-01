@@ -225,7 +225,7 @@ local function playDialogStep()
 	dialogFrame.Chat.Text:SetText(text);
 	dialogFrame.Chat.start = 0; -- Automatically starts the fade-in animation for text
 
-	dialogFrame.Chat.Next:SetText(loc.DI_NEXT);
+	dialogFrame.Chat.Next:SetText("");
 	dialogFrame.Chat.NextButton:Enable();
 	if not dialogFrame.isPreview and dialogFrame.LO then
 		dialogFrame.Chat.NextButton:Disable();
@@ -243,6 +243,7 @@ local function playDialogStep()
 		-- If there is a choice to make
 		if dialogStepClass.CH then
 			setupChoices(dialogStepClass.CH);
+			dialogFrame.Chat.Next:SetText(loc.DI_CHOICE_TEXT);
 			dialogFrame.Chat.NextButton:Disable();
 		else
 			if dialogStepClass.EP then
