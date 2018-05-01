@@ -1,0 +1,36 @@
+# Travis CI configuration file
+# http://travis-ci.org
+
+sudo: false
+
+language: c
+
+addons:
+  apt:
+    packages:
+    - luarocks
+    - pandoc
+
+install:
+  - eval $(luarocks path --bin)
+  - luarocks install --local luacheck
+
+# Run luacheck to make sure there is not syntax error left in the add-on
+script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
+
+notifications:
+  email:
+    on_failure: always
+    on_success: never
+
+cache:
+  apt: true
+  directories:
+    - $HOME/.luarocks
+
+# Call script to package the add-on. We pass the CurseForge and WoWInterface IDs to the script (it can't read it from the .toc file somehow)
+after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 100707 -w 24465 -o
+
+#branches:
+#  only:
+#  - /^\d+\.\d+(\.\d+)?(-\S*)?$/

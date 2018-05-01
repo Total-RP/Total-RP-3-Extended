@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local wipe, tostring, error, assert, date = wipe, tostring, error, assert, date;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -24,7 +24,7 @@ local assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 local DEBUG = false;
 
@@ -567,7 +567,7 @@ local function executeFunction(func, args, scriptID)
 		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
 	else
-		TRP3_API.utils.message.displayMessage(loc("SEC_SCRIPT_ERROR"):format(scriptID or "preview"), 4);
+		TRP3_API.utils.message.displayMessage(loc.SEC_SCRIPT_ERROR:format(scriptID or "preview"), 4);
 		TRP3_API.utils.message.displayMessage("|cffff0000" .. tostring(ret));
 	end
 end
@@ -581,7 +581,7 @@ local function executeClassScript(scriptID, classScripts, args, fullID)
 
 
 	if not classScripts[scriptID] then
-		TRP3_API.utils.message.displayMessage("|cffff0000" .. loc("SEC_MISSING_SCRIPT"):format(scriptID), 4);
+		TRP3_API.utils.message.displayMessage("|cffff0000" .. loc.SEC_MISSING_SCRIPT:format(scriptID), 4);
 		return;
 	end
 
@@ -796,6 +796,11 @@ function TRP3_API.script.parseArgs(text, args)
 			default = capture:sub(capture:find("::") + 2);
 			capture = capture:sub(1, capture:find("::") - 1);
 		end
+		local decimals = 2;
+		if capture:find("#") then
+			decimals = tonumber(capture:sub(capture:find("#") + 1) or 2) or 2;
+			capture = capture:sub(1, capture:find("#") - 1);
+		end
 		if directReplacement[capture] then
 			return directReplacement[capture](args);
 		elseif capture:match("gender%:%w+%:[^%:]+%:[^%:]+") then
@@ -808,11 +813,11 @@ function TRP3_API.script.parseArgs(text, args)
 			return UNKNOWN;
 		elseif capture:match("event%.%d+") then
 			local index = tonumber(capture:match("event%.(%d+)") or 1) or 1;
-			return (args.event or EMPTY)[index] or capture;
+			return TRP3_API.extended.tools.truncateDecimals( (args.event or EMPTY)[index] or capture, decimals);
 		elseif (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture] then
-			return (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture];
+			return TRP3_API.extended.tools.truncateDecimals( (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture], decimals);
 		elseif ((TRP3_API.quest.getActiveCampaignLog() or EMPTY).vars or EMPTY)[capture] then
-			return ((TRP3_API.quest.getActiveCampaignLog() or EMPTY).vars or EMPTY)[capture];
+			return TRP3_API.extended.tools.truncateDecimals( ((TRP3_API.quest.getActiveCampaignLog() or EMPTY).vars or EMPTY)[capture], decimals);
 		elseif TRP3_API.extended.classExists(capture) then
 			return TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(capture), capture);
 		end

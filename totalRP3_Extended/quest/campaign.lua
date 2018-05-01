@@ -20,7 +20,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local CAMPAIGN_DB = TRP3_DB.campaign;
 local EMPTY = TRP3_API.globals.empty;
 local tostring, assert, pairs, wipe, tinsert = tostring, assert, pairs, wipe, tinsert;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local Log = Utils.log;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
@@ -88,7 +88,7 @@ end
 local function deactivateCurrentCampaign(skipMessage)
 	if playerQuestLog.currentCampaign then
 		if not skipMessage then
-			Utils.message.displayMessage(loc("QE_CAMPAIGN_PAUSE"), Utils.message.type.CHAT_FRAME);
+			Utils.message.displayMessage(loc.QE_CAMPAIGN_PAUSE, Utils.message.type.CHAT_FRAME);
 		end
 		playerQuestLog.currentCampaign = nil;
 	end
@@ -125,10 +125,10 @@ local function activateCampaign(campaignID, force)
 			NPC = {},
 			QUEST = {}
 		};
-		Utils.message.displayMessage(loc("QE_CAMPAIGN_START"):format(campaignName), Utils.message.type.CHAT_FRAME);
+		Utils.message.displayMessage(loc.QE_CAMPAIGN_START:format(campaignName), Utils.message.type.CHAT_FRAME);
 	else
 		-- If already started, just resuming
-		Utils.message.displayMessage(loc("QE_CAMPAIGN_RESUME"):format(campaignName), Utils.message.type.CHAT_FRAME);
+		Utils.message.displayMessage(loc.QE_CAMPAIGN_RESUME:format(campaignName), Utils.message.type.CHAT_FRAME);
 	end
 
 	Log.log("Activated campaign: " .. campaignID .. " with init at " .. tostring(init), Log.level.DEBUG);
@@ -232,27 +232,27 @@ function TRP3_API.quest.campaignInit()
 	-- Helpers
 	TRP3_API.slash.registerCommand({
 		id = "debug_quest_step",
-		helpLine = " " .. loc("DEBUG_QUEST_STEP"),
+		helpLine = " " .. loc.DEBUG_QUEST_STEP,
 		handler = function(questID, stepID)
 			if questID and stepID then
 				if getCurrentCampaignID() then
 					TRP3_API.quest.goToStep(getCurrentCampaignID(), questID, stepID);
 				end
 			else
-				Utils.message.displayMessage(loc("DEBUG_QUEST_STEP_USAGE"));
+				Utils.message.displayMessage(loc.DEBUG_QUEST_STEP_USAGE);
 			end
 		end
 	});
 	TRP3_API.slash.registerCommand({
 		id = "debug_quest_start",
-		helpLine = " " .. loc("DEBUG_QUEST_START"),
+		helpLine = " " .. loc.DEBUG_QUEST_START,
 		handler = function(questID)
 			if questID then
 				if getCurrentCampaignID() then
 					TRP3_API.quest.startQuest(getCurrentCampaignID(), questID);
 				end
 			else
-				Utils.message.displayMessage(loc("DEBUG_QUEST_START_USAGE"));
+				Utils.message.displayMessage(loc.DEBUG_QUEST_START_USAGE);
 			end
 		end
 	});

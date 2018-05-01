@@ -20,7 +20,7 @@ local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
 local TRP3_ItemTooltip = TRP3_ItemTooltip;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local EMPTY = TRP3_API.globals.empty;
 
@@ -172,7 +172,7 @@ end
 local function onEquipRefresh(self)
 	-- Camera
 	local rotation = model.rotation;
-	self.Camera:SetText(loc("INV_PAGE_CAMERA_CONFIG"):format(rotation));
+	self.Camera:SetText(loc.INV_PAGE_CAMERA_CONFIG:format(rotation));
 
 	local button = main.Equip.isOn
 	if button and button.info then
@@ -188,7 +188,7 @@ local function onEquipRefresh(self)
 	-- Marker
 	local x = model.Marker.posX or 0;
 	local y = model.Marker.posY or 0;
-	self.Marker:SetText(loc("INV_PAGE_MARKER"):format(x, y));
+	self.Marker:SetText(loc.INV_PAGE_MARKER:format(x, y));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -199,7 +199,7 @@ local function onSlotClickAction(action, slot)
 	local slotID = slot.slotID;
 	if action == 1 then
 		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = main, point = "CENTER", parentPoint = "CENTER"}, {function(fromID)
-			TRP3_API.popup.showNumberInputPopup(loc("DB_ADD_COUNT"):format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(fromID))), function(value)
+			TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(fromID))), function(value)
 				local class = TRP3_API.extended.getClass(fromID);
 				TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), fromID, {count = value or 1, madeBy = class.BA and class.BA.CR}, nil, slotID);
 			end, nil, 1);
@@ -216,10 +216,10 @@ local function onSlotClick(slot, button)
 	if TRP3_ToolFrame then
 		if not slot.info and button == "RightButton" then
 			local menu = {
-				{loc("INV_PAGE_CHARACTER_INV")},
-				{loc("EFFECT_ITEM_ADD"), 1},
-				{loc("DB_CREATE_ITEM"), 2},
-				--			{loc("DB_IMPORT_ITEM"), 3}
+				{loc.INV_PAGE_CHARACTER_INV},
+				{loc.EFFECT_ITEM_ADD, 1},
+				{loc.DB_CREATE_ITEM, 2},
+				--			{loc.DB_IMPORT_ITEM, 3}
 			};
 			TRP3_API.ui.listbox.displayDropDown(slot, menu, onSlotClickAction, 0, true);
 		elseif button == "LeftButton" and IsAltKeyDown() and slot.info then
@@ -227,10 +227,10 @@ local function onSlotClick(slot, button)
 				if (TRP3_API.extended.getClass(slot.info.id).MD or EMPTY).MO == TRP3_DB.modes.QUICK then
 					TRP3_API.extended.tools.openItemQuickEditor(main, nil, slot.info.id, true);
 				else
-					Utils.message.displayMessage(loc("INV_PAGE_EDIT_ERROR2"), 4);
+					Utils.message.displayMessage(loc.INV_PAGE_EDIT_ERROR2, 4);
 				end
 			else
-				Utils.message.displayMessage(loc("INV_PAGE_EDIT_ERROR1"), 4);
+				Utils.message.displayMessage(loc.INV_PAGE_EDIT_ERROR1, 4);
 			end
 		end
 	end
@@ -256,7 +256,7 @@ local function containerFrameUpdate(self, elapsed)
 	-- Weight and value
 	local current = self.info.totalWeight or 0;
 	local weight = TRP3_API.extended.formatWeight(current) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
-	local formatedValue = ("%s: %s"):format(loc("INV_PAGE_TOTAL_VALUE"), GetCoinTextureString(self.info.totalValue or 0));
+	local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, GetCoinTextureString(self.info.totalValue or 0));
 	model.WeightText:SetText(weight);
 	model.ValueText:SetText(formatedValue);
 end
@@ -275,13 +275,13 @@ local function onToolbarButtonClicked(buttonType)
 end
 
 local function initPlayerInventoryButton()
-	local playerInvText = loc("INV_PAGE_PLAYER_INV"):format(Globals.player);
+	local playerInvText = loc.INV_PAGE_PLAYER_INV:format(Globals.player);
 	if TRP3_API.toolbar then
 		local toolbarButton = {
 			id = "hh_player_d_inventory",
-			configText = loc("INV_PAGE_CHARACTER_INV"),
+			configText = loc.INV_PAGE_CHARACTER_INV,
 			tooltip = playerInvText,
-			tooltipSub = loc("IT_INV_SHOW_CONTENT"),
+			tooltipSub = loc.IT_INV_SHOW_CONTENT,
 			icon = "inv_misc_bag_16",
 			onClick = function(_, _, buttonType, _)
 				onToolbarButtonClicked(buttonType);
@@ -302,7 +302,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("INV_TU_1"),
+				text = loc.INV_TU_1,
 				textWidth = 400,
 				arrow = "RIGHT"
 			}
@@ -313,7 +313,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("INV_TU_2"),
+				text = loc.INV_TU_2,
 				textWidth = 400,
 				arrow = "LEFT"
 			}
@@ -324,7 +324,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 50, y = 0, anchor = "CENTER",
-				text = loc("INV_TU_3"),
+				text = loc.INV_TU_3,
 				textWidth = 400,
 				arrow = "RIGHT"
 			}
@@ -335,7 +335,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("INV_TU_4"),
+				text = loc.INV_TU_4,
 				textWidth = 400,
 				arrow = "LEFT"
 			}
@@ -346,7 +346,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("INV_TU_5"),
+				text = loc.INV_TU_5,
 				textWidth = 400,
 				arrow = "LEFT"
 			}
@@ -388,9 +388,9 @@ function TRP3_API.inventory.initInventoryPage()
 	-- Create model slots
 	main.lockX = 110;
 	main.slots = {};
-	local wearText = loc("INV_PAGE_WEAR_TT")
-			.. "\n\n|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("INV_PAGE_WEAR_ACTION")
-			.. "\n|cffffff00" .. loc("CM_R_CLICK") .. ":|r " .. loc("INV_PAGE_WEAR_ACTION_RESET");
+	local wearText = loc.INV_PAGE_WEAR_TT
+			.. "\n\n|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION
+			.. "\n|cffffff00" .. loc.CM_R_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION_RESET;
 	for i=1, 17 do
 		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, main, "TRP3_InventoryPageSlotTemplate");
 		if i == 1 then
@@ -399,18 +399,18 @@ function TRP3_API.inventory.initInventoryPage()
 			button:SetPoint("TOPLEFT", model, "TOPRIGHT", 15, 0);
 		elseif i == 17 then
 			button:SetPoint("BOTTOMLEFT", model, "BOTTOMLEFT", 5, 10);
-			button.First:SetText(loc("INV_PAGE_QUICK_SLOT"));
-			button.Second:SetText(loc("INV_PAGE_QUICK_SLOT_TT"));
+			button.First:SetText(loc.INV_PAGE_QUICK_SLOT);
+			button.Second:SetText(loc.INV_PAGE_QUICK_SLOT_TT);
 			button.Locator:Hide();
 		else
 			button:SetPoint("TOP", _G["TRP3_ContainerInvPageSlot" .. (i - 1)], "BOTTOM", 0, -11);
 		end
 		if i <= 8 then
 			button.Locator:SetPoint("RIGHT", button, "LEFT", -5, 0);
-			setTooltipForSameFrame(button.Locator, "LEFT", 0, 0, loc("INV_PAGE_ITEM_LOCATION"), wearText);
+			setTooltipForSameFrame(button.Locator, "LEFT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
 		else
 			button.Locator:SetPoint("LEFT", button, "RIGHT", 5, 0);
-			setTooltipForSameFrame(button.Locator, "RIGHT", 0, 0, loc("INV_PAGE_ITEM_LOCATION"), wearText);
+			setTooltipForSameFrame(button.Locator, "RIGHT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
 		end
 
 		tinsert(main.slots, button);
@@ -470,11 +470,11 @@ function TRP3_API.inventory.initInventoryPage()
 
 	-- Equip
 	model.defaultRotation = 0;
-	main.Equip.Title:SetText(loc("INV_PAGE_ITEM_LOCATION"));
+	main.Equip.Title:SetText(loc.INV_PAGE_ITEM_LOCATION);
 	createRefreshOnFrame(main.Equip, 0.15, onEquipRefresh);
 	main.Equip:SetScript("OnShow", function() model.Blocker:Hide() end);
 	main.Equip:SetScript("OnHide", function() model.Blocker:Show() end);
-	setTooltipForSameFrame(model.Blocker.ValueHelp, "RIGHT", 0, 0, loc("INV_PAGE_TOTAL_VALUE"), loc("INV_PAGE_TOTAL_VALUE_TT"));
+	setTooltipForSameFrame(model.Blocker.ValueHelp, "RIGHT", 0, 0, loc.INV_PAGE_TOTAL_VALUE, loc.INV_PAGE_TOTAL_VALUE_TT);
 
 	-- Hide unwanted model adaptation
 	model.controlFrame:SetPoint("TOP", 0, 25);
@@ -503,8 +503,8 @@ function TRP3_API.inventory.initInventoryPage()
 	end;
 	main.Equip.sequence:SetScript("OnTextChanged", onChange);
 	main.Equip.sequence:SetScript("OnEnterPressed", onChange);
-	main.Equip.sequence.title:SetText(loc("INV_PAGE_SEQUENCE"));
-	setTooltipForSameFrame(main.Equip.sequence.help, "RIGHT", 0, 5, loc("INV_PAGE_SEQUENCE"), loc("INV_PAGE_SEQUENCE_TT"));
+	main.Equip.sequence.title:SetText(loc.INV_PAGE_SEQUENCE);
+	setTooltipForSameFrame(main.Equip.sequence.help, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_TT);
 
 	-- Preset
 	local presets = {
@@ -549,7 +549,7 @@ function TRP3_API.inventory.initInventoryPage()
 			main.Equip.sequence:SetText(value or "");
 		end, 0, true);
 	end);
-	setTooltipForSameFrame(main.Equip.preset, "RIGHT", 0, 5, loc("INV_PAGE_SEQUENCE"), loc("INV_PAGE_SEQUENCE_PRESET"));
+	setTooltipForSameFrame(main.Equip.preset, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_PRESET);
 
 	createTutorialStructure();
 end

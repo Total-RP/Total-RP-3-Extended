@@ -21,7 +21,7 @@ local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonu
 local tsize = Utils.table.size;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color = Utils.str.color;
@@ -66,9 +66,9 @@ local function decorateNPCLine(line, npcID)
 	local npcData = data.ND[npcID];
 
 	TRP3_API.ui.frame.setupIconButton(line.Icon, npcData.IC or Globals.icons.profile_default);
-	line.Name:SetText(npcData.NA or loc("CA_NPC_NAME"));
+	line.Name:SetText(npcData.NA or loc.CA_NPC_NAME);
 	line.Description:SetText(npcData.DE or "");
-	line.ID:SetText(loc("CA_NPC_ID") .. ": " .. npcID);
+	line.ID:SetText(loc.CA_NPC_ID .. ": " .. npcID);
 	line.click.npcID = npcID;
 end
 
@@ -150,7 +150,7 @@ local function onNPCSaved()
 end
 
 local function removeNPC(id)
-	TRP3_API.popup.showConfirmPopup(loc("CA_NPC_REMOVE"), function()
+	TRP3_API.popup.showConfirmPopup(loc.CA_NPC_REMOVE, function()
 		if toolFrame.specificDraft.ND[id] then
 			wipe(toolFrame.specificDraft.ND[id]);
 			toolFrame.specificDraft.ND[id] = nil;
@@ -171,7 +171,7 @@ local function decorateQuestLine(line, questID)
 	TRP3_API.ui.frame.setupIconButton(line.Icon, questData.BA.IC or Globals.icons.default);
 	line.Name:SetText(questData.BA.NA or UNKNOWN);
 	if questData.BA.IN then
-		line.ID:SetText(questID .. "\n|cff00ff00" .. loc("QE_AUTO_REVEAL"));
+		line.ID:SetText(questID .. "\n|cff00ff00" .. loc.QE_AUTO_REVEAL);
 	else
 		line.ID:SetText(questID);
 	end
@@ -189,7 +189,7 @@ local function refreshQuestsList()
 end
 
 local function removeQuest(questID)
-	TRP3_API.popup.showConfirmPopup(loc("CA_QUEST_REMOVE"), function()
+	TRP3_API.popup.showConfirmPopup(loc.CA_QUEST_REMOVE, function()
 		if toolFrame.specificDraft.QE[questID] then
 			wipe(toolFrame.specificDraft.QE[questID]);
 			toolFrame.specificDraft.QE[questID] = nil;
@@ -203,26 +203,26 @@ local function openQuest(questID)
 end
 
 local function renameQuest(questID)
-	TRP3_API.popup.showTextInputPopup(loc("CA_QUEST_CREATE"), function(newID)
+	TRP3_API.popup.showTextInputPopup(loc.CA_QUEST_CREATE, function(newID)
 		newID = TRP3_API.extended.checkID(newID);
 		if questID ~= newID and not toolFrame.specificDraft.QE[newID] then
 			toolFrame.specificDraft.QE[newID] = toolFrame.specificDraft.QE[questID];
 			toolFrame.specificDraft.QE[questID] = nil;
 			refreshQuestsList();
 		else
-			Utils.message.displayMessage(loc("CA_QUEST_EXIST"):format(newID), 4);
+			Utils.message.displayMessage(loc.CA_QUEST_EXIST:format(newID), 4);
 		end
 	end, nil, questID);
 end
 
 local function createQuest()
-	TRP3_API.popup.showTextInputPopup(loc("CA_QUEST_CREATE"), function(value)
+	TRP3_API.popup.showTextInputPopup(loc.CA_QUEST_CREATE, function(value)
 		value = TRP3_API.extended.checkID(value);
 		if not toolFrame.specificDraft.QE[value] then
 			toolFrame.specificDraft.QE[value] = TRP3_API.extended.tools.getQuestData();
 			refreshQuestsList();
 		else
-			Utils.message.displayMessage(loc("CA_QUEST_EXIST"):format(value), 4);
+			Utils.message.displayMessage(loc.CA_QUEST_EXIST:format(value), 4);
 		end
 	end, nil, "quest_" .. (Utils.table.size(toolFrame.specificDraft.QE) + 1) .. "_");
 end
@@ -358,12 +358,12 @@ local function createTabBar()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
-			{ loc("QE_QUESTS"), TABS.QUESTS, 150 },
-			{ loc("IN_INNER"), TABS.INNER, 150 },
-			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
-			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
-			{ loc("CA_ACTIONS"), TABS.ACTIONS, 150 },
+			{ loc.EDITOR_MAIN, TABS.MAIN, 150 },
+			{ loc.QE_QUESTS, TABS.QUESTS, 150 },
+			{ loc.IN_INNER, TABS.INNER, 150 },
+			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
+			{ loc.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.CA_ACTIONS, TABS.ACTIONS, 150 },
 		},
 		onTabChanged
 	);
@@ -386,15 +386,15 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 
 	-- Main
 	main = toolFrame.campaign.normal.main;
-	main.title:SetText(loc("TYPE_CAMPAIGN"));
+	main.title:SetText(loc.TYPE_CAMPAIGN);
 
 	-- Name
-	main.name.title:SetText(loc("CA_NAME"));
-	setTooltipForSameFrame(main.name.help, "RIGHT", 0, 5, loc("CA_NAME"), loc("CA_NAME_TT"));
+	main.name.title:SetText(loc.CA_NAME);
+	setTooltipForSameFrame(main.name.help, "RIGHT", 0, 5, loc.CA_NAME, loc.CA_NAME_TT);
 
 	-- Description
-	main.description.title:SetText(loc("CA_DESCRIPTION"));
-	setTooltipAll(main.description.dummy, "RIGHT", 0, 5, loc("CA_DESCRIPTION"), loc("CA_DESCRIPTION_TT"));
+	main.description.title:SetText(loc.CA_DESCRIPTION);
+	setTooltipAll(main.description.dummy, "RIGHT", 0, 5, loc.CA_DESCRIPTION, loc.CA_DESCRIPTION_TT);
 
 	local CAMPAIGN_PORTRAITS = {
 		"AirStrike",
@@ -433,15 +433,15 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "TOP", parentPoint = "BOTTOM"}, {onIconSelected});
 		else
 			local values = {};
-			tinsert(values, {loc("CA_IMAGE_TT")});
+			tinsert(values, {loc.CA_IMAGE_TT});
 			for index, portrait in pairs(CAMPAIGN_PORTRAITS) do
-				tinsert(values, {TRP3_API.formats.dropDownElements:format(loc("CA_IMAGE"), portrait), portrait, ("|TInterface\\ExtraButton\\%s:96:192|t"):format(portrait)});
+				tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.CA_IMAGE, portrait), portrait, ("|TInterface\\ExtraButton\\%s:96:192|t"):format(portrait)});
 			end
 			TRP3_API.ui.listbox.displayDropDown(self, values, onCampaignPortraitSelected, 0, true);
 		end
 	end);
-	setTooltipAll(main.vignette, "RIGHT", 0, 5, loc("CA_ICON"),
-		("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CA_ICON_TT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), loc("CA_IMAGE_TT")));
+	setTooltipAll(main.vignette, "RIGHT", 0, 5, loc.CA_ICON,
+		("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CA_ICON_TT) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, loc.CA_IMAGE_TT));
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NOTES
@@ -449,15 +449,15 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 
 	-- Notes
 	notes = toolFrame.campaign.normal.notes;
-	notes.title:SetText(loc("EDITOR_NOTES"));
+	notes.title:SetText(loc.EDITOR_NOTES);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NPC
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	npc = toolFrame.campaign.normal.npc;
-	npc.title:SetText(loc("CA_NPC"));
-	npc.help:SetText(loc("CA_NPC_TT"));
+	npc.title:SetText(loc.CA_NPC);
+	npc.help:SetText(loc.CA_NPC_TT);
 
 	-- List
 	npc.list.widgetTab = {};
@@ -484,24 +484,24 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 			self:GetParent().Highlight:Hide();
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_NPC_UNIT"),
-			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) ..
-			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CTRL") .. " + " .. loc("CM_CLICK"), loc("CA_NPC_AS")) ..
-			("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.CA_NPC_UNIT,
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT) ..
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CTRL .. " + " .. loc.CM_CLICK, loc.CA_NPC_AS) ..
+			("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 	end
 	npc.list.decorate = decorateNPCLine;
 	TRP3_API.ui.list.handleMouseWheel(npc.list, npc.list.slider);
 	npc.list.slider:SetValue(0);
-	npc.list.add:SetText(loc("CA_NPC_ADD"));
+	npc.list.add:SetText(loc.CA_NPC_ADD);
 	npc.list.add:SetScript("OnClick", function() openNPC() end);
-	npc.list.empty:SetText(loc("CA_NO_NPC"));
+	npc.list.empty:SetText(loc.CA_NO_NPC);
 
 	-- Editor
-	npc.editor.title:SetText(loc("CA_NPC_EDITOR"));
-	npc.editor.id.title:SetText(loc("CA_NPC_ID"));
-	setTooltipForSameFrame(npc.editor.id.help, "RIGHT", 0, 5, loc("CA_NPC_ID"), loc("CA_NPC_ID_TT"));
-	npc.editor.name.title:SetText(loc("CA_NPC_EDITOR_NAME"));
-	npc.editor.description.title:SetText(loc("CA_NPC_EDITOR_DESC"));
+	npc.editor.title:SetText(loc.CA_NPC_EDITOR);
+	npc.editor.id.title:SetText(loc.CA_NPC_ID);
+	setTooltipForSameFrame(npc.editor.id.help, "RIGHT", 0, 5, loc.CA_NPC_ID, loc.CA_NPC_ID_TT);
+	npc.editor.name.title:SetText(loc.CA_NPC_EDITOR_NAME);
+	npc.editor.description.title:SetText(loc.CA_NPC_EDITOR_DESC);
 	npc.editor.icon:SetScript("OnClick", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected});
 	end);
@@ -514,8 +514,8 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	quests = toolFrame.campaign.normal.quests;
-	quests.title:SetText(loc("QE_QUESTS"));
-	quests.help:SetText(loc("QE_QUESTS_HELP"));
+	quests.title:SetText(loc.QE_QUESTS);
+	quests.help:SetText(loc.QE_QUESTS_HELP);
 
 	-- List
 	quests.list.widgetTab = {};
@@ -542,23 +542,23 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 			self:GetParent().Highlight:Hide();
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("TYPE_QUEST"),
-			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
-			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CTRL") .. " + " .. loc("CM_CLICK"), loc("CA_QE_ID"))
-			.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.TYPE_QUEST,
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT)
+			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CTRL .. " + " .. loc.CM_CLICK, loc.CA_QE_ID)
+			.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 	end
 	quests.list.decorate = decorateQuestLine;
 	TRP3_API.ui.list.handleMouseWheel(quests.list, quests.list.slider);
 	quests.list.slider:SetValue(0);
-	quests.list.add:SetText(loc("CA_QUEST_ADD"));
+	quests.list.add:SetText(loc.CA_QUEST_ADD);
 	quests.list.add:SetScript("OnClick", function() createQuest() end);
-	quests.list.empty:SetText(loc("CA_QUEST_NO"));
+	quests.list.empty:SetText(loc.CA_QUEST_NO);
 
 	-- Links
 	linksStructure = {
 		{
-			text = loc("CA_LINKS_ON_START"),
-			tt = loc("CA_LINKS_ON_START_TT"),
+			text = loc.CA_LINKS_ON_START,
+			tt = loc.CA_LINKS_ON_START_TT,
 			icon = "Interface\\ICONS\\achievement_quests_completed_08",
 			field = "OS",
 		}

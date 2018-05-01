@@ -21,7 +21,7 @@ local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, st
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
@@ -52,27 +52,27 @@ local function text_init()
 	local editor = TRP3_EffectEditorText;
 
 	-- Text
-	setTooltipAll(editor.text.dummy, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_TEXT_TEXT_TT"));
+	setTooltipAll(editor.text.dummy, "RIGHT", 0, 5, loc.EFFECT_TEXT_TEXT, loc.EFFECT_TEXT_TEXT_TT);
 
 
 	-- Type
 	local outputs = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_1")), Utils.message.type.CHAT_FRAME},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_2")), Utils.message.type.ALERT_POPUP},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_3")), Utils.message.type.RAID_ALERT},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_TEXT_TYPE"), loc("EFFECT_TEXT_TYPE_4")), Utils.message.type.ALERT_MESSAGE}
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_TEXT_TYPE, loc.EFFECT_TEXT_TYPE_1), Utils.message.type.CHAT_FRAME},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_TEXT_TYPE, loc.EFFECT_TEXT_TYPE_2), Utils.message.type.ALERT_POPUP},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_TEXT_TYPE, loc.EFFECT_TEXT_TYPE_3), Utils.message.type.RAID_ALERT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_TEXT_TYPE, loc.EFFECT_TEXT_TYPE_4), Utils.message.type.ALERT_MESSAGE}
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.type, outputs, nil, nil, 250, true);
 
 	registerEffectEditor("text", {
-		title = loc("EFFECT_TEXT"),
+		title = loc.EFFECT_TEXT,
 		icon = "inv_inscription_scrollofwisdom_01",
-		description = loc("EFFECT_TEXT_TT"),
+		description = loc.EFFECT_TEXT_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" ..loc("EFFECT_TEXT_PREVIEW") .. ":|r " .. tostring(args[1]));
+			scriptStepFrame.description:SetText("|cffffff00" ..loc.EFFECT_TEXT_PREVIEW .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
-			return {loc("EFFECT_TEXT_TEXT_DEFAULT"), 1};
+			return {loc.EFFECT_TEXT_TEXT_DEFAULT, 1};
 		end,
 		editor = editor,
 	});
@@ -94,12 +94,12 @@ local function script_init()
 	local editor = TRP3_EffectEditorScript;
 
 	-- Text
-	setTooltipAll(editor.script.dummy, "RIGHT", 0, 5, loc("EFFECT_SCRIPT_SCRIPT"), loc("EFFECT_SCRIPT_SCRIPT_TT"));
+	setTooltipAll(editor.script.dummy, "RIGHT", 0, 5, loc.EFFECT_SCRIPT_SCRIPT, loc.EFFECT_SCRIPT_SCRIPT_TT);
 	editor.script.scroll.text:SetFontObject(GameFontNormalLarge);
 
 	-- Insert effect function
-	editor.script.insertEffect:SetText(loc("EFFECT_SCRIPT_I_EFFECT"));
-	setTooltipAll(editor.script.insertEffect, "RIGHT", 0, 5, loc("EFFECT_SCRIPT_I_EFFECT"), loc("EFFECT_SCRIPT_I_EFFECT_TT"));
+	editor.script.insertEffect:SetText(loc.EFFECT_SCRIPT_I_EFFECT);
+	setTooltipAll(editor.script.insertEffect, "RIGHT", 0, 5, loc.EFFECT_SCRIPT_I_EFFECT, loc.EFFECT_SCRIPT_I_EFFECT_TT);
 	editor.script.insertEffect:SetScript("OnClick", function()
 		local index = editor.script.scroll.text:GetCursorPosition();
 		local text = editor.script.scroll.text:GetText();
@@ -110,9 +110,9 @@ local function script_init()
 	end);
 
 	registerEffectEditor("script", {
-		title = loc("EFFECT_SCRIPT"),
+		title = loc.EFFECT_SCRIPT,
 		icon = "inv_inscription_scroll_fortitude",
-		description = loc("EFFECT_SCRIPT_TT"),
+		description = loc.EFFECT_SCRIPT_TT,
 		getDefaultArgs = function()
 			return {"-- Your script here"};
 		end,
@@ -135,25 +135,25 @@ end
 
 local function companion_dismiss_mount_init()
 	registerEffectEditor("companion_dismiss_mount", {
-		title = loc("EFFECT_DISMOUNT"),
+		title = loc.EFFECT_DISMOUNT,
 		icon = "ability_skyreach_dismount",
-		description = loc("EFFECT_DISMOUNT_TT"),
+		description = loc.EFFECT_DISMOUNT_TT,
 	});
 end
 
 local function companion_dismiss_critter_init()
 	registerEffectEditor("companion_dismiss_critter", {
-		title = loc("EFFECT_DISPET"),
+		title = loc.EFFECT_DISPET,
 		icon = "inv_pet_pettrap01",
-		description = loc("EFFECT_DISPET_TT"),
+		description = loc.EFFECT_DISPET_TT,
 	});
 end
 
 local function companion_random_critter_init()
 	registerEffectEditor("companion_random_critter", {
-		title = loc("EFFECT_RANDSUM"),
+		title = loc.EFFECT_RANDSUM,
 		icon = "ability_hunter_beastcall",
-		description = loc("EFFECT_RANDSUM_TT"),
+		description = loc.EFFECT_RANDSUM_TT,
 	});
 end
 
@@ -173,7 +173,7 @@ local function companion_summon_mount_init()
 		editor.id = data[1];
 		local creatureName, spellID, icon = GetMountInfoByID(editor.id or 0);
 		local _, description = GetMountInfoExtraByID(editor.id or 0);
-		companionSelected({creatureName or loc("EFFECT_SUMMOUNT_NOMOUNT"), icon or "Interface\\ICONS\\inv_misc_questionmark", description or "", loc("PR_CO_MOUNT"), spellID, editor.id});
+		companionSelected({creatureName or loc.EFFECT_SUMMOUNT_NOMOUNT, icon or "Interface\\ICONS\\inv_misc_questionmark", description or "", loc.PR_CO_MOUNT, spellID, editor.id});
 	end
 
 	editor.save = function(scriptData)
@@ -186,12 +186,12 @@ local function companion_summon_mount_init()
 	editor.type = TRP3_API.ui.misc.TYPE_MOUNT;
 
 	registerEffectEditor("companion_summon_mount", {
-		title = loc("EFFECT_SUMMOUNT"),
+		title = loc.EFFECT_SUMMOUNT,
 		icon = "ability_hunter_beastcall",
-		description = loc("EFFECT_SUMMOUNT_TT"),
+		description = loc.EFFECT_SUMMOUNT_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local creatureName = GetMountInfoByID(args[1] or 0);
-			scriptStepFrame.description:SetText("|cffffff00" ..loc("EFFECT_SUMMOUNT") .. ":|r " .. tostring(creatureName or loc("EFFECT_SUMMOUNT_NOMOUNT")));
+			scriptStepFrame.description:SetText("|cffffff00" ..loc.EFFECT_SUMMOUNT .. ":|r " .. tostring(creatureName or loc.EFFECT_SUMMOUNT_NOMOUNT));
 		end,
 		getDefaultArgs = function()
 			return {0};
@@ -209,14 +209,14 @@ local function var_set_operand_init()
 	local getOperandEditorInfo = TRP3_API.extended.tools.getOperandEditorInfo;
 
 	-- Var name
-	editor.var.title:SetText(loc("EFFECT_VAR"))
-	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+	editor.var.title:SetText(loc.EFFECT_VAR)
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc.EFFECT_VAR, "");
 
 	-- Source
 	local sources = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_WORKFLOW")), "w", loc("EFFECT_SOURCE_WORKFLOW_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_WORKFLOW), "w", loc.EFFECT_SOURCE_WORKFLOW_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_SOURCE_OBJECT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_SOURCE_CAMPAIGN_TT}
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
 
@@ -228,7 +228,7 @@ local function var_set_operand_init()
 		if editor.currentEditor then
 			editor.currentEditor:Hide();
 		end
-		listbox.config:SetText(loc("EFFECT_VAR_OPERAND_CONFIG_NO"));
+		listbox.config:SetText(loc.EFFECT_VAR_OPERAND_CONFIG_NO);
 		if operand.editor then
 			operand.editor:SetParent(editor);
 			operand.editor:ClearAllPoints();
@@ -239,7 +239,7 @@ local function var_set_operand_init()
 			operand.editor.load();
 			editor.currentEditor = operand.editor;
 			operand.editor:Show();
-			listbox.config:SetText(loc("EFFECT_VAR_OPERAND_CONFIG"));
+			listbox.config:SetText(loc.EFFECT_VAR_OPERAND_CONFIG);
 		end
 	end
 
@@ -272,15 +272,15 @@ local function var_set_operand_init()
 	end
 
 	local sourcesText = {
-		w = loc("EFFECT_SOURCE_WORKFLOW"),
-		o = loc("EFFECT_SOURCE_OBJECT"),
-		c = loc("EFFECT_SOURCE_CAMPAIGN")
+		w = loc.EFFECT_SOURCE_WORKFLOW,
+		o = loc.EFFECT_SOURCE_OBJECT,
+		c = loc.EFFECT_SOURCE_CAMPAIGN
 	}
 
 	registerEffectEditor("var_operand", {
-		title = loc("EFFECT_VAR_OPERAND"),
+		title = loc.EFFECT_VAR_OPERAND,
 		icon = "inv_inscription_minorglyph04",
-		description = loc("EFFECT_VAR_OPERAND_TT"),
+		description = loc.EFFECT_VAR_OPERAND_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local varName = tostring(args[1]);
 			local source = sourcesText[args[2]] or "?";
@@ -290,7 +290,7 @@ local function var_set_operand_init()
 			if operand.getText then
 				text = operand.getText(args[4]);
 			end
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_VAR_OPERAND") .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " = |cff00ff00" .. text);
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_VAR_OPERAND .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " = |cff00ff00" .. text);
 		end,
 		getDefaultArgs = function()
 			return {"varName", "w", "random"};
@@ -303,29 +303,29 @@ local function var_set_execenv_init()
 	local changeVarEditor = TRP3_EffectEditorVarChange;
 
 	-- Var name
-	changeVarEditor.var.title:SetText(loc("EFFECT_VAR"))
-	setTooltipForSameFrame(changeVarEditor.var.help, "RIGHT", 0, 5, loc("EFFECT_VAR"), "");
+	changeVarEditor.var.title:SetText(loc.EFFECT_VAR)
+	setTooltipForSameFrame(changeVarEditor.var.help, "RIGHT", 0, 5, loc.EFFECT_VAR, "");
 
 	-- Var value
-	changeVarEditor.value.title:SetText(loc("EFFECT_OPERATION_VALUE"));
-	setTooltipForSameFrame(changeVarEditor.value.help, "RIGHT", 0, 5, loc("EFFECT_OPERATION_VALUE"), "");
+	changeVarEditor.value.title:SetText(loc.EFFECT_OPERATION_VALUE);
+	setTooltipForSameFrame(changeVarEditor.value.help, "RIGHT", 0, 5, loc.EFFECT_OPERATION_VALUE, "");
 
 	-- Type
 	local types = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_INIT")), "[=]", loc("EFFECT_OPERATION_TYPE_INIT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_SET")), "=", loc("EFFECT_OPERATION_TYPE_SET_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_ADD")), "+"},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_SUB")), "-"},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_MULTIPLY")), "x"},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_OPERATION_TYPE"), loc("EFFECT_OPERATION_TYPE_DIV")), "/"}
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_INIT), "[=]", loc.EFFECT_OPERATION_TYPE_INIT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_SET), "=", loc.EFFECT_OPERATION_TYPE_SET_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_ADD), "+"},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_SUB), "-"},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_MULTIPLY), "x"},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_DIV), "/"}
 	}
 	TRP3_API.ui.listbox.setupListBox(changeVarEditor.type, types, nil, nil, 250, true);
 
 	-- Source
 	local sources = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_WORKFLOW")), "w", loc("EFFECT_SOURCE_WORKFLOW_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_WORKFLOW), "w", loc.EFFECT_SOURCE_WORKFLOW_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_SOURCE_OBJECT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_SOURCE_CAMPAIGN_TT}
 	}
 	TRP3_API.ui.listbox.setupListBox(changeVarEditor.source, sources, nil, nil, 250, true);
 
@@ -345,19 +345,19 @@ local function var_set_execenv_init()
 	end
 
 	local sourcesText = {
-		w = loc("EFFECT_SOURCE_WORKFLOW"),
-		o = loc("EFFECT_SOURCE_OBJECT"),
-		c = loc("EFFECT_SOURCE_CAMPAIGN")
+		w = loc.EFFECT_SOURCE_WORKFLOW,
+		o = loc.EFFECT_SOURCE_OBJECT,
+		c = loc.EFFECT_SOURCE_CAMPAIGN
 	}
 
 	registerEffectEditor("var_object", {
-		title = loc("EFFECT_VAR_OBJECT_CHANGE"),
+		title = loc.EFFECT_VAR_OBJECT_CHANGE,
 		icon = "inv_inscription_minorglyph01",
-		description = loc("EFFECT_VAR_OBJECT_CHANGE_TT"),
+		description = loc.EFFECT_VAR_OBJECT_CHANGE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local source = sourcesText[args[1]] or "?";
 			local varName = tostring(args[3]);
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_OPERATION") .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " |cff00ff00=|r " .. varName .. " |cff00ff00" .. tostring(args[2]) .. "|r " .. tostring(args[4]));
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_OPERATION .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " |cff00ff00=|r " .. varName .. " |cff00ff00" .. tostring(args[2]) .. "|r " .. tostring(args[4]));
 		end,
 		getDefaultArgs = function()
 			return {"w", "[=]", "varName", 0};
@@ -372,11 +372,11 @@ local function signal_send_init()
 	local editor = TRP3_EffectEditorSignalSend;
 
 	registerEffectEditor("signal_send", {
-		title = loc("EFFECT_SIGNAL"),
+		title = loc.EFFECT_SIGNAL,
 		icon = "Inv_gizmo_goblingtonkcontroller",
-		description = loc("EFFECT_SIGNAL_TT"),
+		description = loc.EFFECT_SIGNAL_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_SIGNAL_PREVIEW"):format(tostring(args[1]), tostring(args[2])));
+			scriptStepFrame.description:SetText(loc.EFFECT_SIGNAL_PREVIEW:format(tostring(args[1]), tostring(args[2])));
 		end,
 		getDefaultArgs = function()
 			return {"id", "value"};
@@ -385,12 +385,12 @@ local function signal_send_init()
 	});
 
 	-- Var name
-	editor.id.title:SetText(loc("EFFECT_SIGNAL_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_SIGNAL_ID"), loc("EFFECT_SIGNAL_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_SIGNAL_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_SIGNAL_ID, loc.EFFECT_SIGNAL_ID_TT);
 
 	-- Var value
-	editor.value.title:SetText(loc("EFFECT_SIGNAL_VALUE"));
-	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, loc("EFFECT_SIGNAL_VALUE"), loc("EFFECT_SIGNAL_VALUE_TT"));
+	editor.value.title:SetText(loc.EFFECT_SIGNAL_VALUE);
+	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, loc.EFFECT_SIGNAL_VALUE, loc.EFFECT_SIGNAL_VALUE_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -410,19 +410,19 @@ local function run_workflow_init()
 
 	-- Source
 	local sources = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_W_OBJECT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_W_CAMPAIGN_TT")}
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_W_OBJECT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_W_CAMPAIGN_TT}
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_RUN_WORKFLOW_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_RUN_WORKFLOW_ID"), loc("EFFECT_RUN_WORKFLOW_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_RUN_WORKFLOW_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_RUN_WORKFLOW_ID, loc.EFFECT_RUN_WORKFLOW_ID_TT);
 
 
 	local sourcesText = {
-		o = loc("EFFECT_SOURCE_OBJECT"),
-		c = loc("EFFECT_SOURCE_CAMPAIGN")
+		o = loc.EFFECT_SOURCE_OBJECT,
+		c = loc.EFFECT_SOURCE_CAMPAIGN
 	}
 
 	function editor.load(scriptData)
@@ -437,13 +437,13 @@ local function run_workflow_init()
 	end
 
 	registerEffectEditor("run_workflow", {
-		title = loc("EFFECT_RUN_WORKFLOW"),
+		title = loc.EFFECT_RUN_WORKFLOW,
 		icon = "inv_gizmo_electrifiedether",
-		description = loc("EFFECT_RUN_WORKFLOW_TT"),
+		description = loc.EFFECT_RUN_WORKFLOW_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local source = sourcesText[args[1]] or "?";
 			local id = tostring(args[2]);
-			scriptStepFrame.description:SetText(loc("EFFECT_RUN_WORKFLOW_PREVIEW"):format("|cff00ff00".. id .."|r", "|cff00ff00".. source .."|r"));
+			scriptStepFrame.description:SetText(loc.EFFECT_RUN_WORKFLOW_PREVIEW:format("|cff00ff00".. id .."|r", "|cff00ff00".. source .."|r"));
 		end,
 		getDefaultArgs = function()
 			return {"o", "id"};
@@ -456,37 +456,37 @@ local function var_prompt_init()
 	local editor = TRP3_EffectEditorPrompt;
 
 	-- Text
-	editor.text.title:SetText(loc("EFFECT_PROMPT_TEXT"));
-	setTooltipForSameFrame(editor.text.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_TEXT"), loc("EFFECT_PROMPT_TEXT_TT"));
+	editor.text.title:SetText(loc.EFFECT_PROMPT_TEXT);
+	setTooltipForSameFrame(editor.text.help, "RIGHT", 0, 5, loc.EFFECT_PROMPT_TEXT, loc.EFFECT_PROMPT_TEXT_TT);
 
 	-- Variable
-	editor.var.title:SetText(loc("EFFECT_PROMPT_VAR"));
-	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_VAR"), loc("EFFECT_PROMPT_VAR_TT"));
+	editor.var.title:SetText(loc.EFFECT_PROMPT_VAR);
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc.EFFECT_PROMPT_VAR, loc.EFFECT_PROMPT_VAR_TT);
 
 	-- Source var
 	local sourcesVar = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_SOURCE_OBJECT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_V"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_SOURCE_CAMPAIGN_TT")}
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE_V, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_SOURCE_OBJECT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE_V, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_SOURCE_CAMPAIGN_TT}
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.source, sourcesVar, nil, nil, 250, true);
 
 	-- Workflow callback
-	editor.workflow.title:SetText(loc("EFFECT_PROMPT_CALLBACK"));
-	setTooltipForSameFrame(editor.workflow.help, "RIGHT", 0, 5, loc("EFFECT_PROMPT_CALLBACK"), loc("EFFECT_PROMPT_CALLBACK_TT"));
+	editor.workflow.title:SetText(loc.EFFECT_PROMPT_CALLBACK);
+	setTooltipForSameFrame(editor.workflow.help, "RIGHT", 0, 5, loc.EFFECT_PROMPT_CALLBACK, loc.EFFECT_PROMPT_CALLBACK_TT);
 
 	-- Source workflow
 	local workflowSource = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_W"), loc("EFFECT_SOURCE_OBJECT")), "o", loc("EFFECT_W_OBJECT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE_W"), loc("EFFECT_SOURCE_CAMPAIGN")), "c", loc("EFFECT_W_CAMPAIGN_TT")}
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE_W, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_W_OBJECT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE_W, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_W_CAMPAIGN_TT}
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.w_source, workflowSource, nil, nil, 250, true);
 
 	registerEffectEditor("var_prompt", {
-		title = loc("EFFECT_PROMPT"),
+		title = loc.EFFECT_PROMPT,
 		icon = "inv_gizmo_hardenedadamantitetube",
-		description = loc("EFFECT_PROMPT_TT"),
+		description = loc.EFFECT_PROMPT_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_PROMPT_PREVIEW"):format(args[2] or ""));
+			scriptStepFrame.description:SetText(loc.EFFECT_PROMPT_PREVIEW:format(args[2] or ""));
 		end,
 		getDefaultArgs = function()
 			return {"Please enter some input", "input", "o", "", "o"};
@@ -521,21 +521,21 @@ local speechNPCEditor = TRP3_EffectEditorSpeechNPC;
 
 local function speech_env_init()
 	registerEffectEditor("speech_env", {
-		title = loc("EFFECT_SPEECH_NAR"),
+		title = loc.EFFECT_SPEECH_NAR,
 		icon = "inv_misc_book_07",
-		description = loc("EFFECT_SPEECH_NAR_TT"),
+		description = loc.EFFECT_SPEECH_NAR_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText(tostring(args[1]));
 		end,
 		getDefaultArgs = function()
-			return {loc("EFFECT_SPEECH_NAR_DEFAULT")};
+			return {loc.EFFECT_SPEECH_NAR_DEFAULT};
 		end,
 		editor = speechEnvEditor,
 	});
 
 	-- Narrative text
-	speechEnvEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
-	setTooltipForSameFrame(speechEnvEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT"), loc("EFFECT_SPEECH_NAR_TEXT_TT"));
+	speechEnvEditor.text.title:SetText(loc.EFFECT_TEXT_TEXT);
+	setTooltipForSameFrame(speechEnvEditor.text.help, "RIGHT", 0, 5, loc.EFFECT_TEXT_TEXT, loc.EFFECT_SPEECH_NAR_TEXT_TT);
 
 	function speechEnvEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -549,33 +549,33 @@ end
 
 local function speech_npc_init()
 	registerEffectEditor("speech_npc", {
-		title = loc("EFFECT_SPEECH_NPC"),
+		title = loc.EFFECT_SPEECH_NPC,
 		icon = "ability_warrior_rallyingcry",
-		description = loc("EFFECT_SPEECH_NPC_TT"),
+		description = loc.EFFECT_SPEECH_NPC_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText(TRP3_API.ui.misc.getSpeechPrefixText(args[2], args[1], args[3]));
 		end,
 		getDefaultArgs = function()
-			return {"Tish", TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc("EFFECT_SPEECH_NPC_DEFAULT")};
+			return {"Tish", TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc.EFFECT_SPEECH_NPC_DEFAULT};
 		end,
 		editor = speechNPCEditor,
 	});
 
 	-- Name
-	speechNPCEditor.name.title:SetText(loc("EFFECT_SPEECH_NPC_NAME"));
-	setTooltipForSameFrame(speechNPCEditor.name.help, "RIGHT", 0, 5, loc("EFFECT_SPEECH_NPC_NAME"), loc("EFFECT_SPEECH_NPC_NAME_TT"));
+	speechNPCEditor.name.title:SetText(loc.EFFECT_SPEECH_NPC_NAME);
+	setTooltipForSameFrame(speechNPCEditor.name.help, "RIGHT", 0, 5, loc.EFFECT_SPEECH_NPC_NAME, loc.EFFECT_SPEECH_NPC_NAME_TT);
 
 	-- Type
 	local types = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_SAYS")), TRP3_API.ui.misc.SPEECH_PREFIX.SAYS},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_YELLS")), TRP3_API.ui.misc.SPEECH_PREFIX.YELLS},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_WHISPERS")), TRP3_API.ui.misc.SPEECH_PREFIX.WHISPERS},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_SAYS), TRP3_API.ui.misc.SPEECH_PREFIX.SAYS},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_YELLS), TRP3_API.ui.misc.SPEECH_PREFIX.YELLS},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_WHISPERS), TRP3_API.ui.misc.SPEECH_PREFIX.WHISPERS},
 	}
 	TRP3_API.ui.listbox.setupListBox(speechNPCEditor.type, types, nil, nil, 250, true);
 
 	-- Narrative text
-	speechNPCEditor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
-	setTooltipForSameFrame(speechNPCEditor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT", loc("EFFECT_SPEECH_NAR_TEXT_TT")));
+	speechNPCEditor.text.title:SetText(loc.EFFECT_TEXT_TEXT);
+	setTooltipForSameFrame(speechNPCEditor.text.help, "RIGHT", 0, 5, loc.EFFECT_TEXT_TEXT, loc.EFFECT_SPEECH_NAR_TEXT_TT);
 
 	function speechNPCEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -595,29 +595,29 @@ local function speech_player_init()
 	local editor = TRP3_EffectEditorSpeechPlayer;
 
 	registerEffectEditor("speech_player", {
-		title = loc("EFFECT_SPEECH_PLAYER"),
+		title = loc.EFFECT_SPEECH_PLAYER,
 		icon = "ability_warrior_warcry",
-		description = loc("EFFECT_SPEECH_PLAYER_TT"),
+		description = loc.EFFECT_SPEECH_PLAYER_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText(TRP3_API.ui.misc.getSpeech(args[2], args[1]));
 		end,
 		getDefaultArgs = function()
-			return {TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc("EFFECT_SPEECH_PLAYER_DEFAULT")};
+			return {TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc.EFFECT_SPEECH_PLAYER_DEFAULT};
 		end,
 		editor = editor,
 	});
 
 	-- Type
 	local types = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_SAYS")), TRP3_API.ui.misc.SPEECH_PREFIX.SAYS},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_YELLS")), TRP3_API.ui.misc.SPEECH_PREFIX.YELLS},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SPEECH_TYPE"), loc("NPC_EMOTES")), TRP3_API.ui.misc.SPEECH_PREFIX.EMOTES},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_SAYS), TRP3_API.ui.misc.SPEECH_PREFIX.SAYS},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_YELLS), TRP3_API.ui.misc.SPEECH_PREFIX.YELLS},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_EMOTES), TRP3_API.ui.misc.SPEECH_PREFIX.EMOTES},
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 250, true);
 
 	-- Narrative text
-	editor.text.title:SetText(loc("EFFECT_TEXT_TEXT"));
-	setTooltipForSameFrame(editor.text.help, "RIGHT", 0, 5, loc("EFFECT_TEXT_TEXT", loc("EFFECT_SPEECH_NAR_TEXT_TT")));
+	editor.text.title:SetText(loc.EFFECT_TEXT_TEXT);
+	setTooltipForSameFrame(editor.text.help, "RIGHT", 0, 5, loc.EFFECT_TEXT_TEXT, loc.EFFECT_SPEECH_NAR_TEXT_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -639,11 +639,11 @@ local function sound_id_self_init()
 	local SoundIDSelfEditor = TRP3_EffectEditorSoundIDSelf;
 
 	registerEffectEditor("sound_id_self", {
-		title = loc("EFFECT_SOUND_ID_SELF"),
+		title = loc.EFFECT_SOUND_ID_SELF,
 		icon = "inv_misc_ear_human_02",
-		description = loc("EFFECT_SOUND_ID_SELF_TT"),
+		description = loc.EFFECT_SOUND_ID_SELF_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_ID_SELF_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_SELF_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
 		end,
 		getDefaultArgs = function()
 			return {"SFX", 43569};
@@ -653,16 +653,16 @@ local function sound_id_self_init()
 
 	-- Channel
 	local outputs = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOUND_ID_SELF_CHANNEL"), loc("EFFECT_SOUND_ID_SELF_CHANNEL_SFX")), "SFX", loc("EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOUND_ID_SELF_CHANNEL"), loc("EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE")), "Ambience", loc("EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX), "SFX", loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE), "Ambience", loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT},
 	}
 	TRP3_API.ui.listbox.setupListBox(SoundIDSelfEditor.channel, outputs, nil, nil, 250, true);
 
 	-- ID
-	SoundIDSelfEditor.id.title:SetText(loc("EFFECT_SOUND_ID_SELF_ID"));
-	setTooltipForSameFrame(SoundIDSelfEditor.id.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_ID_SELF_ID"), loc("EFFECT_SOUND_ID_SELF_ID_TT"));
+	SoundIDSelfEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
+	setTooltipForSameFrame(SoundIDSelfEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_ID, loc.EFFECT_SOUND_ID_SELF_ID_TT);
 
-	SoundIDSelfEditor.play:SetText(loc("EFFECT_SOUND_PLAY"));
+	SoundIDSelfEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	SoundIDSelfEditor.play:SetScript("OnClick", function(self)
 		Utils.music.playSoundID(tonumber(strtrim(SoundIDSelfEditor.id:GetText())), SoundIDSelfEditor.channel:GetSelectedValue() or "SFX");
 	end);
@@ -683,11 +683,11 @@ local function sound_music_self_init()
 	local soundMusicEditor = TRP3_EffectEditorSoundMusicSelf;
 
 	registerEffectEditor("sound_music_self", {
-		title = loc("EFFECT_SOUND_MUSIC_SELF"),
+		title = loc.EFFECT_SOUND_MUSIC_SELF,
 		icon = "inv_misc_drum_07",
-		description = loc("EFFECT_SOUND_MUSIC_SELF_TT"),
+		description = loc.EFFECT_SOUND_MUSIC_SELF_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_MUSIC_SELF_PREVIEW"):format("|cff00ff00" .. tostring(args[1])));
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_MUSIC_SELF_PREVIEW:format("|cff00ff00" .. tostring(args[1])));
 		end,
 		getDefaultArgs = function()
 			return {"zonemusic\\brewfest\\BF_Goblins1"};
@@ -696,8 +696,8 @@ local function sound_music_self_init()
 	});
 
 	-- ID
-	soundMusicEditor.path.title:SetText(loc("EFFECT_SOUND_MUSIC_SELF_PATH"));
-	setTooltipForSameFrame(soundMusicEditor.path.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_MUSIC_SELF_PATH"), loc("EFFECT_SOUND_MUSIC_SELF_PATH_TT"));
+	soundMusicEditor.path.title:SetText(loc.EFFECT_SOUND_MUSIC_SELF_PATH);
+	setTooltipForSameFrame(soundMusicEditor.path.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_MUSIC_SELF_PATH, loc.EFFECT_SOUND_MUSIC_SELF_PATH_TT);
 
 	-- Browse and play
 	soundMusicEditor.browse:SetText(BROWSE);
@@ -706,7 +706,7 @@ local function sound_music_self_init()
 			soundMusicEditor.path:SetText(music);
 		end});
 	end);
-	soundMusicEditor.play:SetText(loc("EFFECT_SOUND_PLAY"));
+	soundMusicEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	soundMusicEditor.play:SetScript("OnClick", function(self)
 		Utils.music.playMusic(soundMusicEditor.path:GetText());
 	end);
@@ -723,9 +723,9 @@ end
 
 local function sound_music_stop_init()
 	registerEffectEditor("sound_music_stop", {
-		title = loc("EFFECT_SOUND_MUSIC_STOP"),
+		title = loc.EFFECT_SOUND_MUSIC_STOP,
 		icon = "spell_holy_silence",
-		description = loc("EFFECT_SOUND_MUSIC_STOP_TT"),
+		description = loc.EFFECT_SOUND_MUSIC_STOP_TT,
 	});
 end
 
@@ -733,11 +733,11 @@ local function sound_id_local_init()
 	local soundLocalEditor = TRP3_EffectEditorSoundIDLocal;
 
 	registerEffectEditor("sound_id_local", {
-		title = loc("EFFECT_SOUND_ID_LOCAL"),
+		title = loc.EFFECT_SOUND_ID_LOCAL,
 		icon = "inv_misc_ear_human_01",
-		description = loc("EFFECT_SOUND_ID_LOCAL_TT"),
+		description = loc.EFFECT_SOUND_ID_LOCAL_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_ID_LOCAL_PREVIEW"):format(
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_LOCAL_PREVIEW:format(
 			"|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[3]) .. "|r"
 			));
 		end,
@@ -749,22 +749,22 @@ local function sound_id_local_init()
 
 	-- Channel
 	local outputs = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOUND_ID_SELF_CHANNEL"), loc("EFFECT_SOUND_ID_SELF_CHANNEL_SFX")), "SFX", loc("EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOUND_ID_SELF_CHANNEL"), loc("EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE")), "Ambience", loc("EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX), "SFX", loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE), "Ambience", loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT},
 	}
 	TRP3_API.ui.listbox.setupListBox(soundLocalEditor.channel, outputs, nil, nil, 250, true);
 
 	-- ID
-	soundLocalEditor.id.title:SetText(loc("EFFECT_SOUND_ID_SELF_ID"));
-	setTooltipForSameFrame(soundLocalEditor.id.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_ID_SELF_ID"), loc("EFFECT_SOUND_ID_SELF_ID_TT"));
-	soundLocalEditor.play:SetText(loc("EFFECT_SOUND_PLAY"));
+	soundLocalEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
+	setTooltipForSameFrame(soundLocalEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_ID, loc.EFFECT_SOUND_ID_SELF_ID_TT);
+	soundLocalEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	soundLocalEditor.play:SetScript("OnClick", function(self)
 		Utils.music.playSoundID(tonumber(strtrim(soundLocalEditor.id:GetText())), soundLocalEditor.channel:GetSelectedValue() or "SFX");
 	end);
 
 	-- Distance
-	soundLocalEditor.distance.title:SetText(loc("EFFECT_SOUND_LOCAL_DISTANCE"));
-	setTooltipForSameFrame(soundLocalEditor.distance.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_LOCAL_DISTANCE"), loc("EFFECT_SOUND_LOCAL_DISTANCE_TT"));
+	soundLocalEditor.distance.title:SetText(loc.EFFECT_SOUND_LOCAL_DISTANCE);
+	setTooltipForSameFrame(soundLocalEditor.distance.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_LOCAL_DISTANCE, loc.EFFECT_SOUND_LOCAL_DISTANCE_TT);
 
 	function soundLocalEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -784,11 +784,11 @@ local function sound_music_local_init()
 	local musicLocalEditor = TRP3_EffectEditorMusicLocal;
 
 	registerEffectEditor("sound_music_local", {
-		title = loc("EFFECT_SOUND_MUSIC_LOCAL"),
+		title = loc.EFFECT_SOUND_MUSIC_LOCAL,
 		icon = "inv_misc_drum_04",
-		description = loc("EFFECT_SOUND_MUSIC_LOCAL_TT"),
+		description = loc.EFFECT_SOUND_MUSIC_LOCAL_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_SOUND_MUSIC_LOCAL_PREVIEW"):format(
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_MUSIC_LOCAL_PREVIEW:format(
 			"|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[2]) .. "|cffffff00"
 			));
 		end,
@@ -799,8 +799,8 @@ local function sound_music_local_init()
 	});
 
 	-- ID
-	musicLocalEditor.path.title:SetText(loc("EFFECT_SOUND_MUSIC_SELF_PATH"));
-	setTooltipForSameFrame(musicLocalEditor.path.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_MUSIC_SELF_PATH"), loc("EFFECT_SOUND_MUSIC_SELF_PATH_TT"));
+	musicLocalEditor.path.title:SetText(loc.EFFECT_SOUND_MUSIC_SELF_PATH);
+	setTooltipForSameFrame(musicLocalEditor.path.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_MUSIC_SELF_PATH, loc.EFFECT_SOUND_MUSIC_SELF_PATH_TT);
 
 	musicLocalEditor.browse:SetText(BROWSE);
 	musicLocalEditor.browse:SetScript("OnClick", function(self)
@@ -808,14 +808,14 @@ local function sound_music_local_init()
 			musicLocalEditor.path:SetText(music);
 		end});
 	end);
-	musicLocalEditor.play:SetText(loc("EFFECT_SOUND_PLAY"));
+	musicLocalEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	musicLocalEditor.play:SetScript("OnClick", function(self)
 		Utils.music.playMusic(musicLocalEditor.path:GetText());
 	end);
 
 	-- Distance
-	musicLocalEditor.distance.title:SetText(loc("EFFECT_SOUND_LOCAL_DISTANCE"));
-	setTooltipForSameFrame(musicLocalEditor.distance.help, "RIGHT", 0, 5, loc("EFFECT_SOUND_LOCAL_DISTANCE"), loc("EFFECT_SOUND_LOCAL_DISTANCE_TT"));
+	musicLocalEditor.distance.title:SetText(loc.EFFECT_SOUND_LOCAL_DISTANCE);
+	setTooltipForSameFrame(musicLocalEditor.distance.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_LOCAL_DISTANCE, loc.EFFECT_SOUND_LOCAL_DISTANCE_TT);
 
 	function musicLocalEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -837,11 +837,11 @@ local function cam_zoom_init()
 	local editor = TRP3_EffectEditorCamera;
 
 	registerEffectEditor("cam_zoom_in", {
-		title = loc("EFFECT_CAT_CAMERA_ZOOM_IN"),
+		title = loc.EFFECT_CAT_CAMERA_ZOOM_IN,
 		icon = "inv_misc_spyglass_03",
-		description = loc("EFFECT_CAT_CAMERA_ZOOM_IN_TT"),
+		description = loc.EFFECT_CAT_CAMERA_ZOOM_IN_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_ZOOM_IN") .. ":|cff00ff00 " .. tostring(args[1]));
+			scriptStepFrame.description:SetText(loc.EFFECT_CAT_CAMERA_ZOOM_IN .. ":|cff00ff00 " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {"5"};
@@ -850,11 +850,11 @@ local function cam_zoom_init()
 	});
 
 	registerEffectEditor("cam_zoom_out", {
-		title = loc("EFFECT_CAT_CAMERA_ZOOM_OUT"),
+		title = loc.EFFECT_CAT_CAMERA_ZOOM_OUT,
 		icon = "inv_misc_spyglass_03",
-		description = loc("EFFECT_CAT_CAMERA_ZOOM_OUT_TT"),
+		description = loc.EFFECT_CAT_CAMERA_ZOOM_OUT_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_ZOOM_OUT") .. ":|cff00ff00 " .. tostring(args[1]));
+			scriptStepFrame.description:SetText(loc.EFFECT_CAT_CAMERA_ZOOM_OUT .. ":|cff00ff00 " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {"5"};
@@ -863,7 +863,7 @@ local function cam_zoom_init()
 	});
 
 	-- Distance
-	editor.distance.title:SetText(loc("EFFECT_CAT_CAMERA_ZOOM_DISTANCE"));
+	editor.distance.title:SetText(loc.EFFECT_CAT_CAMERA_ZOOM_DISTANCE);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -879,11 +879,11 @@ local function cam_save_init()
 	local editor = TRP3_EffectEditorCameraSlot;
 
 	registerEffectEditor("cam_save", {
-		title = loc("EFFECT_CAT_CAMERA_SAVE"),
+		title = loc.EFFECT_CAT_CAMERA_SAVE,
 		icon = "inv_misc_spyglass_02",
-		description = loc("EFFECT_CAT_CAMERA_SAVE_TT"),
+		description = loc.EFFECT_CAT_CAMERA_SAVE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_SAVE") .. ":|cff00ff00 " .. tostring(args[1]));
+			scriptStepFrame.description:SetText(loc.EFFECT_CAT_CAMERA_SAVE .. ":|cff00ff00 " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {1};
@@ -892,11 +892,11 @@ local function cam_save_init()
 	});
 
 	registerEffectEditor("cam_load", {
-		title = loc("EFFECT_CAT_CAMERA_LOAD"),
+		title = loc.EFFECT_CAT_CAMERA_LOAD,
 		icon = "inv_misc_spyglass_01",
-		description = loc("EFFECT_CAT_CAMERA_LOAD_TT"),
+		description = loc.EFFECT_CAT_CAMERA_LOAD_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_CAT_CAMERA_LOAD") .. ":|cff00ff00 " .. tostring(args[1]));
+			scriptStepFrame.description:SetText(loc.EFFECT_CAT_CAMERA_LOAD .. ":|cff00ff00 " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {1};
@@ -905,8 +905,8 @@ local function cam_save_init()
 	});
 
 	-- Slot
-	editor.slot.title:SetText(loc("EFFECT_CAT_CAMERA_SLOT"));
-	setTooltipForSameFrame(editor.slot.help, "RIGHT", 0, 5, loc("EFFECT_CAT_CAMERA_SLOT"), loc("EFFECT_CAT_CAMERA_SLOT_TT"));
+	editor.slot.title:SetText(loc.EFFECT_CAT_CAMERA_SLOT);
+	setTooltipForSameFrame(editor.slot.help, "RIGHT", 0, 5, loc.EFFECT_CAT_CAMERA_SLOT, loc.EFFECT_CAT_CAMERA_SLOT_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;

@@ -22,7 +22,7 @@ local tostring, tremove, tinsert, strtrim, pairs, assert, wipe = tostring, tremo
 local tsize = Utils.table.size;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color = Utils.str.color;
@@ -41,11 +41,11 @@ local function decorateActionLine(line, actionIndex)
 	TRP3_API.ui.frame.setupIconButton(line.Icon, TRP3_API.quest.getActionTypeIcon(actionData.TY) or Globals.icons.default);
 	line.Name:SetText(TRP3_API.quest.getActionTypeLocale(actionData.TY or UNKNOWN));
 	if actionData.CO then
-		line.Description:SetText("|cff00ff00" .. loc("CA_ACTIONS_COND_ON"));
+		line.Description:SetText("|cff00ff00" .. loc.CA_ACTIONS_COND_ON);
 	else
-		line.Description:SetText("|cffffff00" .. loc("CA_ACTIONS_COND_OFF"));
+		line.Description:SetText("|cffffff00" .. loc.CA_ACTIONS_COND_OFF);
 	end
-	line.ID:SetText("|cff00ff00" .. (stEtN(actionData.SC) or "|cffff9900" .. loc("WO_LINKS_NO_LINKS")));
+	line.ID:SetText("|cff00ff00" .. (stEtN(actionData.SC) or "|cffff9900" .. loc.WO_LINKS_NO_LINKS));
 	line.click.actionIndex = actionIndex;
 end
 
@@ -68,7 +68,7 @@ function editor.load()
 end
 
 local function removeAction(index)
-	TRP3_API.popup.showConfirmPopup(loc("CA_ACTION_REMOVE"), function()
+	TRP3_API.popup.showConfirmPopup(loc.CA_ACTION_REMOVE, function()
 		if toolFrame.specificDraft.AC[index] then
 			wipe(toolFrame.specificDraft.AC[index]);
 			tremove(toolFrame.specificDraft.AC, index);
@@ -159,8 +159,8 @@ local function openActionCondition(actionIndex)
 	TRP3_ConditionEditor.close:SetScript("OnClick", function()
 		TRP3_ConditionEditor:Hide();
 	end);
-	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
-	TRP3_ConditionEditor.title:SetText(loc("CA_ACTION_CONDI"));
+	TRP3_ConditionEditor.confirm:SetText(loc.EDITOR_CONFIRM);
+	TRP3_ConditionEditor.title:SetText(loc.CA_ACTION_CONDI);
 end
 
 local function removeCondition(actionIndex)
@@ -184,8 +184,8 @@ end
 function editor.init(ToolFrame)
 	toolFrame = ToolFrame;
 
-	editor.title:SetText(loc("WO_ACTIONS_LINKS"));
-	editor.help:SetText(loc("WO_ACTIONS_LINKS_TT"));
+	editor.title:SetText(loc.WO_ACTIONS_LINKS);
+	editor.help:SetText(loc.WO_ACTIONS_LINKS_TT);
 
 	-- List
 	editor.list.widgetTab = {};
@@ -216,31 +216,31 @@ function editor.init(ToolFrame)
 			self:GetParent().Highlight:Hide();
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_ACTIONS"),
-			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
-					.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc("CM_CTRL"), loc("CM_CLICK"), loc("CA_ACTIONS_COND"))
-					.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc("CM_CTRL"), loc("CM_R_CLICK"), loc("CA_ACTIONS_COND_REMOVE"))
-					.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.CA_ACTIONS,
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT)
+					.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc.CM_CTRL, loc.CM_CLICK, loc.CA_ACTIONS_COND)
+					.. ("|cffffff00%s + %s: |cff00ff00%s\n"):format(loc.CM_CTRL, loc.CM_R_CLICK, loc.CA_ACTIONS_COND_REMOVE)
+					.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 	end
 	editor.list.decorate = decorateActionLine;
 	TRP3_API.ui.list.handleMouseWheel(editor.list, editor.list.slider);
 	editor.list.slider:SetValue(0);
-	editor.list.add:SetText(loc("CA_ACTIONS_ADD"));
+	editor.list.add:SetText(loc.CA_ACTIONS_ADD);
 	editor.list.add:SetScript("OnClick", function() openAction() end);
-	editor.list.empty:SetText(loc("CA_ACTIONS_NO"));
+	editor.list.empty:SetText(loc.CA_ACTIONS_NO);
 
 	-- Editor
-	editor.editor.title:SetText(loc("CA_ACTIONS_EDITOR"));
+	editor.editor.title:SetText(loc.CA_ACTIONS_EDITOR);
 	editor.editor.save:SetScript("OnClick", function(self)
 		onActionSaved();
 	end);
 	TRP3_API.ui.listbox.setupListBox(editor.editor.type,
 		{
-			{loc("CA_ACTIONS_SELECT")},
-			{TRP3_API.formats.dropDownElements:format(loc("CA_ACTIONS"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)), TRP3_API.quest.ACTION_TYPES.LOOK},
-			{TRP3_API.formats.dropDownElements:format(loc("CA_ACTIONS"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)), TRP3_API.quest.ACTION_TYPES.TALK},
-			{TRP3_API.formats.dropDownElements:format(loc("CA_ACTIONS"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)), TRP3_API.quest.ACTION_TYPES.LISTEN},
-			{TRP3_API.formats.dropDownElements:format(loc("CA_ACTIONS"), TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)), TRP3_API.quest.ACTION_TYPES.ACTION},
+			{loc.CA_ACTIONS_SELECT},
+			{TRP3_API.formats.dropDownElements:format(loc.CA_ACTIONS, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LOOK)), TRP3_API.quest.ACTION_TYPES.LOOK},
+			{TRP3_API.formats.dropDownElements:format(loc.CA_ACTIONS, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.TALK)), TRP3_API.quest.ACTION_TYPES.TALK},
+			{TRP3_API.formats.dropDownElements:format(loc.CA_ACTIONS, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.LISTEN)), TRP3_API.quest.ACTION_TYPES.LISTEN},
+			{TRP3_API.formats.dropDownElements:format(loc.CA_ACTIONS, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)), TRP3_API.quest.ACTION_TYPES.ACTION},
 		},
 		nil, nil, ACTION_LIST_WIDTH, true);
 

@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local UnitPosition = UnitPosition;
 local sqrt, pow = math.sqrt, math.pow;
 

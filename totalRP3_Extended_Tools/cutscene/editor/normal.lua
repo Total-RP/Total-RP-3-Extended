@@ -19,7 +19,7 @@
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local TUTORIAL;
@@ -53,16 +53,16 @@ end
 local function refreshConditions()
 	for i=1, 5 do
 		local line = editor.choicesEditor["line" .. i];
-		line.condition:SetText(loc("WO_CONDITION"));
+		line.condition:SetText(loc.WO_CONDITION);
 		if line.scriptData then
-			line.condition:SetText(loc("WO_CONDITION") .. " " .. Utils.str.texture("Interface\\GossipFrame\\DailyQuestIcon"));
+			line.condition:SetText(loc.WO_CONDITION .. " " .. Utils.str.texture("Interface\\GossipFrame\\DailyQuestIcon"));
 		end
 	end
 end
 
 local function editStep(stepID)
 	editor.imageEditor:Hide();
-	editor.title:SetText(("%s: %s"):format(loc("DI_STEP_EDIT"), stepID));
+	editor.title:SetText(("%s: %s"):format(loc.DI_STEP_EDIT, stepID));
 	local data = toolFrame.specificDraft.DS[stepID];
 
 	-- Load
@@ -137,14 +137,14 @@ local function decorateStepLine(line, stepID)
 	local icon = "Interface\\GossipFrame\\PetitionGossipIcon";
 	if stepData.EP then
 		icon = "Interface\\GossipFrame\\AvailableLegendaryQuestIcon";
-		tooltip = tooltip .. "\n\n" .. Utils.str.texture(icon) .. "|cff00ff00 " .. loc("DI_END");
+		tooltip = tooltip .. "\n\n" .. Utils.str.texture(icon) .. "|cff00ff00 " .. loc.DI_END;
 	elseif stepData.CH then
 		icon = "Interface\\GossipFrame\\ActiveLegendaryQuestIcon";
-		tooltip = tooltip .. "\n\n" .. Utils.str.texture(icon) .. "|cff00ff00 " .. loc("DI_CHOICES");
+		tooltip = tooltip .. "\n\n" .. Utils.str.texture(icon) .. "|cff00ff00 " .. loc.DI_CHOICES;
 	end
 
-	setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("DI_STEP") .. " " .. stepID,
-		tooltip .. ("\n\n|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+	setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.DI_STEP .. " " .. stepID,
+		tooltip .. ("\n\n|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 
 	line.text:SetText(Utils.str.texture(icon) .. " |cff00ff00" .. stepID .. ")|r " .. (stepData.TX or ""));
 	line.click.stepID = stepID;
@@ -292,8 +292,8 @@ local function configureCondition(line)
 		TRP3_ConditionEditor:Hide();
 		editor.choicesEditor:Show();
 	end);
-	TRP3_ConditionEditor.confirm:SetText(loc("EDITOR_CONFIRM"));
-	TRP3_ConditionEditor.title:SetText(loc("DI_CHOICE_CONDI"));
+	TRP3_ConditionEditor.confirm:SetText(loc.EDITOR_CONFIRM);
+	TRP3_ConditionEditor.title:SetText(loc.DI_CHOICE_CONDI);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -405,9 +405,9 @@ local function createTabBar()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
-			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
-			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
+			{ loc.EDITOR_MAIN, TABS.MAIN, 150 },
+			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
+			{ loc.WO_LINKS, TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -429,13 +429,13 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	main = toolFrame.cutscene.normal.main;
-	main.title:SetText(loc("TYPE_DIALOG"));
+	main.title:SetText(loc.TYPE_DIALOG);
 
 	-- Name
-	main.distance.title:SetText(loc("DI_DISTANCE"));
-	setTooltipForSameFrame(main.distance.help, "RIGHT", 0, 5, loc("DI_DISTANCE"), loc("DI_DISTANCE_TT"));
+	main.distance.title:SetText(loc.DI_DISTANCE);
+	setTooltipForSameFrame(main.distance.help, "RIGHT", 0, 5, loc.DI_DISTANCE, loc.DI_DISTANCE_TT);
 
-	main.preview:SetText(loc("EDITOR_PREVIEW"));
+	main.preview:SetText(loc.EDITOR_PREVIEW);
 	main.preview:SetScript("OnClick", function()
 		saveToDraft();
 		TRP3_API.extended.dialog.startDialog(nil, toolFrame.specificDraft);
@@ -446,7 +446,7 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	step = toolFrame.cutscene.normal.step;
-	step.title:SetText(loc("DI_STEPS"));
+	step.title:SetText(loc.DI_STEPS);
 
 	-- List
 	step.list.widgetTab = {};
@@ -472,21 +472,21 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 			end
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("DI_STEP"),
-							   ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT")) .. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.DI_STEP,
+							   ("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 
 		-- Up/down
 		line.movedown:SetFrameLevel(line.click:GetFrameLevel() + 10);
 		line.moveup:SetFrameLevel(line.click:GetFrameLevel() + 10);
-		setTooltipAll(line.moveup, "TOP", 0, 0, loc("CM_MOVE_UP"));
-		setTooltipAll(line.movedown, "TOP", 0, 0, loc("CM_MOVE_DOWN"));
+		setTooltipAll(line.moveup, "TOP", 0, 0, loc.CM_MOVE_UP);
+		setTooltipAll(line.movedown, "TOP", 0, 0, loc.CM_MOVE_DOWN);
 		line.moveup:SetScript("OnClick", onMoveUpClick);
 		line.movedown:SetScript("OnClick", onMoveDownClick);
 	end
 	step.list.decorate = decorateStepLine;
 	TRP3_API.ui.list.handleMouseWheel(step.list, step.list.slider);
 	step.list.slider:SetValue(0);
-	step.list.add:SetText(loc("DI_STEP_ADD"));
+	step.list.add:SetText(loc.DI_STEP_ADD);
 	step.list.add:SetScript("OnClick", function() saveStep(editor.stepID); addStep(); end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -496,36 +496,36 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	editor = toolFrame.cutscene.normal.editor;
 
 	-- Text
-	editor.text.title:SetText(loc("DI_STEP_TEXT"));
-	editor.attributes:SetText(loc("DI_ATTRIBUTE"));
+	editor.text.title:SetText(loc.DI_STEP_TEXT);
+	editor.attributes:SetText(loc.DI_ATTRIBUTE);
 
 	-- Force loot
-	editor.loot.Text:SetText(loc("DI_LOOT"));
-	setTooltipForSameFrame(editor.loot, "RIGHT", 0, 5, loc("DI_LOOT"), loc("DI_LOOT_TT"));
+	editor.loot.Text:SetText(loc.DI_LOOT);
+	setTooltipForSameFrame(editor.loot, "RIGHT", 0, 5, loc.DI_LOOT, loc.DI_LOOT_TT);
 
 	-- Direction
-	editor.direction.section:SetText(loc("DI_DIALOG"));
-	editor.direction.Text:SetText(loc("DI_NAME_DIRECTION"));
-	setTooltipForSameFrame(editor.direction, "RIGHT", 0, 5, loc("DI_NAME_DIRECTION"), loc("DI_NAME_DIRECTION_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+	editor.direction.section:SetText(loc.DI_DIALOG);
+	editor.direction.Text:SetText(loc.DI_NAME_DIRECTION);
+	setTooltipForSameFrame(editor.direction, "RIGHT", 0, 5, loc.DI_NAME_DIRECTION, loc.DI_NAME_DIRECTION_TT .. "\n\n|cffff9900" .. loc.DI_ATTR_TT);
 	TRP3_API.ui.listbox.setupListBox(editor.directionValue, {
-		{loc("DI_NAME_DIRECTION")},
-		{loc("CM_LEFT"), "LEFT"},
-		{loc("CM_RIGHT"), "RIGHT"},
-		{loc("REG_RELATION_NONE"), "NONE"}
+		{loc.DI_NAME_DIRECTION},
+		{loc.CM_LEFT, "LEFT"},
+		{loc.CM_RIGHT, "RIGHT"},
+		{loc.REG_RELATION_NONE, "NONE"}
 	}, nil, nil, 195, true);
 
 	-- Name
-	editor.name.Text:SetText(loc("DI_NAME"));
-	setTooltipForSameFrame(editor.name, "RIGHT", 0, 5, loc("DI_NAME"), loc("DI_NAME_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+	editor.name.Text:SetText(loc.DI_NAME);
+	setTooltipForSameFrame(editor.name, "RIGHT", 0, 5, loc.DI_NAME, loc.DI_NAME_TT .. "\n\n|cffff9900" .. loc.DI_ATTR_TT);
 
 	-- Background
-	editor.background.section:SetText(loc("DI_FRAME"));
-	editor.background.Text:SetText(loc("DI_BKG"));
-	setTooltipForSameFrame(editor.background, "RIGHT", 0, 5, loc("DI_BKG"), loc("DI_BKG_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+	editor.background.section:SetText(loc.DI_FRAME);
+	editor.background.Text:SetText(loc.DI_BKG);
+	setTooltipForSameFrame(editor.background, "RIGHT", 0, 5, loc.DI_BKG, loc.DI_BKG_TT .. "\n\n|cffff9900" .. loc.DI_ATTR_TT);
 
 	-- Image
-	editor.image.Text:SetText(loc("DI_IMAGE"));
-	editor.imageMore:SetText(loc("EDITOR_MORE"));
+	editor.image.Text:SetText(loc.DI_IMAGE);
+	editor.imageMore:SetText(loc.EDITOR_MORE);
 	editor.imageMore:SetScript("OnClick", function()
 		if not editor.imageEditor:IsVisible() then
 			TRP3_API.ui.frame.configureHoverFrame(editor.imageEditor, editor.imageMore, "RIGHT", -10, 0);
@@ -533,46 +533,46 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 			editor.imageEditor:Hide();
 		end
 	end);
-	setTooltipForSameFrame(editor.image, "RIGHT", 0, 5, loc("DI_IMAGE"), loc("DI_IMAGE_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
-	editor.imageEditor.width.title:SetText(loc("EDITOR_WIDTH"));
-	editor.imageEditor.height.title:SetText(loc("EDITOR_HEIGHT"));
-	editor.imageEditor.top.title:SetText(loc("EDITOR_TOP"));
-	editor.imageEditor.bottom.title:SetText(loc("EDITOR_BOTTOM"));
-	editor.imageEditor.left.title:SetText(loc("CM_LEFT"));
-	editor.imageEditor.right.title:SetText(loc("CM_RIGHT"));
+	setTooltipForSameFrame(editor.image, "RIGHT", 0, 5, loc.DI_IMAGE, loc.DI_IMAGE_TT .. "\n\n|cffff9900" .. loc.DI_ATTR_TT);
+	editor.imageEditor.width.title:SetText(loc.EDITOR_WIDTH);
+	editor.imageEditor.height.title:SetText(loc.EDITOR_HEIGHT);
+	editor.imageEditor.top.title:SetText(loc.EDITOR_TOP);
+	editor.imageEditor.bottom.title:SetText(loc.EDITOR_BOTTOM);
+	editor.imageEditor.left.title:SetText(loc.CM_LEFT);
+	editor.imageEditor.right.title:SetText(loc.CM_RIGHT);
 
 	-- Left unit
-	editor.leftUnit.section:SetText(loc("DI_MODELS"));
-	editor.leftUnit.Text:SetText(loc("DI_LEFT_UNIT"));
-	setTooltipForSameFrame(editor.leftUnit, "RIGHT", 0, 5, loc("DI_LEFT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+	editor.leftUnit.section:SetText(loc.DI_MODELS);
+	editor.leftUnit.Text:SetText(loc.DI_LEFT_UNIT);
+	setTooltipForSameFrame(editor.leftUnit, "RIGHT", 0, 5, loc.DI_LEFT_UNIT, loc.DI_UNIT_TT .. "\n\n|cffff9900" .. loc.DI_ATTR_TT);
 
-	editor.getLeftTarget:SetText(loc("DI_GET_ID"));
+	editor.getLeftTarget:SetText(loc.DI_GET_ID);
 	editor.getLeftTarget:SetScript("OnClick", function()
 		if Utils.str.getUnitNPCID("target") then
 			editor.leftUnitValue:SetText(Utils.str.getUnitNPCID("target"));
 		end
 	end);
-	setTooltipForSameFrame(editor.getLeftTarget, "RIGHT", 0, 5, loc("DI_GET_ID"), loc("DI_GET_ID_TT"));
+	setTooltipForSameFrame(editor.getLeftTarget, "RIGHT", 0, 5, loc.DI_GET_ID, loc.DI_GET_ID_TT);
 
 	-- Right unit
-	editor.rightUnit.Text:SetText(loc("DI_RIGHT_UNIT"));
-	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc("DI_RIGHT_UNIT"), loc("DI_UNIT_TT") .. "\n\n|cffff9900" .. loc("DI_ATTR_TT"));
+	editor.rightUnit.Text:SetText(loc.DI_RIGHT_UNIT);
+	setTooltipForSameFrame(editor.rightUnit, "RIGHT", 0, 5, loc.DI_RIGHT_UNIT, loc.DI_UNIT_TT .. "\n\n|cffff9900" .. loc.DI_ATTR_TT);
 
-	editor.getRightTarget:SetText(loc("DI_GET_ID"));
+	editor.getRightTarget:SetText(loc.DI_GET_ID);
 	editor.getRightTarget:SetScript("OnClick", function()
 		if Utils.str.getUnitNPCID("target") then
 			editor.rightUnitValue:SetText(Utils.str.getUnitNPCID("target"));
 		end
 	end);
-	setTooltipForSameFrame(editor.getRightTarget, "RIGHT", 0, 5, loc("DI_GET_ID"), loc("DI_GET_ID_TT"));
+	setTooltipForSameFrame(editor.getRightTarget, "RIGHT", 0, 5, loc.DI_GET_ID, loc.DI_GET_ID_TT);
 
 	-- End point
-	editor.endpoint.Text:SetText(loc("DI_END"));
-	setTooltipForSameFrame(editor.endpoint, "RIGHT", 0, 5, loc("DI_END"), loc("DI_END_TT"));
+	editor.endpoint.Text:SetText(loc.DI_END);
+	setTooltipForSameFrame(editor.endpoint, "RIGHT", 0, 5, loc.DI_END, loc.DI_END_TT);
 
 	-- Choices
-	editor.choices:SetText(loc("DI_CHOICES"));
-	setTooltipForSameFrame(editor.choices, "TOP", 0, 5, loc("DI_CHOICES"), loc("DI_CHOICES_TT"));
+	editor.choices:SetText(loc.DI_CHOICES);
+	setTooltipForSameFrame(editor.choices, "TOP", 0, 5, loc.DI_CHOICES, loc.DI_CHOICES_TT);
 	editor.choices:SetScript("OnClick", function()
 		if not editor.choicesEditor:IsVisible() then
 			TRP3_API.ui.frame.configureHoverFrame(editor.choicesEditor, editor.choices, "TOP", 0, 0);
@@ -580,14 +580,14 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 			editor.choicesEditor:Hide();
 		end
 	end);
-	editor.choicesEditor.title:SetText(loc("DI_CHOICES"));
+	editor.choicesEditor.title:SetText(loc.DI_CHOICES);
 	for i=1, 5 do
 		local line = editor.choicesEditor["line" .. i];
-		line.text.title:SetText(loc("DI_CHOICE") .. " " .. i);
-		setTooltipForSameFrame(line.text.help, "RIGHT", 0, 5, loc("DI_CHOICE") .. " " .. i, loc("DI_CHOICE_TT"));
-		line.step.title:SetText(loc("DI_CHOICE_STEP"));
-		setTooltipForSameFrame(line.step.help, "RIGHT", 0, 5, loc("DI_CHOICE_STEP"), loc("DI_CHOICE_STEP_TT"));
-		setTooltipForSameFrame(line.condition, "RIGHT", 0, 5, loc("WO_CONDITION"), loc("DI_CONDI_TT"));
+		line.text.title:SetText(loc.DI_CHOICE .. " " .. i);
+		setTooltipForSameFrame(line.text.help, "RIGHT", 0, 5, loc.DI_CHOICE .. " " .. i, loc.DI_CHOICE_TT);
+		line.step.title:SetText(loc.DI_CHOICE_STEP);
+		setTooltipForSameFrame(line.step.help, "RIGHT", 0, 5, loc.DI_CHOICE_STEP, loc.DI_CHOICE_STEP_TT);
+		setTooltipForSameFrame(line.condition, "RIGHT", 0, 5, loc.WO_CONDITION, loc.DI_CONDI_TT);
 		line.condition:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		line.condition:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
@@ -618,8 +618,8 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	}
 
 	-- Next
-	editor.next.title:SetText(loc("DI_NEXT"));
-	setTooltipForSameFrame(editor.next.help, "RIGHT", 0, 5, loc("DI_NEXT"), loc("DI_NEXT_TT"));
+	editor.next.title:SetText(loc.DI_NEXT);
+	setTooltipForSameFrame(editor.next.help, "RIGHT", 0, 5, loc.DI_NEXT, loc.DI_NEXT_TT);
 
 	-- tutorial
 	TUTORIAL = {
@@ -648,14 +648,14 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 	-- Workflows links
 	linksStructure = {
 		{
-			text = loc("DI_LINKS_ONSTART"),
-			tt = loc("DI_LINKS_ONSTART_TT"),
+			text = loc.DI_LINKS_ONSTART,
+			tt = loc.DI_LINKS_ONSTART_TT,
 			icon = "Interface\\ICONS\\ability_priest_heavanlyvoice",
 			field = "OS",
 		},
 		{
-			text = loc("DI_LINKS_ONEND"),
-			tt = loc("DI_LINKS_ONEND_TT"),
+			text = loc.DI_LINKS_ONEND,
+			tt = loc.DI_LINKS_ONEND_TT,
 			icon = "Interface\\ICONS\\achievement_BG_captureflag_EOS",
 			field = "OE",
 		}

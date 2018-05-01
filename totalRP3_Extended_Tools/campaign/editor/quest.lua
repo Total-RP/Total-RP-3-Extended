@@ -21,7 +21,7 @@ local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonu
 local tsize = Utils.table.size;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color = Utils.str.color;
@@ -56,7 +56,7 @@ local function decorateObjectiveLine(line, objectiveID)
 	line.Description:SetText(objectiveData.TX or "");
 	line.ID:SetText("");
 	if objectiveData.AA then
-		line.ID:SetText("|cff00ff00" .. loc("QE_OBJ_AUTO"));
+		line.ID:SetText("|cff00ff00" .. loc.QE_OBJ_AUTO);
 	end
 	line.click.objectiveID = objectiveID;
 end
@@ -116,7 +116,7 @@ local function onObjectiveSaved()
 end
 
 local function removeObjective(id)
-	TRP3_API.popup.showConfirmPopup(loc("QE_OBJ_REMOVE"), function()
+	TRP3_API.popup.showConfirmPopup(loc.QE_OBJ_REMOVE, function()
 		if toolFrame.specificDraft.OB[id] then
 			wipe(toolFrame.specificDraft.OB[id]);
 			toolFrame.specificDraft.OB[id] = nil;
@@ -138,9 +138,9 @@ local function decorateQuestStepLine(line, stepID)
 	line.Description:SetText(stepData.BA.TX or "");
 	line.ID:SetText("");
 	if stepData.BA.IN then
-		line.ID:SetText("|cff00ff00" .. loc("QE_AUTO_REVEAL"));
+		line.ID:SetText("|cff00ff00" .. loc.QE_AUTO_REVEAL);
 	elseif stepData.BA.FI then
-		line.ID:SetText("|cff00ff00" .. loc("QE_ST_END"));
+		line.ID:SetText("|cff00ff00" .. loc.QE_ST_END);
 	end
 	line.click.stepID = stepID;
 end
@@ -157,7 +157,7 @@ local function refreshQuestStepList()
 end
 
 local function removeQuestStep(stepID)
-	TRP3_API.popup.showConfirmPopup(loc("QE_STEP_REMOVE"), function()
+	TRP3_API.popup.showConfirmPopup(loc.QE_STEP_REMOVE, function()
 		if toolFrame.specificDraft.ST[stepID] then
 			wipe(toolFrame.specificDraft.ST[stepID]);
 			toolFrame.specificDraft.ST[stepID] = nil;
@@ -171,7 +171,7 @@ local function openQuestStep(stepID)
 end
 
 local function renameQuestStep(stepID)
-	TRP3_API.popup.showTextInputPopup(loc("QE_STEP_CREATE"), function(newID)
+	TRP3_API.popup.showTextInputPopup(loc.QE_STEP_CREATE, function(newID)
 		newID = TRP3_API.extended.checkID(newID);
 		if stepID ~= newID and not toolFrame.specificDraft.ST[newID] then
 			toolFrame.specificDraft.ST[newID] = toolFrame.specificDraft.ST[stepID];
@@ -179,19 +179,19 @@ local function renameQuestStep(stepID)
 			toolFrame.specificDraft.ST[stepID] = nil;
 			refreshQuestStepList();
 		else
-			Utils.message.displayMessage(loc("QE_STEP_EXIST"):format(newID), 4);
+			Utils.message.displayMessage(loc.QE_STEP_EXIST:format(newID), 4);
 		end
 	end, nil, stepID);
 end
 
 local function createQuestStep()
-	TRP3_API.popup.showTextInputPopup(loc("QE_STEP_CREATE"), function(value)
+	TRP3_API.popup.showTextInputPopup(loc.QE_STEP_CREATE, function(value)
 		value = TRP3_API.extended.checkID(value);
 		if not toolFrame.specificDraft.ST[value] then
 			toolFrame.specificDraft.ST[value] = TRP3_API.extended.tools.getQuestStepData(value);
 			refreshQuestStepList();
 		else
-			Utils.message.displayMessage(loc("QE_STEP_EXIST"):format(value), 4);
+			Utils.message.displayMessage(loc.QE_STEP_EXIST:format(value), 4);
 		end
 	end, nil, "step_" .. (Utils.table.size(toolFrame.specificDraft.ST) + 1) .. "_");
 end
@@ -331,12 +331,12 @@ local function createTabBar()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ loc("EDITOR_MAIN"), TABS.MAIN, 150 },
-			{ loc("QE_STEPS"), TABS.STEPS, 150 },
-			{ loc("IN_INNER"), TABS.INNER, 150 },
-			{ loc("WO_WORKFLOW"), TABS.WORKFLOWS, 150 },
-			{ loc("WO_LINKS"), TABS.EXPERT, 150 },
-			{ loc("CA_ACTIONS"), TABS.ACTIONS, 150 },
+			{ loc.EDITOR_MAIN, TABS.MAIN, 150 },
+			{ loc.QE_STEPS, TABS.STEPS, 150 },
+			{ loc.IN_INNER, TABS.INNER, 150 },
+			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
+			{ loc.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.CA_ACTIONS, TABS.ACTIONS, 150 },
 		},
 		onTabChanged
 	);
@@ -359,30 +359,30 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 
 	-- Main
 	main = toolFrame.quest.main;
-	main.title:SetText(loc("TYPE_QUEST"));
+	main.title:SetText(loc.TYPE_QUEST);
 
 	-- Name
-	main.name.title:SetText(loc("QE_NAME"));
-	setTooltipForSameFrame(main.name.help, "RIGHT", 0, 5, loc("QE_NAME"), loc("QE_NAME_TT"));
+	main.name.title:SetText(loc.QE_NAME);
+	setTooltipForSameFrame(main.name.help, "RIGHT", 0, 5, loc.QE_NAME, loc.QE_NAME_TT);
 
 	-- Description
-	main.description.title:SetText(loc("QE_DESCRIPTION"));
-	setTooltipAll(main.description.dummy, "RIGHT", 0, 5, loc("QE_DESCRIPTION"), loc("QE_DESCRIPTION_TT"));
+	main.description.title:SetText(loc.QE_DESCRIPTION);
+	setTooltipAll(main.description.dummy, "RIGHT", 0, 5, loc.QE_DESCRIPTION, loc.QE_DESCRIPTION_TT);
 
 	-- Preview
-	main.preview.Name:SetText(loc("EDITOR_PREVIEW"));
-	main.preview.InfoText:SetText(loc("EDITOR_ICON_SELECT"));
+	main.preview.Name:SetText(loc.EDITOR_PREVIEW);
+	main.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
 	main.preview:SetScript("OnClick", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
 	end);
 
 	-- Auto reveal
-	main.auto.Text:SetText(loc("QE_AUTO_REVEAL"));
-	setTooltipForSameFrame(main.auto, "RIGHT", 0, 5, loc("QE_AUTO_REVEAL"), loc("QE_AUTO_REVEAL_TT"));
+	main.auto.Text:SetText(loc.QE_AUTO_REVEAL);
+	setTooltipForSameFrame(main.auto, "RIGHT", 0, 5, loc.QE_AUTO_REVEAL, loc.QE_AUTO_REVEAL_TT);
 
 	-- Progress
-	main.progress.Text:SetText(loc("QE_PROGRESS"));
-	setTooltipForSameFrame(main.progress, "RIGHT", 0, 5, loc("QE_PROGRESS"), loc("QE_PROGRESS_TT"));
+	main.progress.Text:SetText(loc.QE_PROGRESS);
+	setTooltipForSameFrame(main.progress, "RIGHT", 0, 5, loc.QE_PROGRESS, loc.QE_PROGRESS_TT);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NOTES
@@ -390,7 +390,7 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 
 	-- Notes
 	notes = toolFrame.quest.notes;
-	notes.title:SetText(loc("EDITOR_NOTES"));
+	notes.title:SetText(loc.EDITOR_NOTES);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- OBJECTIVES
@@ -398,8 +398,8 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 
 	-- Objectives
 	objectives = toolFrame.quest.objectives;
-	objectives.title:SetText(loc("QE_OBJ"));
-	objectives.help:SetText(loc("QE_OBJ_TT"));
+	objectives.title:SetText(loc.QE_OBJ);
+	objectives.help:SetText(loc.QE_OBJ_TT);
 
 	-- List
 	objectives.list.widgetTab = {};
@@ -422,42 +422,42 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 			self:GetParent().Highlight:Hide();
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_ACTIONS"),
-			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
-					.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.CA_ACTIONS,
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT)
+					.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 	end
 	objectives.list.decorate = decorateObjectiveLine;
 	TRP3_API.ui.list.handleMouseWheel(objectives.list, objectives.list.slider);
 	objectives.list.slider:SetValue(0);
-	objectives.list.add:SetText(loc("QE_OBJ_ADD"));
+	objectives.list.add:SetText(loc.QE_OBJ_ADD);
 	objectives.list.add:SetScript("OnClick", function() editObjective() end);
-	objectives.list.empty:SetText(loc("QE_OBJ_NO"));
+	objectives.list.empty:SetText(loc.QE_OBJ_NO);
 
 	-- Editor
-	objectives.editor.title:SetText(loc("QE_OBJ_SINGULAR"));
+	objectives.editor.title:SetText(loc.QE_OBJ_SINGULAR);
 	objectives.editor.save:SetScript("OnClick", function(self)
 		onObjectiveSaved();
 	end);
 	objectives:SetScript("OnHide", function() objectives.editor:Hide() end);
-	objectives.editor.id.title:SetText(loc("QE_OBJ_ID"));
-	setTooltipForSameFrame(objectives.editor.id.help, "RIGHT", 0, 5, loc("QE_OBJ_ID"), loc("QE_OBJ_ID_TT"));
-	objectives.editor.text.title:SetText(loc("QE_OBJ_TEXT"));
+	objectives.editor.id.title:SetText(loc.QE_OBJ_ID);
+	setTooltipForSameFrame(objectives.editor.id.help, "RIGHT", 0, 5, loc.QE_OBJ_ID, loc.QE_OBJ_ID_TT);
+	objectives.editor.text.title:SetText(loc.QE_OBJ_TEXT);
 
 	-- Auto add
-	objectives.editor.auto.Text:SetText(loc("QE_OBJ_AUTO"));
-	setTooltipForSameFrame(objectives.editor.auto, "RIGHT", 0, 5, loc("QE_OBJ_AUTO"), loc("QE_OBJ_AUTO_TT"));
+	objectives.editor.auto.Text:SetText(loc.QE_OBJ_AUTO);
+	setTooltipForSameFrame(objectives.editor.auto, "RIGHT", 0, 5, loc.QE_OBJ_AUTO, loc.QE_OBJ_AUTO_TT);
 
 	-- Links
 	linksStructure = {
 		{
-			text = loc("QE_LINKS_ON_START"),
-			tt = loc("QE_LINKS_ON_START_TT"),
+			text = loc.QE_LINKS_ON_START,
+			tt = loc.QE_LINKS_ON_START_TT,
 			icon = "Interface\\ICONS\\achievement_quests_completed_02",
 			field = "OS",
 		},
 		{
-			text = loc("QE_LINKS_ON_OBJECTIVE"),
-			tt = loc("QE_LINKS_ON_OBJECTIVE_TT"),
+			text = loc.QE_LINKS_ON_OBJECTIVE,
+			tt = loc.QE_LINKS_ON_OBJECTIVE_TT,
 			icon = "Interface\\ICONS\\achievement_quests_completed_uldum",
 			field = "OOC",
 		}
@@ -469,8 +469,8 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 
 	-- Steps
 	steps = toolFrame.quest.step;
-	steps.title:SetText(loc("QE_STEP"));
-	steps.help:SetText(loc("QE_STEP_TT"));
+	steps.title:SetText(loc.QE_STEP);
+	steps.help:SetText(loc.QE_STEP_TT);
 
 	-- List
 	steps.list.widgetTab = {};
@@ -497,16 +497,16 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 			self:GetParent().Highlight:Hide();
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc("CA_ACTIONS"),
-			("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CLICK"), loc("CM_EDIT"))
-			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc("CM_CTRL") .. " + " .. loc("CM_CLICK"), loc("CA_QE_ST_ID"))
-			.. ("|cffffff00%s: |cff00ff00%s"):format(loc("CM_R_CLICK"), REMOVE));
+		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.CA_ACTIONS,
+			("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT)
+			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CTRL .. " + " .. loc.CM_CLICK, loc.CA_QE_ST_ID)
+			.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 	end
 	steps.list.decorate = decorateQuestStepLine;
 	TRP3_API.ui.list.handleMouseWheel(steps.list, steps.list.slider);
 	steps.list.slider:SetValue(0);
-	steps.list.add:SetText(loc("QE_STEP_ADD"));
+	steps.list.add:SetText(loc.QE_STEP_ADD);
 	steps.list.add:SetScript("OnClick", function() createQuestStep() end);
-	steps.list.empty:SetText(loc("QE_STEP_NO"));
+	steps.list.empty:SetText(loc.QE_STEP_NO);
 
 end

@@ -23,7 +23,7 @@ local tinsert = tinsert;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor;
 
@@ -35,9 +35,9 @@ local inventorySources, inventorySourcesLocals;
 
 local function item_sheath_init()
 	registerEffectEditor("item_sheath", {
-		title = loc("EFFECT_SHEATH"),
+		title = loc.EFFECT_SHEATH,
 		icon = "garrison_blueweapon",
-		description = loc("EFFECT_SHEATH_TT"),
+		description = loc.EFFECT_SHEATH_TT,
 	});
 end
 
@@ -45,14 +45,14 @@ local function item_bag_durability_init()
 	local editor = TRP3_EffectEditorItemBagDurability;
 
 	registerEffectEditor("item_bag_durability", {
-		title = loc("EFFECT_ITEM_BAG_DURABILITY"),
+		title = loc.EFFECT_ITEM_BAG_DURABILITY,
 		icon = "ability_repair",
-		description = loc("EFFECT_ITEM_BAG_DURABILITY_TT"),
+		description = loc.EFFECT_ITEM_BAG_DURABILITY_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			if args[1] == "HEAL" then
-				scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_ITEM_BAG_DURABILITY_PREVIEW_1"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00") .. "|r");
+				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_ITEM_BAG_DURABILITY_PREVIEW_1:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00") .. "|r");
 			else
-				scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_ITEM_BAG_DURABILITY_PREVIEW_2"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00") .. "|r");
+				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_ITEM_BAG_DURABILITY_PREVIEW_2:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00") .. "|r");
 			end
 		end,
 		getDefaultArgs = function()
@@ -64,14 +64,14 @@ local function item_bag_durability_init()
 
 	-- Method
 	local outputs = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_BAG_DURABILITY_METHOD"), loc("EFFECT_ITEM_BAG_DURABILITY_METHOD_HEAL")), "HEAL", loc("EFFECT_ITEM_BAG_DURABILITY_METHOD_HEAL_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_BAG_DURABILITY_METHOD"), loc("EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE")), "DAMAGE", loc("EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_BAG_DURABILITY_METHOD, loc.EFFECT_ITEM_BAG_DURABILITY_METHOD_HEAL), "HEAL", loc.EFFECT_ITEM_BAG_DURABILITY_METHOD_HEAL_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_BAG_DURABILITY_METHOD, loc.EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE), "DAMAGE", loc.EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE_TT},
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.method, outputs, nil, nil, 250, true);
 
 	-- Amount
-	editor.amount.title:SetText(loc("EFFECT_ITEM_BAG_DURABILITY_VALUE"));
-	setTooltipForSameFrame(editor.amount.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_BAG_DURABILITY_VALUE"), loc("EFFECT_ITEM_BAG_DURABILITY_VALUE_TT"));
+	editor.amount.title:SetText(loc.EFFECT_ITEM_BAG_DURABILITY_VALUE);
+	setTooltipForSameFrame(editor.amount.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_BAG_DURABILITY_VALUE, loc.EFFECT_ITEM_BAG_DURABILITY_VALUE_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -87,9 +87,9 @@ end
 
 local function item_consume_init()
 	registerEffectEditor("item_consume", {
-		title = loc("EFFECT_ITEM_CONSUME"),
+		title = loc.EFFECT_ITEM_CONSUME,
 		icon = "inv_misc_potionseta",
-		description = loc("EFFECT_ITEM_CONSUME_TT"),
+		description = loc.EFFECT_ITEM_CONSUME_TT,
 		context = {TRP3_DB.types.ITEM},
 	});
 end
@@ -98,16 +98,16 @@ local function document_show_init()
 	local editor = TRP3_EffectEditorDocumentShow;
 
 	registerEffectEditor("document_show", {
-		title = loc("EFFECT_DOC_DISPLAY"),
+		title = loc.EFFECT_DOC_DISPLAY,
 		icon = "inv_icon_mission_complete_order",
-		description = loc("EFFECT_DOC_DISPLAY_TT"),
+		description = loc.EFFECT_DOC_DISPLAY_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
 				link = TRP3_API.inventory.getItemLink(class, args[1], true);
 			end
-			scriptStepFrame.description:SetText("|cffffff00" .. loc("EFFECT_DOC_ID") .. ":|r " .. (link or tostring(args[1])));
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_DOC_ID .. ":|r " .. (link or tostring(args[1])));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -123,8 +123,8 @@ local function document_show_init()
 	end);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_DOC_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_DOC_ID"), loc("EFFECT_DOC_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_DOC_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_DOC_ID, loc.EFFECT_DOC_ID_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -140,9 +140,9 @@ local function document_close_init()
 	local editor = TRP3_EffectEditorDocumentShow;
 
 	registerEffectEditor("document_close", {
-		title = loc("EFFECT_DOC_CLOSE"),
+		title = loc.EFFECT_DOC_CLOSE,
 		icon = "trade_archaeology_silverscrollcase",
-		description = loc("EFFECT_DOC_CLOSE_TT"),
+		description = loc.EFFECT_DOC_CLOSE_TT,
 	});
 
 end
@@ -151,16 +151,16 @@ local function item_add_init()
 	local editor = TRP3_EffectEditorItemAdd;
 
 	registerEffectEditor("item_add", {
-		title = loc("EFFECT_ITEM_ADD"),
+		title = loc.EFFECT_ITEM_ADD,
 		icon = "garrison_weaponupgrade",
-		description = loc("EFFECT_ITEM_ADD_TT"),
+		description = loc.EFFECT_ITEM_ADD_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
 				link = TRP3_API.inventory.getItemLink(class);
 			end
-			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_ADD_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_ITEM_ADD_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {"", 1, false, "parent"};
@@ -176,16 +176,16 @@ local function item_add_init()
 	end);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_ITEM_ADD_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_ID"), loc("EFFECT_ITEM_ADD_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_ITEM_ADD_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_ID, loc.EFFECT_ITEM_ADD_ID_TT);
 
 	-- Count
-	editor.count.title:SetText(loc("EFFECT_ITEM_ADD_QT"));
-	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_QT"), loc("EFFECT_ITEM_ADD_QT_TT"));
+	editor.count.title:SetText(loc.EFFECT_ITEM_ADD_QT);
+	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_QT, loc.EFFECT_ITEM_ADD_QT_TT);
 
 	-- Crafted
-	editor.crafted.Text:SetText(loc("EFFECT_ITEM_ADD_CRAFTED"));
-	setTooltipForSameFrame(editor.crafted, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_CRAFTED"), loc("EFFECT_ITEM_ADD_CRAFTED_TT"));
+	editor.crafted.Text:SetText(loc.EFFECT_ITEM_ADD_CRAFTED);
+	setTooltipForSameFrame(editor.crafted, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_CRAFTED, loc.EFFECT_ITEM_ADD_CRAFTED_TT);
 
 	-- Source
 	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 250, true);
@@ -210,16 +210,16 @@ local function item_remove_init()
 	local editor = TRP3_EffectEditorItemRemove;
 
 	registerEffectEditor("item_remove", {
-		title = loc("EFFECT_ITEM_REMOVE"),
+		title = loc.EFFECT_ITEM_REMOVE,
 		icon = "spell_sandexplosion",
-		description = loc("EFFECT_ITEM_REMOVE_TT"),
+		description = loc.EFFECT_ITEM_REMOVE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
 				link = TRP3_API.inventory.getItemLink(class);
 			end
-			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_REMOVE_PREVIEW"):format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_ITEM_REMOVE_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {"", 1, "inventory"};
@@ -235,12 +235,12 @@ local function item_remove_init()
 	end);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_ITEM_ADD_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_ID"), loc("EFFECT_ITEM_REMOVE_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_ITEM_ADD_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_ID, loc.EFFECT_ITEM_REMOVE_ID_TT);
 
 	-- Count
-	editor.count.title:SetText(loc("EFFECT_ITEM_ADD_QT"));
-	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_ADD_QT"), loc("EFFECT_ITEM_REMOVE_QT_TT"));
+	editor.count.title:SetText(loc.EFFECT_ITEM_ADD_QT);
+	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_QT, loc.EFFECT_ITEM_REMOVE_QT_TT);
 
 	-- Source
 	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 250, true);
@@ -263,11 +263,11 @@ local function item_cooldown_init()
 	local editor = TRP3_EffectEditorItemCooldown;
 
 	registerEffectEditor("item_cooldown", {
-		title = loc("EFFECT_ITEM_COOLDOWN"),
+		title = loc.EFFECT_ITEM_COOLDOWN,
 		icon = "ability_mage_timewarp",
-		description = loc("EFFECT_ITEM_COOLDOWN_TT"),
+		description = loc.EFFECT_ITEM_COOLDOWN_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_COOLDOWN_PREVIEW"):format("|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_ITEM_COOLDOWN_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {1};
@@ -277,8 +277,8 @@ local function item_cooldown_init()
 	});
 
 	-- Time
-	editor.time.title:SetText(loc("EFFECT_COOLDOWN_DURATION"));
-	setTooltipForSameFrame(editor.time.help, "RIGHT", 0, 5, loc("EFFECT_COOLDOWN_DURATION"), loc("EFFECT_COOLDOWN_DURATION_TT"));
+	editor.time.title:SetText(loc.EFFECT_COOLDOWN_DURATION);
+	setTooltipForSameFrame(editor.time.help, "RIGHT", 0, 5, loc.EFFECT_COOLDOWN_DURATION, loc.EFFECT_COOLDOWN_DURATION_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -294,11 +294,11 @@ local function item_use_init()
 	local editor = TRP3_OperandEditorItemUse;
 
 	registerEffectEditor("item_use", {
-		title = loc("EFFECT_ITEM_USE"),
+		title = loc.EFFECT_ITEM_USE,
 		icon = "ability_paladin_handoflight",
-		description = loc("EFFECT_ITEM_USE_TT"),
+		description = loc.EFFECT_ITEM_USE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_USE_PREVIEW"):format("|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_ITEM_USE_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {"1"};
@@ -308,8 +308,8 @@ local function item_use_init()
 	});
 
 	-- Time
-	editor.id.title:SetText(loc("EFFECT_USE_SLOT"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_USE_SLOT"), loc("EFFECT_USE_SLOT_TT"));
+	editor.id.title:SetText(loc.EFFECT_USE_SLOT);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_USE_SLOT, loc.EFFECT_USE_SLOT_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -325,8 +325,8 @@ local function item_roll_dice_init()
 	local editor = TRP3_EffectEditorRollDice;
 
 	-- Roll
-	editor.roll.title:SetText(loc("EFFECT_ITEM_DICE_ROLL"));
-	setTooltipForSameFrame(editor.roll.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_DICE_ROLL"), loc("EFFECT_ITEM_DICE_ROLL_TT"));
+	editor.roll.title:SetText(loc.EFFECT_ITEM_DICE_ROLL);
+	setTooltipForSameFrame(editor.roll.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_DICE_ROLL, loc.EFFECT_ITEM_DICE_ROLL_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -338,11 +338,11 @@ local function item_roll_dice_init()
 	end
 
 	registerEffectEditor("item_roll_dice", {
-		title = loc("EFFECT_ITEM_DICE"),
+		title = loc.EFFECT_ITEM_DICE,
 		icon = "inv_misc_dice_02",
-		description = loc("EFFECT_ITEM_DICE_TT"),
+		description = loc.EFFECT_ITEM_DICE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc("EFFECT_ITEM_DICE_PREVIEW"):format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+			scriptStepFrame.description:SetText(loc.EFFECT_ITEM_DICE_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r"));
 		end,
 		getDefaultArgs = function()
 			return {"1d100", ""};
@@ -355,36 +355,36 @@ local function inv_loot_init()
 	local editor = TRP3_EffectEditorLoot;
 
 	registerEffectEditor("item_loot", {
-		title = loc("EFFECT_ITEM_LOOT"),
+		title = loc.EFFECT_ITEM_LOOT,
 		icon = "inv_box_02",
-		description = loc("EFFECT_ITEM_LOOT_TT"),
+		description = loc.EFFECT_ITEM_LOOT_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local isDrop = args[1][4] or false;
 			local itemCount = #(args[1][3] or EMPTY);
 			if isDrop then
-				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_LOOT_PREVIEW_1"):format(itemCount));
+				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_LOOT_PREVIEW_1:format(itemCount));
 			else
-				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_LOOT_PREVIEW_2"):format(itemCount));
+				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_LOOT_PREVIEW_2:format(itemCount));
 			end
 		end,
 		getDefaultArgs = function()
-			return {{loc("LOOT"), "inv_misc_bag_07", {}, false}};
+			return {{loc.LOOT, "inv_misc_bag_07", {}, false}};
 		end,
 		editor = editor;
 	});
 
 	-- Name
-	editor.name.title:SetText(loc("EFFECT_ITEM_LOOT_NAME"));
-	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc("EFFECT_ITEM_LOOT_NAME"), loc("EFFECT_ITEM_LOOT_NAME_TT"));
-	editor.bag.help:SetText(loc("EFFECT_ITEM_LOOT_SLOT"))
+	editor.name.title:SetText(loc.EFFECT_ITEM_LOOT_NAME);
+	setTooltipForSameFrame(editor.name.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_LOOT_NAME, loc.EFFECT_ITEM_LOOT_NAME_TT);
+	editor.bag.help:SetText(loc.EFFECT_ITEM_LOOT_SLOT)
 
 	-- Crafted
-	editor.drop.Text:SetText(loc("EFFECT_ITEM_LOOT_DROP"));
-	setTooltipForSameFrame(editor.drop, "RIGHT", 0, 5, loc("EFFECT_ITEM_LOOT_DROP"), loc("EFFECT_ITEM_LOOT_DROP_TT"));
+	editor.drop.Text:SetText(loc.EFFECT_ITEM_LOOT_DROP);
+	setTooltipForSameFrame(editor.drop, "RIGHT", 0, 5, loc.EFFECT_ITEM_LOOT_DROP, loc.EFFECT_ITEM_LOOT_DROP_TT);
 
 
 	-- Icon
-	setTooltipForSameFrame(editor.icon, "RIGHT", 0, 5, loc("EDITOR_ICON"));
+	setTooltipForSameFrame(editor.icon, "RIGHT", 0, 5, loc.EDITOR_ICON);
 	local iconHandler = function(icon)
 		editor.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
 		editor.bag.Icon:SetTexture("Interface\\ICONS\\" .. icon);
@@ -442,13 +442,13 @@ local function inv_loot_init()
 	end);
 
 	TRP3_API.ui.frame.createRefreshOnFrame(editor.bag, 0.25, function(self)
-		local text = stEtN(strtrim(editor.name:GetText())) or loc("LOOT");
+		local text = stEtN(strtrim(editor.name:GetText())) or loc.LOOT;
 		editor.bag.Title:SetText(text);
 	end);
 
 	function editor.load(scriptData)
 		local data = (scriptData.args or Globals.empty)[1] or Globals.empty;
-		editor.name:SetText(data[1] or loc("LOOT"));
+		editor.name:SetText(data[1] or loc.LOOT);
 		editor.drop:SetChecked(data[4] or false);
 		iconHandler(data[2] or "inv_misc_bag_07");
 		editor.bag.editor:Hide();
@@ -489,19 +489,19 @@ local function run_item_workflow_init()
 
 	-- Source
 	local sources = {
---		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_PARENT")), "p", loc("EFFECT_SOURCE_PARENT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_SLOT")), "ch", loc("EFFECT_SOURCE_SLOT_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_SOURCE"), loc("EFFECT_SOURCE_SLOT_B")), "si", loc("EFFECT_SOURCE_SLOT_B_TT")}
+--		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_PARENT), "p", loc.EFFECT_SOURCE_PARENT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_SLOT), "ch", loc.EFFECT_SOURCE_SLOT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_SLOT_B), "si", loc.EFFECT_SOURCE_SLOT_B_TT}
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_RUN_WORKFLOW_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("EFFECT_RUN_WORKFLOW_ID"), loc("EFFECT_RUN_WORKFLOW_ID_TT"));
+	editor.id.title:SetText(loc.EFFECT_RUN_WORKFLOW_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.EFFECT_RUN_WORKFLOW_ID, loc.EFFECT_RUN_WORKFLOW_ID_TT);
 
 	-- Slot
-	editor.slot.title:SetText(loc("EFFECT_RUN_WORKFLOW_SLOT"));
-	setTooltipForSameFrame(editor.slot.help, "RIGHT", 0, 5, loc("EFFECT_RUN_WORKFLOW_SLOT"), loc("EFFECT_RUN_WORKFLOW_SLOT_TT"));
+	editor.slot.title:SetText(loc.EFFECT_RUN_WORKFLOW_SLOT);
+	setTooltipForSameFrame(editor.slot.help, "RIGHT", 0, 5, loc.EFFECT_RUN_WORKFLOW_SLOT, loc.EFFECT_RUN_WORKFLOW_SLOT_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -517,17 +517,17 @@ local function run_item_workflow_init()
 	end
 
 	registerEffectEditor("run_item_workflow", {
-		title = loc("EFFECT_ITEM_WORKFLOW"),
+		title = loc.EFFECT_ITEM_WORKFLOW,
 		icon = "inv_gizmo_electrifiedether",
-		description = loc("EFFECT_ITEM_WORKFLOW_TT"),
+		description = loc.EFFECT_ITEM_WORKFLOW_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local source = args[1];
 			local id = tostring(args[2]);
 			local slot = tostring(args[3]);
 			if source == "ch" then
-				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_WORKFLOW_PREVIEW_C"):format("|cff00ff00".. id .."|r", "|cff00ff00".. slot .."|r"));
+				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_WORKFLOW_PREVIEW_C:format("|cff00ff00".. id .."|r", "|cff00ff00".. slot .."|r"));
 			else
-				scriptStepFrame.description:SetText(loc("EFFECT_ITEM_WORKFLOW_PREVIEW_S"):format("|cff00ff00".. id .."|r", "|cff00ff00".. slot .."|r"));
+				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_WORKFLOW_PREVIEW_S:format("|cff00ff00".. id .."|r", "|cff00ff00".. slot .."|r"));
 			end
 		end,
 		getDefaultArgs = function()
@@ -554,8 +554,8 @@ local function initItemSelectionEditor(editor)
 	end);
 
 	-- Text
-	editor.id.title:SetText(loc("ITEM_ID"));
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc("ITEM_ID"), loc("EFFECT_ITEM_SOURCE_ID"));
+	editor.id.title:SetText(loc.ITEM_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.ITEM_ID, loc.EFFECT_ITEM_SOURCE_ID);
 
 end
 
@@ -564,19 +564,19 @@ local function inv_item_count_init()
 	initItemSelectionEditor(editor);
 
 	registerOperandEditor("inv_item_count", {
-		title = loc("OP_OP_INV_COUNT"),
-		description = loc("OP_OP_INV_COUNT_TT"),
+		title = loc.OP_OP_INV_COUNT,
+		description = loc.OP_OP_INV_COUNT_TT,
 		returnType = 0,
 		getText = function(args)
 			local data = args or EMPTY;
 			local id = data[1] or "";
 			if id:len() == 0 then
-				id = "|cff00ff00" .. loc("OP_OP_INV_COUNT_ANY");
+				id = "|cff00ff00" .. loc.OP_OP_INV_COUNT_ANY;
 			else
 				id = TRP3_API.inventory.getItemLink(getClass(id));
 			end
 			local source = data[2] or "inventory";
-			return loc("OP_OP_INV_COUNT_PREVIEW"):format(id .. "|cffffff00", inventorySourcesLocals[source] or "?");
+			return loc.OP_OP_INV_COUNT_PREVIEW:format(id .. "|cffffff00", inventorySourcesLocals[source] or "?");
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -602,13 +602,13 @@ local function inv_item_weight_init()
 	local editor = TRP3_OperandEditorItemWeight;
 
 	registerOperandEditor("inv_item_weight", {
-		title = loc("OP_OP_INV_WEIGHT"),
-		description = loc("OP_OP_INV_WEIGHT_TT"),
+		title = loc.OP_OP_INV_WEIGHT,
+		description = loc.OP_OP_INV_WEIGHT_TT,
 		returnType = 0,
 		getText = function(args)
 			local data = args or EMPTY;
 			local source = data[1] or "inventory";
-			return loc("OP_OP_INV_WEIGHT_PREVIEW"):format(inventorySourcesLocals[source] or "?");
+			return loc.OP_OP_INV_WEIGHT_PREVIEW:format(inventorySourcesLocals[source] or "?");
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -632,14 +632,14 @@ end
 function TRP3_API.extended.tools.initItemEffects()
 
 	inventorySources = {
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_1")), "inventory", loc("EFFECT_ITEM_SOURCE_1_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_2")), "parent", loc("EFFECT_ITEM_SOURCE_2_TT")},
-		{TRP3_API.formats.dropDownElements:format(loc("EFFECT_ITEM_SOURCE"), loc("EFFECT_ITEM_SOURCE_3")), "self", loc("EFFECT_ITEM_SOURCE_3_TT")},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_1_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_2_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_3_TT},
 	}
 	inventorySourcesLocals = {
-		inventory = loc("EFFECT_ITEM_SOURCE_1"),
-		parent = loc("EFFECT_ITEM_SOURCE_2"),
-		self = loc("EFFECT_ITEM_SOURCE_3"),
+		inventory = loc.EFFECT_ITEM_SOURCE_1,
+		parent = loc.EFFECT_ITEM_SOURCE_2,
+		self = loc.EFFECT_ITEM_SOURCE_3,
 	}
 
 	-- Effects

@@ -22,7 +22,7 @@ local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, st
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor;
@@ -35,16 +35,16 @@ local function dialog_start_init()
 	local editor = TRP3_EffectEditorDialogSelection;
 
 	registerEffectEditor("dialog_start", {
-		title = loc("EFFECT_DIALOG_START"),
+		title = loc.EFFECT_DIALOG_START,
 		icon = "warrior_disruptingshout",
-		description = loc("EFFECT_DIALOG_START_TT"),
+		description = loc.EFFECT_DIALOG_START_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local class = getClass(tostring(args[1]));
 			local link;
 			if class ~= TRP3_DB.missing then
 				link = TRP3_API.inventory.getItemLink(class, args[1]);
 			end
-			scriptStepFrame.description:SetText(loc("EFFECT_DIALOG_START_PREVIEW"):format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
+			scriptStepFrame.description:SetText(loc.EFFECT_DIALOG_START_PREVIEW:format("|cff00ff00" .. (link or tostring(args[1])) .. "|cffffff00"));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -60,7 +60,7 @@ local function dialog_start_init()
 	end);
 
 	-- ID
-	editor.id.title:SetText(loc("EFFECT_DIALOG_ID"));
+	editor.id.title:SetText(loc.EFFECT_DIALOG_ID);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -77,14 +77,14 @@ local function dialog_quick_init()
 	local editor = TRP3_EffectEditorDialogSimple;
 
 	registerEffectEditor("dialog_quick", {
-		title = loc("EFFECT_DIALOG_QUICK"),
+		title = loc.EFFECT_DIALOG_QUICK,
 		icon = "inv_inscription_scrollofwisdom_01",
-		description = loc("EFFECT_DIALOG_QUICK_TT"),
+		description = loc.EFFECT_DIALOG_QUICK_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" ..loc("EFFECT_TEXT_PREVIEW") .. ":|r " .. tostring(args[1]));
+			scriptStepFrame.description:SetText("|cffffff00" ..loc.EFFECT_TEXT_PREVIEW .. ":|r " .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
-			return {loc("EFFECT_TEXT_TEXT_DEFAULT")};
+			return {loc.EFFECT_TEXT_TEXT_DEFAULT};
 		end,
 		editor = editor,
 	});

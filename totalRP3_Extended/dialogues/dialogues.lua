@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, wipe, tostring, tinsert, strsplit, pairs, type, tonumber = _G, wipe, tostring, tinsert, strsplit, pairs, type, tonumber;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass = TRP3_API.extended.getClass;
@@ -225,11 +225,11 @@ local function playDialogStep()
 	dialogFrame.Chat.Text:SetText(text);
 	dialogFrame.Chat.start = 0; -- Automatically starts the fade-in animation for text
 
-	dialogFrame.Chat.Next:SetText(loc("DI_NEXT"));
+	dialogFrame.Chat.Next:SetText("");
 	dialogFrame.Chat.NextButton:Enable();
 	if not dialogFrame.isPreview and dialogFrame.LO then
 		dialogFrame.Chat.NextButton:Disable();
-		dialogFrame.Chat.Next:SetText(loc("DI_WAIT_LOOT"));
+		dialogFrame.Chat.Next:SetText(loc.DI_WAIT_LOOT);
 	end
 
 	-- What to do next
@@ -243,6 +243,7 @@ local function playDialogStep()
 		-- If there is a choice to make
 		if dialogStepClass.CH then
 			setupChoices(dialogStepClass.CH);
+			dialogFrame.Chat.Next:SetText(loc.DI_CHOICE_TEXT);
 			dialogFrame.Chat.NextButton:Disable();
 		else
 			if dialogStepClass.EP then
@@ -543,11 +544,11 @@ function TRP3_API.extended.dialog.onStart()
 	local function showHistory()
 		historyFrame:Show();
 	end
-	setTooltipAll(dialogFrame.Chat.HistoryButton, "RIGHT", 0, 5, loc("DI_HISTORY"), loc("DI_HISTORY_TT"));
+	setTooltipAll(dialogFrame.Chat.HistoryButton, "RIGHT", 0, 5, loc.DI_HISTORY, loc.DI_HISTORY_TT);
 	dialogFrame.Chat.HistoryButton:SetScript("OnClick", function()
 		showHistory();
 	end);
-	historyFrame.title:SetText(loc("DI_HISTORY"));
+	historyFrame.title:SetText(loc.DI_HISTORY);
 	historyFrame.Close:SetScript("OnClick", function()
 		historyFrame:Hide();
 	end);

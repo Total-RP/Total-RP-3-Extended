@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local wipe, tostring, error, assert, date = wipe, tostring, error, assert, date;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -45,7 +45,7 @@ function TRP3_API.extended.tools.getQuestStepData(id)
 	local data = {
 		TY = TRP3_DB.types.QUEST_STEP,
 		BA = {
-			TX = loc("QE_STEP_NAME_NEW"),
+			TX = loc.QE_STEP_NAME_NEW,
 		},
 		MD = {
 			MO = TRP3_DB.modes.NORMAL,
@@ -58,9 +58,9 @@ function TRP3_API.extended.tools.getQuestData()
 	local data = {
 		TY = TRP3_DB.types.QUEST,
 		BA = {
-			NA = loc("QE_NAME_NEW"),
+			NA = loc.QE_NAME_NEW,
 			IC = "achievement_quests_completed_07",
-			DE = loc("QE_DESCRIPTION_TT"),
+			DE = loc.QE_DESCRIPTION_TT,
 			PR = true,
 		},
 		ST = {
@@ -87,9 +87,9 @@ function TRP3_API.extended.tools.getCampaignData(campaignID)
 			SB = Globals.player_id,
 		},
 		BA = {
-			NA = loc("CA_NAME_NEW"),
+			NA = loc.CA_NAME_NEW,
 			RA = "1 - 100",
-			DE = loc("CA_DESCRIPTION_TT"),
+			DE = loc.CA_DESCRIPTION_TT,
 			IC = "achievement_quests_completed_06"
 		},
 		QE = {

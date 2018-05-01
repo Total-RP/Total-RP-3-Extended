@@ -20,7 +20,7 @@
 -- Fixed the "Summon Mount" effect (Paul Corlay)
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC speech
@@ -42,11 +42,11 @@ local SPEECH_CHANNEL = {
 
 local function getSpeechPrefixText(speechPrefix, npcName, text)
 	if speechPrefix == SPEECH_PREFIX.SAYS then
-		return ("%s %s: %s"):format(npcName, loc("NPC_SAYS"), text);
+		return ("%s %s: %s"):format(npcName, loc.NPC_SAYS, text);
 	elseif speechPrefix == SPEECH_PREFIX.YELLS then
-		return ("%s %s: %s"):format(npcName, loc("NPC_YELLS"), text);
+		return ("%s %s: %s"):format(npcName, loc.NPC_YELLS, text);
 	elseif speechPrefix == SPEECH_PREFIX.WHISPERS then
-		return ("%s %s: %s"):format(npcName, loc("NPC_WHISPERS"), text);
+		return ("%s %s: %s"):format(npcName, loc.NPC_WHISPERS, text);
 	elseif speechPrefix == SPEECH_PREFIX.EMOTES then
 		return ("%s %s"):format(npcName, text);
 	end
@@ -80,7 +80,7 @@ local EFFECTS = {
 
 	["MISSING"] = {
 		method = function(structure, args, eArgs)
-			TRP3_API.utils.message.displayMessage("|cffff0000" .. loc("SCRIPT_UNKNOWN_EFFECT"), 1);
+			TRP3_API.utils.message.displayMessage("|cffff0000" .. loc.SCRIPT_UNKNOWN_EFFECT, 1);
 			eArgs.LAST = 0;
 		end,
 		secured = security.HIGH,

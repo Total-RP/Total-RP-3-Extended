@@ -19,7 +19,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local Comm = TRP3_API.communication;
 local tinsert, tostring, _G, wipe, pairs, time, tonumber = tinsert, tostring, _G, wipe, pairs, time, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local CreateFrame = CreateFrame;
 
@@ -41,7 +41,7 @@ local function receiveResponse(response, sender)
 	if sender == inspectionFrame.current then
 		-- Weight and value
 		local weight = TRP3_API.extended.formatWeight(response.totalWeight or 0) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
-		local formatedValue = ("%s: %s"):format(loc("INV_PAGE_TOTAL_VALUE"), GetCoinTextureString(response.totalValue or 0));
+		local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, GetCoinTextureString(response.totalValue or 0));
 		inspectionFrame.Main.Model.WeightText:SetText(weight);
 		inspectionFrame.Main.Model.ValueText:SetText(formatedValue);
 		inspectionFrame.Main.Model.WeightText:Show();
@@ -101,7 +101,7 @@ local function sendRequest()
 	local reservedMessageID = Comm.getMessageIDAndIncrement();
 	local data = {reservedMessageID};
 	inspectionFrame.time = time();
-	inspectionFrame.Main.Model.Loading:SetText("... " .. loc("INV_PAGE_WAIT") .. " ...");
+	inspectionFrame.Main.Model.Loading:SetText("... " .. loc.INV_PAGE_WAIT .. " ...");
 	Comm.addMessageIDHandler(inspectionFrame.current, reservedMessageID, function(_, total, current)
 		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(current / total * 100));
 		if current == total then
@@ -153,7 +153,7 @@ end
 
 function inspectionFrame.init()
 
-	loadingTemplate = loc("INV_PAGE_CHARACTER_INSPECTION") .. ": %0.2f %%";
+	loadingTemplate = loc.INV_PAGE_CHARACTER_INSPECTION .. ": %0.2f %%";
 
 	-- Slots
 	Model_OnLoad(inspectionFrame.Main.Model, nil, nil, 0);
@@ -195,7 +195,7 @@ function inspectionFrame.init()
 			TRP3_API.target.registerButton({
 				id = "aa_player_e_inspect",
 				onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-				configText = loc("INV_PAGE_CHARACTER_INSPECTION"),
+				configText = loc.INV_PAGE_CHARACTER_INSPECTION,
 				condition = function(_, unitID)
 					if UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) then
 						if TRP3_API.register.isUnitKnown("target") then
@@ -208,8 +208,8 @@ function inspectionFrame.init()
 				onClick = function(_, _, buttonType, _)
 					onToolbarButtonClicked();
 				end,
-				tooltip = loc("INV_PAGE_CHARACTER_INSPECTION"),
-				tooltipSub = loc("INV_PAGE_CHARACTER_INSPECTION_TT"),
+				tooltip = loc.INV_PAGE_CHARACTER_INSPECTION,
+				tooltipSub = loc.INV_PAGE_CHARACTER_INSPECTION_TT,
 				icon = "inv_helmet_66"
 			});
 		end

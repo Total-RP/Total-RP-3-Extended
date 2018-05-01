@@ -22,7 +22,7 @@ local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getCla
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
 local getItemLink = TRP3_API.inventory.getItemLink;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local classExists = TRP3_API.extended.classExists;
 local getQualityColorRGB = TRP3_API.inventory.getQualityColorRGB;
@@ -81,16 +81,16 @@ local function reloadDownloads()
 			local rootClassVersion = yourData[tostring(index)].vn;
 			if currentDownloads[rootClassId] then
 				local percent = currentDownloads[rootClassId] * 100;
-				slot.details:SetFormattedText(loc("IT_EX_DOWNLOADING"), percent);
+				slot.details:SetFormattedText(loc.IT_EX_DOWNLOADING, percent);
 			elseif classExists(rootClassId) and getClass(rootClassId).MD.V >= rootClassVersion then
 				local class = getItemClass(rootClassId);
 				if class.securityLevel ~= SECURITY_LEVEL.HIGH then
 					-- If at least one effectgroup is blocked, only then we bother the user
 					if TRP3_API.security.atLeastOneBlocked(rootClassId) then
-						local secLevelText = ("|cffffffff%s: %s"):format(loc("SEC_LEVEL"), TRP3_API.security.getSecurityText(class.securityLevel));
-						slot.details:SetText("|cffff0000" .. loc("SEC_EFFECT_BLOCKED"));
+						local secLevelText = ("|cffffffff%s: %s"):format(loc.SEC_LEVEL, TRP3_API.security.getSecurityText(class.securityLevel));
+						slot.details:SetText("|cffff0000" .. loc.SEC_EFFECT_BLOCKED);
 						slot.security:Show();
-						setTooltipForSameFrame(slot.security, "TOP", 0, 5, loc("SEC_EFFECT_BLOCKED"), loc("SEC_EFFECT_BLOCKED_TT"));
+						setTooltipForSameFrame(slot.security, "TOP", 0, 5, loc.SEC_EFFECT_BLOCKED, loc.SEC_EFFECT_BLOCKED_TT);
 						slot.security:SetScript("OnClick", function()
 							TRP3_API.security.showSecurityDetailFrame(rootClassId, exchangeFrame);
 						end);
@@ -194,7 +194,7 @@ local function drawUI()
 				local class = getItemClass(slotData.c.id);
 				if not classExists(rootClassId) or getClass(rootClassId).MD.V < rootClassVersion then
 					atLeastOneBad = true;
-					class.BA.DE = loc("IT_EX_SLOT_DOWNLOAD"):format(exchangeFrame.targetID);
+					class.BA.DE = loc.IT_EX_SLOT_DOWNLOAD:format(exchangeFrame.targetID);
 					if slotData.si >= MAX_MESSAGES_SIZE and not currentDownloads[rootClassId] then
 						slot.download:Show();
 						slot.download:SetScript("OnClick", function()
@@ -202,7 +202,7 @@ local function drawUI()
 							drawUI();
 						end);
 						setTooltipForSameFrame(slot.download, "TOP", 0, 5,
-							loc("IT_EX_DOWNLOAD"), loc("IT_EX_DOWNLOAD_TT"):format(slotData.si, estimateSendingTime(slotData.si), exchangeFrame.targetID));
+							loc.IT_EX_DOWNLOAD, loc.IT_EX_DOWNLOAD_TT:format(slotData.si, estimateSendingTime(slotData.si), exchangeFrame.targetID));
 					end
 				end
 				local value, weight = decorateSlot(slot, slotData, count, class);
@@ -283,7 +283,7 @@ local function addToExchange(container, slotID)
 	-- Can't exchange an non-empty bag for now
 	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slotInfo.content or EMPTY) > 0 then
 		if not itemClass.CO.OI then
-			Utils.message.displayMessage(loc("IT_CON_ERROR_TRADE"), Utils.message.type.ALERT_MESSAGE);
+			Utils.message.displayMessage(loc.IT_CON_ERROR_TRADE, Utils.message.type.ALERT_MESSAGE);
 			return;
 		end
 	end
@@ -576,11 +576,11 @@ function exchangeFrame.init()
 		slot:SetScript("OnEnter", function(self)
 			TRP3_API.inventory.showItemTooltip(self, self.slotInfo, self.itemClass);
 		end);
-		slot.download:SetText(loc("IT_EX_DOWNLOAD"));
+		slot.download:SetText(loc.IT_EX_DOWNLOAD);
 	end
 
-	exchangeFrame.left.empty:SetText(loc("IT_EX_EMPTY_DRAG"));
-	exchangeFrame.right.empty:SetText(loc("IT_EX_EMPTY"));
+	exchangeFrame.left.empty:SetText(loc.IT_EX_EMPTY_DRAG);
+	exchangeFrame.right.empty:SetText(loc.IT_EX_EMPTY);
 	exchangeFrame.title:SetText(TRADE);
 
 	exchangeFrame.cancel:SetText(CANCEL);

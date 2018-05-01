@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local wipe, tostring, error, assert, date = wipe, tostring, error, assert, date;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -30,7 +30,7 @@ function TRP3_API.extended.tools.getDocumentItemData(id)
 	data.BA.IC = "inv_misc_book_16";
 	data.BA.US = true;
 	data.US = {
-		AC = loc("IT_DOC_ACTION"),
+		AC = loc.IT_DOC_ACTION,
 		SC = "onUse"
 	};
 	data.SC = {
@@ -51,7 +51,7 @@ function TRP3_API.extended.tools.getDocumentItemData(id)
 				MO = TRP3_DB.modes.NORMAL,
 			},
 			BA = {
-				NA = loc("DO_NEW_DOC"),
+				NA = loc.DO_NEW_DOC,
 			},
 			BT = true,
 		}
