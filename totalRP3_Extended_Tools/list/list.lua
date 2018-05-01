@@ -17,6 +17,8 @@
 ----------------------------------------------------------------------------------
 
 -- Fixed inner item display bug (issue #82) (Paul Corlay)
+---@type Ellyb;
+local Ellyb = Ellyb("totalRP3");
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, strsplit, tinsert, table, strtrim = wipe, pairs, strsplit, tinsert, table, strtrim;
@@ -129,9 +131,11 @@ local function onLineClick(self, button)
 			onLineActionSelected("1" .. data.fullID);
 		end
 	else
+		-- If the shift key is down we want to insert a link for this item
 		if IsShiftKeyDown() then
-			-- If the shift key is down we want to insert a link for this item
-			ItemsChatLinkModule:InsertLink(data.fullID, data.rootID)
+			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_CREATION, function(canBeImported)
+				ItemsChatLinkModule:InsertLink(data.fullID, data.rootID, canBeImported);
+			end);
 		else
 			if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
 				TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID, nil, not TRP3_DB.my[data.rootID]);
@@ -145,7 +149,7 @@ end
 local color = "|cffffff00";
 local fieldFormat = "%s: " .. color .. "%s|r";
 
-local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID)
+local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	local metadata = rootClass.MD or EMPTY;
 	local text = "";
 
@@ -160,8 +164,11 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID)
 	end
 
 	text = text .. "\n" .. fieldFormat:format(loc.SPECIFIC_MODE, TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
-	text = text .. "\n\n|cffffff00" .. loc.CM_CLICK .. ": |cffff9900" .. loc.CM_OPEN;
-	text = text .. "\n|cffffff00" .. loc.CM_R_CLICK .. ": |cffff9900" .. loc.DB_ACTIONS;
+	text = text .. "\n\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.LEFT_CLICK, loc.CM_OPEN);
+	text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.DB_ACTIONS);
+	if TRP3_API.extended.ItemsChatLinkModule:IsSupportedCreationType(type) then
+		text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),  loc.CL_TOOLTIP);
+	end
 	return text;
 end
 
@@ -226,7 +233,7 @@ function refresh()
 			isOpen = isOpen,
 			hasChildren = hasChildren,
 			locale = locale,
-			metadataTooltip = getMetadataTooltipText(parts[1], rootClass, objectID == parts[#parts], parts[#parts]),
+			metadataTooltip = getMetadataTooltipText(parts[1], rootClass, objectID == parts[#parts], parts[#parts], class.TY),
 		}
 
 	end

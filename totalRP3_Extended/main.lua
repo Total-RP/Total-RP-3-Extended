@@ -147,6 +147,8 @@ local function getClassDataSafe(class)
 		end
 		if class.BA.DE then
 			description = class.BA.DE;
+		elseif class.BA.TX then
+			description = class.BA.TX;
 		end
 	end
 	return icon, name, description;

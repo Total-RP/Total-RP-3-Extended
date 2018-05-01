@@ -1550,6 +1550,17 @@ You can easily see each quest current situation and what are the current objecti
 
 You can also see the history of previous steps, in case you forget something.]],
 
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CL_CREATION = "Extended creation",
+	CL_IMPORT_CREATION_DB = "Add to database",
+	CL_UPDATE_CREATION = "Update creation",
+	CL_IMPORT_ITEM_BAG = "Add to bag",
+	CL_TOOLTIP = "Create a chat link",
+
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
@@ -1557,7 +1568,7 @@ Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
 
 -- Register all locales into the localization system
 -- Note the localeContent is filled by the publishing script using CurseForge's localization tool when packaging builds
--- See https://wow.curseforge.com/projects/total-rp-3/localization
+-- See https://wow.curseforge.com/projects/total-rp-3-extended/localization
 local localeContent = {};
 
 --@localization(locale="enUS", format="lua_table", table-name="localeContent")@
