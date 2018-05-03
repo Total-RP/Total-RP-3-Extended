@@ -1,4 +1,8 @@
-# 1.0.9 - 2018-04-29
+# Version 1.0.9.1
+
+- Fixed an issue in Extended that would break NPC speeches in Total RP 3.
+
+# Version 1.0.9
 
 Note: This version requires at least Total RP 3 version 1.3.4.
 
