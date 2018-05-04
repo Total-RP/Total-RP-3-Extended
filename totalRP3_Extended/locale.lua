@@ -1569,7 +1569,7 @@ Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
 -- See https://wow.curseforge.com/projects/total-rp-3/localization
 local localeContent = {};
 
---@localization(locale="enUS", format="lua_table", table-name="localeContent")@
+--@localization(locale="enUS", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("enUS"):AddTexts(localeContent);
 --@localization(locale="deDE", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("deDE"):AddTexts(localeContent);
