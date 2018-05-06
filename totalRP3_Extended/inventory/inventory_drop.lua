@@ -146,7 +146,7 @@ local function initScans()
 			end
 			local line = Utils.str.icon(stash.BA.IC) .. " " .. getItemLink(stash);
 			marker.scanLine = line .. " - |cffff9900" .. total .. "/8";
-			marker.Icon:SetTexCoord(0.250, 0.375, 0.625, 0.750);
+			marker.iconAtlas = "VignetteLoot";
 		end,
 		noAnim = true,
 	});
@@ -190,7 +190,7 @@ local function initScans()
 		scanMarkerDecorator = function(index, entry, marker)
 			local line = Utils.str.icon(entry.BA.IC) .. " " .. getItemLink(entry);
 			marker.scanLine = line .. " - |cffff9900" .. entry.total .. "/8 |cff00ff00- " .. entry.sender;
-			marker.Icon:SetTexCoord(0.250, 0.375, 0.625, 0.750);
+			marker.iconAtlas = "VignetteLoot";
 		end,
 		scanDuration = 2.5;
 	});
