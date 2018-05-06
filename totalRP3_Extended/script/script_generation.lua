@@ -790,6 +790,7 @@ directReplacement = {
 
 function TRP3_API.script.parseArgs(text, args)
 	args = args or EMPTY;
+	text = tostring(text) or "";
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		local default;
 		if capture:find("::") then
