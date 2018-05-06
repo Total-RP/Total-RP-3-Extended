@@ -204,7 +204,8 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text1 and text1:len() > 0 then
-		TRP3_ItemTooltip:AddLine(text1, 1, 0.67, 0,true);		-- corresponds to color("o") = FFAA00 for the description
+		local r, g, b = TRP3_API.Ellyb.ColorManager.ORANGE:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
+		TRP3_ItemTooltip:AddLine(text1, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
@@ -212,7 +213,8 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text1_lower and text1_lower:len() > 0 then
-		TRP3_ItemTooltip:AddLine(text1_lower, 0, 1, 0,true);	-- corresponds to color("g") = 00FF00 for the use text
+		local r, g, b = TRP3_API.Ellyb.ColorManager.GREEN:GetRGB();	-- corresponds to color("g") = 00FF00 for the use text
+		TRP3_ItemTooltip:AddLine(text1_lower, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
