@@ -728,13 +728,13 @@ The function is in the form of:
 	EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT = "SFX is for effect sounds. It uses the sound volume game option.\n\nMultiple different SFX sounds can be played simultaneously.",
 	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE = "Ambience",
 	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT = "Ambience is for ambiant sound. It uses the ambience volume game option\n\nMultiple different ambience sounds can be played simultaneously.\n\n|cffff9900Please do not use this effect to play music as this won't stop the current game music and you would have musics overlaping each other. If you want to play a music use the proper music effect.",
+	EFFECT_SOUND_ID_SELF_ID_TT = "The ID is an internal identifier for sounds in the game.\n\n|cff00ff00You can easily find all ID on websites like wowhead.\n\n|cffff9900Leave empty to stop all sounds played on the selected channel.",
 	EFFECT_SOUND_MUSIC_SELF = "Play music",
 	EFFECT_SOUND_MUSIC_SELF_TT = "Plays a music. Only the player will hear it.\n\nNote that the music will loop until the game plays a music of his own (when entering a zone for example), or until a \"stop music\" effect is played. Also the player can always manually stop the music through the sound history frame.",
 	EFFECT_SOUND_MUSIC_SELF_PREVIEW = "Plays music: %s",
 	EFFECT_SOUND_MUSIC_SELF_PATH = "Music path",
 	EFFECT_SOUND_MUSIC_SELF_PATH_TT = "The music path within the game files.\n\n|cffff9900It must not contains the Sounds\\Music\\ part of the path, nor the .mp3 at the end.",
 	EFFECT_SOUND_MUSIC_STOP = "Stop music",
-	EFFECT_SOUND_MUSIC_STOP_TT = "If you use the \"play music\" effect, the music will loop until the game plays another music (for example: the player enters a new zone), or if the player stop it manually or until you use this effect.\n\n|cffff9900Note that this effect will only stop music played by the addon, and will not stop a music played by the game.",
 	EFFECT_SOUND_ID_LOCAL = "Play local sound",
 	EFFECT_SOUND_ID_LOCAL_TT = "Plays a sound for players around you.",
 	EFFECT_SOUND_ID_LOCAL_PREVIEW = "Plays sound ID %s in channel %s in a %s yards radius.",
@@ -1560,6 +1560,17 @@ You can also see the history of previous steps, in case you forget something.]],
 	CL_UPDATE_CREATION = "Update creation",
 	CL_IMPORT_ITEM_BAG = "Add to bag",
 	CL_TOOLTIP = "Create a chat link",
+	IN_INNER_ENTER_ID_NO_SPACE = "Object IDs can't contain spaces. Remember that this isn't the object's name !",
+	EFFECT_SOUND_ID_SELF_ID_TT = "The ID is an internal identifier for sounds in the game.\n\n|cff00ff00You can easily find all ID on websites like wowhead.\n\n|cffff9900Leave empty to stop all sounds played on the selected channel.",
+	EFFECT_SOUND_ID_STOP = "Stop sound ID",
+	EFFECT_SOUND_ID_STOP_TT = "Stops one or all sounds in a particular channel.",
+	EFFECT_SOUND_ID_STOP_PREVIEW = "Stops sound ID %s in channel %s.",
+	EFFECT_SOUND_ID_STOP_ALL_PREVIEW = "Stops |cff00ff00all|cffffff00 sounds in channel %s.",
+	EFFECT_SOUND_MUSIC_STOP_TT = "If you use the \"play music\" effect, the music will loop until the game plays another music (for example: the player enters a new zone), or if the player stops it manually or until you use this effect.\n\n|cffff9900Note that this effect will only stop music played by the addon, and will not stop a music played by the game.",
+	EFFECT_SOUND_ID_LOCAL_STOP = "Stop local sound",
+	EFFECT_SOUND_ID_LOCAL_STOP_TT = "Stops one or all sounds in a particular channel for players around you.",
+	EFFECT_SOUND_MUSIC_LOCAL_STOP = "Stop local music",
+	EFFECT_SOUND_MUSIC_LOCAL_STOP_TT = "If you use the \"play local music\" effect, the music will loop for all players around until the game plays another music (for example: the player enters a new zone), or if each player stops it manually or until you use this effect.\n\n|cffff9900Note that this effect will only stop music played by the addon, and will not stop a music played by the game.",
 
 }
 
@@ -1571,7 +1582,7 @@ Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
 -- See https://wow.curseforge.com/projects/total-rp-3-extended/localization
 local localeContent = {};
 
---@localization(locale="enUS", format="lua_table", table-name="localeContent")@
+--@localization(locale="enUS", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("enUS"):AddTexts(localeContent);
 --@localization(locale="deDE", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 Localization:GetLocale("deDE"):AddTexts(localeContent);

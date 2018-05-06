@@ -675,7 +675,55 @@ local function sound_id_self_init()
 
 	function SoundIDSelfEditor.save(scriptData)
 		scriptData.args[1] = SoundIDSelfEditor.channel:GetSelectedValue() or "SFX";
-		scriptData.args[2] = tonumber(strtrim(SoundIDSelfEditor.id:GetText()));
+		scriptData.args[2] = tonumber(strtrim(SoundIDSelfEditor.id:GetText())) or 0;
+	end
+end
+
+local function sound_id_stop_init()
+	local SoundIDStopEditor = TRP3_EffectEditorSoundIDStop;
+
+	registerEffectEditor("sound_id_stop", {
+		title = loc.EFFECT_SOUND_ID_STOP,
+		icon = "inv_misc_ear_nightelf_02",
+		description = loc.EFFECT_SOUND_ID_STOP_TT,
+		effectFrameDecorator = function(scriptStepFrame, args)
+			if args[2] then
+				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+			else
+				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_ALL_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+			end
+		end,
+		getDefaultArgs = function()
+			return {"SFX", nil};
+		end,
+		editor = SoundIDStopEditor,
+	});
+
+	-- Channel
+	local outputs = {
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX), "SFX"},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE), "Ambience"},
+	}
+	TRP3_API.ui.listbox.setupListBox(SoundIDStopEditor.channel, outputs, nil, nil, 250, true);
+
+	-- ID
+	SoundIDStopEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
+	setTooltipForSameFrame(SoundIDStopEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_ID, loc.EFFECT_SOUND_ID_STOP_ID_TT);
+
+	SoundIDStopEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
+	SoundIDStopEditor.play:SetScript("OnClick", function(self)
+		Utils.music.playSoundID(tonumber(strtrim(SoundIDStopEditor.id:GetText())), SoundIDStopEditor.channel:GetSelectedValue() or "SFX");
+	end);
+
+	function SoundIDStopEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		SoundIDStopEditor.channel:SetSelectedValue(data[1] or "SFX");
+		SoundIDStopEditor.id:SetText(data[2] or "");
+	end
+
+	function SoundIDStopEditor.save(scriptData)
+		scriptData.args[1] = SoundIDStopEditor.channel:GetSelectedValue() or "SFX";
+		scriptData.args[2] = tonumber(strtrim(SoundIDStopEditor.id:GetText()));
 	end
 end
 
@@ -738,7 +786,7 @@ local function sound_id_local_init()
 		description = loc.EFFECT_SOUND_ID_LOCAL_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_LOCAL_PREVIEW:format(
-			"|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[3]) .. "|r"
+			"|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[3]) .. "|cffffff00"
 			));
 		end,
 		getDefaultArgs = function()
@@ -777,6 +825,57 @@ local function sound_id_local_init()
 		scriptData.args[1] = soundLocalEditor.channel:GetSelectedValue() or "SFX";
 		scriptData.args[2] = tonumber(strtrim(soundLocalEditor.id:GetText()));
 		scriptData.args[3] = tonumber(strtrim(soundLocalEditor.distance:GetText()));
+	end
+end
+
+local function sound_id_local_stop_init()
+	local SoundIDLocalStopEditor = TRP3_EffectEditorSoundIDLocalStop;
+
+	registerEffectEditor("sound_id_local_stop", {
+		title = loc.EFFECT_SOUND_ID_LOCAL_STOP,
+		icon = "spell_shadow_coneofsilence",
+		description = loc.EFFECT_SOUND_ID_LOCAL_STOP_TT,
+		effectFrameDecorator = function(scriptStepFrame, args)
+			if args[2] then
+				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+			else
+				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_ALL_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+			end
+		end,
+		getDefaultArgs = function()
+			return {"SFX", nil};
+		end,
+		editor = SoundIDLocalStopEditor,
+	});
+
+	-- Channel
+	local outputs = {
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX), "SFX"},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE), "Ambience"},
+	}
+	TRP3_API.ui.listbox.setupListBox(SoundIDLocalStopEditor.channel, outputs, nil, nil, 250, true);
+
+	-- ID
+	SoundIDLocalStopEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
+	setTooltipForSameFrame(SoundIDLocalStopEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_ID, loc.EFFECT_SOUND_ID_STOP_ID_TT);
+
+	SoundIDLocalStopEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
+	SoundIDLocalStopEditor.play:SetScript("OnClick", function(self)
+		Utils.music.playSoundID(tonumber(strtrim(SoundIDLocalStopEditor.id:GetText())), SoundIDLocalStopEditor.channel:GetSelectedValue() or "SFX");
+	end);
+
+	function SoundIDLocalStopEditor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		SoundIDLocalStopEditor.channel:SetSelectedValue(data[1] or "SFX");
+		SoundIDLocalStopEditor.id:SetText(data[2] or "");
+	end
+
+	function SoundIDLocalStopEditor.save(scriptData)
+		scriptData.args[1] = SoundIDLocalStopEditor.channel:GetSelectedValue() or "SFX";
+		scriptData.args[2] = tonumber(strtrim(SoundIDLocalStopEditor.id:GetText()));
+		if scriptData.args[2] == 0 then
+			scriptData.args[2] = nil;
+		end
 	end
 end
 
@@ -827,6 +926,14 @@ local function sound_music_local_init()
 		scriptData.args[1] = stEtN(strtrim(musicLocalEditor.path:GetText()));
 		scriptData.args[2] = tonumber(strtrim(musicLocalEditor.distance:GetText()));
 	end
+end
+
+local function sound_music_local_stop_init()
+	registerEffectEditor("sound_music_local_stop", {
+		title = loc.EFFECT_SOUND_MUSIC_LOCAL_STOP,
+		icon = "ability_priest_silence",
+		description = loc.EFFECT_SOUND_MUSIC_LOCAL_STOP_TT,
+	});
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -936,10 +1043,13 @@ function TRP3_API.extended.tools.initBaseEffects()
 	speech_player_init();
 
 	sound_id_self_init();
+	sound_id_stop_init();
 	sound_music_self_init();
 	sound_music_stop_init();
 	sound_id_local_init();
+	sound_id_local_stop_init();
 	sound_music_local_init();
+	sound_music_local_stop_init();
 
 	var_set_execenv_init();
 	var_set_operand_init();
