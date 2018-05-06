@@ -15,6 +15,9 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
+
+local Ellyb = TRP3_API.Ellyb;
+
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, assert, tostring, tinsert, wipe, pairs, time = _G, assert, tostring, tinsert, wipe, pairs, time;
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus;
@@ -135,13 +138,15 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		if not forceAlt then
 			if isUsableByClass(class) then
 				text2 = text2 .. "\n";
-				text2 = text2 .. color("y") .. loc.CM_R_CLICK .. ":|cffff9900 " .. USE;
+				text2 = text2 .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, USE);
 			end
 
 			if isContainerByClass(class) then
 				text2 = text2 .. "\n";
-				text2 = text2 .. color("y") .. loc.CM_DOUBLECLICK .. ":|cffff9900 " .. loc.IT_CON_OPEN;
+				text2 = text2 .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.DOUBLE_CLICK, loc.IT_CON_OPEN);
 			end
+			text2 = text2 .. "\n";
+			text2 = text2 .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK), loc.CL_TOOLTIP);
 
 			if class.missing then
 				text2 = text2 .. "\n";
@@ -149,11 +154,12 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 			else
 				if TRP3_DB.exchange[rootClassID] or TRP3_DB.my[rootClassID] then
 					text2 = text2 .. "\n";
-					text2 = text2 .. color("y") .. loc.SEC_TT_COMBO;
+					text2 = text2 .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.ALT, Ellyb.System.CLICKS.RIGHT_CLICK), loc.SEC_TT_COMBO_2);
 				end
 				if TRP3_DB.exchange[rootClassID] and TRP3_API.security.atLeastOneBlocked(rootClassID) then
 					text2 = text2 .. "\n\n";
-					text2 = text2 .. color("o") .. loc.SET_TT_SECURED;
+					text2 = text2 .. loc.SET_TT_SECURED_2;
+					text2 = text2 .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.ALT, Ellyb.System.CLICKS.RIGHT_CLICK), loc.SET_TT_SECURED_2_1);
 				end
 				if not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
 					text2 = text2 .. "\n\n";
@@ -509,6 +515,12 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 		slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 
 		slot:SetScript("OnClick", function(self, button)
+			if IsShiftKeyDown() then
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_DATABASE_ITEM, function(canBeImported)
+					TRP3_API.extended.DatabaseItemsChatLinksModule:InsertLink(self.info.id, TRP3_API.extended.getRootClassID(self.info.id), canBeImported);
+				end);
+				return true;
+			end
 			if not self.loot and self.info and not TRP3_API.inventory.isInTransaction(self.info) then
 				if button == "LeftButton" then
 					if IsShiftKeyDown() and (self.info.count or 1) > 1 then

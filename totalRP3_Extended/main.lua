@@ -99,6 +99,11 @@ local function getClass(...)
 end
 TRP3_API.extended.getClass = getClass;
 
+function TRP3_API.extended.getRootTypeByID(id)
+	local class = getClass(TRP3_API.extended.getRootClassID(id));
+	return class.TY;
+end
+
 local function classExists(...)
 	local id = getFullID(...);
 	local class = DB[id];

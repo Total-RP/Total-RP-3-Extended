@@ -15,6 +15,9 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
+
+local Ellyb = TRP3_API.Ellyb;
+
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
 local CreateFrame = CreateFrame;
@@ -23,8 +26,11 @@ local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
 local getQuestLog = TRP3_API.quest.getQuestLog;
+local IsShiftKeyDown = IsShiftKeyDown;
 
 local TRP3_QuestLogPage = TRP3_QuestLogPage;
+
+-- Total RP 3 modules
 
 local goToPage, refreshCampaignList;
 local TAB_CAMPAIGNS = "campaigns";
@@ -53,14 +59,21 @@ local function onCampaignButtonClick(button, mouseButton)
 	assert(button.campaignID, "No campaign ID in button");
 	local campaignID = button.campaignID;
 	local _, campaignName = getClassDataSafe(getClass(campaignID));
-	if mouseButton == "LeftButton" then
-		goToPage(false, TAB_QUESTS, campaignID, campaignName);
+	if IsShiftKeyDown() then
+		TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_DATABASE_CAMPAIGN, function(canBeImported)
+			TRP3_API.extended.DatabaseCampaignsChatLinksModule:InsertLink(campaignID, campaignID	, canBeImported);
+		end);
 	else
-		local values = {};
-		tinsert(values, {campaignName});
-		tinsert(values, {loc.QE_CAMPAIGN_RESET, 1});
-		tinsert(values, {loc.QE_CAMPAIGN_START_BUTTON, 2});
-		TRP3_API.ui.listbox.displayDropDown(button, values, onCampaignActionSelected, 0, true);
+		onCampaignActionSelected(2, self:GetParent())
+		if mouseButton == "LeftButton" then
+			goToPage(false, TAB_QUESTS, campaignID, campaignName);
+		else
+			local values = {};
+			tinsert(values, {campaignName});
+			tinsert(values, {loc.QE_CAMPAIGN_RESET, 1});
+			tinsert(values, {loc.QE_CAMPAIGN_START_BUTTON, 2});
+			TRP3_API.ui.listbox.displayDropDown(button, values, onCampaignActionSelected, 0, true);
+		end
 	end
 end
 
@@ -129,7 +142,10 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton, "TOPRIGHT", 0, 5, campaignName,
 			createdBy:format(loc.DB_FILTERS_OWNER, author)
 			.. progress:format(loc.QE_PROGRESS, progression)
-			.. ("|r\n\n|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_OPEN) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, loc.CM_ACTIONS)
+			.. ("|r\n")
+			.. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.LEFT_CLICK, loc.CM_OPEN)
+			.. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.CM_ACTIONS)
+			.. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.RIGHT_CLICK), loc.CL_TOOLTIP)
 		);
 	else
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton);

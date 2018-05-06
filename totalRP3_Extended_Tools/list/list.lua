@@ -32,7 +32,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
 local showItemTooltip = TRP3_API.inventory.showItemTooltip;
 local IsAltKeyDown = IsAltKeyDown;
-
+local tContains = tContains;
 local ToolFrame, onLineActionSelected;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
 local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
@@ -44,7 +44,9 @@ local SUPPOSED_SERIAL_SIZE_LIMIT = 500000; -- We suppose the text field can only
 
 -- Total RP 3 imports
 ---@type ChatLinkModule
-local ItemsChatLinkModule = TRP3_API.extended.ItemsChatLinkModule;
+local DatabaseItemsChatLinksModule = TRP3_API.extended.DatabaseItemsChatLinksModule;
+---@type ChatLinkModule
+local DatabaseCampaignsChatLinksModule = TRP3_API.extended.DatabaseCampaignsChatLinksModule;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: util methods
@@ -133,9 +135,15 @@ local function onLineClick(self, button)
 	else
 		-- If the shift key is down we want to insert a link for this item
 		if IsShiftKeyDown() then
-			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_CREATION, function(canBeImported)
-				ItemsChatLinkModule:InsertLink(data.fullID, data.rootID, canBeImported);
-			end);
+			if data.TY == "IT" then
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_DATABASE_ITEM, function(canBeImported)
+					DatabaseItemsChatLinksModule:InsertLink(data.fullID, data.rootID, canBeImported);
+				end);
+			elseif data.TY == "CA" then
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_DATABASE_CAMPAIGN, function(canBeImported)
+					DatabaseCampaignsChatLinksModule:InsertLink(data.fullID, data.rootID, canBeImported);
+				end);
+			end
 		else
 			if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
 				TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID, nil, not TRP3_DB.my[data.rootID]);
@@ -148,6 +156,8 @@ end
 
 local color = "|cffffff00";
 local fieldFormat = "%s: " .. color .. "%s|r";
+
+local SUPPORTED_CREATION_TYPES = { "CA", "QU", "ST", "IT" }
 
 local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	local metadata = rootClass.MD or EMPTY;
@@ -166,7 +176,7 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	text = text .. "\n" .. fieldFormat:format(loc.SPECIFIC_MODE, TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
 	text = text .. "\n\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.LEFT_CLICK, loc.CM_OPEN);
 	text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.DB_ACTIONS);
-	if TRP3_API.extended.ItemsChatLinkModule:IsSupportedCreationType(type) then
+	if tContains(SUPPORTED_CREATION_TYPES, type) then
 		text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),  loc.CL_TOOLTIP);
 	end
 	return text;

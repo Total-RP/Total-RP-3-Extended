@@ -32,20 +32,15 @@ local tContains = tContains;
 -- Total RP 3 imports
 local iconToString = TRP3_API.utils.str.icon;
 local loc = TRP3_API.loc;
+local parseArgs = TRP3_API.script.parseArgs;
 
 local Colors = Ellyb.ColorManager;
 local USED_FOR_PROFESSIONS_COLOR = Ellyb.Color("66BBFF"):Freeze();
 
-local ItemsChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_CREATION, "EXTENDED_DB_ITEM_LINK");
+local DatabaseItemsChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_EXTENDED_DATABASE_ITEM, "EXTENDED_DB_ITEM_LINK");
 
-local SUPPORTED_CREATION_TYPES = { "CA", "QU", "ST", "IT"}
 
-function ItemsChatLinkModule:IsSupportedCreationType(creationType)
-	return tContains(SUPPORTED_CREATION_TYPES, creationType);
-end
-
--- TODO 3rd argument should be the slot info from the bag. The system would handle having no slot info as an item coming from the DB
-function ItemsChatLinkModule:GetLinkData(fullID, rootID, canBeImported)
+function DatabaseItemsChatLinksModule:GetLinkData(fullID, rootID, canBeImported)
 	local itemData = TRP3_API.extended.getClass(fullID);
 	local tooltipData = {
 		class = {}
@@ -60,8 +55,8 @@ function ItemsChatLinkModule:GetLinkData(fullID, rootID, canBeImported)
 	return itemName, tooltipData
 end
 
--- TODO When we get slot info, use those info the parse the variables inside the fields
-function ItemsChatLinkModule:GetTooltipLines(tooltipData)
+
+function DatabaseItemsChatLinksModule:GetTooltipLines(tooltipData)
 	local class = tooltipData.class;
 
 	-- Get a new tooltipLines object that we will fill
@@ -76,15 +71,11 @@ function ItemsChatLinkModule:GetTooltipLines(tooltipData)
 
 	tooltipLines:SetTitle(iconToString(icon) .. " " .. itemQualityColor:WrapTextInColorCode(name));
 
-	local creationType = TRP3_API.extended.tools.getTypeLocale(class.TY);
-
-	tooltipLines:AddDoubleLine(" ", creationType, nil, Colors.YELLOW);
-
 	-- Custom left and right texts
 	if class.BA.LE or class.BA.RI then
 		local left = class.BA.LE or "";
 		local right = class.BA.RI or "";
-		tooltipLines:AddDoubleLine(left, right, Colors.WHITE, Colors.WHITE)
+		tooltipLines:AddDoubleLine(parseArgs(left), parseArgs(right), Colors.WHITE, Colors.WHITE)
 	end
 
 	-- Flagged as quest item
@@ -110,7 +101,7 @@ function ItemsChatLinkModule:GetTooltipLines(tooltipData)
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine(description, Colors.ORANGE)
+		tooltipLines:AddLine(parseArgs(description), Colors.ORANGE)
 	end
 
 	-- On use effect
@@ -126,13 +117,13 @@ function ItemsChatLinkModule:GetTooltipLines(tooltipData)
 	return tooltipLines;
 end
 
-local ImportItemInDatabaseButton = ItemsChatLinkModule:NewActionButton("EXTENDED_IMPORT_DB_ITEM", loc.CL_IMPORT_CREATION_DB, "EXT_DB_I_Q", "EXT_DB_I_A");
+local DatabaseItemsImportButton = DatabaseItemsChatLinksModule:NewActionButton("EXTENDED_IMPORT_DB_ITEM", loc.CL_IMPORT_ITEM, "EXT_DB_I_Q", "EXT_DB_I_A");
 
-function ImportItemInDatabaseButton:IsVisible(data)
+function DatabaseItemsImportButton:IsVisible(data)
 	return data.canBeImported and data.rootID and TRP3_DB.global[data.rootID] == nil;
 end
 
-function ImportItemInDatabaseButton:OnAnswerCommandReceived(data, sender)
+function DatabaseItemsImportButton:OnAnswerCommandReceived(data, sender)
 	local itemID = data.rootID;
 	local fromClass = data.class;
 	local copiedData = {};
@@ -146,13 +137,13 @@ function ImportItemInDatabaseButton:OnAnswerCommandReceived(data, sender)
 	TRP3_API.extended.tools.goToPage(itemID);
 end
 
-local UpdateItemInDatabaseButton = ItemsChatLinkModule:NewActionButton("EXTENDED_UPDATE_DB_ITEM", loc.CL_UPDATE_CREATION, "EXT_DB_U_Q", "EXT_DB_U_A");
+local DatabaseItemsUpdateButton = DatabaseItemsChatLinksModule:NewActionButton("EXTENDED_UPDATE_DB_ITEM", loc.CL_UPDATE_ITEM, "EXT_DB_U_Q", "EXT_DB_U_A");
 
-function UpdateItemInDatabaseButton:IsVisible(data)
+function DatabaseItemsUpdateButton:IsVisible(data)
 	return data.canBeImported and data.rootID and TRP3_DB.global[data.rootID] ~= nil;
 end
 
-function UpdateItemInDatabaseButton:OnAnswerCommandReceived(data, sender)
+function DatabaseItemsUpdateButton:OnAnswerCommandReceived(data, sender)
 	local itemID = data.rootID;
 	local fromClass = data.class;
 	local copiedData = {};
@@ -167,7 +158,7 @@ function UpdateItemInDatabaseButton:OnAnswerCommandReceived(data, sender)
 	TRP3_API.extended.tools.goToPage(itemID);
 end
 
-local ImportItemInInventoryButton = ItemsChatLinkModule:NewActionButton("EXTENDED_IMPORT_BAG_ITEM", loc.CL_IMPORT_ITEM_BAG, "EXT_B_I_Q", "EXT_B_I_A");
+local ImportItemInInventoryButton = DatabaseItemsChatLinksModule:NewActionButton("EXTENDED_IMPORT_BAG_ITEM", loc.CL_IMPORT_ITEM_BAG, "EXT_B_I_Q", "EXT_B_I_A");
 
 function ImportItemInInventoryButton:IsVisible(data)
 	-- Check if item was made to be importable, that it is an item, and that the option to prevent manual adding was not checked
@@ -193,4 +184,4 @@ function ImportItemInInventoryButton:OnAnswerCommandReceived(data, sender)
 	TRP3_API.inventory.addItem(nil, data.fullID, { count = 1, madeBy = item.BA and item.BA.CR });
 end
 
-TRP3_API.extended.ItemsChatLinkModule = ItemsChatLinkModule;
+TRP3_API.extended.DatabaseItemsChatLinksModule = DatabaseItemsChatLinksModule;

@@ -1556,10 +1556,14 @@ You can also see the history of previous steps, in case you forget something.]],
 	------------------------------------------------------------------------------------------------
 
 	CL_CREATION = "Extended creation",
-	CL_IMPORT_CREATION_DB = "Add to database",
-	CL_UPDATE_CREATION = "Update creation",
-	CL_IMPORT_ITEM_BAG = "Add to bag",
+	CL_EXTENDED_DATABASE_ITEM = "Extended database item",
+	CL_EXTENDED_DATABASE_CAMPAIGN = "Extended database campaign",
+	CL_IMPORT_ITEM = "Import item into database",
+	CL_UPDATE_ITEM = "Update database info for item",
+	CL_IMPORT_ITEM_BAG = "Add item to your bag",
 	CL_TOOLTIP = "Create a chat link",
+	CL_IMPORT_ITEM = "Import campaign into database",
+	CL_UPDATE_CAMPAIGN = "Update database info for campaign",
 	IN_INNER_ENTER_ID_NO_SPACE = "Object IDs can't contain spaces. Remember that this isn't the object's name !",
 	EFFECT_SOUND_ID_SELF_ID_TT = "The ID is an internal identifier for sounds in the game.\n\n|cff00ff00You can easily find all ID on websites like wowhead.\n\n|cffff9900Leave empty to stop all sounds played on the selected channel.",
 	EFFECT_SOUND_ID_STOP = "Stop sound ID",
@@ -1571,6 +1575,9 @@ You can also see the history of previous steps, in case you forget something.]],
 	EFFECT_SOUND_ID_LOCAL_STOP_TT = "Stops one or all sounds in a particular channel for players around you.",
 	EFFECT_SOUND_MUSIC_LOCAL_STOP = "Stop local music",
 	EFFECT_SOUND_MUSIC_LOCAL_STOP_TT = "If you use the \"play local music\" effect, the music will loop for all players around until the game plays another music (for example: the player enters a new zone), or if each player stops it manually or until you use this effect.\n\n|cffff9900Note that this effect will only stop music played by the addon, and will not stop a music played by the game.",
+	SEC_TT_COMBO_2 = "Configure security",
+	SET_TT_SECURED_2 = "Some potentially malicious effects have been secured for your safety.",
+	SET_TT_SECURED_2_1 = "See more details.",
 
 }
 
