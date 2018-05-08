@@ -102,7 +102,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 	if class.BA.CO then
 		text1_lower = incrementLine(text1_lower);
-		text1_lower = text1_lower .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
+		text1_lower = text1_lower .. TRP3_API.Ellyb.ColorManager.CRAFTING_REAGENT(PROFESSIONS_USED_IN_COOKING);
 	end
 
 	if class.BA.CR and slotInfo.madeBy then
@@ -188,14 +188,16 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 
 	local i = 1;
 	if title and title:len() > 0 then
-		TRP3_ItemTooltip:AddLine(title, 1, 1, 1,true);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		TRP3_ItemTooltip:AddLine(title, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if (left and left:len() > 0) or (right and right:len() > 0) then
-		TRP3_ItemTooltip:AddDoubleLine(left or "", right or "", 1, 1, 1, 1, 1, 1);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		TRP3_ItemTooltip:AddDoubleLine(left or "", right or "", r, g, b, r, g, b);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		_G["TRP3_ItemTooltipTextRight"..i]:SetFontObject(GameFontNormal);
@@ -222,7 +224,8 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if (extension1 and extension1:len() > 0) or (extension2 and extension2:len() > 0) then
-		TRP3_ItemTooltip:AddDoubleLine(extension1 or "", extension2 or "", 1, 1, 1, 1, 1, 1);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		TRP3_ItemTooltip:AddDoubleLine(extension1 or "", extension2 or "", r, g, b, r, g, b);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		_G["TRP3_ItemTooltipTextRight"..i]:SetFontObject(GameFontNormal);
@@ -231,7 +234,8 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text2 and text2:len() > 0 then
-		TRP3_ItemTooltip:AddLine(text2, 1, 1, 1,true);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		TRP3_ItemTooltip:AddLine(text2, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
