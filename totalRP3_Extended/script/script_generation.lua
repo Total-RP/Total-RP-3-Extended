@@ -965,6 +965,9 @@ function TRP3_API.script.runLuaScriptEffect(code, args, secured)
 
 	env["op"] = operand;
 
+	env["getVar"] = TRP3_API.script.varCheck;
+	env["setVar"] = TRP3_API.script.setVar;
+
 	-- Compile
 	local factory, errorMessage = loadstring(code, "Generated code");
 	if not factory then
