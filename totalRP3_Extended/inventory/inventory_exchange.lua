@@ -30,6 +30,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local SECURITY_LEVEL = TRP3_API.security.SECURITY_LEVEL;
 local exchangeFrame = TRP3_ExchangeFrame;
 local sendCurrentState, sendAcceptExchange, sendCancel, sendItemDataRequest;
+local UnitIsPlayer = UnitIsPlayer;
 
 local UPDATE_EXCHANGE_QUERY_PREFIX = "IEUE";
 local CANCEL_EXCHANGE_QUERY_PREFIX = "IECE";
@@ -339,6 +340,19 @@ local function addToExchange(container, slotID)
 end
 TRP3_API.inventory.addToExchange = addToExchange;
 
+--- Opens an empty exchange frame with the given unit ID
+--- @param targetID string @ The complete unit ID of the target of the exchange
+local function startEmptyExchangeWithUnit(targetID)
+	exchangeFrame.targetID = targetID;
+	exchangeFrame.myData = {};
+	exchangeFrame.yourData = {};
+	exchangeFrame.myData.ok = nil;
+	exchangeFrame.yourData.ok = nil;
+	drawUI();
+	Comm.sendObject(UPDATE_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+end
+TRP3_API.inventory.startEmptyExchangeWithUnit = startEmptyExchangeWithUnit;
+
 local function removeItem(index)
 	assert(exchangeFrame.myData, "No exchangeFrame.myData");
 	assert(exchangeFrame.myData[tostring(index)], "Slot is already empty");
@@ -606,3 +620,32 @@ function exchangeFrame.init()
 
 	TRP3_API.ui.frame.setupMove(exchangeFrame);
 end
+
+-- Button on toolbar
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	if TRP3_API.target then
+		local UnitIsKnown = TRP3_API.register.isUnitKnown;
+		local UnitIsIgnored = TRP3_API.register.isIDIgnored;
+		local GetUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
+		TRP3_API.target.registerButton({
+			id = "aa_player_e_trade",
+			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			configText = loc("INV_PAGE_CHARACTER_INSPECTION"),
+			condition = function(_, unitID)
+				if UnitIsPlayer("target") and unitID ~= Globals.player_id and not UnitIsIgnored(unitID) then
+					if UnitIsKnown("target") then
+						local character = GetUnitIDCharacter(Utils.str.getUnitID("target"));
+						return (tonumber(character.extended or 0) or 0) > 0;
+					end
+				end
+				return false;
+			end,
+			onClick = function()
+				startEmptyExchangeWithUnit(Utils.str.getUnitID("target"));
+			end,
+			tooltip = loc.IT_EX_TRADE_BUTTON,
+			tooltipSub = loc.IT_EX_TRADE_BUTTON_TT,
+			icon = "garrison_building_tradingpost"
+		});
+	end
+end);
