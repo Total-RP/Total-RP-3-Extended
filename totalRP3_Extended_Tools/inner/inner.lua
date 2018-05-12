@@ -37,7 +37,7 @@ editor.browser.container.lines = {};
 -- Inner object editor: Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function createInnerObject(innerID, innerType, innerData)
+local function createInnerObject(innerID, innerType, innerMode, innerData)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
 	assert(innerID and innerID:len() > 0, "Bad inner ID");
 
@@ -56,6 +56,10 @@ local function createInnerObject(innerID, innerType, innerData)
 				NA = loc.IT_NEW_NAME,
 			},
 		}
+
+		if innerMode then
+			toolFrame.specificDraft.IN[innerID].MD.MO = innerMode;
+		end
 	elseif innerType == TRP3_DB.types.DOCUMENT then
 		toolFrame.specificDraft.IN[innerID] = innerData or {
 			TY = TRP3_DB.types.DOCUMENT,
@@ -221,13 +225,22 @@ end
 
 local function addInnerObject(type, self)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
+	-- Checking the parent mode to automatically adapt the mode for inner items
+	local parentClass = getClass(toolFrame.fullClassID);
+	local parentMode = (parentClass.MD and parentClass.MD.MO);
+	local innerMode;
+	if (parentMode == TRP3_DB.modes.EXPERT) then
+		innerMode = TRP3_DB.modes.EXPERT;
+	else
+		innerMode = TRP3_DB.modes.NORMAL;
+	end
 	TRP3_API.popup.showTextInputPopup(loc.IN_INNER_ENTER_ID .. "\n\n" .. loc.IN_INNER_ENTER_ID_TT, function(innerID)
 		if not innerID or innerID:len() == 0 then
 			return;
 		elseif innerID:find(" ") then
 			TRP3_API.popup.showAlertPopup(loc.IN_INNER_ENTER_ID_NO_SPACE);
 		elseif self == editor.browser.add then
-			createInnerObject(innerID, type);
+			createInnerObject(innerID, type, innerMode);
 			refresh();
 		elseif self == editor.browser.addcopy then
 			TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "CENTER", parentPoint = "CENTER"}, {function(id)
@@ -235,7 +248,7 @@ local function addInnerObject(type, self)
 				local template = {};
 				Utils.table.copy(template, class);
 				TRP3_API.extended.tools.replaceID(template, id, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. innerID);
-				createInnerObject(innerID, type, template);
+				createInnerObject(innerID, type, innerMode, template);
 				refresh();
 			end, type});
 		end
