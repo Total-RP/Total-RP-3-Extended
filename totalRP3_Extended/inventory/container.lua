@@ -57,7 +57,7 @@ local function parseArgs(text, info)
 end
 
 local function getItemTooltipLines(slotInfo, class, forceAlt)
-	local title, left, right, text1, text2,  extension1, extension2;
+	local title, left, right, text1, text1_lower, text2,  extension1, extension2;
 	local icon, name = getBaseClassDataSafe(class);
 	local rootClassID = TRP3_API.extended.getRootClassID(slotInfo.id);
 	local rootClass = TRP3_API.extended.classExists(rootClassID) and getClass(rootClassID);
@@ -92,22 +92,22 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. color("o") .. "\"" .. parseArgs(class.BA.DE, argsStructure) .. "\"";
+		text1 = text1 .. "|r" .. "\"" .. parseArgs(class.BA.DE, argsStructure) .. "\"";		-- no color as it is the default color for that part of the tooltip
 	end
 
+	text1_lower = "";
 	if class.US and class.US.AC then
-		text1 = incrementLine(text1);
-		text1 = text1 .. color("g") .. USE .. ": " .. parseArgs(class.US.AC, argsStructure);
+		text1_lower = text1_lower .. USE .. ": " .. parseArgs(class.US.AC, argsStructure);	-- no color as it is the default color for that part of the tooltip
 	end
 
 	if class.BA.CO then
-		text1 = incrementLine(text1);
-		text1 = text1 .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
+		text1_lower = incrementLine(text1_lower);
+		text1_lower = text1_lower .. TRP3_API.Ellyb.ColorManager.CRAFTING_REAGENT(PROFESSIONS_USED_IN_COOKING);
 	end
 
 	if class.BA.CR and slotInfo.madeBy then
-		text1 = incrementLine(text1);
-		text1 = text1 .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
+		text1_lower = incrementLine(text1_lower);
+		text1_lower = text1_lower .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
 	end
 
 	if not slotInfo.noAlt and (IsAltKeyDown() or forceAlt) then
@@ -176,7 +176,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		end
 	end
 
-	return title, left, right, text1, text2, extension1, extension2;
+	return title, left, right, text1, text1_lower, text2, extension1, extension2;
 end
 
 local TRP3_ItemTooltip = TRP3_ItemTooltip;
@@ -184,18 +184,20 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	TRP3_ItemTooltip:Hide();
 	TRP3_ItemTooltip:SetOwner(frame, anchor or (frame.tooltipRight and "ANCHOR_RIGHT") or "ANCHOR_LEFT", 0, 0);
 
-	local title, left, right, text1, text2,  extension1, extension2 = getItemTooltipLines(slotInfo, itemClass, forceAlt);
+	local title, left, right, text1, text1_lower, text2,  extension1, extension2 = getItemTooltipLines(slotInfo, itemClass, forceAlt);
 
 	local i = 1;
 	if title and title:len() > 0 then
-		TRP3_ItemTooltip:AddLine(title, 1, 1, 1,true);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		TRP3_ItemTooltip:AddLine(title, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if (left and left:len() > 0) or (right and right:len() > 0) then
-		TRP3_ItemTooltip:AddDoubleLine(left or "", right or "", 1, 1, 1, 1, 1, 1);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		TRP3_ItemTooltip:AddDoubleLine(left or "", right or "", r, g, b, r, g, b);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		_G["TRP3_ItemTooltipTextRight"..i]:SetFontObject(GameFontNormal);
@@ -204,7 +206,17 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text1 and text1:len() > 0 then
-		TRP3_ItemTooltip:AddLine(text1, 1, 1, 1,true);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.ORANGE:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
+		TRP3_ItemTooltip:AddLine(text1, r, g, b,true);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		i = i + 1;
+	end
+
+	if text1_lower and text1_lower:len() > 0 then
+		local r, g, b = TRP3_API.Ellyb.ColorManager.GREEN:GetRGB();	-- corresponds to color("g") = 00FF00 for the use text
+		TRP3_ItemTooltip:AddLine(text1_lower, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
@@ -212,7 +224,8 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if (extension1 and extension1:len() > 0) or (extension2 and extension2:len() > 0) then
-		TRP3_ItemTooltip:AddDoubleLine(extension1 or "", extension2 or "", 1, 1, 1, 1, 1, 1);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		TRP3_ItemTooltip:AddDoubleLine(extension1 or "", extension2 or "", r, g, b, r, g, b);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		_G["TRP3_ItemTooltipTextRight"..i]:SetFontObject(GameFontNormal);
@@ -221,7 +234,8 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text2 and text2:len() > 0 then
-		TRP3_ItemTooltip:AddLine(text2, 1, 1, 1,true);
+		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		TRP3_ItemTooltip:AddLine(text2, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
