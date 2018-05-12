@@ -1511,13 +1511,7 @@ You can also see all droped items on the map by using the "Scan for my items" bu
 
 |cffff9900Note that sometimes items can be droped automatically: if you receive items but your inventory is full, or if one of your bags is damaged.]],
 
-	INV_TU_5 = [[You can exchange an item (or a stack of items) with another player by drag & drop the stack on the player (just like the game does).
 
-|cffff9900When someone give you an item, the exchange frame will tell you if the item could possibly have annoying effects (nobody want their character to shout horrible things).
-
-|rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
-
-|cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TUTORIAL: Quest log
@@ -1565,6 +1559,15 @@ You can also see the history of previous steps, in case you forget something.]],
 	EFFECT_SOUND_ID_LOCAL_STOP_TT = "Stops one or all sounds in a particular channel for players around you.",
 	EFFECT_SOUND_MUSIC_LOCAL_STOP = "Stop local music",
 	EFFECT_SOUND_MUSIC_LOCAL_STOP_TT = "If you use the \"play local music\" effect, the music will loop for all players around until the game plays another music (for example: the player enters a new zone), or if each player stops it manually or until you use this effect.\n\n|cffff9900Note that this effect will only stop music played by the addon, and will not stop a music played by the game.",
+	IT_EX_TRADE_BUTTON = "Open exchange",
+	IT_EX_TRADE_BUTTON_TT = "Open the exchange frame to start trading items with this player.",
+	INV_TU_5_V2 = [[You can exchange an item (or a stack of items) with another player by drag & drop the stack on the player (just like the game does) or using the dedicated button on the target frame.
+
+|cffff9900When someone give you an item, the exchange frame will tell you if the item could possibly have annoying effects (nobody want their character to shout horrible things).
+
+|rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
+
+|cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
