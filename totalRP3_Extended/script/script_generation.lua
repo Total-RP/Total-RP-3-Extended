@@ -871,6 +871,10 @@ function TRP3_API.script.setVar(args, source, operationType, varName, varValue)
 	end
 end
 
+local function setVarValue(args, source, varName, varValue)
+	TRP3_API.script.setVar(args, source, "=", varName, varValue);
+end
+
 function TRP3_API.script.varCheck(args, source, varName)
 	if args and source then
 
@@ -966,7 +970,7 @@ function TRP3_API.script.runLuaScriptEffect(code, args, secured)
 	env["op"] = operand;
 
 	env["getVar"] = TRP3_API.script.varCheck;
-	env["setVar"] = TRP3_API.script.setVar;
+	env["setVar"] = setVarValue;
 
 	-- Compile
 	local factory, errorMessage = loadstring(code, "Generated code");
