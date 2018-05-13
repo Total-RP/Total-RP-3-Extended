@@ -417,12 +417,13 @@ local function initStashContainer()
 			TRP3_API.ui.listbox.displayDropDown(self, {
 				{ stashContainer.stashInfo.BA.NA or loc.DR_STASHES_NAME },
 				{ loc.DR_STASHES_EDIT, 1 },
+				{ loc.DR_STASHES_OWNERSHIP, 3},
 				{ loc.DR_STASHES_REMOVE, 2 }
 			}, function(value)
 				if value == 1 then
 					openStashEditor(stashContainer.stashIndex);
 					stashContainer:Hide();
-				else
+				elseif value == 2 then
 					TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_REMOVE_PP, function()
 						if stashContainer.stashIndex then
 							wipe(stashesData[stashContainer.stashIndex]);
@@ -430,6 +431,10 @@ local function initStashContainer()
 							stashContainer:Hide();
 							Utils.message.displayMessage(loc.DR_STASHES_REMOVED, 1);
 						end
+					end);
+				elseif value == 3 then
+					TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
+						stashContainer.stashInfo.CR = Utils.str.getUnitID("player");
 					end);
 				end
 			end, 0, true);
