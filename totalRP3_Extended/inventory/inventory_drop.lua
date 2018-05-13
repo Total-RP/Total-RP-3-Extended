@@ -170,7 +170,7 @@ local function initScans()
 					for index, slot in pairs(stash.item) do
 						total = total + 1;
 					end
-					broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total);
+					broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total, stash.CR);
 				end
 			end
 		end,
@@ -178,18 +178,18 @@ local function initScans()
 			local posY, posX = UnitPosition("player");
 			return posY ~= nil and posY ~= nil and not currentlyScanning;
 		end,
-		scanAssembler = function(saveStructure, sender, mapX, mapY, NA, IC, total)
+		scanAssembler = function(saveStructure, sender, mapX, mapY, NA, IC, total, CR)
 			local i = 1;
 			while saveStructure[sender .. i] do
 				i = i + 1;
 			end
-			saveStructure[sender .. i] = { x = mapX, y = mapY, BA = { NA = NA, IC = IC }, sender = sender, total = total };
+			saveStructure[sender .. i] = { x = mapX, y = mapY, BA = { NA = NA, IC = IC }, sender = sender, total = total, CR = CR };
 		end,
 		scanComplete = function(saveStructure)
 		end,
 		scanMarkerDecorator = function(index, entry, marker)
 			local line = Utils.str.icon(entry.BA.IC) .. " " .. getItemLink(entry);
-			marker.scanLine = line .. " - |cffff9900" .. entry.total .. "/8 |cff00ff00- " .. entry.sender;
+			marker.scanLine = line .. " - |cffff9900" .. entry.total .. "/8 |cff00ff00- " .. (entry.CR or entry.sender);
 			marker.iconAtlas = "VignetteLoot";
 		end,
 		scanDuration = 2.5;
@@ -313,7 +313,8 @@ local function saveStash()
 	if not stash then
 		stash = {
 			BA = {},
-			item = {}
+			item = {},
+			CR = Utils.str.getUnitID("player")
 		};
 		tinsert(stashesData, stash);
 		index = #stashesData;
@@ -353,7 +354,7 @@ function showStash(stashInfo, stashIndex, sharedData)
 			stashContainer.sync = false;
 		end
 
-		local owner = stashInfo.owner or Globals.player_id;
+		local owner = stashInfo.CR or Globals.player_id;
 		local sub = "|cff00ff00" .. owner;
 		if stashIndex then
 			sub = sub .. "\n\n|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.CM_ACTIONS;
@@ -733,7 +734,7 @@ local function decorateStashSlot(slot, index)
 	local stashResponse = stashResponse[index];
 	TRP3_API.ui.frame.setupIconButton(slot, stashResponse[4] or "Temp");
 	slot.Name:SetText((stashResponse[3] or loc.DR_STASHES_NAME) .. "|cffff9900 (" .. (stashResponse[5] or 0) .. "/8)");
-	slot.InfoText:SetText("|cff00ff00" .. stashResponse[1]);
+	slot.InfoText:SetText("|cff00ff00" .. (stashResponse[6] or stashResponse[1]));
 	slot.info = stashResponse;
 	slot:SetScript("OnClick", function(self)
 		stashFoundFrame:Hide();
@@ -747,7 +748,8 @@ local function decorateStashSlot(slot, index)
 				NA = self.info[3] or loc.DR_STASHES_NAME,
 				IC = self.info[4] or "Temp"
 			},
-			item = {}
+			item = {},
+			CR = self.info[6] or self.info[1]
 		}
 		showStash(stashInfo, nil, self.info);
 		callForStashRefresh(self.info[1], self.info[2]);
@@ -803,16 +805,16 @@ local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 				for index, slot in pairs(stash.item) do
 					total = total + 1;
 				end
-				Comm.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, stash.id, stash.BA.NA, stash.BA.IC, total, castID);
+				Comm.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, stash.id, stash.BA.NA, stash.BA.IC, total, castID, stash.CR);
 			end
 		end
 	end
 end
 
-local function receivedStashesResponse(sender, id, name, icon, slot, cID)
+local function receivedStashesResponse(sender, id, name, icon, slot, cID, creator)
 	Utils.log.log(("Received stash %s from %s."):format(name, sender));
 	if TRP3_CastingBarFrame.castID == cID then
-		tinsert(stashResponse, {sender, id, name, icon, slot});
+		tinsert(stashResponse, {sender, id, name, icon, slot, creator});
 	else
 		Utils.log.log(("Wrong cast ID for stashes response."));
 	end
