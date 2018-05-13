@@ -1019,7 +1019,7 @@ function TRP3_API.inventory.initLootFrame()
 	lootAll:SetScript("OnClick", function()
 		for _, slot in pairs(lootFrame.slots) do
 			if slot.info then
-				pickUpLoot(slot);
+				doPickUpLoot(slot, nil, nil, slot.info.count or 1);
 			end
 		end
 	end);
