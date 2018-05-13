@@ -596,7 +596,9 @@ You can browse their website for other people's creations and paste them here.]]
 	WO_PASTE = "Paste workflow content",
 	WO_PASTE_CONFIRM = "Replace this workflow content with the one you copied earlier?",
 	WO_EVENT_EX_LINKS = "Game event links",
-	WO_EVENT_EX_LINKS_TT = "Here you can link your workflows to game events.\nEach link can be conditioned.",
+	WO_EVENT_EX_LINKS_TT = [[Here you can link your workflows to game events. Each link can be conditioned.
+<\br>
+|cff00ff00[<a href="https://github.com/Ellypse/Total-RP-3-Extended/wiki/Total-RP-3-:-Extended-custom-events">Documentation on Extended custom events</a>]|r]],
 	WO_EVENT_EX_LINK = "Game event link",
 	WO_EVENT_EX_ADD = "Add event link",
 	WO_EVENT_EX_NO = "No event link",

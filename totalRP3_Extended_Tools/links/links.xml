@@ -174,23 +174,19 @@
 					<Anchor point="BOTTOM" x="0" y="5"/>
 				</Anchors>
 
-				<Layers>
-					<Layer level="OVERLAY">
-
-						<FontString parentKey="help" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
-							<Size x="0" y="75"/>
-							<Anchors>
-								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="0"/>
-								<Anchor point="RIGHT" x="-20" y="0"/>
-								<Anchor point="LEFT" x="20" y="0"/>
-							</Anchors>
+				<Frames>
+					<SimpleHTML parentKey="help">
+						<Size x="0" y="75"/>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="0"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+						<FontString inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
 							<Color r="0.95" g="0.95" b="0.95"/>
 						</FontString>
-
-					</Layer>
-				</Layers>
-
-				<Frames>
+					</SimpleHTML>
+					
 					<Frame parentKey="editor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
 						<Size x="300" y="175"/>
 						<Layers>
