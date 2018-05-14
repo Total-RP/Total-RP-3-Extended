@@ -418,14 +418,14 @@ local function onStart()
 	TRP3_API.communication.registerProtocolPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
 		if sender ~= Globals.player_id then
 			Log.log(("Received signal from %s"):format(sender));
-			Utils.event.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v);
+			Utils.event.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v, sender);
 		end
 	end);
 	function TRP3_API.extended.sendSignal(id, value)
 		if UnitExists("target") and UnitIsPlayer("target") then
 			if UnitIsUnit("player", "target") then
-				Log.log(("Received signal from yourself"):format(sender));
-				Utils.event.fireEvent(TRP3_API.extended.SIGNAL_EVENT, id, value);
+				Log.log("Received signal from yourself");
+				Utils.event.fireEvent(TRP3_API.extended.SIGNAL_EVENT, id, value, Utils.str.getUnitID("player"));
 			else
 				TRP3_API.communication.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
 			end
