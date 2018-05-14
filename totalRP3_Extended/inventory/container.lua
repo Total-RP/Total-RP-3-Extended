@@ -823,6 +823,7 @@ local function getContainerInstance(container, class)
 		containerFrame.IconButton:SetScript("OnLeave", slotOnLeave);
 		initContainerInstance(containerFrame, size)
 		tinsert(containerInstances, containerFrame);
+		tinsert(UISpecialFrames, containerFrame:GetName());
 	end
 	containerFrame.info = container;
 	return containerFrame;
