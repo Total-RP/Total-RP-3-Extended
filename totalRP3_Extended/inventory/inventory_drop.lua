@@ -314,7 +314,7 @@ local function saveStash()
 		stash = {
 			BA = {},
 			item = {},
-			CR = Utils.str.getUnitID("player")
+			CR = TRP3_API.globals.player_id
 		};
 		tinsert(stashesData, stash);
 		index = #stashesData;
@@ -434,7 +434,7 @@ local function initStashContainer()
 					end);
 				elseif value == 3 then
 					TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
-						stashContainer.stashInfo.CR = Utils.str.getUnitID("player");
+						stashContainer.stashInfo.CR = TRP3_API.globals.player_id;
 					end);
 				end
 			end, 0, true);
