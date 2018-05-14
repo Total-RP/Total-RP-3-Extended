@@ -230,16 +230,8 @@ function editor.init(ToolFrame)
 	-- GAME
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	do
-		gameLinksEditor.title:SetText(loc.WO_EVENT_EX_LINKS);
-
-		---@type SimpleHTML
-		local helpInfo = gameLinksEditor.help;
-		helpInfo:SetText(HTML_START .. loc.WO_EVENT_EX_LINKS_TT .. HTML_END);
-		helpInfo:SetScript("OnHyperlinkClick", function(self, url)
-			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
-		end);
-	end
+	gameLinksEditor.title:SetText(loc.WO_EVENT_EX_LINKS);
+	gameLinksEditor.help:SetText(loc.WO_EVENT_EX_LINKS_TT);
 
 	-- List
 	gameLinksEditor.list.widgetTab = {};
