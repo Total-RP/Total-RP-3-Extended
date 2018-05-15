@@ -36,9 +36,11 @@ local QUICK_SLOT_ID = "17";
 TRP3_API.inventory.QUICK_SLOT_ID = QUICK_SLOT_ID;
 
 local function onItemAddEnd(container, itemClass, returnType, count, ...)
-	Utils.message.displayMessage(loc.IT_INV_GOT:format(getItemLink(itemClass), count));
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-	TRP3_API.inventory.recomputeAllInventory();
+	if count ~= 0 then
+		Utils.message.displayMessage(loc.IT_INV_GOT:format(getItemLink(itemClass), count));
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+		TRP3_API.inventory.recomputeAllInventory();
+	end
 	return returnType, count, ...;
 end
 

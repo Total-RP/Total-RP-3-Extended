@@ -6,9 +6,9 @@ Extended module for the Total RP 3 add-on for World of Warcraft, adding creation
 
 # Introduction
 
-Even if World of Warcraft is losing subscribers month after month, it still has a strong community. People with a lot of talent when it comes to role-play, fan-fiction and other artistic creations. One big problem is that all these original creations can only live outside of the game as we can't have any impact on the game it self. That's what Total RP 3 Extended will change.
+World of Warcraft has a strong community of players with a lot of talent when it comes to role-playing, fan-fiction, and other artistic creations. One major problem is that all these original creations can only live outside of the game as we can't have any impact on the game itself. Total RP 3 Extended is aiming to change this.
 
-Total RP 3 brought you the best way to customize your characters and companions (pets and mounts). Total RP 3: Extended brings you the best way to create new content in World of Warcraft: campaigns with quests, customized NPCs and dialogues, items, documents (books, signs, contracts ...) and many more!
+Total RP 3 brought you the best way to customize your characters and companions (pets and mounts). Total RP 3: Extended brings you the best way to create new content in World of Warcraft: campaigns with quests, customized NPCs and dialogues, items, documents (books, signs, contracts ...) and much more!
 
 # Highlights
 
