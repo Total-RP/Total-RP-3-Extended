@@ -252,6 +252,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame.list.bottom.item.templates.document.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT);
 	toolFrame.list.bottom.item.templates.blank.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_BLANK);
 	toolFrame.list.bottom.item.templates.blank.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_BLANK_TT);
+	toolFrame.list.bottom.item.templates.expert.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_EXPERT);
+	toolFrame.list.bottom.item.templates.expert.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_EXPERT_TT);
 	toolFrame.list.bottom.item.templates.container.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_CONTAINER);
 	toolFrame.list.bottom.item.templates.container.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT);
 	toolFrame.list.bottom.item.templates.from.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_FROM);
@@ -264,6 +266,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.container, "inv_misc_bag_36");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.blank, "inv_inscription_scroll");
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.expert, "ability_siege_engineer_pattern_recognition");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.document, "inv_misc_book_16");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.quick, "petbattle_speed");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.from, "spell_nature_mirrorimage");
@@ -279,6 +282,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 			self.templates:Hide();
 		else
 			TRP3_API.ui.frame.configureHoverFrame(self.templates, self, "BOTTOM", 0, 5, false);
+			self.templates:SetPoint("BOTTOM", self, "TOP", 200, 25);	-- Black magic to off-center the templates frame.
+			self.templates.ArrowUP:SetPoint("TOP", self.templates, "BOTTOM", -200, 5);	-- More black magic to re-center the arrow on the button.
 		end
 	end);
 
@@ -298,6 +303,12 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame.list.bottom.item.templates.blank:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
 		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL));
+		TRP3_API.extended.tools.goToPage(ID);
+	end);
+
+	toolFrame.list.bottom.item.templates.expert:SetScript("OnClick", function()
+		toolFrame.list.bottom.item.templates:Hide();
+		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.EXPERT));
 		TRP3_API.extended.tools.goToPage(ID);
 	end);
 
