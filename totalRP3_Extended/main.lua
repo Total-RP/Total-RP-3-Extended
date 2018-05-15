@@ -460,7 +460,12 @@ local function onStart()
 		local time, event, _, source, sourceName, _, _, dest, destName = ...;
 		if event == "PARTY_KILL" then
 			local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(dest);
-			Utils.event.fireEvent(TRP3_API.extended.KILL_EVENT, event, source, sourceName, dest, destName, NPC_ID);
+			if (unitType == "Player") then
+				local className, classID, raceName, raceID, gender = GetPlayerInfoByGUID(dest);
+				Utils.event.fireEvent(TRP3_API.extended.KILL_EVENT, unitType, source, sourceName, dest, destName, classID, className, raceID, raceName, gender);
+			else
+				Utils.event.fireEvent(TRP3_API.extended.KILL_EVENT, unitType, source, sourceName, dest, destName, NPC_ID);
+			end
 		end
 	end);
 end

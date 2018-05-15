@@ -1415,15 +1415,7 @@ The list of possible events is fixed and depends on the type of the object (item
 
 You can link one event to only one workflow. But the same workflow can be linked to multiple events.]],
 
-	TU_EL_3_TEXT = [[|cff00ff00Game events|r are events triggered by the game when something happens.
 
-Each link you add will link a game event to a workflow. Each time the event occurs, the workflow will be executed.
-
-|cff00ff00You can add a condition to the link by Ctrl+click on it.|r The condition will have access to the event arguments to be tested.
-For example if you listen to the event of casting a spell, you will be able in the condition to test which spell is casted.
-
-|cffff9900There is a large list of game event, thus it wouldn't be for us to list them all in the add-on. We suggest you to consult webwite like wowwiki.
-http://wowwiki.wikia.com/wiki/Event_API]],
 
 	TU_EL_4_TEXT = [[|cff00ff00Game events|r are only available for campaigns, quests and quest steps.]],
 
@@ -1568,6 +1560,18 @@ You can also see the history of previous steps, in case you forget something.]],
 |rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
 
 |cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
+	TU_EL_3_TEXT_V2 = [[|cff00ff00Game events|r are events triggered by the game when something happens.
+
+Each link you add will link a game event to a workflow. Each time the event occurs, the workflow will be executed.
+
+|cff00ff00You can add a condition to the link by Ctrl+click on it.|r The condition will have access to the event arguments to be tested.
+For example if you listen to the event of casting a spell, you will be able in the condition to test which spell is casted.
+
+|cffff9900There is a large list of game event, thus it wouldn't be for us to list them all in the add-on. We suggest you to consult webwite like wowwiki.
+http://wowwiki.wikia.com/wiki/Event_API
+
+|rIn addition to the game's events, |cff00ff00Total RP 3: Extended offers a couple of custom events|r detailed on the addon wiki.
+|cff00ff00https://github.com/Ellypse/Total-RP-3-Extended/wiki|r]],
 	DR_STASHES_OWNERSHIP = "Take ownership",
 	DR_STASHES_OWNERSHIP_PP = "Take ownership of this stash?\nThis character will be shown as owner of this stash when other players scan for it.",
 }
