@@ -1574,6 +1574,9 @@ http://wowwiki.wikia.com/wiki/Event_API
 |cff00ff00https://github.com/Ellypse/Total-RP-3-Extended/wiki|r]],
 	DR_STASHES_OWNERSHIP = "Take ownership",
 	DR_STASHES_OWNERSHIP_PP = "Take ownership of this stash?\nThis character will be shown as owner of this stash when other players scan for it.",
+	EFFECT_ITEM_DICE_PREVIEW_STORED = "Rollin' %s and saving the result to %s",
+	EFFECT_ITEM_DICE_ROLL_VAR = "Variable name (optional)",
+	EFFECT_ITEM_DICE_ROLL_VAR_TT = "The variable in which you want to store the dice roll result.\nLeave empty if you don't want to store the result.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
