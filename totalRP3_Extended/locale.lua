@@ -1568,6 +1568,8 @@ You can also see the history of previous steps, in case you forget something.]],
 |rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
 
 |cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
+	DR_STASHES_OWNERSHIP = "Take ownership",
+	DR_STASHES_OWNERSHIP_PP = "Take ownership of this stash?\nThis character will be shown as owner of this stash when other players scan for it.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
