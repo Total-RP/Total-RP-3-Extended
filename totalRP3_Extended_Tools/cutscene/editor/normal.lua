@@ -267,10 +267,9 @@ end
 local function configureCondition(line)
 	local condition = line.scriptData;
 	if not condition then
-		line.scriptData = {
+		condition = {
 			{ { i = "unit_name", a = {"target"} }, "==", { v = "Elsa" } }
 		};
-		condition = line.scriptData;
 	end
 	editor.choicesEditor:Hide();
 	toolFrame.cutscene.normal.overlay:Show();
@@ -283,6 +282,9 @@ local function configureCondition(line)
 	TRP3_ConditionEditor.load(condition);
 	TRP3_ConditionEditor:SetScript("OnHide", function() toolFrame.cutscene.normal.overlay:Hide() end);
 	TRP3_ConditionEditor.confirm:SetScript("OnClick", function()
+		if not line.scriptData then
+			line.scriptData = {};
+		end
 		TRP3_ConditionEditor.save(line.scriptData);
 		TRP3_ConditionEditor:Hide();
 		editor.choicesEditor:Show();
