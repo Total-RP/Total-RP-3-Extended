@@ -1574,6 +1574,8 @@ http://wowwiki.wikia.com/wiki/Event_API
 
 |rIn addition to the game's events, |cff00ff00Total RP 3: Extended offers a couple of custom events|r detailed on the addon wiki.
 |cff00ff00https://github.com/Ellypse/Total-RP-3-Extended/wiki|r]],
+	DR_STASHES_OWNERSHIP = "Take ownership",
+	DR_STASHES_OWNERSHIP_PP = "Take ownership of this stash?\nThis character will be shown as owner of this stash when other players scan for it.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
