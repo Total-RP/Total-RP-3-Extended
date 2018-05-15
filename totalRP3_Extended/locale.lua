@@ -1560,7 +1560,6 @@ You can also see the history of previous steps, in case you forget something.]],
 |rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
 
 |cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
-
 	TU_EL_3_TEXT_V2 = [[|cff00ff00Game events|r are events triggered by the game when something happens.
 
 Each link you add will link a game event to a workflow. Each time the event occurs, the workflow will be executed.
@@ -1573,6 +1572,8 @@ http://wowwiki.wikia.com/wiki/Event_API
 
 |rIn addition to the game's events, |cff00ff00Total RP 3: Extended offers a couple of custom events|r detailed on the addon wiki.
 |cff00ff00https://github.com/Ellypse/Total-RP-3-Extended/wiki|r]],
+	DR_STASHES_OWNERSHIP = "Take ownership",
+	DR_STASHES_OWNERSHIP_PP = "Take ownership of this stash?\nThis character will be shown as owner of this stash when other players scan for it.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
