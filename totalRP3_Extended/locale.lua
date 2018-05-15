@@ -1568,6 +1568,8 @@ You can also see the history of previous steps, in case you forget something.]],
 |rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
 
 |cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
+	DB_CREATE_ITEM_TEMPLATES_EXPERT = "Expert item",
+	DB_CREATE_ITEM_TEMPLATES_EXPERT_TT = "An expert blank template.\nFor users with experience making creations.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
