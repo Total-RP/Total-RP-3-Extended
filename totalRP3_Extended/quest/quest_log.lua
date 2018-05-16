@@ -60,11 +60,10 @@ local function onCampaignButtonClick(button, mouseButton)
 	local campaignID = button.campaignID;
 	local _, campaignName = getClassDataSafe(getClass(campaignID));
 	if IsShiftKeyDown() then
-		TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_DATABASE_CAMPAIGN, function(canBeImported)
-			TRP3_API.extended.DatabaseCampaignsChatLinksModule:InsertLink(campaignID, campaignID	, canBeImported);
+		TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_CAMPAIGN, function(canBeImported)
+			TRP3_API.extended.CampaignsChatLinksModule:InsertLink(campaignID, canBeImported);
 		end);
 	else
-		onCampaignActionSelected(2, self:GetParent())
 		if mouseButton == "LeftButton" then
 			goToPage(false, TAB_QUESTS, campaignID, campaignName);
 		else
@@ -101,6 +100,7 @@ local function getCampaignProgression(campaignID)
 		return 0;
 	end
 end
+TRP3_API.quest.getCampaignProgression = getCampaignProgression;
 
 local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 	local campaignClass = getClass(campaignID);

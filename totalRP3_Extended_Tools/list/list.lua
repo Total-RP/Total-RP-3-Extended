@@ -140,7 +140,7 @@ local function onLineClick(self, button)
 					DatabaseItemsChatLinksModule:InsertLink(data.fullID, data.rootID, canBeImported);
 				end);
 			elseif data.TY == "CA" then
-				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_DATABASE_CAMPAIGN, function(canBeImported)
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_CAMPAIGN, function(canBeImported)
 					DatabaseCampaignsChatLinksModule:InsertLink(data.fullID, data.rootID, canBeImported);
 				end);
 			end

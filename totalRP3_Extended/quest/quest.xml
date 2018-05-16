@@ -533,6 +533,8 @@
 		</Frames>
 	</Frame>
 
+	<Script file="CampaignsChatLinkModule.lua"/>
+
 	<Script file="db.lua"/>
 	<Script file="quest_effects.lua"/>
 	<Script file="campaign_npc.lua"/>
@@ -540,5 +542,6 @@
 	<Script file="quest.lua"/>
 	<Script file="quest_log.lua"/>
 	<Script file="quest_objective.lua"/>
+
 
 </Ui>
