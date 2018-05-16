@@ -31,11 +31,14 @@ local delayEditor = TRP3_ScriptEditorDelay;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function delayEditor.decorate(scriptStep)
+	local strToFormat = "%s: " .. TRP3_API.Ellyb.ColorManager.YELLOW("%s %s|r");
+	local delayText;
 	if scriptStep.c == 2 then
-		return ("%s: |cffffff00%s %s|r"):format(loc.WO_DELAY_CAST, scriptStep.d or 0, loc.WO_DELAY_SECONDS);
+		delayText = loc.WO_DELAY_CAST;
 	else
-		return ("%s: |cffffff00%s %s|r"):format(loc.WO_DELAY_WAIT, scriptStep.d or 0, loc.WO_DELAY_SECONDS);
+		delayText = loc.WO_DELAY_WAIT;
 	end
+	return strToFormat:format(delayText, scriptStep.d or 0, loc.WO_DELAY_SECONDS);
 end
 
 function delayEditor.save(scriptStepStructure)
@@ -115,8 +118,7 @@ end
 
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
-local color = "|cffffff00";
-local fieldFormat = "%s: " .. color .. "%s|r";
+local fieldFormat = "%s: " .. TRP3_API.Ellyb.ColorManager.YELLOW("%s|r");
 
 local function decorateBrowserLine(frame, index)
 	local objectID = filteredObjectList[index];
@@ -145,17 +147,18 @@ local function decorateBrowserLine(frame, index)
 		text = text .. "\n" .. Utils.str.icon(base.IC or "temp", 25) .. " " .. link;
 		if base.LE or base.RI then
 			if base.LE and not base.RI then
-				text = text .. "\n|cffffffff" .. base.LE;
+				text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(base.LE);
 			elseif base.RI and not base.LE then
-				text = text .. "\n|cffffffff" .. base.RI;
+				text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(base.RI);
 			else
-				text = text .. "\n|cffffffff" .. base.LE .. " - " .. base.RI;
+				text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(base.LE .. " - " .. base.RI);
 			end
 		end
 		if base.DE then
-			text = text .. "\n|cffff9900\"" .. base.DE .. "\"";
+			local argsStructure = {object = {id = objectID}};
+			text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.ORANGE("\"" .. TRP3_API.script.parseArgs(base.DE .. "\"", argsStructure));
 		end
-		text = text .. "\n|cffffffff" .. TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0);
+		text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0));
 
 	end
 

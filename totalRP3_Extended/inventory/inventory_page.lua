@@ -346,7 +346,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc.INV_TU_5,
+				text = loc.INV_TU_5_V2,
 				textWidth = 400,
 				arrow = "LEFT"
 			}

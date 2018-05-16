@@ -790,6 +790,7 @@ directReplacement = {
 
 function TRP3_API.script.parseArgs(text, args)
 	args = args or EMPTY;
+	text = tostring(text) or "";
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		local default;
 		if capture:find("::") then
@@ -868,6 +869,10 @@ function TRP3_API.script.setVar(args, source, operationType, varName, varValue)
 			storage[varName] = initialValue * value;
 		end
 	end
+end
+
+local function setVarValue(args, source, varName, varValue)
+	TRP3_API.script.setVar(args, source, "=", varName, varValue);
 end
 
 function TRP3_API.script.varCheck(args, source, varName)
@@ -963,6 +968,9 @@ function TRP3_API.script.runLuaScriptEffect(code, args, secured)
 	end
 
 	env["op"] = operand;
+
+	env["getVar"] = TRP3_API.script.varCheck;
+	env["setVar"] = setVarValue;
 
 	-- Compile
 	local factory, errorMessage = loadstring(code, "Generated code");

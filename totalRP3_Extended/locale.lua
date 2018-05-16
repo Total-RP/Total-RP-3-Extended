@@ -1416,15 +1416,7 @@ The list of possible events is fixed and depends on the type of the object (item
 
 You can link one event to only one workflow. But the same workflow can be linked to multiple events.]],
 
-	TU_EL_3_TEXT = [[|cff00ff00Game events|r are events triggered by the game when something happens.
 
-Each link you add will link a game event to a workflow. Each time the event occurs, the workflow will be executed.
-
-|cff00ff00You can add a condition to the link by Ctrl+click on it.|r The condition will have access to the event arguments to be tested.
-For example if you listen to the event of casting a spell, you will be able in the condition to test which spell is casted.
-
-|cffff9900There is a large list of game event, thus it wouldn't be for us to list them all in the add-on. We suggest you to consult webwite like wowwiki.
-http://wowwiki.wikia.com/wiki/Event_API]],
 
 	TU_EL_4_TEXT = [[|cff00ff00Game events|r are only available for campaigns, quests and quest steps.]],
 
@@ -1512,13 +1504,7 @@ You can also see all droped items on the map by using the "Scan for my items" bu
 
 |cffff9900Note that sometimes items can be droped automatically: if you receive items but your inventory is full, or if one of your bags is damaged.]],
 
-	INV_TU_5 = [[You can exchange an item (or a stack of items) with another player by drag & drop the stack on the player (just like the game does).
 
-|cffff9900When someone give you an item, the exchange frame will tell you if the item could possibly have annoying effects (nobody want their character to shout horrible things).
-
-|rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
-
-|cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TUTORIAL: Quest log
@@ -1578,7 +1564,31 @@ You can also see the history of previous steps, in case you forget something.]],
 	SEC_TT_COMBO_2 = "Configure security",
 	SET_TT_SECURED_2 = "Some potentially malicious effects have been secured for your safety.",
 	SET_TT_SECURED_2_1 = "See more details.",
+	IT_EX_TRADE_BUTTON = "Open exchange",
+	IT_EX_TRADE_BUTTON_TT = "Open the exchange frame to start trading items with this player.",
+	INV_TU_5_V2 = [[You can exchange an item (or a stack of items) with another player by drag & drop the stack on the player (just like the game does) or using the dedicated button on the target frame.
 
+|cffff9900When someone give you an item, the exchange frame will tell you if the item could possibly have annoying effects (nobody want their character to shout horrible things).
+
+|rWhen that's the case, TRP will convert these effects into a less damaging form (for instance, the shouting will be converted to a personal text) until you decide to unblock them.
+
+|cff00ff00You can block/unblock effects and white-list effects or players by Alt + Right-click on an item on your inventory.]],
+	DB_CREATE_ITEM_TEMPLATES_EXPERT = "Expert item",
+	DB_CREATE_ITEM_TEMPLATES_EXPERT_TT = "An expert blank template.\nFor users with experience making creations.",
+	TU_EL_3_TEXT_V2 = [[|cff00ff00Game events|r are events triggered by the game when something happens.
+
+Each link you add will link a game event to a workflow. Each time the event occurs, the workflow will be executed.
+
+|cff00ff00You can add a condition to the link by Ctrl+click on it.|r The condition will have access to the event arguments to be tested.
+For example if you listen to the event of casting a spell, you will be able in the condition to test which spell is casted.
+
+|cffff9900There is a large list of game event, thus it wouldn't be for us to list them all in the add-on. We suggest you to consult webwite like wowwiki.
+http://wowwiki.wikia.com/wiki/Event_API
+
+|rIn addition to the game's events, |cff00ff00Total RP 3: Extended offers a couple of custom events|r detailed on the addon wiki.
+|cff00ff00https://github.com/Ellypse/Total-RP-3-Extended/wiki|r]],
+	DR_STASHES_OWNERSHIP = "Take ownership",
+	DR_STASHES_OWNERSHIP_PP = "Take ownership of this stash?\nThis character will be shown as owner of this stash when other players scan for it.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

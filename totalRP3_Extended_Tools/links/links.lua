@@ -299,7 +299,7 @@ function editor.init(ToolFrame)
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 		},
 		{
-			box = gameLinksEditor, title = "WO_EVENT_EX_LINKS", text = "TU_EL_3_TEXT",
+			box = gameLinksEditor, title = "WO_EVENT_EX_LINKS", text = "TU_EL_3_TEXT_V2",
 			arrow = "LEFT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 		}
 	};
