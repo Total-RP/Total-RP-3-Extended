@@ -83,10 +83,10 @@ function CampaignsChatLinksModule:GetTooltipLines(tooltipData)
 	return tooltipLines;
 end
 
-local DatabaseCampaignImportButton = CampaignsChatLinksModule:NewActionButton("EXTENDED_IMPORT_DB_CAMPAIGN", loc.CL_IMPORT_ITEM, "EXT_DB_C_Q", "EXT_DB_C_A");
+local DatabaseCampaignImportButton = CampaignsChatLinksModule:NewActionButton("EXTENDED_IMPORT_DB_CAMPAIGN", loc.CL_IMPORT, "EXT_DB_C_Q", "EXT_DB_C_A");
 
 function DatabaseCampaignImportButton:IsVisible(data)
-	return data.canBeImported and data.campaignID and TRP3_DB.global[data.campaignID] == nil;
+	return data.canBeImported;
 end
 
 function DatabaseCampaignImportButton:OnAnswerCommandReceived(data, sender)
@@ -95,27 +95,19 @@ function DatabaseCampaignImportButton:OnAnswerCommandReceived(data, sender)
 	local copiedData = {};
 	tcopy(copiedData, fromClass);
 
-	TRP3_API.extended.tools.createItem(copiedData, campaignID);
+	TRP3_DB.exchange[data.campaignID] = copiedData;
+
+	TRP3_API.security.computeSecurity(campaignID, copiedData);
+	TRP3_API.extended.unregisterObject(campaignID);
+	TRP3_API.extended.registerObject(campaignID, copiedData, 0);
+	TRP3_API.script.clearRootCompilation(campaignID);
+	TRP3_API.security.registerSender(campaignID, sender);
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+	TRP3_API.events.fireEvent(TRP3_API.events.ON_OBJECT_UPDATED);
+
 	TRP3_API.extended.tools.showFrame();
 	TRP3_API.extended.tools.goToPage(campaignID);
-end
-
-local DatabaseCampaignUpdateButton = CampaignsChatLinksModule:NewActionButton("EXTENDED_UPDATE_DB_CAMPAIGN", loc.CL_UPDATE_CAMPAIGN, "EXT_DB_U_C_Q", "EXT_DB_U_C_A");
-
-function DatabaseCampaignUpdateButton:IsVisible(data)
-	return data.canBeImported and data.campaignID and TRP3_DB.global[data.campaignID] ~= nil;
-end
-
-function DatabaseCampaignUpdateButton:OnAnswerCommandReceived(data, sender)
-	local itemID = data.campaignID;
-	local fromClass = data.campaignInfo;
-	local copiedData = {};
-	tcopy(copiedData, fromClass);
-
-	TRP3_DB.global[data.campaignID] = copiedData;
-
-	TRP3_API.extended.tools.showFrame();
-	TRP3_API.extended.tools.goToPage(itemID);
 end
 
 TRP3_API.extended.CampaignsChatLinksModule = CampaignsChatLinksModule;

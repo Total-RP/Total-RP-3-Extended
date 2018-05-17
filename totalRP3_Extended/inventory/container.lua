@@ -530,8 +530,8 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 
 		slot:SetScript("OnClick", function(self, button)
 			if IsShiftKeyDown() then
-				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_DATABASE_ITEM, function(canBeImported)
-					TRP3_API.extended.DatabaseItemsChatLinksModule:InsertLink(self.info.id, TRP3_API.extended.getRootClassID(self.info.id), canBeImported);
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
+					TRP3_API.extended.ItemsChatLinksModule:InsertLink(self.info.id, TRP3_API.extended.getRootClassID(self.info.id), self.info, canBeImported);
 				end);
 				return true;
 			end

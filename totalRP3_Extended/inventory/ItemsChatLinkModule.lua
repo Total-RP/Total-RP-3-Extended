@@ -27,7 +27,6 @@ local Ellyb = TRP3_API.Ellyb;
 -- Lua imports
 local tcopy = Ellyb.Tables.copy;
 local date = date;
-local tContains = tContains;
 
 -- Total RP 3 imports
 local iconToString = TRP3_API.utils.str.icon;
@@ -37,45 +36,47 @@ local parseArgs = TRP3_API.script.parseArgs;
 local Colors = Ellyb.ColorManager;
 local USED_FOR_PROFESSIONS_COLOR = Ellyb.Color("66BBFF"):Freeze();
 
-local DatabaseItemsChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_EXTENDED_DATABASE_ITEM, "EXTENDED_DB_ITEM_LINK");
+local ItemsChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_EXTENDED_ITEM, "EXTENDED_DB_ITEM_LINK");
 
 
-function DatabaseItemsChatLinksModule:GetLinkData(fullID, rootID, canBeImported)
+function ItemsChatLinksModule:GetLinkData(fullID, rootID, slotInfo, canBeImported)
 	local itemData = TRP3_API.extended.getClass(fullID);
+
 	local tooltipData = {
-		class = {}
+		class = tcopy(itemData),
+		rootClass = tcopy(TRP3_API.extended.getClass(rootID)),
+		fullID = fullID,
+		rootID = rootID,
+		slotInfo = slotInfo,
+		canBeImported = canBeImported,
 	};
 	local _, itemName = TRP3_API.extended.getClassDataSafe(itemData);
-
-	tcopy(tooltipData.class, itemData);
-	tooltipData.fullID = fullID;
-	tooltipData.rootID = rootID;
-	tooltipData.canBeImported = canBeImported;
 
 	return itemName, tooltipData
 end
 
 
-function DatabaseItemsChatLinksModule:GetTooltipLines(tooltipData)
+function ItemsChatLinksModule:GetTooltipLines(tooltipData)
 	local class = tooltipData.class;
+	local args = {object = tooltipData.slotInfo};
 
 	-- Get a new tooltipLines object that we will fill
 	local tooltipLines = TRP3_API.ChatLinkTooltipLines();
 
 	local icon, name, description = TRP3_API.extended.getClassDataSafe(class)
 
-	-- Get the quality and quality color of the tiem
+	-- Get the quality and quality color of the item
 	local itemQuality = class.BA.QA or LE_ITEM_QUALITY_COMMON;
 	---@type Color
 	local itemQualityColor = TRP3_API.inventory.getQualityColor(itemQuality);
 
-	tooltipLines:SetTitle(iconToString(icon) .. " " .. itemQualityColor:WrapTextInColorCode(name));
+	tooltipLines:SetTitle(iconToString(icon, 25) .. " " .. itemQualityColor:WrapTextInColorCode(name));
 
 	-- Custom left and right texts
 	if class.BA.LE or class.BA.RI then
 		local left = class.BA.LE or "";
 		local right = class.BA.RI or "";
-		tooltipLines:AddDoubleLine(parseArgs(left), parseArgs(right), Colors.WHITE, Colors.WHITE)
+		tooltipLines:AddDoubleLine(parseArgs(left, args), parseArgs(right, args), Colors.WHITE, Colors.WHITE)
 	end
 
 	-- Flagged as quest item
@@ -91,7 +92,8 @@ function DatabaseItemsChatLinksModule:GetTooltipLines(tooltipData)
 	-- Specific to containers
 	if TRP3_API.inventory.isContainerByClass(class) then
 		local slotCount = (class.CO.SR or 5) * (class.CO.SC or 4);
-		tooltipLines:AddLine(loc("IT_CON_TT"):format(0, slotCount), Colors.WHITE);
+		local slotUsed = TRP3_API.inventory.countUsedSlot(class, tooltipData.slotInfo);
+		tooltipLines:AddLine(loc.IT_CON_TT:format(slotUsed, slotCount), Colors.WHITE);
 	end
 
 	-- Unique item
@@ -101,7 +103,7 @@ function DatabaseItemsChatLinksModule:GetTooltipLines(tooltipData)
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine(parseArgs(description), Colors.ORANGE)
+		tooltipLines:AddLine(parseArgs(description, args), Colors.ORANGE)
 	end
 
 	-- On use effect
@@ -117,48 +119,36 @@ function DatabaseItemsChatLinksModule:GetTooltipLines(tooltipData)
 	return tooltipLines;
 end
 
-local DatabaseItemsImportButton = DatabaseItemsChatLinksModule:NewActionButton("EXTENDED_IMPORT_DB_ITEM", loc.CL_IMPORT_ITEM, "EXT_DB_I_Q", "EXT_DB_I_A");
+local DatabaseItemsImportButton = ItemsChatLinksModule:NewActionButton("EXTENDED_IMPORT_DB_ITEM", loc.CL_IMPORT, "EXT_DB_I_Q", "EXT_DB_I_A");
 
 function DatabaseItemsImportButton:IsVisible(data)
-	return data.canBeImported and data.rootID and TRP3_DB.global[data.rootID] == nil;
+	return data.canBeImported;
 end
 
 function DatabaseItemsImportButton:OnAnswerCommandReceived(data, sender)
 	local itemID = data.rootID;
-	local fromClass = data.class;
-	local copiedData = {};
-	TRP3_API.utils.table.copy(copiedData, fromClass);
+	local fromClass = data.rootClass;
+	local copiedData = tcopy(fromClass);
 
 	copiedData.MD.SD = date("%d/%m/%y %H:%M:%S");
 	copiedData.MD.SB = TRP3_API.globals.player_id;
-	TRP3_API.extended.tools.createItem(copiedData, itemID);
+
+	TRP3_DB.exchange[data.rootID] = copiedData;
+
+	TRP3_API.security.computeSecurity(itemID, copiedData);
+	TRP3_API.extended.unregisterObject(itemID);
+	TRP3_API.extended.registerObject(itemID, copiedData, 0);
+	TRP3_API.script.clearRootCompilation(itemID);
+	TRP3_API.security.registerSender(itemID, sender);
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+	TRP3_API.events.fireEvent(TRP3_API.events.ON_OBJECT_UPDATED);
 
 	TRP3_API.extended.tools.showFrame();
 	TRP3_API.extended.tools.goToPage(itemID);
 end
 
-local DatabaseItemsUpdateButton = DatabaseItemsChatLinksModule:NewActionButton("EXTENDED_UPDATE_DB_ITEM", loc.CL_UPDATE_ITEM, "EXT_DB_U_Q", "EXT_DB_U_A");
-
-function DatabaseItemsUpdateButton:IsVisible(data)
-	return data.canBeImported and data.rootID and TRP3_DB.global[data.rootID] ~= nil;
-end
-
-function DatabaseItemsUpdateButton:OnAnswerCommandReceived(data, sender)
-	local itemID = data.rootID;
-	local fromClass = data.class;
-	local copiedData = {};
-	TRP3_API.utils.table.copy(copiedData, fromClass);
-
-	copiedData.MD.SD = date("%d/%m/%y %H:%M:%S");
-	copiedData.MD.SB = TRP3_API.globals.player_id;
-
-	TRP3_DB.global[data.rootID] = copiedData;
-
-	TRP3_API.extended.tools.showFrame();
-	TRP3_API.extended.tools.goToPage(itemID);
-end
-
-local ImportItemInInventoryButton = DatabaseItemsChatLinksModule:NewActionButton("EXTENDED_IMPORT_BAG_ITEM", loc.CL_IMPORT_ITEM_BAG, "EXT_B_I_Q", "EXT_B_I_A");
+local ImportItemInInventoryButton = ItemsChatLinksModule:NewActionButton("EXTENDED_IMPORT_BAG_ITEM", loc.CL_IMPORT_ITEM_BAG, "EXT_B_I_Q", "EXT_B_I_A");
 
 function ImportItemInInventoryButton:IsVisible(data)
 	-- Check if item was made to be importable, that it is an item, and that the option to prevent manual adding was not checked
@@ -166,22 +156,23 @@ function ImportItemInInventoryButton:IsVisible(data)
 end
 
 function ImportItemInInventoryButton:OnAnswerCommandReceived(data, sender)
-	local rootID, item = data.rootID;
-	local fromClass = data.class;
-	local copiedData = {};
-	TRP3_API.utils.table.copy(copiedData, fromClass);
+	local rootID = data.rootID;
+	local fromClass = data.rootClass;
+	local copiedData = tcopy(fromClass);
 	copiedData.MD.SD = date("%d/%m/%y %H:%M:%S");
 	copiedData.MD.SB = TRP3_API.globals.player_id;
 
-	-- If the root item didn't exist before we create it
-	if not TRP3_DB.global[rootID] then
-		rootID, item = TRP3_API.extended.tools.createItem(copiedData, rootID);
-	else
-		-- If it existed we update it
-		TRP3_DB.global[rootID] = copiedData;
-		item = TRP3_DB.global[rootID];
-	end
-	TRP3_API.inventory.addItem(nil, data.fullID, { count = 1, madeBy = item.BA and item.BA.CR });
+	TRP3_DB.exchange[rootID] = copiedData;
+
+	TRP3_API.security.computeSecurity(rootID, copiedData);
+	TRP3_API.extended.unregisterObject(rootID);
+	TRP3_API.extended.registerObject(rootID, copiedData, 0);
+	TRP3_API.script.clearRootCompilation(rootID);
+	TRP3_API.security.registerSender(rootID, sender);
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+	TRP3_API.events.fireEvent(TRP3_API.events.ON_OBJECT_UPDATED);
+	TRP3_API.inventory.addItem(nil, data.fullID, { count = 1, madeBy = copiedData.BA and copiedData.BA.CR });
 end
 
-TRP3_API.extended.DatabaseItemsChatLinksModule = DatabaseItemsChatLinksModule;
+TRP3_API.extended.ItemsChatLinksModule = ItemsChatLinksModule;

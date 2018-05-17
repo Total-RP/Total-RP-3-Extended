@@ -42,12 +42,6 @@ local hasImportExportModule = false;
 
 local SUPPOSED_SERIAL_SIZE_LIMIT = 500000; -- We suppose the text field can only handle 500k pastes
 
--- Total RP 3 imports
----@type ChatLinkModule
-local DatabaseItemsChatLinksModule = TRP3_API.extended.DatabaseItemsChatLinksModule;
----@type ChatLinkModule
-local DatabaseCampaignsChatLinksModule = TRP3_API.extended.DatabaseCampaignsChatLinksModule;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: util methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -135,13 +129,14 @@ local function onLineClick(self, button)
 	else
 		-- If the shift key is down we want to insert a link for this item
 		if IsShiftKeyDown() then
-			if data.TY == "IT" then
-				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_DATABASE_ITEM, function(canBeImported)
-					DatabaseItemsChatLinksModule:InsertLink(data.fullID, data.rootID, canBeImported);
+			TRP3_API.Ellyb.Tables.inspect(data);
+			if data.type == "IT" then
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
+					TRP3_API.extended.ItemsChatLinksModule:InsertLink(data.fullID, data.rootID, {}, canBeImported);
 				end);
-			elseif data.TY == "CA" then
+			elseif data.type == "CA" then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_CAMPAIGN, function(canBeImported)
-					DatabaseCampaignsChatLinksModule:InsertLink(data.fullID, data.rootID, canBeImported);
+					TRP3_API.extended.CampaignsChatLinksModule:InsertLink(data.fullID, data.rootID, canBeImported);
 				end);
 			end
 		else
@@ -157,7 +152,6 @@ end
 local color = "|cffffff00";
 local fieldFormat = "%s: " .. color .. "%s|r";
 
-local SUPPORTED_CREATION_TYPES = { "CA", "QU", "ST", "IT" }
 
 local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	local metadata = rootClass.MD or EMPTY;
@@ -176,7 +170,7 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	text = text .. "\n" .. fieldFormat:format(loc.SPECIFIC_MODE, TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
 	text = text .. "\n\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.LEFT_CLICK, loc.CM_OPEN);
 	text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.DB_ACTIONS);
-	if tContains(SUPPORTED_CREATION_TYPES, type) then
+	if type == "CA" or type == "IT" then
 		text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),  loc.CL_TOOLTIP);
 	end
 	return text;
