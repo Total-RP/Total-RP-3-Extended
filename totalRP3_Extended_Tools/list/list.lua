@@ -129,7 +129,6 @@ local function onLineClick(self, button)
 	else
 		-- If the shift key is down we want to insert a link for this item
 		if IsShiftKeyDown() then
-			TRP3_API.Ellyb.Tables.inspect(data);
 			if data.type == "IT" then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
 					TRP3_API.extended.ItemsChatLinksModule:InsertLink(data.fullID, data.rootID, {}, canBeImported);
