@@ -22,7 +22,7 @@ _Note: You can already send links to player who have Total RP 3 version 1.3 or a
 ## Changed
 
 - Numeric variables are now displayed with 2 decimal values by default. You can manually choose how many decimals to display on a variable by using ${variable#X} for X decimals.
-- "Next step index" has been removed from the bottom of cut-scene dialogs, replaced by "Choose an option" when the player has to make a choice.
+- "Next step index" has been removed from the bottom of cutscene dialogs, replaced by "Choose an option" when the player has to make a choice.
 - Trying to input an inner item ID with a space will now result in a warning popup.
 - Creating an inner item by copying another item will now upgrade the inner item mode to match the parent's mode.
 - The `TRP3_KILL` event arguments (to track kills from player & party) has been changed to return the killed entity type, and different info in case of a player killed. [Learn more](https://github.com/Ellypse/Total-RP-3-Extended/wiki/Total-RP-3-:-Extended-custom-events)
