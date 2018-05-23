@@ -17,6 +17,8 @@
 ----------------------------------------------------------------------------------
 
 -- Fixed inner item display bug (issue #82) (Paul Corlay)
+---@type Ellyb;
+local Ellyb = Ellyb("totalRP3");
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, strsplit, tinsert, table, strtrim = wipe, pairs, strsplit, tinsert, table, strtrim;
@@ -30,7 +32,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
 local showItemTooltip = TRP3_API.inventory.showItemTooltip;
 local IsAltKeyDown = IsAltKeyDown;
-
+local tContains = tContains;
 local ToolFrame, onLineActionSelected;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
 local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
@@ -125,10 +127,24 @@ local function onLineClick(self, button)
 			onLineActionSelected("1" .. data.fullID);
 		end
 	else
-		if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
-			TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID, nil,  not TRP3_DB.my[data.rootID]);
+		-- If the shift key is down we want to insert a link for this item
+		if IsShiftKeyDown() then
+			TRP3_API.Ellyb.Tables.inspect(data);
+			if data.type == "IT" then
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
+					TRP3_API.extended.ItemsChatLinksModule:InsertLink(data.fullID, data.rootID, {}, canBeImported);
+				end);
+			elseif data.type == "CA" then
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_CAMPAIGN, function(canBeImported)
+					TRP3_API.extended.CampaignsChatLinksModule:InsertLink(data.fullID, data.rootID, canBeImported);
+				end);
+			end
 		else
-			TRP3_API.extended.tools.goToPage(data.fullID, true);
+			if data.type == TRP3_DB.types.ITEM and data.mode == TRP3_DB.modes.QUICK then
+				TRP3_API.extended.tools.openItemQuickEditor(self, nil, data.fullID, nil, not TRP3_DB.my[data.rootID]);
+			else
+				TRP3_API.extended.tools.goToPage(data.fullID, true);
+			end
 		end
 	end
 end
@@ -136,7 +152,8 @@ end
 local color = "|cffffff00";
 local fieldFormat = "%s: " .. color .. "%s|r";
 
-local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID)
+
+local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	local metadata = rootClass.MD or EMPTY;
 	local text = "";
 
@@ -151,8 +168,11 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID)
 	end
 
 	text = text .. "\n" .. fieldFormat:format(loc.SPECIFIC_MODE, TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
-	text = text .. "\n\n|cffffff00" .. loc.CM_CLICK .. ": |cffff9900" .. loc.CM_OPEN;
-	text = text .. "\n|cffffff00" .. loc.CM_R_CLICK .. ": |cffff9900" .. loc.DB_ACTIONS;
+	text = text .. "\n\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.LEFT_CLICK, loc.CM_OPEN);
+	text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.DB_ACTIONS);
+	if type == "CA" or type == "IT" then
+		text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),  loc.CL_TOOLTIP);
+	end
 	return text;
 end
 
@@ -217,7 +237,7 @@ function refresh()
 			isOpen = isOpen,
 			hasChildren = hasChildren,
 			locale = locale,
-			metadataTooltip = getMetadataTooltipText(parts[1], rootClass, objectID == parts[#parts], parts[#parts]),
+			metadataTooltip = getMetadataTooltipText(parts[1], rootClass, objectID == parts[#parts], parts[#parts], class.TY),
 		}
 
 	end

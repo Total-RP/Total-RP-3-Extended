@@ -2,6 +2,7 @@
 -- Total RP 3
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+--  Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -1540,6 +1541,13 @@ You can also see the history of previous steps, in case you forget something.]],
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	CL_CREATION = "Extended creation",
+	CL_EXTENDED_ITEM = "Extended item",
+	CL_EXTENDED_CAMPAIGN = "Extended campaign",
+	CL_CAMPAIGN_PROGRESSION = "Progression for %s:",
+	CL_IMPORT = "Import into database",
+	CL_IMPORT_ITEM_BAG = "Add item to your bag",
+	CL_TOOLTIP = "Create a chat link",
 	IN_INNER_ENTER_ID_NO_SPACE = "Object IDs can't contain spaces. Remember that this isn't the object's name !",
 	EFFECT_SOUND_ID_SELF_ID_TT = "The ID is an internal identifier for sounds in the game.\n\n|cff00ff00You can easily find all ID on websites like wowhead.\n\n|cffff9900Leave empty to stop all sounds played on the selected channel.",
 	EFFECT_SOUND_ID_STOP = "Stop sound ID",
@@ -1551,6 +1559,9 @@ You can also see the history of previous steps, in case you forget something.]],
 	EFFECT_SOUND_ID_LOCAL_STOP_TT = "Stops one or all sounds in a particular channel for players around you.",
 	EFFECT_SOUND_MUSIC_LOCAL_STOP = "Stop local music",
 	EFFECT_SOUND_MUSIC_LOCAL_STOP_TT = "If you use the \"play local music\" effect, the music will loop for all players around until the game plays another music (for example: the player enters a new zone), or if each player stops it manually or until you use this effect.\n\n|cffff9900Note that this effect will only stop music played by the addon, and will not stop a music played by the game.",
+	SEC_TT_COMBO_2 = "Configure security",
+	SET_TT_SECURED_2 = "Some potentially malicious effects have been secured for your safety.",
+	SET_TT_SECURED_2_1 = "See more details.",
 	IT_EX_TRADE_BUTTON = "Open exchange",
 	IT_EX_TRADE_BUTTON_TT = "Open the exchange frame to start trading items with this player.",
 	INV_TU_5_V2 = [[You can exchange an item (or a stack of items) with another player by drag & drop the stack on the player (just like the game does) or using the dedicated button on the target frame.
@@ -1583,7 +1594,7 @@ Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
 
 -- Register all locales into the localization system
 -- Note the localeContent is filled by the publishing script using CurseForge's localization tool when packaging builds
--- See https://wow.curseforge.com/projects/total-rp-3/localization
+-- See https://wow.curseforge.com/projects/total-rp-3-extended/localization
 local localeContent = {};
 
 --@localization(locale="enUS", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
