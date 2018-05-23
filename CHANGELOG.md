@@ -8,7 +8,7 @@ We have added support for Total RP 3's chat links system. You can now insert lin
 
 Shift-Click on an item in your inventory, on a campaign in your quest log or in the database list to insert a link inside the chat frame. Make the link importable if you want the other players to be able to import the creation and use it, or make it viewable if you just want them to see the information. When sending a link from your inventory or quest log, the campaign progress is visible in the tooltip and variables in the text fields are resolved so that the tooltip looks exactly like what you see at the moment you created the link (if the variables change, the link won't be automatically updated).
 
-_Note: You can already send links to player who have Total RP 3 version 1.3 or above, but they will need Total RP 3: Extended 1.1 or above to import the content._
+_Note: You can already send links to player who have Total RP 3 version 1.3 or above, but they will need Total RP 3: Extended 1.1 or above to import the content. **It is also strongly advised to use Total RP 3 version 1.3.4.3 (currently in beta) or above to get the download progress on the tooltip buttons during the importing process.**_
 
 ## Added
 - Added workflow effects to stop sounds, local sounds, and local musics. You can either stop a specific sound/music ID, or all sounds/musics you've triggered so far.
