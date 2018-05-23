@@ -40,4 +40,4 @@ _Note: You can already send links to player who have Total RP 3 version 1.3 or a
 - Fixed a bug that would show incorrect stash icons on the map after a scan.
 - "Loot all" now properly loots everything it can without asking for permission when reaching a stack.
 - "Loot all" won't show "Received: [Item] x 0" when loot fails (because of full inventory, unique item...).
-- Fixed a bug that would add a condition to a player choice in a cut-scene even if "Condition" was exited without saving.
+- Fixed a bug that would add a condition to a player choice in a cutscene even if "Condition" was exited without saving.
