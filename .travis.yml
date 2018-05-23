@@ -16,7 +16,7 @@ install:
   - luarocks install --local luacheck
 
 # Run luacheck to make sure there is not syntax error left in the add-on
-script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011" -g 7.3.5
+script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
 
 notifications:
   email:
@@ -29,4 +29,4 @@ cache:
     - $HOME/.luarocks
 
 # Call script to package the add-on. We pass the CurseForge and WoWInterface IDs to the script (it can't read it from the .toc file somehow)
-after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 100707 -w 24465 -o
+after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 100707 -w 24465 -g 7.3.5 -o
