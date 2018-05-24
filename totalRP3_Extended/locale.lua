@@ -1535,12 +1535,6 @@ You can easily see each quest current situation and what are the current objecti
 	QUEST_TU_4 = [[|cff00ff00You can find here the current progression of this quest and all current objectives.|r
 
 You can also see the history of previous steps, in case you forget something.]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	CL_CREATION = "Extended creation",
 	CL_EXTENDED_ITEM = "Extended item",
 	CL_EXTENDED_CAMPAIGN = "Extended campaign",
@@ -1590,6 +1584,13 @@ http://wowwiki.wikia.com/wiki/Event_API
 	EFFECT_ITEM_DICE_PREVIEW_STORED = "Rollin' %s and saving the result to %s",
 	EFFECT_ITEM_DICE_ROLL_VAR = "Variable name (optional)",
 	EFFECT_ITEM_DICE_ROLL_VAR_TT = "The variable in which you want to store the dice roll result.\nLeave empty if you don't want to store the result.",
+
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
