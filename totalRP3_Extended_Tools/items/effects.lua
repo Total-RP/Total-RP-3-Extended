@@ -328,24 +328,50 @@ local function item_roll_dice_init()
 	editor.roll.title:SetText(loc.EFFECT_ITEM_DICE_ROLL);
 	setTooltipForSameFrame(editor.roll.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_DICE_ROLL, loc.EFFECT_ITEM_DICE_ROLL_TT);
 
+	editor.var.title:SetText(loc.EFFECT_ITEM_DICE_ROLL_VAR);
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_DICE_ROLL_VAR, loc.EFFECT_ITEM_DICE_ROLL_VAR_TT);
+
+	-- Source
+	local sources = {
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_WORKFLOW), "w", loc.EFFECT_SOURCE_WORKFLOW_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_SOURCE_OBJECT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_SOURCE_CAMPAIGN_TT}
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		editor.roll:SetText(data[1] or "1d100");
+		editor.var:SetText(data[2] or "");
+		editor.source:SetSelectedValue(data[3] or "w");
 	end
 
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.roll:GetText())) or "1d100";
+		scriptData.args[2] = stEtN(strtrim(editor.var:GetText())) or "";
+		scriptData.args[3] = editor.source:GetSelectedValue() or "w";
 	end
+
+	local sourcesText = {
+		w = loc.EFFECT_SOURCE_WORKFLOW,
+		o = loc.EFFECT_SOURCE_OBJECT,
+		c = loc.EFFECT_SOURCE_CAMPAIGN
+	}
 
 	registerEffectEditor("item_roll_dice", {
 		title = loc.EFFECT_ITEM_DICE,
 		icon = "inv_misc_dice_02",
 		description = loc.EFFECT_ITEM_DICE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(loc.EFFECT_ITEM_DICE_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+			if args[2] ~= "" then
+				local source = sourcesText[args[3]] or "?";
+				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_DICE_PREVIEW_STORED:format(TRP3_API.Ellyb.ColorManager.GREEN(tostring(args[1])), TRP3_API.Ellyb.ColorManager.GREEN("(" .. source .. ") ") .. tostring(args[2])));
+			else
+				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_DICE_PREVIEW:format(TRP3_API.Ellyb.ColorManager.GREEN(tostring(args[1]))));
+			end
 		end,
 		getDefaultArgs = function()
-			return {"1d100", ""};
+			return {"1d100", "", "w"};
 		end,
 		editor = editor,
 	});

@@ -155,11 +155,17 @@ TRP3_API.inventory.EFFECTS = {
 		getCArgs = function(args)
 			local roll = tostring(args[1]) or "1d100";
 			local serial = strjoin("\", args), var(\"", strsplit(" ", roll));
-			return serial;
+			local varName = args[2] or "";
+			local varSource = args[3] or "w";
+			return serial, varName, varSource;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local serial = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.slash.rollDices(strsplit(" ",TRP3_API.script.parseArgs(serial, eArgs)));
+			local serial, varName, varSource = structure.getCArgs(cArgs);
+			local rollResult = TRP3_API.slash.rollDices(strsplit(" ",TRP3_API.script.parseArgs(serial, eArgs)));
+			if varName ~= "" then
+				TRP3_API.script.setVar(eArgs, varSource, "=", varName, rollResult);
+			end
+			eArgs.LAST = rollResult;
 		end,
 	},
 

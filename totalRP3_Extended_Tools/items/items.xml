@@ -215,6 +215,19 @@
 				</Anchors>
 			</EditBox>
 
+			<EditBox parentKey="var" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.roll" x="0" y="-25"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-20" y="-20"/>
+				</Anchors>
+			</Frame>
+
 		</Frames>
 
 	</Frame>
