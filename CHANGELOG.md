@@ -1,20 +1,22 @@
 # Version 1.1
 
+**This version of Extended requires Total RP 3 version 1.3.4.4 or above.**
+
 ## New chat links support
 
 We have added support for Total RP 3's chat links system. You can now insert links to Items and Campaigns in chat by Shift-Clicking them. People will be able to see the creation's information, and even import them if you set the links to be importable.
 
-[PICTURES OF THE CHAT LINKS FEATURE GOES HERE]
+![](https://www.dropbox.com/s/s94rffs8ylktvpl/extended_chat_links.png?raw=1)
 
 Shift-Click on an item in your inventory, on a campaign in your quest log or in the database list to insert a link inside the chat frame. Make the link importable if you want the other players to be able to import the creation and use it, or make it viewable if you just want them to see the information. When sending a link from your inventory or quest log, the campaign progress is visible in the tooltip and variables in the text fields are resolved so that the tooltip looks exactly like what you see at the moment you created the link (if the variables change, the link won't be automatically updated).
 
-_Note: You can already send links to player who have Total RP 3 version 1.3 or above, but they will need Total RP 3: Extended 1.1 or above to import the content. **It is also strongly advised to use Total RP 3 version 1.3.4.3 (currently in beta) or above to get the download progress on the tooltip buttons during the importing process.**_
+_Note: You can send links to player who have Total RP 3 version 1.3 or above, but they will need Total RP 3: Extended 1.1 or above to import the content.__
 
 ## Added
 - Added workflow effects to stop sounds, local sounds, and local musics. You can either stop a specific sound/music ID, or all sounds/musics you've triggered so far.
 - Inventory effects can now parse variables, meaning you can now add ${amount} of an item.
 - Added a Trade button on the target frame to initiate a trade with another player (only shows if the target is using Extended).  
-[IMAGE OF THE TRADE BUTTON GOES HERE]
+![](https://www.dropbox.com/s/1j1ykegm043n3sh/extended_trade_button.png?raw=1)
 - The Restricted Lua script effect has now access to new functions to access variables from workflows, objects and active campaign. [Learn more](https://github.com/Ellypse/Total-RP-3-Extended/wiki/"Execute-restricted-Lua-script"-effect))
 - Added a button to create an expert item directly from the database.
 - Added an optional field in the dice roll effect to store the result in a variable.
@@ -28,7 +30,7 @@ _Note: You can already send links to player who have Total RP 3 version 1.3 or a
 - The `TRP3_KILL` event arguments (to track kills from player & party) has been changed to return the killed entity type, and different info in case of a player killed. [Learn more](https://github.com/Ellypse/Total-RP-3-Extended/wiki/Total-RP-3-:-Extended-custom-events)
 - TRP3_SIGNAL now gives the sender's name as 3rd argument.
 - New stashes will now set the current character as owner of the stash. Its name will be shown on scans even if you're playing on another character. Existing stashes can set or change the stash owner by using the "Set ownership" option in the dropdown shown when clicking the stash icon.
-[IMAGE OF THE MENU AND THE ICON GOES HERE]
+![](https://www.dropbox.com/s/i2cbjhjm0c894og/extended_take_stash_ownership.png?raw=1)
 
 ## Fixed
 
