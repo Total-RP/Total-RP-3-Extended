@@ -477,7 +477,7 @@ local function onStart()
 	end);
 end
 
-Globals.extended_version = 1011;
+Globals.extended_version = 1012;
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",

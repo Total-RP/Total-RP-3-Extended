@@ -1,3 +1,7 @@
+# Version 1.1.1
+
+Fixed an issue introduced with the chat links system that would prevent from splitting stacks of items in the inventory.
+
 # Version 1.1
 
 **This version of Extended requires Total RP 3 version 1.3.4.4 or above.**
