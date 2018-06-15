@@ -464,7 +464,7 @@ local function onStart()
 	-- Simplier combat kill event
 	TRP3_API.extended.KILL_EVENT = "TRP3_KILL";
 	Utils.event.registerHandler("COMBAT_LOG_EVENT_UNFILTERED", function(...)
-		local time, event, _, source, sourceName, _, _, dest, destName = ...;
+		local time, event, _, source, sourceName, _, _, dest, destName = CombatLogGetCurrentEventInfo();	-- No payload for combat log events in 8.0
 		if event == "PARTY_KILL" then
 			local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(dest);
 			if (unitType == "Player") then

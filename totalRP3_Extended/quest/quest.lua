@@ -28,12 +28,16 @@ local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass,
 
 local questHandlers = {};
 
-local function onQuestCallback(campaignID, questID, scriptID, condition, ...)
+local function onQuestCallback(campaignID, questID, scriptID, condition, eventID, ...)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
 	local class = getClass(fullID);
 	if class.SC and class.SC[scriptID] then
+		local payload = {...};
+		if (eventID == "COMBAT_LOG_EVENT" or eventID == "COMBAT_LOG_EVENT_UNFILTERED") then
+			payload = {CombatLogGetCurrentEventInfo()};	-- No payload for combat log events in 8.0
+		end
 		local playerQuestLog = TRP3_API.quest.getQuestLog();
-		local args = { object = playerQuestLog[campaignID], event = {...} };
+		local args = { object = playerQuestLog[campaignID], event = payload };
 		if TRP3_API.script.generateAndRunCondition(condition, args) then
 			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, fullID);
 		end
@@ -68,7 +72,7 @@ local function activateQuestHandlers(campaignID, questID, questClass)
 
 	for _, event in pairs(questClass.HA or EMPTY) do
 		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onQuestCallback(campaignID, questID, event.SC, event.CO, ...);
+			onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
 		end);
 		if not questHandlers[fullID] then
 			questHandlers[fullID] = {};
@@ -228,12 +232,16 @@ end
 
 local stepHandlers = {};
 
-local function onStepCallback(campaignID, questID, stepID, scriptID, condition, ...)
+local function onStepCallback(campaignID, questID, stepID, scriptID, condition, eventID, ...)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
 	local class = getClass(fullID);
 	if class.SC and class.SC[scriptID] then
+		local payload = {...};
+		if (eventID == "COMBAT_LOG_EVENT" or eventID == "COMBAT_LOG_EVENT_UNFILTERED") then
+			payload = {CombatLogGetCurrentEventInfo()};	-- No payload for combat log events in 8.0
+		end
 		local playerQuestLog = TRP3_API.quest.getQuestLog();
-		local args = {object = playerQuestLog[campaignID], event = {...}};
+		local args = {object = playerQuestLog[campaignID], event = payload};
 		if TRP3_API.script.generateAndRunCondition(condition, args) then
 			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, fullID);
 		end
@@ -276,7 +284,7 @@ local function activateStepHandlers(campaignID, questID, stepID, stepClass)
 
 	for _, event in pairs(stepClass.HA or EMPTY) do
 		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, ...);
+			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
 		end);
 		if not stepHandlers[fullID] then
 			stepHandlers[fullID] = {};

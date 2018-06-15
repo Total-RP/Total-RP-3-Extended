@@ -45,10 +45,14 @@ end
 
 local campaignHandlers = {};
 
-local function onCampaignCallback(campaignID, scriptID, condition, ...)
+local function onCampaignCallback(campaignID, scriptID, condition, eventID, ...)
 	local class = getClass(campaignID);
 	if class and class.SC and class.SC[scriptID] then
-		local args = { object = playerQuestLog[campaignID], event = {...} };
+		local payload = {...};
+		if (eventID == "COMBAT_LOG_EVENT" or eventID == "COMBAT_LOG_EVENT_UNFILTERED") then
+			payload = {CombatLogGetCurrentEventInfo()};	-- No payload for combat log events in 8.0
+		end
+		local args = { object = playerQuestLog[campaignID], event = payload };
 		if TRP3_API.script.generateAndRunCondition(condition, args) then
 			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, campaignID);
 		end
@@ -69,7 +73,7 @@ local function activateCampaignHandlers(campaignID, campaignClass)
 	Log.log("activateCampaignHandlers: " .. campaignID, Log.level.DEBUG);
 	for _, event in pairs(campaignClass.HA or EMPTY) do
 		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onCampaignCallback(campaignID, event.SC, event.CO, ...);
+			onCampaignCallback(campaignID, event.SC, event.CO, event.EV, ...);
 		end);
 		campaignHandlers[handlerID] = event.EV;
 	end
