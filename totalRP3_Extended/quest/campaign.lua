@@ -24,6 +24,9 @@ local loc = TRP3_API.loc;
 local Log = Utils.log;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
+-- Ellyb imports
+local Ellyb = TRP3_API.Ellyb;
+
 local playerQuestLog;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -69,13 +72,19 @@ local function clearCampaignHandlers()
 	TRP3_API.quest.clearAllQuestHandlers();
 end
 
+local function registerCampaignHandler(campaignID, event)
+	local handlerID = Utils.event.registerHandler(event.EV, function(...)
+		onCampaignCallback(campaignID, event.SC, event.CO, event.EV, ...);
+	end);
+	campaignHandlers[handlerID] = event.EV;
+end
+
 local function activateCampaignHandlers(campaignID, campaignClass)
 	Log.log("activateCampaignHandlers: " .. campaignID, Log.level.DEBUG);
 	for _, event in pairs(campaignClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onCampaignCallback(campaignID, event.SC, event.CO, event.EV, ...);
-		end);
-		campaignHandlers[handlerID] = event.EV;
+		if not pcall(registerCampaignHandler(campaignID, event)) then
+			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, campaignID)));
+		end
 	end
 	-- Active handlers for known quests
 	for questID, questClass in pairs(campaignClass.QE or EMPTY) do

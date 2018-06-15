@@ -1591,6 +1591,8 @@ http://wowwiki.wikia.com/wiki/Event_API
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	WO_EVENT_EX_UNKNOWN_ERROR = "[Error] Unknown event %s in %s",
+
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

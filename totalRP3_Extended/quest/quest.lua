@@ -22,6 +22,9 @@ local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
 
+-- Ellyb imports
+local Ellyb = TRP3_API.Ellyb;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- QUEST API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -66,18 +69,24 @@ local function clearAllQuestHandlers()
 end
 TRP3_API.quest.clearAllQuestHandlers = clearAllQuestHandlers;
 
+local function registerQuestHandler(campaignID, questID, fullID, event)
+	local handlerID = Utils.event.registerHandler(event.EV, function(...)
+		onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
+	end);
+	if not questHandlers[fullID] then
+		questHandlers[fullID] = {};
+	end
+	questHandlers[fullID][handlerID] = event.EV;
+end
+
 local function activateQuestHandlers(campaignID, questID, questClass)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
 	Log.log("activateQuestHandlers: " .. fullID, Log.level.DEBUG);
 
 	for _, event in pairs(questClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
-		end);
-		if not questHandlers[fullID] then
-			questHandlers[fullID] = {};
+		if not pcall(registerQuestHandler(campaignID, questID, fullID, event)) then
+			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
-		questHandlers[fullID][handlerID] = event.EV;
 	end
 
 	-- Active handlers for known step
@@ -278,18 +287,24 @@ function TRP3_API.quest.clearStepHandlersForQuest(questFullID)
 	end
 end
 
+local function registerStepHandler(campaignID, questID, stepID, fullID, event)
+	local handlerID = Utils.event.registerHandler(event.EV, function(...)
+		onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
+	end);
+	if not stepHandlers[fullID] then
+		stepHandlers[fullID] = {};
+	end
+	stepHandlers[fullID][handlerID] = event.EV;
+end
+
 local function activateStepHandlers(campaignID, questID, stepID, stepClass)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
 	Log.log("activateStepHandlers: " .. fullID, Log.level.DEBUG);
 
 	for _, event in pairs(stepClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
-		end);
-		if not stepHandlers[fullID] then
-			stepHandlers[fullID] = {};
+		if not pcall(registerStepHandler(campaignID, questID, stepID, fullID, event)) then
+			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
-		stepHandlers[fullID][handlerID] = event.EV;
 	end
 end
 TRP3_API.quest.activateStepHandlers = activateStepHandlers;
