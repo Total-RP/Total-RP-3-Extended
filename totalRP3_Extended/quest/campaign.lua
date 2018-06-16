@@ -27,6 +27,13 @@ local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended
 -- Ellyb imports
 local Ellyb = TRP3_API.Ellyb;
 
+-- List of custom events for Extended
+local CUSTOM_EVENTS = {
+	TRP3_KILL = "TRP3_KILL",
+	TRP3_ROLL = "TRP3_ROLL",
+	TRP3_SIGNAL = "TRP3_SIGNAL"
+};
+
 local playerQuestLog;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -65,17 +72,28 @@ end
 local function clearCampaignHandlers()
 	Log.log("clearCampaignHandlers", Log.level.DEBUG);
 
-	for handlerID, _ in pairs(campaignHandlers) do
-		Utils.event.unregisterHandler(handlerID);
+	for handlerID, eventID in pairs(campaignHandlers) do
+		if (CUSTOM_EVENTS[eventID] ~= nil) then
+			Events.unregisterCallback(handlerID);
+		else
+			Utils.event.unregisterHandler(handlerID);
+		end
 	end
 	wipe(campaignHandlers);
 	TRP3_API.quest.clearAllQuestHandlers();
 end
 
 local function registerCampaignHandler(campaignID, event)
-	local handlerID = Utils.event.registerHandler(event.EV, function(...)
-		onCampaignCallback(campaignID, event.SC, event.CO, event.EV, ...);
-	end);
+	local handlerID;
+	if (CUSTOM_EVENTS[event.EV] ~= nil) then
+		handlerID = Events.registerCallback(event.EV, function(...)
+			onCampaignCallback(campaignID, event.SC, event.CO, event.EV, ...);
+		end);
+	else
+		handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onCampaignCallback(campaignID, event.SC, event.CO, event.EV, ...);
+		end);
+	end
 	campaignHandlers[handlerID] = event.EV;
 end
 

@@ -25,6 +25,13 @@ local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass,
 -- Ellyb imports
 local Ellyb = TRP3_API.Ellyb;
 
+-- List of custom events for Extended
+local CUSTOM_EVENTS = {
+	TRP3_KILL = "TRP3_KILL",
+	TRP3_ROLL = "TRP3_ROLL",
+	TRP3_SIGNAL = "TRP3_SIGNAL"
+};
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- QUEST API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -51,8 +58,12 @@ local function clearQuestHandlers(questFullID)
 	Log.log("clearQuestHandlers: " .. questFullID, Log.level.DEBUG);
 
 	if questHandlers[questFullID] then
-		for handlerID, _ in pairs(questHandlers[questFullID]) do
-			Utils.event.unregisterHandler(handlerID);
+		for handlerID, eventID in pairs(questHandlers[questFullID]) do
+			if (CUSTOM_EVENTS[eventID] ~= nil) then
+				Events.unregisterCallback(handlerID);
+			else
+				Utils.event.unregisterHandler(handlerID);
+			end
 		end
 		wipe(questHandlers[questFullID]);
 		questHandlers[questFullID] = nil;
@@ -70,9 +81,16 @@ end
 TRP3_API.quest.clearAllQuestHandlers = clearAllQuestHandlers;
 
 local function registerQuestHandler(campaignID, questID, fullID, event)
-	local handlerID = Utils.event.registerHandler(event.EV, function(...)
-		onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
-	end);
+	local handlerID;
+	if (CUSTOM_EVENTS[event.EV] ~= nil) then
+		handlerID = Events.registerCallback(event.EV, function(...)
+			onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
+		end);
+	else
+		handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
+		end);
+	end
 	if not questHandlers[fullID] then
 		questHandlers[fullID] = {};
 	end
@@ -261,8 +279,12 @@ local function clearStepHandlers(stepFullID)
 	Log.log("clearStepHandlers: " .. stepFullID, Log.level.DEBUG);
 
 	if stepHandlers[stepFullID] then
-		for handlerID, _ in pairs(stepHandlers[stepFullID]) do
-			Utils.event.unregisterHandler(handlerID);
+		for handlerID, eventID in pairs(stepHandlers[stepFullID]) do
+			if (CUSTOM_EVENTS[eventID] ~= nil) then
+				Events.unregisterCallback(handlerID);
+			else
+				Utils.event.unregisterHandler(handlerID);
+			end
 		end
 		wipe(stepHandlers[stepFullID]);
 		stepHandlers[stepFullID] = nil;
@@ -288,9 +310,16 @@ function TRP3_API.quest.clearStepHandlersForQuest(questFullID)
 end
 
 local function registerStepHandler(campaignID, questID, stepID, fullID, event)
-	local handlerID = Utils.event.registerHandler(event.EV, function(...)
-		onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
-	end);
+	local handlerID;
+	if (CUSTOM_EVENTS[event.EV] ~= nil) then
+		handlerID = Events.registerCallback(event.EV, function(...)
+			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
+		end);
+	else
+		handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
+		end);
+	end
 	if not stepHandlers[fullID] then
 		stepHandlers[fullID] = {};
 	end
