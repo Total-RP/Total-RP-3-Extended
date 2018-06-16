@@ -293,7 +293,7 @@ local function doUseSlot(info, class, container)
 		end
 		local retCode = TRP3_API.script.executeClassScript(useWorkflow, class.SC,
 			{object = info, container = container, class = class}, info.id);
-		Utils.event.fireEvent(TRP3_API.extended.ITEM_USED_EVENT, info.id, retCode);
+		Events.fireEvent(TRP3_API.extended.ITEM_USED_EVENT, info.id, retCode);
 		return retCode;
 	end
 end

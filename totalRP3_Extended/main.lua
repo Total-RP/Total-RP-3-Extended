@@ -425,14 +425,14 @@ local function onStart()
 	TRP3_API.communication.registerProtocolPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
 		if sender ~= Globals.player_id then
 			Log.log(("Received signal from %s"):format(sender));
-			Utils.event.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v, sender);
+			Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v, sender);
 		end
 	end);
 	function TRP3_API.extended.sendSignal(id, value)
 		if UnitExists("target") and UnitIsPlayer("target") then
 			if UnitIsUnit("player", "target") then
 				Log.log("Received signal from yourself");
-				Utils.event.fireEvent(TRP3_API.extended.SIGNAL_EVENT, id, value, Utils.str.getUnitID("player"));
+				Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, id, value, Utils.str.getUnitID("player"));
 			else
 				TRP3_API.communication.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
 			end
@@ -469,9 +469,9 @@ local function onStart()
 			local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(dest);
 			if (unitType == "Player") then
 				local className, classID, raceName, raceID, gender = GetPlayerInfoByGUID(dest);
-				Utils.event.fireEvent(TRP3_API.extended.KILL_EVENT, unitType, source, sourceName, dest, destName, classID, className, raceID, raceName, gender);
+				Events.fireEvent(TRP3_API.extended.KILL_EVENT, unitType, source, sourceName, dest, destName, classID, className, raceID, raceName, gender);
 			else
-				Utils.event.fireEvent(TRP3_API.extended.KILL_EVENT, unitType, source, sourceName, dest, destName, NPC_ID);
+				Events.fireEvent(TRP3_API.extended.KILL_EVENT, unitType, source, sourceName, dest, destName, NPC_ID);
 			end
 		end
 	end);

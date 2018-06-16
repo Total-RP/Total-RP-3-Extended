@@ -82,7 +82,7 @@ end
 local function activateCampaignHandlers(campaignID, campaignClass)
 	Log.log("activateCampaignHandlers: " .. campaignID, Log.level.DEBUG);
 	for _, event in pairs(campaignClass.HA or EMPTY) do
-		if not pcall(registerCampaignHandler(campaignID, event)) then
+		if not pcall(function() registerCampaignHandler(campaignID, event) end) then
 			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, campaignID)));
 		end
 	end
@@ -239,7 +239,7 @@ function TRP3_API.quest.campaignInit()
 	-- Emote event (yes, I put it here because I'm the boss)
 	TRP3_API.extended.EMOTE_EVENT = "TRP3_EMOTE";
 	hooksecurefunc("DoEmote", function(emote, arg2, arg3)
-		Utils.event.fireEvent(TRP3_API.extended.EMOTE_EVENT, emote);
+		Events.fireEvent(TRP3_API.extended.EMOTE_EVENT, emote);
 	end);
 
 	-- Helpers
