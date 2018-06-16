@@ -102,7 +102,7 @@ local function activateQuestHandlers(campaignID, questID, questClass)
 	Log.log("activateQuestHandlers: " .. fullID, Log.level.DEBUG);
 
 	for _, event in pairs(questClass.HA or EMPTY) do
-		if not pcall(function() registerQuestHandler(campaignID, questID, fullID, event) end) then
+		if event.EV and not pcall(function() registerQuestHandler(campaignID, questID, fullID, event) end) then
 			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
 	end
@@ -331,7 +331,7 @@ local function activateStepHandlers(campaignID, questID, stepID, stepClass)
 	Log.log("activateStepHandlers: " .. fullID, Log.level.DEBUG);
 
 	for _, event in pairs(stepClass.HA or EMPTY) do
-		if not pcall(function() registerStepHandler(campaignID, questID, stepID, fullID, event) end) then
+		if event.EV and not pcall(function() registerStepHandler(campaignID, questID, stepID, fullID, event) end) then
 			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
 	end

@@ -100,7 +100,7 @@ end
 local function activateCampaignHandlers(campaignID, campaignClass)
 	Log.log("activateCampaignHandlers: " .. campaignID, Log.level.DEBUG);
 	for _, event in pairs(campaignClass.HA or EMPTY) do
-		if not pcall(function() registerCampaignHandler(campaignID, event) end) then
+		if event.EV and not pcall(function() registerCampaignHandler(campaignID, event) end) then
 			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, campaignID)));
 		end
 	end
