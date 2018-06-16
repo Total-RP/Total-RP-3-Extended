@@ -31,7 +31,8 @@ local Ellyb = TRP3_API.Ellyb;
 local CUSTOM_EVENTS = {
 	TRP3_KILL = "TRP3_KILL",
 	TRP3_ROLL = "TRP3_ROLL",
-	TRP3_SIGNAL = "TRP3_SIGNAL"
+	TRP3_SIGNAL = "TRP3_SIGNAL",
+	TRP3_ITEM_USED = "TRP3_ITEM_USED"
 };
 
 local playerQuestLog;
@@ -243,7 +244,6 @@ function TRP3_API.quest.campaignInit()
 	end
 
 	TRP3_API.quest.EVENT_REFRESH_CAMPAIGN = "EVENT_REFRESH_CAMPAIGN";
-	Events.registerEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
 		if getActiveCampaignLog() and not TRP3_API.extended.classExists(playerQuestLog.currentCampaign) then
 			deactivateCurrentCampaign();

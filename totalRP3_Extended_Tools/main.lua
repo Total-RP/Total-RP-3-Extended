@@ -420,7 +420,6 @@ local function onStart()
 
 	-- Events
 	Events.ON_OBJECT_UPDATED = "ON_OBJECT_UPDATED";
-	Events.registerEvent(Events.ON_OBJECT_UPDATED);
 
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.root, loc.ROOT_TITLE, 150);
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.actions, loc.DB_ACTIONS, 100);
@@ -450,7 +449,6 @@ local function onStart()
 	toolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
 
 	TRP3_API.events.NAVIGATION_EXTENDED_RESIZED = "NAVIGATION_EXTENDED_RESIZED";
-	TRP3_API.events.registerEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED);
 
 	toolFrame.Resize.minWidth = 1150;
 	toolFrame.Resize.minHeight = 730;

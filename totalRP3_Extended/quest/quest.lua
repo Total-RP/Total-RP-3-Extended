@@ -29,7 +29,8 @@ local Ellyb = TRP3_API.Ellyb;
 local CUSTOM_EVENTS = {
 	TRP3_KILL = "TRP3_KILL",
 	TRP3_ROLL = "TRP3_ROLL",
-	TRP3_SIGNAL = "TRP3_SIGNAL"
+	TRP3_SIGNAL = "TRP3_SIGNAL",
+	TRP3_ITEM_USED = "TRP3_ITEM_USED"
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -743,7 +744,6 @@ end
 
 function TRP3_API.quest.onStart()
 	Events.CAMPAIGN_REFRESH_LOG = "CAMPAIGN_REFRESH_LOG";
-	Events.registerEvent(Events.CAMPAIGN_REFRESH_LOG);
 
 	TRP3_QuestToast.title:SetText(loc.QE_NEW);
 
