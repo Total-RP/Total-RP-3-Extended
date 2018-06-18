@@ -28,8 +28,8 @@
 			<OnLoad>
 				CastingBarFrame_OnLoad(self, nil, false, false);
 			</OnLoad>
-			<OnEvent function="nil" />
-			<OnShow function="nil" />
+			<OnEvent function="" />
+			<OnShow function="" />
 		</Scripts>
 	</StatusBar>
 

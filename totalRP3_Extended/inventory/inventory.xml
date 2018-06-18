@@ -383,15 +383,15 @@
 							<Anchor point="RIGHT" x="-5" y="0"/>
 						</Anchors>
 						<Scripts>
-							<OnEnter function="nil"/>
-							<OnLeave function="nil"/>
+							<OnEnter function=""/>
+							<OnLeave function=""/>
 							<OnMouseUp>
 								self.onMouseUpFunc(self, button);
 							</OnMouseUp>
 							<OnMouseDown>
 								Model_OnMouseDown(self, button);
 							</OnMouseDown>
-							<OnMouseWheel function="nil"/>
+							<OnMouseWheel function=""/>
 						</Scripts>
 						<Layers>
 							<Layer level="OVERLAY">
