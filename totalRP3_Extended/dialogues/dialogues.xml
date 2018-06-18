@@ -53,9 +53,9 @@
 					<Anchor point="CENTER" relativePoint="LEFT" x="0" y="0" />
 				</Anchors>
 				<Scripts>
-					<OnMouseDown function="nil"/>
-					<OnMouseUp function="nil"/>
-					<OnClick function="nil"/>
+					<OnMouseDown function=""/>
+					<OnMouseUp function=""/>
+					<OnClick function=""/>
 				</Scripts>
 			</Button>
 		</Frames>
