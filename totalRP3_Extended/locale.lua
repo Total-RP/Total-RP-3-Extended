@@ -1592,6 +1592,8 @@ http://wowwiki.wikia.com/wiki/Event_API
 	------------------------------------------------------------------------------------------------
 
 	WO_EVENT_EX_UNKNOWN_ERROR = "[Error] Unknown event %s in %s",
+	WO_EVENT_EX_BROWSER_TITLE = "Event browser",
+	WO_EVENT_EX_BROWSER_NO_PAYLOAD = "No arguments",
 
 }
 
