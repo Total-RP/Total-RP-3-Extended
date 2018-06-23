@@ -426,9 +426,37 @@ local function onTabChanged(tabWidget, tab)
 end
 
 function TRP3_API.extended.tools.formatVersion(version)
-	local v = tostring(version or Globals.extended_version);
+	if not version then
+		return Globals.extended_display_version;
+	end
+
+	-- Fixing the mess
+	if (version == 1010) then
+		return "1.0.9.1"
+	elseif (version == 1011) then
+		return "1.1.0"
+	elseif (version == 1012) then
+		return "1.1.1"
+	end
+
+	-- Before the change
+	local v = tostring(version);
 	local inter = tostring(tonumber(v:sub(2, 3)));
 	return v:sub(1, 1) .. "." .. inter .. "." .. v:sub(4, 4);
+end
+
+function TRP3_API.extended.tools.getClassVersion(rootID)
+	if not rootID.MD.tV and not rootID.MD.dV then
+		return "?"
+	end
+
+	if rootID.MD.dV then	-- Display version in the creation data (after 1.1.1)
+		return rootID.MD.dV
+	elseif (rootID.MD.tV <= 1012) then	-- No display version (1.1.1 and before)
+		return TRP3_API.extended.tools.formatVersion(rootID.MD.tV);
+	else	-- Shouldn't happen
+		return rootID.MD.tV
+	end
 end
 
 local function createTabBar()
@@ -500,7 +528,7 @@ function onLineActionSelected(value, button)
 		TRP3_InnerObjectEditor.copy_fullClassID = objectID;
 	elseif action == ACTION_FLAG_EXPORT then
 		local class = getClass(objectID);
-		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class});
+		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class, Globals.extended_display_version});
 		serial = serial:gsub("|", "||");
 		if serial:len() < SUPPOSED_SERIAL_SIZE_LIMIT then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
@@ -516,6 +544,7 @@ function onLineActionSelected(value, button)
 			TRP3_Extended_ImpExport.object = {};
 			TRP3_Extended_ImpExport.date = date("%d/%m/%y %H:%M:%S");
 			TRP3_Extended_ImpExport.version = Globals.extended_version;
+			TRP3_Extended_ImpExport.display_version = Globals.extended_display_version;
 			Utils.table.copy(TRP3_Extended_ImpExport.object, getClass(objectID));
 			TRP3_Tools_Flags.exportAlert = true;
 			ReloadUI();
@@ -728,7 +757,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.import, "INV_Inscription_ScrollOfWisdom_02");
 
 	-- Import
-	local function importFunction(version, ID, data)
+	local function importFunction(version, ID, data, displayVersion)
 		local type = data.TY;
 		local objectVersion = data.MD.V or 0;
 		local author = data.MD.CB;
@@ -771,7 +800,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		end
 
 		if version ~= Globals.extended_version then
-			TRP3_API.popup.showConfirmPopup(loc.DB_IMPORT_CONFIRM:format(TRP3_API.extended.tools.formatVersion(version), TRP3_API.extended.tools.formatVersion()), function()
+			TRP3_API.popup.showConfirmPopup(loc.DB_IMPORT_CONFIRM:format(displayVersion or TRP3_API.extended.tools.formatVersion(version), TRP3_API.extended.tools.formatVersion()), function()
 				C_Timer.After(0.25, checkVersion);
 			end);
 		else
@@ -797,17 +826,18 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		local code = ToolFrame.list.container.import.content.scroll.text:GetText();
 		code = code:gsub("||", "|");
 		local object = Utils.serial.safeDeserialize(code);
-		if object and type(object) == "table" and #object == 3 then
+		if object and type(object) == "table" and (#object == 3 or #object == 4) then
 			local version = object[1];
 			local ID = object[2];
 			local data = object[3];
+			local displayVersion = object[4];
 			local link = TRP3_API.inventory.getItemLink(data);
 			local by = data.MD.CB;
 			local objectVersion = data.MD.V or 0;
 			local type = TRP3_API.extended.tools.getTypeLocale(data.TY);
 			TRP3_API.popup.showConfirmPopup(loc.DB_IMPORT_FULL_CONFIRM:format(type, link, by, objectVersion), function()
 				C_Timer.After(0.25, function()
-					importFunction(version, ID, data);
+					importFunction(version, ID, data, displayVersion);
 					tabGroup:SelectTab(4); -- After importing go to full database, so we see what we have imported
 				end);
 			end);
@@ -851,13 +881,14 @@ function TRP3_API.extended.tools.initList(toolFrame)
 				local version = TRP3_Extended_ImpExport.version;
 				local ID = TRP3_Extended_ImpExport.id;
 				local data = TRP3_Extended_ImpExport.object;
+				local displayVersion = TRP3_Extended_ImpExport.display_version;
 				local link = TRP3_API.inventory.getItemLink(data);
 				local by = data.MD.CB;
 				local objectVersion = data.MD.V or 0;
 				local type = TRP3_API.extended.tools.getTypeLocale(data.TY);
 				TRP3_API.popup.showConfirmPopup(loc.DB_IMPORT_FULL_CONFIRM:format(type, link, by, objectVersion), function()
 					C_Timer.After(0.25, function()
-						importFunction(version, ID, data);
+						importFunction(version, ID, data, displayVersion);
 					end);
 				end);
 			else

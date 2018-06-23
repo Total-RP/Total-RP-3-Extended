@@ -1737,7 +1737,7 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 
 ##  You are the best!
 
-## Total RP 3: Extended is also maintained thanks Ellype's [Patreon](http://patreon.com/Ellypse) supporters:
+## Total RP 3: Extended is also maintained thanks to Ellypse's [Patreon](http://patreon.com/Ellypse) supporters:
 
 %s
 ]];
