@@ -171,14 +171,6 @@ local function onEventLineClick(self)
 	gameLinksEditor.editor.container:Hide();
 end
 
-local function onEventLineEnter(self)
-	TRP3_API.Ellyb.Tooltips.getTooltip(self):Show();
-end
-
-local function onEventLineLeave(self)
-	TRP3_API.Ellyb.Tooltips.getTooltip(self):Hide();
-end
-
 local function onLineExpandClick(self)
 	if not self:GetParent().Expand.isOpen then
 		addEventsToPool(self:GetParent().name);
@@ -216,6 +208,8 @@ function refreshEventsList()
 		if not lineWidget then
 			lineWidget = CreateFrame("Frame", "TRP3_ToolFrameListLine" .. index, gameLinksEditor.editor.container.scroll.child, "TRP3_Tools_ListLineTemplate");
 			lineWidget.Click:RegisterForClicks("LeftButtonUp");
+			TRP3_API.Ellyb.Tooltips.getTooltip(lineWidget.Click):SetAnchor("BOTTOMRIGHT");
+
 			lineWidget.Expand:SetScript("OnClick", onLineExpandClick);
 			lineWidget.Right:Hide();
 			tinsert(linesWidget, lineWidget);
@@ -225,12 +219,8 @@ function refreshEventsList()
 
 		if isEvent then
 			lineWidget.Click:SetScript("OnClick", onEventLineClick);
-			lineWidget.Click:SetScript("OnEnter", onEventLineEnter);
-			lineWidget.Click:SetScript("OnLeave", onEventLineLeave);
 		else
 			lineWidget.Click:SetScript("OnClick", onLineExpandClick);
-			lineWidget.Click:SetScript("OnEnter", nil);
-			lineWidget.Click:SetScript("OnLeave", nil);
 		end
 
 		lineWidget.Text:SetText(TRP3_API.Ellyb.ColorManager.WHITE(name));
@@ -247,6 +237,7 @@ function refreshEventsList()
 				lineWidget.Expand:SetNormalTexture("Interface\\Buttons\\UI-PlusButton-UP");
 				lineWidget.Expand:SetPushedTexture("Interface\\Buttons\\UI-PlusButton-DOWN");
 			end
+			TRP3_API.Ellyb.Tooltips.getTooltip(lineWidget.Click):SetTitle(nil);
 			depth = 1;
 		else
 			local tooltipContent;
@@ -256,10 +247,7 @@ function refreshEventsList()
 			else
 				tooltipContent = getEventTooltip(element.PA);
 			end
-			TRP3_API.Ellyb.Tooltips.getTooltip(lineWidget.Click)
-				:SetAnchor("BOTTOMRIGHT")
-				:SetTitle(name)
-				:SetLine(tooltipContent)
+			TRP3_API.Ellyb.Tooltips.getTooltip(lineWidget.Click):SetTitle(name):SetLine(tooltipContent);
 			depth = 2;
 		end
 
