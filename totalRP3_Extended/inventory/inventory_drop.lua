@@ -32,8 +32,6 @@ local dropData, stashesData;
 
 local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
-local GetCurrentMapAreaID = function() return WorldMapFrame:GetMapID() end;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Drop
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -43,8 +41,8 @@ local function dropCommon(lootInfo)
 	local posY, posX, posZ = UnitPosition("player");
 
 	-- We still need map position for potential marker placement
-	local mapID = GetCurrentMapAreaID();
-	local mapX, mapY = C_Map.GetPlayerMapPosition(mapID, "player");
+	local mapID = C_Map.GetBestMapForUnit("player");
+	local mapX, mapY = C_Map.GetPlayerMapPosition(mapID, "player"):GetXY();
 
 	-- Pack the data
 	local groundData = {
@@ -101,7 +99,7 @@ local function initScans()
 		buttonIcon = "inv_misc_bag_16",
 		scanTitle = loc.TYPE_ITEMS,
 		scan = function(saveStructure)
-			local mapID = GetCurrentMapAreaID();
+			local mapID = WorldMapFrame:GetMapID();
 			for index, drop in pairs(dropData) do
 				if drop.mapID == mapID then
 					saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
@@ -127,7 +125,7 @@ local function initScans()
 		buttonIcon = "Inv_misc_map_01",
 		scanTitle = loc.DR_STASHES,
 		scan = function(saveStructure)
-			local mapID = GetCurrentMapAreaID();
+			local mapID = WorldMapFrame:GetMapID();
 			for index, drop in pairs(stashesData) do
 				if drop.mapID == mapID then
 					saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
@@ -158,7 +156,7 @@ local function initScans()
 		buttonText = loc.DR_STASHES_SCAN,
 		buttonIcon = "Icon_treasuremap",
 		scan = function()
-			local mapID = GetCurrentMapAreaID();
+			local mapID = WorldMapFrame:GetMapID();
 			broadcast.broadcast(STASHES_SCAN_COMMAND, mapID);
 		end,
 		scanTitle = loc.DR_STASHES,
@@ -220,7 +218,7 @@ end
 function searchForItems()
 	-- Proper coordinates
 	local posY, posX = UnitPosition("player");
-	local mapID = GetCurrentMapAreaID();
+	local mapID = C_Map.GetBestMapForUnit("player");
 
 	local searchResults = {};
 	for _, drop in pairs(dropData) do
@@ -775,7 +773,7 @@ end
 
 local function startStashesRequest()
 	local posY, posX = UnitPosition("player");
-	local mapID = GetCurrentMapAreaID();
+	local mapID = WorldMapFrame:GetMapID();
 	if posX and posY then
 		stashFoundFrame:Hide();
 		stashEditFrame:Hide();
@@ -851,7 +849,7 @@ end
 
 local function onToolbarButtonClick(button, mouseButton)
 	local posY, posX = UnitPosition("player");
-	local mapID = GetCurrentMapAreaID();
+	local mapID = C_Map.GetBestMapForUnit("player");
 
 	local dropdownItems = {};
 	tinsert(dropdownItems, { loc.DR_SYSTEM, nil });
