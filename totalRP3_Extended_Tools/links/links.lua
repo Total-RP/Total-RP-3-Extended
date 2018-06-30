@@ -172,11 +172,11 @@ local function onEventLineClick(self)
 end
 
 local function onEventLineEnter(self)
-	TRP3_RefreshTooltipForFrame(self);
+	TRP3_API.Ellyb.Tooltips.getTooltip(self):Show();
 end
 
 local function onEventLineLeave(self)
-	TRP3_MainTooltip:Hide();
+	TRP3_API.Ellyb.Tooltips.getTooltip(self):Hide();
 end
 
 local function onLineExpandClick(self)
@@ -249,8 +249,17 @@ function refreshEventsList()
 			end
 			depth = 1;
 		else
-			local tooltipContent = getEventTooltip(element.PA);
-			setTooltipForSameFrame(lineWidget.Click, "BOTTOMRIGHT", 0, 0, name, tooltipContent);
+			local tooltipContent;
+			if element.NA == "COMBAT_LOG_EVENT" or element.NA == "COMBAT_LOG_EVENT_UNFILTERED" then
+				-- Showing custom message for combat log events as there is no payload but we can still get event arguments
+				tooltipContent = TRP3_API.Ellyb.ColorManager.RED(loc.WO_EVENT_EX_BROWSER_COMBAT_LOG_ERROR);
+			else
+				tooltipContent = getEventTooltip(element.PA);
+			end
+			TRP3_API.Ellyb.Tooltips.getTooltip(lineWidget.Click)
+				:SetAnchor("BOTTOMRIGHT")
+				:SetTitle(name)
+				:SetLine(tooltipContent)
 			depth = 2;
 		end
 
