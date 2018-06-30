@@ -529,7 +529,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 		slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 
 		slot:SetScript("OnClick", function(self, button)
-			if IsShiftKeyDown() then
+			if ChatEdit_GetActiveWindow() and IsModifiedClick("CHATLINK") then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
 					TRP3_API.extended.ItemsChatLinksModule:InsertLink(self.info.id, TRP3_API.extended.getRootClassID(self.info.id), self.info, canBeImported);
 				end);

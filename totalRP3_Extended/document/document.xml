@@ -100,7 +100,6 @@
 		</Frames>
 	</Frame>
 
-	<Script file="db.lua"/>
 	<Script file="document.lua"/>
 
 </Ui>
