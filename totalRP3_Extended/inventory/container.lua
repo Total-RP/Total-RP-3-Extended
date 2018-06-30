@@ -163,7 +163,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 				end
 				if not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
 					text2 = text2 .. "\n\n";
-					text2 = text2 .. color("o") .. loc.SET_TT_OLD:format(rootClass.MD.tV ~= nil and TRP3_API.extended.tools.formatVersion(rootClass.MD.tV) or "?");
+					text2 = text2 .. color("o") .. loc.SET_TT_OLD:format(TRP3_API.extended.tools.getClassVersion(rootClass));
 				end
 			end
 		end
