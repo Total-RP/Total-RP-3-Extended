@@ -21,7 +21,6 @@ local Comm = TRP3_API.communication;
 local type, tremove = type, tremove;
 local tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber = tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
-local SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition = SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition;
 local loc = TRP3_API.loc;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -33,6 +32,8 @@ local dropData, stashesData;
 
 local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
+local GetCurrentMapAreaID = function() return WorldMapFrame:GetMapID() end;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Drop
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -42,9 +43,8 @@ local function dropCommon(lootInfo)
 	local posY, posX, posZ = UnitPosition("player");
 
 	-- We still need map position for potential marker placement
-	SetMapToCurrentZone();
 	local mapID = GetCurrentMapAreaID();
-	local mapX, mapY = GetPlayerMapPosition("player");
+	local mapX, mapY = C_Map.GetPlayerMapPosition(mapID, "player");
 
 	-- Pack the data
 	local groundData = {
@@ -219,7 +219,6 @@ end
 
 function searchForItems()
 	-- Proper coordinates
-	SetMapToCurrentZone();
 	local posY, posX = UnitPosition("player");
 	local mapID = GetCurrentMapAreaID();
 
@@ -325,7 +324,6 @@ local function saveStash()
 
 	-- Proper coordinates
 	local posY, posX, posZ = UnitPosition("player");
-	SetMapToCurrentZone();
 	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
 
 	if posX and posY then
@@ -776,7 +774,6 @@ local function displayStashesResponse()
 end
 
 local function startStashesRequest()
-	SetMapToCurrentZone();
 	local posY, posX = UnitPosition("player");
 	local mapID = GetCurrentMapAreaID();
 	if posX and posY then
@@ -853,7 +850,6 @@ local function getActionValue(value, x, y)
 end
 
 local function onToolbarButtonClick(button, mouseButton)
-	SetMapToCurrentZone();
 	local posY, posX = UnitPosition("player");
 	local mapID = GetCurrentMapAreaID();
 
