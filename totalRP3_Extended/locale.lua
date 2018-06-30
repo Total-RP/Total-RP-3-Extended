@@ -660,7 +660,6 @@ The function is in the form of:
 	EFFECT_DISPET = "Dismiss battle pet",
 	EFFECT_DISPET_TT = "Dismiss the currently invoked battle pet.",
 	EFFECT_RANDSUM = "Summon random battle pet",
-	EFFECT_RANDSUM_TT = "Summon a random battle pet, picked up in your favorite pets pool.",
 	EFFECT_SUMMOUNT = "Summon a mount",
 	EFFECT_SUMMOUNT_TT = "Summon a specific mount, if available.",
 	EFFECT_SUMMOUNT_NOMOUNT = "No mount select yet.",
@@ -1591,6 +1590,10 @@ http://wowwiki.wikia.com/wiki/Event_API
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	EFFECT_RANDSUM_TT = "Summon a random battle pet.",
+	EFFECT_RANDSUM_SUMMON_FAV = "Only summon favourite pets",
+	EFFECT_RANDSUM_PREVIEW_FULL = "Summon a random battle pet from your |c0000ff00entire pool|r.",
+	EFFECT_RANDSUM_PREVIEW_FAV = "Summon a random battle pet from your |c0000ff00favourite pool|r.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

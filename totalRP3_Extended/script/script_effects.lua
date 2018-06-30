@@ -354,8 +354,13 @@ local EFFECTS = {
 	},
 
 	["companion_random_critter"] = {
+		getCArgs = function(args)
+			local summonFav = args[1] or false;
+			return summonFav;
+		end,
 		method = function(structure, cArgs, eArgs)
-			C_PetJournal.SummonRandomPet();
+			local summonFav = structure.getCArgs(cArgs);
+			C_PetJournal.SummonRandomPet(summonFav);
 			eArgs.LAST = 0;
 		end,
 		secured = security.HIGH,
