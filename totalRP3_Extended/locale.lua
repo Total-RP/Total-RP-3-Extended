@@ -663,7 +663,6 @@ The function is in the form of:
 	EFFECT_RANDSUM_TT = "Summon a random battle pet, picked up in your favorite pets pool.",
 	EFFECT_SUMMOUNT = "Summon a mount",
 	EFFECT_SUMMOUNT_TT = "Summon a specific mount, if available.",
-	EFFECT_SUMMOUNT_NOMOUNT = "No mount select yet.",
 	EFFECT_SHEATH = "Toggle weapons sheath",
 	EFFECT_SHEATH_TT = "Draw or put up the character weapons.",
 	EFFECT_VAR_OBJECT_CHANGE = "Variable operation",
@@ -1591,6 +1590,7 @@ http://wowwiki.wikia.com/wiki/Event_API
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	EFFECT_SUMMOUNT_RANDOMMOUNT = "Random favourite",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
