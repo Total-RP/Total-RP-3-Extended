@@ -246,7 +246,7 @@ local EFFECTS = {
 
 	["sound_id_stop"] = {
 		getCArgs = function(args)
-			local soundID = tonumber(args[2] or nil);
+			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
 			return soundID, channel;
 		end,
@@ -294,7 +294,7 @@ local EFFECTS = {
 
 	["sound_id_local_stop"] = {
 		getCArgs = function(args)
-			local soundID = tonumber(args[2] or nil);
+			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
 			return soundID, channel;
 		end,
