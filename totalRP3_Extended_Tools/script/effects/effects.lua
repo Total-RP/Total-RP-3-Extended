@@ -173,17 +173,23 @@ local function companion_summon_mount_init()
 		editor.id = data[1];
 		local creatureName, spellID, icon = GetMountInfoByID(editor.id or 0);
 		local _, description = GetMountInfoExtraByID(editor.id or 0);
-		companionSelected({creatureName or loc.EFFECT_SUMMOUNT_NOMOUNT, icon or "Interface\\ICONS\\inv_misc_questionmark", description or "", loc.PR_CO_MOUNT, spellID, editor.id});
+		companionSelected({creatureName or loc.EFFECT_SUMMOUNT_RANDOMMOUNT, icon or "Interface\\ICONS\\inv_misc_questionmark", description or "", loc.PR_CO_MOUNT, spellID, editor.id});
 	end
 
 	editor.save = function(scriptData)
 		scriptData.args[1] = editor.id or 0;
 	end
 
-	editor.select:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.COMPANIONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {companionSelected, nil, editor.type});
+	editor.select:SetScript("OnClick", function(self, button)
+		if button == "RightButton" then
+			companionSelected({loc.EFFECT_SUMMOUNT_RANDOMMOUNT, "Interface\\ICONS\\inv_misc_questionmark", "", loc.PR_CO_MOUNT, 0, 0});
+		else
+			TRP3_API.popup.showPopup(TRP3_API.popup.COMPANIONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {companionSelected, nil, editor.type});
+		end
 	end);
 	editor.type = TRP3_API.ui.misc.TYPE_MOUNT;
+
+	editor.select:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 
 	registerEffectEditor("companion_summon_mount", {
 		title = loc.EFFECT_SUMMOUNT,
@@ -191,7 +197,7 @@ local function companion_summon_mount_init()
 		description = loc.EFFECT_SUMMOUNT_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local creatureName = GetMountInfoByID(args[1] or 0);
-			scriptStepFrame.description:SetText("|cffffff00" ..loc.EFFECT_SUMMOUNT .. ":|r " .. tostring(creatureName or loc.EFFECT_SUMMOUNT_NOMOUNT));
+			scriptStepFrame.description:SetText("|cffffff00" ..loc.EFFECT_SUMMOUNT .. ":|r " .. tostring(creatureName or loc.EFFECT_SUMMOUNT_RANDOMMOUNT));
 		end,
 		getDefaultArgs = function()
 			return {0};
