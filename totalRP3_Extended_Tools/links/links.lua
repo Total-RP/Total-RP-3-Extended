@@ -128,7 +128,7 @@ local function loadAPIEventDoc()
 
 	local apiTable = APIDocumentation:GetAPITableByTypeName("system");
 	for systemIndex, system in pairs(apiTable) do
-		if (system["Events"] and Utils.table.size(system["Events"]) ~= 0) then
+		if (system["Events"] and issecurevariable(system, "Events") and Utils.table.size(system["Events"]) ~= 0) then
 			EVENTS_TABLE[systemIndex + 1] = {NA = system["Name"], EV = {}, ID = system["Name"]};
 			for eventIndex, event in pairs(system["Events"]) do
 				EVENTS_TABLE[systemIndex + 1].EV[eventIndex] = {NA = event["LiteralName"], ID = system["Name"] .. " " .. event["LiteralName"]};
