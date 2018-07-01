@@ -1591,6 +1591,8 @@ http://wowwiki.wikia.com/wiki/Event_API
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	DR_STASHES_ERROR_INSTANCE = "Cannot create a stash in an instance",
+	DR_DROP_ERROR_INSTANCE = "Cannot drop items in an instance",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
