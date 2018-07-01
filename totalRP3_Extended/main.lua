@@ -415,6 +415,9 @@ local function onInit()
 			whitelist = {}; -- Keys are senderID, value boolean
 		};
 	end
+
+	-- Applying patches to saved variables
+	TRP3_API.extended.flyway.applyPatches();
 end
 
 local function onStart()
