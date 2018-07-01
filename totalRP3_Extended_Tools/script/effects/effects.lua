@@ -197,17 +197,23 @@ local function companion_summon_mount_init()
 		editor.id = data[1];
 		local creatureName, spellID, icon = GetMountInfoByID(editor.id or 0);
 		local _, description = GetMountInfoExtraByID(editor.id or 0);
-		companionSelected({creatureName or loc.EFFECT_SUMMOUNT_NOMOUNT, icon or "Interface\\ICONS\\inv_misc_questionmark", description or "", loc.PR_CO_MOUNT, spellID, editor.id});
+		companionSelected({creatureName or loc.EFFECT_SUMMOUNT_RANDOMMOUNT, icon or "Interface\\ICONS\\inv_misc_questionmark", description or "", loc.PR_CO_MOUNT, spellID, editor.id});
 	end
 
 	editor.save = function(scriptData)
 		scriptData.args[1] = editor.id or 0;
 	end
 
-	editor.select:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.COMPANIONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {companionSelected, nil, editor.type});
+	editor.select:SetScript("OnClick", function(self, button)
+		if button == "RightButton" then
+			companionSelected({loc.EFFECT_SUMMOUNT_RANDOMMOUNT, "Interface\\ICONS\\inv_misc_questionmark", "", loc.PR_CO_MOUNT, 0, 0});
+		else
+			TRP3_API.popup.showPopup(TRP3_API.popup.COMPANIONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {companionSelected, nil, editor.type});
+		end
 	end);
 	editor.type = TRP3_API.ui.misc.TYPE_MOUNT;
+
+	editor.select:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 
 	registerEffectEditor("companion_summon_mount", {
 		title = loc.EFFECT_SUMMOUNT,
@@ -215,7 +221,7 @@ local function companion_summon_mount_init()
 		description = loc.EFFECT_SUMMOUNT_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			local creatureName = GetMountInfoByID(args[1] or 0);
-			scriptStepFrame.description:SetText("|cffffff00" ..loc.EFFECT_SUMMOUNT .. ":|r " .. tostring(creatureName or loc.EFFECT_SUMMOUNT_NOMOUNT));
+			scriptStepFrame.description:SetText("|cffffff00" ..loc.EFFECT_SUMMOUNT .. ":|r " .. tostring(creatureName or loc.EFFECT_SUMMOUNT_RANDOMMOUNT));
 		end,
 		getDefaultArgs = function()
 			return {0};
@@ -688,18 +694,21 @@ local function sound_id_self_init()
 
 	SoundIDSelfEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	SoundIDSelfEditor.play:SetScript("OnClick", function(self)
-		Utils.music.playSoundID(tonumber(strtrim(SoundIDSelfEditor.id:GetText())), SoundIDSelfEditor.channel:GetSelectedValue() or "SFX");
+		local soundID = tonumber(strtrim(SoundIDSelfEditor.id:GetText()));
+		if soundID then
+			Utils.music.playSoundID(soundID, SoundIDSelfEditor.channel:GetSelectedValue() or "SFX");
+		end
 	end);
 
 	function SoundIDSelfEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		SoundIDSelfEditor.channel:SetSelectedValue(data[1] or "SFX");
-		SoundIDSelfEditor.id:SetText(data[2]);
+		SoundIDSelfEditor.id:SetText(data[2] or "");
 	end
 
 	function SoundIDSelfEditor.save(scriptData)
 		scriptData.args[1] = SoundIDSelfEditor.channel:GetSelectedValue() or "SFX";
-		scriptData.args[2] = tonumber(strtrim(SoundIDSelfEditor.id:GetText())) or 0;
+		scriptData.args[2] = tonumber(strtrim(SoundIDSelfEditor.id:GetText()));
 	end
 end
 
@@ -736,7 +745,10 @@ local function sound_id_stop_init()
 
 	SoundIDStopEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	SoundIDStopEditor.play:SetScript("OnClick", function(self)
-		Utils.music.playSoundID(tonumber(strtrim(SoundIDStopEditor.id:GetText())), SoundIDStopEditor.channel:GetSelectedValue() or "SFX");
+		local soundID = tonumber(strtrim(SoundIDStopEditor.id:GetText()));
+		if soundID then
+			Utils.music.playSoundID(soundID, SoundIDStopEditor.channel:GetSelectedValue() or "SFX");
+		end
 	end);
 
 	function SoundIDStopEditor.load(scriptData)
@@ -785,7 +797,7 @@ local function sound_music_self_init()
 
 	function soundMusicEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
-		soundMusicEditor.path:SetText(data[1]);
+		soundMusicEditor.path:SetText(data[1] or "");
 	end
 
 	function soundMusicEditor.save(scriptData)
@@ -831,7 +843,10 @@ local function sound_id_local_init()
 	setTooltipForSameFrame(soundLocalEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_ID, loc.EFFECT_SOUND_ID_SELF_ID_TT);
 	soundLocalEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	soundLocalEditor.play:SetScript("OnClick", function(self)
-		Utils.music.playSoundID(tonumber(strtrim(soundLocalEditor.id:GetText())), soundLocalEditor.channel:GetSelectedValue() or "SFX");
+		local soundID = tonumber(strtrim(soundLocalEditor.id:GetText()));
+		if soundID then
+			Utils.music.playSoundID(soundID, soundLocalEditor.channel:GetSelectedValue() or "SFX");
+		end
 	end);
 
 	-- Distance
@@ -841,8 +856,8 @@ local function sound_id_local_init()
 	function soundLocalEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		soundLocalEditor.channel:SetSelectedValue(data[1] or "SFX");
-		soundLocalEditor.id:SetText(data[2]);
-		soundLocalEditor.distance:SetText(data[3]);
+		soundLocalEditor.id:SetText(data[2] or "");
+		soundLocalEditor.distance:SetText(data[3] or "");
 	end
 
 	function soundLocalEditor.save(scriptData)
@@ -885,7 +900,10 @@ local function sound_id_local_stop_init()
 
 	SoundIDLocalStopEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	SoundIDLocalStopEditor.play:SetScript("OnClick", function(self)
-		Utils.music.playSoundID(tonumber(strtrim(SoundIDLocalStopEditor.id:GetText())), SoundIDLocalStopEditor.channel:GetSelectedValue() or "SFX");
+		local soundID = tonumber(strtrim(SoundIDLocalStopEditor.id:GetText()));
+		if soundID then
+			Utils.music.playSoundID(soundID, SoundIDLocalStopEditor.channel:GetSelectedValue() or "SFX");
+		end
 	end);
 
 	function SoundIDLocalStopEditor.load(scriptData)
@@ -942,8 +960,8 @@ local function sound_music_local_init()
 
 	function musicLocalEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
-		musicLocalEditor.path:SetText(data[1]);
-		musicLocalEditor.distance:SetText(data[2]);
+		musicLocalEditor.path:SetText(data[1] or "");
+		musicLocalEditor.distance:SetText(data[2] or "");
 	end
 
 	function musicLocalEditor.save(scriptData)
