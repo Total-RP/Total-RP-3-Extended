@@ -150,11 +150,35 @@ local function companion_dismiss_critter_init()
 end
 
 local function companion_random_critter_init()
+	local editor = TRP3_EffectEditorSummonPet;
+
 	registerEffectEditor("companion_random_critter", {
 		title = loc.EFFECT_RANDSUM,
 		icon = "ability_hunter_beastcall",
 		description = loc.EFFECT_RANDSUM_TT,
+		effectFrameDecorator = function(scriptStepFrame, args)
+			if args and args[1] then
+				scriptStepFrame.description:SetText(loc.EFFECT_RANDSUM_PREVIEW_FAV);
+			else
+				scriptStepFrame.description:SetText(loc.EFFECT_RANDSUM_PREVIEW_FULL);
+			end
+		end,
+		getDefaultArgs = function()
+			return {false};
+		end,
+		editor = editor
 	});
+
+	editor.favourite.Text:SetText(loc.EFFECT_RANDSUM_SUMMON_FAV);
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.favourite:SetChecked(data[1] or false);
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = editor.favourite:GetChecked();
+	end
 end
 
 local function companion_summon_mount_init()
