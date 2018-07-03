@@ -187,6 +187,12 @@ local function item_add_init()
 	editor.crafted.Text:SetText(loc.EFFECT_ITEM_ADD_CRAFTED);
 	setTooltipForSameFrame(editor.crafted, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_CRAFTED, loc.EFFECT_ITEM_ADD_CRAFTED_TT);
 
+	inventorySources = {
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_ADD_1_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_ADD_2_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_ADD_3_TT},
+	}
+
 	-- Source
 	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 250, true);
 
@@ -241,6 +247,12 @@ local function item_remove_init()
 	-- Count
 	editor.count.title:SetText(loc.EFFECT_ITEM_ADD_QT);
 	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_QT, loc.EFFECT_ITEM_REMOVE_QT_TT);
+
+	inventorySources = {
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_SEARCH_1_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_SEARCH_2_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_SEARCH_3_TT},
+	}
 
 	-- Source
 	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 250, true);
@@ -610,6 +622,12 @@ local function inv_item_count_init()
 		end,
 	});
 
+	inventorySources = {
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_SEARCH_1_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_SEARCH_2_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_SEARCH_3_TT},
+	}
+
 	-- Source
 	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 185, true);
 
@@ -642,6 +660,12 @@ local function inv_item_weight_init()
 		end,
 	});
 
+	inventorySources = {
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_SEARCH_1_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_SEARCH_2_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_SEARCH_3_TT},
+	}
+
 	-- Source
 	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 185, true);
 
@@ -657,11 +681,6 @@ end
 
 function TRP3_API.extended.tools.initItemEffects()
 
-	inventorySources = {
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_1_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_2_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_3_TT},
-	}
 	inventorySourcesLocals = {
 		inventory = loc.EFFECT_ITEM_SOURCE_1,
 		parent = loc.EFFECT_ITEM_SOURCE_2,
