@@ -188,9 +188,9 @@ local function item_add_init()
 	setTooltipForSameFrame(editor.crafted, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_CRAFTED, loc.EFFECT_ITEM_ADD_CRAFTED_TT);
 
 	inventorySources = {
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_ADD_1_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_ADD_2_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_ADD_3_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_1_ADD_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_2_ADD_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_ADD, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_3_ADD_TT},
 	}
 
 	-- Source
@@ -249,9 +249,9 @@ local function item_remove_init()
 	setTooltipForSameFrame(editor.count.help, "RIGHT", 0, 5, loc.EFFECT_ITEM_ADD_QT, loc.EFFECT_ITEM_REMOVE_QT_TT);
 
 	inventorySources = {
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_SEARCH_1_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_SEARCH_2_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_SEARCH_3_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_1_SEARCH_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_2_SEARCH_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_3_SEARCH_TT},
 	}
 
 	-- Source
@@ -623,9 +623,9 @@ local function inv_item_count_init()
 	});
 
 	inventorySources = {
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_SEARCH_1_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_SEARCH_2_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_SEARCH_3_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_1_SEARCH_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_2_SEARCH_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_3_SEARCH_TT},
 	}
 
 	-- Source
@@ -661,9 +661,9 @@ local function inv_item_weight_init()
 	});
 
 	inventorySources = {
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_SEARCH_1_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_SEARCH_2_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_SEARCH_3_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_1), "inventory", loc.EFFECT_ITEM_SOURCE_1_SEARCH_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_2), "parent", loc.EFFECT_ITEM_SOURCE_2_SEARCH_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_SOURCE_SEARCH, loc.EFFECT_ITEM_SOURCE_3), "self", loc.EFFECT_ITEM_SOURCE_3_SEARCH_TT},
 	}
 
 	-- Source
