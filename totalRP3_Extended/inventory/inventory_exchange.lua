@@ -630,7 +630,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.target.registerButton({
 			id = "aa_player_e_trade",
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-			configText = loc.INV_PAGE_CHARACTER_INSPECTION,
+			configText = loc.IT_EX_TRADE_BUTTON,
 			condition = function(_, unitID)
 				if UnitIsPlayer("target") and unitID ~= Globals.player_id and not UnitIsIgnored(unitID) then
 					if UnitIsKnown("target") then
