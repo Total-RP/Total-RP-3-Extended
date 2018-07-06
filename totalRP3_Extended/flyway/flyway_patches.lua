@@ -3,6 +3,7 @@
 -- Schema migration tool : Patches
 --	---------------------------------------------------------------------------
 --	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--	          2018 Paul Corlay (paul.corlay@gmail.com)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
