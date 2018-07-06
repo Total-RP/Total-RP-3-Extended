@@ -776,13 +776,9 @@ The function is in the form of:
 	EFFECT_ITEM_COOLDOWN_PREVIEW = "Duration: %s second(s)",
 	EFFECT_COOLDOWN_DURATION_TT = "The cooldown duration, in seconds.",
 	EFFECT_ITEM_SOURCE_ID = "You can select an item ID you want to search, or leave empty if you want to search for all types of items.",
-	EFFECT_ITEM_SOURCE = "Search in",
 	EFFECT_ITEM_SOURCE_1 = "All inventory",
 	EFFECT_ITEM_SOURCE_2 = "Parent container",
 	EFFECT_ITEM_SOURCE_3 = "This item",
-	EFFECT_ITEM_SOURCE_1_TT = "Search for the item(s) inside the entire character inventory.",
-	EFFECT_ITEM_SOURCE_2_TT = "Search for the item(s) only inside this item parent container (and any sub-container).\n\n|cffff9900Only works if this script is in an item context.",
-	EFFECT_ITEM_SOURCE_3_TT = "Search for the item(s) only inside this item (and any sub-container).\n\n|cffff9900Only works if this script is in an item context and this item is a container.",
 	EFFECT_ITEM_USE = "Container: item use",
 	EFFECT_ITEM_USE_TT = "Use a item in a slot in the container.\n\n|cffff9900Only works if this workflow is triggered by a container.",
 	EFFECT_ITEM_USE_PREVIEW = "Use item in slot %s",
@@ -1594,6 +1590,14 @@ http://wowwiki.wikia.com/wiki/Event_API
 	EFFECT_RANDSUM_PREVIEW_FULL = "Summon a random battle pet from your |c0000ff00entire pool|r.",
 	EFFECT_RANDSUM_PREVIEW_FAV = "Summon a random battle pet from your |c0000ff00favourite pool|r.",
 	EFFECT_SUMMOUNT_RANDOMMOUNT = "Random favourite",
+	EFFECT_ITEM_SOURCE_SEARCH = "Search in",
+	EFFECT_ITEM_SOURCE_1_SEARCH_TT = "Search for the item(s) inside the entire character inventory.",
+	EFFECT_ITEM_SOURCE_2_SEARCH_TT = "Search for the item(s) only inside this item parent container (and any sub-container).\n\n|cffff9900Only works if this script is in an item context.",
+	EFFECT_ITEM_SOURCE_3_SEARCH_TT = "Search for the item(s) only inside this item (and any sub-container).\n\n|cffff9900Only works if this script is in an item context and this item is a container.",
+	EFFECT_ITEM_SOURCE_ADD = "Add to",
+	EFFECT_ITEM_SOURCE_1_ADD_TT = "Add the item(s) anywhere inside the entire character inventory, starting with the main container.",
+	EFFECT_ITEM_SOURCE_2_ADD_TT = "Add the item(s) only inside this item parent container (and any sub-container).\n\n|cffff9900Only works if this script is in an item context.",
+	EFFECT_ITEM_SOURCE_3_ADD_TT = "Add the item(s) only inside this item (and any sub-container).\n\n|cffff9900Only works if this script is in an item context and this item is a container.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
