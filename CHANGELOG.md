@@ -1,49 +1,39 @@
-# Version 1.1.1
+# Changelog for version 1.2.0
 
-Fixed an issue introduced with the chat links system that would prevent from splitting stacks of items in the inventory.
+**This version of Extended requires Total RP 3 version 1.4.0 or above.**
 
-# Version 1.1
+## Compatibility with patch 8.0.1
 
-**This version of Extended requires Total RP 3 version 1.3.4.4 or above.**
+Due to important technical changes to the World of Warcraft API, older versions of the addon will not work for 8.0.1.
 
-## New chat links support
+## Battle.net friends support
 
-We have added support for Total RP 3's chat links system. You can now insert links to Items and Campaigns in chat by Shift-Clicking them. People will be able to see the creation's information, and even import them if you set the links to be importable.
+You can now open a trade for Extended creations and inspect a player's Extended inventory with a player from the opposite faction or on another realm if you are friend with them on Battle.net !
 
-![](https://www.dropbox.com/s/s94rffs8ylktvpl/extended_chat_links.png?raw=1)
-
-Shift-Click on an item in your inventory, on a campaign in your quest log or in the database list to insert a link inside the chat frame. Make the link importable if you want the other players to be able to import the creation and use it, or make it viewable if you just want them to see the information. When sending a link from your inventory or quest log, the campaign progress is visible in the tooltip and variables in the text fields are resolved so that the tooltip looks exactly like what you see at the moment you created the link (if the variables change, the link won't be automatically updated).
-
-_Note: You can send links to player who have Total RP 3 version 1.3 or above, but they will need Total RP 3: Extended 1.1 or above to import the content.__
+![](https://pbs.twimg.com/media/DhIC1m6W0AYkzMO.jpg:large)
 
 ## Added
-- Added workflow effects to stop sounds, local sounds, and local musics. You can either stop a specific sound/music ID, or all sounds/musics you've triggered so far.
-- Inventory effects can now parse variables, meaning you can now add ${amount} of an item.
-- Added a Trade button on the target frame to initiate a trade with another player (only shows if the target is using Extended).  
-![](https://www.dropbox.com/s/1j1ykegm043n3sh/extended_trade_button.png?raw=1)
-- The Restricted Lua script effect has now access to new functions to access variables from workflows, objects and active campaign. [Learn more](https://github.com/Ellypse/Total-RP-3-Extended/wiki/"Execute-restricted-Lua-script"-effect))
-- Added a button to create an expert item directly from the database.
-- Added an optional field in the dice roll effect to store the result in a variable.
 
-## Changed
+- Extended modifies Total RP 3's logo on the dashboard to reflect that Extended is installed.
+- The "Summon random battle pet" effect now lets you choose if you wish to pull from your entire pet pool or only from your favourites.
+- Right-clicking the selected mount in the "Summon mount" effect now resets the selector, letting you summon a random mount.
+- Added a game events browser to the game events editor. This browser pulls information from the official API documentation and gives you the list of game events as well as the arguments for each of them. Extended custom events are included in this browser as well.
 
-- Numeric variables are now displayed with 2 decimal values by default. You can manually choose how many decimals to display on a variable by using ${variable#X} for X decimals.
-- "Next step index" has been removed from the bottom of cutscene dialogs, replaced by "Choose an option" when the player has to make a choice.
-- Trying to input an inner item ID with a space will now result in a warning popup.
-- Creating an inner item by copying another item will now upgrade the inner item mode to match the parent's mode.
-- The `TRP3_KILL` event arguments (to track kills from player & party) has been changed to return the killed entity type, and different info in case of a player killed. [Learn more](https://github.com/Ellypse/Total-RP-3-Extended/wiki/Total-RP-3-:-Extended-custom-events)
-- TRP3_SIGNAL now gives the sender's name as 3rd argument.
-- New stashes will now set the current character as owner of the stash. Its name will be shown on scans even if you're playing on another character. Existing stashes can set or change the stash owner by using the "Set ownership" option in the dropdown shown when clicking the stash icon.
-![](https://www.dropbox.com/s/i2cbjhjm0c894og/extended_take_stash_ownership.png?raw=1)
+
+## Modified
+
+- Stash data are being migrated to use new map IDs introduced in path 8.0.1. Some stashes may be lost in the transition due to this change.
 
 ## Fixed
 
-- Fixed incorrect colors after using item links variables in item descriptions or use text.
-- Variables in item descriptions will now be resolved in the item browser.
-- Quest progress percentage doesn't try to show decimals anymore. (It would just show "..." at the end)
-- Containers and sounds history now close when pressing Esc.
-- Fixed a bug that wouldn't display the prompt window if the effect was called in the callback workflow of another prompt.
-- Fixed a bug that would show incorrect stash icons on the map after a scan.
-- "Loot all" now properly loots everything it can without asking for permission when reaching a stack.
-- "Loot all" won't show "Received: [Item] x 0" when loot fails (because of full inventory, unique item...).
-- Fixed a bug that would add a condition to a player choice in a cutscene even if "Condition" was exited without saving.
+- Fixed the "Container total weight" condition editor dropdown going out of bounds.
+- Replaced the dropdown text for the add item effect to better reflect the actual action.
+- Fixed an incorrect label for the trade button in the target frame settings.
+- Fixed the "Simple rifle" backer item not working.
+- Fixed some potential Lua errors with the sound & music workflow effects.
+- Fixed version number display in some parts of the add-on.
+
+## Removed
+
+- Scans are currently disabled in Total RP 3 while we are working on re-implementing them for the major changes to the map API brought by Battle for Azeroth.
+- Stashes cannot be created and items cannot be dropped anymore in instances, due to the lack of player coordinates.
