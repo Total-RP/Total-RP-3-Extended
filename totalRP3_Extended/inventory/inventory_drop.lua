@@ -21,7 +21,6 @@ local Comm = TRP3_API.communication;
 local type, tremove = type, tremove;
 local tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber = tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
-local SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition = SetMapToCurrentZone, GetCurrentMapAreaID, GetPlayerMapPosition;
 local loc = TRP3_API.loc;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -42,9 +41,7 @@ local function dropCommon(lootInfo)
 	local posY, posX, posZ = UnitPosition("player");
 
 	-- We still need map position for potential marker placement
-	SetMapToCurrentZone();
-	local mapID = GetCurrentMapAreaID();
-	local mapX, mapY = GetPlayerMapPosition("player");
+	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
 
 	-- Pack the data
 	local groundData = {
@@ -62,10 +59,14 @@ local function dropCommon(lootInfo)
 end
 
 function TRP3_API.inventory.dropItemDirect(slotInfo)
-	dropCommon(slotInfo);
-	local count = slotInfo.count or 1;
-	local link = getItemLink(getClass(slotInfo.id));
-	Utils.message.displayMessage(loc.DR_DROPED:format(link, count));
+	if TRP3_API.map.getCurrentCoordinates("player") then
+		dropCommon(slotInfo);
+		local count = slotInfo.count or 1;
+		local link = getItemLink(getClass(slotInfo.id));
+		Utils.message.displayMessage(loc.DR_DROPED:format(link, count));
+	else
+		Utils.message.displayMessage(loc.DR_DROP_ERROR_INSTANCE, Utils.message.type.ALERT_MESSAGE);
+	end
 end
 
 function TRP3_API.inventory.dropLoot(lootID)
@@ -101,9 +102,9 @@ local function initScans()
 		buttonIcon = "inv_misc_bag_16",
 		scanTitle = loc.TYPE_ITEMS,
 		scan = function(saveStructure)
-			local mapID = GetCurrentMapAreaID();
+			local mapID = WorldMapFrame:GetMapID();
 			for index, drop in pairs(dropData) do
-				if drop.mapID == mapID then
+				if drop.uiMapID == mapID then
 					saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
 				end
 			end
@@ -127,7 +128,7 @@ local function initScans()
 		buttonIcon = "Inv_misc_map_01",
 		scanTitle = loc.DR_STASHES,
 		scan = function(saveStructure)
-			local mapID = GetCurrentMapAreaID();
+			local mapID = WorldMapFrame:GetMapID();
 			for index, drop in pairs(stashesData) do
 				if drop.mapID == mapID then
 					saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
@@ -158,14 +159,14 @@ local function initScans()
 		buttonText = loc.DR_STASHES_SCAN,
 		buttonIcon = "Icon_treasuremap",
 		scan = function()
-			local mapID = GetCurrentMapAreaID();
+			local mapID = WorldMapFrame:GetMapID();
 			broadcast.broadcast(STASHES_SCAN_COMMAND, mapID);
 		end,
 		scanTitle = loc.DR_STASHES,
 		scanCommand = STASHES_SCAN_COMMAND,
 		scanResponder = function(sender, requestMapID)
 			for _, stash in pairs(stashesData) do
-				if stash.mapID == tonumber(requestMapID) and not stash.BA.NS then
+				if stash.uiMapID == tonumber(requestMapID) and not stash.BA.NS then
 					local total = 0;
 					for index, slot in pairs(stash.item) do
 						total = total + 1;
@@ -219,13 +220,12 @@ end
 
 function searchForItems()
 	-- Proper coordinates
-	SetMapToCurrentZone();
 	local posY, posX = UnitPosition("player");
-	local mapID = GetCurrentMapAreaID();
+	local mapID = C_Map.GetBestMapForUnit("player");
 
 	local searchResults = {};
 	for _, drop in pairs(dropData) do
-		if drop.mapID == mapID then
+		if drop.uiMapID == mapID then
 			local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, drop.posY or 0, drop.posX or 0);
 			if isInRadius then
 				-- Show loot
@@ -325,14 +325,13 @@ local function saveStash()
 
 	-- Proper coordinates
 	local posY, posX, posZ = UnitPosition("player");
-	SetMapToCurrentZone();
 	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
 
 	if posX and posY then
 		stash.posX = posX;
 		stash.posY = posY;
 		stash.posZ = posZ;
-		stash.mapID = mapID;
+		stash.uiMapID = mapID;
 		stash.mapX = mapX;
 		stash.mapY = mapY;
 		stash.id = Utils.str.id();
@@ -776,9 +775,8 @@ local function displayStashesResponse()
 end
 
 local function startStashesRequest()
-	SetMapToCurrentZone();
 	local posY, posX = UnitPosition("player");
-	local mapID = GetCurrentMapAreaID();
+	local mapID = WorldMapFrame:GetMapID();
 	if posX and posY then
 		stashFoundFrame:Hide();
 		stashEditFrame:Hide();
@@ -802,7 +800,7 @@ local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 	posX = tonumber(posX or 0) or 0;
 	Utils.log.log(("%s is asking for stashes in zone %s."):format(sender, mapID));
 	for index, stash in pairs(stashesData) do
-		if stash.mapID == mapID then
+		if stash.uiMapID == mapID then
 			local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
 			if isInRadius then
 				-- P2P response
@@ -837,7 +835,11 @@ local function onDropButtonAction(actionID)
 	if actionID == ACTION_SEARCH_MY then
 		searchForItems();
 	elseif actionID == ACTION_STASH_CREATE then
-		openStashEditor(nil);
+		if TRP3_API.map.getCurrentCoordinates("player") then
+			openStashEditor(nil);
+		else
+			Utils.message.displayMessage(loc.DR_STASHES_ERROR_INSTANCE, Utils.message.type.ALERT_MESSAGE);
+		end
 	elseif actionID == ACTION_STASH_SEARCH then
 		startStashesRequest();
 	elseif type(actionID) == "number" then
@@ -853,9 +855,8 @@ local function getActionValue(value, x, y)
 end
 
 local function onToolbarButtonClick(button, mouseButton)
-	SetMapToCurrentZone();
 	local posY, posX = UnitPosition("player");
-	local mapID = GetCurrentMapAreaID();
+	local mapID = C_Map.GetBestMapForUnit("player");
 
 	local dropdownItems = {};
 	tinsert(dropdownItems, { loc.DR_SYSTEM, nil });
@@ -865,7 +866,7 @@ local function onToolbarButtonClick(button, mouseButton)
 	if posX and posY then
 		local searchResults = {};
 		for stashIndex, stash in pairs(stashesData) do
-			if stash.mapID == mapID then
+			if stash.uiMapID == mapID then
 				local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
 				if isInRadius then
 					-- Show loot
@@ -892,6 +893,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+
+
 
 function dropFrame.init()
 	-- Init data
@@ -971,6 +974,13 @@ function dropFrame.init()
 		button1 = loc.DR_POPUP_REMOVE,
 		button2 = CANCEL,
 		button3 = loc.DR_POPUP,
+		OnShow = function(self)
+			if TRP3_API.map.getCurrentCoordinates("player") then
+				self.button3:Enable();
+			else
+				self.button3:Disable();
+			end
+		end,
 		OnAccept = function()
 			if dropFrame.callbackDestroy then
 				dropFrame.callbackDestroy();

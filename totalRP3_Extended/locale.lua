@@ -1585,6 +1585,8 @@ http://wowwiki.wikia.com/wiki/Event_API
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	DR_STASHES_ERROR_INSTANCE = "Cannot create a stash in an instance",
+	DR_DROP_ERROR_INSTANCE = "Cannot drop items in an instance",
 	EFFECT_RANDSUM_TT = "Summon a random battle pet.",
 	EFFECT_RANDSUM_SUMMON_FAV = "Only summon favourite pets",
 	EFFECT_RANDSUM_PREVIEW_FULL = "Summon a random battle pet from your |c0000ff00entire pool|r.",

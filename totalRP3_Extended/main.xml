@@ -37,6 +37,9 @@
 	<!-- Locales -->
 	<Script file="locale.lua"/>
 
+	<Script file="flyway\flyway.lua"/>
+	<Script file="flyway\flyway_patches.lua"/>
+
 	<!-- Sub-Modules -->
 	<Script file="misc\utils.lua"/>
 	<Include file="misc\cast.xml"/>
