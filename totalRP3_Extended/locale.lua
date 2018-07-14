@@ -1596,6 +1596,7 @@ http://wowwiki.wikia.com/wiki/Event_API
 	EFFECT_RANDSUM_PREVIEW_FULL = "Summon a random battle pet from your |c0000ff00entire pool|r.",
 	EFFECT_RANDSUM_PREVIEW_FAV = "Summon a random battle pet from your |c0000ff00favourite pool|r.",
 	EFFECT_SUMMOUNT_RANDOMMOUNT = "Random favourite",
+	EFFECT_SUMMOUNT_ACTION_TT = "Select a specific mount",
 	EFFECT_ITEM_SOURCE_SEARCH = "Search in",
 	EFFECT_ITEM_SOURCE_1_SEARCH_TT = "Search for the item(s) inside the entire character inventory.",
 	EFFECT_ITEM_SOURCE_2_SEARCH_TT = "Search for the item(s) only inside this item parent container (and any sub-container).\n\n|cffff9900Only works if this script is in an item context.",

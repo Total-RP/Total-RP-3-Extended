@@ -16,6 +16,10 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local TRP3_API = TRP3_API;
+local Ellyb = TRP3_API.Ellyb;
+
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;
 local tsize = Utils.table.size;
@@ -214,6 +218,12 @@ local function companion_summon_mount_init()
 	editor.type = TRP3_API.ui.misc.TYPE_MOUNT;
 
 	editor.select:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+
+	---@type Tooltip
+	local tooltip = TRP3_API.Ellyb.Tooltips.getTooltip(editor.select)
+	tooltip:SetTitle(loc.EFFECT_SUMMOUNT)
+		:AddLine(Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.LEFT_CLICK, loc.EFFECT_SUMMOUNT_ACTION_TT))
+		:AddLine(Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, RESET))
 
 	registerEffectEditor("companion_summon_mount", {
 		title = loc.EFFECT_SUMMOUNT,
