@@ -253,6 +253,14 @@
 									<Anchor point="RIGHT" x="-10" y="0" relativeKey="$parent" relativePoint="LEFT"/>
 								</Anchors>
 								<Layers>
+									<Layer level="BACKGROUND">
+										<Texture file="Interface\Collections\CollectionsBackgroundTile" horizTile="true" vertTile="true" setAllPoints="true">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="5" y="-5" />
+												<Anchor point="BOTTOMRIGHT" x="-4" y="4" />
+											</Anchors>
+										</Texture>
+									</Layer>
 									<Layer level="OVERLAY">
 										<FontString parentKey="Empty" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
 											<Color r="0.95" g="0.95" b="0.95" />
@@ -263,9 +271,9 @@
 									<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
 										<Anchors>
 											<Anchor point="TOP" x="0" y="-15"/>
-											<Anchor point="RIGHT" x="-20" y="0"/>
-											<Anchor point="LEFT" x="20" y="0"/>
-											<Anchor point="BOTTOM" x="0" y="25"/>
+											<Anchor point="RIGHT" x="-3" y="0"/>
+											<Anchor point="LEFT" x="5" y="0"/>
+											<Anchor point="BOTTOM" x="0" y="5"/>
 										</Anchors>
 										<Frames>
 											<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
