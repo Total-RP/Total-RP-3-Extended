@@ -134,9 +134,10 @@ TRP3_DB.inner.rifle = {
 							["cond"] = {
 								{
 									{
-										["i"] = "inv_item_count_con",
+										["i"] = "inv_item_count",
 										["a"] = {
 											"rifle bullet", -- [1]
+											"self", -- [2]
 										},
 									}, -- [1]
 									">", -- [2]

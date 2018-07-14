@@ -500,6 +500,19 @@
 
 	</Frame>
 
+	<Frame name="TRP3_EffectEditorSummonPet" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="180"/>
+		<Frames>
+			<CheckButton parentKey="favourite" inherits="TRP3_CheckBox" name="$parentFavourite">
+				<Anchors>
+					<Anchor point="LEFT" x="50"/>
+				</Anchors>
+			</CheckButton>
+
+		</Frames>
+
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--    Script       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->

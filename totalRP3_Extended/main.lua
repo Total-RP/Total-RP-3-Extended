@@ -415,6 +415,9 @@ local function onInit()
 			whitelist = {}; -- Keys are senderID, value boolean
 		};
 	end
+
+	-- Applying patches to saved variables
+	TRP3_API.extended.flyway.applyPatches();
 end
 
 local function onStart()
@@ -475,9 +478,15 @@ local function onStart()
 			end
 		end
 	end);
+
+    local dashboard = TRP3_Dashboard;
+    dashboard.extendedlogo = dashboard:CreateTexture("TRP3DashboardLogoExtended", "ARTWORK");
+    dashboard.extendedlogo:SetAllPoints(TRP3_DashboardLogo);
+    dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
 Globals.extended_version = 1012;
+Globals.extended_display_version = "@project-version@";
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",

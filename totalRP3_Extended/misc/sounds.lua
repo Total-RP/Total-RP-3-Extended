@@ -18,7 +18,6 @@
 
 local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
 local pairs, strsplit, floor, sqrt, tonumber = pairs, strsplit, math.floor, sqrt, tonumber;
-local EJ_GetCurrentInstance = EJ_GetCurrentInstance;
 local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.loc;
 local Log = TRP3_API.utils.log;
@@ -34,7 +33,7 @@ local LOCAL_STOPSOUND_COMMAND = "STS";
 
 local function getPosition()
 	local posY, posX, posZ, instanceID = UnitPosition("player");
-	instanceID = instanceID	.. ',' .. EJ_GetCurrentInstance();
+	instanceID = instanceID;
 	posY = floor(posY + 0.5);
 	posX = floor(posX + 0.5);
 	return posY, posX, posZ, instanceID;
@@ -89,7 +88,7 @@ local function initSharedSound()
 				else
 					-- Get current position
 					local myPosY, myPosX, myPosZ, myInstanceID = UnitPosition("player");
-					myInstanceID = myInstanceID	.. ',' .. EJ_GetCurrentInstance();
+					myInstanceID = myInstanceID;
 					myPosY = floor(myPosY + 0.5);
 					myPosX = floor(myPosX + 0.5);
 
