@@ -1585,6 +1585,10 @@ http://wowwiki.wikia.com/wiki/Event_API
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	WO_EVENT_EX_UNKNOWN_ERROR = "[Error] Unknown event %s in %s",
+	WO_EVENT_EX_BROWSER_TITLE = "Event browser",
+	WO_EVENT_EX_BROWSER_NO_PAYLOAD = "No arguments",
+	WO_EVENT_EX_BROWSER_COMBAT_LOG_ERROR = "Can't show arguments, refer to Wowpedia",
 	DR_STASHES_ERROR_INSTANCE = "Cannot create a stash in an instance",
 	DR_DROP_ERROR_INSTANCE = "Cannot drop items in an instance",
 	EFFECT_RANDSUM_TT = "Summon a random battle pet.",

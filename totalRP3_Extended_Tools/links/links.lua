@@ -51,6 +51,229 @@ end
 
 local tsize = Utils.table.size;
 
+local EVENTS_TABLE;
+local eventsList = {};
+local linesWidget = {};
+local LINE_TOP_MARGIN = 25;
+local LEFT_DEPTH_STEP_MARGIN = 30;
+local refreshEventsList;
+
+-- Custom TRP3 Extended events table --
+local CUSTOM_EVENTS =
+{
+	{
+		NA = "Total RP 3 Extended events",
+		ID = "0", -- I'm not cheating this is bullshit
+		EV =
+		{
+			{
+				NA = "TRP3_KILL",
+				ID = "0 TRP3_KILL",
+				PA =
+				{
+					{ NA = "unitType", TY = "string" }, -- [1]
+					{ NA = "killerGUID", TY = "string" }, -- [2]
+					{ NA = "killerName", TY = "string" }, -- [3]
+					{ NA = "victimGUID", TY = "string" }, -- [4]
+					{ NA = "victimName", TY = "string" }, -- [5]
+					{ NA = "victimNPC_ID / victimPlayerClassID", TY = "string" }, -- [6]
+					{ NA = "victimPlayerClassName", TY = "string" }, -- [7]
+					{ NA = "victimPlayerRaceID", TY = "string" }, -- [8]
+					{ NA = "victimPlayerRaceName", TY = "string" }, -- [9]
+					{ NA = "victimPlayerGender", TY = "number" } -- [10]
+				}
+
+			},
+			{
+				NA = "TRP3_SIGNAL",
+				ID = "0 TRP3_SIGNAL",
+				PA =
+				{
+					{ NA = "signalID", TY = "string" }, -- [1]
+					{ NA = "signalValue", TY = "string" }, -- [2]
+					{ NA = "senderName", TY = "string" } -- [3]
+				}
+
+			},
+			{
+				NA = "TRP3_ROLL",
+				ID = "0 TRP3_ROLL",
+				PA =
+				{
+					{ NA = "diceRolled", TY = "string" }, -- [1]
+					{ NA = "result", TY = "number" } -- [2]
+				}
+
+			},
+			{
+				NA = "TRP3_ITEM_USED",
+				ID = "0 TRP3_ITEM_USED",
+				PA =
+				{
+					{ NA = "itemID", TY = "string" }, -- [1]
+					{ NA = "errorMessage", TY = "string" } -- [2]
+				}
+
+			}
+		}
+	}
+};
+
+local function loadAPIEventDoc()
+	APIDocumentation_LoadUI();
+
+	EVENTS_TABLE = {};
+	Utils.table.copy(EVENTS_TABLE, CUSTOM_EVENTS);
+	tinsert(eventsList, EVENTS_TABLE[1]);
+
+	local apiTable = APIDocumentation:GetAPITableByTypeName("system");
+	for systemIndex, system in pairs(apiTable) do
+		if (system["Events"] and issecurevariable(system, "Events") and Utils.table.size(system["Events"]) ~= 0) then
+			EVENTS_TABLE[systemIndex + 1] = {NA = system["Name"], EV = {}, ID = system["Name"]};
+			for eventIndex, event in pairs(system["Events"]) do
+				EVENTS_TABLE[systemIndex + 1].EV[eventIndex] = {NA = event["LiteralName"], ID = system["Name"] .. " " .. event["LiteralName"]};
+				if (event["Payload"]) then
+					EVENTS_TABLE[systemIndex + 1].EV[eventIndex].PA = {};
+					for argIndex, payloadArg in pairs(event["Payload"]) do
+						EVENTS_TABLE[systemIndex + 1].EV[eventIndex].PA[argIndex] = {NA = payloadArg["Name"], TY = payloadArg["Type"]};
+					end
+				end
+			end
+			tinsert(eventsList, EVENTS_TABLE[systemIndex + 1]);
+		end
+	end
+end
+
+local function addEventsToPool(systemName)
+	for _, system in pairs(EVENTS_TABLE) do
+		if system.NA == systemName then
+			for _, event in pairs(system.EV) do
+				tinsert(eventsList, event);
+			end
+		end
+	end
+	refreshEventsList();
+end
+
+local function removeEventsFromPool(systemName)
+	for _, system in pairs(EVENTS_TABLE) do
+		if system.NA == systemName then
+			for _, event in pairs(system.EV) do
+				Utils.table.remove(eventsList, event);
+			end
+		end
+	end
+	refreshEventsList();
+end
+
+local function onEventLineClick(self)
+	gameLinksEditor.editor.event:SetText(self:GetParent().name);
+	gameLinksEditor.editor.container:Hide();
+end
+
+local function onLineExpandClick(self)
+	if not self:GetParent().Expand.isOpen then
+		addEventsToPool(self:GetParent().name);
+	else
+		removeEventsFromPool(self:GetParent().name);
+	end
+end
+
+local ARG_STRING_FORMAT = "%s: " .. TRP3_API.Ellyb.ColorManager.WHITE("%s") .. " (" .. TRP3_API.Ellyb.ColorManager.GREEN("%s") .. ")";
+
+local function getEventTooltip(payload)
+	local text = "";
+	if not payload then
+		text = "\n" .. loc.WO_EVENT_EX_BROWSER_NO_PAYLOAD;
+	else
+		for index, payloadArg in pairs(payload) do
+			text = text .. "\n" .. ARG_STRING_FORMAT:format(index, payloadArg.NA, payloadArg.TY);
+		end
+	end
+	return text;
+end
+
+function refreshEventsList()
+	for _, lineWidget in pairs(linesWidget) do
+		lineWidget:Hide();
+	end
+
+	table.sort(eventsList, function(a,b) return a.ID<b.ID end);
+	for index, element in pairs(eventsList) do
+		local isEvent = (element.EV == nil);
+		local name = element.NA;
+		local isOpen = (not isEvent) and eventsList[index + 1] and (eventsList[index + 1].EV == nil);
+
+		local lineWidget = linesWidget[index];
+		if not lineWidget then
+			lineWidget = CreateFrame("Frame", "TRP3_ToolFrameListLine" .. index, gameLinksEditor.editor.container.scroll.child, "TRP3_Tools_ListLineTemplate");
+			lineWidget.Click:RegisterForClicks("LeftButtonUp");
+			TRP3_API.Ellyb.Tooltips.getTooltip(lineWidget.Click):SetAnchor("BOTTOMRIGHT");
+
+			lineWidget.Expand:SetScript("OnClick", onLineExpandClick);
+			lineWidget.Right:Hide();
+			tinsert(linesWidget, lineWidget);
+		end
+
+		lineWidget.name = name;
+
+		if isEvent then
+			lineWidget.Click:SetScript("OnClick", onEventLineClick);
+		else
+			lineWidget.Click:SetScript("OnClick", onLineExpandClick);
+		end
+
+		lineWidget.Text:SetText(TRP3_API.Ellyb.ColorManager.WHITE(name));
+
+		local depth;
+		lineWidget.Expand:Hide();
+		if not isEvent then
+			lineWidget.Expand:Show();
+			lineWidget.Expand.isOpen = isOpen;
+			if isOpen then
+				lineWidget.Expand:SetNormalTexture("Interface\\Buttons\\UI-MinusButton-UP");
+				lineWidget.Expand:SetPushedTexture("Interface\\Buttons\\UI-MinusButton-DOWN");
+			else
+				lineWidget.Expand:SetNormalTexture("Interface\\Buttons\\UI-PlusButton-UP");
+				lineWidget.Expand:SetPushedTexture("Interface\\Buttons\\UI-PlusButton-DOWN");
+			end
+			TRP3_API.Ellyb.Tooltips.getTooltip(lineWidget.Click):SetTitle(nil);
+			depth = 1;
+		else
+			local tooltipContent;
+			if element.NA == "COMBAT_LOG_EVENT" or element.NA == "COMBAT_LOG_EVENT_UNFILTERED" then
+				-- Showing custom message for combat log events as there is no payload but we can still get event arguments
+				tooltipContent = TRP3_API.Ellyb.ColorManager.RED(loc.WO_EVENT_EX_BROWSER_COMBAT_LOG_ERROR);
+			else
+				tooltipContent = getEventTooltip(element.PA);
+			end
+			TRP3_API.Ellyb.Tooltips.getTooltip(lineWidget.Click):SetTitle(name):SetLine(tooltipContent);
+			depth = 2;
+		end
+
+		lineWidget:ClearAllPoints();
+		lineWidget:SetPoint("LEFT", LEFT_DEPTH_STEP_MARGIN * (depth - 1), 0);
+		lineWidget:SetPoint("RIGHT", -15, 0);
+		lineWidget:SetPoint("TOP", 0, (-LINE_TOP_MARGIN) * (index - 1));
+
+		lineWidget:Show();
+	end
+end
+
+local function toggleEventBrowser()
+	if gameLinksEditor.editor.container:IsVisible() then
+		gameLinksEditor.editor.container:Hide();
+	else
+		if not EVENTS_TABLE then
+			loadAPIEventDoc();
+		end
+
+		refreshEventsList();
+
+		gameLinksEditor.editor.container:Show();
+	end
+end
+
 local function decorateEventLine(line, actionIndex)
 	local data = toolFrame.specificDraft;
 	local actionData = data.HA[actionIndex];
@@ -285,6 +508,12 @@ function editor.init(ToolFrame)
 	gameLinksEditor.editor.save:SetScript("OnClick", function(self)
 		onEventSaved();
 	end);
+	gameLinksEditor.editor.browser:SetText("<<");
+	gameLinksEditor.editor.browser:SetScript("OnClick", function(self)
+		toggleEventBrowser();
+	end);
+
+	TRP3_API.ui.frame.setupFieldPanel(gameLinksEditor.editor.container, loc.WO_EVENT_EX_BROWSER_TITLE, 150);
 
 	gameLinksEditor:SetScript("OnHide", function() gameLinksEditor.editor:Hide() end);
 

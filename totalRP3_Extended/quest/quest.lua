@@ -22,18 +22,33 @@ local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
 
+-- Ellyb imports
+local Ellyb = TRP3_API.Ellyb;
+
+-- List of custom events for Extended
+local CUSTOM_EVENTS = {
+	TRP3_KILL = "TRP3_KILL",
+	TRP3_ROLL = "TRP3_ROLL",
+	TRP3_SIGNAL = "TRP3_SIGNAL",
+	TRP3_ITEM_USED = "TRP3_ITEM_USED"
+};
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- QUEST API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local questHandlers = {};
 
-local function onQuestCallback(campaignID, questID, scriptID, condition, ...)
+local function onQuestCallback(campaignID, questID, scriptID, condition, eventID, ...)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
 	local class = getClass(fullID);
 	if class.SC and class.SC[scriptID] then
+		local payload = {...};
+		if (eventID == "COMBAT_LOG_EVENT" or eventID == "COMBAT_LOG_EVENT_UNFILTERED") then
+			payload = {CombatLogGetCurrentEventInfo()};	-- No payload for combat log events in 8.0
+		end
 		local playerQuestLog = TRP3_API.quest.getQuestLog();
-		local args = { object = playerQuestLog[campaignID], event = {...} };
+		local args = { object = playerQuestLog[campaignID], event = payload };
 		if TRP3_API.script.generateAndRunCondition(condition, args) then
 			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, fullID);
 		end
@@ -44,8 +59,12 @@ local function clearQuestHandlers(questFullID)
 	Log.log("clearQuestHandlers: " .. questFullID, Log.level.DEBUG);
 
 	if questHandlers[questFullID] then
-		for handlerID, _ in pairs(questHandlers[questFullID]) do
-			Utils.event.unregisterHandler(handlerID);
+		for handlerID, eventID in pairs(questHandlers[questFullID]) do
+			if (CUSTOM_EVENTS[eventID] ~= nil) then
+				Events.unregisterCallback(handlerID);
+			else
+				Utils.event.unregisterHandler(handlerID);
+			end
 		end
 		wipe(questHandlers[questFullID]);
 		questHandlers[questFullID] = nil;
@@ -62,18 +81,31 @@ local function clearAllQuestHandlers()
 end
 TRP3_API.quest.clearAllQuestHandlers = clearAllQuestHandlers;
 
+local function registerQuestHandler(campaignID, questID, fullID, event)
+	local handlerID;
+	if (CUSTOM_EVENTS[event.EV] ~= nil) then
+		handlerID = Events.registerCallback(event.EV, function(...)
+			onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
+		end);
+	else
+		handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
+		end);
+	end
+	if not questHandlers[fullID] then
+		questHandlers[fullID] = {};
+	end
+	questHandlers[fullID][handlerID] = event.EV;
+end
+
 local function activateQuestHandlers(campaignID, questID, questClass)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
 	Log.log("activateQuestHandlers: " .. fullID, Log.level.DEBUG);
 
 	for _, event in pairs(questClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onQuestCallback(campaignID, questID, event.SC, event.CO, ...);
-		end);
-		if not questHandlers[fullID] then
-			questHandlers[fullID] = {};
+		if event.EV and not pcall(registerQuestHandler, campaignID, questID, fullID, event) then
+			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
-		questHandlers[fullID][handlerID] = event.EV;
 	end
 
 	-- Active handlers for known step
@@ -228,12 +260,16 @@ end
 
 local stepHandlers = {};
 
-local function onStepCallback(campaignID, questID, stepID, scriptID, condition, ...)
+local function onStepCallback(campaignID, questID, stepID, scriptID, condition, eventID, ...)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
 	local class = getClass(fullID);
 	if class.SC and class.SC[scriptID] then
+		local payload = {...};
+		if (eventID == "COMBAT_LOG_EVENT" or eventID == "COMBAT_LOG_EVENT_UNFILTERED") then
+			payload = {CombatLogGetCurrentEventInfo()};	-- No payload for combat log events in 8.0
+		end
 		local playerQuestLog = TRP3_API.quest.getQuestLog();
-		local args = {object = playerQuestLog[campaignID], event = {...}};
+		local args = {object = playerQuestLog[campaignID], event = payload};
 		if TRP3_API.script.generateAndRunCondition(condition, args) then
 			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, fullID);
 		end
@@ -244,8 +280,12 @@ local function clearStepHandlers(stepFullID)
 	Log.log("clearStepHandlers: " .. stepFullID, Log.level.DEBUG);
 
 	if stepHandlers[stepFullID] then
-		for handlerID, _ in pairs(stepHandlers[stepFullID]) do
-			Utils.event.unregisterHandler(handlerID);
+		for handlerID, eventID in pairs(stepHandlers[stepFullID]) do
+			if (CUSTOM_EVENTS[eventID] ~= nil) then
+				Events.unregisterCallback(handlerID);
+			else
+				Utils.event.unregisterHandler(handlerID);
+			end
 		end
 		wipe(stepHandlers[stepFullID]);
 		stepHandlers[stepFullID] = nil;
@@ -270,18 +310,31 @@ function TRP3_API.quest.clearStepHandlersForQuest(questFullID)
 	end
 end
 
+local function registerStepHandler(campaignID, questID, stepID, fullID, event)
+	local handlerID;
+	if (CUSTOM_EVENTS[event.EV] ~= nil) then
+		handlerID = Events.registerCallback(event.EV, function(...)
+			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
+		end);
+	else
+		handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
+		end);
+	end
+	if not stepHandlers[fullID] then
+		stepHandlers[fullID] = {};
+	end
+	stepHandlers[fullID][handlerID] = event.EV;
+end
+
 local function activateStepHandlers(campaignID, questID, stepID, stepClass)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
 	Log.log("activateStepHandlers: " .. fullID, Log.level.DEBUG);
 
 	for _, event in pairs(stepClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, ...);
-		end);
-		if not stepHandlers[fullID] then
-			stepHandlers[fullID] = {};
+		if event.EV and not pcall(registerStepHandler, campaignID, questID, stepID, fullID, event) then
+			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
-		stepHandlers[fullID][handlerID] = event.EV;
 	end
 end
 TRP3_API.quest.activateStepHandlers = activateStepHandlers;
@@ -691,7 +744,6 @@ end
 
 function TRP3_API.quest.onStart()
 	Events.CAMPAIGN_REFRESH_LOG = "CAMPAIGN_REFRESH_LOG";
-	Events.registerEvent(Events.CAMPAIGN_REFRESH_LOG);
 
 	TRP3_QuestToast.title:SetText(loc.QE_NEW);
 

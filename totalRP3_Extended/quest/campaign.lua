@@ -24,6 +24,17 @@ local loc = TRP3_API.loc;
 local Log = Utils.log;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
+-- Ellyb imports
+local Ellyb = TRP3_API.Ellyb;
+
+-- List of custom events for Extended
+local CUSTOM_EVENTS = {
+	TRP3_KILL = "TRP3_KILL",
+	TRP3_ROLL = "TRP3_ROLL",
+	TRP3_SIGNAL = "TRP3_SIGNAL",
+	TRP3_ITEM_USED = "TRP3_ITEM_USED"
+};
+
 local playerQuestLog;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -45,10 +56,14 @@ end
 
 local campaignHandlers = {};
 
-local function onCampaignCallback(campaignID, scriptID, condition, ...)
+local function onCampaignCallback(campaignID, scriptID, condition, eventID, ...)
 	local class = getClass(campaignID);
 	if class and class.SC and class.SC[scriptID] then
-		local args = { object = playerQuestLog[campaignID], event = {...} };
+		local payload = {...};
+		if (eventID == "COMBAT_LOG_EVENT" or eventID == "COMBAT_LOG_EVENT_UNFILTERED") then
+			payload = {CombatLogGetCurrentEventInfo()};	-- No payload for combat log events in 8.0
+		end
+		local args = { object = playerQuestLog[campaignID], event = payload };
 		if TRP3_API.script.generateAndRunCondition(condition, args) then
 			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, campaignID);
 		end
@@ -58,20 +73,37 @@ end
 local function clearCampaignHandlers()
 	Log.log("clearCampaignHandlers", Log.level.DEBUG);
 
-	for handlerID, _ in pairs(campaignHandlers) do
-		Utils.event.unregisterHandler(handlerID);
+	for handlerID, eventID in pairs(campaignHandlers) do
+		if (CUSTOM_EVENTS[eventID] ~= nil) then
+			Events.unregisterCallback(handlerID);
+		else
+			Utils.event.unregisterHandler(handlerID);
+		end
 	end
 	wipe(campaignHandlers);
 	TRP3_API.quest.clearAllQuestHandlers();
 end
 
+local function registerCampaignHandler(campaignID, event)
+	local handlerID;
+	if (CUSTOM_EVENTS[event.EV] ~= nil) then
+		handlerID = Events.registerCallback(event.EV, function(...)
+			onCampaignCallback(campaignID, event.SC, event.CO, event.EV, ...);
+		end);
+	else
+		handlerID = Utils.event.registerHandler(event.EV, function(...)
+			onCampaignCallback(campaignID, event.SC, event.CO, event.EV, ...);
+		end);
+	end
+	campaignHandlers[handlerID] = event.EV;
+end
+
 local function activateCampaignHandlers(campaignID, campaignClass)
 	Log.log("activateCampaignHandlers: " .. campaignID, Log.level.DEBUG);
 	for _, event in pairs(campaignClass.HA or EMPTY) do
-		local handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onCampaignCallback(campaignID, event.SC, event.CO, ...);
-		end);
-		campaignHandlers[handlerID] = event.EV;
+		if event.EV and not pcall(registerCampaignHandler, campaignID, event) then
+			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, campaignID)));
+		end
 	end
 	-- Active handlers for known quests
 	for questID, questClass in pairs(campaignClass.QE or EMPTY) do
@@ -212,7 +244,6 @@ function TRP3_API.quest.campaignInit()
 	end
 
 	TRP3_API.quest.EVENT_REFRESH_CAMPAIGN = "EVENT_REFRESH_CAMPAIGN";
-	Events.registerEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
 		if getActiveCampaignLog() and not TRP3_API.extended.classExists(playerQuestLog.currentCampaign) then
 			deactivateCurrentCampaign();
@@ -226,7 +257,7 @@ function TRP3_API.quest.campaignInit()
 	-- Emote event (yes, I put it here because I'm the boss)
 	TRP3_API.extended.EMOTE_EVENT = "TRP3_EMOTE";
 	hooksecurefunc("DoEmote", function(emote, arg2, arg3)
-		Utils.event.fireEvent(TRP3_API.extended.EMOTE_EVENT, emote);
+		Events.fireEvent(TRP3_API.extended.EMOTE_EVENT, emote);
 	end);
 
 	-- Helpers
