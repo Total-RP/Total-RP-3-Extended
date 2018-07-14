@@ -5,6 +5,7 @@
 ## Version: @project-version@
 ## URL: http://extended.totalrp3.info
 ## RequiredDeps: totalRP3
+## OptionalDeps: Blizzard_QuestChoice
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: TRP3_Tools_DB, TRP3_Exchange_DB, TRP3_Security, TRP3_Drop, TRP3_Stashes, TRP3_Extended_Flyway
