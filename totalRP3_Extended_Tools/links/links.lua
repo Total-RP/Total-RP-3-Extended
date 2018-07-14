@@ -508,7 +508,9 @@ function editor.init(ToolFrame)
 	gameLinksEditor.editor.save:SetScript("OnClick", function(self)
 		onEventSaved();
 	end);
-	gameLinksEditor.editor.browser:SetText("<<");
+
+	gameLinksEditor.editor.browser:SetText(loc.WO_EVENT_EX_BROWSER_OPEN);
+	gameLinksEditor.editor.browser:SetWidth(gameLinksEditor.editor.browser:GetTextWidth() + 40)
 	gameLinksEditor.editor.browser:SetScript("OnClick", function(self)
 		toggleEventBrowser();
 	end);

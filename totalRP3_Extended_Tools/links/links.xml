@@ -232,7 +232,7 @@
 
 							<Button parentKey="browser" inherits="TRP3_CommonButton" text="open">
 								<Anchors>
-									<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.event" y="-10"/>
 								</Anchors>
 							</Button>
 
