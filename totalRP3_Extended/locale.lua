@@ -1578,13 +1578,6 @@ http://wowwiki.wikia.com/wiki/Event_API
 	EFFECT_ITEM_DICE_PREVIEW_STORED = "Rollin' %s and saving the result to %s",
 	EFFECT_ITEM_DICE_ROLL_VAR = "Variable name (optional)",
 	EFFECT_ITEM_DICE_ROLL_VAR_TT = "The variable in which you want to store the dice roll result.\nLeave empty if you don't want to store the result.",
-
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WO_EVENT_EX_UNKNOWN_ERROR = "[Error] Unknown event %s in %s",
 	WO_EVENT_EX_BROWSER_TITLE = "Event browser",
 	WO_EVENT_EX_BROWSER_OPEN = "Open event browser",
@@ -1606,6 +1599,12 @@ http://wowwiki.wikia.com/wiki/Event_API
 	EFFECT_ITEM_SOURCE_1_ADD_TT = "Add the item(s) anywhere inside the entire character inventory, starting with the main container.",
 	EFFECT_ITEM_SOURCE_2_ADD_TT = "Add the item(s) only inside this item parent container (and any sub-container).\n\n|cffff9900Only works if this script is in an item context.",
 	EFFECT_ITEM_SOURCE_3_ADD_TT = "Add the item(s) only inside this item (and any sub-container).\n\n|cffff9900Only works if this script is in an item context and this item is a container.",
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
