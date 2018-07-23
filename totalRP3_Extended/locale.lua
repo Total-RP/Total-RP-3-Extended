@@ -1742,7 +1742,7 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Victor Nilsson
 - Vinayack 
 - W. Kristoph "Calmorlayne" Nolen
-- Weston R. Haring
+- Defilers of Arathor
 - Yann
 - Ydara
 - Zach Platzer
