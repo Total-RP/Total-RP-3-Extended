@@ -776,7 +776,7 @@ end
 
 local function startStashesRequest()
 	local posY, posX = UnitPosition("player");
-	local mapID = WorldMapFrame:GetMapID();
+	local mapID = C_Map.GetBestMapForUnit("player");
 	if posX and posY then
 		stashFoundFrame:Hide();
 		stashEditFrame:Hide();

@@ -33,7 +33,6 @@ local LOCAL_STOPSOUND_COMMAND = "STS";
 
 local function getPosition()
 	local posY, posX, posZ, instanceID = UnitPosition("player");
-	instanceID = instanceID;
 	posY = floor(posY + 0.5);
 	posX = floor(posX + 0.5);
 	return posY, posX, posZ, instanceID;
@@ -78,6 +77,7 @@ local function initSharedSound()
 				posY = tonumber(posY) or 0;
 				posX = tonumber(posX) or 0;
 				posZ = tonumber(posZ) or 0;
+				instanceID = tonumber(instanceID) or -1;
 
 				if sender == Globals.player_id then
 					if channel ~= "Music" then
@@ -88,7 +88,6 @@ local function initSharedSound()
 				else
 					-- Get current position
 					local myPosY, myPosX, myPosZ, myInstanceID = UnitPosition("player");
-					myInstanceID = myInstanceID;
 					myPosY = floor(myPosY + 0.5);
 					myPosX = floor(myPosX + 0.5);
 
