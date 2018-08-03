@@ -48,7 +48,7 @@ local function dropCommon(lootInfo)
 		posY = posY,
 		posX = posX,
 		posZ = posZ,
-		mapID = mapID,
+		uiMapID = mapID,
 		mapX = mapX,
 		mapY = mapY,
 		item = {}
