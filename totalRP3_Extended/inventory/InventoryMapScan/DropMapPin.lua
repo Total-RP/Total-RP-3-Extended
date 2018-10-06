@@ -21,21 +21,17 @@ local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
---region Lua imports
-local huge = math.huge;
---endregion
-
---region Total RP 3 imports
-local Utils = TRP3_API.utils;
+--{{{ Total RP 3 imports
 local loc = TRP3_API.loc;
 local getClass, getItemLink = TRP3_API.extended.getClass, TRP3_API.inventory.getItemLink;
---endregion
+--}}}
 
---region Ellyb imports
+--{{{ Ellyb imports
 local ORANGE = Ellyb.ColorManager.ORANGE;
----endregion
+---}}}
 
 -- Create the pin template, above group members
+---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{Texture: Texture, GetMap: fun():MapCanvasMixin}
 TRP3_DropMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
 	AddOn_TotalRP3.MapPoiMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
 	AddOn_TotalRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
@@ -57,6 +53,7 @@ function TRP3_DropMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 end
 
 --- This is called by the data provider to decorate the pin after the base pin mixin has done its job.
+---@param displayData {scanLine:string}
 function TRP3_DropMapPinMixin:Decorate(displayData)
 	self.Texture:SetSize(24, 24);
 	self:SetSize(24, 24);

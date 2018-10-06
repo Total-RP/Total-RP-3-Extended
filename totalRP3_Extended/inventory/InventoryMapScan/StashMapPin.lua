@@ -21,21 +21,18 @@ local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
---region Lua imports
-local huge = math.huge;
---endregion
-
---region Total RP 3 imports
+--{{{ Total RP 3 imports
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local getItemLink = TRP3_API.inventory.getItemLink;
---endregion
+--}}}
 
---region Ellyb imports
+--{{{ Ellyb imports
 local ORANGE = Ellyb.ColorManager.ORANGE;
----endregion
+---}}}
 
 -- Create the pin template, above group members
+---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{Texture: Texture, GetMap: fun():MapCanvasMixin}
 TRP3_StashMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
 	AddOn_TotalRP3.MapPoiMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
 	AddOn_TotalRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
@@ -50,18 +47,22 @@ TRP3_StashMapPinMixin.TEMPLATE_NAME = "TRP3_StashMapPinTemplate";
 function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.CR or poiInfo.sender);
 	local displayData = {};
+
+	--{{{ Player name
 	local name, color, icon = player:GetRoleplayingName(), player:GetCustomColor(), player:GetCustomIcon();
 
 	if color ~= nil then
 		name = color:WrapTextInColorCode(name);
 	end
 	if icon ~= nil then
-		name = TRP3_API.utils.str.icon(icon, 15) .. " " .. name;
+		name = Utils.str.icon(icon, 15) .. " " .. name;
 	end
+	--}}}
 
 	displayData.playerName = name;
 	displayData.categoryPriority = displayData.playerName;
 
+	--{{{ Stash size
 	local total = poiInfo.total;
 	-- If no total, it's a self stash, so we compute the total.
 	if not total then
@@ -70,6 +71,7 @@ function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 			total = total + 1;
 		end
 	end
+	--}}}
 
 	local line = Utils.str.icon(poiInfo.BA.IC) .. " " .. getItemLink(poiInfo);
 	displayData.scanLine = line .. " - |cffff9900" .. total .. "/8";
@@ -78,6 +80,7 @@ function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 end
 
 --- This is called by the data provider to decorate the pin after the base pin mixin has done its job.
+---@param displayData {playerName:string, categoryPriority:string, scanLine: string}
 function TRP3_StashMapPinMixin:Decorate(displayData)
 	self.Texture:SetSize(24, 24);
 	self:SetSize(24, 24);

@@ -21,21 +21,16 @@ local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
---region Lua imports
+--{{{ Lua imports
 local tonumber = tonumber;
-local insert = table.insert;
---endregion
+--}}}
 
---region WoW imports
-local CreateVector2D = CreateVector2D;
---endregion
-
---region Total RP 3 imports
+--{{{ Total RP 3 imports
 local Globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
 local broadcast = AddOn_TotalRP3.Communications.broadcast;
 local Map = AddOn_TotalRP3.Map;
---endregion
+--}}}
 
 --
 -- Self stash scan
@@ -51,7 +46,7 @@ stashSelfMapScanner.scanTitle = loc.DR_STASHES;
 -- The MapDataProvider will use this template to generate the pin
 stashSelfMapScanner.dataProviderTemplate = TRP3_StashMapPinMixin.TEMPLATE_NAME;
 
---region Scan behavior
+--{{{ Scan behavior
 function stashSelfMapScanner:Scan()
 	local mapID = WorldMapFrame:GetMapID();
 	local stashData = TRP3_Stashes[Globals.player_realm];
@@ -75,7 +70,7 @@ function stashSelfMapScanner:CanScan()
 
 	return true;
 end
---endregion
+--}}}
 
 --
 -- Self drop scan
@@ -91,7 +86,7 @@ dropSelfMapScanner.scanTitle = loc.TYPE_ITEMS;
 -- The MapDataProvider will use this template to generate the pin
 dropSelfMapScanner.dataProviderTemplate = TRP3_DropMapPinMixin.TEMPLATE_NAME;
 
---region Scan behavior
+--{{{ Scan behavior
 function dropSelfMapScanner:Scan()
 	local mapID = WorldMapFrame:GetMapID();
 	local dropData = TRP3_Drop[Globals.player_realm];
@@ -115,7 +110,7 @@ function dropSelfMapScanner:CanScan()
 
 	return true;
 end
---endregion
+--}}}
 
 --
 -- Others stash scan
@@ -133,7 +128,7 @@ stashOthersMapScanner.scanTitle = loc.DR_STASHES;
 -- The MapDataProvider will use this template to generate the pin
 stashOthersMapScanner.dataProviderTemplate = TRP3_StashMapPinMixin.TEMPLATE_NAME;
 
---region Scan behavior
+--{{{ Scan behavior
 function stashOthersMapScanner:Scan()
 	broadcast.broadcast(STASHES_SCAN_COMMAND, Map.getDisplayedMapID());
 end
@@ -151,9 +146,9 @@ function stashOthersMapScanner:CanScan()
 
 	return true;
 end
---endregion
+--}}}
 
---region Broadcast commands
+--{{{ Broadcast commands
 broadcast.registerCommand(STASHES_SCAN_COMMAND, function(sender, mapID)
 	if (sender == Globals.player_id) then
 		return;
@@ -174,4 +169,4 @@ end)
 broadcast.registerP2PCommand(STASHES_SCAN_COMMAND, function(sender, mapX, mapY, name, icon, total, owner)
 	stashOthersMapScanner:OnScanDataReceived(sender, mapX, mapY, {BA = {NA = name, IC = icon}, total = total, CR = owner});
 end)
---endregion
+--}}}
