@@ -48,34 +48,23 @@ TRP3_StashMapPinMixin.TEMPLATE_NAME = "TRP3_StashMapPinTemplate";
 --- into display info to be used to decorate the pin.
 ---@param poiInfo {position:Vector2DMixin, sender:string}
 function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
-	local characterID = poiInfo.CR or poiInfo.sender;
+	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.CR or poiInfo.sender);
 	local displayData = {};
 	local isSelf = characterID == TRP3_API.globals.player_id;
+	local name, color, icon = player:GetRoleplayingName(), player:GetCustomColor(), player:GetCustomIcon();
 
-	if not isSelf and (not TRP3_API.register.isUnitIDKnown(characterID) or not TRP3_API.register.hasProfile(characterID)) then
-		-- Only remove the server name from the sender ID
-		displayData.playerName = characterID:gsub("%-.*$", "");
-		displayData.categoryPriority = displayData.playerName;
-	else
-		local profile = TRP3_API.profile.getPlayerCurrentProfile().player;
-
-		--region Player name
-		displayData.playerName = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
-		displayData.categoryPriority = displayData.playerName;
-
-		if profile.characteristics then
-			if profile.characteristics.CH then
-				local color = Ellyb.Color.CreateFromHexa(profile.characteristics.CH);
-				displayData.playerName = color(displayData.playerName);
-			end
-			if profile.characteristics.IC then
-				displayData.playerName = Utils.str.icon(profile.characteristics.IC, 15) .. " " .. displayData.playerName;
-			end
-		end
-		--endregion
+	if color ~= nil then
+		name = color:WrapTextInColorCode(name);
+	end
+	if icon ~= nil then
+		name = TRP3_API.utils.str.icon(icon, 15) .. " " .. name;
 	end
 
+	displayData.playerName = name;
+	displayData.categoryPriority = displayData.playerName;
+
 	local total = poiInfo.total;
+	-- If no total, it's a self stash, so we compute the total.
 	if not total then
 		total = 0;
 		for index, slot in pairs(poiInfo.item) do

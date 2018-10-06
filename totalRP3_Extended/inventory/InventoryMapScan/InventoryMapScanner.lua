@@ -57,18 +57,23 @@ function stashSelfMapScanner:Scan()
 	local stashData = TRP3_Stashes[Globals.player_realm];
 	for index, stash in pairs(stashData) do
 		if stash.uiMapID == mapID then
-			stashSelfMapScanner:OnScanDataReceived(Globals.player_id, stash.mapX, stash.mapY, stash)
+			stashSelfMapScanner:OnScanDataReceived(Globals.player_id, stash.mapX, stash.mapY, stash);
 		end
 	end
 end
 
--- Players can only scan for their own stashes in zones where it is possible to retrieve player coordinates.
+-- Players can scan for stashes everywhere except if they're in an instance and checking their current map.
 function stashSelfMapScanner:CanScan()
-	local x, y = Map.getPlayerCoordinates()
-	if x and y then
-		return true;
+	-- Check if the map we are going to scan is the map the player is currently in
+	-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
+	if Map.getDisplayedMapID() == Map.getPlayerMapID() then
+		local x, y = Map.getPlayerCoordinates()
+		if not x or not y then
+			return false;
+		end
 	end
-	return false;
+
+	return true;
 end
 --endregion
 
@@ -92,18 +97,23 @@ function dropSelfMapScanner:Scan()
 	local dropData = TRP3_Drop[Globals.player_realm];
 	for index, drop in pairs(dropData) do
 		if drop.uiMapID == mapID then
-			dropSelfMapScanner:OnScanDataReceived(Globals.player_id, drop.mapX, drop.mapY, drop)
+			dropSelfMapScanner:OnScanDataReceived(Globals.player_id, drop.mapX, drop.mapY, drop);
 		end
 	end
 end
 
--- Players can only scan for their own drps in zones where it is possible to retrieve player coordinates.
+-- Players can scan for drops everywhere except if they're in an instance and checking their current map.
 function dropSelfMapScanner:CanScan()
-	local x, y = Map.getPlayerCoordinates()
-	if x and y then
-		return true;
+	-- Check if the map we are going to scan is the map the player is currently in
+	-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
+	if Map.getDisplayedMapID() == Map.getPlayerMapID() then
+		local x, y = Map.getPlayerCoordinates()
+		if not x or not y then
+			return false;
+		end
 	end
-	return false;
+
+	return true;
 end
 --endregion
 
@@ -121,39 +131,47 @@ stashOthersMapScanner.scanOptionText = loc.DR_STASHES_SCAN;
 stashOthersMapScanner.scanTitle = loc.DR_STASHES;
 -- Indicate the name of the pin template to use with this scan.
 -- The MapDataProvider will use this template to generate the pin
-stashOthersMapScanner.dataProviderTemplate = TRP3_DropMapPinMixin.TEMPLATE_NAME;
+stashOthersMapScanner.dataProviderTemplate = TRP3_StashMapPinMixin.TEMPLATE_NAME;
 
 --region Scan behavior
 function stashOthersMapScanner:Scan()
 	broadcast.broadcast(STASHES_SCAN_COMMAND, Map.getDisplayedMapID());
 end
 
--- Players can scan for others' stashes everywhere (as we don't have a way to know if a map is from an instance or not ? Will just get no answers).
+-- Players can scan for stashes everywhere except if they're in an instance and checking their current map.
 function stashOthersMapScanner:CanScan()
+	-- Check if the map we are going to scan is the map the player is currently in
+	-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
+	if Map.getDisplayedMapID() == Map.getPlayerMapID() then
+		local x, y = Map.getPlayerCoordinates()
+		if not x or not y then
+			return false;
+		end
+	end
+
 	return true;
 end
 --endregion
 
 --region Broadcast commands
 broadcast.registerCommand(STASHES_SCAN_COMMAND, function(sender, mapID)
-	if Map.playerCanSeeTarget(sender) then
-		mapID = tonumber(mapID);
-		if shouldAnswerToLocationRequest() and Map.playerCanSeeTarget(sender) then
-			local playerMapID = Map.getPlayerMapID();
-			if playerMapID ~= mapID then
-				return
+	if (sender == Globals.player_id) then
+		return;
+	end
+
+	local stashData = TRP3_Stashes[Globals.player_realm];
+	for _, stash in pairs(stashData) do
+		if stash.uiMapID == tonumber(mapID) and not stash.BA.NS then
+			local total = 0;
+			for index, slot in pairs(stash.item) do
+				total = total + 1;
 			end
-			local x, y = Map.getPlayerCoordinates();
-			if x and y then
-				broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, playerMapID);
-			end
+			broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total, stash.CR);
 		end
 	end
 end)
 
-broadcast.registerP2PCommand(STASHES_SCAN_COMMAND, function(sender, x, y)
-	if Map.playerCanSeeTarget(sender) then
-		inventorySelfMapScanner:OnScanDataReceived(sender, x, y)
-	end
+broadcast.registerP2PCommand(STASHES_SCAN_COMMAND, function(sender, mapX, mapY, name, icon, total, owner)
+	stashOthersMapScanner:OnScanDataReceived(sender, mapX, mapY, {BA = {NA = name, IC = icon}, total = total, CR = owner});
 end)
 --endregion
