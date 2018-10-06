@@ -50,7 +50,6 @@ TRP3_StashMapPinMixin.TEMPLATE_NAME = "TRP3_StashMapPinTemplate";
 function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.CR or poiInfo.sender);
 	local displayData = {};
-	local isSelf = characterID == TRP3_API.globals.player_id;
 	local name, color, icon = player:GetRoleplayingName(), player:GetCustomColor(), player:GetCustomIcon();
 
 	if color ~= nil then
