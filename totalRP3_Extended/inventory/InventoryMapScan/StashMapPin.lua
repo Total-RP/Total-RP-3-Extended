@@ -2,8 +2,8 @@
 --- Total RP 3
 ---    ---------------------------------------------------------------------------
 ---    Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
----                Solanya <solanya@totalrp3.info> @Solanya_
+---    Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---    Copyright 2018 Solanya <solanya@totalrp3.info> @Solanya_
 ---    Licensed under the Apache License, Version 2.0 (the "License");
 ---    you may not use this file except in compliance with the License.
 ---    You may obtain a copy of the License at
@@ -74,7 +74,7 @@ function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	--}}}
 
 	local line = Utils.str.icon(poiInfo.BA.IC) .. " " .. getItemLink(poiInfo);
-	displayData.scanLine = line .. " - |cffff9900" .. total .. "/8";
+	displayData.scanLine = line .. " - " .. Ellyb.ColorManager.ORANGE(total .. "/8");
 
 	return displayData
 end
