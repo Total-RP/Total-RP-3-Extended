@@ -532,6 +532,8 @@ function onLineActionSelected(value, button)
 		serial = serial:gsub("|", "||");
 		serial = AddOn_TotalRP3.Compression.compress(serial, false);
 		serial = "!" .. LibDeflate:EncodeForPrint(serial);
+		serial = serial:gsub("%(", "+");
+		serial = serial:gsub("%)", "=");
 		if serial:len() < SUPPOSED_SERIAL_SIZE_LIMIT then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
 			ToolFrame.list.container.export.content.title:SetText(loc.DB_EXPORT_HELP:format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
@@ -828,7 +830,9 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		local code = ToolFrame.list.container.import.content.scroll.text:GetText();
 		local encoded, usesLibDeflate = code:gsub("^%!", "");
 		if usesLibDeflate == 1 then
-			code = LibDeflate:DecodeForPrint(encoded);
+			code = encoded:gsub("%+", "(");
+			code = code:gsub("%=", ")");
+			code = LibDeflate:DecodeForPrint(code);
 			code = AddOn_TotalRP3.Compression.decompress(code, false);
 		end
 		code = code:gsub("||", "|");
