@@ -16,9 +16,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
--- Fixed inner item display bug (issue #82) (Paul Corlay)
 ---@type Ellyb;
 local Ellyb = Ellyb("totalRP3");
+local LibDeflate = LibStub:GetLibrary("LibDeflate");
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, strsplit, tinsert, table, strtrim = wipe, pairs, strsplit, tinsert, table, strtrim;
@@ -530,6 +530,8 @@ function onLineActionSelected(value, button)
 		local class = getClass(objectID);
 		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class, Globals.extended_display_version});
 		serial = serial:gsub("|", "||");
+		serial = AddOn_TotalRP3.Compression.compress(serial, false);
+		serial = "!" .. LibDeflate:EncodeForPrint(serial);
 		if serial:len() < SUPPOSED_SERIAL_SIZE_LIMIT then
 			ToolFrame.list.container.export.content.scroll.text:SetText(serial);
 			ToolFrame.list.container.export.content.title:SetText(loc.DB_EXPORT_HELP:format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
@@ -824,6 +826,11 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.container.import.save:SetText(loc.DB_IMPORT_WORD);
 	ToolFrame.list.container.import.save:SetScript("OnClick", function()
 		local code = ToolFrame.list.container.import.content.scroll.text:GetText();
+		local encoded, usesLibDeflate = code:gsub("^%!", "");
+		if usesLibDeflate == 1 then
+			code = LibDeflate:DecodeForPrint(encoded);
+			code = AddOn_TotalRP3.Compression.decompress(code, false);
+		end
 		code = code:gsub("||", "|");
 		local object = Utils.serial.safeDeserialize(code);
 		if object and type(object) == "table" and (#object == 3 or #object == 4) then
