@@ -427,6 +427,18 @@ local EFFECTS = {
 		secured = security.LOW,
 	},
 
+	-- SECURED MACRO
+	["secure_macro"] = {
+		-- Secure macros have no code in methods, their code is special and needs to be executed in a pre-use hook
+		method = function(structure, cArgs, eArgs)
+			eArgs.LAST = InCombatLockdown() -- Indicates if the macro was executed or not
+		end,
+		securedMethod = function(structure, cArgs, eArgs)
+			eArgs.LAST = InCombatLockdown()
+		end,
+		secured = security.LOW,
+	},
+
 	-- PROMPT
 	["var_prompt"] = {
 		method = function(structure, cArgs, eArgs)

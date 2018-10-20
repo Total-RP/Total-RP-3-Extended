@@ -104,7 +104,7 @@
 	<!--      Containers      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Button name="TRP3_ContainerSlotTemplate" enableMouse="true" virtual="true">
+	<Button name="TRP3_ContainerSlotTemplate" inherits="InsecureActionButtonTemplate" enableMouse="true" virtual="true">
 		<Size x="36" y="36"/>
 		<Layers>
 			<Layer level="BORDER">
@@ -147,9 +147,9 @@
 		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
 	</Button>
 
-	<Frame name="TRP3_ItemDragButton" inherits="TRP3_ContainerSlotTemplate" parent="UIParent" frameStrata="DIALOG" hidden="true" movable="true" enableMouse="false">
+	<Button name="TRP3_ItemDragButton" inherits="TRP3_ContainerSlotTemplate" parent="UIParent" frameStrata="DIALOG" hidden="true" movable="true" enableMouse="false">
 
-	</Frame>
+	</Button>
 
 	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true" movable="true">
 		<Size x="200" y="270" />

@@ -93,6 +93,38 @@ local function text_init()
 	end
 end
 
+local function macro_init()
+
+	local editor = TRP3_EffectEditorMacro;
+
+	registerEffectEditor("secure_macro",{
+		title = "Run macro",
+		icon = "inv_inscription_scrollofwisdom_01",
+		description = [[Execute a custom macro
+
+|cffff0000Note: This effect will NEVER be run while in combat.]],
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("|cffffff00Execute macro:|r " .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {""};
+		end,
+		editor = editor,
+	})
+
+	-- Text
+	setTooltipAll(editor.macroText.dummy, "RIGHT", 0, 5, "Macro code", "You can use any macro command");
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.macroText.scroll.text:SetText(data[1] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.macroText.scroll.text:GetText()));
+	end
+end
+
 local function script_init()
 
 	local editor = TRP3_EffectEditorScript;
@@ -1083,6 +1115,7 @@ end
 
 function TRP3_API.extended.tools.initBaseEffects()
 	text_init();
+	macro_init();
 	script_init();
 
 	companion_dismiss_mount_init();
