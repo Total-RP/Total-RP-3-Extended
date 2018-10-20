@@ -19,6 +19,11 @@
 
 -- Fixed the "Summon Mount" effect (Paul Corlay)
 
+local _, Private_TRP3E = ...;
+
+---@type SecureEnclave
+local SecureEnclave = Private_TRP3E.SecureEnclave;
+
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local loc = TRP3_API.loc;
 
@@ -431,10 +436,16 @@ local EFFECTS = {
 	["secure_macro"] = {
 		-- Secure macros have no code in methods, their code is special and needs to be executed in a pre-use hook
 		method = function(structure, cArgs, eArgs)
-			eArgs.LAST = InCombatLockdown() -- Indicates if the macro was executed or not
+			local macroText = tostring(cArgs[1]);
+			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
+			SecureEnclave:AddSecureCommands(macroText)
+			eArgs.LAST =0
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
-			eArgs.LAST = InCombatLockdown()
+			local macroText = tostring(cArgs[1]);
+			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
+			TRP3_API.utils.message.displayMessage(macroText, 1);
+			eArgs.LAST = 0
 		end,
 		secured = security.LOW,
 	},

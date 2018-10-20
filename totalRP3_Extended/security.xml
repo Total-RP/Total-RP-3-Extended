@@ -187,4 +187,5 @@
 		</Frames>
 	</Frame>
 
+	<Script file="SecureEnclave.lua" />
 </Ui>

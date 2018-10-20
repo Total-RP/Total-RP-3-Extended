@@ -16,6 +16,11 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local _, Private_TRP3E = ...;
+
+---@type SecureEnclave
+local SecureEnclave = Private_TRP3E.SecureEnclave
+
 local Ellyb = TRP3_API.Ellyb;
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
@@ -252,30 +257,6 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	TRP3_ItemTooltip:Show();
 end
 TRP3_API.inventory.showItemTooltip = showItemTooltip;
-
-local function applyMacroScriptToSlot(slot, class)
-	if not class.SC then return end -- No scripts
-	local useWorkflow = (class.LI and class.LI.OU) or class.US.SC;
-	if not useWorkflow then return end -- No on use script
-	if not class.SC[useWorkflow] then return end -- On use script missing from class script
-
-	local scripts = class.SC[useWorkflow].ST
-	local macroText = "";
-	for _, script in pairs(scripts) do
-		if script["e"] then
-			local effect = script["e"][1]
-			if effect.id == "secure_macro" then
-				macroText = macroText .. effect.args[1] .. "\n";
-			end
-		end
-	end
-
-	if macroText ~= "" then -- Only actually make the button a macro button if needed
-		slot:SetAttribute("type", "macro");
-		macroText = macroText .. [[/run local b=GetMouseFocus();if b.trp3func then b.trp3func(b,"RightButton")end]]
-		slot:SetAttribute("macrotext", macroText);
-	end
-end
 
 local function containerSlotUpdate(self, elapsed)
 	self.Quest:Hide();
@@ -552,17 +533,12 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 		slot:SetScript("OnDragStop", slotOnDragStop);
 		slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 
+		slot:SetAttribute("type", "macro");
 		-- OnMouseDown is called before the OnClick script, which gives us the opportunity to setup the macro behavior before use
 		slot:SetScript("OnMouseDown", function(self, button)
-			slot:SetAttribute("type", "trp3func"); -- Default to use function button
-			if InCombatLockdown() or IsAltKeyDown() then
-				-- Secure macro will not be run during combat, we have to manually call TRP3's function
-				-- Macro code will be ignored
-				slot.trp3func(self, button);
-			elseif button == "RightButton" then
-				-- If we are trying to use an item we might need to apply macro scripts to the slot
-				applyMacroScriptToSlot(slot, slot.class, button);
-			end
+			SecureEnclave:StartCollectingSecureCommands();
+			slot.trp3func(self, button);
+			slot:SetAttribute("macrotext", SecureEnclave:GetSecureCommands());
 		end)
 
 		-- This function is manually called from the macro environment
