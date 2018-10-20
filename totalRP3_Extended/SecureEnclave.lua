@@ -33,7 +33,9 @@ end
 
 ---@param macroCommands string
 function SecureEnclave:AddSecureCommands(macroCommands)
-	enclave[#enclave + 1] = macroCommands;
+	if shouldEnclaveCollectCommands then
+		enclave[#enclave + 1] = macroCommands;
+	end
 end
 
 ---@return string
