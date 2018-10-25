@@ -39,7 +39,7 @@ local Map = AddOn_TotalRP3.Map;
 ---@type MapScanner
 local stashSelfMapScanner = AddOn_TotalRP3.MapScanner("stashSelfScan")
 -- Set scan display properties
-stashSelfMapScanner.scanIcon = "Inv_misc_map_01"
+stashSelfMapScanner.scanIcon = Ellyb.Icon("Inv_misc_map_01")
 stashSelfMapScanner.scanOptionText = loc.DR_STASHES_SCAN_MY;
 stashSelfMapScanner.scanTitle = loc.DR_STASHES;
 -- Indicate the name of the pin template to use with this scan.
@@ -79,7 +79,7 @@ end
 ---@type MapScanner
 local dropSelfMapScanner = AddOn_TotalRP3.MapScanner("dropSelfScan")
 -- Set scan display properties
-dropSelfMapScanner.scanIcon = "inv_misc_bag_16"
+dropSelfMapScanner.scanIcon = Ellyb.Icon("inv_misc_bag_16")
 dropSelfMapScanner.scanOptionText = loc.IT_INV_SCAN_MY_ITEMS;
 dropSelfMapScanner.scanTitle = loc.TYPE_ITEMS;
 -- Indicate the name of the pin template to use with this scan.
@@ -121,7 +121,7 @@ local STASHES_SCAN_COMMAND = "S_SCAN";
 ---@type MapScanner
 local stashOthersMapScanner = AddOn_TotalRP3.MapScanner("inventoryOthersScan")
 -- Set scan display properties
-stashOthersMapScanner.scanIcon = "Icon_treasuremap"
+stashOthersMapScanner.scanIcon = Ellyb.Icon("Icon_treasuremap")
 stashOthersMapScanner.scanOptionText = loc.DR_STASHES_SCAN;
 stashOthersMapScanner.scanTitle = loc.DR_STASHES;
 -- Indicate the name of the pin template to use with this scan.
