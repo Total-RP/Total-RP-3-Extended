@@ -1,5 +1,7 @@
 # Changelog for version 1.3.0
 
+**This update requires Total RP 3 version 1.5.0 or higher.**
+
 ## Map scans are back
 
 Map scans for stashes and dropped items have been re-implemented for the new world map system.
@@ -9,9 +11,9 @@ Map scans for stashes and dropped items have been re-implemented for the new wor
 
 ## New encoding for quick exports
 
-Creations exported using the quick export feature are using a new algorithm that combines both compression and safer encoding. Basically, this means you are able to export bigger creations and the serialized text is no longer using characters that might be transformed by word processors.
+Creations exported using the quick export feature are using a new algorithm that combines both compression and safer encoding. Basically, this means you are able to export bigger creations faster and the serialized text is no longer using characters that might be transformed by word processors.
 
-> Note: Creations exported with version 1.3.0 of Total RP 3: Extended cannot be imported into older version, but creation exported with older version can still be imported. The website http://wago.io for sharing Total RP 3 creations will receive an update to support this new algorithm.
+> Note: Creations exported with version 1.3.0 (and higher) of Total RP 3: Extended cannot be imported into older versions, but creation exported with older versions can still be imported. The website http://wago.io for sharing Total RP 3 creations will receive an update to support this new algorithm.
 
 ## Fixed
 
