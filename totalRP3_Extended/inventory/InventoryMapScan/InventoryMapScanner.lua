@@ -42,6 +42,7 @@ local stashSelfMapScanner = AddOn_TotalRP3.MapScanner("stashSelfScan")
 stashSelfMapScanner.scanIcon = Ellyb.Icon("Inv_misc_map_01")
 stashSelfMapScanner.scanOptionText = loc.DR_STASHES_SCAN_MY;
 stashSelfMapScanner.scanTitle = loc.DR_STASHES;
+stashSelfMapScanner.duration = 0;
 -- Indicate the name of the pin template to use with this scan.
 -- The MapDataProvider will use this template to generate the pin
 stashSelfMapScanner.dataProviderTemplate = TRP3_StashMapPinMixin.TEMPLATE_NAME;
