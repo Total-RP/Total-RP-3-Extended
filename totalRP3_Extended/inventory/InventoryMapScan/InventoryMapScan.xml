@@ -22,7 +22,11 @@
 	<Script file="DropMapPin.lua" />
 	<Script file="InventoryMapScanner.lua" />
 
-	<Frame name="TRP3_StashMapPinTemplate" inherits="BaseHighlightableMapPoiPinTemplate" mixin="TRP3_StashMapPinMixin" virtual="true"/>
+	<Frame name="TRP3_StashMapPinTemplate" inherits="BaseHighlightableMapPoiPinTemplate" mixin="TRP3_StashMapPinMixin" virtual="true">
+		<Scripts>
+			<OnMouseDown method="OnClick" />
+		</Scripts>
+	</Frame>
 
 	<Frame name="TRP3_DropMapPinTemplate" inherits="BaseHighlightableMapPoiPinTemplate" mixin="TRP3_DropMapPinMixin" virtual="true"/>
 

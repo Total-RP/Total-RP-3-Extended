@@ -285,6 +285,43 @@ function showStash(stashInfo, stashIndex, sharedData)
 	end
 end
 
+function TRP3_API.inventory.getStashIndexForStashID(stashID)
+	for index, stash in pairs(stashesData) do
+		if stash.id == stashID then
+			return index
+		end
+	end
+end
+
+function TRP3_API.inventory.showStashDropdown(frame, stashInfo)
+	local stashIndex = TRP3_API.inventory.getStashIndexForStashID(stashInfo.id)
+	TRP3_API.ui.listbox.displayDropDown(frame, {
+		{ stashInfo.BA.NA or loc.DR_STASHES_NAME },
+		{ loc.DR_STASHES_EDIT, 1 },
+		{ loc.DR_STASHES_OWNERSHIP, 3},
+		{ loc.DR_STASHES_REMOVE, 2 }
+	}, function(value)
+		if value == 1 then
+			openStashEditor(stashIndex);
+			stashContainer:Hide();
+		elseif value == 2 then
+			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_REMOVE_PP, function()
+				if stashIndex then
+					wipe(stashesData[stashIndex]);
+					tremove(stashesData, stashIndex);
+					stashContainer:Hide();
+					Utils.message.displayMessage(loc.DR_STASHES_REMOVED, 1);
+					TRP3_API.MapDataProvider:RemoveAllData()
+				end
+			end);
+		elseif value == 3 then
+			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
+				stashInfo.CR = TRP3_API.globals.player_id;
+			end);
+		end
+	end, 0, true);
+end
+
 local function initStashContainer()
 	stashContainer = CreateFrame("Frame", "TRP3_StashContainer", UIParent, "TRP3_Container2x4Template");
 	stashContainer.LockIcon:Hide();
@@ -307,30 +344,7 @@ local function initStashContainer()
 	end);
 	stashContainer.IconButton:SetScript("OnClick", function(self)
 		if stashContainer.stashIndex then
-			TRP3_API.ui.listbox.displayDropDown(self, {
-				{ stashContainer.stashInfo.BA.NA or loc.DR_STASHES_NAME },
-				{ loc.DR_STASHES_EDIT, 1 },
-				{ loc.DR_STASHES_OWNERSHIP, 3},
-				{ loc.DR_STASHES_REMOVE, 2 }
-			}, function(value)
-				if value == 1 then
-					openStashEditor(stashContainer.stashIndex);
-					stashContainer:Hide();
-				elseif value == 2 then
-					TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_REMOVE_PP, function()
-						if stashContainer.stashIndex then
-							wipe(stashesData[stashContainer.stashIndex]);
-							tremove(stashesData, stashContainer.stashIndex);
-							stashContainer:Hide();
-							Utils.message.displayMessage(loc.DR_STASHES_REMOVED, 1);
-						end
-					end);
-				elseif value == 3 then
-					TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
-						stashContainer.stashInfo.CR = TRP3_API.globals.player_id;
-					end);
-				end
-			end, 0, true);
+			TRP3_API.inventory.showStashDropdown(self, stashContainer.stashInfo)
 		elseif stashContainer.sharedData then
 			callForStashRefresh(stashContainer.sharedData[1], stashContainer.sharedData[2]);
 		end
