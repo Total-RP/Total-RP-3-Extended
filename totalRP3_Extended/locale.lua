@@ -1605,6 +1605,7 @@ http://wowwiki.wikia.com/wiki/Event_API
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	DR_STASHES_OWNER = "Owner",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
