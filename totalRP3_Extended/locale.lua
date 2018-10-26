@@ -1606,6 +1606,20 @@ http://wowwiki.wikia.com/wiki/Event_API
 	------------------------------------------------------------------------------------------------
 
 	DR_STASHES_OWNER = "Owner",
+	EFFECT_SECURE_MACRO_ACTION_NAME = "Execute macro",
+	EFFECT_SECURE_MACRO_DESCRIPTION = [[Execute custom macro commands.
+
+|cffccccccNotes:
+- This effect will only be run if the workflow is called following a user action (use an item, click on a dialog choice in a cutscene).
+- This effect is not impacted by delays inside the workflow. Because macros can execute secure actions, all macro effects will be executed immediately after the user action.
+- This effect IS affected by conditions and can resolve variables.
+- This effect will NEVER be run while in combat or when called by an event in a campaign.
+|r]],
+	EFFECT_SECURE_MACRO_HELP_TITLE = "Macro commands",
+	EFFECT_SECURE_MACRO_HELP = [[You can use any commands you would normally use in a macro, including other add-ons' custom /slash commands.
+
+You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
+]],
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

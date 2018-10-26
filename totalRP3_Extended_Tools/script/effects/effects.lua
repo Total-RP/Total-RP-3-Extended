@@ -98,13 +98,11 @@ local function macro_init()
 	local editor = TRP3_EffectEditorMacro;
 
 	registerEffectEditor("secure_macro",{
-		title = "Run macro",
-		icon = "inv_inscription_scrollofwisdom_01",
-		description = [[Execute a custom macro
-
-|cffff0000Note: This effect will NEVER be run while in combat.]],
+		title = loc.EFFECT_SECURE_MACRO_ACTION_NAME,
+		icon = "inv_eng_gizmo3",
+		description = loc.EFFECT_SECURE_MACRO_DESCRIPTION,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00Execute macro:|r " .. tostring(args[1]));
+			scriptStepFrame.description:SetText(Ellyb.ColorManager.YELLOW(loc.EFFECT_SECURE_MACRO_ACTION_NAME .. ": ") .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -113,7 +111,7 @@ local function macro_init()
 	})
 
 	-- Text
-	setTooltipAll(editor.macroText.dummy, "RIGHT", 0, 5, "Macro code", "You can use any macro command");
+	setTooltipAll(editor.macroText.dummy, "RIGHT", 0, 5, loc.EFFECT_SECURE_MACRO_HELP_TITLE, loc.EFFECT_SECURE_MACRO_HELP);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
