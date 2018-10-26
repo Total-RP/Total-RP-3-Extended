@@ -18,8 +18,8 @@
 
 local _, Private_TRP3E = ...;
 
----@type SecureEnclave
-local SecureEnclave = Private_TRP3E.SecureEnclave
+---@type SecuredMacroCommandsEnclave
+local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave
 
 local Ellyb = TRP3_API.Ellyb;
 
@@ -536,9 +536,9 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 		slot:SetAttribute("type", "macro");
 		-- OnMouseDown is called before the OnClick script, which gives us the opportunity to setup the macro behavior before use
 		slot:SetScript("OnMouseDown", function(self, button)
-			SecureEnclave:StartCollectingSecureCommands();
+			SecuredMacroCommandsEnclave:StartCollectingSecureCommands();
 			slot.trp3func(self, button);
-			slot:SetAttribute("macrotext", SecureEnclave:GetSecureCommands());
+			slot:SetAttribute("macrotext", SecuredMacroCommandsEnclave:GetSecureCommands());
 		end)
 
 		-- This function is manually called from the macro environment

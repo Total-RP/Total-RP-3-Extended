@@ -20,26 +20,30 @@ local _, Private_TRP3E = ...;
 
 --- This module is responsible for securely collecting macro commands to run for the user.
 --- This should be as secure as humanly possible, avoid calling global functions.
----@class SecureEnclave
-local SecureEnclave = {};
+---@class SecuredMacroCommandsEnclave
+local SecuredMacroCommandsEnclave = {};
 
 local enclave = {};
 local shouldEnclaveCollectCommands = false;
 
-function SecureEnclave:StartCollectingSecureCommands()
+--- Ask the SecuredMacroCommandsEnclave to start collecting macro commands
+function SecuredMacroCommandsEnclave:StartCollectingSecureCommands()
 	shouldEnclaveCollectCommands = true;
 	enclave = {};
 end
 
+--- Add a macro command to the SecuredMacroCommandsEnclave.
+--- The command will be ignored if added add a time when the enclave is not collecting.
 ---@param macroCommands string
-function SecureEnclave:AddSecureCommands(macroCommands)
+function SecuredMacroCommandsEnclave:AddSecureCommands(macroCommands)
 	if shouldEnclaveCollectCommands then
 		enclave[#enclave + 1] = macroCommands;
 	end
 end
 
+--- Fetch all macro commands from the SecuredMacroCommandsEnclave
 ---@return string
-function SecureEnclave:GetSecureCommands()
+function SecuredMacroCommandsEnclave:GetSecureCommands()
 
 	-- Create a copy of the table instead of passing a direct reference, for security reasons
 	local enclaveContent = "";
@@ -53,4 +57,4 @@ function SecureEnclave:GetSecureCommands()
 	return enclaveContent;
 end
 
-Private_TRP3E.SecureEnclave = SecureEnclave
+Private_TRP3E.SecuredMacroCommandsEnclave = SecuredMacroCommandsEnclave

@@ -21,8 +21,8 @@
 
 local _, Private_TRP3E = ...;
 
----@type SecureEnclave
-local SecureEnclave = Private_TRP3E.SecureEnclave;
+---@type SecuredMacroCommandsEnclave
+local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave;
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local loc = TRP3_API.loc;
@@ -438,7 +438,7 @@ local EFFECTS = {
 		method = function(structure, cArgs, eArgs)
 			local macroText = tostring(cArgs[1]);
 			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
-			SecureEnclave:AddSecureCommands(macroText)
+			SecuredMacroCommandsEnclave:AddSecureCommands(macroText)
 			eArgs.LAST =0
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
