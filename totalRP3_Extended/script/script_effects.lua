@@ -447,7 +447,7 @@ local EFFECTS = {
 			TRP3_API.utils.message.displayMessage(macroText, 1);
 			eArgs.LAST = 0
 		end,
-		secured = security.LOW,
+		secured = security.DANGEROUS,
 	},
 
 	-- PROMPT

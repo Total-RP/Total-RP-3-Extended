@@ -28,6 +28,7 @@ TRP3_API.security = {};
 local securityVault;
 
 local SECURITY_LEVEL = {
+	DANGEROUS = 0,
 	LOW = 1,
 	MEDIUM = 2,
 	HIGH = 3,
@@ -289,6 +290,7 @@ function TRP3_API.security.initSecurity()
 	securityLevelDetailText[SECURITY_LEVEL.LOW] = loc.SEC_LOW_TT;
 	securityLevelDetailText[SECURITY_LEVEL.MEDIUM] = loc.SEC_MEDIUM_TT;
 	securityLevelDetailText[SECURITY_LEVEL.HIGH] = loc.SEC_HIGH_TT;
+	securityLevelDetailText[SECURITY_LEVEL.DANGEROUS] = loc.SEC_DANGEROUS_TT;
 	securityResolutionText = {
 		"Whitelisted sender", --TODO: locasl
 		"For all objects", --TODO: locasl

@@ -1611,7 +1611,7 @@ http://wowwiki.wikia.com/wiki/Event_API
 
 |cffccccccNotes:
 - This effect will only be run if the workflow is called following a user action (use an item, click on a dialog choice in a cutscene).
-- This effect is not impacted by delays inside the workflow. Because macros can execute secure actions, all macro effects will be executed immediately after the user action.
+- This effect is not impacted by delays inside the workflow. Because macros can execute secure actions, all macro effects have to be executed immediately after the user action.
 - This effect IS affected by conditions and can resolve variables.
 - This effect will NEVER be run while in combat or when called by an event in a campaign.
 |r]],
@@ -1620,6 +1620,7 @@ http://wowwiki.wikia.com/wiki/Event_API
 
 You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 ]],
+	SEC_DANGEROUS_TT = "This item, or one of its related objects, uses one or more effects capable of running unrestricted Lua code. Only accept these effects if you trust its author.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
