@@ -624,4 +624,6 @@
 	<Include file="inventory_drop.xml"/>
 	<Script file="inventory_drop.lua"/>
 
+	<Include file="InventoryMapScan\InventoryMapScan.xml"/>
+
 </Ui>

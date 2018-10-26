@@ -92,112 +92,6 @@ function TRP3_API.inventory.dropItem(container, slotID, initialSlotInfo)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Scan
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function initScans()
-	TRP3_API.map.registerScan({
-		id = "inv_scan_self",
-		buttonText = loc.IT_INV_SCAN_MY_ITEMS,
-		buttonIcon = "inv_misc_bag_16",
-		scanTitle = loc.TYPE_ITEMS,
-		scan = function(saveStructure)
-			local mapID = WorldMapFrame:GetMapID();
-			for index, drop in pairs(dropData) do
-				if drop.uiMapID == mapID then
-					saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
-				end
-			end
-		end,
-		canScan = function()
-			local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
-			return x ~= nil and y ~= nil;
-		end,
-		scanMarkerDecorator = function(index, entry, marker)
-			local drop = dropData[index];
-			local item = getClass(drop.item.id);
-			marker.scanLine = TRP3_API.inventory.getItemLink(item) .. " x" .. (drop.item.count or 1);
-			marker.Icon:SetTexCoord(0.125, 0.250, 0.250, 0.375);
-		end,
-		noAnim = true,
-	});
-
-	TRP3_API.map.registerScan({
-		id = "stashes_scan_self",
-		buttonText = loc.DR_STASHES_SCAN_MY,
-		buttonIcon = "Inv_misc_map_01",
-		scanTitle = loc.DR_STASHES,
-		scan = function(saveStructure)
-			local mapID = WorldMapFrame:GetMapID();
-			for index, drop in pairs(stashesData) do
-				if drop.mapID == mapID then
-					saveStructure[index] = { x = drop.mapX or 0, y = drop.mapY or 0 };
-				end
-			end
-		end,
-		canScan = function()
-			local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
-			return x ~= nil and y ~= nil;
-		end,
-		scanMarkerDecorator = function(index, entry, marker)
-			local stash = stashesData[index] or EMPTY;
-			local total = 0;
-			for index, slot in pairs(stash.item) do
-				total = total + 1;
-			end
-			local line = Utils.str.icon(stash.BA.IC) .. " " .. getItemLink(stash);
-			marker.scanLine = line .. " - |cffff9900" .. total .. "/8";
-			marker.iconAtlas = "VignetteLoot";
-		end,
-		noAnim = true,
-	});
-
-	local STASHES_SCAN_COMMAND = "SSCAN";
-
-	TRP3_API.map.registerScan({
-		id = "stashes_scan_other",
-		buttonText = loc.DR_STASHES_SCAN,
-		buttonIcon = "Icon_treasuremap",
-		scan = function()
-			local mapID = WorldMapFrame:GetMapID();
-			broadcast.broadcast(STASHES_SCAN_COMMAND, mapID);
-		end,
-		scanTitle = loc.DR_STASHES,
-		scanCommand = STASHES_SCAN_COMMAND,
-		scanResponder = function(sender, requestMapID)
-			for _, stash in pairs(stashesData) do
-				if stash.uiMapID == tonumber(requestMapID) and not stash.BA.NS then
-					local total = 0;
-					for index, slot in pairs(stash.item) do
-						total = total + 1;
-					end
-					broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total, stash.CR);
-				end
-			end
-		end,
-		canScan = function(currentlyScanning)
-			local posY, posX = UnitPosition("player");
-			return posY ~= nil and posY ~= nil and not currentlyScanning;
-		end,
-		scanAssembler = function(saveStructure, sender, mapX, mapY, NA, IC, total, CR)
-			local i = 1;
-			while saveStructure[sender .. i] do
-				i = i + 1;
-			end
-			saveStructure[sender .. i] = { x = mapX, y = mapY, BA = { NA = NA, IC = IC }, sender = sender, total = total, CR = CR };
-		end,
-		scanComplete = function(saveStructure)
-		end,
-		scanMarkerDecorator = function(index, entry, marker)
-			local line = Utils.str.icon(entry.BA.IC) .. " " .. getItemLink(entry);
-			marker.scanLine = line .. " - |cffff9900" .. entry.total .. "/8 |cff00ff00- " .. (entry.CR or entry.sender);
-			marker.iconAtlas = "VignetteLoot";
-		end,
-		scanDuration = 2.5;
-	});
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Loot
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -391,6 +285,43 @@ function showStash(stashInfo, stashIndex, sharedData)
 	end
 end
 
+function TRP3_API.inventory.getStashIndexForStashID(stashID)
+	for index, stash in pairs(stashesData) do
+		if stash.id == stashID then
+			return index
+		end
+	end
+end
+
+function TRP3_API.inventory.showStashDropdown(frame, stashInfo)
+	local stashIndex = TRP3_API.inventory.getStashIndexForStashID(stashInfo.id)
+	TRP3_API.ui.listbox.displayDropDown(frame, {
+		{ stashInfo.BA.NA or loc.DR_STASHES_NAME },
+		{ loc.DR_STASHES_EDIT, 1 },
+		{ loc.DR_STASHES_OWNERSHIP, 3},
+		{ loc.DR_STASHES_REMOVE, 2 }
+	}, function(value)
+		if value == 1 then
+			openStashEditor(stashIndex);
+			stashContainer:Hide();
+		elseif value == 2 then
+			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_REMOVE_PP, function()
+				if stashIndex then
+					wipe(stashesData[stashIndex]);
+					tremove(stashesData, stashIndex);
+					stashContainer:Hide();
+					Utils.message.displayMessage(loc.DR_STASHES_REMOVED, 1);
+					TRP3_API.MapDataProvider:RemoveAllData()
+				end
+			end);
+		elseif value == 3 then
+			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
+				stashInfo.CR = TRP3_API.globals.player_id;
+			end);
+		end
+	end, 0, true);
+end
+
 local function initStashContainer()
 	stashContainer = CreateFrame("Frame", "TRP3_StashContainer", UIParent, "TRP3_Container2x4Template");
 	stashContainer.LockIcon:Hide();
@@ -413,30 +344,7 @@ local function initStashContainer()
 	end);
 	stashContainer.IconButton:SetScript("OnClick", function(self)
 		if stashContainer.stashIndex then
-			TRP3_API.ui.listbox.displayDropDown(self, {
-				{ stashContainer.stashInfo.BA.NA or loc.DR_STASHES_NAME },
-				{ loc.DR_STASHES_EDIT, 1 },
-				{ loc.DR_STASHES_OWNERSHIP, 3},
-				{ loc.DR_STASHES_REMOVE, 2 }
-			}, function(value)
-				if value == 1 then
-					openStashEditor(stashContainer.stashIndex);
-					stashContainer:Hide();
-				elseif value == 2 then
-					TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_REMOVE_PP, function()
-						if stashContainer.stashIndex then
-							wipe(stashesData[stashContainer.stashIndex]);
-							tremove(stashesData, stashContainer.stashIndex);
-							stashContainer:Hide();
-							Utils.message.displayMessage(loc.DR_STASHES_REMOVED, 1);
-						end
-					end);
-				elseif value == 3 then
-					TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
-						stashContainer.stashInfo.CR = TRP3_API.globals.player_id;
-					end);
-				end
-			end, 0, true);
+			TRP3_API.inventory.showStashDropdown(self, stashContainer.stashInfo)
 		elseif stashContainer.sharedData then
 			callForStashRefresh(stashContainer.sharedData[1], stashContainer.sharedData[2]);
 		end
@@ -948,8 +856,6 @@ function dropFrame.init()
 			TRP3_Stashes[k] = nil;
 		end
 	end
-
-	initScans();
 
 	-- UI
 	-- Button on toolbar
