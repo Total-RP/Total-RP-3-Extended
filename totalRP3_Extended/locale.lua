@@ -1620,7 +1620,16 @@ http://wowwiki.wikia.com/wiki/Event_API
 
 You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 ]],
-	SEC_DANGEROUS_TT = "This item, or one of its related objects, uses one or more effects capable of running unrestricted Lua code. Only accept these effects if you trust its author.",
+	SEC_REASON_MACRO_WHY = [[This object could trigger any macro commands.
+
+|cffff0000It may cast spells or consume items (outside of combat). It may also execute any Lua code available to add-ons and affect your inventory, gold, guild, be used in a malicious way to force you so say something reprehensible by the Blizzard terms of services that can make you banned from the game.
+
+|cff00ff00If blocked, the macro commands will not be executed but printed in the chat frame instead.]],
+
+	SEC_RESOLUTION_WHITELISTED = "Whitelisted sender",
+	SEC_RESOLUTION_ALL = "For all objects",
+	SEC_RESOLUTION_THIS_OBJECT = "For this object only",
+	SEC_RESOLUTION_AUTHOR = "You are the author",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

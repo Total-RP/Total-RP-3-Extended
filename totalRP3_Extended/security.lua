@@ -1,20 +1,26 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
---	---------------------------------------------------------------------------
---	Copyright 2016 Sylvain Cossement (telkostrasz@totalrp3.info)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+---	---------------------------------------------------------------------------
+---	Copyright 2016 Sylvain Cossement (telkostrasz@totalrp3.info)
+--- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
+
+local Ellyb = TRP3_API.Ellyb;
+
+--{{{ Ellyb imports
+local COLORS = Ellyb.ColorManager;
+--}}}
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
 local assert, pairs, tinsert, wipe = assert, pairs, tinsert, wipe;
@@ -28,7 +34,6 @@ TRP3_API.security = {};
 local securityVault;
 
 local SECURITY_LEVEL = {
-	DANGEROUS = 0,
 	LOW = 1,
 	MEDIUM = 2,
 	HIGH = 3,
@@ -56,6 +61,7 @@ local transposition = {
 	sound_music_local = "SEC_REASON_SOUND",
 	companion_dismiss_mount = "SEC_REASON_DISMOUNT",
 	companion_summon_mount = "SEC_REASON_DISMOUNT",
+	secure_macro = "SEC_REASON_MACRO"
 }
 
 local function resolveEffectGroupSecurity(classID, effectGroupID)
@@ -126,7 +132,7 @@ local function computeSecurity(rootObjectID, rootObject, details)
 	rootObject.securityLevel = minSecurity;
 	rootObject.details = details;
 
-	Utils.log.log(("Security: found %d security issu in %s (%s)."):format(Utils.table.size(details), rootObjectID, minSecurity));
+	Utils.log.log(("Security: found %d security issues in %s (%s)."):format(Utils.table.size(details), rootObjectID, minSecurity));
 
 	return details;
 end
@@ -209,9 +215,9 @@ local function decorateLine(line, effectGroup)
 	local accepted, reason = resolveEffectGroupSecurity(securityFrame.classID, effectGroup);
 	local stateText = "";
 	if accepted then
-		stateText = "|cff00ff00" .. loc.SEC_LEVEL_DETAILS_ACCEPTED;
+		stateText = COLORS.GREEN(loc.SEC_LEVEL_DETAILS_ACCEPTED);
 	else
-		stateText = "|cffff0000" .. loc.SEC_LEVEL_DETAILS_BLOCKED
+		stateText = COLORS.RED(loc.SEC_LEVEL_DETAILS_BLOCKED);
 	end
 	if reason then
 		stateText = stateText .. " (" .. securityResolutionText[reason] .. ")"
@@ -242,7 +248,7 @@ function showSecurityDetailFrame(classID, frameFrom)
 		height = height - 50;
 	else
 		securityFrame.whitelist:SetChecked(securityVault.whitelist[securityFrame.sender]);
-		securityFrame.whitelist.Text:SetText(loc.SEC_LEVEL_DETAILS_FROM:format("|cff00ff00" .. securityFrame.sender));
+		securityFrame.whitelist.Text:SetText(loc.SEC_LEVEL_DETAILS_FROM:format(COLORS.GREEN(securityFrame.sender)));
 	end
 
 	initList(securityFrame, securityFrame.securityDetails, securityFrame.slider);
@@ -284,28 +290,30 @@ TRP3_API.security.atLeastOneBlocked = atLeastOneBlocked;
 function TRP3_API.security.initSecurity()
 	securityVault = TRP3_Security;
 
-	securityLevelText[SECURITY_LEVEL.LOW] = "|cffff0000" .. loc.SEC_LOW .. "|r";
-	securityLevelText[SECURITY_LEVEL.MEDIUM] = "|cffff9900" .. loc.SEC_MEDIUM .. "|r";
-	securityLevelText[SECURITY_LEVEL.HIGH] = "|cff00ff00" .. loc.SEC_HIGH .. "|r";
+	securityLevelText[SECURITY_LEVEL.LOW] = COLORS.RED(loc.SEC_LOW);
+	securityLevelText[SECURITY_LEVEL.MEDIUM] = COLORS.ORANGE(loc.SEC_MEDIUM);
+	securityLevelText[SECURITY_LEVEL.HIGH] = COLORS.GREEN(loc.SEC_HIGH);
+
 	securityLevelDetailText[SECURITY_LEVEL.LOW] = loc.SEC_LOW_TT;
 	securityLevelDetailText[SECURITY_LEVEL.MEDIUM] = loc.SEC_MEDIUM_TT;
 	securityLevelDetailText[SECURITY_LEVEL.HIGH] = loc.SEC_HIGH_TT;
-	securityLevelDetailText[SECURITY_LEVEL.DANGEROUS] = loc.SEC_DANGEROUS_TT;
+
 	securityResolutionText = {
-		"Whitelisted sender", --TODO: locasl
-		"For all objects", --TODO: locasl
-		"For this object only", --TODO: locasl
-		"You are the author", --TODO: locasl
+		loc.SEC_RESOLUTION_WHITELISTED,
+		loc.SEC_RESOLUTION_ALL,
+		loc.SEC_RESOLUTION_THIS_OBJECT,
+		loc.SEC_RESOLUTION_AUTHOR
 	};
 
 	securityFrame.title:SetText(loc.SEC_LEVEL_DETAILS);
 	securityFrame.empty:SetText(loc.SEC_LEVEL_DETAILS_SECURED);
 
 	securityFrame.reasons = {};
-	securityFrame.reasons["SEC_REASON_TALK"] = "|cffffffff" .. loc.SEC_REASON_TALK_WHY;
-	securityFrame.reasons["SEC_REASON_SOUND"] = "|cffffffff" .. loc.SEC_REASON_SOUND_WHY;
-	securityFrame.reasons["SEC_REASON_DISMOUNT"] = "|cffffffff" .. loc.SEC_REASON_DISMOUNT_WHY;
-	securityFrame.reasons["SEC_REASON_SCRIPT"] = "|cffffffff" .. loc.SEC_REASON_SCRIPT_WHY;
+	securityFrame.reasons["SEC_REASON_TALK"] = COLORS.WHITE(loc.SEC_REASON_TALK_WHY);
+	securityFrame.reasons["SEC_REASON_SOUND"] = COLORS.WHITE(loc.SEC_REASON_SOUND_WHY);
+	securityFrame.reasons["SEC_REASON_DISMOUNT"] = COLORS.WHITE(loc.SEC_REASON_DISMOUNT_WHY);
+	securityFrame.reasons["SEC_REASON_SCRIPT"] = COLORS.WHITE(loc.SEC_REASON_SCRIPT_WHY);
+	securityFrame.reasons["SEC_REASON_MACRO"] = COLORS.WHITE(loc.SEC_REASON_MACRO_WHY);
 
 	securityFrame.securityDetails = {};
 	securityFrame.widgetTab = {};
