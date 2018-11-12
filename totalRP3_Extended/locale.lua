@@ -1606,6 +1606,8 @@ http://wowwiki.wikia.com/wiki/Event_API
 	------------------------------------------------------------------------------------------------
 
 	DR_STASHES_OWNER = "Owner",
+	EFFECT_DO_EMOTE = "Do emote",
+	EFFECT_DO_EMOTE_TT = "Make the player do a specific animated emote.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

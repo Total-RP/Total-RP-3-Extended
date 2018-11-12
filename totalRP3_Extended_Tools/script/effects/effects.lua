@@ -671,6 +671,79 @@ local function speech_player_init()
 	end
 end
 
+-- Build list of emotes
+local spokenEmotes = {}
+for _, emoteToken in ipairs(TextEmoteSpeechList) do
+	spokenEmotes[emoteToken] = true;
+end
+-- Those two are added dynamically
+spokenEmotes["FORTHEALLIANCE"] = true;
+spokenEmotes["FORTHEHORDE"] = true;
+local animatedEmotes = {}
+for _, emoteToken in ipairs(EmoteList) do
+	animatedEmotes[emoteToken] = true;
+end
+local otherEmotes = {}
+for i = 1, 522 do
+	local emoteToken = _G["EMOTE" .. i .. "_TOKEN"]
+	if emoteToken then
+		if spokenEmotes[emoteToken] then
+			spokenEmotes[emoteToken] = i;
+		elseif animatedEmotes[emoteToken] then
+			animatedEmotes[emoteToken] = i
+		else
+			otherEmotes[emoteToken] = i;
+		end
+	end
+end
+
+local function getEmoteNameFromToken(emoteToken)
+	local emoteIndex = spokenEmotes[emoteToken] or animatedEmotes[emoteToken] or otherEmotes[emoteToken] or UNKNOWN
+	return _G["EMOTE"..emoteIndex.."_CMD"..1]
+end
+
+local function getEmotesList(emotesList)
+	local list = {}
+	for token, _ in pairs(emotesList) do
+		table.insert(list, {getEmoteNameFromToken(token), token})
+	end
+	return list
+end
+
+local function do_emote_init()
+	local editor = TRP3_EffectEditorSpeechPlayer;
+
+	registerEffectEditor("do_emote", {
+		title = loc.EFFECT_DO_EMOTE,
+		icon = "ability_warrior_warcry", -- TODO Find a better icon
+		description = loc.EFFECT_DO_EMOTE_TT,
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText("Do emote" .. tostring(getEmoteNameFromToken(args[1])));
+		end,
+		getDefaultArgs = function()
+			return {};
+		end,
+		editor = editor,
+	});
+
+	local emotes = {
+		{"Spoken", getEmotesList(spokenEmotes)},
+		{"Animated", getEmotesList(animatedEmotes)},
+		{"Others", getEmotesList(otherEmotes)}
+	}
+
+	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotes, nil, nil, 250, true);
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.emoteList:SetSelectedValue(data[1]);
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = editor.emoteList:GetSelectedValue();
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Sounds
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1093,6 +1166,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	speech_env_init();
 	speech_npc_init();
 	speech_player_init();
+	do_emote_init();
 
 	sound_id_self_init();
 	sound_id_stop_init();

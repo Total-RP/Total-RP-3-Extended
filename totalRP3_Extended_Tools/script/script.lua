@@ -43,6 +43,7 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"speech_env",
 			"speech_npc",
 			"speech_player",
+			"do_emote",
 		},
 		[loc.REG_COMPANIONS] = {
 			"companion_dismiss_mount",
