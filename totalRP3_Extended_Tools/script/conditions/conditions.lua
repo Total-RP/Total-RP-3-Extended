@@ -168,6 +168,10 @@ local function onOperandSelected(operandID, list, loadEditor)
 
 	setTooltipForSameFrame(list, "TOP", 0, 0);
 
+	if not list.argsData then
+		list.argsData = EMPTY;
+	end
+
 	local hasPreview = false;
 	local operandInfo = getOperandEditorInfo(operandID);
 	if operandInfo ~= EMPTY then
@@ -180,7 +184,7 @@ local function onOperandSelected(operandID, list, loadEditor)
 		end
 		if not operandInfo.noPreview then
 			list.preview:Enable();
-			hasPreview = false;
+			hasPreview = true;
 		end
 		local returnType = type(operandInfo.returnType);
 		local returnTypeText;
