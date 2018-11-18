@@ -224,7 +224,7 @@ local function onPreviewClick(button)
 	local list = button:GetParent();
 	local operandInfo = TRP3_API.script.getOperand(list.operandID);
 	if operandInfo and operandInfo.codeReplacement then
-		local code = ("displayMessage(\"|cffff9900" .. loc.OP_PREVIEW .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo.codeReplacement(list.argsData));
+		local code = ("displayMessage(\"|cffff9900" .. loc.OP_PREVIEW .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo.codeReplacement(list.argsData or EMPTY));
 		local env = {};
 		Utils.table.copy(env, previewEnv);
 		Utils.table.copy(env, operandInfo.env);
