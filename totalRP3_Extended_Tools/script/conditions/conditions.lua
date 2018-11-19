@@ -180,7 +180,7 @@ local function onOperandSelected(operandID, list, loadEditor)
 		end
 		if not operandInfo.noPreview then
 			list.preview:Enable();
-			hasPreview = false;
+			hasPreview = true;
 		end
 		local returnType = type(operandInfo.returnType);
 		local returnTypeText;
@@ -220,7 +220,7 @@ local function onPreviewClick(button)
 	local list = button:GetParent();
 	local operandInfo = TRP3_API.script.getOperand(list.operandID);
 	if operandInfo and operandInfo.codeReplacement then
-		local code = ("displayMessage(\"|cffff9900" .. loc.OP_PREVIEW .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo.codeReplacement(list.argsData));
+		local code = ("displayMessage(\"|cffff9900" .. loc.OP_PREVIEW .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo.codeReplacement(list.argsData or EMPTY));
 		local env = {};
 		Utils.table.copy(env, previewEnv);
 		Utils.table.copy(env, operandInfo.env);
@@ -623,7 +623,7 @@ function editor.init()
 	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, checkNumeric, nil, 175, true);
 
 	TRP3_API.ui.listbox.setupListBox(operandEditor.left, getEvaluatedOperands(leftListStructure), function(operandID, list)
-		list.argsData = nil;
+		list.argsData = EMPTY;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, true, operandEditor.left);
@@ -649,7 +649,7 @@ function editor.init()
 		}},
 	}
 	TRP3_API.ui.listbox.setupListBox(operandEditor.right, rightStructure, function(operandID, list)
-		list.argsData = nil;
+		list.argsData = EMPTY;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, true, operandEditor.right);
