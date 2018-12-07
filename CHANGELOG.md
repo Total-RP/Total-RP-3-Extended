@@ -19,3 +19,4 @@ Creations exported using the quick export feature are using a new algorithm that
 
 - Fixed sound and music broadcasting to other players.
 - Fixed an issue in the migration to 8.0's new map IDs in drops that would cause them to not be shown on the map.
+- Fixed an issue that could cause some effects to have invalid arguments when leaving the effect editors without confirming.
