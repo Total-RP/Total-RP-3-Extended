@@ -486,7 +486,7 @@ local function onStart()
 end
 
 Globals.extended_version = 1013;
-Globals.required_trp3_build = 59;
+Globals.required_trp3_build = 60;
 Globals.extended_display_version = "@project-version@";
 
 local MODULE_STRUCTURE = {
