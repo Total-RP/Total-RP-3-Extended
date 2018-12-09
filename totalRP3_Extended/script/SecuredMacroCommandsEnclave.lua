@@ -33,7 +33,7 @@ function SecuredMacroCommandsEnclave:StartCollectingSecureCommands()
 end
 
 --- Add a macro command to the SecuredMacroCommandsEnclave.
---- The command will be ignored if added add a time when the enclave is not collecting.
+--- The command will be ignored if added add at a time when the enclave is not collecting.
 ---@param macroCommands string
 function SecuredMacroCommandsEnclave:AddSecureCommands(macroCommands)
 	if shouldEnclaveCollectCommands then
