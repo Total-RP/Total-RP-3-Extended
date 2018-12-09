@@ -444,7 +444,7 @@ local EFFECTS = {
 		securedMethod = function(structure, cArgs, eArgs)
 			local macroText = tostring(cArgs[1]);
 			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
-			TRP3_API.utils.message.displayMessage(macroText, 1);
+			TRP3_API.utils.message.displayMessage(loc.EFFECT_SECURE_MACRO_BLOCKED .. " " .. tostring(macroText), 1);
 			eArgs.LAST = 0
 		end,
 		secured = security.LOW,

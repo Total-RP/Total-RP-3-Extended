@@ -106,7 +106,7 @@ local function computeSecurity(rootObjectID, rootObject, details)
 	assert(rootObject.TY, "Object has no type.");
 	assert(rootObject.TY == TRP3_DB.types.ITEM or rootObject.TY == TRP3_DB.types.CAMPAIGN, "Object is not an item or a campaign.");
 
-	local details = details or {};
+	details = details or {};
 
 	local minSecurity = SECURITY_LEVEL.HIGH;
 	iterateObject(rootObjectID, rootObject, function(childID, childClass)
@@ -228,7 +228,7 @@ end
 function showSecurityDetailFrame(classID, frameFrom)
 	local class = getClass(classID);
 
-	securityFrame.securityDetails = class.details or computeSecurity(classID, class);
+	securityFrame.securityDetails = computeSecurity(classID, class);
 
 	local height = NORMAL_HEIGHT;
 
