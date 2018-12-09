@@ -1623,7 +1623,7 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	SEC_REASON_MACRO = [[Execute a macro]],
 	SEC_REASON_MACRO_WHY = [[This object could trigger any macro commands.
 
-|cffff0000It may cast spells or consume items (outside of combat). It may also execute any Lua code available to add-ons and affect your inventory, gold, guild, be used in a malicious way to force you so say something reprehensible by the Blizzard terms of services that can make you banned from the game.
+|cffff0000It may cast spells or consume items (outside of combat). It may also execute any Lua code available to add-ons and affect your inventory, gold, guild, be used in a malicious way to force you so to say something reprehensible by the Blizzard terms of services that can make you banned from the game.
 
 |cff00ff00If blocked, the macro commands will not be executed but printed in the chat frame instead.]],
 
