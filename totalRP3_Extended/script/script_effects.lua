@@ -3,7 +3,7 @@
 -- Scripts : Effects
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
+--	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
 --	You may obtain a copy of the License at
@@ -434,12 +434,11 @@ local EFFECTS = {
 
 	-- SECURED MACRO
 	["secure_macro"] = {
-		-- Secure macros have no code in methods, their code is special and needs to be executed in a pre-use hook
 		method = function(structure, cArgs, eArgs)
 			local macroText = tostring(cArgs[1]);
 			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
-			SecuredMacroCommandsEnclave:AddSecureCommands(macroText)
-			eArgs.LAST =0
+			SecuredMacroCommandsEnclave:AddSecureCommands(macroText);
+			eArgs.LAST = 0
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
 			local macroText = tostring(cArgs[1]);
