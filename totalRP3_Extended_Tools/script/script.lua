@@ -2,6 +2,7 @@
 -- Total RP 3: Extended features
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+--	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -86,6 +87,7 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"signal_send",
 			"run_workflow",
 			"run_item_workflow",
+			"secure_macro",
 			"script"
 		},
 		order = {

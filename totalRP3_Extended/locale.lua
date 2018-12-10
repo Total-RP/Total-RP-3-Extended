@@ -1606,6 +1606,32 @@ http://wowwiki.wikia.com/wiki/Event_API
 	------------------------------------------------------------------------------------------------
 
 	DR_STASHES_OWNER = "Owner",
+	EFFECT_SECURE_MACRO_ACTION_NAME = "Execute macro",
+	EFFECT_SECURE_MACRO_DESCRIPTION = [[Execute custom macro commands.
+
+|cffccccccNotes:
+- This effect will only be run if the workflow is called following a user action (use an item, click on a dialog choice in a cutscene).
+- This effect is not impacted by delays inside the workflow. Because macros can execute secure actions, all macro effects have to be executed immediately after the user action.
+- This effect IS affected by conditions and can resolve variables.
+- This effect will NEVER be run while in combat or when called by an event in a campaign.
+|r]],
+	EFFECT_SECURE_MACRO_HELP_TITLE = "Macro commands",
+	EFFECT_SECURE_MACRO_HELP = [[You can use any commands you would normally use in a macro, including other add-ons' custom /slash commands.
+
+You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
+]],
+	SEC_REASON_MACRO = [[Execute a macro]],
+	SEC_REASON_MACRO_WHY = [[This object could trigger any macro commands.
+
+|cffff0000It may cast spells or consume items (outside of combat). It may also execute any Lua code available to add-ons and affect your inventory, gold, guild, be used in a malicious way to force you so to say something reprehensible by the Blizzard terms of services that can make you banned from the game.
+
+|cff00ff00If blocked, the macro commands will not be executed but printed in the chat frame instead.]],
+
+	SEC_RESOLUTION_WHITELISTED = "Whitelisted sender",
+	SEC_RESOLUTION_ALL = "For all objects",
+	SEC_RESOLUTION_THIS_OBJECT = "For this object only",
+	SEC_RESOLUTION_AUTHOR = "You are the author",
+	EFFECT_SECURE_MACRO_BLOCKED = "Blocked macro effect:",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
