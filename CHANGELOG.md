@@ -9,11 +9,28 @@ Map scans for stashes and dropped items have been re-implemented for the new wor
 - You can now right-click on your own stashes when using the "Scan for my stashes" scan to edit or delete them.
 - Thanks to the new map system in Total RP 3's core add-on, stashes and items placed on a specific level of a map will now correctly be associated to that specific level only.
 
+![](https://totalrp3.info/documentation/changelogs/1_3_0_stash_menu.PNG)
+
+## New Execute macro effect
+
+A new effect has been added to allow you to execute a macro when using your Total RP 3: Extended items. You can run macro commands from the game (`/use`, `/cast`, `/roar`, `/equipset`, `/petfollow`, etc.) or any command added by an add-on (`/dbm pull`, `/skada reset`). The macro executed can even resolve TRP3:E variables from your workflow, to inject variable values inside the execution.
+
+![](https://totalrp3.info/documentation/changelogs/1_3_0_macro_example.PNG)
+
+Due to game engine limitations, this effect has the following rules:
+
+- This effect will be completely ignored while in combat.
+- This effect ignores delays. The generated macro commands from your workflow effects are compiled when the item is used and executed immediately.
+- This effect will only be executed when an item is right-clicked from the inventory by the player (it can be a workflow called by an item being used). It will be ignored if called by a campaign event or a cutscene. (Support for cutscene dialog buttons will be added in an update).
+- Due to the dangerous nature of allowing access to commands like `/use`, `/gquit` or `/script`, this effect's security is set to "dangerous" and requires manual approval when receiving an item using such effect via trade or imports.
+
+![](https://totalrp3.info/documentation/changelogs/1_3_0_macro.PNG)
+
 ## New encoding for quick exports
 
-Creations exported using the quick export feature are using a new algorithm that combines both compression and safer encoding. Basically, this means you are able to export bigger creations faster and the serialized text is no longer using characters that might be transformed by word processors.
+Creations exported using the quick export feature are using a new algorithm that combines both compression and safer encoding. Basically, this means you are able to export bigger creations faster and the serialized text is no longer using characters that might be transformed by word processors. This new format will only be compatible with versions 1.3.0 or above.
 
-> Note: Creations exported with version 1.3.0 (and higher) of Total RP 3: Extended cannot be imported into older versions, but creation exported with older versions can still be imported. The website http://wago.io for sharing Total RP 3 creations will receive an update to support this new algorithm.
+> Note: The website http://wago.io for sharing Total RP 3 creations has received an update to support this new algorithm (thanks to Ora from the wago team) and will be able to import the new export strings while exporting export strings compatible with both pre and post 1.3.0 versions of Total RP 3: Extended.
 
 ## Fixed
 
