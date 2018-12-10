@@ -2,6 +2,7 @@
 -- Total RP 3
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+--	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -15,6 +16,11 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
+
+local _, Private_TRP3E = ...;
+
+---@type SecuredMacroCommandsEnclave
+local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave
 
 local Ellyb = TRP3_API.Ellyb;
 
@@ -528,7 +534,16 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 		slot:SetScript("OnDragStop", slotOnDragStop);
 		slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 
-		slot:SetScript("OnClick", function(self, button)
+		slot:SetAttribute("type", "macro");
+		-- OnMouseDown is called before the OnClick script, which gives us the opportunity to setup the macro behavior before use
+		slot:SetScript("OnMouseDown", function(self, button)
+			SecuredMacroCommandsEnclave:StartCollectingSecureCommands();
+			slot.trp3func(self, button);
+			slot:SetAttribute("macrotext", SecuredMacroCommandsEnclave:GetSecureCommands());
+		end)
+
+		-- This function is manually called from the macro environment
+		slot.trp3func = function(self, button)
 			if ChatEdit_GetActiveWindow() and IsModifiedClick("CHATLINK") then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
 					TRP3_API.extended.ItemsChatLinksModule:InsertLink(self.info.id, TRP3_API.extended.getRootClassID(self.info.id), self.info, canBeImported);
@@ -566,7 +581,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 			if self.additionalClickHandler then
 				self.additionalClickHandler(self, button);
 			end
-		end);
+		end
 		slot:SetScript("OnDoubleClick", function(self, button)
 			if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
 				switchContainerByRef(self.info, self:GetParent());

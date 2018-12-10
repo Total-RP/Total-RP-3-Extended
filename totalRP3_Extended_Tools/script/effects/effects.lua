@@ -2,6 +2,7 @@
 -- Total RP 3: Extended features
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+--	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -90,6 +91,36 @@ local function text_init()
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.text.scroll.text:GetText()));
 		scriptData.args[2] = editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
+	end
+end
+
+local function macro_init()
+
+	local editor = TRP3_EffectEditorMacro;
+
+	registerEffectEditor("secure_macro",{
+		title = loc.EFFECT_SECURE_MACRO_ACTION_NAME,
+		icon = "inv_eng_gizmo3",
+		description = loc.EFFECT_SECURE_MACRO_DESCRIPTION,
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(Ellyb.ColorManager.YELLOW(loc.EFFECT_SECURE_MACRO_ACTION_NAME .. ": ") .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {""};
+		end,
+		editor = editor,
+	})
+
+	-- Text
+	setTooltipAll(editor.macroText.dummy, "RIGHT", 0, 5, loc.EFFECT_SECURE_MACRO_HELP_TITLE, loc.EFFECT_SECURE_MACRO_HELP);
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		editor.macroText.scroll.text:SetText(data[1] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(editor.macroText.scroll.text:GetText()));
 	end
 end
 
@@ -1083,6 +1114,7 @@ end
 
 function TRP3_API.extended.tools.initBaseEffects()
 	text_init();
+	macro_init();
 	script_init();
 
 	companion_dismiss_mount_init();
