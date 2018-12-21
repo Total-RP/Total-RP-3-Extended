@@ -395,6 +395,8 @@ end
 TRP3_API.inventory.removeSlotContent = removeSlotContent;
 
 local function splitSlot(slot, container, quantity)
+	if slot.count == quantity then return end	-- Ignoring the command if we're trying to split the stack into itself.
+
 	local containerClass = getClass(container.id);
 
 	local emptySlotID;
