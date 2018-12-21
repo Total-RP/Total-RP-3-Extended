@@ -516,7 +516,7 @@ local function splitStack(slot, quantity)
 	end
 end
 
-local IsShiftKeyDown, IsControlKeyDown, OpenStackSplitFrame = IsShiftKeyDown, IsControlKeyDown, OpenStackSplitFrame;
+local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown;
 local COLUMN_SPACING = 43;
 local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
@@ -553,7 +553,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 			if not self.loot and self.info and not TRP3_API.inventory.isInTransaction(self.info) then
 				if button == "LeftButton" then
 					if IsShiftKeyDown() and (self.info.count or 1) > 1 then
-						OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
+						StackSplitFrame:OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
 					elseif simpleLeftClick then
 						simpleLeftClick(self);
 					end
