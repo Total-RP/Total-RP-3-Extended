@@ -1600,11 +1600,6 @@ http://wowwiki.wikia.com/wiki/Event_API
 	EFFECT_ITEM_SOURCE_2_ADD_TT = "Add the item(s) only inside this item parent container (and any sub-container).\n\n|cffff9900Only works if this script is in an item context.",
 	EFFECT_ITEM_SOURCE_3_ADD_TT = "Add the item(s) only inside this item (and any sub-container).\n\n|cffff9900Only works if this script is in an item context and this item is a container.",
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	DR_STASHES_OWNER = "Owner",
 	EFFECT_SECURE_MACRO_ACTION_NAME = "Execute macro",
 	EFFECT_SECURE_MACRO_DESCRIPTION = [[Execute custom macro commands.
@@ -1632,6 +1627,12 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	SEC_RESOLUTION_THIS_OBJECT = "For this object only",
 	SEC_RESOLUTION_AUTHOR = "You are the author",
 	EFFECT_SECURE_MACRO_BLOCKED = "Blocked macro effect:",
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
