@@ -553,7 +553,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 			if not self.loot and self.info and not TRP3_API.inventory.isInTransaction(self.info) then
 				if button == "LeftButton" then
 					if IsShiftKeyDown() and (self.info.count or 1) > 1 then
-						StackSplitFrame:OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
+						StackSplitFrame:OpenStackSplitFrame(self.info.count - 1, self, "BOTTOMRIGHT", "TOPRIGHT");
 					elseif simpleLeftClick then
 						simpleLeftClick(self);
 					end
