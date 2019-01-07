@@ -485,9 +485,18 @@ local function onStart()
     dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
-Globals.extended_version = 1013;
-Globals.required_trp3_build = 60;
+Globals.extended_version = 1014;
+Globals.required_trp3_build = 62;
 Globals.extended_display_version = "@project-version@";
+
+if TRP3_API.globals.version < Globals.required_trp3_build then
+	print(TRP3_API.Ellyb.ColorManager.RED([[
+
+The Total RP 3: Extended version you have installed (%s) requires a newer version of the main Total RP 3 add-on.
+
+Please download the latest version of Total RP 3 using the Twitch app or by manually downloading it on Curse at http://curse.totalrp.com.
+]]):format(Globals.extended_display_version));
+end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",
