@@ -623,7 +623,7 @@ function editor.init()
 	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, checkNumeric, nil, 175, true);
 
 	TRP3_API.ui.listbox.setupListBox(operandEditor.left, getEvaluatedOperands(leftListStructure), function(operandID, list)
-		list.argsData = EMPTY;
+		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, true, operandEditor.left);
@@ -649,7 +649,7 @@ function editor.init()
 		}},
 	}
 	TRP3_API.ui.listbox.setupListBox(operandEditor.right, rightStructure, function(operandID, list)
-		list.argsData = EMPTY;
+		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, true, operandEditor.right);

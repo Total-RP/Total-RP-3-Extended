@@ -29,7 +29,7 @@ local OPERANDS = {
 
 	["unit_name"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitName(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -39,7 +39,7 @@ local OPERANDS = {
 
 	["unit_id"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitID(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -49,7 +49,7 @@ local OPERANDS = {
 
 	["unit_npc_id"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("getUnitNPCID(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -59,7 +59,7 @@ local OPERANDS = {
 
 	["unit_guild"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("GetGuildName(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -69,7 +69,7 @@ local OPERANDS = {
 
 	["unit_guild_rank"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("GetGuildRank(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -79,7 +79,7 @@ local OPERANDS = {
 
 	["unit_class"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("(GetClass(\"%s\") or \"\"):lower()"):format(unitID);
 		end,
 		env = {
@@ -89,7 +89,7 @@ local OPERANDS = {
 
 	["unit_race"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("(GetRace(\"%s\") or \"\"):lower()"):format(unitID);
 		end,
 		env = {
@@ -99,7 +99,7 @@ local OPERANDS = {
 
 	["unit_sex"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitSex(\"%s\") or 1"):format(unitID);
 		end,
 		env = {
@@ -109,7 +109,7 @@ local OPERANDS = {
 
 	["unit_faction"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("(GetFaction(\"%s\") or \"\"):lower()"):format(unitID);
 		end,
 		env = {
@@ -120,7 +120,7 @@ local OPERANDS = {
 	["unit_classification"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitClassification(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -135,7 +135,7 @@ local OPERANDS = {
 	["unit_health"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitHealth(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -146,7 +146,7 @@ local OPERANDS = {
 	["unit_level"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitLevel(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -157,7 +157,7 @@ local OPERANDS = {
 	["unit_speed"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("GetUnitSpeed(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -168,7 +168,7 @@ local OPERANDS = {
 	["unit_position_x"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("({UnitPosition(\"%s\")})[2]"):format(unitID);
 		end,
 		env = {
@@ -179,7 +179,7 @@ local OPERANDS = {
 	["unit_position_y"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("({UnitPosition(\"%s\")})[1]"):format(unitID);
 		end,
 		env = {
@@ -193,7 +193,7 @@ local OPERANDS = {
 
 	["unit_exists"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitExists(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -203,7 +203,7 @@ local OPERANDS = {
 
 	["unit_is_player"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitIsPlayer(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -213,7 +213,7 @@ local OPERANDS = {
 
 	["unit_is_dead"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitIsDeadOrGhost(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -223,7 +223,7 @@ local OPERANDS = {
 
 	["unit_distance_trade"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("CheckInteractDistance(\"%s\", 2)"):format(unitID);
 		end,
 		env = {
@@ -233,7 +233,7 @@ local OPERANDS = {
 
 	["unit_distance_inspect"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("CheckInteractDistance(\"%s\", 1)"):format(unitID);
 		end,
 		env = {
@@ -244,9 +244,9 @@ local OPERANDS = {
 	["unit_distance_point"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
-			local x = args[3] or 0;
-			local y = args[2] or 0;	-- Fix for the coordinates switch.
+			local unitID = (args or EMPTY)[1] or "target";
+			local x = (args or EMPTY)[3] or 0;
+			local y = (args or EMPTY)[2] or 0;	-- Fix for the coordinates switch.
 			return ("unitDistancePoint(\"%s\", %s, %s)"):format(unitID, x, y);
 		end,
 		env = {
@@ -257,7 +257,7 @@ local OPERANDS = {
 	["unit_distance_me"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("unitDistanceMe(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -383,12 +383,12 @@ local OPERANDS = {
 		numeric = false,
 		codeReplacement = function(args)
 			local completedByIndex = 4;
-			if args[1] == "account" then
+			if (args or EMPTY)[1] == "account" then
 				completedByIndex = 4; -- We get the "completed" return
-			elseif args[1] == "character" then
+			elseif (args or EMPTY)[1] == "character" then
 				completedByIndex = 13; -- We get the "wasEarnedByMe" return
 			end
-			local id = args[2] or "";
+			local id = (args or EMPTY)[2] or "";
 			return ("({GetAchievementInfo(%s)})[%s]"):format(id, completedByIndex);
 		end,
 		env = {
@@ -403,11 +403,11 @@ local OPERANDS = {
 	["inv_item_count"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local id = args[1] or "";
+			local id = (args or EMPTY)[1] or "";
 			local source = "nil";
-			if args[2] == "parent" then
+			if (args or EMPTY)[2] == "parent" then
 				source = "args.container";
-			elseif args[2] == "self" then
+			elseif (args or EMPTY)[2] == "self" then
 				source = "args.object";
 			end
 			return ("getItemCount(\"%s\", %s)"):format(id, source);
@@ -421,9 +421,9 @@ local OPERANDS = {
 		numeric = true,
 		codeReplacement = function(args)
 			local source = "nil";
-			if args[1] == "parent" then
+			if (args or EMPTY)[1] == "parent" then
 				source = "args.container";
-			elseif args[1] == "self" then
+			elseif (args or EMPTY)[1] == "self" then
 				source = "args.object";
 			end
 			return ("getContainerWeight(%s)"):format(source);
@@ -439,7 +439,7 @@ local OPERANDS = {
 
 	["quest_is_step"] = {
 		codeReplacement = function(args)
-			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local campaignID, questID = TRP3_API.extended.splitID((args or EMPTY)[1] or "");
 			return ("getQuestCurrentStep(\"%s\", \"%s\")"):format(campaignID, questID);
 		end,
 		env = {
@@ -449,8 +449,8 @@ local OPERANDS = {
 
 	["quest_obj"] = {
 		codeReplacement = function(args)
-			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
-			local objectiveID = args[2] or "";
+			local campaignID, questID = TRP3_API.extended.splitID((args or EMPTY)[1] or "");
+			local objectiveID = (args or EMPTY)[2] or "";
 			return ("isQuestObjectiveDone(\"%s\", \"%s\", \"%s\")"):format(campaignID, questID, objectiveID);
 		end,
 		env = {
@@ -460,7 +460,7 @@ local OPERANDS = {
 
 	["quest_obj_current"] = {
 		codeReplacement = function(args)
-			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local campaignID, questID = TRP3_API.extended.splitID((args or EMPTY)[1] or "");
 			return ("isAllQuestObjectiveDone(\"%s\", \"%s\", false)"):format(campaignID, questID);
 		end,
 		env = {
@@ -470,7 +470,7 @@ local OPERANDS = {
 
 	["quest_obj_all"] = {
 		codeReplacement = function(args)
-			local campaignID, questID = TRP3_API.extended.splitID(args[1] or "");
+			local campaignID, questID = TRP3_API.extended.splitID((args or EMPTY)[1] or "");
 			return ("isAllQuestObjectiveDone(\"%s\", \"%s\", true)"):format(campaignID, questID);
 		end,
 		env = {
@@ -480,7 +480,7 @@ local OPERANDS = {
 
 	["quest_is_npc"] = {
 		codeReplacement = function(args)
-			local unitID = args[1] or "target";
+			local unitID = (args or EMPTY)[1] or "target";
 			return ("UnitIsCampaignNPC(\"%s\")"):format(unitID);
 		end,
 		env = {
@@ -494,8 +494,8 @@ local OPERANDS = {
 
 	["var_check"] = {
 		codeReplacement = function(args)
-			local source = args[1] or "w";
-			local var = args[2] or "";
+			local source = (args or EMPTY)[1] or "w";
+			local var = (args or EMPTY)[2] or "";
 			return ("varCheck(args, \"%s\", \"%s\")"):format(source, var);
 		end,
 		env = {
@@ -506,8 +506,8 @@ local OPERANDS = {
 	["var_check_n"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local source = args[1] or "w";
-			local var = args[2] or "";
+			local source = (args or EMPTY)[1] or "w";
+			local var = (args or EMPTY)[2] or "";
 			return ("varCheckN(args, \"%s\", \"%s\")"):format(source, var);
 		end,
 		env = {
@@ -517,7 +517,7 @@ local OPERANDS = {
 
 	["check_event_var"] = {
 		codeReplacement = function(args)
-			local var = tonumber(args[1] or 1) or 1;
+			local var = tonumber((args or EMPTY)[1] or 1) or 1;
 			return ("eventVarCheck(args, %s)"):format(var);
 		end,
 		env = {
@@ -528,7 +528,7 @@ local OPERANDS = {
 	["check_event_var_n"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local var = tonumber(args[1] or 1) or 1;
+			local var = tonumber((args or EMPTY)[1] or 1) or 1;
 			return ("eventVarCheckN(args, %s)"):format(var);
 		end,
 		env = {
@@ -539,8 +539,8 @@ local OPERANDS = {
 	["random"] = {
 		numeric = true,
 		codeReplacement = function(args)
-			local from = tonumber(args[1] or 1) or 1;
-			local to = tonumber(args[2] or 100) or 100;
+			local from = tonumber((args or EMPTY)[1] or 1) or 1;
+			local to = tonumber((args or EMPTY)[2] or 100) or 100;
 			return ("random(%s, %s)"):format(from, to);
 		end,
 		env = {
