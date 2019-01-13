@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local EMPTY = Globals.empty;
-local Comm = TRP3_API.communication;
+local Comm = AddOn_TotalRP3.Communications;
 local type, tremove = type, tremove;
 local tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber = tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
@@ -485,7 +485,7 @@ function callForStashRefresh(target, stashID)
 	Comm.addMessageIDHandler(target, reservedMessageID, function(_, total, current)
 		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
-	Comm.sendObject(STASH_TOTAL_REQUEST, {reservedMessageID, stashID}, target, "HIGH");
+	Comm.sendObject(STASH_TOTAL_REQUEST, {reservedMessageID, stashID}, target, Comm.PRIORITIES.HIGH);
 end
 
 local function onUnstashResponse(response, sender)
@@ -553,7 +553,7 @@ local function onUnstashRequest(request, sender)
 						response.id = rootID;
 						response.class = localRootClass;
 					end
-					Comm.sendObject(STASH_ITEM_RESPONSE, response, sender, "LOW", reservedMessageID);
+					Comm.sendObject(STASH_ITEM_RESPONSE, response, sender, Comm.PRIORITIES.LOW, reservedMessageID);
 
 					-- Remove from our stash
 					tremove(stash.item, slotID);
@@ -568,7 +568,7 @@ local function onUnstashRequest(request, sender)
 		end
 	end
 
-	Comm.sendObject(STASH_ITEM_RESPONSE, "0", sender, "LOW", reservedMessageID);
+	Comm.sendObject(STASH_ITEM_RESPONSE, "0", sender, Comm.PRIORITIES.LOW, reservedMessageID);
 end
 
 function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
@@ -599,7 +599,7 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 		slotID = slotID,
 		rootID = rootClassID,
 		v = version
-	}, stashContainer.sharedData[1], "HIGH");
+	}, stashContainer.sharedData[1], Comm.PRIORITIES.HIGH);
 end
 
 local function receiveStashResponse(response, sender)
@@ -635,11 +635,11 @@ local function receiveStashRequest(data, sender)
 				Utils.table.copy(slot.class.CO, class.CO or EMPTY);
 				Utils.table.copy(slot.class.US, class.US or EMPTY);
 			end
-			Comm.sendObject(STASH_TOTAL_RESPONSE, response, sender, "LOW", reservedMessageID);
+			Comm.sendObject(STASH_TOTAL_RESPONSE, response, sender, Comm.PRIORITIES.LOW, reservedMessageID);
 			return;
 		end
 	end
-	Comm.sendObject(STASH_TOTAL_RESPONSE, "0", sender, "LOW", reservedMessageID);
+	Comm.sendObject(STASH_TOTAL_RESPONSE, "0", sender, Comm.PRIORITIES.LOW, reservedMessageID);
 end
 
 local function decorateStashSlot(slot, index)
