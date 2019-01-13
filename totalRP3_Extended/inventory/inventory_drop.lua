@@ -485,7 +485,7 @@ function callForStashRefresh(target, stashID)
 	Comm.addMessageIDHandler(target, reservedMessageID, function(_, total, current)
 		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
-	Comm.sendObject(STASH_TOTAL_REQUEST, {reservedMessageID, stashID}, target, "ALERT");
+	Comm.sendObject(STASH_TOTAL_REQUEST, {reservedMessageID, stashID}, target, "HIGH");
 end
 
 local function onUnstashResponse(response, sender)
@@ -599,7 +599,7 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 		slotID = slotID,
 		rootID = rootClassID,
 		v = version
-	}, stashContainer.sharedData[1], "ALERT");
+	}, stashContainer.sharedData[1], "HIGH");
 end
 
 local function receiveStashResponse(response, sender)
