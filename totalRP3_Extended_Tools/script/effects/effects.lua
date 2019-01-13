@@ -2,6 +2,7 @@
 -- Total RP 3: Extended features
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+--	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -91,6 +92,74 @@ local function text_init()
 		scriptData.args[1] = stEtN(strtrim(editor.text.scroll.text:GetText()));
 		scriptData.args[2] = editor.type:GetSelectedValue() or Utils.message.type.CHAT_FRAME;
 	end
+end
+
+local function macro_init()
+
+	local editor = TRP3_EffectEditorMacro;
+	---@type EditBox
+	local textbox = editor.macroText.scroll.text
+
+	registerEffectEditor("secure_macro",{
+		title = loc.EFFECT_SECURE_MACRO_ACTION_NAME,
+		icon = "inv_eng_gizmo3",
+		description = loc.EFFECT_SECURE_MACRO_DESCRIPTION,
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(Ellyb.ColorManager.YELLOW(loc.EFFECT_SECURE_MACRO_ACTION_NAME .. ": ") .. tostring(args[1]));
+		end,
+		getDefaultArgs = function()
+			return {""};
+		end,
+		editor = editor,
+	})
+
+	-- Text
+	setTooltipAll(editor.macroText.dummy, "RIGHT", 0, 5, loc.EFFECT_SECURE_MACRO_HELP_TITLE, loc.EFFECT_SECURE_MACRO_HELP);
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		textbox:SetText(data[1] or "");
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = stEtN(strtrim(textbox:GetText()));
+	end
+
+	local function hookLinkInsert(functionName, hook)
+		hooksecurefunc(functionName, function(self)
+			if IsModifiedClick("CHATLINK")and editor.macroText.scroll.text:HasFocus() then
+				textbox:Insert(hook(self))
+			end
+		end)
+	end
+
+	hookLinkInsert("SpellButton_OnModifiedClick", function(self)
+		return GetSpellBookItemName(SpellBook_GetSpellBookSlot(self), SpellBookFrame.bookType);
+	end)
+	hookLinkInsert("SpellFlyoutButton_OnClick", function(self)
+		return self.spellName
+	end)
+	hookLinkInsert("HandleModifiedItemClick", function(link)
+		return GetItemInfo(link)
+	end)
+
+	Ellyb.GameEvents.registerCallback("ADDON_LOADED", function(name)
+		if name == "Blizzard_TalentUI" then
+			hookLinkInsert("HandleGeneralTalentFrameChatLink", function(self)
+				return self.name:GetText();
+			end)
+		elseif name == "Blizzard_Collections" then
+			hookLinkInsert("MountListDragButton_OnClick", function(self)
+				return GetSpellInfo(self:GetParent().spellID)
+			end)
+			hookLinkInsert("MountListItem_OnClick", function(self)
+				return GetSpellInfo(self:GetParent().spellID)
+			end)
+			hookLinkInsert("ToySpellButton_OnModifiedClick", function(self)
+				return GetItemInfo(C_ToyBox.GetToyLink(self.itemID))
+			end)
+		end
+	end)
 end
 
 local function script_init()
@@ -1083,6 +1152,7 @@ end
 
 function TRP3_API.extended.tools.initBaseEffects()
 	text_init();
+	macro_init();
 	script_init();
 
 	companion_dismiss_mount_init();

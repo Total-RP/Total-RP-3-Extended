@@ -1,39 +1,41 @@
-# Changelog for version 1.2.0
+# Changelog for version 1.3.0
 
-**This version of Extended requires Total RP 3 version 1.4.0 or above.**
+**This update requires Total RP 3 version 1.5.0 or higher.**
 
-## Compatibility with patch 8.0.1
+## Map scans are back
 
-Due to important technical changes to the World of Warcraft API, older versions of the addon will not work for 8.0.1.
+Map scans for stashes and dropped items have been re-implemented for the new world map system.
 
-## Battle.net friends support
+- You can now right-click on your own stashes when using the "Scan for my stashes" scan to edit or delete them.
+- Thanks to the new map system in Total RP 3's core add-on, stashes and items placed on a specific level of a map will now correctly be associated to that specific level only.
 
-You can now open a trade for Extended creations and inspect a player's Extended inventory with a player from the opposite faction or on another realm if you are friend with them on Battle.net !
+![](https://totalrp3.info/documentation/changelogs/1_3_0_stash_menu.PNG)
 
-![](https://pbs.twimg.com/media/DhIC1m6W0AYkzMO.jpg:large)
+## New Execute macro effect
 
-## Added
+A new effect has been added to allow you to execute a macro when using your Total RP 3: Extended items. You can run macro commands from the game (`/use`, `/cast`, `/roar`, `/equipset`, `/petfollow`, etc.) or any command added by an add-on (`/dbm pull`, `/skada reset`). The macro executed can even resolve TRP3:E variables from your workflow, to inject variable values inside the execution.
 
-- Extended modifies Total RP 3's logo on the dashboard to reflect that Extended is installed.
-- The "Summon random battle pet" effect now lets you choose if you wish to pull from your entire pet pool or only from your favourites.
-- Right-clicking the selected mount in the "Summon mount" effect now resets the selector, letting you summon a random mount.
-- Added a game events browser to the game events editor. This browser pulls information from the official API documentation and gives you the list of game events as well as the arguments for each of them. Extended custom events are included in this browser as well.
+![](https://totalrp3.info/documentation/changelogs/1_3_0_macro_example.PNG)
 
+Due to game engine limitations, this effect has the following rules:
 
-## Modified
+- This effect will be completely ignored while in combat.
+- This effect ignores delays. The generated macro commands from your workflow effects are compiled when the item is used and executed immediately.
+- This effect will only be executed when an item is right-clicked from the inventory by the player (it can be a workflow called by an item being used). It will be ignored if called by a campaign event or a cutscene. (Support for cutscene dialog buttons will be added in an update).
+- Due to the dangerous nature of allowing access to commands like `/use`, `/gquit` or `/script`, this effect's security is set to "dangerous" and requires manual approval when receiving an item using such effect via trade or imports.
 
-- Stash data are being migrated to use new map IDs introduced in path 8.0.1. Some stashes may be lost in the transition due to this change.
+![](https://totalrp3.info/documentation/changelogs/1_3_0_macro.PNG)
+
+## New encoding for quick exports
+
+Creations exported using the quick export feature are using a new algorithm that combines both compression and safer encoding. Basically, this means you are able to export bigger creations faster and the serialized text is no longer using characters that might be transformed by word processors. This new format will only be compatible with versions 1.3.0 or above.
+
+> Note: The website http://wago.io for sharing Total RP 3 creations has received an update to support this new algorithm (thanks to Ora from the wago team) and will be able to import the new export strings while exporting export strings compatible with both pre and post 1.3.0 versions of Total RP 3: Extended.
 
 ## Fixed
 
-- Fixed the "Container total weight" condition editor dropdown going out of bounds.
-- Replaced the dropdown text for the add item effect to better reflect the actual action.
-- Fixed an incorrect label for the trade button in the target frame settings.
-- Fixed the "Simple rifle" backer item not working.
-- Fixed some potential Lua errors with the sound & music workflow effects.
-- Fixed version number display in some parts of the add-on.
-
-## Removed
-
-- Scans are currently disabled in Total RP 3 while we are working on re-implementing them for the major changes to the map API brought by Battle for Azeroth.
-- Stashes cannot be created and items cannot be dropped anymore in instances, due to the lack of player coordinates.
+- Fixed sound and music broadcasting to other players.
+- Fixed an issue in the migration to 8.0's new map IDs in drops that would cause them to not be shown on the map.
+- Fixed an issue that could cause some effects to have invalid arguments when leaving the effect editors without confirming.
+- Fixed an issue when trying to split stacks following the release of patch 8.1.
+- Fixed the maximum amount when splitting a stack to prevent issues when splitting a stack by its entire amount.
