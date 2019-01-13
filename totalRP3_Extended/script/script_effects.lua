@@ -181,10 +181,11 @@ local EFFECTS = {
 			local source = args[2] or "w";
 			local operandID = args[3] or "random";
 			local operandArgs = args[4];
+			---@type TotalRP3_Extended_Operand
 			local operand = TRP3_API.script.getOperand(operandID);
 			local code = "";
 			if operand and operand.codeReplacement then
-				code = operand.codeReplacement(operandArgs);
+				code = operand:CodeReplacement(operandArgs);
 			end
 			return source, varName, code, operand;
 		end,

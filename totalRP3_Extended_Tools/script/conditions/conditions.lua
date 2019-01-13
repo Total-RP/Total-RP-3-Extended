@@ -139,7 +139,9 @@ local function loadOperandEditor(operandInfo, list)
 end
 
 local function checkNumeric(value)
+	---@type TotalRP3_Extended_Operand
 	local leftOperand = TRP3_API.script.getOperand(operandEditor.left.operandID or "") or EMPTY;
+	---@type TotalRP3_Extended_Operand
 	local rightOperand = TRP3_API.script.getOperand(operandEditor.right.operandID or "") or EMPTY;
 	local compa = value or operandEditor.comparator:GetSelectedValue();
 	operandEditor.confirm:Enable();
@@ -218,9 +220,10 @@ local previewEnv = {
 
 local function onPreviewClick(button)
 	local list = button:GetParent();
+	---@type TotalRP3_Extended_Operand
 	local operandInfo = TRP3_API.script.getOperand(list.operandID);
-	if operandInfo and operandInfo.codeReplacement then
-		local code = ("displayMessage(\"|cffff9900" .. loc.OP_PREVIEW .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo.codeReplacement(list.argsData or EMPTY));
+	if operandInfo then
+		local code = ("displayMessage(\"|cffff9900" .. loc.OP_PREVIEW .. ":|cffffffff \" .. tostring(%s));"):format(operandInfo:CodeReplacement(list.argsData or EMPTY));
 		local env = {};
 		Utils.table.copy(env, previewEnv);
 		Utils.table.copy(env, operandInfo.env);

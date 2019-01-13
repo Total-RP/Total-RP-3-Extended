@@ -1,7 +1,7 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@totalrp3.info)
@@ -20,7 +20,7 @@
 -->
 
 	<!-- Please note that the loading order matters a lot -->
-	
+
 	<Include file="libs\libs.xml"/>
 
 	<!-- Main -->
@@ -32,8 +32,9 @@
 
 	<Script file="script\script_generation.lua"/>
 	<Script file="script\script_operands.lua"/>
+	<Include file="script\Operands\Operands.xml"/>
 	<Script file="script\script_effects.lua"/>
-	
+
 	<!-- Locales -->
 	<Script file="locale.lua"/>
 
