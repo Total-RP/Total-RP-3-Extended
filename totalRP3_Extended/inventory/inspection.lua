@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local Comm = TRP3_API.communication;
+local Comm = AddOn_TotalRP3.Communications;
 local tinsert, tostring, _G, wipe, pairs, time, tonumber = tinsert, tostring, _G, wipe, pairs, time, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local loc = TRP3_API.loc;
@@ -32,8 +32,8 @@ local decorateSlot;
 
 local INSPECTION_REQUEST = "IIRQ";
 local INSPECTION_RESPONSE = "IIRS";
-local REQUEST_PRIORITY = "NORMAL";
-local RESPONSE_PRIORITY = "BULK";
+local REQUEST_PRIORITY = Comm.PRIORITIES.MEDIUM;
+local RESPONSE_PRIORITY = Comm.PRIORITIES.LOW;
 
 local loadingTemplate;
 

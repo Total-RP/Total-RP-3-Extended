@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local Comm = TRP3_API.communication;
+local Comm = AddOn_TotalRP3.Communications;
 local tonumber, assert, strsplit, tostring, wipe, pairs, type = tonumber, assert, strsplit, tostring, wipe, pairs, type;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
@@ -39,8 +39,8 @@ local DATA_EXCHANGE_QUERY_PREFIX = "IEDE";
 local SEND_DATA_QUERY_PREFIX = "IESD";
 local FINISH_EXCHANGE_QUERY_PREFIX = "IEFE";
 
-local SEND_DATE_PRIORITY = "BULK";
-local START_EXCHANGE_PRIORITY = "NORMAL";
+local SEND_DATE_PRIORITY = Comm.PRIORITIES.LOW;
+local START_EXCHANGE_PRIORITY = Comm.PRIORITIES.MEDIUM;
 
 local MAX_MESSAGES_SIZE = 25;
 
