@@ -25,10 +25,10 @@ local TRP3_API = TRP3_API
 local Operand = TRP3_API.script.Operand;
 ---@type TotalRP3_Extended_NumericOperand
 local NumericOperand = TRP3_API.script.NumericOperand;
-local getSafeArgument = TRP3_API.getSafeValueFromTable;
+local getSafe = TRP3_API.getSafeValueFromTable;
 
 local function getUnitId(args)
-	return getSafeArgument(args, 1, "target");
+	return getSafe(args, 1, "target");
 end
 
 --region String operands
@@ -201,17 +201,17 @@ function unitIsInInspectingDistanceOperand:CodeReplacement(args)
 	return ([[CheckInteractDistance("%s", 1)]]):format(getUnitId(args));
 end
 
-local unitDistanceToPointOperand = Operand("unit_distance_point", {
+local unitDistanceToPointOperand = NumericOperand("unit_distance_point", {
 	["unitDistancePoint"] = "TRP3_API.extended.unitDistancePoint"
 });
 
 function unitDistanceToPointOperand:CodeReplacement(args)
-	local x = getSafeArgument(args, 3, 0)
-	local y = getSafeArgument(args, 2, 0)
+	local x = getSafe(args, 3, 0)
+	local y = getSafe(args, 2, 0)
 	return ([[unitDistancePoint("%s", %s, %s)]]):format(getUnitId(args), x, y);
 end
 
-local unitDistanceFromPlayerOperand = Operand("unit_distance_me", {
+local unitDistanceFromPlayerOperand = NumericOperand("unit_distance_me", {
 	["unitDistanceMe"] = "TRP3_API.extended.unitDistanceMe"
 });
 

@@ -53,7 +53,7 @@ local checkEventVariableValueOperand = Operand("check_event_var", {
 });
 
 function checkEventVariableValueOperand:CodeReplacement(args)
-	local var = getSafe(args, 2, 1);
+	local var = getSafe(args, 1, 1);
 	return ([[eventVarCheck(args, %s)]]):format(var);
 end
 
@@ -62,11 +62,11 @@ local checkEventNumericVariableValueOperand = NumericOperand("check_event_var_n"
 });
 
 function checkEventNumericVariableValueOperand:CodeReplacement(args)
-	local var = getSafe(args, 2, 1);
+	local var = getSafe(args, 1, 1);
 	return ([[eventVarCheckN(args, %s)]]):format(var);
 end
 
-local randomOperand = Operand("random", {
+local randomOperand = NumericOperand("random", {
 	["random"] = "math.random"
 });
 

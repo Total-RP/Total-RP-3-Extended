@@ -45,7 +45,7 @@ local itemWeightOperand = NumericOperand("inv_item_weight", {
 });
 
 function itemWeightOperand:CodeReplacement(args)
-	local source = getSafe(args, 2, "nil");
+	local source = getSafe(args, 1, "nil");
 	if source == "parent" then
 		source = "args.container";
 	elseif source == "self" then
