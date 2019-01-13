@@ -32,8 +32,8 @@ local decorateSlot;
 
 local INSPECTION_REQUEST = "IIRQ";
 local INSPECTION_RESPONSE = "IIRS";
-local REQUEST_PRIORITY = "NORMAL";
-local RESPONSE_PRIORITY = "BULK";
+local REQUEST_PRIORITY = "MEDIUM";
+local RESPONSE_PRIORITY = "LOW";
 
 local loadingTemplate;
 

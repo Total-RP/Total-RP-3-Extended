@@ -553,7 +553,7 @@ local function onUnstashRequest(request, sender)
 						response.id = rootID;
 						response.class = localRootClass;
 					end
-					Comm.sendObject(STASH_ITEM_RESPONSE, response, sender, "BULK", reservedMessageID);
+					Comm.sendObject(STASH_ITEM_RESPONSE, response, sender, "LOW", reservedMessageID);
 
 					-- Remove from our stash
 					tremove(stash.item, slotID);
@@ -568,7 +568,7 @@ local function onUnstashRequest(request, sender)
 		end
 	end
 
-	Comm.sendObject(STASH_ITEM_RESPONSE, "0", sender, "BULK", reservedMessageID);
+	Comm.sendObject(STASH_ITEM_RESPONSE, "0", sender, "LOW", reservedMessageID);
 end
 
 function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
@@ -635,11 +635,11 @@ local function receiveStashRequest(data, sender)
 				Utils.table.copy(slot.class.CO, class.CO or EMPTY);
 				Utils.table.copy(slot.class.US, class.US or EMPTY);
 			end
-			Comm.sendObject(STASH_TOTAL_RESPONSE, response, sender, "BULK", reservedMessageID);
+			Comm.sendObject(STASH_TOTAL_RESPONSE, response, sender, "LOW", reservedMessageID);
 			return;
 		end
 	end
-	Comm.sendObject(STASH_TOTAL_RESPONSE, "0", sender, "BULK", reservedMessageID);
+	Comm.sendObject(STASH_TOTAL_RESPONSE, "0", sender, "LOW", reservedMessageID);
 end
 
 local function decorateStashSlot(slot, index)
