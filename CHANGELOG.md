@@ -38,4 +38,4 @@ Creations exported using the quick export feature are using a new algorithm that
 - Fixed an issue in the migration to 8.0's new map IDs in drops that would cause them to not be shown on the map.
 - Fixed an issue that could cause some effects to have invalid arguments when leaving the effect editors without confirming.
 - Fixed an issue when trying to split stacks following the release of patch 8.1.
-- Splitting a stack by its maximum amount now leaves that stack intact instead of moving it and creating a stack of 0.
+- Fixed the maximum amount when splitting a stack to prevent issues when splitting a stack by its entire amount.
