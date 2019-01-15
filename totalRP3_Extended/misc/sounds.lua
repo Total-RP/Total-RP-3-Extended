@@ -16,7 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
+local Communications = AddOn_TotalRP3.Communications;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local pairs, strsplit, floor, sqrt, tonumber = pairs, strsplit, math.floor, sqrt, tonumber;
 local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.loc;
@@ -42,7 +43,7 @@ function Utils.music.playLocalSoundID(soundID, channel, distance, source)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
-		Comm.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, channel, distance, instanceID, posY, posX, posZ);
+		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, channel, distance, instanceID, posY, posX, posZ);
 	end
 end
 
@@ -50,13 +51,13 @@ function Utils.music.playLocalMusic(soundID, distance, source)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
-		Comm.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, "Music" , distance, instanceID, posY, posX, posZ);
+		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, "Music" , distance, instanceID, posY, posX, posZ);
 	end
 end
 
 function Utils.music.stopLocalSoundID(soundID, channel)
 	soundID = soundID or 0;
-	Comm.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel);
+	Communications.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel);
 end
 
 function Utils.music.stopLocalMusic(soundID)
@@ -70,7 +71,7 @@ local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
 end
 
 local function initSharedSound()
-	Comm.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
+	Communications.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
 		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
 			if soundID and channel and distance and instanceID and posY and posX and posZ then
 				distance = tonumber(distance) or 0;
@@ -111,7 +112,7 @@ local function initSharedSound()
 		end
 	end);
 
-	Comm.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel)
+	Communications.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel)
 		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
 			Utils.music.stopSoundID(soundID, channel, sender);
 		end
