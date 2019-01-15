@@ -1,5 +1,6 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
+---
 --- Operands Tests
 ---	---------------------------------------------------------------------------
 --- Copyright 2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
@@ -17,19 +18,13 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
---[[
-	These tests will check that all operands can properly handle all kind of arguments passed to the code generation,
-	including nil, an empty table, empty string or a numeric value
 
-	/run __TRP3ExtendedTests__operands()
-]]
+if not WoWUnit then
+	return
+end
 
 ---@type TRP3_API
 local TRP3_API = TRP3_API;
-
-local checkMark = TRP3_API.Ellyb.Texture.CreateFromAtlas("orderhalltalents-done-checkmark")
-checkMark:SetWidth(15)
-local TEST_PASSED = "Operand test %s passed " .. tostring(checkMark)
 
 local operandsToTest = {
 	"unit_name",
@@ -82,19 +77,46 @@ local operandsToTest = {
 	"time_minute",
 };
 
-function __TRP3ExtendedTests__operands()
+---@param closure fun(operand: TotalRP3_Extended_Operand)
+local function forEachOperand(closure)
 	for _, operandId in ipairs(operandsToTest) do
-		local operand = TRP3_API.script.getOperand(operandId);
-		if not operand then
-			error(("Could not get operand %s"):format(operandId))
-		end
-
-		loadstring(operand:CodeReplacement(nil))
-		loadstring(operand:CodeReplacement(""))
-		loadstring(operand:CodeReplacement({}))
-		loadstring(operand:CodeReplacement(0))
-		loadstring(operand:CodeReplacement(true))
-
-		print(TRP3_API.Ellyb.ColorManager.GREEN((TEST_PASSED):format(operandId)))
+		closure(TRP3_API.script.getOperand(operandId));
 	end
 end
+
+local OperandTests = WoWUnit('TRP3:E Operands', "PLAYER_ENTERING_WORLD")
+
+function OperandTests:HandleNilArgs()
+	forEachOperand(function(operand)
+		WoWUnit.Exists(operand)
+		local _, error = loadstring("function test() result = " .. operand:CodeReplacement(nil) .. " end")
+		WoWUnit.IsFalse(error)
+	end)
+end
+
+function OperandTests:HandleEmptyTableArgs()
+	forEachOperand(function(operand)
+		WoWUnit.Exists(operand)
+		local _, error = loadstring("function test() result = " .. operand:CodeReplacement({}) .. " end")
+		WoWUnit.IsFalse(error)
+	end)
+end
+
+function OperandTests:HandleNumericArgs()
+	forEachOperand(function(operand)
+		WoWUnit.Exists(operand)
+		local _, error = loadstring("function test() result = " .. operand:CodeReplacement(4) .. " end")
+		WoWUnit.IsFalse(error)
+	end)
+end
+
+function OperandTests:HandleEmptyStringArgs()
+	forEachOperand(function(operand)
+		WoWUnit.Exists(operand)
+		local _, error = loadstring("function test() result = " .. operand:CodeReplacement("") .. " end")
+		WoWUnit.IsFalse(error)
+	end)
+end
+
+
+WoWUnit:Show()

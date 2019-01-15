@@ -16,7 +16,13 @@
         See the License for the specific language governing permissions and
         limitations under the License.
     -->
-
-    <Script file="OperandsTests.lua" />
+    <Script file="OperandsTests.lua"/>
+    <Script file="UnitOperandsTests.lua"/>
+    <!--<Script file="TimeOperandsTests.lua"/>
+    <Script file="InventoryOperandsTests.lua"/>
+    <Script file="QuestOperandsTests.lua"/>
+    <Script file="CharacterOperandsTests.lua"/>
+    <Script file="ExpertOperandsTests.lua"/>
+    <Script file="MiscellaneousOperandsTests.lua"/>-->
 
 </Ui>
