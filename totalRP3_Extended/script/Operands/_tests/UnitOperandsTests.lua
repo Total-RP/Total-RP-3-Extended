@@ -48,33 +48,56 @@ end]]):format(generatedCode)
 end
 
 function Tests:UnitName()
-	WoWUnit.Replace('UnitName', function() return 'Ellypse' end)
+	WoWUnit.Replace('UnitName', function(arg)
+		WoWUnit.AreEqual("player", arg)
+		return 'Ellypse'
+	end)
 	local operand = getOperand("unit_name");
 	WoWUnit.AreEqual("Ellypse", execute(operand, { "player" }))
 end
 
 function Tests:UnitID()
+	WoWUnit.Replace(TRP3_API.utils.str, "getUnitID", function(arg)
+		WoWUnit.AreEqual("player", arg)
+		return "Ellypse-KirinTor"
+	end)
 	local operand = getOperand("unit_id");
-	WoWUnit.AreEqual(TRP3_API.globals.player_id, execute(operand, { "player" }))
+	WoWUnit.AreEqual("Ellypse-KirinTor", execute(operand, { "player" }))
 end
 
 function Tests:UnitClass()
+	WoWUnit.Replace(TRP3_API.utils.str, "GetClass", function(arg)
+		WoWUnit.AreEqual("player", arg)
+		return "PRIEST"
+	end)
 	local operand = getOperand("unit_class");
-	WoWUnit.AreEqual(TRP3_API.utils.str.GetClass("player"):lower(), execute(operand, { "player" }))
+	WoWUnit.AreEqual("priest", execute(operand, { "player" }))
 end
 
 function Tests:UnitRace()
+	WoWUnit.Replace(TRP3_API.utils.str, "GetRace", function(arg)
+		WoWUnit.AreEqual("player", arg)
+		return "HIGHELF"
+	end)
 	local operand = getOperand("unit_race");
-	WoWUnit.AreEqual(TRP3_API.utils.str.GetRace("player"):lower(), execute(operand, { "player" }))
+	WoWUnit.AreEqual("highelf", execute(operand, { "player" }))
 end
 
 function Tests:UnitGuild()
+	WoWUnit.Replace(TRP3_API.utils.str, "GetGuildName", function(arg)
+		WoWUnit.AreEqual("player", arg)
+		return "Sons of Anarchy"
+	end)
 	local operand = getOperand("unit_guild");
-	WoWUnit.AreEqual(TRP3_API.utils.str.GetGuildName("player"), execute(operand, { "player" }))
+	WoWUnit.AreEqual("Sons of Anarchy", execute(operand, { "player" }))
 end
 
 function Tests:UnitRank()
+	WoWUnit.Replace(TRP3_API.utils.str, "GetGuildRank", function(arg)
+		WoWUnit.AreEqual("player", arg)
+		return "Traitor"
+	end)
 	local operand = getOperand("unit_guild_rank");
-	WoWUnit.AreEqual(TRP3_API.utils.str.GetGuildRank("player"), execute(operand, { "player" }))
+	WoWUnit.AreEqual("Traitor", execute(operand, { "player" }))
 end
 
