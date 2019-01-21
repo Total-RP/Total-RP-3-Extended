@@ -742,6 +742,12 @@ end
 
 local OTHER_EMOTES_CATEGORIES_COUNT = 8;
 
+function TRP3_API.utils.splitTableIntoSmallerAlphabetizedTables(input)
+	local output = Ellyb.Tables.copy(input);
+	table.sort(output); -- TODO Replace this by actual implementation
+	return output;
+end
+
 local function do_emote_init()
 	local editor = TRP3_EffectEditorDoEmote;
 
