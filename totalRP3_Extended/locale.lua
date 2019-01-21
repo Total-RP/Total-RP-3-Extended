@@ -1636,6 +1636,9 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	DR_STASHES_OWNER = "Owner",
 	EFFECT_DO_EMOTE = "Do emote",
 	EFFECT_DO_EMOTE_TT = "Make the player do a specific animated emote.",
+	EFFECT_DO_EMOTE_SPOKEN = "Spoken",
+	EFFECT_DO_EMOTE_ANIMATED = "Animated",
+	EFFECT_DO_EMOTE_OTHER =  "Others",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

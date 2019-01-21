@@ -740,54 +740,77 @@ local function speech_player_init()
 	end
 end
 
--- Build list of emotes
-local spokenEmotes = {}
-for _, emoteToken in ipairs(TextEmoteSpeechList) do
-	spokenEmotes[emoteToken] = true;
-end
--- Those two are added dynamically
-spokenEmotes["FORTHEALLIANCE"] = true;
-spokenEmotes["FORTHEHORDE"] = true;
-local animatedEmotes = {}
-for _, emoteToken in ipairs(EmoteList) do
-	animatedEmotes[emoteToken] = true;
-end
-local otherEmotes = {}
-for i = 1, 522 do
-	local emoteToken = _G["EMOTE" .. i .. "_TOKEN"]
-	if emoteToken then
-		if spokenEmotes[emoteToken] then
-			spokenEmotes[emoteToken] = i;
-		elseif animatedEmotes[emoteToken] then
-			animatedEmotes[emoteToken] = i
-		else
-			otherEmotes[emoteToken] = i;
+local function do_emote_init()
+	local editor = TRP3_EffectEditorDoEmote;
+
+	-- Build list of emotes
+	local spokenEmotes = {}
+	for _, emoteToken in ipairs(TextEmoteSpeechList) do
+		spokenEmotes[emoteToken] = true;
+	end
+	-- Those two are added dynamically
+	spokenEmotes["FORTHEALLIANCE"] = true;
+	spokenEmotes["FORTHEHORDE"] = true;
+	local animatedEmotes = {}
+	for _, emoteToken in ipairs(EmoteList) do
+		animatedEmotes[emoteToken] = true;
+	end
+	local otherEmotes = {}
+	for i = 1, 522 do
+		local emoteToken = _G["EMOTE" .. i .. "_TOKEN"]
+		if emoteToken then
+			if spokenEmotes[emoteToken] then
+				spokenEmotes[emoteToken] = i;
+			elseif animatedEmotes[emoteToken] then
+				animatedEmotes[emoteToken] = i
+			else
+				otherEmotes[emoteToken] = i;
+			end
 		end
 	end
-end
 
-local function getEmoteNameFromToken(emoteToken)
-	local emoteIndex = spokenEmotes[emoteToken] or animatedEmotes[emoteToken] or otherEmotes[emoteToken] or UNKNOWN
-	return _G["EMOTE"..emoteIndex.."_CMD"..1]
-end
-
-local function getEmotesList(emotesList)
-	local list = {}
-	for token, _ in pairs(emotesList) do
-		table.insert(list, {getEmoteNameFromToken(token), token})
+	local function getEmoteNameFromToken(emoteToken)
+		local emoteIndex = spokenEmotes[emoteToken] or animatedEmotes[emoteToken] or otherEmotes[emoteToken] or UNKNOWN
+		return _G["EMOTE"..emoteIndex.."_CMD"..1]
 	end
-	return list
-end
 
-local function do_emote_init()
-	local editor = TRP3_EffectEditorSpeechPlayer;
+	local function getEmotesList(emotesList)
+		local list = {}
+		for token, _ in pairs(emotesList) do
+			table.insert(list, {getEmoteNameFromToken(token), token})
+		end
+		table.sort(list, function(a, b)
+			return a[1] < b[1]
+		end)
+		return list
+	end
+
+	local emotesList = {
+		{loc.EFFECT_DO_EMOTE_SPOKEN, getEmotesList(spokenEmotes)},
+		{loc.EFFECT_DO_EMOTE_ANIMATED, getEmotesList(animatedEmotes)}
+	}
+
+	local otherEmotesList = getEmotesList(otherEmotes)
+
+	local emoteTableIndex = #emotesList + 1;
+	for _, emote in ipairs(otherEmotesList) do
+		if not emotesList[emoteTableIndex] then
+			emotesList[emoteTableIndex] = { loc.EFFECT_DO_EMOTE_OTHER .. (emoteTableIndex - 2), {} };
+		end
+		table.insert(emotesList[emoteTableIndex][2], emote)
+		if #emotesList[emoteTableIndex][2] > 30 then
+			emoteTableIndex = emoteTableIndex + 1;
+		end
+	end
+
+	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotesList, nil, nil, 250, true);
 
 	registerEffectEditor("do_emote", {
 		title = loc.EFFECT_DO_EMOTE,
-		icon = "ability_warrior_warcry", -- TODO Find a better icon
+		icon = "Achievement_Faction_Celestials",
 		description = loc.EFFECT_DO_EMOTE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("Do emote" .. tostring(getEmoteNameFromToken(args[1])));
+			scriptStepFrame.description:SetText(Ellyb.ColorManager.YELLOW(loc.EFFECT_DO_EMOTE .. ": ") .. tostring(getEmoteNameFromToken(args[1])));
 		end,
 		getDefaultArgs = function()
 			return {};
@@ -795,20 +818,15 @@ local function do_emote_init()
 		editor = editor,
 	});
 
-	local emotes = {
-		{"Spoken", getEmotesList(spokenEmotes)},
-		{"Animated", getEmotesList(animatedEmotes)},
-		{"Others", getEmotesList(otherEmotes)}
-	}
-
-	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotes, nil, nil, 250, true);
-
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
-		editor.emoteList:SetSelectedValue(data[1]);
+		if data[1] then
+			editor.emoteList:SetSelectedValue(data[1]);
+		end
 	end
 
 	function editor.save(scriptData)
+		print(editor.emoteList:GetSelectedValue())
 		scriptData.args[1] = editor.emoteList:GetSelectedValue();
 	end
 end

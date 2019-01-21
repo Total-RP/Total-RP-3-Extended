@@ -295,7 +295,7 @@
 
 			<Frame parentKey="emoteList" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.name" x="-20" y="-20"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-20"/>
 				</Anchors>
 			</Frame>
 
