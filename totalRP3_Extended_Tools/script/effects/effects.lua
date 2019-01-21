@@ -740,6 +740,8 @@ local function speech_player_init()
 	end
 end
 
+local OTHER_EMOTES_CATEGORIES_COUNT = 8;
+
 local function do_emote_init()
 	local editor = TRP3_EffectEditorDoEmote;
 
@@ -792,16 +794,40 @@ local function do_emote_init()
 
 	local otherEmotesList = getEmotesList(otherEmotes)
 
+	-- Retrieving the first character of the first emote in the list
+	local characterList = {}
+	for character in string.gmatch(otherEmotesList[1][1], "([%z\1-\127\194-\244][\128-\191]*)") do
+		table.insert(characterList, character);
+	end
+	local previousFirstCharacter = characterList[2];
+
 	local emoteTableIndex = #emotesList + 1;
 	for _, emote in ipairs(otherEmotesList) do
+		-- Retrieving the first character of the current emote
+		characterList = {}
+		for character in string.gmatch(emote[1], "([%z\1-\127\194-\244][\128-\191]*)") do
+			table.insert(characterList, character);
+		end
+		local currentFirstCharacter = characterList[2];
+
+		-- If the character changed, we check if the size of the current category is too big. If it is, we close the current category and open a new one, else we just update the previous character
+		if previousFirstCharacter ~= currentFirstCharacter then
+			if #emotesList[emoteTableIndex][2] > #otherEmotesList / OTHER_EMOTES_CATEGORIES_COUNT then
+				emotesList[emoteTableIndex][1] = emotesList[emoteTableIndex][1] .. string.upper(previousFirstCharacter);
+				emoteTableIndex = emoteTableIndex + 1;
+			end
+			previousFirstCharacter = currentFirstCharacter;
+		end
+
+		-- Initialising the new category
 		if not emotesList[emoteTableIndex] then
-			emotesList[emoteTableIndex] = { loc.EFFECT_DO_EMOTE_OTHER .. (emoteTableIndex - 2), {} };
+			emotesList[emoteTableIndex] = { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(previousFirstCharacter) .. "-" , {} };
 		end
+
 		table.insert(emotesList[emoteTableIndex][2], emote)
-		if #emotesList[emoteTableIndex][2] > 30 then
-			emoteTableIndex = emoteTableIndex + 1;
-		end
 	end
+	-- Closing the last category
+	emotesList[emoteTableIndex][1] = emotesList[emoteTableIndex][1] .. string.upper(previousFirstCharacter);
 
 	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotesList, nil, nil, 250, true);
 
