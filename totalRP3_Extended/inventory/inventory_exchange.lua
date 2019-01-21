@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local Comm = TRP3_API.communication;
+local Communications = AddOn_TotalRP3.Communications;
 local tonumber, assert, strsplit, tostring, wipe, pairs, type = tonumber, assert, strsplit, tostring, wipe, pairs, type;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
@@ -39,8 +39,8 @@ local DATA_EXCHANGE_QUERY_PREFIX = "IEDE";
 local SEND_DATA_QUERY_PREFIX = "IESD";
 local FINISH_EXCHANGE_QUERY_PREFIX = "IEFE";
 
-local SEND_DATE_PRIORITY = "BULK";
-local START_EXCHANGE_PRIORITY = "NORMAL";
+local SEND_DATE_PRIORITY = Communications.PRIORITIES.LOW;
+local START_EXCHANGE_PRIORITY = Communications.PRIORITIES.MEDIUM;
 
 local MAX_MESSAGES_SIZE = 25;
 
@@ -319,7 +319,7 @@ local function addToExchange(container, slotID)
 				qa = itemClass.BA.QA,
 				id = rootClassID,
 				vn = rootClass.MD.V,
-				si = Comm.estimateStructureLoad(rootClass);
+				si = Communications.estimateStructureLoad(rootClass);
 			};
 			slotMapping[slotInfo] = {container, slotID};
 			found = true;
@@ -336,7 +336,7 @@ local function addToExchange(container, slotID)
 
 	drawUI();
 
-	Comm.sendObject(UPDATE_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+	Communications.sendObject(UPDATE_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 end
 TRP3_API.inventory.addToExchange = addToExchange;
 
@@ -349,7 +349,7 @@ local function startEmptyExchangeWithUnit(targetID)
 	exchangeFrame.myData.ok = nil;
 	exchangeFrame.yourData.ok = nil;
 	drawUI();
-	Comm.sendObject(UPDATE_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+	Communications.sendObject(UPDATE_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 end
 TRP3_API.inventory.startEmptyExchangeWithUnit = startEmptyExchangeWithUnit;
 
@@ -426,7 +426,7 @@ end
 
 function sendCurrentState()
 	assert(exchangeFrame.targetID, "No targetID");
-	Comm.sendObject(UPDATE_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+	Communications.sendObject(UPDATE_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 end
 
 function sendItemDataRequest(rootClassId, rootClassVersion)
@@ -435,7 +435,7 @@ function sendItemDataRequest(rootClassId, rootClassVersion)
 		return;
 	end
 
-	local reservedMessageID = Comm.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getMessageIDAndIncrement();
 	local request = {
 		id = rootClassId,
 		v = rootClassVersion,
@@ -443,14 +443,14 @@ function sendItemDataRequest(rootClassId, rootClassVersion)
 	};
 
 	currentDownloads[rootClassId] = 0;
-	Comm.addMessageIDHandler(exchangeFrame.targetID, reservedMessageID, function(_, total, current)
+	Communications.addMessageIDHandler(exchangeFrame.targetID, reservedMessageID, function(_, total, current)
 		currentDownloads[rootClassId] = current / total;
 		reloadDownloads();
 		if current == total then
 			currentDownloads[rootClassId] = nil;
 		end
 	end);
-	Comm.sendObject(DATA_EXCHANGE_QUERY_PREFIX, request, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+	Communications.sendObject(DATA_EXCHANGE_QUERY_PREFIX, request, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 	reloadDownloads();
 end
 
@@ -465,7 +465,7 @@ local function receivedDataRequest(request, sender)
 		class = class;
 	}
 
-	Comm.sendObject(SEND_DATA_QUERY_PREFIX, response, sender, SEND_DATE_PRIORITY, messageID);
+	Communications.sendObject(SEND_DATA_QUERY_PREFIX, response, sender, SEND_DATE_PRIORITY, messageID);
 end
 
 local function receivedDataResponse(response, sender)
@@ -504,7 +504,7 @@ local function receivedAccept(_, sender)
 		exchangeFrame.yourData.ok = true;
 		drawUI();
 		if exchangeFrame.myData.ok then
-			Comm.sendObject(FINISH_EXCHANGE_QUERY_PREFIX, "", exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+			Communications.sendObject(FINISH_EXCHANGE_QUERY_PREFIX, "", exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 			receivedFinish(nil, sender);
 		end
 	else
@@ -514,7 +514,7 @@ end
 
 -- Send accept to the other side
 function sendAcceptExchange()
-	Comm.sendObject(ACCEPT_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+	Communications.sendObject(ACCEPT_EXCHANGE_QUERY_PREFIX, exchangeFrame.myData, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 end
 
 local function receivedUpdate(data, sender)
@@ -552,7 +552,7 @@ end
 
 function sendCancel(sender)
 	if sender or exchangeFrame.targetID then
-		Comm.sendObject(CANCEL_EXCHANGE_QUERY_PREFIX, "", sender or exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
+		Communications.sendObject(CANCEL_EXCHANGE_QUERY_PREFIX, "", sender or exchangeFrame.targetID, START_EXCHANGE_PRIORITY);
 	end
 end
 
@@ -605,12 +605,12 @@ function exchangeFrame.init()
 	exchangeFrame.Background:SetTexture("Interface\\BankFrame\\Bank-Background", true, true);
 
 	-- Register prefix for data exchange
-	Comm.registerProtocolPrefix(UPDATE_EXCHANGE_QUERY_PREFIX, receivedUpdate);
-	Comm.registerProtocolPrefix(CANCEL_EXCHANGE_QUERY_PREFIX, receivedCancel);
-	Comm.registerProtocolPrefix(ACCEPT_EXCHANGE_QUERY_PREFIX, receivedAccept);
-	Comm.registerProtocolPrefix(DATA_EXCHANGE_QUERY_PREFIX, receivedDataRequest);
-	Comm.registerProtocolPrefix(SEND_DATA_QUERY_PREFIX, receivedDataResponse);
-	Comm.registerProtocolPrefix(FINISH_EXCHANGE_QUERY_PREFIX, receivedFinish);
+	Communications.registerSubSystemPrefix(UPDATE_EXCHANGE_QUERY_PREFIX, receivedUpdate);
+	Communications.registerSubSystemPrefix(CANCEL_EXCHANGE_QUERY_PREFIX, receivedCancel);
+	Communications.registerSubSystemPrefix(ACCEPT_EXCHANGE_QUERY_PREFIX, receivedAccept);
+	Communications.registerSubSystemPrefix(DATA_EXCHANGE_QUERY_PREFIX, receivedDataRequest);
+	Communications.registerSubSystemPrefix(SEND_DATA_QUERY_PREFIX, receivedDataResponse);
+	Communications.registerSubSystemPrefix(FINISH_EXCHANGE_QUERY_PREFIX, receivedFinish);
 
 	TRP3_API.events.listenToEvent(TRP3_API.security.EVENT_SECURITY_CHANGED, function(arg)
 		if exchangeFrame:IsVisible() then

@@ -1,10 +1,11 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -104,7 +105,7 @@
 	<!--      Containers      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Button name="TRP3_ContainerSlotTemplate" enableMouse="true" virtual="true">
+	<Button name="TRP3_ContainerSlotTemplate" inherits="InsecureActionButtonTemplate" enableMouse="true" virtual="true">
 		<Size x="36" y="36"/>
 		<Layers>
 			<Layer level="BORDER">
@@ -147,9 +148,9 @@
 		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
 	</Button>
 
-	<Frame name="TRP3_ItemDragButton" inherits="TRP3_ContainerSlotTemplate" parent="UIParent" frameStrata="DIALOG" hidden="true" movable="true" enableMouse="false">
+	<Button name="TRP3_ItemDragButton" inherits="TRP3_ContainerSlotTemplate" parent="UIParent" frameStrata="DIALOG" hidden="true" movable="true" enableMouse="false">
 
-	</Frame>
+	</Button>
 
 	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true" movable="true">
 		<Size x="200" y="270" />

@@ -395,6 +395,7 @@ end
 TRP3_API.inventory.removeSlotContent = removeSlotContent;
 
 local function splitSlot(slot, container, quantity)
+
 	local containerClass = getClass(container.id);
 
 	local emptySlotID;

@@ -3,7 +3,7 @@
 -- Scripts : Effects
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
+--	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
 --	You may obtain a copy of the License at
@@ -18,6 +18,11 @@
 ----------------------------------------------------------------------------------
 
 -- Fixed the "Summon Mount" effect (Paul Corlay)
+
+local _, Private_TRP3E = ...;
+
+---@type SecuredMacroCommandsEnclave
+local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave;
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local loc = TRP3_API.loc;
@@ -212,10 +217,11 @@ local EFFECTS = {
 			local source = args[2] or "w";
 			local operandID = args[3] or "random";
 			local operandArgs = args[4];
+			---@type TotalRP3_Extended_Operand
 			local operand = TRP3_API.script.getOperand(operandID);
 			local code = "";
 			if operand and operand.codeReplacement then
-				code = operand.codeReplacement(operandArgs);
+				code = operand:CodeReplacement(operandArgs);
 			end
 			return source, varName, code, operand;
 		end,
@@ -459,6 +465,23 @@ local EFFECTS = {
 			local value = tostring(cArgs[1]);
 			TRP3_API.script.runLuaScriptEffect(value, eArgs, true);
 			eArgs.LAST = 0;
+		end,
+		secured = security.LOW,
+	},
+
+	-- SECURED MACRO
+	["secure_macro"] = {
+		method = function(structure, cArgs, eArgs)
+			local macroText = tostring(cArgs[1]);
+			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
+			SecuredMacroCommandsEnclave:AddSecureCommands(macroText);
+			eArgs.LAST = 0
+		end,
+		securedMethod = function(structure, cArgs, eArgs)
+			local macroText = tostring(cArgs[1]);
+			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
+			TRP3_API.utils.message.displayMessage(loc.EFFECT_SECURE_MACRO_BLOCKED .. " " .. tostring(macroText), 1);
+			eArgs.LAST = 0
 		end,
 		secured = security.LOW,
 	},

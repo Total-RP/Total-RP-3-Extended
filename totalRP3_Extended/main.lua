@@ -425,7 +425,7 @@ local function onStart()
 	-- Signal
 	TRP3_API.extended.SIGNAL_PREFIX = "EXSI";
 	TRP3_API.extended.SIGNAL_EVENT = "TRP3_SIGNAL",
-	TRP3_API.communication.registerProtocolPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
 		if sender ~= Globals.player_id then
 			Log.log(("Received signal from %s"):format(sender));
 			Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v, sender);
@@ -485,8 +485,18 @@ local function onStart()
     dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
-Globals.extended_version = 1013;
+Globals.extended_version = 1014;
+Globals.required_trp3_build = 62;
 Globals.extended_display_version = "@project-version@";
+
+if TRP3_API.globals.version < Globals.required_trp3_build then
+	print(TRP3_API.Ellyb.ColorManager.RED([[
+
+The Total RP 3: Extended version you have installed (%s) requires a newer version of the main Total RP 3 add-on.
+
+Please download the latest version of Total RP 3 using the Twitch app or by manually downloading it on Curse at http://curse.totalrp.com.
+]]):format(Globals.extended_display_version));
+end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Extended",
@@ -495,7 +505,7 @@ local MODULE_STRUCTURE = {
 	["id"] = "trp3_extended",
 	["onInit"] = onInit,
 	["onStart"] = onStart,
-	["minVersion"] = 48,
+	["minVersion"] = Globals.required_trp3_build,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);

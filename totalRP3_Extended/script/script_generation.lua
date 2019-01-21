@@ -98,15 +98,13 @@ local function playEffect(effectID, shouldBeSecured, eArgs, ...)
 end
 TRP3_API.script.playEffect = playEffect;
 
-local function getTestOperande(id)
-	return TRP3_API.script.getOperand(id);
-end
 
 local function operand(operandID, eArgs, ...)
 	local cArgs = {...};
-	local operandInfo = getTestOperande(operandID);
+	---@type TotalRP3_Extended_Operand
+	local operandInfo = TRP3_API.script.getOperand(operandID);
 	if operandInfo then
-		local code = "return function(args)\nreturn " .. operandInfo.codeReplacement(escapeArguments(cArgs)) .. "\nend;";
+		local code = "return function(args)\nreturn " .. operandInfo:CodeReplacement(escapeArguments(cArgs) or EMPTY) .. "\nend;";
 		-- Compile
 		-- TODO: with proper method
 		local factory, errorMessage = loadstring(code, "Generated direct operand code");
@@ -188,14 +186,15 @@ local function writeOperand(testStructure, comparatorType, env)
 			code = "var(\"" .. escapeString(tostring(testStructure.v)) .. "\", args)";
 		end
 	else
-		local operandInfo = getTestOperande(testStructure.i);
+		---@type TotalRP3_Extended_Operand
+		local operandInfo = TRP3_API.script.getOperand(testStructure.i);
 		assert(operandInfo, "Unknown operand ID: " .. testStructure.i);
 		assert(comparatorType ~= "number" or operandInfo.numeric, "Operand ID is not numeric: " .. testStructure.i);
 
 		if comparatorType == "number" then
-			code = ("(tonumber(%s) or -1)"):format(operandInfo.codeReplacement(escapeArguments(testStructure.a)));
+			code = ("(tonumber(%s) or -1)"):format(operandInfo:CodeReplacement(escapeArguments(testStructure.a) or EMPTY));
 		else
-			code = ("tostring(%s)"):format(operandInfo.codeReplacement(escapeArguments(testStructure.a)));
+			code = ("tostring(%s)"):format(operandInfo:CodeReplacement(escapeArguments(testStructure.a) or EMPTY));
 		end
 
 
