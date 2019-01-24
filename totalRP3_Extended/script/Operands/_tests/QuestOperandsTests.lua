@@ -28,24 +28,9 @@ local TRP3_API = TRP3_API;
 
 ---@type fun(id: string):TotalRP3_Extended_Operand
 local getOperand = TRP3_API.script.getOperand;
+local execute = TRP3_API.extended.executeOperandInSafeEnv;
 
 local Tests = WoWUnit('TRP3:E Quest Operands', "PLAYER_ENTERING_WORLD");
-
---- Execute the operand in a safe environment, as close as how it would run in the addon
----@param operand TotalRP3_Extended_Operand
-local function execute(operand, args)
-	local generatedCode = operand:CodeReplacement(args)
-	local factory = ([[
-return function()
-return %s
-end]]):format(generatedCode)
-	for k, v in pairs(operand.env) do
-		factory = ([[local %s = %s]]):format(k, v) .. "\n"..factory
-	end
-	local func = loadstring(factory)()
-	setfenv(func, {})
-	return func()
-end
 
 function Tests:QuestIsAtStep()
 	local operand = getOperand("quest_is_step");
@@ -54,7 +39,7 @@ function Tests:QuestIsAtStep()
 		WoWUnit.AreEqual("my_quest", questId)
 		return 42
 	end)
-	WoWUnit.AreEqual(42, execute(operand, { "my_camp:my_quest" }))
+	WoWUnit.AreEqual(42, execute(operand, { "my_camp" .. TRP3_API.extended.ID_SEPARATOR .. "my_quest" }))
 end
 
 function Tests:IsQuestObjCompleted()
@@ -65,7 +50,7 @@ function Tests:IsQuestObjCompleted()
 		WoWUnit.AreEqual("my_obj", objectiveId)
 		return true
 	end)
-	WoWUnit.IsTrue(execute(operand, { "my_camp:my_quest", "my_obj" }))
+	WoWUnit.IsTrue(execute(operand, { "my_camp".. TRP3_API.extended.ID_SEPARATOR .. "my_quest", "my_obj" }))
 end
 
 function Tests:IsQuestObjCurrent()
@@ -76,7 +61,7 @@ function Tests:IsQuestObjCurrent()
 		WoWUnit.IsFalse(flag)
 		return true
 	end)
-	WoWUnit.IsTrue(execute(operand, { "my_camp:my_quest" }))
+	WoWUnit.IsTrue(execute(operand, { "my_camp".. TRP3_API.extended.ID_SEPARATOR .. "my_quest" }))
 end
 
 function Tests:AreAllQuestObjCompleted()
@@ -87,7 +72,7 @@ function Tests:AreAllQuestObjCompleted()
 		WoWUnit.IsTrue(flag)
 		return true
 	end)
-	WoWUnit.IsTrue(execute(operand, { "my_camp:my_quest" }))
+	WoWUnit.IsTrue(execute(operand, { "my_camp" .. TRP3_API.extended.ID_SEPARATOR .. "my_quest" }))
 end
 
 function Tests:UnitIsQuestNpc()

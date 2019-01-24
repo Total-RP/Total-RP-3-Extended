@@ -28,24 +28,9 @@ local TRP3_API = TRP3_API;
 
 ---@type fun(id: string):TotalRP3_Extended_Operand
 local getOperand = TRP3_API.script.getOperand;
+local execute = TRP3_API.extended.executeOperandInSafeEnv;
 
 local Tests = WoWUnit('TRP3:E Time Operands', "PLAYER_ENTERING_WORLD");
-
---- Execute the operand in a safe environment, as close as how it would run in the addon
----@param operand TotalRP3_Extended_Operand
-local function execute(operand, args)
-	local generatedCode = operand:CodeReplacement(args)
-	local factory = ([[
-return function()
-return %s
-end]]):format(generatedCode)
-	for k, v in pairs(operand.env) do
-		factory = ([[local %s = %s]]):format(k, v) .. "\n"..factory
-	end
-	local func = loadstring(factory)()
-	setfenv(func, {})
-	return func()
-end
 
 function Tests:Time()
 	WoWUnit.Replace('GetGameTime', function()
