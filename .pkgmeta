@@ -3,6 +3,7 @@ enable-nolib-creation: no
 
 ignore:
   - README.md
+  - _tests
 
 manual-changelog:
   filename: CHANGELOG.md
