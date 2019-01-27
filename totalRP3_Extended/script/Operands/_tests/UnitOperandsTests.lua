@@ -226,10 +226,10 @@ function Tests:UnitDistanceToPoint()
 end
 
 function Tests:UnitDistanceToPoint()
-	WoWUnit.Replace(TRP3_API.extended, "unitDistanceMe", function(arg, x, y)
+	WoWUnit.Replace(TRP3_API.extended, "unitDistanceMe", function(arg)
 		WoWUnit.AreEqual("focus", arg)
 		return true
 	end)
 	local operand = getOperand(("unit_distance_me"));
-	WoWUnit.IsTrue(execute(operand, { "focus"}));
+	WoWUnit.IsTrue(execute(operand, { "focus" }));
 end

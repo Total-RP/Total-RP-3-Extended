@@ -44,7 +44,7 @@ function Tests:ItemCount()
 	WoWUnit.AreEqual(42, execute(operand, { 36, "parent", container = "CONTAINER" }))
 	--endregion
 
-	--region Parent check
+	--region Self check
 	WoWUnit.Replace(TRP3_API.inventory, 'getItemCount', function(id, source)
 		WoWUnit.AreEqual("36", id)
 		WoWUnit.AreEqual("OBJECT", source)
@@ -74,7 +74,7 @@ function Tests:ItemWeight()
 	WoWUnit.AreEqual(42, execute(operand, { "parent", container = "CONTAINER" }))
 	--endregion
 
-	--region Parent check
+	--region Self check
 	WoWUnit.Replace(TRP3_API.inventory, 'getContainerWeight', function(source)
 		WoWUnit.AreEqual("OBJECT", source)
 		return 42
