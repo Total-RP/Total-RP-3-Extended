@@ -25,4 +25,6 @@
     <Script file="ExpertOperands.lua"/>
     <Script file="MiscellaneousOperands.lua"/>
 
+    <Include file="_tests\tests.xml" />
+
 </Ui>

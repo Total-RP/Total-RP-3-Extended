@@ -46,7 +46,7 @@ local unitIdOperand = Operand("unit_id", {
 })
 
 function unitIdOperand:CodeReplacement(args)
-	return ([[UnitId("%s")]]):format(getUnitId(args))
+	return ([[UnitID("%s")]]):format(getUnitId(args))
 end
 
 local unitNpcIdOperand = Operand("unit_npc_id", {
@@ -54,7 +54,7 @@ local unitNpcIdOperand = Operand("unit_npc_id", {
 });
 
 function unitNpcIdOperand:CodeReplacement(args)
-	return ([[getUnitNPCID("%s\"]]):format(getUnitId(args));
+	return ([[getUnitNPCID("%s")]]):format(getUnitId(args));
 end
 
 local unitGuildOperand = Operand("unit_guild", {
@@ -110,7 +110,7 @@ local unitClassificationOperand = Operand("unit_classification", {
 })
 
 function unitClassificationOperand:CodeReplacement(args)
-	return ([[(UnitClassification("%s")]]):format(getUnitId(args));
+	return ([[UnitClassification("%s")]]):format(getUnitId(args));
 end
 
 --endregion
@@ -146,7 +146,7 @@ local unitPositionXOperand = NumericOperand("unit_position_x", {
 });
 
 function unitPositionXOperand:CodeReplacement(args)
-	return ([[{UnitPosition("%s")}[2]]):format(getUnitId(args));
+	return ("({UnitPosition(\"%s\")})[2]"):format(getUnitId(args));
 end
 
 local unitPositionYOperand = NumericOperand("unit_position_y", {
@@ -154,7 +154,7 @@ local unitPositionYOperand = NumericOperand("unit_position_y", {
 });
 
 function unitPositionYOperand:CodeReplacement(args)
-	return ([[{UnitPosition("%s")}[1]]):format(getUnitId(args));
+	return ("({UnitPosition(\"%s\")})[1]"):format(getUnitId(args));
 end
 
 --endregion
