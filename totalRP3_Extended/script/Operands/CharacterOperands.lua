@@ -91,7 +91,6 @@ function zoneTextOperand:CodeReplacement()
 	return "GetZoneText()";
 end
 
-
 local subZoneTextOperand = Operand("char_subzone", {
 	["GetSubZoneText"] = "GetSubZoneText"
 });

@@ -3,7 +3,6 @@ enable-nolib-creation: no
 
 ignore:
   - README.md
-  - totalRP3_Extended_UnitTesting
 
 manual-changelog:
   filename: CHANGELOG.md
