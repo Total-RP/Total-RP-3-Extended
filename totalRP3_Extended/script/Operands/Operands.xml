@@ -25,6 +25,8 @@
     <Script file="ExpertOperands.lua"/>
     <Script file="MiscellaneousOperands.lua"/>
 
+    <!--@debug@-->
     <Include file="_tests\tests.xml" />
+    <!--@end-debug@-->
 
 </Ui>

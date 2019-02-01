@@ -15,6 +15,9 @@ install:
   - eval $(luarocks path --bin)
   - luarocks install --local luacheck
 
+# Remove unit tests folders
+before-script: rm -rf `find . -name "_tests"`
+
 # Run luacheck to make sure there is not syntax error left in the add-on
 script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
 
