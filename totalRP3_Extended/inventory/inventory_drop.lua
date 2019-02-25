@@ -32,6 +32,8 @@ local dropData, stashesData;
 
 local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
+local messageIDDispatcher = TRP3_API.Ellyb.EventsDispatcher();
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Drop
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -480,10 +482,12 @@ local classExists = TRP3_API.extended.classExists;
 function callForStashRefresh(target, stashID)
 	stashContainer.DurabilityText:SetText(loc.DR_STASHES_SYNC);
 	stashContainer.sync = true;
-	local reservedMessageID = Communications.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	Communications.addMessageIDHandler(target, reservedMessageID, function(_, total, current)
-		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
+	messageIDDispatcher:RegisterCallback(reservedMessageID, function(senderID, total, current)
+		if senderID == target then
+			stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
+		end
 	end);
 	Communications.sendObject(STASH_TOTAL_REQUEST, { reservedMessageID, stashID}, target, Communications.PRIORITIES.HIGH);
 end
@@ -588,10 +592,12 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 	stashContainer.toSlot = slot2;
 	stashContainer.DurabilityText:SetText(loc.IT_EX_DOWNLOAD);
 	stashContainer.sync = true;
-	local reservedMessageID = Communications.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	Communications.addMessageIDHandler(stashContainer.sharedData[1], reservedMessageID, function(_, total, current)
-		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
+	messageIDDispatcher:RegisterCallback(reservedMessageID, function(senderID, total, current)
+		if senderID == stashContainer.sharedData[1] then
+			stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
+		end
 	end);
 	Communications.sendObject(STASH_ITEM_REQUEST, {
 		rID = reservedMessageID,
