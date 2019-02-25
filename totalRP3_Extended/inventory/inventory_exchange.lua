@@ -46,8 +46,6 @@ local MAX_MESSAGES_SIZE = 25;
 
 local currentDownloads = {};
 
-local messageIDDispatcher = TRP3_API.Ellyb.EventsDispatcher();
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -445,13 +443,11 @@ function sendItemDataRequest(rootClassId, rootClassVersion)
 	};
 
 	currentDownloads[rootClassId] = 0;
-	messageIDDispatcher:RegisterCallback(reservedMessageID, function(senderID, total, current)
-		if senderID == exchangeFrame.targetID then
-			currentDownloads[rootClassId] = current / total;
-			reloadDownloads();
-			if current == total then
-				currentDownloads[rootClassId] = nil;
-			end
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, exchangeFrame.targetID, function(senderID, total, current)
+		currentDownloads[rootClassId] = current / total;
+		reloadDownloads();
+		if current == total then
+			currentDownloads[rootClassId] = nil;
 		end
 	end);
 	Communications.sendObject(DATA_EXCHANGE_QUERY_PREFIX, request, exchangeFrame.targetID, START_EXCHANGE_PRIORITY);

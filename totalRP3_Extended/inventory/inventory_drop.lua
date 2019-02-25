@@ -32,8 +32,6 @@ local dropData, stashesData;
 
 local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
-local messageIDDispatcher = TRP3_API.Ellyb.EventsDispatcher();
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Drop
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -484,10 +482,8 @@ function callForStashRefresh(target, stashID)
 	stashContainer.sync = true;
 	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	messageIDDispatcher:RegisterCallback(reservedMessageID, function(senderID, total, current)
-		if senderID == target then
-			stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
-		end
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, target, function(senderID, total, current)
+		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
 	Communications.sendObject(STASH_TOTAL_REQUEST, { reservedMessageID, stashID}, target, Communications.PRIORITIES.HIGH);
 end
@@ -594,10 +590,8 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 	stashContainer.sync = true;
 	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	messageIDDispatcher:RegisterCallback(reservedMessageID, function(senderID, total, current)
-		if senderID == stashContainer.sharedData[1] then
-			stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
-		end
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, stashContainer.sharedData[1], function(senderID, total, current)
+		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
 	Communications.sendObject(STASH_ITEM_REQUEST, {
 		rID = reservedMessageID,

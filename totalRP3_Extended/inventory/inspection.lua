@@ -26,8 +26,6 @@ local CreateFrame = CreateFrame;
 local inspectionFrame = TRP3_InspectionFrame;
 local decorateSlot;
 
-local messageIDDispatcher = TRP3_API.Ellyb.EventsDispatcher();
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DATA EXCHANGE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -104,12 +102,10 @@ local function sendRequest()
 	local data = {reservedMessageID};
 	inspectionFrame.time = time();
 	inspectionFrame.Main.Model.Loading:SetText("... " .. loc.INV_PAGE_WAIT .. " ...");
-	messageIDDispatcher:RegisterCallback(reservedMessageID, function(senderID, total, current)
-		if senderID == inspectionFrame.current then
-			inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(current / total * 100));
-			if current == total then
-				inspectionFrame.Main.Model.Loading:Hide();
-			end
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, inspectionFrame.current, function(senderID, total, current)
+		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(current / total * 100));
+		if current == total then
+			inspectionFrame.Main.Model.Loading:Hide();
 		end
 	end);
 	Communications.sendObject(INSPECTION_REQUEST, data, inspectionFrame.current, REQUEST_PRIORITY);
