@@ -41,7 +41,8 @@ local function dropCommon(lootInfo)
 	local posY, posX, posZ = UnitPosition("player");
 
 	-- We still need map position for potential marker placement
-	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
+	local mapID = AddOn_TotalRP3.Map.getPlayerMapID();
+	local mapX, mapY = AddOn_TotalRP3.Map.getPlayerCoordinates();
 
 	-- Pack the data
 	local groundData = {
@@ -59,7 +60,7 @@ local function dropCommon(lootInfo)
 end
 
 function TRP3_API.inventory.dropItemDirect(slotInfo)
-	if TRP3_API.map.getCurrentCoordinates("player") then
+	if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 		dropCommon(slotInfo);
 		local count = slotInfo.count or 1;
 		local link = getItemLink(getClass(slotInfo.id));
@@ -219,7 +220,8 @@ local function saveStash()
 
 	-- Proper coordinates
 	local posY, posX, posZ = UnitPosition("player");
-	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
+	local mapID = AddOn_TotalRP3.Map.getPlayerMapID();
+	local mapX, mapY = AddOn_TotalRP3.Map.getPlayerCoordinates();
 
 	if posX and posY then
 		stash.posX = posX;
@@ -743,7 +745,7 @@ local function onDropButtonAction(actionID)
 	if actionID == ACTION_SEARCH_MY then
 		searchForItems();
 	elseif actionID == ACTION_STASH_CREATE then
-		if TRP3_API.map.getCurrentCoordinates("player") then
+		if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 			openStashEditor(nil);
 		else
 			Utils.message.displayMessage(loc.DR_STASHES_ERROR_INSTANCE, Utils.message.type.ALERT_MESSAGE);
@@ -881,7 +883,7 @@ function dropFrame.init()
 		button2 = CANCEL,
 		button3 = loc.DR_POPUP,
 		OnShow = function(self)
-			if TRP3_API.map.getCurrentCoordinates("player") then
+			if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 				self.button3:Enable();
 			else
 				self.button3:Disable();
