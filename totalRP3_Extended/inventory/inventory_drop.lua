@@ -482,7 +482,7 @@ function callForStashRefresh(target, stashID)
 	stashContainer.sync = true;
 	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	Communications.registerMessageTokenProgressHandler(reservedMessageID, target, function(senderID, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, target, function(_, total, current)
 		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
 	Communications.sendObject(STASH_TOTAL_REQUEST, { reservedMessageID, stashID}, target, Communications.PRIORITIES.HIGH);
@@ -590,7 +590,7 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 	stashContainer.sync = true;
 	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	Communications.registerMessageTokenProgressHandler(reservedMessageID, stashContainer.sharedData[1], function(senderID, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, stashContainer.sharedData[1], function(_, total, current)
 		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
 	Communications.sendObject(STASH_ITEM_REQUEST, {

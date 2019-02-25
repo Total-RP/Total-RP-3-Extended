@@ -443,7 +443,7 @@ function sendItemDataRequest(rootClassId, rootClassVersion)
 	};
 
 	currentDownloads[rootClassId] = 0;
-	Communications.registerMessageTokenProgressHandler(reservedMessageID, exchangeFrame.targetID, function(senderID, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, exchangeFrame.targetID, function(_, total, current)
 		currentDownloads[rootClassId] = current / total;
 		reloadDownloads();
 		if current == total then

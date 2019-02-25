@@ -102,7 +102,7 @@ local function sendRequest()
 	local data = {reservedMessageID};
 	inspectionFrame.time = time();
 	inspectionFrame.Main.Model.Loading:SetText("... " .. loc.INV_PAGE_WAIT .. " ...");
-	Communications.registerMessageTokenProgressHandler(reservedMessageID, inspectionFrame.current, function(senderID, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, inspectionFrame.current, function(_, total, current)
 		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(current / total * 100));
 		if current == total then
 			inspectionFrame.Main.Model.Loading:Hide();
