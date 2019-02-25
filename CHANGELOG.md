@@ -1,3 +1,9 @@
+# Changelog for version 1.3.1
+
+## Fixed
+
+- Fixed an issue introduced in the previous update that would prevent you from editing some direct values in conditions - #160
+
 # Changelog for version 1.3.0
 
 **This update requires Total RP 3 version 1.5.0 or higher.**
