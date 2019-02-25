@@ -105,7 +105,7 @@ local function sendRequest()
 	inspectionFrame.time = time();
 	inspectionFrame.Main.Model.Loading:SetText("... " .. loc.INV_PAGE_WAIT .. " ...");
 	messageIDDispatcher:RegisterCallback(reservedMessageID, function(senderID, total, current)
-		if senderID == sender then
+		if senderID == inspectionFrame.current then
 			inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(current / total * 100));
 			if current == total then
 				inspectionFrame.Main.Model.Loading:Hide();
