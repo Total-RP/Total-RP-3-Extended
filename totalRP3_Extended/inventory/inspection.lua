@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local Comm = TRP3_API.communication;
+local Communications = AddOn_TotalRP3.Communications;
 local tinsert, tostring, _G, wipe, pairs, time, tonumber = tinsert, tostring, _G, wipe, pairs, time, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local loc = TRP3_API.loc;
@@ -32,8 +32,8 @@ local decorateSlot;
 
 local INSPECTION_REQUEST = "IIRQ";
 local INSPECTION_RESPONSE = "IIRS";
-local REQUEST_PRIORITY = "NORMAL";
-local RESPONSE_PRIORITY = "BULK";
+local REQUEST_PRIORITY = Communications.PRIORITIES.MEDIUM;
+local RESPONSE_PRIORITY = Communications.PRIORITIES.LOW;
 
 local loadingTemplate;
 
@@ -94,21 +94,21 @@ local function receiveRequest(request, sender)
 		end
 	end
 
-	Comm.sendObject(INSPECTION_RESPONSE, response, sender, RESPONSE_PRIORITY, reservedMessageID);
+	Communications.sendObject(INSPECTION_RESPONSE, response, sender, RESPONSE_PRIORITY, reservedMessageID);
 end
 
 local function sendRequest()
-	local reservedMessageID = Comm.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	local data = {reservedMessageID};
 	inspectionFrame.time = time();
 	inspectionFrame.Main.Model.Loading:SetText("... " .. loc.INV_PAGE_WAIT .. " ...");
-	Comm.addMessageIDHandler(inspectionFrame.current, reservedMessageID, function(_, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, inspectionFrame.current, function(_, total, current)
 		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(current / total * 100));
 		if current == total then
 			inspectionFrame.Main.Model.Loading:Hide();
 		end
 	end);
-	Comm.sendObject(INSPECTION_REQUEST, data, inspectionFrame.current, REQUEST_PRIORITY);
+	Communications.sendObject(INSPECTION_REQUEST, data, inspectionFrame.current, REQUEST_PRIORITY);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -216,8 +216,8 @@ function inspectionFrame.init()
 	end);
 
 	-- Register prefix for data exchange
-	Comm.registerProtocolPrefix(INSPECTION_REQUEST, receiveRequest);
-	Comm.registerProtocolPrefix(INSPECTION_RESPONSE, receiveResponse);
+	Communications.registerSubSystemPrefix(INSPECTION_REQUEST, receiveRequest);
+	Communications.registerSubSystemPrefix(INSPECTION_RESPONSE, receiveResponse);
 
 	TRP3_API.ui.frame.setupMove(inspectionFrame);
 end

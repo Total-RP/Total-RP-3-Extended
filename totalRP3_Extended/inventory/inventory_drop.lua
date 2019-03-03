@@ -17,14 +17,14 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local EMPTY = Globals.empty;
-local Comm = TRP3_API.communication;
+local Communications = AddOn_TotalRP3.Communications;
 local type, tremove = type, tremove;
 local tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber = tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local loc = TRP3_API.loc;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local broadcast = TRP3_API.communication.broadcast;
+local broadcast = Communications.broadcast;
 
 local dropFrame, stashEditFrame, stashFoundFrame = TRP3_DropSearchFrame, TRP3_StashEditFrame, TRP3_StashFoundFrame;
 local callForStashRefresh;
@@ -41,7 +41,8 @@ local function dropCommon(lootInfo)
 	local posY, posX, posZ = UnitPosition("player");
 
 	-- We still need map position for potential marker placement
-	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
+	local mapID = AddOn_TotalRP3.Map.getPlayerMapID();
+	local mapX, mapY = AddOn_TotalRP3.Map.getPlayerCoordinates();
 
 	-- Pack the data
 	local groundData = {
@@ -59,7 +60,7 @@ local function dropCommon(lootInfo)
 end
 
 function TRP3_API.inventory.dropItemDirect(slotInfo)
-	if TRP3_API.map.getCurrentCoordinates("player") then
+	if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 		dropCommon(slotInfo);
 		local count = slotInfo.count or 1;
 		local link = getItemLink(getClass(slotInfo.id));
@@ -219,7 +220,8 @@ local function saveStash()
 
 	-- Proper coordinates
 	local posY, posX, posZ = UnitPosition("player");
-	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
+	local mapID = AddOn_TotalRP3.Map.getPlayerMapID();
+	local mapX, mapY = AddOn_TotalRP3.Map.getPlayerCoordinates();
 
 	if posX and posY then
 		stash.posX = posX;
@@ -480,12 +482,12 @@ local classExists = TRP3_API.extended.classExists;
 function callForStashRefresh(target, stashID)
 	stashContainer.DurabilityText:SetText(loc.DR_STASHES_SYNC);
 	stashContainer.sync = true;
-	local reservedMessageID = Comm.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	Comm.addMessageIDHandler(target, reservedMessageID, function(_, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, target, function(_, total, current)
 		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
-	Comm.sendObject(STASH_TOTAL_REQUEST, {reservedMessageID, stashID}, target, "ALERT");
+	Communications.sendObject(STASH_TOTAL_REQUEST, { reservedMessageID, stashID}, target, Communications.PRIORITIES.HIGH);
 end
 
 local function onUnstashResponse(response, sender)
@@ -553,7 +555,7 @@ local function onUnstashRequest(request, sender)
 						response.id = rootID;
 						response.class = localRootClass;
 					end
-					Comm.sendObject(STASH_ITEM_RESPONSE, response, sender, "BULK", reservedMessageID);
+					Communications.sendObject(STASH_ITEM_RESPONSE, response, sender, Communications.PRIORITIES.LOW, reservedMessageID);
 
 					-- Remove from our stash
 					tremove(stash.item, slotID);
@@ -568,7 +570,7 @@ local function onUnstashRequest(request, sender)
 		end
 	end
 
-	Comm.sendObject(STASH_ITEM_RESPONSE, "0", sender, "BULK", reservedMessageID);
+	Communications.sendObject(STASH_ITEM_RESPONSE, "0", sender, Communications.PRIORITIES.LOW, reservedMessageID);
 end
 
 function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
@@ -588,18 +590,18 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 	stashContainer.toSlot = slot2;
 	stashContainer.DurabilityText:SetText(loc.IT_EX_DOWNLOAD);
 	stashContainer.sync = true;
-	local reservedMessageID = Comm.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	Comm.addMessageIDHandler(stashContainer.sharedData[1], reservedMessageID, function(_, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, stashContainer.sharedData[1], function(_, total, current)
 		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
-	Comm.sendObject(STASH_ITEM_REQUEST, {
+	Communications.sendObject(STASH_ITEM_REQUEST, {
 		rID = reservedMessageID,
 		stashID = stashID,
 		slotID = slotID,
 		rootID = rootClassID,
 		v = version
-	}, stashContainer.sharedData[1], "ALERT");
+	}, stashContainer.sharedData[1], Communications.PRIORITIES.HIGH);
 end
 
 local function receiveStashResponse(response, sender)
@@ -635,11 +637,11 @@ local function receiveStashRequest(data, sender)
 				Utils.table.copy(slot.class.CO, class.CO or EMPTY);
 				Utils.table.copy(slot.class.US, class.US or EMPTY);
 			end
-			Comm.sendObject(STASH_TOTAL_RESPONSE, response, sender, "BULK", reservedMessageID);
+			Communications.sendObject(STASH_TOTAL_RESPONSE, response, sender, Communications.PRIORITIES.LOW, reservedMessageID);
 			return;
 		end
 	end
-	Comm.sendObject(STASH_TOTAL_RESPONSE, "0", sender, "BULK", reservedMessageID);
+	Communications.sendObject(STASH_TOTAL_RESPONSE, "0", sender, Communications.PRIORITIES.LOW, reservedMessageID);
 end
 
 local function decorateStashSlot(slot, index)
@@ -716,7 +718,7 @@ local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 				for index, slot in pairs(stash.item) do
 					total = total + 1;
 				end
-				Comm.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, stash.id, stash.BA.NA, stash.BA.IC, total, castID, stash.CR);
+				Communications.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, stash.id, stash.BA.NA, stash.BA.IC, total, castID, stash.CR);
 			end
 		end
 	end
@@ -743,7 +745,7 @@ local function onDropButtonAction(actionID)
 	if actionID == ACTION_SEARCH_MY then
 		searchForItems();
 	elseif actionID == ACTION_STASH_CREATE then
-		if TRP3_API.map.getCurrentCoordinates("player") then
+		if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 			openStashEditor(nil);
 		else
 			Utils.message.displayMessage(loc.DR_STASHES_ERROR_INSTANCE, Utils.message.type.ALERT_MESSAGE);
@@ -881,7 +883,7 @@ function dropFrame.init()
 		button2 = CANCEL,
 		button3 = loc.DR_POPUP,
 		OnShow = function(self)
-			if TRP3_API.map.getCurrentCoordinates("player") then
+			if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 				self.button3:Enable();
 			else
 				self.button3:Disable();
@@ -921,8 +923,8 @@ function dropFrame.init()
 	setTooltipForSameFrame(stashEditFrame.hidden, "RIGHT", 0, 5, loc.DR_STASHES_HIDE, loc.DR_STASHES_HIDE_TT);
 
 	initStashContainer();
-	Comm.broadcast.registerCommand(SEARCH_STASHES_COMMAND, receivedStashesRequest);
-	Comm.broadcast.registerP2PCommand(SEARCH_STASHES_COMMAND, receivedStashesResponse);
+	Communications.broadcast.registerCommand(SEARCH_STASHES_COMMAND, receivedStashesRequest);
+	Communications.broadcast.registerP2PCommand(SEARCH_STASHES_COMMAND, receivedStashesResponse);
 
 	TRP3_API.ui.frame.setupMove(stashFoundFrame);
 	createRefreshOnFrame(stashFoundFrame, 0.15, function(self)
@@ -934,10 +936,10 @@ function dropFrame.init()
 	end);
 
 	-- Stash list
-	Comm.registerProtocolPrefix(STASH_TOTAL_REQUEST, receiveStashRequest);
-	Comm.registerProtocolPrefix(STASH_TOTAL_RESPONSE, receiveStashResponse);
-	Comm.registerProtocolPrefix(STASH_ITEM_REQUEST, onUnstashRequest);
-	Comm.registerProtocolPrefix(STASH_ITEM_RESPONSE, onUnstashResponse);
+	Communications.registerSubSystemPrefix(STASH_TOTAL_REQUEST, receiveStashRequest);
+	Communications.registerSubSystemPrefix(STASH_TOTAL_RESPONSE, receiveStashResponse);
+	Communications.registerSubSystemPrefix(STASH_ITEM_REQUEST, onUnstashRequest);
+	Communications.registerSubSystemPrefix(STASH_ITEM_RESPONSE, onUnstashResponse);
 
 	stashFoundFrame.widgetTab = {};
 	for i=1, 6 do

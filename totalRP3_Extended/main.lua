@@ -425,7 +425,7 @@ local function onStart()
 	-- Signal
 	TRP3_API.extended.SIGNAL_PREFIX = "EXSI";
 	TRP3_API.extended.SIGNAL_EVENT = "TRP3_SIGNAL",
-	TRP3_API.communication.registerProtocolPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
 		if sender ~= Globals.player_id then
 			Log.log(("Received signal from %s"):format(sender));
 			Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v, sender);
@@ -485,7 +485,7 @@ local function onStart()
     dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
-Globals.extended_version = 1014;
+Globals.extended_version = 1015;
 Globals.required_trp3_build = 62;
 Globals.extended_display_version = "@project-version@";
 

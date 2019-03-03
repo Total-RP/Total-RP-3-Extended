@@ -1,3 +1,11 @@
+# Changelog for version 1.3.1
+
+## Fixed
+
+- Fixed an issue introduced in the previous update that would prevent you from editing some direct values in conditions - #160
+- Fixed lingering issues preventing stashes from working
+- Fixed an issue with the download progress display while inspecting or exchanging an item.
+
 # Changelog for version 1.3.0
 
 **This update requires Total RP 3 version 1.5.0 or higher.**
