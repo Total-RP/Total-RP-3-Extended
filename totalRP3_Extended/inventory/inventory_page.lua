@@ -37,7 +37,7 @@ local DEFAULT_TIME = 1;
 local function resetEquip(Main, Model)
 	local main = Main or main;
 	local model = Model or model;
-	Model_Reset(model);
+	model:ResetModel();
 	if main.Equip then
 		main.Equip:Hide();
 	end
