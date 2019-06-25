@@ -1,3 +1,13 @@
+# Changelog for version 1.3.2
+
+## Changed
+
+- The music system has been reworked in Total RP 3 and impacts Total RP 3: Extended as well. **You need to update to have musics working again, and require Total RP 3 version 1.6.1 or later.** Changes should still support older creations with music effects.
+
+## Fixed
+
+- Fixed an issue with the inventory page following 8.2 changes.
+
 # Changelog for version 1.3.1
 
 ## Fixed
