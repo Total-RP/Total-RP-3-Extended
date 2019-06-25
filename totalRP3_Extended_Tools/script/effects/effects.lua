@@ -850,7 +850,7 @@ local function sound_music_self_init()
 		icon = "inv_misc_drum_07",
 		description = loc.EFFECT_SOUND_MUSIC_SELF_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_MUSIC_SELF_PREVIEW:format("|cff00ff00" .. (Utils.music.getTitle(tonumber(args[1])) or tostring(args[1])));
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_MUSIC_SELF_PREVIEW:format("|cff00ff00" .. (Utils.music.getTitle(tonumber(args[1])) or tostring(args[1]))));
 		end,
 		getDefaultArgs = function()
 			return {"228575"};
