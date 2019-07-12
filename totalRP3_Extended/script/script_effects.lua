@@ -265,8 +265,8 @@ local EFFECTS = {
 
 	["sound_music_self"] = {
 		method = function(structure, cArgs, eArgs)
-			local path = cArgs[1] or "";
-			local musicID = tonumber(path) or TRP3_API.utils.music.convertPathToID(path) or path;
+			local musicPath = cArgs[1] or "";
+			local musicID = tonumber(musicPath) or TRP3_API.utils.music.convertPathToID(musicPath) or musicPath;
 			eArgs.LAST = TRP3_API.utils.music.playMusic(musicID);
 		end,
 		secured = security.HIGH,
@@ -315,7 +315,7 @@ local EFFECTS = {
 	["sound_music_local"] = {
 		getCArgs = function(args)
 			local musicPath = args[1] or "";
-			local musicID = tonumber(path) or TRP3_API.utils.music.convertPathToID(path) or path;
+			local musicID = tonumber(musicPath) or TRP3_API.utils.music.convertPathToID(musicPath) or musicPath;
 			local distance = tonumber(args[2] or 0);
 			local source = "Script"; -- TODO: get source
 			return musicID, distance, source;
