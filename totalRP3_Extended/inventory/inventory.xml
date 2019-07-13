@@ -387,10 +387,10 @@
 							<OnEnter function=""/>
 							<OnLeave function=""/>
 							<OnMouseUp>
-								self.onMouseUpFunc(self, button);
+								self:OnMouseUp(button);
 							</OnMouseUp>
 							<OnMouseDown>
-								Model_OnMouseDown(self, button);
+								self:OnMouseDown(button);
 							</OnMouseDown>
 							<OnMouseWheel function=""/>
 						</Scripts>
