@@ -21,6 +21,12 @@ before-script: rm -rf `find . -name "_tests"`
 # Run luacheck to make sure there is not syntax error left in the add-on
 script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
 
+deploy:
+  provider: script
+  script: curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -p 100707 -w 24465 -g 8.2.0 -o
+  on:
+    tags: true
+
 notifications:
   email:
     on_failure: always
@@ -30,6 +36,3 @@ cache:
   apt: true
   directories:
     - $HOME/.luarocks
-
-# Call script to package the add-on. We pass the CurseForge and WoWInterface IDs to the script (it can't read it from the .toc file somehow)
-after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 100707 -w 24465 -g 8.2.0 -o
