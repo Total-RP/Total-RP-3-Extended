@@ -1,3 +1,11 @@
+# Changelog for version 1.3.3
+
+## Fixed
+
+- Fixed an issue preventing the inspection frame from working.
+- Fixed an issue preventing the local music effect from working.
+- Fixed an issue preventing the model rotation in the inventory page from stopping.
+
 # Changelog for version 1.3.2
 
 ## Changed
