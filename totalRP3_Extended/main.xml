@@ -21,6 +21,82 @@
 
 	<!-- Please note that the loading order matters a lot -->
 
+	<Button name="TRP2_BookwormButton" parent="UIParent" hidden="true">
+		<Size x="35" y="35"/>
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="35" y="-45" relativeTo="ItemTextFrame"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface/SPELLBOOK/SpellBook-SkillLineTab">
+					<Anchors>
+						<Anchor point="CENTER" x="12" y="-4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="$parentIcon" file="Interface/ICONS/INV_Misc_Book_03">
+					<Size x="30" y="30"/>
+					<Anchors>
+						<Anchor point="CENTER" />
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture name="$parent_highlight" file="Interface/BUTTONS/ButtonHilight-Square" alphaMode="ADD">
+					<Size x="30" y="30"/>
+					<Anchors>
+						<Anchor point="CENTER" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				SetCursor("Interface\\CURSOR\\Pickup")
+			</OnEnter>
+			<OnLeave>
+				SetCursor(nil);
+			</OnLeave>
+			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+			</OnLoad>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP2_BookwormButtonEmpty" parent="UIParent" hidden="true">
+		<Size x="35" y="35"/>
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="35" y="-45" relativeTo="ItemTextFrame"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface/SPELLBOOK/SpellBook-SkillLineTab">
+					<Anchors>
+						<Anchor point="CENTER" x="12" y="-4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="$parentIcon" file="Interface/ICONS/INV_Misc_Book_03">
+					<Size x="30" y="30"/>
+					<Anchors>
+						<Anchor point="CENTER" />
+					</Anchors>
+					<Color a="1" r="0.5" g="0.5" b="0.5" />
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface/BUTTONS/UI-CheckBox-Check">
+					<Size x="30" y="30"/>
+					<Anchors>
+						<Anchor point="CENTER" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Button>
+
 	<Include file="libs\libs.xml"/>
 
 	<!-- Main -->

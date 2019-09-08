@@ -509,3 +509,191 @@ local MODULE_STRUCTURE = {
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);
+
+----------------------------------------------------
+
+local Ellyb = TRP3_API.Ellyb;
+
+-- Object decleration
+local Book = {
+
+    -- Get the number of the current page
+    getPageNumber = ItemTextGetPage,
+
+    -- Go to previous page
+    previousPage = ItemTextPrevPage,
+
+    -- Go to next page
+    nextPage = ItemTextNextPage,
+
+    -- Return true if a next page exists
+    hasNextPage = ItemTextHasNextPage,
+
+    -- Get information about an item by its name
+    getInfo = GetItemInfo,
+
+    -- Get the name of the item (book, parchment, letter, plaque)
+    getItem = ItemTextGetItem,
+
+    -- Get the name of the creator of the letter, if there is one
+    author = ItemTextGetCreator,
+
+    -- Get the text from the page being displayed
+    getText = ItemTextGetText,
+}
+
+-- Return true if an author exists for the document (only for letters)
+Book.hasAuthor = function()
+    return Book.author() ~= nil;
+end
+
+-- Return the type of material for the document
+-- Parchment, Bronze, Silver, Stone or Marble
+Book.getMaterial = function()
+    return ItemTextGetMaterial() or "Parchment";
+end
+
+-- Go back to the first page of the book
+Book.goToFirstPage = function()
+    while Book.getPageNumber() > 1 do
+        Book.previousPage();
+    end
+end
+
+-- Go to the last page of the book
+Book.goToLastPage = function()
+    while Book.hasNextPage() do
+        Book.nextPage();
+    end
+end
+
+-- Go to a specific page in the book
+Book.goToPage = function(pageNumer)
+    Book.goToFirstPage();
+    while Book.getPageNumber() ~= pageNumer do
+        Book.nextPage();
+    end
+end
+
+-- Return the icon of the item used to display the document
+Book.getItemIcon = function()
+    return select(10, Book.getInfo(Book.getItem()));
+end
+
+local function getNewDocumentData()
+	local itemId = Utils.str.id();
+	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
+
+	data.BA.US = true;
+	data.US = {
+		AC = loc.IT_DOC_ACTION,
+		SC = "onUse"
+	};
+	data.SC = {
+		["onUse"] = { ["ST"] = { ["1"] = { ["e"] = {
+			{
+				["id"] = "document_show",
+				["args"] = {
+					itemId .. TRP3_API.extended.ID_SEPARATOR .. "doc",
+				},
+			},
+		},
+										   ["t"] = "list",
+		}}}};
+	data.IN = {
+		doc = {
+			TY = TRP3_DB.types.DOCUMENT,
+			MD = {
+				MO = TRP3_DB.modes.NORMAL,
+			},
+			BA = {
+				NA = loc.DO_NEW_DOC,
+			},
+			BT = true,
+		}
+	};
+	return itemId, data
+end
+
+local function importDocument()
+
+	local itemId, data = getNewDocumentData()
+
+	-- Book name
+	local documentName = Book.getItem()
+	local itemName = documentName
+	local author = Book.author()
+	if author then
+		itemName = itemName .. ", " .. author
+	end
+
+	data.BA.NA = itemName
+
+	-- Item icon
+	-- local icon = Book.getItemIcon()
+	-- TODO Get proper icon from texture file ID
+	data.BA.IC = "INV_Misc_Book_03";
+
+	-- Document pages
+	local currentPage = Book.getPageNumber()
+	local pages = {}
+	Book.goToFirstPage()
+
+	table.insert(pages, {
+		["TX"] = "{h1:c}" .. documentName .. "{/h1}{img:Interface\\QUESTFRAME\\UI-HorizontalBreak:200:50}\n" .. Book.getText()
+	})
+	while Book.hasNextPage() do
+		Book.nextPage();
+		table.insert(pages, {
+			["TX"] = "{h1:c}" .. documentName .. "{/h1}{img:Interface\\QUESTFRAME\\UI-HorizontalBreak:200:50}\n" .. Book.getText()
+		})
+	end
+	Book.goToPage(currentPage);
+	data.IN.doc.PA = pages
+
+	itemId = TRP3_API.extended.tools.createItem(data, itemId)
+	TRP3_API.inventory.addItem(nil, itemId, {count = 1});
+end
+
+local function itemAlreadyExists(itemName)
+	for _, item in pairs(TRP3_DB.my) do
+		if item and item.BA and item.BA.NA == itemName then
+			return true
+		end
+	end
+	return false
+end
+
+-- Bookworm's icon behavior
+TRP2_BookwormButton:SetScript("OnClick", function(self)
+	importDocument()
+	TRP2_BookwormButton:Hide();
+	TRP2_BookwormButtonEmpty:Show();
+
+	local playerInventory = TRP3_API.inventory.getInventory();
+	local quickSlot = playerInventory.content[TRP3_API.inventory.QUICK_SLOT_ID];
+	if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
+		TRP3_API.inventory.switchContainerBySlotID(playerInventory, TRP3_API.inventory.QUICK_SLOT_ID);
+	end
+end);
+
+Ellyb.GameEvents.registerCallback("ITEM_TEXT_READY", function()
+	-- Determines the icon to use for the document.
+	local itemIcon = Book.getItemIcon();
+	local itemName = Book.getItem()
+	TRP2_BookwormButtonIcon:SetTexture(itemIcon or "Interface\\ICONS\\INV_Misc_Book_03");
+	TRP2_BookwormButtonEmptyIcon:SetTexture(itemIcon or "Interface\\ICONS\\INV_Misc_Book_03");
+	if itemAlreadyExists(itemName) then
+		TRP2_BookwormButtonEmpty:Show()
+	else
+		TRP2_BookwormButton:Show();
+	end
+end)
+Ellyb.GameEvents.registerCallback("ITEM_TEXT_CLOSED", function()
+	-- The document is closed, we hide our frames
+	TRP2_BookwormButton:Hide();
+	TRP2_BookwormButtonEmpty:Hide();
+end)
+
+Ellyb.Tooltips.getTooltip(TRP2_BookwormButton):SetTitle("Import document into your Total RP 3: Extended inventory")
+Ellyb.Tooltips.getTooltip(TRP2_BookwormButtonEmpty):SetTitle("This item has already been imported into your Total RP 3: Extended inventory")
