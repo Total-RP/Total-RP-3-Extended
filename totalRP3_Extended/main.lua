@@ -575,6 +575,18 @@ Book.goToPage = function(pageNumer)
     end
 end
 
+Book.getNumberOfPages = function()
+	local currentPage = Book.getPageNumber()
+	local index = 1
+	Book.goToFirstPage();
+	while Book.hasNextPage() do
+		Book.nextPage();
+		index = index + 1
+	end
+	Book.goToPage(currentPage)
+	return index
+end
+
 -- Return the icon of the item used to display the document
 Book.getItemIcon = function()
     return select(10, Book.getInfo(Book.getItem()));
@@ -585,21 +597,42 @@ local function getNewDocumentData()
 	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
 
 	data.BA.US = true;
+	data.BA.PS = 1184; -- Pick up sound
+	data.BA.DS = 1201; -- Put down sound
 	data.US = {
 		AC = loc.IT_DOC_ACTION,
 		SC = "onUse"
 	};
 	data.SC = {
-		["onUse"] = { ["ST"] = { ["1"] = { ["e"] = {
-			{
-				["id"] = "document_show",
-				["args"] = {
-					itemId .. TRP3_API.extended.ID_SEPARATOR .. "doc",
+		["onUse"] = {
+			["ST"] = {
+				["1"] = {
+					["e"] = {
+						{
+							["id"] = "sound_id_self",
+							["args"] = {
+								"SFX",
+								3190, -- Book opening sound
+							},
+						},
+					},
+					["t"] = "list",
+					["n"] = "2",
 				},
-			},
-		},
-										   ["t"] = "list",
-		}}}};
+				["2"] = {
+					["e"] = {
+						{
+							["id"] = "document_show",
+							["args"] = {
+								itemId .. TRP3_API.extended.ID_SEPARATOR .. "doc",
+							},
+						},
+					},
+					["t"] = "list",
+				}
+			}
+		}
+	};
 	data.IN = {
 		doc = {
 			TY = TRP3_DB.types.DOCUMENT,
@@ -618,6 +651,7 @@ end
 local function importDocument()
 
 	local itemId, data = getNewDocumentData()
+	local currentPage = Book.getPageNumber()
 
 	-- Book name
 	local documentName = Book.getItem()
@@ -635,10 +669,8 @@ local function importDocument()
 	data.BA.IC = "INV_Misc_Book_03";
 
 	-- Document pages
-	local currentPage = Book.getPageNumber()
 	local pages = {}
 	Book.goToFirstPage()
-
 	table.insert(pages, {
 		["TX"] = "{h1:c}" .. documentName .. "{/h1}{img:Interface\\QUESTFRAME\\UI-HorizontalBreak:200:50}\n" .. Book.getText()
 	})
@@ -648,11 +680,23 @@ local function importDocument()
 			["TX"] = "{h1:c}" .. documentName .. "{/h1}{img:Interface\\QUESTFRAME\\UI-HorizontalBreak:200:50}\n" .. Book.getText()
 		})
 	end
-	Book.goToPage(currentPage);
+
+	-- Weight
+	local weight = 0
+	Book.goToFirstPage()
+	if  Book.hasNextPage() then -- This is a book, not a note
+		weight = 125 + (Book.getNumberOfPages() * 75)
+	else
+		weight = 75
+	end
+	data.BA.WE = weight
+
 	data.IN.doc.PA = pages
 
 	itemId = TRP3_API.extended.tools.createItem(data, itemId)
 	TRP3_API.inventory.addItem(nil, itemId, {count = 1});
+
+	Book.goToPage(currentPage); -- Restore book position
 end
 
 local function itemAlreadyExists(itemName)
