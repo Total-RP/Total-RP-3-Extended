@@ -1778,8 +1778,4 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Zencore
 
 ##  You are the best!
-
-## Total RP 3: Extended is also maintained thanks to Ellypse's [Patreon](http://patreon.com/Ellypse) supporters:
-
-%s
 ]];

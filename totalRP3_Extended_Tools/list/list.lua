@@ -416,7 +416,7 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.filters:Hide();
 		ToolFrame.list.backers:Show();
 
-		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion(), TRP3_API.Ellyb:GetPatreonSupporters())));
+		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion())));
 		ToolFrame.list.backers.child.HTML:SetScript("OnHyperlinkClick", function(self, url, text, button)
 			TRP3_API.Ellyb.Popups:OpenURL(url);
 		end)
