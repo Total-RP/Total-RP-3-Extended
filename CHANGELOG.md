@@ -1,3 +1,9 @@
+# Changelog for version 1.3.4
+
+## Fixed
+
+- Fixed a bug when trying to access the addon credits.
+
 # Changelog for version 1.3.3
 
 ## Fixed
