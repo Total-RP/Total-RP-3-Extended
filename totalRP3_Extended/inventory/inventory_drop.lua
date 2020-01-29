@@ -233,8 +233,8 @@ local function saveStash()
 		stash.uiMapID = mapID;
 		stash.mapX = mapX;
 		stash.mapY = mapY;
-		stash.id = Utils.str.id();
 	end
+	stash.id = Utils.str.id();
 
 	stashEditFrame:Hide();
 
