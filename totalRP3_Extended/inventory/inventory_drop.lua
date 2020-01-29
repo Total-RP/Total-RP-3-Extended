@@ -205,6 +205,7 @@ local function saveStash()
 	if index then
 		stash = stashesData[index];
 	end
+	local newStash;
 	if not stash then
 		stash = {
 			BA = {},
@@ -213,6 +214,7 @@ local function saveStash()
 		};
 		tinsert(stashesData, stash);
 		index = #stashesData;
+		newStash = true;
 	end
 	stash.BA.IC = stashEditFrame.icon.selectedIcon or "TEMP";
 	stash.BA.NA = stEtN(strtrim(stashEditFrame.name:GetText():sub(1, 50))) or loc.DR_STASHES_NAME;
@@ -223,7 +225,8 @@ local function saveStash()
 	local mapID = AddOn_TotalRP3.Map.getPlayerMapID();
 	local mapX, mapY = AddOn_TotalRP3.Map.getPlayerCoordinates();
 
-	if posX and posY then
+	-- If it's not a new stash, we don't want to replace its position, we can always consider a "move stash" option later
+	if not newStash and posX and posY then
 		stash.posX = posX;
 		stash.posY = posY;
 		stash.posZ = posZ;
