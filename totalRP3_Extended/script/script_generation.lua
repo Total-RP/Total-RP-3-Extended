@@ -761,6 +761,34 @@ directReplacement = {
 		local defaultRace = UnitRace("player");
 		return TRP3_API.profile.getData("player/characteristics").RA or defaultRace or UNKNOWN;
 	end,
+	["trp:target:first"] = function()
+		if UnitIsUnit("target", "player") then
+			return directReplacement["trp:player:first"]();
+		end
+		local defaultName = UnitName("target");
+		local unitID = getUnitID("target");
+		if unitID and isUnitIDKnown(unitID) then
+			local profile = getUnitIDCurrentProfile(unitID);
+			if profile and profile.characteristics and profile.characteristics.FN then
+				return profile.characteristics.FN;
+			end
+		end
+		return defaultName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
+	["trp:target:last"] = function()
+		if UnitIsUnit("target", "player") then
+			return directReplacement["trp:player:last"]();
+		end
+		local defaultName = UnitName("target");
+		local unitID = getUnitID("target");
+		if unitID and isUnitIDKnown(unitID) then
+			local profile = getUnitIDCurrentProfile(unitID);
+			if profile and profile.characteristics and profile.characteristics.LN then
+				return profile.characteristics.LN;
+			end
+		end
+		return defaultName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
 	["trp:target:class"] = function()
 		if UnitIsUnit("target", "player") then
 			return directReplacement["trp:player:class"]();
