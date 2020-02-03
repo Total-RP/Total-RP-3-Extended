@@ -23,6 +23,7 @@ local EMPTY = TRP3_API.globals.empty;
 local assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit;
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
+local getUnitID, isUnitIDKnown, getUnitIDCurrentProfile = TRP3_API.utils.str.getUnitID, TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCurrentProfile;
 local writeElement;
 local loc = TRP3_API.loc;
 
@@ -765,9 +766,12 @@ directReplacement = {
 			return directReplacement["trp:player:class"]();
 		end
 		local defaultClass = UnitClass("target");
-		local profile = TRP3_API.register.getUnitCurrentProfile("target");
-		if profile and profile.characteristics and profile.characteristics.CL then
-			return profile.characteristics.CL;
+		local unitID = getUnitID("target");
+		if unitID and isUnitIDKnown(unitID) then
+			local profile = getUnitIDCurrentProfile(unitID);
+			if profile and profile.characteristics and profile.characteristics.CL then
+				return profile.characteristics.CL;
+			end
 		end
 		return defaultClass or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
@@ -776,9 +780,12 @@ directReplacement = {
 			return directReplacement["trp:player:race"]();
 		end
 		local defaultRace = UnitClass("target");
-		local profile = TRP3_API.register.getUnitCurrentProfile("target");
-		if profile and profile.characteristics and profile.characteristics.RA then
-			return profile.characteristics.RA;
+		local unitID = getUnitID("target");
+		if unitID and isUnitIDKnown(unitID) then
+			local profile = getUnitIDCurrentProfile(unitID);
+			if profile and profile.characteristics and profile.characteristics.RA then
+				return profile.characteristics.RA;
+			end
 		end
 		return defaultRace or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
