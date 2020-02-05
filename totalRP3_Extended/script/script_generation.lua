@@ -20,7 +20,7 @@
 TRP3_API.script = {};
 
 local EMPTY = TRP3_API.globals.empty;
-local assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit;
+local assert, type, tostring, error, tonumber, pairs, ipairs, loadstring, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, ipairs, loadstring, wipe, strsplit;
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
@@ -244,7 +244,7 @@ local function writeCondition(conditionStructure, conditionID, env)
 	local code = "";
 	local previousType;
 	local isInParenthesis = false;
-	for index, element in pairs(conditionStructure) do
+	for index, element in ipairs(conditionStructure) do
 		if type(element) == "string" then
 			assert(index > 1 and index < #conditionStructure, ("Can't have a logic operator at start or end: index %s for operator %s"):format(index, element));
 			assert(previousType ~= "string", "Can't have two successive logic operator");
