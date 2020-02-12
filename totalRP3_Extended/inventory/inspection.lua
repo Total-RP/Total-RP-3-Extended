@@ -70,7 +70,6 @@ end
 local function receiveRequest(request, sender)
 	local reservedMessageID = request[1];
 	local playerInventory = TRP3_API.inventory.getInventory();
-	local campaignStorage = TRP3_API.quest.getCampaignVarStorage();
 
 	local response = {
 		totalWeight = playerInventory.totalWeight,
@@ -81,13 +80,14 @@ local function receiveRequest(request, sender)
 		-- Don't send the default bag
 		if slotID ~= "17" then
 			local class = getClass(slot.id);
+			local slotInfo = { object = slot };
 
 			-- Parsing arguments in the item info
 			local parsedBA = {};
 			Utils.table.copy(class.BA, parsedBA);
-			parsedBA.RI = parseArgs(parsedBA.RI, campaignStorage);
-			parsedBA.LE = parseArgs(parsedBA.LE, campaignStorage);
-			parsedBA.DE = parseArgs(parsedBA.DE, campaignStorage);
+			parsedBA.RI = parseArgs(parsedBA.RI, slotInfo);
+			parsedBA.LE = parseArgs(parsedBA.LE, slotInfo);
+			parsedBA.DE = parseArgs(parsedBA.DE, slotInfo);
 
 			response.slots[slotID] = {
 				count = slot.count,
@@ -102,7 +102,7 @@ local function receiveRequest(request, sender)
 				-- Parsing arguments in the use text
 				local parsedUS = {};
 				Utils.table.copy(class.US, parsedUS);
-				parsedUS.AC = parseArgs(parsedUS.AC, campaignStorage);
+				parsedUS.AC = parseArgs(parsedUS.AC, slotInfo);
 
 				response.slots[slotID].US = parsedUS;
 			end
