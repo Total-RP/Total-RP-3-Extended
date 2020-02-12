@@ -22,6 +22,7 @@ local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getCla
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local CreateFrame = CreateFrame;
+local parseArgs = TRP3_API.script.parseArgs;
 
 local inspectionFrame = TRP3_InspectionFrame;
 local decorateSlot;
@@ -69,6 +70,7 @@ end
 local function receiveRequest(request, sender)
 	local reservedMessageID = request[1];
 	local playerInventory = TRP3_API.inventory.getInventory();
+	local campaignStorage = TRP3_API.quest.getCampaignVarStorage();
 
 	local response = {
 		totalWeight = playerInventory.totalWeight,
@@ -79,17 +81,30 @@ local function receiveRequest(request, sender)
 		-- Don't send the default bag
 		if slotID ~= "17" then
 			local class = getClass(slot.id);
+
+			-- Parsing arguments in the item info
+			local parsedBA = {};
+			Utils.table.copy(class.BA, parsedBA);
+			parsedBA.RI = parseArgs(parsedBA.RI, campaignStorage);
+			parsedBA.LE = parseArgs(parsedBA.LE, campaignStorage);
+			parsedBA.DE = parseArgs(parsedBA.DE, campaignStorage);
+
 			response.slots[slotID] = {
 				count = slot.count,
 				id = slot.id,
-				BA = class.BA,
+				BA = parsedBA,
 				pos = slot.pos,
 			};
 			if isContainerByClassID(slot.id) then
 				response.slots[slotID].CO = class.CO;
 			end
 			if isUsableByClass(class) then
-				response.slots[slotID].US = class.US;
+				-- Parsing arguments in the use text
+				local parsedUS = {};
+				Utils.table.copy(class.US, parsedUS);
+				parsedUS.AC = parseArgs(parsedUS.AC, campaignStorage);
+
+				response.slots[slotID].US = parsedUS;
 			end
 		end
 	end
