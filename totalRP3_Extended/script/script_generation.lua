@@ -788,7 +788,7 @@ directReplacement = {
 }
 
 function TRP3_API.script.parseArgs(text, args)
-    if not text return end;
+    if not text then return end;
 	args = args or EMPTY;
 	text = tostring(text) or "";
 	text = text:gsub("%$%{(.-)%}", function(capture)
