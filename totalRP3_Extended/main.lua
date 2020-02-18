@@ -487,7 +487,14 @@ end
 
 Globals.extended_version = 1018;
 Globals.required_trp3_build = 66;
+
+--@debug@
+Globals.extended_display_version = "v-dev";
+--@end-debug@
+
+--[===[@non-debug@
 Globals.extended_display_version = "@project-version@";
+--@end-non-debug@]===]
 
 if TRP3_API.globals.version < Globals.required_trp3_build then
 	print(TRP3_API.Ellyb.ColorManager.RED([[
