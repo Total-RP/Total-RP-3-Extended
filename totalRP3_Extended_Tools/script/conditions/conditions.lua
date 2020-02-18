@@ -477,6 +477,8 @@ local getEvaluatedOperands = function(structure)
 			"unit_npc_id",
 			"unit_guild",
 			"unit_guild_rank",
+			"unit_creature_type",
+			"unit_creature_family",
 			"unit_classification",
 			"unit_sex",
 			"unit_class",

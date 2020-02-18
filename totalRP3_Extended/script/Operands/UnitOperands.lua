@@ -105,6 +105,22 @@ function unitFactionOperand:CodeReplacement(args)
 	return ([[(GetFaction("%s") or ""):lower()]]):format(getUnitId(args));
 end
 
+local unitCreatureTypeOperand = Operand("unit_creature_type", {
+	["UnitCreatureType"] = "UnitCreatureType"
+})
+
+function unitCreatureTypeOperand:CodeReplacement(args)
+	return ([[UnitCreatureType("%s")]]):format(getUnitId(args));
+end
+
+local unitCreatureFamilyOperand = Operand("unit_creature_family", {
+	["UnitCreatureFamily"] = "UnitCreatureFamily"
+})
+
+function unitCreatureFamilyOperand:CodeReplacement(args)
+	return ([[UnitCreatureFamily("%s")]]):format(getUnitId(args));
+end
+
 local unitClassificationOperand = Operand("unit_classification", {
 	["UnitClassification"] = "UnitClassification"
 })
