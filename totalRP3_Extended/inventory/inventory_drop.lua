@@ -226,7 +226,7 @@ local function saveStash()
 	local mapX, mapY = AddOn_TotalRP3.Map.getPlayerCoordinates();
 
 	-- If it's not a new stash, we don't want to replace its position, we can always consider a "move stash" option later
-	if not newStash and posX and posY then
+	if not isNewStash and posX and posY then
 		stash.posX = posX;
 		stash.posY = posY;
 		stash.posZ = posZ;
