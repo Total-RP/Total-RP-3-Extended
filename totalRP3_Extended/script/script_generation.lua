@@ -23,7 +23,6 @@ local EMPTY = TRP3_API.globals.empty;
 local assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit;
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
-local getUnitID, isUnitIDKnown, getUnitIDCurrentProfile = TRP3_API.utils.str.getUnitID, TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCurrentProfile;
 local writeElement;
 local loc = TRP3_API.loc;
 
@@ -761,45 +760,14 @@ directReplacement = {
 		local defaultRace = UnitRace("player");
 		return TRP3_API.profile.getData("player/characteristics").RA or defaultRace or UNKNOWN;
 	end,
-	["trp:target:first"] = function()
-		if UnitIsUnit("target", "player") then
-			return directReplacement["trp:player:first"]();
-		end
-		local defaultName = UnitName("target");
-		local unitID = getUnitID("target");
-		if unitID and isUnitIDKnown(unitID) then
-			local profile = getUnitIDCurrentProfile(unitID);
-			if profile and profile.characteristics and profile.characteristics.FN then
-				return profile.characteristics.FN;
-			end
-		end
-		return defaultName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
-	end,
-	["trp:target:last"] = function()
-		if UnitIsUnit("target", "player") then
-			return directReplacement["trp:player:last"]();
-		end
-		local defaultName = UnitName("target");
-		local unitID = getUnitID("target");
-		if unitID and isUnitIDKnown(unitID) then
-			local profile = getUnitIDCurrentProfile(unitID);
-			if profile and profile.characteristics and profile.characteristics.LN then
-				return profile.characteristics.LN;
-			end
-		end
-		return defaultName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
-	end,
 	["trp:target:class"] = function()
 		if UnitIsUnit("target", "player") then
 			return directReplacement["trp:player:class"]();
 		end
 		local defaultClass = UnitClass("target");
-		local unitID = getUnitID("target");
-		if unitID and isUnitIDKnown(unitID) then
-			local profile = getUnitIDCurrentProfile(unitID);
-			if profile and profile.characteristics and profile.characteristics.CL then
-				return profile.characteristics.CL;
-			end
+		local profile = TRP3_API.register.getUnitCurrentProfile("target");
+		if profile and profile.characteristics and profile.characteristics.CL then
+			return profile.characteristics.CL;
 		end
 		return defaultClass or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
@@ -808,12 +776,9 @@ directReplacement = {
 			return directReplacement["trp:player:race"]();
 		end
 		local defaultRace = UnitClass("target");
-		local unitID = getUnitID("target");
-		if unitID and isUnitIDKnown(unitID) then
-			local profile = getUnitIDCurrentProfile(unitID);
-			if profile and profile.characteristics and profile.characteristics.RA then
-				return profile.characteristics.RA;
-			end
+		local profile = TRP3_API.register.getUnitCurrentProfile("target");
+		if profile and profile.characteristics and profile.characteristics.RA then
+			return profile.characteristics.RA;
 		end
 		return defaultRace or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
