@@ -205,7 +205,7 @@ local function saveStash()
 	if index then
 		stash = stashesData[index];
 	end
-	local newStash;
+	local isNewStash;
 	if not stash then
 		stash = {
 			BA = {},
