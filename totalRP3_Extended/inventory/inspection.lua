@@ -22,6 +22,7 @@ local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getCla
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local CreateFrame = CreateFrame;
+local parseArgs = TRP3_API.script.parseArgs;
 
 local inspectionFrame = TRP3_InspectionFrame;
 local decorateSlot;
@@ -79,17 +80,31 @@ local function receiveRequest(request, sender)
 		-- Don't send the default bag
 		if slotID ~= "17" then
 			local class = getClass(slot.id);
+			local slotInfo = { object = slot };
+
+			-- Parsing arguments in the item info
+			local parsedBA = {};
+			Utils.table.copy(class.BA, parsedBA);
+			parsedBA.RI = parseArgs(parsedBA.RI, slotInfo);
+			parsedBA.LE = parseArgs(parsedBA.LE, slotInfo);
+			parsedBA.DE = parseArgs(parsedBA.DE, slotInfo);
+
 			response.slots[slotID] = {
 				count = slot.count,
 				id = slot.id,
-				BA = class.BA,
+				BA = parsedBA,
 				pos = slot.pos,
 			};
 			if isContainerByClassID(slot.id) then
 				response.slots[slotID].CO = class.CO;
 			end
 			if isUsableByClass(class) then
-				response.slots[slotID].US = class.US;
+				-- Parsing arguments in the use text
+				local parsedUS = {};
+				Utils.table.copy(class.US, parsedUS);
+				parsedUS.AC = parseArgs(parsedUS.AC, slotInfo);
+
+				response.slots[slotID].US = parsedUS;
 			end
 		end
 	end
