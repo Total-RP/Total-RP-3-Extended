@@ -528,6 +528,17 @@ local function char_swimming_init()
 	});
 end
 
+local function char_indoors_init()
+	registerOperandEditor("char_indoors", {
+		title = loc.OP_OP_CHAR_INDOORS,
+		description = loc.OP_OP_CHAR_INDOORS_TT,
+		returnType = true,
+		getText = function(args)
+			return loc.OP_OP_CHAR_INDOORS;
+		end,
+	});
+end
+
 local function char_zone_init()
 	registerOperandEditor("char_zone", {
 		title = loc.OP_OP_CHAR_ZONE,
@@ -830,6 +841,7 @@ function TRP3_ConditionEditor.initOperands()
 	char_mounted_init();
 	char_resting_init();
 	char_swimming_init();
+	char_indoors_init();
 	char_zone_init();
 	char_subzone_init();
 	char_minimap_init();

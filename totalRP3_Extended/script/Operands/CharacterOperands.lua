@@ -83,6 +83,14 @@ function isSwimmingOperand:CodeReplacement()
 	return "IsSwimming()";
 end
 
+local isIndoorsOperand = Operand("char_indoors", {
+	["IsIndoors"] = "IsIndoors"
+});
+
+function isIndoorsOperand:CodeReplacement()
+	return "IsIndoors()";
+end
+
 local zoneTextOperand = Operand("char_zone", {
 	["GetZoneText"] = "GetZoneText"
 });
