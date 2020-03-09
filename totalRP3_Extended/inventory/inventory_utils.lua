@@ -134,11 +134,14 @@ local function getItemLink(itemClass, id, complete)
 	local ids = {strsplit(TRP3_API.extended.ID_SEPARATOR, id or "???")};
 	local name, color;
 	if itemClass.TY == TRP3_DB.types.DOCUMENT or itemClass.TY == TRP3_DB.types.QUEST_STEP or itemClass.TY == TRP3_DB.types.DIALOG then
-		color = "|cffffffff";
+		color = Ellyb.ColorManager.YELLOW:GetColorCodeStartSequence();
 		name = ids[#ids];
 	else
 		local _, n, qa = getBaseClassDataSafe(itemClass);
 		color = getQualityColorText(qa);
+		if itemClass.TY == TRP3_DB.types.CAMPAIGN or itemClass.TY == TRP3_DB.types.QUEST then
+			color = Ellyb.ColorManager.YELLOW:GetColorCodeStartSequence();
+		end
 		name = n;
 	end
 

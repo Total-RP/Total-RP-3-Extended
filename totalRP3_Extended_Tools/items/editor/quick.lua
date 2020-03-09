@@ -242,6 +242,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	end);
 	setTooltipForSameFrame(editor.convert, "TOP", 0, 0, loc.IT_CONVERT_TO_NORMAL, loc.IT_CONVERT_TO_NORMAL_TT);
 
+	--[===[
 	-- Templates
 	toolFrame.list.bottom.item.Name:SetText(loc.DB_CREATE_ITEM);
 	toolFrame.list.bottom.item.InfoText:SetText(loc.DB_CREATE_ITEM_TT);
@@ -376,6 +377,6 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 			TRP3_API.extended.tools.goToPage(ID);
 		end, TRP3_DB.types.CAMPAIGN});
 
-	end);
+	end);]===]
 
 end

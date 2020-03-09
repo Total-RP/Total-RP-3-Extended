@@ -28,6 +28,7 @@
 	<Include file="campaign/campaign.xml"/>
 	<Include file="cutscene/cutscene.xml"/>
 	<Include file="list/list.xml"/>
+	<!--Include file="list/list_new.xml"/-->
 
 	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true" movable="true">
 		<Anchors>
@@ -115,6 +116,7 @@
 					<Anchor point="TOP" relativeTo="$parentNavBar" relativePoint="BOTTOM" x="0" y="-35"/>
 					<Anchor point="LEFT" x="24" y="0"/>
 					<Anchor point="BOTTOMRIGHT" x="-45" y="24"/>
+					<!--Anchor point="BOTTOMRIGHT" x="-410" y="24"/-->
 				</Anchors>
 			</Frame>
 
