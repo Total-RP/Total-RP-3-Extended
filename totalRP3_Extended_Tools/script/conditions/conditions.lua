@@ -506,6 +506,7 @@ local getEvaluatedOperands = function(structure)
 			"char_mounted",
 			"char_resting",
 			"char_swimming",
+			"char_indoors",
 			"char_facing",
 			"char_zone",
 			"char_subzone",
