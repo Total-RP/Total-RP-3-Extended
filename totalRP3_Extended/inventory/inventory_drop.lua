@@ -214,7 +214,7 @@ local function saveStash()
 		};
 		tinsert(stashesData, stash);
 		index = #stashesData;
-		newStash = true;
+		isNewStash = true;
 	end
 	stash.BA.IC = stashEditFrame.icon.selectedIcon or "TEMP";
 	stash.BA.NA = stEtN(strtrim(stashEditFrame.name:GetText():sub(1, 50))) or loc.DR_STASHES_NAME;
