@@ -84,7 +84,7 @@ local function receiveRequest(request, sender)
 
 			-- Parsing arguments in the item info
 			local parsedBA = {};
-			Utils.table.copy(class.BA, parsedBA);
+			Utils.table.copy(parsedBA, class.BA);
 			parsedBA.RI = parseArgs(parsedBA.RI, slotInfo);
 			parsedBA.LE = parseArgs(parsedBA.LE, slotInfo);
 			parsedBA.DE = parseArgs(parsedBA.DE, slotInfo);
@@ -101,7 +101,7 @@ local function receiveRequest(request, sender)
 			if isUsableByClass(class) then
 				-- Parsing arguments in the use text
 				local parsedUS = {};
-				Utils.table.copy(class.US, parsedUS);
+				Utils.table.copy(parsedUS, class.US);
 				parsedUS.AC = parseArgs(parsedUS.AC, slotInfo);
 
 				response.slots[slotID].US = parsedUS;

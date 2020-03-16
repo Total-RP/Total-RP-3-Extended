@@ -1,3 +1,15 @@
+# Changelog for version 1.3.5.3
+
+## Fixed
+
+- Fixed an issue with inspection showing unknown items.
+
+# Changelog for version 1.3.5.2
+
+## Fixed
+
+- Fixed an issue with stashes not working properly since last version.
+
 # Changelog for version 1.3.5
 
 ## Added
