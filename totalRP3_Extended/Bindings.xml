@@ -46,7 +46,7 @@
     <Binding name="TRP3_QUEST_TALK">
         TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.TALK)
     </Binding>
-    <Binding name="BINDINGS_NAME_STASHES_SEARCH">
+    <Binding name="TRP3_STASHES_LOOKUP">
         TRP3_API.inventory.searchForStashesAtPlayerLocation();
     </Binding>
 </Bindings>
