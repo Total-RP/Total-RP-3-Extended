@@ -1633,6 +1633,13 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+
+	OP_OP_UNIT_CREATURE_TYPE = "Unit creature type",
+	OP_OP_UNIT_CREATURE_TYPE_TT = "|cff00ff00The creature type of the unit. Example: Beast, Dragonkin, Elemental...",
+	OP_OP_UNIT_CREATURE_FAMILY = "Unit creature family",
+	OP_OP_UNIT_CREATURE_FAMILY_TT = "|cff00ff00The creature family of the unit. Only works on beasts and demons. Example: Crab, Wolf, Succubus, Voidwalker...",
+	OP_OP_CHAR_INDOORS = "Character is indoors",
+	OP_OP_CHAR_INDOORS_TT = "Checks if the character is indoors.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

@@ -20,9 +20,10 @@
 TRP3_API.script = {};
 
 local EMPTY = TRP3_API.globals.empty;
-local assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, loadstring, wipe, strsplit;
+local assert, type, tostring, error, tonumber, pairs, ipairs, loadstring, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, ipairs, loadstring, wipe, strsplit;
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
+local getUnitID, isUnitIDKnown, getUnitIDCurrentProfile = TRP3_API.utils.str.getUnitID, TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCurrentProfile;
 local writeElement;
 local loc = TRP3_API.loc;
 
@@ -244,7 +245,7 @@ local function writeCondition(conditionStructure, conditionID, env)
 	local code = "";
 	local previousType;
 	local isInParenthesis = false;
-	for index, element in pairs(conditionStructure) do
+	for index, element in ipairs(conditionStructure) do
 		if type(element) == "string" then
 			assert(index > 1 and index < #conditionStructure, ("Can't have a logic operator at start or end: index %s for operator %s"):format(index, element));
 			assert(previousType ~= "string", "Can't have two successive logic operator");
@@ -760,14 +761,45 @@ directReplacement = {
 		local defaultRace = UnitRace("player");
 		return TRP3_API.profile.getData("player/characteristics").RA or defaultRace or UNKNOWN;
 	end,
+	["trp:target:first"] = function()
+		if UnitIsUnit("target", "player") then
+			return directReplacement["trp:player:first"]();
+		end
+		local defaultName = UnitName("target");
+		local unitID = getUnitID("target");
+		if unitID and isUnitIDKnown(unitID) then
+			local profile = getUnitIDCurrentProfile(unitID);
+			if profile and profile.characteristics and profile.characteristics.FN then
+				return profile.characteristics.FN;
+			end
+		end
+		return defaultName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
+	["trp:target:last"] = function()
+		if UnitIsUnit("target", "player") then
+			return directReplacement["trp:player:last"]();
+		end
+		local defaultName = UnitName("target");
+		local unitID = getUnitID("target");
+		if unitID and isUnitIDKnown(unitID) then
+			local profile = getUnitIDCurrentProfile(unitID);
+			if profile and profile.characteristics and profile.characteristics.LN then
+				return profile.characteristics.LN;
+			end
+		end
+		return defaultName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+	end,
 	["trp:target:class"] = function()
 		if UnitIsUnit("target", "player") then
 			return directReplacement["trp:player:class"]();
 		end
 		local defaultClass = UnitClass("target");
-		local profile = TRP3_API.register.getUnitCurrentProfile("target");
-		if profile and profile.characteristics and profile.characteristics.CL then
-			return profile.characteristics.CL;
+		local unitID = getUnitID("target");
+		if unitID and isUnitIDKnown(unitID) then
+			local profile = getUnitIDCurrentProfile(unitID);
+			if profile and profile.characteristics and profile.characteristics.CL then
+				return profile.characteristics.CL;
+			end
 		end
 		return defaultClass or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
@@ -776,9 +808,12 @@ directReplacement = {
 			return directReplacement["trp:player:race"]();
 		end
 		local defaultRace = UnitClass("target");
-		local profile = TRP3_API.register.getUnitCurrentProfile("target");
-		if profile and profile.characteristics and profile.characteristics.RA then
-			return profile.characteristics.RA;
+		local unitID = getUnitID("target");
+		if unitID and isUnitIDKnown(unitID) then
+			local profile = getUnitIDCurrentProfile(unitID);
+			if profile and profile.characteristics and profile.characteristics.RA then
+				return profile.characteristics.RA;
+			end
 		end
 		return defaultRace or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
@@ -788,6 +823,7 @@ directReplacement = {
 }
 
 function TRP3_API.script.parseArgs(text, args)
+	if not text then return end;
 	args = args or EMPTY;
 	text = tostring(text) or "";
 	text = text:gsub("%$%{(.-)%}", function(capture)
