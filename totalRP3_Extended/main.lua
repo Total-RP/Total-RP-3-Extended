@@ -655,6 +655,17 @@ local function getNewDocumentData()
 	return itemId, data
 end
 
+local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
+
+-- That one missing function LibRPMedia doesn't have
+local function getIconNameByFileID(fileID)
+	for iconIndex, iconFileID in pairs(LibRPMedia:GetDatabase("icons").data.file) do
+		if iconFileID == fileID then
+			return LibRPMedia:GetIconNameByIndex(iconIndex);
+		end
+	end
+end
+
 local function importDocument()
 
 	local itemId, data = getNewDocumentData()
@@ -671,9 +682,13 @@ local function importDocument()
 	data.BA.NA = itemName
 
 	-- Item icon
-	-- local icon = Book.getItemIcon()
-	-- TODO Get proper icon from texture file ID
-	data.BA.IC = "INV_Misc_Book_03";
+	local itemIcon = Book.getItemIcon()
+	if itemIcon then
+		local itemIconName = getIconNameByFileID(itemIcon);
+		data.BA.IC = itemIconName or "INV_Misc_Book_03";
+	else
+		data.BA.IC = "INV_Misc_Book_03";
+	end
 
 	-- Document pages
 	local pages = {}
