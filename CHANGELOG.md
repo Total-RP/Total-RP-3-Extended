@@ -1,3 +1,36 @@
+# Changelog for version 1.3.5.3
+
+## Fixed
+
+- Fixed an issue with inspection showing unknown items.
+
+# Changelog for version 1.3.5.2
+
+## Fixed
+
+- Fixed an issue with stashes not working properly since last version.
+
+# Changelog for version 1.3.5
+
+## Added
+
+- Added variable tags to get a target's first or last TRP3 name.
+- Added conditions on a creature's type, or family (for beasts/demons).
+- Added conditions to check if the character is indoors (or outdoors).
+
+## Fixed
+
+- Fixed an issue where editing a stash would move it to the current player position.
+- Fixed an issue where sharing a creation through in-game trade could break its conditions.
+- Fixed an issue with the race and class tags not working on target.
+- When inspecting another player, variables in items tooltips will now be replaced with what the other player sees.
+
+# Changelog for version 1.3.4
+
+## Fixed
+
+- Fixed a bug when trying to access the addon credits.
+
 # Changelog for version 1.3.3
 
 ## Fixed
