@@ -96,18 +96,6 @@
                 </Texture>
             </Layer>
             <Layer level="ARTWORK" textureSubLevel="2">
-                <Texture parentKey="LeftHide" inherits="PlayerChoiceLeftHide">
-                    <Anchors>
-                        <Anchor point="TOPLEFT" relativeKey="$parent.BorderTopLeft" relativePoint="BOTTOMLEFT" x="10"
-                                y="10"/>
-                    </Anchors>
-                </Texture>
-                <Texture parentKey="LeftHide2" inherits="PlayerChoiceLeftHide">
-                    <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.BorderBottomLeft" relativePoint="TOPLEFT" x="10"
-                                y="-10"/>
-                    </Anchors>
-                </Texture>
                 <Texture parentKey="RightHide" inherits="PlayerChoiceRightHide">
                     <Anchors>
                         <Anchor point="TOPRIGHT" relativeKey="$parent.BorderTopRight" relativePoint="BOTTOMRIGHT" x="-8"
@@ -118,18 +106,6 @@
                     <Anchors>
                         <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BorderBottomRight" relativePoint="TOPRIGHT"
                                 x="-10" y="-10"/>
-                    </Anchors>
-                </Texture>
-                <Texture parentKey="BottomHide" inherits="PlayerChoiceBottomHide">
-                    <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.BorderBottomLeft" relativePoint="BOTTOMRIGHT"
-                                x="-10" y="11"/>
-                    </Anchors>
-                </Texture>
-                <Texture parentKey="BottomHide2" inherits="PlayerChoiceBottomHide">
-                    <Anchors>
-                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BorderBottomRight" relativePoint="BOTTOMLEFT"
-                                x="15" y="11"/>
                     </Anchors>
                 </Texture>
             </Layer>
