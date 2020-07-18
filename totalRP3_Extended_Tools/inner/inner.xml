@@ -57,7 +57,7 @@
 		</Frames>
 
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 			</OnLoad>
 		</Scripts>
