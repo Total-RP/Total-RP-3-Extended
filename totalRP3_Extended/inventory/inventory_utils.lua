@@ -29,7 +29,7 @@ local Ellyb = TRP3_API.Ellyb;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.extended.getTTAction(method, action, notFirst)
-	local text = "|cffffff00" .. method .. ": |cffff9900" .. action;
+	local text = "|cffffff00" .. method .. ":|r |cffff9900" .. action .. "|r";
 	if notFirst then
 		text = "\n" .. text;
 	end
