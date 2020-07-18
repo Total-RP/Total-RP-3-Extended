@@ -59,18 +59,10 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_EditorEffectFrame" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="24" />
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="418" />
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5" />
-			</BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_EditorEffectFrame" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+		</KeyValues>
 		<Size x="0" y="65" />
 		<Frames>
 			<Frame parentKey="icon" inherits="TRP3_SimpleIcon">
@@ -173,19 +165,11 @@
 
 		<Frames>
 
-			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true">
+			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true" inherits="TRP3_BackdropTemplate">
 
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="24" />
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="418" />
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5" />
-					</BackgroundInsets>
-				</Backdrop>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
 
 			</Frame>
 
@@ -389,19 +373,11 @@
 
 			</Frame>
 
-			<Frame parentKey="element" hidden="true" setAllPoints="true" enableMouse="true" frameStrata="HIGH">
+			<Frame parentKey="element" hidden="true" setAllPoints="true" enableMouse="true" frameStrata="HIGH" inherits="TRP3_BackdropTemplate">
 
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="24" />
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="418" />
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5" />
-					</BackgroundInsets>
-				</Backdrop>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
 
 				<Frames>
 					<Frame parentKey="selector" inherits="TRP3_EditorEffectTemplate" hidden="true">

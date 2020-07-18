@@ -23,6 +23,9 @@
 
 	<Include file="libs\libs.xml"/>
 
+	<!-- Backdrop templates -->
+	<Script file="widgets.lua"/>
+
 	<!-- Main -->
 	<Script file="main.lua"/>
 

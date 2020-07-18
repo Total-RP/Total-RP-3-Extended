@@ -20,11 +20,10 @@
 -->
 
 	<!-- line  -->
-	<Button name="TRP3_InnerObjectEditorLine" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
+	<Button name="TRP3_InnerObjectEditorLine" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
+		</KeyValues>
 		<Size x="0" y="28"/>
 		<Anchors>
 			<Anchor point="LEFT" x="15" y="0"/>

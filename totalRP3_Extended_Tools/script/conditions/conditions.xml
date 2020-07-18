@@ -169,19 +169,11 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="operand" hidden="true" setAllPoints="true" enableMouse="true">
+			<Frame parentKey="operand" hidden="true" setAllPoints="true" enableMouse="true" inherits="TRP3_BackdropTemplate">
 
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="24" />
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="418" />
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5" />
-					</BackgroundInsets>
-				</Backdrop>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
 
 				<Frames>
 
