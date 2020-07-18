@@ -157,13 +157,13 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	local text = "";
 
 	if isRoot then
-		text = text .. fieldFormat:format(loc.ROOT_GEN_ID, "|cff00ffff" .. rootID);
+		text = text .. fieldFormat:format(loc.ROOT_GEN_ID, "|cff00ffff" .. rootID .. "|r");
 		text = text .. "\n" .. fieldFormat:format(loc.ROOT_VERSION, metadata.V or 1);
 		text = text .. "\n" .. fieldFormat:format(loc.ROOT_CREATED_BY, metadata.CB or "?");
 		text = text .. "\n" .. fieldFormat:format(loc.ROOT_CREATED_ON, metadata.CD or "?");
 		text = text .. "\n" .. fieldFormat:format(loc.SEC_LEVEL, TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
 	else
-		text = text .. fieldFormat:format(loc.SPECIFIC_INNER_ID, "|cff00ffff" .. innerID);
+		text = text .. fieldFormat:format(loc.SPECIFIC_INNER_ID, "|cff00ffff" .. innerID .. "|r");
 	end
 
 	text = text .. "\n" .. fieldFormat:format(loc.SPECIFIC_MODE, TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
