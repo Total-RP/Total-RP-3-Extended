@@ -128,7 +128,7 @@ local function onLineClick(self, button)
 		end
 	else
 		-- If the shift key is down we want to insert a link for this item
-		if ChatEdit_GetActiveWindow() and IsModifiedClick("CHATLINK") then
+		if IsModifiedClick("CHATLINK") then
 			if data.type == "IT" then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
 					TRP3_API.extended.ItemsChatLinksModule:InsertLink(data.fullID, data.rootID, {}, canBeImported);
