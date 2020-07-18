@@ -526,18 +526,11 @@ function TRP3_API.extended.dialog.onStart()
 	end;
 
 	-- Choices
-	local setupButton = function(button, iconIndex)
-		local QUEST_POI_ICONS_PER_ROW = 8;
-		local QUEST_POI_ICON_SIZE = 0.125;
-		local yOffset = 0.5 + floor(iconIndex / QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
-		local xOffset = mod(iconIndex, QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
-		button.Number:SetTexCoord(xOffset, xOffset + QUEST_POI_ICON_SIZE, yOffset, yOffset + QUEST_POI_ICON_SIZE);
-	end
-	setupButton(dialogFrame.Choice1.Num, 0);
-	setupButton(dialogFrame.Choice2.Num, 1);
-	setupButton(dialogFrame.Choice3.Num, 2);
-	setupButton(dialogFrame.Choice4.Num, 3);
-	setupButton(dialogFrame.Choice5.Num, 4);
+	dialogFrame.Choice1.Num.Display:SetNumber(1);
+	dialogFrame.Choice2.Num.Display:SetNumber(2);
+	dialogFrame.Choice3.Num.Display:SetNumber(3);
+	dialogFrame.Choice4.Num.Display:SetNumber(4);
+	dialogFrame.Choice5.Num.Display:SetNumber(5);
 	dialogFrame.choices = { dialogFrame.Choice1, dialogFrame.Choice2, dialogFrame.Choice3, dialogFrame.Choice4, dialogFrame.Choice5 }
 
 	-- History
