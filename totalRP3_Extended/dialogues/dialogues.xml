@@ -368,7 +368,7 @@
 				</Anchors>
 				<Scripts>
 					<PostClick>
-						TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+						TRP3_API.ui.misc.playUISound(808);
 					</PostClick>
 				</Scripts>
 			</Button>
