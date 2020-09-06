@@ -454,7 +454,7 @@ local function startQuickDialog(text)
 			{
 				["TX"] = text,
 				["ND"] = "RIGHT",
-				["NA"] = "target",
+				["NA"] = "${trp:target:full}",
 				["LU"] = "player",
 				["RU"] = "target",
 			},
