@@ -2,7 +2,7 @@
 -- Total RP 3
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
---  Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--  Copyright 2018 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -1692,7 +1692,7 @@ Localization:GetLocale("zhTW"):AddTexts(localeContent);
 TRP3_KS_BACKERS =
 [[#Total RP 3: Extended (version %s)
 
-Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ellypse" Parize|r.
+Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Morgane "Ellypse" Parize|r.
 
 ## To all our Kickstarter backers: many thanks for the support!
 
