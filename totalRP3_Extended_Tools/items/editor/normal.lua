@@ -88,7 +88,7 @@ local function loadDataMain()
 
 	display.name:SetText(data.BA.NA or "");
 	display.description.scroll.text:SetText(data.BA.DE or "");
-	display.quality:SetSelectedValue(data.BA.QA or LE_ITEM_QUALITY_COMMON);
+	display.quality:SetSelectedValue(data.BA.QA or Enum.ItemQuality.Common);
 	display.left:SetText(data.BA.LE or "");
 	display.right:SetText(data.BA.RI or "");
 	display.component:SetChecked(data.BA.CO or false);
@@ -122,7 +122,7 @@ local function storeDataMain()
 	data.BA.DE = stEtN(strtrim(display.description.scroll.text:GetText()));
 	data.BA.LE = stEtN(strtrim(display.left:GetText()));
 	data.BA.RI = stEtN(strtrim(display.right:GetText()));
-	data.BA.QA = display.quality:GetSelectedValue() or LE_ITEM_QUALITY_COMMON;
+	data.BA.QA = display.quality:GetSelectedValue() or Enum.ItemQuality.Common;
 	data.BA.CO = display.component:GetChecked();
 	data.BA.CR = display.crafted:GetChecked();
 	data.BA.QE = display.quest:GetChecked();

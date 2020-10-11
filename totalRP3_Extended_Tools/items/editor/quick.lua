@@ -36,7 +36,7 @@ local function injectUIData(data)
 	data.BA.DE = stEtN(strtrim(editor.description:GetText()));
 	data.BA.LE = stEtN(strtrim(editor.left:GetText()));
 	data.BA.RI = stEtN(strtrim(editor.right:GetText()));
-	data.BA.QA = editor.quality:GetSelectedValue() or LE_ITEM_QUALITY_COMMON;
+	data.BA.QA = editor.quality:GetSelectedValue() or Enum.ItemQuality.Common;
 	data.BA.VA = tonumber(editor.value:GetText());
 	data.BA.WE = tonumber(editor.weight:GetText());
 	data.BA.IC = editor.preview.selectedIcon;
@@ -86,7 +86,7 @@ end
 local function loadData(data)
 	editor.name:SetText(data.BA.NA or "");
 	editor.description:SetText(data.BA.DE or "");
-	editor.quality:SetSelectedValue(data.BA.QA or LE_ITEM_QUALITY_COMMON);
+	editor.quality:SetSelectedValue(data.BA.QA or Enum.ItemQuality.Common);
 	editor.left:SetText(data.BA.LE or "");
 	editor.right:SetText(data.BA.RI or "");
 	editor.value:SetText(data.BA.VA or "0");
@@ -125,7 +125,7 @@ function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, cl
 		loadData({
 			BA = {
 				NA = loc.IT_NEW_NAME,
-				QA = LE_ITEM_QUALITY_COMMON,
+				QA = Enum.ItemQuality.Common,
 			}
 		});
 	end
@@ -169,14 +169,14 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 
 	-- Quality
 	editor.qualityList = {
-		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_POOR) .. ITEM_QUALITY0_DESC, LE_ITEM_QUALITY_POOR},
-		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_COMMON) .. ITEM_QUALITY1_DESC, LE_ITEM_QUALITY_COMMON},
-		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_UNCOMMON) .. ITEM_QUALITY2_DESC, LE_ITEM_QUALITY_UNCOMMON},
-		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_RARE) .. ITEM_QUALITY3_DESC, LE_ITEM_QUALITY_RARE},
-		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_EPIC) .. ITEM_QUALITY4_DESC, LE_ITEM_QUALITY_EPIC},
-		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_LEGENDARY) .. ITEM_QUALITY5_DESC, LE_ITEM_QUALITY_LEGENDARY},
-		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_ARTIFACT) .. ITEM_QUALITY6_DESC, LE_ITEM_QUALITY_ARTIFACT},
-		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(LE_ITEM_QUALITY_HEIRLOOM) .. ITEM_QUALITY7_DESC, LE_ITEM_QUALITY_HEIRLOOM},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Poor) .. ITEM_QUALITY0_DESC, Enum.ItemQuality.Poor},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Common) .. ITEM_QUALITY1_DESC, Enum.ItemQuality.Common},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Uncommon) .. ITEM_QUALITY2_DESC, Enum.ItemQuality.Uncommon},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Rare) .. ITEM_QUALITY3_DESC, Enum.ItemQuality.Rare},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Epic) .. ITEM_QUALITY4_DESC, Enum.ItemQuality.Epic},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Legendary) .. ITEM_QUALITY5_DESC, Enum.ItemQuality.Legendary},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Artifact) .. ITEM_QUALITY6_DESC, Enum.ItemQuality.Artifact},
+		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Heirloom) .. ITEM_QUALITY7_DESC, Enum.ItemQuality.Heirloom},
 	};
 	setupListBox(editor.quality, editor.qualityList, nil, nil, 165, true);
 

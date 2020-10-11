@@ -66,7 +66,7 @@ function ItemsChatLinksModule:GetTooltipLines(tooltipData)
 	local icon, name, description = TRP3_API.extended.getClassDataSafe(class)
 
 	-- Get the quality and quality color of the item
-	local itemQuality = class.BA.QA or LE_ITEM_QUALITY_COMMON;
+	local itemQuality = class.BA.QA or Enum.ItemQuality.Common;
 	---@type Color
 	local itemQualityColor = TRP3_API.inventory.getQualityColor(itemQuality);
 
