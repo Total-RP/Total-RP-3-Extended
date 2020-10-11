@@ -703,6 +703,7 @@ local function startStashesRequest()
 		end);
 	end
 end
+TRP3_API.inventory.searchForStashesAtPlayerLocation = startStashesRequest;
 
 local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 	if sender == Globals.player_id then
@@ -743,6 +744,7 @@ end
 local ACTION_SEARCH_MY = "a";
 local ACTION_STASH_CREATE = "c";
 local ACTION_STASH_SEARCH = "d";
+TRP3_STASHES_LOOKUP = loc.DR_STASHES_SEARCH;
 
 local function onDropButtonAction(actionID)
 	if actionID == ACTION_SEARCH_MY then
