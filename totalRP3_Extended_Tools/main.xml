@@ -247,7 +247,7 @@
 
 		</Frames>
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				tinsert(UISpecialFrames, self:GetName());
 			</OnLoad>
 		</Scripts>
@@ -307,7 +307,7 @@
 		</HighlightTexture>
 		<Scripts>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+				TRP3_API.ui.misc.playUISound(808);
 			</PostClick>
 		</Scripts>
 	</Button>

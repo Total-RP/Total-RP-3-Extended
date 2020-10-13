@@ -158,7 +158,7 @@ end
 TRP3_API.inventory.searchForItems = searchForItems;
 
 function TRP3_API.inventory.dropOrDestroy(itemClass, callbackDestroy, callbackDrop)
-	StaticPopupDialogs["TRP3_DROP_ITEM"].text = loc.DR_POPUP_ASK:format(TRP3_API.inventory.getItemLink(itemClass));
+	StaticPopupDialogs["TRP3_DROP_ITEM"].text = string.gsub(loc.DR_POPUP_ASK:format(TRP3_API.inventory.getItemLink(itemClass), "%%","%%%%"));
 	local dialog = StaticPopup_Show("TRP3_DROP_ITEM");
 	if dialog then
 		dialog:ClearAllPoints();
@@ -703,6 +703,7 @@ local function startStashesRequest()
 		end);
 	end
 end
+TRP3_API.inventory.searchForStashesAtPlayerLocation = startStashesRequest;
 
 local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 	if sender == Globals.player_id then
@@ -743,6 +744,7 @@ end
 local ACTION_SEARCH_MY = "a";
 local ACTION_STASH_CREATE = "c";
 local ACTION_STASH_SEARCH = "d";
+TRP3_STASHES_LOOKUP = loc.DR_STASHES_SEARCH;
 
 local function onDropButtonAction(actionID)
 	if actionID == ACTION_SEARCH_MY then

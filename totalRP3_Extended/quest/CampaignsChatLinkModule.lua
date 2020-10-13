@@ -3,7 +3,7 @@
 ---
 --- Campaigns chat link module
 --- ------------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2018 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ function CampaignsChatLinksModule:GetTooltipLines(tooltipData)
 	local icon, name, description = TRP3_API.extended.getClassDataSafe(campaignInfo)
 
 	-- Get the quality and quality color of the tiem
-	local itemQuality = campaignInfo.BA.QA or LE_ITEM_QUALITY_COMMON;
+	local itemQuality = campaignInfo.BA.QA or Enum.ItemQuality.Common;
 	---@type Color
 	local itemQualityColor = TRP3_API.inventory.getQualityColor(itemQuality);
 

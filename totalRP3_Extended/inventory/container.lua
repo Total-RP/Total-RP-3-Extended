@@ -2,7 +2,7 @@
 -- Total RP 3
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--	Copyright 2018 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -74,29 +74,29 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 	title = getQualityColorText(class.BA.QA) .. name;
 
 	if class.BA.LE then
-		left = color("w") .. parseArgs(class.BA.LE, argsStructure);
+		left = TRP3_API.Ellyb.ColorManager.WHITE(parseArgs(class.BA.LE, argsStructure));
 	end
 	if class.BA.RI then
-		right = color("w") .. parseArgs(class.BA.RI, argsStructure);
+		right = TRP3_API.Ellyb.ColorManager.WHITE(parseArgs(class.BA.RI, argsStructure));
 	end
 
 	text1 = "";
 	if class.BA.QE then
-		text1 = color("w") .. ITEM_BIND_QUEST;
+		text1 = TRP3_API.Ellyb.ColorManager.WHITE(ITEM_BIND_QUEST);
 	end
 	if class.BA.SB then
 		text1 = incrementLine(text1);
-		text1 = text1 .. color("w") .. ITEM_SOULBOUND;
+		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(ITEM_SOULBOUND);
 	end
 	if isContainerByClass(class) then
 		local slotCount = (class.CO.SR or 5) * (class.CO.SC or 4);
 		local slotUsed = TRP3_API.inventory.countUsedSlot(class, slotInfo);
 		text1 = incrementLine(text1);
-		text1 = text1 .. color("w") .. loc.IT_CON_TT:format(slotUsed, slotCount);
+		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(loc.IT_CON_TT:format(slotUsed, slotCount));
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. color("w") .. ITEM_UNIQUE .. " (" .. class.BA.UN .. ")";
+		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(ITEM_UNIQUE .. " (" .. class.BA.UN .. ")");
 	end
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
@@ -124,7 +124,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		extension1 = "";
 		local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * (class.BA.WE or 0));
 		local formatedWeight = TRP3_API.extended.formatWeight(weight);
-		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. color("w") .. " " .. formatedWeight;
+		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. " " .. TRP3_API.Ellyb.ColorManager.WHITE(formatedWeight);
 
 		if (class.BA.VA or 0) > 0 or (isContainerByClass(class) and (slotInfo.totalValue or 0) > 0) then
 			extension2 = "";
@@ -135,7 +135,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 				value = (class.BA.VA or 0) * (slotInfo.count or 1);
 			end
 			value = GetCoinTextureString(value);
-			extension2 = extension2 .. color("w") .. value;
+			extension2 = extension2 .. TRP3_API.Ellyb.ColorManager.WHITE(value);
 
 		end
 
@@ -156,7 +156,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 			if class.missing then
 				text2 = text2 .. "\n";
-				text2 = text2 .. color("y") .. loc.IT_CON_TT_MISSING_CLASS .. ":|cffff9900 " .. slotInfo.id;
+				text2 = text2 .. TRP3_API.Ellyb.ColorManager.YELLOW(loc.IT_CON_TT_MISSING_CLASS .. ":|cffff9900 " .. slotInfo.id);
 			else
 				if TRP3_DB.exchange[rootClassID] or TRP3_DB.my[rootClassID] then
 					text2 = text2 .. "\n";
@@ -169,7 +169,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 				end
 				if not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
 					text2 = text2 .. "\n\n";
-					text2 = text2 .. color("o") .. loc.SET_TT_OLD:format(TRP3_API.extended.tools.getClassVersion(rootClass));
+					text2 = text2 .. TRP3_API.Ellyb.ColorManager.ORANGE(loc.SET_TT_OLD:format(TRP3_API.extended.tools.getClassVersion(rootClass)));
 				end
 			end
 		end
@@ -183,8 +183,8 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 			end
 		end
 		if alertCount > 0 then
-			extension1 = color("y") .. loc.SET_TT_DETAILS_2:format(alertCount);
-			extension2 = color("y") .. loc.SET_TT_DETAILS_1;
+			extension1 = TRP3_API.Ellyb.ColorManager.YELLOW(loc.SET_TT_DETAILS_2:format(alertCount));
+			extension2 = TRP3_API.Ellyb.ColorManager.YELLOW(loc.SET_TT_DETAILS_1);
 		end
 	end
 
