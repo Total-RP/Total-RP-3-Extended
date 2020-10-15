@@ -1,3 +1,9 @@
+# Changelog for version 1.3.7
+
+## Fixed
+
+- Fixed the addon showing as out of date in the addons list. Oops.
+
 # Changelog for version 1.3.6
 
 ## Added
