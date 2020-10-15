@@ -158,7 +158,7 @@ end
 TRP3_API.inventory.searchForItems = searchForItems;
 
 function TRP3_API.inventory.dropOrDestroy(itemClass, callbackDestroy, callbackDrop)
-	StaticPopupDialogs["TRP3_DROP_ITEM"].text = string.gsub(loc.DR_POPUP_ASK:format(TRP3_API.inventory.getItemLink(itemClass), "%%","%%%%"));
+	StaticPopupDialogs["TRP3_DROP_ITEM"].text = string.gsub(loc.DR_POPUP_ASK:format(TRP3_API.inventory.getItemLink(itemClass)), "%%","%%%%");
 	local dialog = StaticPopup_Show("TRP3_DROP_ITEM");
 	if dialog then
 		dialog:ClearAllPoints();
