@@ -189,7 +189,7 @@
 							<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 						</Anchors>
 					</Button>
-					<Frame parentKey="select" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSelect">
+					<Frame parentKey="select" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSelect">
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT" x="7" y="4"/>
 						</Anchors>
@@ -328,7 +328,7 @@
 		</Anchors>
 		<Frames>
 
-			<Frame parentKey="step" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentStep">
+			<Frame parentKey="step" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentStep">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="0"/>
 				</Anchors>
