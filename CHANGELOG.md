@@ -1,3 +1,9 @@
+# Changelog for version 1.3.8
+
+## Fixed
+
+- Fixed an issue when trying to drop/delete an item from the bags.
+
 # Changelog for version 1.3.7
 
 ## Fixed
