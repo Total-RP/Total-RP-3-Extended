@@ -108,8 +108,13 @@ function frame.init()
 
 	local ticker = C_Timer.NewTicker(1, function()
 		frame:Hide();
-		if ObjectiveTrackerBlocksFrame.QuestHeader.module.lastBlock then
-			frame:SetPoint("TOPRIGHT", ObjectiveTrackerBlocksFrame.QuestHeader.module.lastBlock, "BOTTOMRIGHT", 0, -10);
+		if ObjectiveTrackerBlocksFrame:IsShown() then
+			local top = ObjectiveTrackerBlocksFrame.contentsHeight
+			if top > 0 then
+				top = top + 20
+			end
+			frame:SetPoint("TOPRIGHT", ObjectiveTrackerBlocksFrame, "TOPRIGHT", 0, -top);
+			frame:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame, "TOPLEFT", 0, -top);
 			display();
 			frame:Show();
 		end
