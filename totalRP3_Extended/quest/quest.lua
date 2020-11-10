@@ -158,6 +158,15 @@ local function startQuestForReal(campaignID, questID)
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
 	local campaignLog = playerQuestLog[campaignID];
 
+	-- If the quest is already revealed, clear handlers
+	if campaignLog.QUEST[questID] then
+		clearQuestHandlers(TRP3_API.extended.getFullID(campaignID, questID));
+		local stepID = campaignLog.QUEST[questID].CS;
+		if stepID then
+			TRP3_API.quest.clearStepHandlersForQuest(TRP3_API.extended.getFullID(campaignID, questID, stepID))
+		end
+	end
+
 	campaignLog.QUEST[questID] = {
 		OB = {},
 	};
