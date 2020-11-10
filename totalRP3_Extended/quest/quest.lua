@@ -368,7 +368,7 @@ local function goToStep(campaignID, questID, stepID)
 		local autoResumeWarning = loc.QE_AUTORESUME_CONFIRM:format(campaignName);
 		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
 			TRP3_API.quest.activateCampaign(campaignID, false);
-			TRP3_API.quest.goToStep(campaignID, questID, stepID);
+			TRP3_API.quest.goToStepForReal(campaignID, questID, stepID);
 		end);
 		return 3;
 	else
