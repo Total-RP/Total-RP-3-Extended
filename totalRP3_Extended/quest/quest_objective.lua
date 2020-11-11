@@ -43,7 +43,7 @@ local function display()
 				local completeQuestID = campaignID .. TRP3_API.extended.ID_SEPARATOR .. questID;
 				local questClass = getClass(completeQuestID)
 				local questIcon, questName, _ = getClassDataSafe(questClass);
-				HTML = HTML .. "{h2:r}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t {link*" .. completeQuestID .. "*" .. questName .. "}{/h2}";
+				HTML = HTML .. "{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t {link*" .. completeQuestID .. "*" .. questName .. "}{/h2}";
 				if questLog.OB then
 					local objIds = {};
 					for objectiveID, _ in pairs(questLog.OB) do
@@ -69,7 +69,7 @@ local function display()
 		end
 
 		if questCount > 0 then
-			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t {link*" .. campaignID .. "*" .. campaignName .. "}{/h1}" .. HTML;
+			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t {link*" .. campaignID .. "*" .. campaignName .. "}{/h1}\n" .. HTML;
 		end
 	end
 	frame.html = Utils.str.toHTML(HTML);
@@ -106,7 +106,7 @@ function frame.init()
 		end
 	end);
 
-	local ticker = C_Timer.NewTicker(1, function()
+	local ticker = C_Timer.NewTicker(0.5, function()
 		frame:Hide();
 		if ObjectiveTrackerBlocksFrame:IsShown() then
 			local top = ObjectiveTrackerBlocksFrame.contentsHeight
@@ -115,6 +115,7 @@ function frame.init()
 			end
 			frame:SetPoint("TOPRIGHT", ObjectiveTrackerBlocksFrame, "TOPRIGHT", 0, -top);
 			frame:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame, "TOPLEFT", 0, -top);
+			frame:SetWidth(ObjectiveTrackerBlocksFrame:GetWidth());
 			display();
 			frame:Show();
 		end
