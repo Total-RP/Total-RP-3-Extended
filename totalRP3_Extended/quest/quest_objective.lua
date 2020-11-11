@@ -46,7 +46,7 @@ local function display()
 				local completeQuestID = campaignID .. TRP3_API.extended.ID_SEPARATOR .. questID;
 				local questClass = getClass(completeQuestID)
 				local questIcon, questName, _ = getClassDataSafe(questClass);
-				HTML = HTML .. "{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. completeQuestID .. "*" .. questName .. "}") .. "{/h2}";
+				HTML = HTML .. "\n{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. completeQuestID .. "*" .. questName .. "}") .. "{/h2}";
 				if questLog.OB then
 					local objIds = {};
 					for objectiveID, _ in pairs(questLog.OB) do
@@ -72,7 +72,7 @@ local function display()
 		end
 
 		if questCount > 0 then
-			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}\n" .. HTML;
+			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}" .. HTML;
 		end
 	end
 	frame.Tracker.html = Utils.str.toHTML(HTML, true, true);
