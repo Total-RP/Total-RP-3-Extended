@@ -32,7 +32,6 @@
 
 	<Button name="TRP3_QuestObjectivesButton" virtual="true">
 		<Size x="30" y="30" />
-		<NormalTexture />
 		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square"/>
 	</Button>
 
