@@ -24,8 +24,11 @@ local frame = TRP3_QuestObjectives;
 
 local function display()
 	local HTML = "";
+	frame.Actions:Hide()
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
 	if playerQuestLog and playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign] then
+		frame.Actions:Show()
+
 		local campaignID = playerQuestLog.currentCampaign;
 		local campaignIcon, campaignName, _ = getClassDataSafe(getClass(campaignID));
 		local campaignLog = playerQuestLog[campaignID];
@@ -43,7 +46,7 @@ local function display()
 				local completeQuestID = campaignID .. TRP3_API.extended.ID_SEPARATOR .. questID;
 				local questClass = getClass(completeQuestID)
 				local questIcon, questName, _ = getClassDataSafe(questClass);
-				HTML = HTML .. "{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t {link*" .. completeQuestID .. "*" .. questName .. "}{/h2}";
+				HTML = HTML .. "{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. completeQuestID .. "*" .. questName .. "}") .. "{/h2}";
 				if questLog.OB then
 					local objIds = {};
 					for objectiveID, _ in pairs(questLog.OB) do
@@ -69,26 +72,41 @@ local function display()
 		end
 
 		if questCount > 0 then
-			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t {link*" .. campaignID .. "*" .. campaignName .. "}{/h1}\n" .. HTML;
+			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}\n" .. HTML;
 		end
 	end
-	frame.html = Utils.str.toHTML(HTML);
-	frame:SetText(frame.html);
+	frame.Tracker.html = Utils.str.toHTML(HTML, true, true);
+	frame.Tracker:SetText(frame.Tracker.html);
+end
+
+local function initActionButton(button, action)
+	button:SetNormalTexture("Interface\\ICONS\\"..TRP3_API.quest.getActionTypeIcon(action));
+	button:SetScript("OnClick", function() TRP3_API.quest.performAction(action) end);
+	button:SetScript("OnEnter", TRP3_API.ui.tooltip.refresh);
+	button:SetScript("OnLeave", function() TRP3_MainTooltip:Hide() end);
+	TRP3_API.ui.tooltip.setTooltipForSameFrame(button, "TOP", 0, 5, TRP3_API.quest.getActionTypeLocale(action), "");
 end
 
 function frame.init()
 	local questLogFrame = TRP3_QuestLogPage;
 
-	frame:SetFontObject("h1", GameFontNormalLarge);
-	frame:SetTextColor("h1", 0.95, 0.75, 0);
+	frame.Actions.caption:Hide()
 
-	frame:SetFontObject("h2", GameFontNormal);
-	frame:SetTextColor("h2", 0.95, 0.75, 0);
+	initActionButton(frame.Actions.Look, TRP3_API.quest.ACTION_TYPES.LOOK);
+	initActionButton(frame.Actions.Talk, TRP3_API.quest.ACTION_TYPES.TALK);
+	initActionButton(frame.Actions.Listen, TRP3_API.quest.ACTION_TYPES.LISTEN);
+	initActionButton(frame.Actions.Interact, TRP3_API.quest.ACTION_TYPES.ACTION);
 
-	frame:SetFontObject("p", GameFontNormal);
-	frame:SetTextColor("p", 0.95, 0.95, 0.95);
+	frame.Tracker:SetFontObject("h1", GameFontNormalLarge);
+	frame.Tracker:SetTextColor("h1", 0.95, 0.75, 0);
 
-	frame:SetScript("OnHyperlinkClick", function(self, link, text, button)
+	frame.Tracker:SetFontObject("h2", GameFontNormal);
+	frame.Tracker:SetTextColor("h2", 0.95, 0.75, 0);
+
+	frame.Tracker:SetFontObject("p", GameFontNormal);
+	frame.Tracker:SetTextColor("p", 0.95, 0.95, 0.95);
+
+	frame.Tracker:SetScript("OnHyperlinkClick", function(self, link, text, button)
 		if not link:find(TRP3_API.extended.ID_SEPARATOR) then
 			local class = getClass(link);
 			local _, campaignName, _ = getClassDataSafe(class);
@@ -111,11 +129,12 @@ function frame.init()
 		if ObjectiveTrackerBlocksFrame:IsShown() then
 			local top = ObjectiveTrackerBlocksFrame.contentsHeight
 			if top > 0 then
-				top = top + 20
+				top = top + 10
 			end
 			frame:SetPoint("TOPRIGHT", ObjectiveTrackerBlocksFrame, "TOPRIGHT", 0, -top);
 			frame:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame, "TOPLEFT", 0, -top);
 			frame:SetWidth(ObjectiveTrackerBlocksFrame:GetWidth());
+			frame.Tracker:SetWidth(ObjectiveTrackerBlocksFrame:GetWidth());
 			display();
 			frame:Show();
 		end

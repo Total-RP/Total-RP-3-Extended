@@ -30,14 +30,67 @@
 		</Scripts>
 	</GameTooltip>
 
-	<SimpleHTML name="TRP3_QuestObjectives" parent="ObjectiveTrackerBlocksFrame" hidden="true">
+	<Button name="TRP3_QuestObjectivesButton" virtual="true">
+		<Size x="30" y="30" />
+		<NormalTexture name="$parentNormal" />
+		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square"/>
+	</Button>
+
+	<Frame name="TRP3_QuestObjectives" parent="ObjectiveTrackerBlocksFrame" hidden="true">
 		<Size x="0" y="100"/>
 		<Anchors>
 			<Anchor point="BOTTOM"/>
 			<Anchor point="LEFT"/>
 			<Anchor point="RIGHT"/>
 		</Anchors>
-	</SimpleHTML>
+		<Frames>
+			<Frame parentKey="Actions" inherits="TRP3_FieldSetFrame">
+				<Size x="0" y="50"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT"/>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="Talk" inherits="TRP3_QuestObjectivesButton">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="TOP" x="0" y="-10"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="Look" inherits="TRP3_QuestObjectivesButton">
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Talk" x="-10"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="Listen" inherits="TRP3_QuestObjectivesButton">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Talk" x="10"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="Interact" inherits="TRP3_QuestObjectivesButton">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Listen" x="10"/>
+						</Anchors>
+					</Button>
+				</Frames>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture parentKey="QuestTexture" atlas="QuestPortraitIcon-SandboxQuest" alpha="0.5">
+							<Size x="18" y="30" />
+							<Anchors>
+								<Anchor point="LEFT" x="20"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+			<SimpleHTML parentKey="Tracker">
+				<Size x="0" y="100"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Actions" y="-10"/>
+				</Anchors>
+			</SimpleHTML>
+		</Frames>
+	</Frame>
 
 	<Button name="TRP3_QuestToast" parent="UIParent" frameStrata="DIALOG" hidden="true">
 		<Size x="325" y="70"/>
