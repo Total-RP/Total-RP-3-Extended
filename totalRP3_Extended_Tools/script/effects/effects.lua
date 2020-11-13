@@ -749,7 +749,7 @@ local function splitTableIntoSmallerAlphabetizedTables(input, maxSize)
 	for _, emote in ipairs(input) do
 		local characterList = {}
 		for character in string.gmatch(emote[1], "([%z\1-\127\194-\244][\128-\191]*)") do
-			table.insert(characterList, character);
+			table.insert(characterList, Utils.str.convertSpecialChars(character));
 		end
 
 		if not currentCharacter or currentCharacter ~= characterList[2] then
@@ -870,7 +870,7 @@ local function do_emote_init()
 			table.insert(list, {getEmoteNameFromToken(token), token})
 		end
 		table.sort(list, function(a, b)
-			return a[1] < b[1]
+			return Utils.str.convertSpecialChars(a[1]) < Utils.str.convertSpecialChars(b[1])
 		end)
 		return list
 	end
