@@ -30,6 +30,8 @@ local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
+local LAST_EMOTE_ID = 522;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effect structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -834,19 +836,13 @@ local function do_emote_init()
 	local editor = TRP3_EffectEditorDoEmote;
 
 	-- Build list of emotes
-	local spokenEmotes = {}
-	for _, emoteToken in ipairs(TextEmoteSpeechList) do
-		spokenEmotes[emoteToken] = true;
-	end
+	local spokenEmotes = tInvert(TextEmoteSpeechList);
 	-- Those two are added dynamically
 	spokenEmotes["FORTHEALLIANCE"] = true;
 	spokenEmotes["FORTHEHORDE"] = true;
-	local animatedEmotes = {}
-	for _, emoteToken in ipairs(EmoteList) do
-		animatedEmotes[emoteToken] = true;
-	end
+	local animatedEmotes = tInvert(EmoteList);
 	local otherEmotes = {}
-	for i = 1, 522 do
+	for i = 1, LAST_EMOTE_ID do
 		local emoteToken = _G["EMOTE" .. i .. "_TOKEN"]
 		if emoteToken then
 			if spokenEmotes[emoteToken] then
@@ -861,7 +857,7 @@ local function do_emote_init()
 
 	local function getEmoteNameFromToken(emoteToken)
 		local emoteIndex = spokenEmotes[emoteToken] or animatedEmotes[emoteToken] or otherEmotes[emoteToken] or UNKNOWN
-		return _G["EMOTE"..emoteIndex.."_CMD"..1]
+		return _G["EMOTE"..emoteIndex.."_CMD1"]
 	end
 
 	local function getEmotesList(emotesList)

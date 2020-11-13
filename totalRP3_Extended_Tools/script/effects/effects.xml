@@ -293,7 +293,7 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="emoteList" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="emoteList" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-20"/>
 				</Anchors>
