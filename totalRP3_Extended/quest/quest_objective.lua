@@ -37,8 +37,17 @@ local function display()
 		frame.Actions:Show();
 
 		local campaignID = playerQuestLog.currentCampaign;
-		local campaignIcon, campaignName, _ = getClassDataSafe(getClass(campaignID));
+		local campaignClass = getClass(campaignID);
+		local campaignIcon, campaignName, _ = getClassDataSafe(campaignClass);
 		local campaignLog = playerQuestLog[campaignID];
+
+		local activeActions = {};
+		-- Looking for campaign actions
+		if campaignClass and campaignClass.AC then
+			for _, action in pairs(campaignClass.AC) do
+				activeActions[action.TY] = true;
+			end
+		end
 
 		local IDs = {};
 		for questID, _ in pairs(campaignLog.QUEST) do
@@ -75,11 +84,40 @@ local function display()
 						HTML = HTML .. objText .. "\n";
 					end
 				end
+
+				-- Looking for quest actions
+				if questClass and questClass.AC then
+					for _, action in pairs(questClass.AC) do
+						activeActions[action.TY] = true;
+					end
+				end
+
+				-- Looking for step actions
+				local stepID = questLog.CS;
+				if stepID then
+					local stepClass = getClass(campaignID, questID, stepID);
+					if stepClass and stepClass.AC then
+						for _, action in pairs(stepClass.AC) do
+							activeActions[action.TY] = true;
+						end
+					end
+				end
 			end
 		end
 
 		if questCount > 0 then
 			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}" .. HTML;
+		end
+
+		-- Fading non-relevant actions
+		for action, button in pairs(ACTION_FRAMES) do
+			if activeActions[action] then
+				button:GetNormalTexture():SetDesaturated(false);
+				button:SetAlpha(1);
+			else
+				button:GetNormalTexture():SetDesaturated(true);
+				button:SetAlpha(0.5);
+			end
 		end
 	end
 	frame.Tracker.html = Utils.str.toHTML(HTML, true, true);
