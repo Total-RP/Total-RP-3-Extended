@@ -740,11 +740,93 @@ local function speech_player_init()
 	end
 end
 
-local OTHER_EMOTES_CATEGORIES_COUNT = 8;
+local function splitTableIntoSmallerAlphabetizedTables(input, maxSize)
+	local output = {};
 
-function TRP3_API.utils.splitTableIntoSmallerAlphabetizedTables(input)
-	local output = Ellyb.Tables.copy(input);
-	table.sort(output); -- TODO Replace this by actual implementation
+	-- Retrieving the first character of the first emote in the list
+	local characterTableSorted = {};
+	local currentCharacter;
+	for _, emote in ipairs(input) do
+		local characterList = {}
+		for character in string.gmatch(emote[1], "([%z\1-\127\194-\244][\128-\191]*)") do
+			table.insert(characterList, character);
+		end
+
+		if not currentCharacter or currentCharacter ~= characterList[2] then
+			currentCharacter = characterList[2];
+			table.insert(characterTableSorted, { characterList[2], { emote }});
+		else
+			table.insert(characterTableSorted[#characterTableSorted][2],  emote);
+		end
+	end
+
+	local currentCount = 0;
+	local currentTable;
+	local firstCharacter;
+	local previousCharacter;
+	for _, characterTable in ipairs(characterTableSorted) do
+		local character = characterTable[1];
+		local emotes = characterTable[2];
+		local characterSize = #emotes;
+		if (currentCount + characterSize) > maxSize then
+			-- Adding the previous table
+			if currentTable then
+				if firstCharacter ~= previousCharacter then
+					table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(firstCharacter) .. "-" .. string.upper(previousCharacter), currentTable });
+				else
+					table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(firstCharacter), currentTable });
+				end
+			end
+
+			if characterSize > maxSize then
+				-- Split into smaller tables
+				firstCharacter = nil;
+				local i = 0;
+				while (maxSize * i) < characterSize do
+					i = i + 1;
+					currentTable = {};
+					local offset = (i - 1) * maxSize;
+					for j = 1, min(maxSize, characterSize - offset) do
+						table.insert(currentTable, emotes[offset + j]);
+					end
+					table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(character) .. i, currentTable });
+				end
+				currentTable = nil;
+				currentCount = 0;
+			else
+				currentTable = {};
+				for i = 1, characterSize do
+					table.insert(currentTable, emotes[i]);
+				end
+				firstCharacter = character;
+				currentCount = characterSize;
+			end
+			previousCharacter = character;
+		else
+			if not currentTable then
+				currentTable = {};
+			end
+			for i = 1, characterSize do
+				table.insert(currentTable, emotes[i]);
+			end
+			currentCount = currentCount + characterSize;
+
+			if not firstCharacter then
+				firstCharacter = character;
+			end
+			previousCharacter = character;
+		end
+	end
+
+	-- Adding the previous table
+	if currentTable then
+		if firstCharacter ~= previousCharacter then
+			table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(firstCharacter) .. "-" .. string.upper(previousCharacter), currentTable });
+		else
+			table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(firstCharacter), currentTable });
+		end
+	end
+
 	return output;
 end
 
@@ -800,42 +882,12 @@ local function do_emote_init()
 
 	local otherEmotesList = getEmotesList(otherEmotes)
 
-	-- Retrieving the first character of the first emote in the list
-	local characterList = {}
-	for character in string.gmatch(otherEmotesList[1][1], "([%z\1-\127\194-\244][\128-\191]*)") do
-		table.insert(characterList, character);
+	local splitTables = splitTableIntoSmallerAlphabetizedTables(otherEmotesList, 30);
+	for i = 1, #splitTables do
+		table.insert(emotesList, splitTables[i]);
 	end
-	local previousFirstCharacter = characterList[2];
 
-	local emoteTableIndex = #emotesList + 1;
-	for _, emote in ipairs(otherEmotesList) do
-		-- Retrieving the first character of the current emote
-		characterList = {}
-		for character in string.gmatch(emote[1], "([%z\1-\127\194-\244][\128-\191]*)") do
-			table.insert(characterList, character);
-		end
-		local currentFirstCharacter = characterList[2];
-
-		-- If the character changed, we check if the size of the current category is too big. If it is, we close the current category and open a new one, else we just update the previous character
-		if previousFirstCharacter ~= currentFirstCharacter then
-			if #emotesList[emoteTableIndex][2] > #otherEmotesList / OTHER_EMOTES_CATEGORIES_COUNT then
-				emotesList[emoteTableIndex][1] = emotesList[emoteTableIndex][1] .. string.upper(previousFirstCharacter);
-				emoteTableIndex = emoteTableIndex + 1;
-			end
-			previousFirstCharacter = currentFirstCharacter;
-		end
-
-		-- Initialising the new category
-		if not emotesList[emoteTableIndex] then
-			emotesList[emoteTableIndex] = { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(previousFirstCharacter) .. "-" , {} };
-		end
-
-		table.insert(emotesList[emoteTableIndex][2], emote)
-	end
-	-- Closing the last category
-	emotesList[emoteTableIndex][1] = emotesList[emoteTableIndex][1] .. string.upper(previousFirstCharacter);
-
-	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotesList, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotesList, function(value, list) _G[list:GetName().."Text"]:SetText(tostring(getEmoteNameFromToken(value))); end, nil, 250, true);
 
 	registerEffectEditor("do_emote", {
 		title = loc.EFFECT_DO_EMOTE,
@@ -854,11 +906,11 @@ local function do_emote_init()
 		local data = scriptData.args or Globals.empty;
 		if data[1] then
 			editor.emoteList:SetSelectedValue(data[1]);
+			_G[editor.emoteList:GetName().."Text"]:SetText(tostring(getEmoteNameFromToken(data[1])));
 		end
 	end
 
 	function editor.save(scriptData)
-		print(editor.emoteList:GetSelectedValue())
 		scriptData.args[1] = editor.emoteList:GetSelectedValue();
 	end
 end
