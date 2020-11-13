@@ -42,7 +42,7 @@ local linksEditor = TRP3_LinksEditor;
 local scriptEditor = TRP3_ScriptEditorNormal;
 local innerEditor = TRP3_InnerObjectEditor;
 
-local questClipboard;
+local questClipboard = {};
 local questClipboardID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -374,9 +374,6 @@ end
 
 local function onQuestDropdown(value, line)
 	if value == 1 then
-		if not questClipboard then
-			questClipboard = {};
-		end
 		wipe(questClipboard);
 		questClipboardID = getFullID(toolFrame.fullClassID, line.questID);
 		Utils.table.copy(questClipboard, toolFrame.specificDraft.QE[line.questID]);
@@ -385,7 +382,6 @@ local function onQuestDropdown(value, line)
 		TRP3_API.extended.tools.replaceID(questClipboard, questClipboardID, getFullID(toolFrame.fullClassID, line.questID));
 		Utils.table.copy(toolFrame.specificDraft.QE[line.questID], questClipboard);
 		wipe(questClipboard);
-		questClipboard = nil;
 		refreshQuestsList();
 	elseif value == 3 then
 		removeQuest(line.questID);
@@ -550,7 +546,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 				local context = {};
 				tinsert(context, {self.questID});
 				tinsert(context, {loc.CA_QUEST_DD_COPY, 1});
-				if questClipboard then
+				if next(questClipboard) then
 					tinsert(context, {loc.CA_QUEST_DD_PASTE, 2});
 				end
 				tinsert(context, {loc.CA_QUEST_DD_REMOVE, 3});

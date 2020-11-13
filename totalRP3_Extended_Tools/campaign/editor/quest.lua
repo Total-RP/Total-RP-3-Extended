@@ -39,7 +39,7 @@ local TABS = {
 local tabGroup, currentTab, linksStructure;
 local actionEditor = TRP3_ActionsEditorFrame;
 
-local stepClipboard;
+local stepClipboard = {};
 local stepClipboardID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -347,9 +347,6 @@ end
 
 local function onStepDropdown(value, line)
 	if value == 1 then
-		if not stepClipboard then
-			stepClipboard = {};
-		end
 		wipe(stepClipboard);
 		stepClipboardID = getFullID(toolFrame.fullClassID, line.stepID);
 		Utils.table.copy(stepClipboard, toolFrame.specificDraft.ST[line.stepID]);
@@ -358,7 +355,6 @@ local function onStepDropdown(value, line)
 		TRP3_API.extended.tools.replaceID(stepClipboard, stepClipboardID, getFullID(toolFrame.fullClassID, line.stepID));
 		Utils.table.copy(toolFrame.specificDraft.ST[line.stepID], stepClipboard);
 		wipe(stepClipboard);
-		stepClipboard = nil;
 		refreshQuestStepList();
 	elseif value == 3 then
 		removeQuestStep(line.stepID);
@@ -505,7 +501,7 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 				local context = {};
 				tinsert(context, {self.stepID});
 				tinsert(context, {loc.QE_STEP_DD_COPY, 1});
-				if stepClipboard then
+				if next(stepClipboard) then
 					tinsert(context, {loc.QE_STEP_DD_PASTE, 2});
 				end
 				tinsert(context, {loc.QE_STEP_DD_REMOVE, 3});
