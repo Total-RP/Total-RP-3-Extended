@@ -2,7 +2,7 @@
 -- Total RP 3: Extended features
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--	Copyright 2018 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -973,10 +973,10 @@ local function sound_music_self_init()
 		icon = "inv_misc_drum_07",
 		description = loc.EFFECT_SOUND_MUSIC_SELF_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_MUSIC_SELF_PREVIEW:format("|cff00ff00" .. tostring(args[1])));
+			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_MUSIC_SELF_PREVIEW:format("|cff00ff00" .. (Utils.music.getTitle(tonumber(args[1])) or tostring(args[1]))));
 		end,
 		getDefaultArgs = function()
-			return {"zonemusic\\brewfest\\BF_Goblins1"};
+			return {"228575"};
 		end,
 		editor = soundMusicEditor,
 	});
@@ -1132,11 +1132,11 @@ local function sound_music_local_init()
 		description = loc.EFFECT_SOUND_MUSIC_LOCAL_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_MUSIC_LOCAL_PREVIEW:format(
-			"|cff00ff00" .. tostring(args[1]) .. "|cffffff00", "|cff00ff00" .. tostring(args[2]) .. "|cffffff00"
+			"|cff00ff00" .. (Utils.music.getTitle(tonumber(args[1])) or tostring(args[1])) .. "|cffffff00", "|cff00ff00" .. tostring(args[2]) .. "|cffffff00"
 			));
 		end,
 		getDefaultArgs = function()
-			return {"zonemusic\\brewfest\\BF_Goblins1", 20};
+			return {"228575", 20};
 		end,
 		editor = musicLocalEditor,
 	});

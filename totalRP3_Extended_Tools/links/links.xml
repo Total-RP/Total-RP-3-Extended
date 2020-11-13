@@ -19,12 +19,10 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_Tools_EventLine" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24" /></EdgeSize>
-			<TileSize><AbsValue val="418" /></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5" /></BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_Tools_EventLine" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+		</KeyValues>
 
 		<Size x="0" y="65" />
 		<Frames>
@@ -77,20 +75,10 @@
 	<Frame name="TRP3_LinksEditor" hidden="true">
 		<Frames>
 
-			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true">
-
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="24" />
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="418" />
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5" />
-					</BackgroundInsets>
-				</Backdrop>
-
+			<Frame parentKey="overlay" hidden="true" setAllPoints="true" enableMouse="true" inherits="TRP3_BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
 			</Frame>
 
 			<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -209,7 +197,7 @@
 
 						<Frames>
 
-							<Frame parentKey="workflow" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentWorkflow">
+							<Frame parentKey="workflow" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentWorkflow">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
 								</Anchors>

@@ -3,7 +3,7 @@
 -- Scripts : Effects
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@telkostrasz.be)
---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--	Copyright 2018 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
 --	You may obtain a copy of the License at
@@ -301,8 +301,9 @@ local EFFECTS = {
 
 	["sound_music_self"] = {
 		method = function(structure, cArgs, eArgs)
-			local path = cArgs[1] or "";
-			eArgs.LAST = TRP3_API.utils.music.playMusic(path);
+			local musicPath = cArgs[1] or "";
+			local musicID = tonumber(musicPath) or TRP3_API.utils.music.convertPathToID(musicPath) or musicPath;
+			eArgs.LAST = TRP3_API.utils.music.playMusic(musicID);
 		end,
 		secured = security.HIGH,
 	},
@@ -350,17 +351,18 @@ local EFFECTS = {
 	["sound_music_local"] = {
 		getCArgs = function(args)
 			local musicPath = args[1] or "";
+			local musicID = tonumber(musicPath) or TRP3_API.utils.music.convertPathToID(musicPath) or musicPath;
 			local distance = tonumber(args[2] or 0);
 			local source = "Script"; -- TODO: get source
-			return musicPath, distance, source;
+			return musicID, distance, source;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local musicPath, distance, source = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.playLocalMusic(musicPath, distance, source);
+			local musicID, distance, source = structure.getCArgs(cArgs);
+			eArgs.LAST = TRP3_API.utils.music.playLocalMusic(musicID, distance, source);
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
-			local musicPath = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.playMusic(musicPath);
+			local musicID = structure.getCArgs(cArgs);
+			eArgs.LAST = TRP3_API.utils.music.playMusic(musicID);
 		end,
 		secured = security.MEDIUM,
 	},

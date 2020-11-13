@@ -41,7 +41,8 @@ local function dropCommon(lootInfo)
 	local posY, posX, posZ = UnitPosition("player");
 
 	-- We still need map position for potential marker placement
-	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
+	local mapID = AddOn_TotalRP3.Map.getPlayerMapID();
+	local mapX, mapY = AddOn_TotalRP3.Map.getPlayerCoordinates();
 
 	-- Pack the data
 	local groundData = {
@@ -59,7 +60,7 @@ local function dropCommon(lootInfo)
 end
 
 function TRP3_API.inventory.dropItemDirect(slotInfo)
-	if TRP3_API.map.getCurrentCoordinates("player") then
+	if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 		dropCommon(slotInfo);
 		local count = slotInfo.count or 1;
 		local link = getItemLink(getClass(slotInfo.id));
@@ -157,7 +158,7 @@ end
 TRP3_API.inventory.searchForItems = searchForItems;
 
 function TRP3_API.inventory.dropOrDestroy(itemClass, callbackDestroy, callbackDrop)
-	StaticPopupDialogs["TRP3_DROP_ITEM"].text = loc.DR_POPUP_ASK:format(TRP3_API.inventory.getItemLink(itemClass));
+	StaticPopupDialogs["TRP3_DROP_ITEM"].text = string.gsub(loc.DR_POPUP_ASK:format(TRP3_API.inventory.getItemLink(itemClass)), "%%","%%%%");
 	local dialog = StaticPopup_Show("TRP3_DROP_ITEM");
 	if dialog then
 		dialog:ClearAllPoints();
@@ -204,6 +205,7 @@ local function saveStash()
 	if index then
 		stash = stashesData[index];
 	end
+	local isNewStash;
 	if not stash then
 		stash = {
 			BA = {},
@@ -212,6 +214,7 @@ local function saveStash()
 		};
 		tinsert(stashesData, stash);
 		index = #stashesData;
+		isNewStash = true;
 	end
 	stash.BA.IC = stashEditFrame.icon.selectedIcon or "TEMP";
 	stash.BA.NA = stEtN(strtrim(stashEditFrame.name:GetText():sub(1, 50))) or loc.DR_STASHES_NAME;
@@ -219,17 +222,19 @@ local function saveStash()
 
 	-- Proper coordinates
 	local posY, posX, posZ = UnitPosition("player");
-	local mapID, mapX, mapY = TRP3_API.map.getCurrentCoordinates("player");
+	local mapID = AddOn_TotalRP3.Map.getPlayerMapID();
+	local mapX, mapY = AddOn_TotalRP3.Map.getPlayerCoordinates();
 
-	if posX and posY then
+	-- If it's not a new stash, we don't want to replace its position, we can always consider a "move stash" option later
+	if isNewStash and posX and posY then
 		stash.posX = posX;
 		stash.posY = posY;
 		stash.posZ = posZ;
 		stash.uiMapID = mapID;
 		stash.mapX = mapX;
 		stash.mapY = mapY;
-		stash.id = Utils.str.id();
 	end
+	stash.id = Utils.str.id();
 
 	stashEditFrame:Hide();
 
@@ -480,9 +485,9 @@ local classExists = TRP3_API.extended.classExists;
 function callForStashRefresh(target, stashID)
 	stashContainer.DurabilityText:SetText(loc.DR_STASHES_SYNC);
 	stashContainer.sync = true;
-	local reservedMessageID = Communications.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	Communications.addMessageIDHandler(target, reservedMessageID, function(_, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, target, function(_, total, current)
 		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
 	Communications.sendObject(STASH_TOTAL_REQUEST, { reservedMessageID, stashID}, target, Communications.PRIORITIES.HIGH);
@@ -588,9 +593,9 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 	stashContainer.toSlot = slot2;
 	stashContainer.DurabilityText:SetText(loc.IT_EX_DOWNLOAD);
 	stashContainer.sync = true;
-	local reservedMessageID = Communications.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	stashContainer.WeightText:SetText("0 %");
-	Communications.addMessageIDHandler(stashContainer.sharedData[1], reservedMessageID, function(_, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, stashContainer.sharedData[1], function(_, total, current)
 		stashContainer.WeightText:SetFormattedText("%0.2f %%", current / total * 100);
 	end);
 	Communications.sendObject(STASH_ITEM_REQUEST, {
@@ -698,6 +703,7 @@ local function startStashesRequest()
 		end);
 	end
 end
+TRP3_API.inventory.searchForStashesAtPlayerLocation = startStashesRequest;
 
 local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 	if sender == Globals.player_id then
@@ -738,12 +744,13 @@ end
 local ACTION_SEARCH_MY = "a";
 local ACTION_STASH_CREATE = "c";
 local ACTION_STASH_SEARCH = "d";
+TRP3_STASHES_LOOKUP = loc.DR_STASHES_SEARCH;
 
 local function onDropButtonAction(actionID)
 	if actionID == ACTION_SEARCH_MY then
 		searchForItems();
 	elseif actionID == ACTION_STASH_CREATE then
-		if TRP3_API.map.getCurrentCoordinates("player") then
+		if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 			openStashEditor(nil);
 		else
 			Utils.message.displayMessage(loc.DR_STASHES_ERROR_INSTANCE, Utils.message.type.ALERT_MESSAGE);
@@ -881,7 +888,7 @@ function dropFrame.init()
 		button2 = CANCEL,
 		button3 = loc.DR_POPUP,
 		OnShow = function(self)
-			if TRP3_API.map.getCurrentCoordinates("player") then
+			if AddOn_TotalRP3.Map.getPlayerCoordinates() then
 				self.button3:Enable();
 			else
 				self.button3:Disable();

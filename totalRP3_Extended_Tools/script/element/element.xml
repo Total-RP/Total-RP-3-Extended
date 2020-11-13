@@ -21,7 +21,7 @@
 
 	<Button inherits="TRP3_QuestButtonTemplate" name="TRP3_WorkflowLinkButton" virtual="true">
 		<Frames>
-			<Frame parentKey="select" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSelect">
+			<Frame parentKey="select" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSelect">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Name" x="-20" y="-5"/>
 				</Anchors>
@@ -35,7 +35,7 @@
 
 		<Frames>
 
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="-5" y="-65"/>
 				</Anchors>
@@ -62,7 +62,7 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="interrupt" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentInterrupt">
+			<Frame parentKey="interrupt" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentInterrupt">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-20" y="-15"/>
 					<Anchor point="RIGHT" x="-35" y="0"/>
@@ -74,11 +74,10 @@
 	</Frame>
 
 	<!-- Icon browser  -->
-	<Frame name="TRP3_ObjectBrowser" hidden="true" enableMouse="true">
-		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_ObjectBrowser" hidden="true" enableMouse="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_24_5555" type="global"/>
+		</KeyValues>
 
 		<Size x="550" y="400"/>
 		<Anchors>
@@ -112,13 +111,12 @@
 				</Anchors>
 			</Button>
 
-			<Frame parentKey="content">
+			<Frame parentKey="content" inherits="TRP3_BackdropTemplate">
 				<Size x="0" y="295"/>
 
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
+				</KeyValues>
 
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-35"/>
@@ -149,12 +147,11 @@
 			</Frame>
 
 			<!-- Filter section -->
-			<Frame parentKey="filter">
+			<Frame parentKey="filter" inherits="TRP3_BackdropTemplate">
 				<Size x="0" y="60"/>
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
 					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>

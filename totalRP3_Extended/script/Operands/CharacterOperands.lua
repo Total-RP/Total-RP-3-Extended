@@ -3,7 +3,7 @@
 --- Scripts : Character Operands
 ---	---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -83,6 +83,14 @@ function isSwimmingOperand:CodeReplacement()
 	return "IsSwimming()";
 end
 
+local isIndoorsOperand = Operand("char_indoors", {
+	["IsIndoors"] = "IsIndoors"
+});
+
+function isIndoorsOperand:CodeReplacement()
+	return "IsIndoors()";
+end
+
 local zoneTextOperand = Operand("char_zone", {
 	["GetZoneText"] = "GetZoneText"
 });
@@ -90,7 +98,6 @@ local zoneTextOperand = Operand("char_zone", {
 function zoneTextOperand:CodeReplacement()
 	return "GetZoneText()";
 end
-
 
 local subZoneTextOperand = Operand("char_subzone", {
 	["GetSubZoneText"] = "GetSubZoneText"

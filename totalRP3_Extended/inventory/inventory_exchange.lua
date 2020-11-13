@@ -435,7 +435,7 @@ function sendItemDataRequest(rootClassId, rootClassVersion)
 		return;
 	end
 
-	local reservedMessageID = Communications.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	local request = {
 		id = rootClassId,
 		v = rootClassVersion,
@@ -443,7 +443,7 @@ function sendItemDataRequest(rootClassId, rootClassVersion)
 	};
 
 	currentDownloads[rootClassId] = 0;
-	Communications.addMessageIDHandler(exchangeFrame.targetID, reservedMessageID, function(_, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, exchangeFrame.targetID, function(_, total, current)
 		currentDownloads[rootClassId] = current / total;
 		reloadDownloads();
 		if current == total then

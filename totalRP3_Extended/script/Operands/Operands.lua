@@ -3,7 +3,7 @@
 --- Scripts : Operands
 ---	---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ local Operand = TRP3_API.Ellyb.Class("TotalRP3_Extended_Operand");
 ---@param operandId string A unique ID to refer to this operand
 ---@param environment table<string, string> An environment table that will be used to map functions that will be made available to the operand code when executed.
 function Operand:initialize(operandId, environment)
-	assert(Ellyb.Assertions.isType(operandId, "string", "operandId"));
+	Ellyb.Assertions.isType(operandId, "string", "operandId");
 	self.id = operandId
 	self.env = environment or {};
 

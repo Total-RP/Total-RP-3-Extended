@@ -2,7 +2,7 @@
 -- Total RP 3
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
---  Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--  Copyright 2018 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -1633,7 +1633,13 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	DR_STASHES_OWNER = "Owner",
+
+	OP_OP_UNIT_CREATURE_TYPE = "Unit creature type",
+	OP_OP_UNIT_CREATURE_TYPE_TT = "|cff00ff00The creature type of the unit. Example: Beast, Dragonkin, Elemental...",
+	OP_OP_UNIT_CREATURE_FAMILY = "Unit creature family",
+	OP_OP_UNIT_CREATURE_FAMILY_TT = "|cff00ff00The creature family of the unit. Only works on beasts and demons. Example: Crab, Wolf, Succubus, Voidwalker...",
+	OP_OP_CHAR_INDOORS = "Character is indoors",
+	OP_OP_CHAR_INDOORS_TT = "Checks if the character is indoors.",
 	EFFECT_DO_EMOTE = "Do emote",
 	EFFECT_DO_EMOTE_TT = "Make the player do a specific animated emote.",
 	EFFECT_DO_EMOTE_SPOKEN = "Spoken",
@@ -1691,7 +1697,7 @@ Localization:GetLocale("zhTW"):AddTexts(localeContent);
 TRP3_KS_BACKERS =
 [[#Total RP 3: Extended (version %s)
 
-Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ellypse" Parize|r.
+Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Morgane "Ellypse" Parize|r.
 
 ## To all our Kickstarter backers: many thanks for the support!
 
@@ -1784,8 +1790,4 @@ Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Renaud "Ell
 - Zencore
 
 ##  You are the best!
-
-## Total RP 3: Extended is also maintained thanks to Ellypse's [Patreon](http://patreon.com/Ellypse) supporters:
-
-%s
 ]];

@@ -1,4 +1,4 @@
-﻿## Interface: 80100
+﻿## Interface: 90001
 ## Title: Total RP 3: Extended Import/Export
 ## Author: Telkostrasz & Ellypse
 ## Notes: Import/Export for Total RP 3 Extended

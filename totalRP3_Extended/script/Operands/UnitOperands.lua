@@ -3,7 +3,7 @@
 --- Scripts : Unit Operands
 ---	---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ local unitIdOperand = Operand("unit_id", {
 })
 
 function unitIdOperand:CodeReplacement(args)
-	return ([[UnitId("%s")]]):format(getUnitId(args))
+	return ([[UnitID("%s")]]):format(getUnitId(args))
 end
 
 local unitNpcIdOperand = Operand("unit_npc_id", {
@@ -54,7 +54,7 @@ local unitNpcIdOperand = Operand("unit_npc_id", {
 });
 
 function unitNpcIdOperand:CodeReplacement(args)
-	return ([[getUnitNPCID("%s\"]]):format(getUnitId(args));
+	return ([[getUnitNPCID("%s")]]):format(getUnitId(args));
 end
 
 local unitGuildOperand = Operand("unit_guild", {
@@ -105,12 +105,28 @@ function unitFactionOperand:CodeReplacement(args)
 	return ([[(GetFaction("%s") or ""):lower()]]):format(getUnitId(args));
 end
 
+local unitCreatureTypeOperand = Operand("unit_creature_type", {
+	["UnitCreatureType"] = "UnitCreatureType"
+})
+
+function unitCreatureTypeOperand:CodeReplacement(args)
+	return ([[UnitCreatureType("%s")]]):format(getUnitId(args));
+end
+
+local unitCreatureFamilyOperand = Operand("unit_creature_family", {
+	["UnitCreatureFamily"] = "UnitCreatureFamily"
+})
+
+function unitCreatureFamilyOperand:CodeReplacement(args)
+	return ([[UnitCreatureFamily("%s")]]):format(getUnitId(args));
+end
+
 local unitClassificationOperand = Operand("unit_classification", {
 	["UnitClassification"] = "UnitClassification"
 })
 
 function unitClassificationOperand:CodeReplacement(args)
-	return ([[(UnitClassification("%s")]]):format(getUnitId(args));
+	return ([[UnitClassification("%s")]]):format(getUnitId(args));
 end
 
 --endregion
@@ -146,7 +162,7 @@ local unitPositionXOperand = NumericOperand("unit_position_x", {
 });
 
 function unitPositionXOperand:CodeReplacement(args)
-	return ([[{UnitPosition("%s")}[2]]):format(getUnitId(args));
+	return ("({UnitPosition(\"%s\")})[2]"):format(getUnitId(args));
 end
 
 local unitPositionYOperand = NumericOperand("unit_position_y", {
@@ -154,7 +170,7 @@ local unitPositionYOperand = NumericOperand("unit_position_y", {
 });
 
 function unitPositionYOperand:CodeReplacement(args)
-	return ([[{UnitPosition("%s")}[1]]):format(getUnitId(args));
+	return ("({UnitPosition(\"%s\")})[1]"):format(getUnitId(args));
 end
 
 --endregion

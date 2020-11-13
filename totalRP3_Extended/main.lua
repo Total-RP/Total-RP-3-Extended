@@ -485,9 +485,16 @@ local function onStart()
     dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
-Globals.extended_version = 1014;
-Globals.required_trp3_build = 62;
+Globals.extended_version = 1025;
+Globals.required_trp3_build = 87;
+
+--@debug@
+Globals.extended_display_version = "v-dev";
+--@end-debug@
+
+--[===[@non-debug@
 Globals.extended_display_version = "@project-version@";
+--@end-non-debug@]===]
 
 if TRP3_API.globals.version < Globals.required_trp3_build then
 	print(TRP3_API.Ellyb.ColorManager.RED([[

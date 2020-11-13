@@ -157,13 +157,13 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	local text = "";
 
 	if isRoot then
-		text = text .. fieldFormat:format(loc.ROOT_GEN_ID, "|cff00ffff" .. rootID);
+		text = text .. fieldFormat:format(loc.ROOT_GEN_ID, "|cff00ffff" .. rootID .. "|r");
 		text = text .. "\n" .. fieldFormat:format(loc.ROOT_VERSION, metadata.V or 1);
 		text = text .. "\n" .. fieldFormat:format(loc.ROOT_CREATED_BY, metadata.CB or "?");
 		text = text .. "\n" .. fieldFormat:format(loc.ROOT_CREATED_ON, metadata.CD or "?");
 		text = text .. "\n" .. fieldFormat:format(loc.SEC_LEVEL, TRP3_API.security.getSecurityText(rootClass.securityLevel or SECURITY_LEVEL.LOW));
 	else
-		text = text .. fieldFormat:format(loc.SPECIFIC_INNER_ID, "|cff00ffff" .. innerID);
+		text = text .. fieldFormat:format(loc.SPECIFIC_INNER_ID, "|cff00ffff" .. innerID .. "|r");
 	end
 
 	text = text .. "\n" .. fieldFormat:format(loc.SPECIFIC_MODE, TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
@@ -416,7 +416,7 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.filters:Hide();
 		ToolFrame.list.backers:Show();
 
-		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion(), TRP3_API.Ellyb:GetPatreonSupporters())));
+		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion())));
 		ToolFrame.list.backers.child.HTML:SetScript("OnHyperlinkClick", function(self, url, text, button)
 			TRP3_API.Ellyb.Popups:OpenURL(url);
 		end)

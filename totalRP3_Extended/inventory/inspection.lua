@@ -22,6 +22,7 @@ local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getCla
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local CreateFrame = CreateFrame;
+local parseArgs = TRP3_API.script.parseArgs;
 
 local inspectionFrame = TRP3_InspectionFrame;
 local decorateSlot;
@@ -79,17 +80,31 @@ local function receiveRequest(request, sender)
 		-- Don't send the default bag
 		if slotID ~= "17" then
 			local class = getClass(slot.id);
+			local slotInfo = { object = slot };
+
+			-- Parsing arguments in the item info
+			local parsedBA = {};
+			Utils.table.copy(parsedBA, class.BA);
+			parsedBA.RI = parseArgs(parsedBA.RI, slotInfo);
+			parsedBA.LE = parseArgs(parsedBA.LE, slotInfo);
+			parsedBA.DE = parseArgs(parsedBA.DE, slotInfo);
+
 			response.slots[slotID] = {
 				count = slot.count,
 				id = slot.id,
-				BA = class.BA,
+				BA = parsedBA,
 				pos = slot.pos,
 			};
 			if isContainerByClassID(slot.id) then
 				response.slots[slotID].CO = class.CO;
 			end
 			if isUsableByClass(class) then
-				response.slots[slotID].US = class.US;
+				-- Parsing arguments in the use text
+				local parsedUS = {};
+				Utils.table.copy(parsedUS, class.US);
+				parsedUS.AC = parseArgs(parsedUS.AC, slotInfo);
+
+				response.slots[slotID].US = parsedUS;
 			end
 		end
 	end
@@ -98,11 +113,11 @@ local function receiveRequest(request, sender)
 end
 
 local function sendRequest()
-	local reservedMessageID = Communications.getMessageIDAndIncrement();
+	local reservedMessageID = Communications.getNewMessageToken();
 	local data = {reservedMessageID};
 	inspectionFrame.time = time();
 	inspectionFrame.Main.Model.Loading:SetText("... " .. loc.INV_PAGE_WAIT .. " ...");
-	Communications.addMessageIDHandler(inspectionFrame.current, reservedMessageID, function(_, total, current)
+	Communications.registerMessageTokenProgressHandler(reservedMessageID, inspectionFrame.current, function(_, total, current)
 		inspectionFrame.Main.Model.Loading:SetText(loadingTemplate:format(current / total * 100));
 		if current == total then
 			inspectionFrame.Main.Model.Loading:Hide();
@@ -156,7 +171,8 @@ function inspectionFrame.init()
 	loadingTemplate = loc.INV_PAGE_CHARACTER_INSPECTION .. ": %0.2f %%";
 
 	-- Slots
-	Model_OnLoad(inspectionFrame.Main.Model, nil, nil, 0);
+	Mixin(inspectionFrame.Main.Model, ModelFrameMixin);
+	inspectionFrame.Main.Model:OnLoad(nil, nil, 0);
 	inspectionFrame.Main.slots = {};
 	for i=1, 16 do
 		local button = CreateFrame("Button", "TRP3_InspectionFrameSlot" .. i, inspectionFrame.Main, "TRP3_InventoryPageSlotTemplate");

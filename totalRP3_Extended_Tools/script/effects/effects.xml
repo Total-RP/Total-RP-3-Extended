@@ -5,7 +5,7 @@
 <!--
 	Total RP 3
 	Copyright 2014-2016 Sylvain Cossement (telkostrasz@totalrp3.info)
-	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+	Copyright 2018 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-45"/>
 				</Anchors>
@@ -104,13 +104,13 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-45"/>
 				</Anchors>
 			</Frame>
 
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.source" x="0" y="-5"/>
 				</Anchors>
@@ -145,13 +145,13 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-20" y="-20"/>
 				</Anchors>
 			</Frame>
 
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="0" y="-20"/>
 				</Anchors>
@@ -178,7 +178,7 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-45"/>
 				</Anchors>
@@ -251,7 +251,7 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.name" x="-20" y="-20"/>
 				</Anchors>
@@ -272,7 +272,7 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-45"/>
 				</Anchors>
@@ -311,7 +311,7 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="channel" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
@@ -338,7 +338,7 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="channel" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
@@ -365,7 +365,7 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="channel" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
@@ -399,7 +399,7 @@
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="channel" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="channel" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
@@ -598,7 +598,7 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentSource">
+			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-20" y="-20"/>
 				</Anchors>
@@ -611,7 +611,7 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="w_source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentWSource">
+			<Frame parentKey="w_source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentWSource">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.workflow" x="-20" y="-20"/>
 				</Anchors>

@@ -87,12 +87,10 @@
 
 		<Frames>
 
-			<Frame parentKey="left">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize><AbsValue val="24"/></EdgeSize>
-					<TileSize><AbsValue val="380"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
+			<Frame parentKey="left" inherits="TRP3_BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_24_5555" type="global"/>
+				</KeyValues>
 
 				<Anchors>
 					<Anchor point="TOPLEFT" x="20" y="-30"/>
@@ -156,12 +154,10 @@
 				</Frames>
 			</Frame>
 
-			<Frame parentKey="right">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize><AbsValue val="24"/></EdgeSize>
-					<TileSize><AbsValue val="380"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
+			<Frame parentKey="right" inherits="TRP3_BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_24_5555" type="global"/>
+				</KeyValues>
 
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-20" y="-30"/>

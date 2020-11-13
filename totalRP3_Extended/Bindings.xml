@@ -1,6 +1,6 @@
 <!--
 	Total RP 3
-	Copyright 2014 Renaud "Ellypse" Parize (ellypse@totalrp3.info)
+	Copyright 2014 Morgane "Ellypse" Parize (ellypse@totalrp3.info)
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -45,5 +45,8 @@
     </Binding>
     <Binding name="TRP3_QUEST_TALK">
         TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.TALK)
+    </Binding>
+    <Binding name="TRP3_STASHES_LOOKUP">
+        TRP3_API.inventory.searchForStashesAtPlayerLocation();
     </Binding>
 </Bindings>

@@ -169,19 +169,11 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="operand" hidden="true" setAllPoints="true" enableMouse="true">
+			<Frame parentKey="operand" hidden="true" setAllPoints="true" enableMouse="true" inherits="TRP3_BackdropTemplate">
 
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="24" />
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="418" />
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5" />
-					</BackgroundInsets>
-				</Backdrop>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
 
 				<Frames>
 
@@ -214,13 +206,13 @@
 								</Anchors>
 							</Button>
 
-							<Frame parentKey="comparator" inherits="UIDropDownMenuTemplate" name="$parentComparator">
+							<Frame parentKey="comparator" inherits="TRP3_DropDownMenuTemplate" name="$parentComparator">
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-60"/>
 								</Anchors>
 							</Frame>
 
-							<Frame parentKey="left" inherits="UIDropDownMenuTemplate" name="$parentLeft" enableMouse="true">
+							<Frame parentKey="left" inherits="TRP3_DropDownMenuTemplate" name="$parentLeft" enableMouse="true">
 								<Anchors>
 									<Anchor point="TOPLEFT" x="10" y="-60"/>
 								</Anchors>
@@ -266,7 +258,7 @@
 								</Frames>
 							</Frame>
 
-							<Frame parentKey="right" inherits="UIDropDownMenuTemplate" name="$parentRight">
+							<Frame parentKey="right" inherits="TRP3_DropDownMenuTemplate" name="$parentRight">
 								<Anchors>
 									<Anchor point="TOPRIGHT" x="-10" y="-60"/>
 								</Anchors>

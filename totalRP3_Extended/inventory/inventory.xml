@@ -5,7 +5,7 @@
 <!--
 	Total RP 3
 	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
-	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+	Copyright 2018 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -387,10 +387,10 @@
 							<OnEnter function=""/>
 							<OnLeave function=""/>
 							<OnMouseUp>
-								self.onMouseUpFunc(self, button);
+								self:OnMouseUp(button);
 							</OnMouseUp>
 							<OnMouseDown>
-								Model_OnMouseDown(self, button);
+								self:OnMouseDown(button);
 							</OnMouseDown>
 							<OnMouseWheel function=""/>
 						</Scripts>
@@ -517,11 +517,15 @@
 		</Anchors>
 		<Frames>
 
-			<Frame parentKey="Main">
-				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
+			<Frame parentKey="Main" inherits="TRP3_BackdropTemplate">
+				<!--<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
 					<EdgeSize><AbsValue val="24"/></EdgeSize>
 					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
-				</Backdrop>
+				</Backdrop>-->
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_400_24_5555" type="global"/>
+				</KeyValues>
+
 				<Size x="350" y="375" />
 				<Anchors>
 					<Anchor point="CENTER" x="0" y="0"/>

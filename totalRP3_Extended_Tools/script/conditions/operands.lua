@@ -227,6 +227,32 @@ local function unit_faction_init()
 	});
 end
 
+local function unit_creature_type_init()
+	registerOperandEditor("unit_creature_type", {
+		title = loc.OP_OP_UNIT_CREATURE_TYPE,
+		description = loc.OP_OP_UNIT_CREATURE_TYPE_TT,
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc.OP_OP_UNIT_CREATURE_TYPE .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
+local function unit_creature_family_init()
+	registerOperandEditor("unit_creature_family", {
+		title = loc.OP_OP_UNIT_CREATURE_FAMILY,
+		description = loc.OP_OP_UNIT_CREATURE_FAMILY_TT,
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc.OP_OP_UNIT_CREATURE_FAMILY .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
 local function unit_classification_init()
 	registerOperandEditor("unit_classification", {
 		title = loc.OP_OP_UNIT_CLASSIFICATION,
@@ -498,6 +524,17 @@ local function char_swimming_init()
 		returnType = true,
 		getText = function(args)
 			return loc.OP_OP_CHAR_SWIMMING;
+		end,
+	});
+end
+
+local function char_indoors_init()
+	registerOperandEditor("char_indoors", {
+		title = loc.OP_OP_CHAR_INDOORS,
+		description = loc.OP_OP_CHAR_INDOORS_TT,
+		returnType = true,
+		getText = function(args)
+			return loc.OP_OP_CHAR_INDOORS;
 		end,
 	});
 end
@@ -777,6 +814,8 @@ function TRP3_ConditionEditor.initOperands()
 	unit_class_init();
 	unit_sex_init();
 	unit_faction_init();
+	unit_creature_type_init();
+	unit_creature_family_init();
 	unit_classification_init();
 
 	-- Unit numeric
@@ -802,6 +841,7 @@ function TRP3_ConditionEditor.initOperands()
 	char_mounted_init();
 	char_resting_init();
 	char_swimming_init();
+	char_indoors_init();
 	char_zone_init();
 	char_subzone_init();
 	char_minimap_init();

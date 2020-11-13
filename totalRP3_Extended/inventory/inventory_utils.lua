@@ -29,7 +29,7 @@ local Ellyb = TRP3_API.Ellyb;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.extended.getTTAction(method, action, notFirst)
-	local text = "|cffffff00" .. method .. ": |cffff9900" .. action;
+	local text = "|cffffff00" .. method .. ":|r |cffff9900" .. action .. "|r";
 	if notFirst then
 		text = "\n" .. text;
 	end
@@ -95,17 +95,17 @@ end
 local colorCodeFloatTab = Utils.color.colorCodeFloatTab;
 
 local ITEM_COLORS = {
-	[LE_ITEM_QUALITY_POOR] = Ellyb.ColorManager.ITEM_POOR,
-	[LE_ITEM_QUALITY_COMMON] = Ellyb.ColorManager.ITEM_COMMON,
-	[LE_ITEM_QUALITY_UNCOMMON] = Ellyb.ColorManager.ITEM_UNCOMMON,
-	[LE_ITEM_QUALITY_RARE] = Ellyb.ColorManager.ITEM_RARE,
-	[LE_ITEM_QUALITY_EPIC] = Ellyb.ColorManager.ITEM_EPIC,
-	[LE_ITEM_QUALITY_LEGENDARY] = Ellyb.ColorManager.ITEM_LEGENDARY,
-	[LE_ITEM_QUALITY_ARTIFACT] = Ellyb.ColorManager.ITEM_ARTIFACT,
-	[LE_ITEM_QUALITY_HEIRLOOM] = Ellyb.ColorManager.ITEM_HEIRLOOM,
-	[LE_ITEM_QUALITY_WOW_TOKEN] = Ellyb.ColorManager.ITEM_WOW_TOKEN,
+	[Enum.ItemQuality.Poor] = Ellyb.ColorManager.ITEM_POOR,
+	[Enum.ItemQuality.Common] = Ellyb.ColorManager.ITEM_COMMON,
+	[Enum.ItemQuality.Uncommon] = Ellyb.ColorManager.ITEM_UNCOMMON,
+	[Enum.ItemQuality.Rare] = Ellyb.ColorManager.ITEM_RARE,
+	[Enum.ItemQuality.Epic] = Ellyb.ColorManager.ITEM_EPIC,
+	[Enum.ItemQuality.Legendary] = Ellyb.ColorManager.ITEM_LEGENDARY,
+	[Enum.ItemQuality.Artifact] = Ellyb.ColorManager.ITEM_ARTIFACT,
+	[Enum.ItemQuality.Heirloom] = Ellyb.ColorManager.ITEM_HEIRLOOM,
+	[Enum.ItemQuality.WoWToken] = Ellyb.ColorManager.ITEM_WOW_TOKEN,
 }
-local NEUTRAL_COLOR = ITEM_COLORS[LE_ITEM_QUALITY_COMMON];
+local NEUTRAL_COLOR = ITEM_COLORS[Enum.ItemQuality.Common];
 
 local function getQualityColorTab(quality)
 	---@type Color
