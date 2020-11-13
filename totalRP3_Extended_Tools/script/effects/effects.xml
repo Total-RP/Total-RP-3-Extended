@@ -289,6 +289,20 @@
 
 	</Frame>
 
+	<Frame name="TRP3_EffectEditorDoEmote" hidden="true" inherits="TRP3_EditorEffectTemplate">
+		<Size x="500" y="250"/>
+		<Frames>
+
+			<Frame parentKey="emoteList" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-20"/>
+				</Anchors>
+			</Frame>
+
+		</Frames>
+
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--        Sounds        -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
