@@ -42,6 +42,9 @@ local linksEditor = TRP3_LinksEditor;
 local scriptEditor = TRP3_ScriptEditorNormal;
 local innerEditor = TRP3_InnerObjectEditor;
 
+local questClipboard = {};
+local questClipboardID;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -369,6 +372,22 @@ local function createTabBar()
 	);
 end
 
+local function onQuestDropdown(value, line)
+	if value == 1 then
+		wipe(questClipboard);
+		questClipboardID = getFullID(toolFrame.fullClassID, line.questID);
+		Utils.table.copy(questClipboard, toolFrame.specificDraft.QE[line.questID]);
+	elseif value == 2 then
+		wipe(toolFrame.specificDraft.QE[line.questID]);
+		TRP3_API.extended.tools.replaceID(questClipboard, questClipboardID, getFullID(toolFrame.fullClassID, line.questID));
+		Utils.table.copy(toolFrame.specificDraft.QE[line.questID], questClipboard);
+		wipe(questClipboard);
+		refreshQuestsList();
+	elseif value == 3 then
+		removeQuest(line.questID);
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -524,7 +543,14 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 		tinsert(quests.list.widgetTab, line);
 		line.click:SetScript("OnClick", function(self, button)
 			if button == "RightButton" then
-				removeQuest(self.questID);
+				local context = {};
+				tinsert(context, {self.questID});
+				tinsert(context, {loc.CA_QUEST_DD_COPY, 1});
+				if next(questClipboard) then
+					tinsert(context, {loc.CA_QUEST_DD_PASTE, 2});
+				end
+				tinsert(context, {loc.CA_QUEST_DD_REMOVE, 3});
+				TRP3_API.ui.listbox.displayDropDown(line.click, context, onQuestDropdown, 0, true);
 			else
 				if IsControlKeyDown() then
 					renameQuest(self.questID);
@@ -545,7 +571,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.TYPE_QUEST,
 			("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT)
 			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CTRL .. " + " .. loc.CM_CLICK, loc.CA_QE_ID)
-			.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
+			.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, loc.CA_ACTIONS));
 	end
 	quests.list.decorate = decorateQuestLine;
 	TRP3_API.ui.list.handleMouseWheel(quests.list, quests.list.slider);
