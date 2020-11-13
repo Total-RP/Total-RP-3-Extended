@@ -27,7 +27,6 @@
 
 	<Include file="script/effects/effects.xml"/>
 	<Script file="script/effects/effects.lua"/>
-	<Include file="script\effects\_tests\tests.xml"/>
 
 	<Include file="script/element/element.xml"/>
 	<Script file="script/element/element.lua"/>
