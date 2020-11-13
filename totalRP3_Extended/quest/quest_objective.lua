@@ -22,12 +22,19 @@ local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass,
 
 local frame = TRP3_QuestObjectives;
 
+local ACTION_FRAMES = {
+	[TRP3_API.quest.ACTION_TYPES.LOOK] = frame.Actions.Look,
+	[TRP3_API.quest.ACTION_TYPES.TALK] = frame.Actions.Talk,
+	[TRP3_API.quest.ACTION_TYPES.LISTEN] = frame.Actions.Listen,
+	[TRP3_API.quest.ACTION_TYPES.ACTION] = frame.Actions.Interact,
+};
+
 local function display()
 	local HTML = "";
-	frame.Actions:Hide()
+	frame.Actions:Hide();
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
 	if playerQuestLog and playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign] then
-		frame.Actions:Show()
+		frame.Actions:Show();
 
 		local campaignID = playerQuestLog.currentCampaign;
 		local campaignIcon, campaignName, _ = getClassDataSafe(getClass(campaignID));
@@ -79,23 +86,18 @@ local function display()
 	frame.Tracker:SetText(frame.Tracker.html);
 end
 
-local function initActionButton(button, action)
-	button:SetNormalTexture("Interface\\ICONS\\"..TRP3_API.quest.getActionTypeIcon(action));
-	button:SetScript("OnClick", function() TRP3_API.quest.performAction(action) end);
-	button:SetScript("OnEnter", TRP3_API.ui.tooltip.refresh);
-	button:SetScript("OnLeave", function() TRP3_MainTooltip:Hide() end);
-	TRP3_API.ui.tooltip.setTooltipForSameFrame(button, "TOP", 0, 5, TRP3_API.quest.getActionTypeLocale(action), "");
-end
-
 function frame.init()
 	local questLogFrame = TRP3_QuestLogPage;
 
 	frame.Actions.caption:Hide()
 
-	initActionButton(frame.Actions.Look, TRP3_API.quest.ACTION_TYPES.LOOK);
-	initActionButton(frame.Actions.Talk, TRP3_API.quest.ACTION_TYPES.TALK);
-	initActionButton(frame.Actions.Listen, TRP3_API.quest.ACTION_TYPES.LISTEN);
-	initActionButton(frame.Actions.Interact, TRP3_API.quest.ACTION_TYPES.ACTION);
+	for action, button in pairs(ACTION_FRAMES) do
+		button:SetNormalTexture("Interface\\ICONS\\"..TRP3_API.quest.getActionTypeIcon(action));
+		button:SetScript("OnClick", function() TRP3_API.quest.performAction(action) end);
+		button:SetScript("OnEnter", TRP3_API.ui.tooltip.refresh);
+		button:SetScript("OnLeave", function() TRP3_MainTooltip:Hide() end);
+		TRP3_API.ui.tooltip.setTooltipForSameFrame(button, "TOP", 0, 5, TRP3_API.quest.getActionTypeLocale(action), "");
+	end
 
 	frame.Tracker:SetFontObject("h1", GameFontNormalLarge);
 	frame.Tracker:SetTextColor("h1", 0.95, 0.75, 0);
