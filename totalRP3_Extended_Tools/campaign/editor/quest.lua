@@ -39,6 +39,9 @@ local TABS = {
 local tabGroup, currentTab, linksStructure;
 local actionEditor = TRP3_ActionsEditorFrame;
 
+local stepClipboard;
+local stepClipboardID;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Quest specifics
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -342,6 +345,26 @@ local function createTabBar()
 	);
 end
 
+local function onStepDropdown(value, line)
+	if value == 1 then
+		if not stepClipboard then
+			stepClipboard = {};
+		end
+		wipe(stepClipboard);
+		stepClipboardID = getFullID(toolFrame.fullClassID, line.stepID);
+		Utils.table.copy(stepClipboard, toolFrame.specificDraft.ST[line.stepID]);
+	elseif value == 2 then
+		wipe(toolFrame.specificDraft.ST[line.stepID]);
+		TRP3_API.extended.tools.replaceID(stepClipboard, stepClipboardID, getFullID(toolFrame.fullClassID, line.stepID));
+		Utils.table.copy(toolFrame.specificDraft.ST[line.stepID], stepClipboard);
+		wipe(stepClipboard);
+		stepClipboard = nil;
+		refreshQuestStepList();
+	elseif value == 3 then
+		removeQuestStep(line.stepID);
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -479,7 +502,14 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 		tinsert(steps.list.widgetTab, line);
 		line.click:SetScript("OnClick", function(self, button)
 			if button == "RightButton" then
-				removeQuestStep(self.stepID);
+				local context = {};
+				tinsert(context, {self.stepID});
+				tinsert(context, {loc.QE_STEP_DD_COPY, 1});
+				if stepClipboard then
+					tinsert(context, {loc.QE_STEP_DD_PASTE, 2});
+				end
+				tinsert(context, {loc.QE_STEP_DD_REMOVE, 3});
+				TRP3_API.ui.listbox.displayDropDown(line.click, context, onStepDropdown, 0, true);
 			else
 				if IsControlKeyDown() then
 					renameQuestStep(self.stepID);
@@ -500,7 +530,7 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.CA_ACTIONS,
 			("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT)
 			.. ("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CTRL .. " + " .. loc.CM_CLICK, loc.CA_QE_ST_ID)
-			.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
+			.. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, loc.CA_ACTIONS));
 	end
 	steps.list.decorate = decorateQuestStepLine;
 	TRP3_API.ui.list.handleMouseWheel(steps.list, steps.list.slider);

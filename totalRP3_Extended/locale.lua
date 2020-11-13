@@ -1644,6 +1644,12 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	EFFECT_DO_EMOTE_SPOKEN = "Spoken",
 	EFFECT_DO_EMOTE_ANIMATED = "Animated",
 	EFFECT_DO_EMOTE_OTHER =  "Others",
+	CA_QUEST_DD_COPY = "Copy quest content",
+	CA_QUEST_DD_PASTE = "Paste quest content",
+	CA_QUEST_DD_REMOVE = "Remove quest",
+	QE_STEP_DD_COPY = "Copy step content",
+	QE_STEP_DD_PASTE = "Paste step content",
+	QE_STEP_DD_REMOVE = "Remove step",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
