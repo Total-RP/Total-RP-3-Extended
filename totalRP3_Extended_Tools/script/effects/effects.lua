@@ -870,7 +870,7 @@ local function do_emote_init()
 			table.insert(list, {getEmoteNameFromToken(token), token})
 		end
 		table.sort(list, function(a, b)
-			return Utils.str.convertSpecialChars(a[1]) < Utils.str.convertSpecialChars(b[1])
+			return strcmputf8i(Utils.str.convertSpecialChars(a[1]), Utils.str.convertSpecialChars(b[1])) < 0;
 		end)
 		return list
 	end
