@@ -5,6 +5,7 @@
 - Added an emote effect.
   - **It is a secure effect**: you have to enable it when receiving a creation from someone else in the creation security settings.
 - Added the ability to copy/paste quests and quest steps to help cooperation on creations.
+  - They are accessible by right-clicking a quest/step (alongside the delete option).
   - Links to inner items of the quest/quest steps will be converted to the new quest/step ID.
   - This does **not** apply to non-inner items links, make sure to check upon pasting.
 
