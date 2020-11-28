@@ -158,6 +158,15 @@ local function startQuestForReal(campaignID, questID)
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
 	local campaignLog = playerQuestLog[campaignID];
 
+	-- If the quest is already revealed, clear handlers
+	if campaignLog.QUEST[questID] then
+		clearQuestHandlers(TRP3_API.extended.getFullID(campaignID, questID));
+		local stepID = campaignLog.QUEST[questID].CS;
+		if stepID then
+			TRP3_API.quest.clearStepHandlersForQuest(TRP3_API.extended.getFullID(campaignID, questID, stepID))
+		end
+	end
+
 	campaignLog.QUEST[questID] = {
 		OB = {},
 	};
@@ -359,7 +368,7 @@ local function goToStep(campaignID, questID, stepID)
 		local autoResumeWarning = loc.QE_AUTORESUME_CONFIRM:format(campaignName);
 		TRP3_API.popup.showConfirmPopup(autoResumeWarning, function()
 			TRP3_API.quest.activateCampaign(campaignID, false);
-			TRP3_API.quest.goToStep(campaignID, questID, stepID);
+			TRP3_API.quest.goToStepForReal(campaignID, questID, stepID);
 		end);
 		return 3;
 	else
@@ -751,26 +760,4 @@ function TRP3_API.quest.onStart()
 	TRP3_API.quest.campaignInit();
 	TRP3_API.quest.questLogInit();
 	TRP3_QuestObjectives.init();
-
-	-- Button on toolbar
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-		if TRP3_API.target then
-			for _, action in pairs({ACTION_TYPES.LOOK, ACTION_TYPES.LISTEN, ACTION_TYPES.ACTION, ACTION_TYPES.TALK}) do
-				TRP3_API.target.registerButton({
-					id = "quest_action_" .. action,
-					onlyForType = TRP3_API.ui.misc.TYPE_NPC,
-					configText = TRP3_API.quest.getActionTypeLocale(action),
-					condition = function(_, unitID)
-						return true;
-					end,
-					onClick = function(_, _, buttonType, _)
-						performAction(action);
-					end,
-					tooltip = TRP3_API.quest.getActionTypeLocale(action),
-					tooltipSub = "",
-					icon = TRP3_API.quest.getActionTypeIcon(action)
-				});
-			end
-		end
-	end);
 end

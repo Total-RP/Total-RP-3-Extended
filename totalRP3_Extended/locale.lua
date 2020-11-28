@@ -1001,6 +1001,10 @@ We should begin with some examples:
 	OP_OP_QUEST_OBJ_CURRENT = "Quest current objectives",
 	OP_OP_QUEST_OBJ_CURRENT_TT = "Returns whether all currently revealed quest objectives are completed.",
 	OP_OP_QUEST_OBJ_CURRENT_PREVIEW = "%s current obj. done",
+	OP_OP_UNIT_CREATURE_TYPE = "Unit creature type",
+	OP_OP_UNIT_CREATURE_TYPE_TT = "|cff00ff00The creature type of the unit. Example: Beast, Dragonkin, Elemental...",
+	OP_OP_UNIT_CREATURE_FAMILY = "Unit creature family",
+	OP_OP_UNIT_CREATURE_FAMILY_TT = "|cff00ff00The creature family of the unit. Only works on beasts and demons. Example: Crab, Wolf, Succubus, Voidwalker...",
 	OP_OP_UNIT_DISTANCE_TRADE = "Unit is near (trade)",
 	OP_OP_UNIT_DISTANCE_TRADE_TT = "|cff00ff00Returns whether a unit is close enough for trading (11.11 yards).",
 	OP_OP_UNIT_DISTANCE_INSPECT = "Unit is near (inspection)",
@@ -1019,6 +1023,8 @@ We should begin with some examples:
 	OP_OP_CHAR_STEALTH_TT = "Checks if the character is stealthed.",
 	OP_OP_CHAR_FLYING = "Character is flying",
 	OP_OP_CHAR_FLYING_TT = "Checks if the character is flying.",
+	OP_OP_CHAR_INDOORS = "Character is indoors",
+	OP_OP_CHAR_INDOORS_TT = "Checks if the character is indoors.",
 	OP_OP_CHAR_MOUNTED = "Character is mounted",
 	OP_OP_CHAR_MOUNTED_TT = "Checks if the character is on a mount.",
 	OP_OP_CHAR_RESTING = "Character is resting",
@@ -1633,13 +1639,17 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-
-	OP_OP_UNIT_CREATURE_TYPE = "Unit creature type",
-	OP_OP_UNIT_CREATURE_TYPE_TT = "|cff00ff00The creature type of the unit. Example: Beast, Dragonkin, Elemental...",
-	OP_OP_UNIT_CREATURE_FAMILY = "Unit creature family",
-	OP_OP_UNIT_CREATURE_FAMILY_TT = "|cff00ff00The creature family of the unit. Only works on beasts and demons. Example: Crab, Wolf, Succubus, Voidwalker...",
-	OP_OP_CHAR_INDOORS = "Character is indoors",
-	OP_OP_CHAR_INDOORS_TT = "Checks if the character is indoors.",
+	EFFECT_DO_EMOTE = "Do emote",
+	EFFECT_DO_EMOTE_TT = "Make the player do a specific animated emote.",
+	EFFECT_DO_EMOTE_SPOKEN = "Spoken",
+	EFFECT_DO_EMOTE_ANIMATED = "Animated",
+	EFFECT_DO_EMOTE_OTHER =  "Others",
+	CA_QUEST_DD_COPY = "Copy quest content",
+	CA_QUEST_DD_PASTE = "Paste quest content",
+	CA_QUEST_DD_REMOVE = "Remove quest",
+	QE_STEP_DD_COPY = "Copy step content",
+	QE_STEP_DD_PASTE = "Paste step content",
+	QE_STEP_DD_REMOVE = "Remove step",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

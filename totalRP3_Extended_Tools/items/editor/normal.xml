@@ -33,7 +33,7 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="quality" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentQuality">
+			<Frame parentKey="quality" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentQuality">
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="16" y="-2"/>
 					<Anchor point="RIGHT" x="-20" y="-2"/>
@@ -205,13 +205,13 @@
 				</Anchors>
 			</CheckButton>
 
-			<Frame parentKey="pickSound" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentPickSound">
+			<Frame parentKey="pickSound" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentPickSound">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="-5" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.noAdd"/>
 				</Anchors>
 			</Frame>
 
-			<Frame parentKey="dropSound" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentDropSound">
+			<Frame parentKey="dropSound" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentDropSound">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.pickSound"/>
 					<Anchor point="LEFT" x="0" y="0" relativePoint="CENTER"/>
@@ -245,7 +245,7 @@
 
 	<Frame name="TRP3_ItemEditorFrameContainer" inherits="TRP3_EditorTitledFrame" virtual="true">
 		<Frames>
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="0" y="-5"/>
 				</Anchors>

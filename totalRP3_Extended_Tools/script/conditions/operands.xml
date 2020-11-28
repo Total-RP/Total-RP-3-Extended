@@ -21,7 +21,7 @@
 
 	<Frame name="TRP3_OperandEditorUnitType" hidden="true">
 		<Frames>
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0"/>
 				</Anchors>
@@ -53,7 +53,7 @@
 
 	<Frame name="TRP3_OperandEditorCheckVar" hidden="true">
 		<Frames>
-			<Frame parentKey="source" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-45"/>
 				</Anchors>
@@ -82,7 +82,7 @@
 
 	<Frame name="TRP3_OperandEditorDistancePoint" hidden="true">
 		<Frames>
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-25"/>
 				</Anchors>
@@ -132,7 +132,7 @@
 
 	<Frame name="TRP3_OperandEditorAchievementSelection" hidden="true">
 		<Frames>
-			<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-25"/>
 				</Anchors>

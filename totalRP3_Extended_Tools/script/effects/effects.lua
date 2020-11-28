@@ -30,6 +30,8 @@ local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
+local LAST_EMOTE_ID = 522;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effect structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -740,6 +742,175 @@ local function speech_player_init()
 	end
 end
 
+local function splitTableIntoSmallerAlphabetizedTables(input, maxSize)
+	local output = {};
+
+	-- Retrieving the first character of the first emote in the list
+	local characterTableSorted = {};
+	local currentCharacter;
+	for _, emote in ipairs(input) do
+		local characterList = {}
+		for character in string.gmatch(emote[1], "([%z\1-\127\194-\244][\128-\191]*)") do
+			table.insert(characterList, Utils.str.convertSpecialChars(character));
+		end
+
+		if not currentCharacter or currentCharacter ~= characterList[2] then
+			currentCharacter = characterList[2];
+			table.insert(characterTableSorted, { characterList[2], { emote }});
+		else
+			table.insert(characterTableSorted[#characterTableSorted][2],  emote);
+		end
+	end
+
+	local currentCount = 0;
+	local currentTable;
+	local firstCharacter;
+	local previousCharacter;
+	for _, characterTable in ipairs(characterTableSorted) do
+		local character = characterTable[1];
+		local emotes = characterTable[2];
+		local characterSize = #emotes;
+		if (currentCount + characterSize) > maxSize then
+			-- Adding the previous table
+			if currentTable then
+				if firstCharacter ~= previousCharacter then
+					table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(firstCharacter) .. "-" .. string.upper(previousCharacter), currentTable });
+				else
+					table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(firstCharacter), currentTable });
+				end
+			end
+
+			if characterSize > maxSize then
+				-- Split into smaller tables
+				firstCharacter = nil;
+				local i = 0;
+				while (maxSize * i) < characterSize do
+					i = i + 1;
+					currentTable = {};
+					local offset = (i - 1) * maxSize;
+					for j = 1, min(maxSize, characterSize - offset) do
+						table.insert(currentTable, emotes[offset + j]);
+					end
+					table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(character) .. i, currentTable });
+				end
+				currentTable = nil;
+				currentCount = 0;
+			else
+				currentTable = {};
+				for i = 1, characterSize do
+					table.insert(currentTable, emotes[i]);
+				end
+				firstCharacter = character;
+				currentCount = characterSize;
+			end
+			previousCharacter = character;
+		else
+			if not currentTable then
+				currentTable = {};
+			end
+			for i = 1, characterSize do
+				table.insert(currentTable, emotes[i]);
+			end
+			currentCount = currentCount + characterSize;
+
+			if not firstCharacter then
+				firstCharacter = character;
+			end
+			previousCharacter = character;
+		end
+	end
+
+	-- Adding the previous table
+	if currentTable then
+		if firstCharacter ~= previousCharacter then
+			table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(firstCharacter) .. "-" .. string.upper(previousCharacter), currentTable });
+		else
+			table.insert(output, { loc.EFFECT_DO_EMOTE_OTHER .. " " .. string.upper(firstCharacter), currentTable });
+		end
+	end
+
+	return output;
+end
+
+local function do_emote_init()
+	local editor = TRP3_EffectEditorDoEmote;
+
+	-- Build list of emotes
+	local spokenEmotes = tInvert(TextEmoteSpeechList);
+	-- Those two are added dynamically
+	spokenEmotes["FORTHEALLIANCE"] = true;
+	spokenEmotes["FORTHEHORDE"] = true;
+	local animatedEmotes = tInvert(EmoteList);
+	local otherEmotes = {}
+	for i = 1, LAST_EMOTE_ID do
+		local emoteToken = _G["EMOTE" .. i .. "_TOKEN"]
+		if emoteToken then
+			if spokenEmotes[emoteToken] then
+				spokenEmotes[emoteToken] = i;
+			elseif animatedEmotes[emoteToken] then
+				animatedEmotes[emoteToken] = i
+			else
+				otherEmotes[emoteToken] = i;
+			end
+		end
+	end
+
+	local function getEmoteNameFromToken(emoteToken)
+		local emoteIndex = spokenEmotes[emoteToken] or animatedEmotes[emoteToken] or otherEmotes[emoteToken] or UNKNOWN
+		return _G["EMOTE"..emoteIndex.."_CMD1"]
+	end
+
+	local function getEmotesList(emotesList)
+		local list = {}
+		for token, _ in pairs(emotesList) do
+			table.insert(list, {getEmoteNameFromToken(token), token})
+		end
+		table.sort(list, function(a, b)
+			return strcmputf8i(Utils.str.convertSpecialChars(a[1]), Utils.str.convertSpecialChars(b[1])) < 0;
+		end)
+		return list
+	end
+
+	local emotesList = {
+		{loc.EFFECT_DO_EMOTE_SPOKEN, getEmotesList(spokenEmotes)},
+		{loc.EFFECT_DO_EMOTE_ANIMATED, getEmotesList(animatedEmotes)}
+	}
+
+	local otherEmotesList = getEmotesList(otherEmotes)
+
+	local splitTables = splitTableIntoSmallerAlphabetizedTables(otherEmotesList, 30);
+	for i = 1, #splitTables do
+		table.insert(emotesList, splitTables[i]);
+	end
+
+	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotesList, function(value, list) _G[list:GetName().."Text"]:SetText(tostring(getEmoteNameFromToken(value))); end, nil, 250, true);
+
+	registerEffectEditor("do_emote", {
+		title = loc.EFFECT_DO_EMOTE,
+		icon = "Achievement_Faction_Celestials",
+		description = loc.EFFECT_DO_EMOTE_TT,
+		effectFrameDecorator = function(scriptStepFrame, args)
+			scriptStepFrame.description:SetText(Ellyb.ColorManager.YELLOW(loc.EFFECT_DO_EMOTE .. ": ") .. tostring(getEmoteNameFromToken(args[1])));
+		end,
+		getDefaultArgs = function()
+			return {};
+		end,
+		editor = editor,
+	});
+
+	function editor.load(scriptData)
+		local data = scriptData.args or Globals.empty;
+		if data[1] then
+			editor.emoteList:SetSelectedValue(data[1]);
+			_G[editor.emoteList:GetName().."Text"]:SetText(tostring(getEmoteNameFromToken(data[1])));
+		end
+	end
+
+	function editor.save(scriptData)
+		scriptData.args[1] = editor.emoteList:GetSelectedValue();
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Sounds
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1163,6 +1334,7 @@ function TRP3_API.extended.tools.initBaseEffects()
 	speech_env_init();
 	speech_npc_init();
 	speech_player_init();
+	do_emote_init();
 
 	sound_id_self_init();
 	sound_id_stop_init();

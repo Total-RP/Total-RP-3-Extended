@@ -121,7 +121,7 @@
 				</Anchors>
 				<Frames>
 
-					<Frame parentKey="type" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentType">
+					<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="30" y="-18"/>
 						</Anchors>
@@ -148,7 +148,7 @@
 						</Anchors>
 					</EditBox>
 
-					<Frame parentKey="locale" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentLocale">
+					<Frame parentKey="locale" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentLocale">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.owner" x="0" y="5"/>
 						</Anchors>

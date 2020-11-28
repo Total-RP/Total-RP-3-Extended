@@ -206,13 +206,13 @@
 								</Anchors>
 							</Button>
 
-							<Frame parentKey="comparator" inherits="UIDropDownMenuTemplate" name="$parentComparator">
+							<Frame parentKey="comparator" inherits="TRP3_DropDownMenuTemplate" name="$parentComparator">
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-60"/>
 								</Anchors>
 							</Frame>
 
-							<Frame parentKey="left" inherits="UIDropDownMenuTemplate" name="$parentLeft" enableMouse="true">
+							<Frame parentKey="left" inherits="TRP3_DropDownMenuTemplate" name="$parentLeft" enableMouse="true">
 								<Anchors>
 									<Anchor point="TOPLEFT" x="10" y="-60"/>
 								</Anchors>
@@ -258,7 +258,7 @@
 								</Frames>
 							</Frame>
 
-							<Frame parentKey="right" inherits="UIDropDownMenuTemplate" name="$parentRight">
+							<Frame parentKey="right" inherits="TRP3_DropDownMenuTemplate" name="$parentRight">
 								<Anchors>
 									<Anchor point="TOPRIGHT" x="-10" y="-60"/>
 								</Anchors>

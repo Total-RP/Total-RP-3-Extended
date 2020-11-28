@@ -147,7 +147,7 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="quality" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentQuality">
+			<Frame parentKey="quality" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentQuality">
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="16" y="-2"/>
 					<Anchor point="RIGHT" x="-20" y="-2"/>

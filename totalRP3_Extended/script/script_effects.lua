@@ -68,6 +68,24 @@ local function getSpeech(text, speechPrefix)
 end
 TRP3_API.ui.misc.getSpeech = getSpeech;
 
+local FOR_THE_ALLIANCE_EMOTE = "FORTHEALLIANCE"
+local FOR_THE_HORDE_EMOTE = "FORTHEHORDE"
+
+--- Swaps faction restricted emote tokens if needed.
+--- For example, only the Alliance can do /forthealliance and only the Horde can do /forthehorde.
+---@return string An emote token that was checked against the player faction
+local function swapFactionRestrictedEmotesIfNeeded(emoteToken)
+	if emoteToken == FOR_THE_ALLIANCE_EMOTE or emoteToken == FOR_THE_HORDE_EMOTE then
+		local factionGroup = UnitFactionGroup("player");
+		if emoteToken == FOR_THE_ALLIANCE_EMOTE and factionGroup == "Horde" then
+			emoteToken = FOR_THE_HORDE_EMOTE
+		elseif emoteToken == FOR_THE_HORDE_EMOTE and factionGroup == "Alliance" then
+			emoteToken = FOR_THE_ALLIANCE_EMOTE
+		end
+	end
+	return emoteToken
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -156,6 +174,24 @@ local EFFECTS = {
 			eArgs.LAST = 0;
 		end,
 		secured = security.LOW,
+	},
+	["do_emote"] = {
+		getCArgs = function(args)
+			local channel = args[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
+			local text = args[2] or "";
+			return channel, text;
+		end,
+		method = function(structure, cArgs, eArgs)
+			local emoteToken, target, hold= structure.getCArgs(cArgs);
+			emoteToken = swapFactionRestrictedEmotesIfNeeded(emoteToken)
+			DoEmote(emoteToken, target, hold);
+			eArgs.LAST = 0;
+		end,
+		securedMethod = function(structure, cArgs, eArgs)
+			-- TBD
+			eArgs.LAST = 0;
+		end,
+		secured = security.MEDIUM,
 	},
 
 	-- Expert
