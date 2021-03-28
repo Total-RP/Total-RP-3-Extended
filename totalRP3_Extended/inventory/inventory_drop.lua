@@ -20,7 +20,7 @@ local EMPTY = Globals.empty;
 local Communications = AddOn_TotalRP3.Communications;
 local type, tremove = type, tremove;
 local tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber = tinsert, assert, strtrim, tostring, wipe, pairs, sqrt, tonumber;
-local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
+local getClass, isContainerByClassID = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID;
 local loc = TRP3_API.loc;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -73,8 +73,8 @@ end
 function TRP3_API.inventory.dropLoot(lootID)
 	local loot = TRP3_API.inventory.getLoot(lootID);
 	if loot then
-		for _, loot in pairs(loot.IT or EMPTY) do
-			TRP3_API.inventory.dropItemDirect(loot);
+		for _, lootItem in pairs(loot.IT or EMPTY) do
+			TRP3_API.inventory.dropItemDirect(lootItem);
 		end
 	end
 end
@@ -104,7 +104,7 @@ local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
 	return distance <= maxDistance, distance;
 end
 
-local function onLooted(itemData)
+local function onLooted()
 	for index, drop in pairs(dropData) do
 		if drop.item.count <= 0 then
 			wipe(dropData[index]);
@@ -121,8 +121,8 @@ function searchForItems()
 	local searchResults = {};
 	for _, drop in pairs(dropData) do
 		if drop.uiMapID == mapID then
-			local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, drop.posY or 0, drop.posX or 0);
-			if isInRadius then
+			local inRadius = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, drop.posY or 0, drop.posX or 0);
+			if inRadius then
 				-- Show loot
 				tinsert(searchResults, drop);
 			end
@@ -607,7 +607,7 @@ function TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2)
 	}, stashContainer.sharedData[1], Communications.PRIORITIES.HIGH);
 end
 
-local function receiveStashResponse(response, sender)
+local function receiveStashResponse(response)
 	if type(response) == "table" and response.item then
 		wipe(stashContainer.stashInfo.item);
 		Utils.table.copy(stashContainer.stashInfo.item, response.item);
@@ -648,11 +648,11 @@ local function receiveStashRequest(data, sender)
 end
 
 local function decorateStashSlot(slot, index)
-	local stashResponse = stashResponse[index];
-	TRP3_API.ui.frame.setupIconButton(slot, stashResponse[4] or "Temp");
-	slot.Name:SetText((stashResponse[3] or loc.DR_STASHES_NAME) .. "|cffff9900 (" .. (stashResponse[5] or 0) .. "/8)");
-	slot.InfoText:SetText("|cff00ff00" .. (stashResponse[6] or stashResponse[1]));
-	slot.info = stashResponse;
+	local stashSlotResponse = stashResponse[index];
+	TRP3_API.ui.frame.setupIconButton(slot, stashSlotResponse[4] or "Temp");
+	slot.Name:SetText((stashSlotResponse[3] or loc.DR_STASHES_NAME) .. "|cffff9900 (" .. (stashSlotResponse[5] or 0) .. "/8)");
+	slot.InfoText:SetText("|cff00ff00" .. (stashSlotResponse[6] or stashSlotResponse[1]));
+	slot.info = stashSlotResponse;
 	slot:SetScript("OnClick", function(self)
 		stashFoundFrame:Hide();
 		local posY, posX, posZ = UnitPosition("player");
@@ -661,6 +661,7 @@ local function decorateStashSlot(slot, index)
 			owner = self.info[1],
 			posY = posY,
 			posX = posX,
+			posZ = posZ,
 			BA = {
 				NA = self.info[3] or loc.DR_STASHES_NAME,
 				IC = self.info[4] or "Temp"
@@ -713,15 +714,12 @@ local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 	posY = tonumber(posY or 0) or 0;
 	posX = tonumber(posX or 0) or 0;
 	Utils.log.log(("%s is asking for stashes in zone %s."):format(sender, mapID));
-	for index, stash in pairs(stashesData) do
+	for _, stash in pairs(stashesData) do
 		if stash.uiMapID == mapID then
-			local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
-			if isInRadius then
+			local inRadius = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
+			if inRadius then
 				-- P2P response
-				local total = 0;
-				for index, slot in pairs(stash.item) do
-					total = total + 1;
-				end
+				local total = Utils.table.size(stash.item);
 				Communications.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, stash.id, stash.BA.NA, stash.BA.IC, total, castID, stash.CR);
 			end
 		end
@@ -769,7 +767,7 @@ local function getActionValue(value, x, y)
 	return nil;
 end
 
-local function onToolbarButtonClick(button, mouseButton)
+local function onToolbarButtonClick(button)
 	local posY, posX = UnitPosition("player");
 	local mapID = C_Map.GetBestMapForUnit("player");
 
@@ -782,8 +780,8 @@ local function onToolbarButtonClick(button, mouseButton)
 		local searchResults = {};
 		for stashIndex, stash in pairs(stashesData) do
 			if stash.uiMapID == mapID then
-				local isInRadius, distance = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
-				if isInRadius then
+				local inRadius = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
+				if inRadius then
 					-- Show loot
 					tinsert(searchResults, stashIndex);
 				end
@@ -829,16 +827,16 @@ function dropFrame.init()
 	stashesData = TRP3_Stashes[Globals.player_realm];
 
 	-- Cleanup
-	for index, dropData in pairs(dropData) do
-		if dropData.item.count then
-			if dropData.item.count == 0 then
-				tremove(dropData, index);
+	for index, dropSlot in pairs(dropData) do
+		if dropSlot.item.count then
+			if dropSlot.item.count == 0 then
+				tremove(dropSlot, index);
 			end
 		else
-			dropData.item.count = 1;
+			dropSlot.item.count = 1;
 		end
 	end
-	for index, stash in pairs(stashesData) do
+	for _, stash in pairs(stashesData) do
 		for index, stashItem in pairs(stash.item or EMPTY) do
 			if stashItem.count then
 				if stashItem.count == 0 then
@@ -874,7 +872,7 @@ function dropFrame.init()
 				configText = loc.DR_SEARCH_BUTTON,
 				tooltip = loc.DR_SYSTEM,
 				tooltipSub = loc.DR_SYSTEM_TT,
-				onClick = function(Uibutton, buttonStructure, button)
+				onClick = function(Uibutton, _, button)
 					onToolbarButtonClick(Uibutton, button);
 				end,
 				visible = 1

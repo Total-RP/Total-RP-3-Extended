@@ -51,7 +51,7 @@ stashSelfMapScanner.dataProviderTemplate = TRP3_StashMapPinMixin.TEMPLATE_NAME;
 function stashSelfMapScanner:Scan()
 	local mapID = WorldMapFrame:GetMapID();
 	local stashData = TRP3_Stashes[Globals.player_realm];
-	for index, stash in pairs(stashData) do
+	for _, stash in pairs(stashData) do
 		if stash.uiMapID == mapID then
 			stashSelfMapScanner:OnScanDataReceived(Globals.player_id, stash.mapX, stash.mapY, stash);
 		end
@@ -91,7 +91,7 @@ dropSelfMapScanner.dataProviderTemplate = TRP3_DropMapPinMixin.TEMPLATE_NAME;
 function dropSelfMapScanner:Scan()
 	local mapID = WorldMapFrame:GetMapID();
 	local dropData = TRP3_Drop[Globals.player_realm];
-	for index, drop in pairs(dropData) do
+	for _, drop in pairs(dropData) do
 		if drop.uiMapID == mapID then
 			dropSelfMapScanner:OnScanDataReceived(Globals.player_id, drop.mapX, drop.mapY, drop);
 		end
@@ -158,10 +158,7 @@ broadcast.registerCommand(STASHES_SCAN_COMMAND, function(sender, mapID)
 	local stashData = TRP3_Stashes[Globals.player_realm];
 	for _, stash in pairs(stashData) do
 		if stash.uiMapID == tonumber(mapID) and not stash.BA.NS then
-			local total = 0;
-			for index, slot in pairs(stash.item) do
-				total = total + 1;
-			end
+			local total = TRP3_API.utils.table.size(stash.item);
 			broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total, stash.CR);
 		end
 	end

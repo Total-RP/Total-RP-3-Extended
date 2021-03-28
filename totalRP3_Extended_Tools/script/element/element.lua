@@ -101,7 +101,6 @@ local objectBrowser = TRP3_ObjectBrowser;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local CreateFrame = CreateFrame;
 local initList = TRP3_API.ui.list.initList;
-local safeMatch = TRP3_API.utils.str.safeMatch;
 local filteredObjectList = {};
 
 local function onBrowserClose()
@@ -172,7 +171,7 @@ local function filterMatch(filter, value)
 	if filter == nil or filter:len() == 0 then
 		return true;
 	end
-	return safeMatch(value:lower(), filter:lower());
+	return string.find(value:lower(), filter:lower(), 1, true);
 end
 
 local function filteredObjectBrowser()

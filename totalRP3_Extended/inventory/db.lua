@@ -546,7 +546,6 @@ TRP3_DB.inner.diceexample = {
 			},
 		},
 	},
-	["securityLevel"] = 1,
 	["US"] = {
 		["AC"] = "Roll it!",
 		["SC"] = "onUse",
@@ -1400,7 +1399,6 @@ TRP3_DB.inner.arcanocasino = {
 			},
 		},
 	},
-	["securityLevel"] = 3,
 	["LI"] = {
 		["OU"] = "onUse",
 	},

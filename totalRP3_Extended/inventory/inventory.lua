@@ -16,9 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs, type, time = _G, assert, tostring, tinsert, wipe, pairs, type, time;
+local assert, tostring, wipe, pairs, type, time = assert, tostring, wipe, pairs, type, time;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
-local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local loc = TRP3_API.loc;
@@ -127,7 +126,6 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 	itemData = itemData or EMPTY;
 
 	local slot;
-	local ret;
 	local toAdd = itemData.count or 1;
 	local canStack = (itemClass.BA.ST or 0) > 0;
 
@@ -182,8 +180,8 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 			container.content[slot] = {
 				id = classID,
 			};
-			local slot = container.content[slot];
-			copySlotContent(slot, itemClass, itemData);
+			local containerSlot = container.content[slot];
+			copySlotContent(containerSlot, itemClass, itemData);
 		end
 		if stackSlot then
 			container.content[slot].count = (container.content[slot].count or 1) + 1;
@@ -196,7 +194,7 @@ end
 
 function TRP3_API.inventory.getItem(container, slotID)
 	-- Checking data
-	local container = container or playerInventory;
+	if not container then container = playerInventory end;
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
 	checkContainerInstance(container);
 	return container.content[slotID];
@@ -207,18 +205,18 @@ function TRP3_API.inventory.removeItem(classID, amount, container)
 		container = playerInventory;
 	end
 	while amount > 0 do
-		local container, slotID = TRP3_API.inventory.searchForFirstInstance(container, classID);
-		if container and slotID then
-			local slot = container.content[slotID];
+		local foundContainer, slotID = TRP3_API.inventory.searchForFirstInstance(container, classID);
+		if foundContainer and slotID then
+			local slot = foundContainer.content[slotID];
 			local amountFounded = (slot.count or 1);
 			local amountToRemove = math.min(amount, amountFounded);
 			slot.count = (slot.count or 1) - amountToRemove;
 			if slot.count <= 0 then
 				wipe(slot);
-				container.content[slotID] = nil;
+				foundContainer.content[slotID] = nil;
 			end
 			amount = amount - amountToRemove;
-			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, foundContainer);
 		else
 			break;
 		end
@@ -380,7 +378,7 @@ local function removeSlotContent(container, slotID, slotInfo, manuallyDestroyed)
 
 		if manuallyDestroyed then
 			if class.LI and class.LI.OD then
-				local retCode = TRP3_API.script.executeClassScript(class.LI.OD, class.SC,
+				TRP3_API.script.executeClassScript(class.LI.OD, class.SC,
 					{object = slotInfo, container = container}, slotInfo.id);
 			end
 			Utils.message.displayMessage(loc.DR_DELETED:format(link, count));
@@ -430,12 +428,12 @@ function TRP3_API.inventory.getInventory()
 	if not playerProfile.inventory then
 		playerProfile.inventory = {};
 	end
-	local playerInventory = playerProfile.inventory;
-	playerInventory.id = "main";
-	if not playerInventory.content then
-		playerInventory.content = {};
+	local playerProfileInventory = playerProfile.inventory;
+	playerProfileInventory.id = "main";
+	if not playerProfileInventory.content then
+		playerProfileInventory.content = {};
 	end
-	return playerInventory;
+	return playerProfileInventory;
 end
 
 local function recomputeContainerWeightValue(container)
@@ -451,7 +449,7 @@ local function recomputeContainerWeightValue(container)
 		end
 
 		-- Add content weight
-		for slotID, slotInfo in pairs(container.content or EMPTY) do
+		for _, slotInfo in pairs(container.content or EMPTY) do
 			if TRP3_API.extended.classExists(slotInfo.id) then
 				if  isContainerByClassID(slotInfo.id) then
 					local subWeight, subValue = recomputeContainerWeightValue(slotInfo);
