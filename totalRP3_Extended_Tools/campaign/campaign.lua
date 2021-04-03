@@ -16,8 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, tostring, error, assert, date = wipe, tostring, error, assert, date;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local error, assert, date = error, assert, date;
 local loc = TRP3_API.loc;
 local toolFrame;
 
@@ -41,7 +41,7 @@ end
 TRP3_API.extended.tools.createCampaign = createCampaign;
 
 
-function TRP3_API.extended.tools.getQuestStepData(id)
+function TRP3_API.extended.tools.getQuestStepData()
 	local data = {
 		TY = TRP3_DB.types.QUEST_STEP,
 		BA = {
@@ -75,7 +75,7 @@ function TRP3_API.extended.tools.getQuestData()
 	return data;
 end
 
-function TRP3_API.extended.tools.getCampaignData(campaignID)
+function TRP3_API.extended.tools.getCampaignData()
 	local data = {
 		TY = TRP3_DB.types.CAMPAIGN,
 		MD = {
