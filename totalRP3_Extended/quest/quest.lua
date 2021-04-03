@@ -31,6 +31,7 @@ local CUSTOM_EVENTS = {
 	TRP3_ROLL = "TRP3_ROLL",
 	TRP3_SIGNAL = "TRP3_SIGNAL",
 	TRP3_ITEM_USED = "TRP3_ITEM_USED"
+	TRP3_EMOTE = "TRP3_EMOTE",
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

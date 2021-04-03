@@ -96,6 +96,14 @@ local CUSTOM_EVENTS =
 
 			},
 			{
+				NA = "TRP3_EMOTE",
+				ID = "0 TRP3_EMOTE",
+				PA =
+				{
+					{ NA = "emoteToken", TY = "string" }, -- [1]
+				}
+			},
+			{
 				NA = "TRP3_ROLL",
 				ID = "0 TRP3_ROLL",
 				PA =
