@@ -486,7 +486,7 @@ function TRP3_API.inventory.initInventoryPage()
 		local diffX = x - self.x;
 		local diffY = y - self.y;
 		self:StopMovingOrSizing();
-		moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY, model);
+		moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY, inventoryModel);
 	end);
 
 	mainInventoryFrame.Equip.time:SetScript("OnValueChanged", function(self)

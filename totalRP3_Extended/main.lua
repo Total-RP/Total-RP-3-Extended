@@ -20,7 +20,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local pairs, strjoin, tostring, strtrim, wipe, assert, strsplit = pairs, strjoin, tostring, strtrim, wipe, assert, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.loc;
-local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local Log = Utils.log;
 
 TRP3_API.extended = {
@@ -399,7 +399,7 @@ local function onInit()
 	TRP3_DB.exchange = TRP3_Exchange_DB;
 
 	-- Register locales
-	for localeID, localeStructure in pairs(TRP3_API.loc:GetLocales()) do
+	for _, localeStructure in pairs(TRP3_API.loc:GetLocales()) do
 		for key, field in pairs(BAG_SOUNDS_MAPPING) do
 			if localeStructure:GetText(field) then
 				localeStructure:AddText(key, localeStructure:GetText(field))
@@ -424,7 +424,7 @@ local function onStart()
 
 	-- Signal
 	TRP3_API.extended.SIGNAL_PREFIX = "EXSI";
-	TRP3_API.extended.SIGNAL_EVENT = "TRP3_SIGNAL",
+	TRP3_API.extended.SIGNAL_EVENT = "TRP3_SIGNAL";
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
 		if sender ~= Globals.player_id then
 			Log.log(("Received signal from %s"):format(sender));
@@ -466,8 +466,8 @@ local function onStart()
 
 	-- Simplier combat kill event
 	TRP3_API.extended.KILL_EVENT = "TRP3_KILL";
-	Utils.event.registerHandler("COMBAT_LOG_EVENT_UNFILTERED", function(...)
-		local time, event, _, source, sourceName, _, _, dest, destName = CombatLogGetCurrentEventInfo();	-- No payload for combat log events in 8.0
+	Utils.event.registerHandler("COMBAT_LOG_EVENT_UNFILTERED", function()
+		local _, event, _, source, sourceName, _, _, dest, destName = CombatLogGetCurrentEventInfo();	-- No payload for combat log events in 8.0
 		if event == "PARTY_KILL" then
 			local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(dest);
 			if (unitType == "Player") then

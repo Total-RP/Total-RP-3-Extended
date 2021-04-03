@@ -21,7 +21,6 @@ local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local pairs, strsplit, floor, sqrt, tonumber = pairs, strsplit, math.floor, sqrt, tonumber;
 local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.loc;
-local Log = TRP3_API.utils.log;
 
 local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 
@@ -39,7 +38,7 @@ local function getPosition()
 	return posY, posX, posZ, instanceID;
 end
 
-function Utils.music.playLocalSoundID(soundID, channel, distance, source)
+function Utils.music.playLocalSoundID(soundID, channel, distance)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
@@ -47,7 +46,7 @@ function Utils.music.playLocalSoundID(soundID, channel, distance, source)
 	end
 end
 
-function Utils.music.playLocalMusic(soundID, distance, source)
+function Utils.music.playLocalMusic(soundID, distance)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
@@ -77,7 +76,6 @@ local function initSharedSound()
 				distance = tonumber(distance) or 0;
 				posY = tonumber(posY) or 0;
 				posX = tonumber(posX) or 0;
-				posZ = tonumber(posZ) or 0;
 				instanceID = tonumber(instanceID) or -1;
 
 				if sender == Globals.player_id then
@@ -88,7 +86,7 @@ local function initSharedSound()
 					end
 				else
 					-- Get current position
-					local myPosY, myPosX, myPosZ, myInstanceID = UnitPosition("player");
+					local myPosY, myPosX, _, myInstanceID = UnitPosition("player");
 					myPosY = floor(myPosY + 0.5);
 					myPosX = floor(myPosX + 0.5);
 
@@ -96,13 +94,13 @@ local function initSharedSound()
 						if channel ~= "Music" then
 							if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_METHOD) == TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY then
 								Utils.music.playSoundID(soundID, channel, sender);
-							else
+							--else
 								-- TODO: ask permission in chat
 							end
 						else
 							if getConfigValue(TRP3_API.extended.CONFIG_MUSIC_METHOD) == TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY then
 								Utils.music.playMusic(soundID, sender);
-							else
+							--else
 								-- TODO: ask permission in chat
 							end
 						end
@@ -126,7 +124,7 @@ end
 
 local historyFrame = TRP3_SoundsHistoryFrame;
 
-local function onLinkClicked(self, link, text, button)
+local function onLinkClicked(self, link)
 
 	local mode, id, channel = strsplit(":", link);
 
@@ -142,8 +140,8 @@ local function onLinkClicked(self, link, text, button)
 		else
 			Utils.music.playSoundID(id, channel, Globals.player_id);
 		end
-	elseif mode == "source" then
-
+	--elseif mode == "source" then
+		-- TODO?
 	end
 
 end

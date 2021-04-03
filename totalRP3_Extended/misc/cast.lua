@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
+local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 
 local frame = TRP3_CastingBarFrame;

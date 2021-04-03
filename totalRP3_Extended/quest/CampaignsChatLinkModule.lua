@@ -26,7 +26,6 @@ local Ellyb = TRP3_API.Ellyb;
 
 -- Lua imports
 local tcopy = Ellyb.Tables.copy;
-local date = date;
 
 -- Total RP 3 imports
 local iconToString = TRP3_API.utils.str.icon;
