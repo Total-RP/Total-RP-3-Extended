@@ -101,7 +101,7 @@ end
 -- Operands
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor; -- luacheck: ignore 212
+local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor; -- luacheck: ignore 211
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
