@@ -17,13 +17,11 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;
-local tsize = Utils.table.size;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local tostring, strtrim = tostring, strtrim;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor;
 
@@ -103,7 +101,7 @@ end
 -- Operands
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
+local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor; -- luacheck: ignore 212
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init

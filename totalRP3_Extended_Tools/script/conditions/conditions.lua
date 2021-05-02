@@ -16,10 +16,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local pairs, _G, type, tinsert, wipe, assert, tostring, strtrim = pairs, _G, type, tinsert, wipe, assert, tostring, strtrim;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
-local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local initList = TRP3_API.ui.list.initList;
@@ -38,7 +37,7 @@ local listCondition;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local OPERANDS = {}
-local leftListStructure, rightListStructure = {}, {};
+local leftListStructure = {};
 
 local function registerOperandEditor(operandID, operandStructure)
 	assert(not OPERANDS[operandID], "Already have an operand editor for " .. operandID);
@@ -262,7 +261,7 @@ local function openOperandEditor(expressionIndex)
 	operandEditor.comparator:SetSelectedValue(comparator);
 
 	operandEditor.left.argsData = leftOperand.a;
-	local hasPreview = onOperandSelected(leftOperand.i, operandEditor.left);
+	onOperandSelected(leftOperand.i, operandEditor.left);
 
 	if rightOperand.v ~= nil then
 		operandEditor.right.argsData = rightOperand.v;

@@ -16,16 +16,13 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
+local Globals, Utils  = TRP3_API.globals, TRP3_API.utils;
 local IsControlKeyDown = IsControlKeyDown;
-local tostring, tremove, tinsert, strtrim, pairs, assert, wipe = tostring, tremove, tinsert, strtrim, pairs, assert, wipe;
+local tremove, tinsert, wipe = tremove, tinsert, wipe;
 local tsize = Utils.table.size;
-local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-local color = Utils.str.color;
 local toolFrame;
 
 local editor = TRP3_ActionsEditorFrame;

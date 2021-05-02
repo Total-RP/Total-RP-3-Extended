@@ -16,9 +16,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local CreateFrame = CreateFrame;
-local wipe, pairs, error, assert, tinsert = wipe, pairs, error, assert, tinsert;
+local wipe, pairs, assert, tinsert = wipe, pairs, assert, tinsert;
 local tsize = Utils.table.size;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
@@ -82,11 +82,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Inner object editor: UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function idExists(id)
-	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
-	return toolFrame.specificDraft.IN[id];
-end
 
 local function onLineEnter(line)
 	line.Highlight:Show();
@@ -172,7 +167,6 @@ local function onLineAction(action, line)
 
 	if action == LINE_ACTION_DELETE then
 		TRP3_API.popup.showConfirmPopup(loc.IN_INNER_DELETE_CONFIRM:format(id, name or UNKNOWN, parentName or UNKNOWN), function()
-			local innerObject = toolFrame.specificDraft.IN[id];
 			wipe(innerObject);
 			toolFrame.specificDraft.IN[id] = nil;
 			refresh();
@@ -223,7 +217,7 @@ local function onLineClicked(line, button)
 	end
 end
 
-local function addInnerObject(type, self)
+local function addInnerObject(objectType, self)
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
 	-- Checking the parent mode to automatically adapt the mode for inner items
 	local parentClass = getClass(toolFrame.fullClassID);
@@ -240,7 +234,7 @@ local function addInnerObject(type, self)
 			else
 				innerMode = TRP3_DB.modes.NORMAL;
 			end
-			createInnerObject(innerID, type, innerMode);
+			createInnerObject(innerID, objectType, innerMode);
 			refresh();
 		elseif self == editor.browser.addcopy then
 			TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = editor, point = "CENTER", parentPoint = "CENTER"}, {function(id)
@@ -255,9 +249,9 @@ local function addInnerObject(type, self)
 				local template = {};
 				Utils.table.copy(template, class);
 				TRP3_API.extended.tools.replaceID(template, id, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. innerID);
-				createInnerObject(innerID, type, innerMode, template);
+				createInnerObject(innerID, objectType, innerMode, template);
 				refresh();
-			end, type});
+			end, objectType});
 		end
 	end, nil, "");
 end

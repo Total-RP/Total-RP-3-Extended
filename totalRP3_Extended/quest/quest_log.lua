@@ -408,8 +408,8 @@ end
 local function initStepFrame()
 	TRP3_QuestLogPage.Step.Title.Name:SetTextColor(0.1, 0.1, 0.1);
 	TRP3_QuestLogPage.Step.Title.InfoText:SetTextColor(0.1, 0.1, 0.1);
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth)
-		stepHTML:SetSize(containerwidth - 130, 5);
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+		stepHTML:SetSize(containerWidth - 130, 5);
 		stepHTML:SetText(stepHTML.html);
 	end);
 

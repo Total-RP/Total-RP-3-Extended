@@ -16,8 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local tostring, strtrim, tinsert, table, tremove, assert, wipe = tostring, strtrim, tinsert, table, tremove, assert, wipe;
+local Utils = TRP3_API.utils;
+local strtrim, tinsert, table, tremove, assert, wipe = strtrim, tinsert, table, tremove, assert, wipe;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local stEtN = Utils.str.emptyToNil;

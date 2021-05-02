@@ -17,10 +17,8 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tonumber, date, strtrim = wipe, pairs, tonumber, date, strtrim;
-local tsize = Utils.table.size;
+local pairs, tonumber, date, strtrim = pairs, tonumber, date, strtrim;
 local getClass = TRP3_API.extended.getClass;
-local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -302,27 +300,27 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 
 	toolFrame.list.bottom.item.templates.blank:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
-		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL));
-		TRP3_API.extended.tools.goToPage(ID);
+		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL));
+		TRP3_API.extended.tools.goToPage(itemID);
 	end);
 
 	toolFrame.list.bottom.item.templates.expert:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
-		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.EXPERT));
-		TRP3_API.extended.tools.goToPage(ID);
+		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.EXPERT));
+		TRP3_API.extended.tools.goToPage(itemID);
 	end);
 
 	toolFrame.list.bottom.item.templates.container:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
-		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getContainerItemData());
-		TRP3_API.extended.tools.goToPage(ID);
+		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getContainerItemData());
+		TRP3_API.extended.tools.goToPage(itemID);
 	end);
 
 	toolFrame.list.bottom.item.templates.document:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
-		local id = Utils.str.id();
-		local ID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getDocumentItemData(id), id);
-		TRP3_API.extended.tools.goToPage(ID);
+		local generatedID = Utils.str.id();
+		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getDocumentItemData(generatedID), generatedID);
+		TRP3_API.extended.tools.goToPage(itemID);
 	end);
 
 	toolFrame.list.bottom.item.templates.from:SetScript("OnClick", function()
@@ -331,7 +329,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 			toolFrame.list.bottom.item.templates:Hide();
 			local fromClass = getClass(fromID);
 			local copiedData = {};
-			local id = Utils.str.id();
+			local generatedID = Utils.str.id();
 			Utils.table.copy(copiedData, fromClass);
 			copiedData.MD = {
 				MO = copiedData.MD.MO,
@@ -341,8 +339,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 				SD = date("%d/%m/%y %H:%M:%S");
 				SB = Globals.player_id,
 			};
-			TRP3_API.extended.tools.replaceID(copiedData, fromID, id);
-			local ID, _ = TRP3_API.extended.tools.createItem(copiedData, id);
+			TRP3_API.extended.tools.replaceID(copiedData, fromID, generatedID);
+			local ID, _ = TRP3_API.extended.tools.createItem(copiedData, generatedID);
 			TRP3_API.extended.tools.goToPage(ID);
 		end, TRP3_DB.types.ITEM});
 
@@ -350,9 +348,9 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 
 	toolFrame.list.bottom.campaign.templates.blank:SetScript("OnClick", function()
 		toolFrame.list.bottom.campaign.templates:Hide();
-		local ID = Utils.str.id();
-		local ID, _ = TRP3_API.extended.tools.createCampaign(TRP3_API.extended.tools.getCampaignData(ID), ID);
-		TRP3_API.extended.tools.goToPage(ID);
+		local generatedID = Utils.str.id();
+		local campaignID, _ = TRP3_API.extended.tools.createCampaign(TRP3_API.extended.tools.getCampaignData(generatedID), generatedID);
+		TRP3_API.extended.tools.goToPage(campaignID);
 	end);
 
 	toolFrame.list.bottom.campaign.templates.from:SetScript("OnClick", function()
@@ -361,7 +359,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 			toolFrame.list.bottom.campaign.templates:Hide();
 			local fromClass = getClass(fromID);
 			local copiedData = {};
-			local id = Utils.str.id();
+			local generatedID = Utils.str.id();
 			Utils.table.copy(copiedData, fromClass);
 			copiedData.MD = {
 				MO = copiedData.MD.MO,
@@ -371,9 +369,9 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 				SD = date("%d/%m/%y %H:%M:%S");
 				SB = Globals.player_id,
 			};
-			TRP3_API.extended.tools.replaceID(copiedData, fromID, id);
-			local ID, _ = TRP3_API.extended.tools.createItem(copiedData, id);
-			TRP3_API.extended.tools.goToPage(ID);
+			TRP3_API.extended.tools.replaceID(copiedData, fromID, generatedID);
+			local campaignID, _ = TRP3_API.extended.tools.createItem(copiedData, generatedID);
+			TRP3_API.extended.tools.goToPage(campaignID);
 		end, TRP3_DB.types.CAMPAIGN});
 
 	end);

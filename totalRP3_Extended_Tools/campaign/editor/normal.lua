@@ -16,16 +16,15 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
+local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
 local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
 local tsize = Utils.table.size;
-local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
+local getFullID = TRP3_API.extended.getFullID;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-local color = Utils.str.color;
-local toolFrame, main, pages, params, manager, notes, npc, quests;
+local toolFrame, main, notes, npc, quests;
 
 local TABS = {
 	MAIN = 1,
@@ -90,9 +89,9 @@ local function newNPC(npcID)
 	npc.editor.oldID = nil;
 	npc.editor.id:SetText(npcID or "");
 	if UnitExists("target") then
-		local unitType, npcID = Utils.str.getUnitDataFromGUID("target");
-		if unitType == "Creature" and npcID then
-			npc.editor.id:SetText(npcID);
+		local unitType, npcTargetID = Utils.str.getUnitDataFromGUID("target");
+		if unitType == "Creature" and npcTargetID then
+			npc.editor.id:SetText(npcTargetID);
 		end
 	end
 	npc.editor.name:SetText("");
@@ -244,7 +243,7 @@ end
 
 local function storeDataScript()
 	-- TODO: compute all workflow order
-	for workflowID, workflow in pairs(toolFrame.specificDraft.SC) do
+	for _, workflow in pairs(toolFrame.specificDraft.SC) do
 		scriptEditor.linkElements(workflow);
 	end
 end
@@ -310,7 +309,7 @@ end
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onTabChanged(tabWidget, tab)
+local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 	assert(toolFrame.fullClassID, "fullClassID is nil");
 
 	-- Hide all
@@ -453,7 +452,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 		else
 			local values = {};
 			tinsert(values, {loc.CA_IMAGE_TT});
-			for index, portrait in pairs(CAMPAIGN_PORTRAITS) do
+			for _, portrait in pairs(CAMPAIGN_PORTRAITS) do
 				tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.CA_IMAGE, portrait), portrait, ("|TInterface\\ExtraButton\\%s:96:192|t"):format(portrait)});
 			end
 			TRP3_API.ui.listbox.displayDropDown(self, values, onCampaignPortraitSelected, 0, true);
