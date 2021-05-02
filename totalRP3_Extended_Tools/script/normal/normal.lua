@@ -656,10 +656,8 @@ function editor.loadList(context)
 	editor.currentContext = context;
 	refreshWorkflowList();
 	-- Select first
-	for id, _ in pairs(toolFrame.specificDraft.SC) do -- luacheck: ignore 512
-		openWorkflow(id);
-		break;
-	end
+	local id = next(toolFrame.specificDraft.SC);
+	openWorkflow(id);
 end
 
 function editor.linkElements(workflow)
