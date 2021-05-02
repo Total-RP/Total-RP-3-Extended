@@ -16,7 +16,7 @@ jobs:
       - name: Create Retail Package
         uses: BigWigsMods/packager@master
         with:
-          args: -p 100707 -w 24465 -a WAGO_ID
+          args: -p 100707 -w 24465 -a e56nE0N9
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
