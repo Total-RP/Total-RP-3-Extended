@@ -657,7 +657,9 @@ function editor.loadList(context)
 	refreshWorkflowList();
 	-- Select first
 	local id = next(toolFrame.specificDraft.SC);
-	openWorkflow(id);
+	if id then
+		openWorkflow(id);
+	end
 end
 
 function editor.linkElements(workflow)
