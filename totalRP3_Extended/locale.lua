@@ -1704,6 +1704,12 @@ TRP3_KS_BACKERS =
 
 Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Morgane "Ellypse" Parize|r.
 
+## Thanks to our helpful members on Discord:
+
+- Obidiah
+- Ovokalia
+- Seleves
+
 ## To all our Kickstarter backers: many thanks for the support!
 
 - Abyssaloth
