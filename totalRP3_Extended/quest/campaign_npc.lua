@@ -99,7 +99,7 @@ local function onMouseOver()
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 			if (npcData.DE or ""):len() > 0 then
-				local text = strtrim(npcData.DE);
+				local text = strtrim(TRP3_API.script.parseArgs(npcData.DE, TRP3_API.quest.getCampaignVarStorage()));
 				if text:len() > getCurrentMaxSize() then
 					text = text:sub(1, getCurrentMaxSize()) .. "…";
 				end
