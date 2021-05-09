@@ -86,7 +86,11 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(ITEM_UNIQUE .. " (" .. class.BA.UN .. ")");
+		local uniqueText = ITEM_UNIQUE;
+		if class.BA.UN > 1 then
+			uniqueText = uniqueText ..  " (" .. class.BA.UN .. ")";
+		end
+		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(uniqueText);
 	end
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
