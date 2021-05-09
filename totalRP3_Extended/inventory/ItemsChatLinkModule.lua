@@ -103,7 +103,7 @@ function ItemsChatLinksModule:GetTooltipLines(tooltipData)
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine(parseArgs(description, args), Colors.ORANGE)
+		tooltipLines:AddLine("\"" .. parseArgs(description, args) .. "\"", Colors.YELLOW)
 	end
 
 	-- On use effect

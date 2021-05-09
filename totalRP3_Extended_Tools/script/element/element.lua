@@ -153,7 +153,7 @@ local function decorateBrowserLine(frame, index)
 		end
 		if base.DE then
 			local argsStructure = {object = {id = objectID}};
-			text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.ORANGE("\"" .. TRP3_API.script.parseArgs(base.DE .. "\"", argsStructure));
+			text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.YELLOW("\"" .. TRP3_API.script.parseArgs(base.DE .. "\"", argsStructure));
 		end
 		text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0));
 

@@ -208,7 +208,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text1 and text1:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.ORANGE:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
+		local r, g, b = TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
 		TRP3_ItemTooltip:AddLine(text1, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);

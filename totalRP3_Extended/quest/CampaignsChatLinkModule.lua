@@ -68,7 +68,7 @@ function CampaignsChatLinksModule:GetTooltipLines(tooltipData)
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine(parseArgs(description), Colors.ORANGE)
+		tooltipLines:AddLine("\"" .. parseArgs(description) .. "\"", Colors.YELLOW)
 	end
 
 	tooltipLines:AddLine(" ");
