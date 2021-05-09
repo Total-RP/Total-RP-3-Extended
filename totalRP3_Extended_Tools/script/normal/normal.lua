@@ -16,12 +16,10 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local wipe, pairs, tostring, tinsert, assert, tonumber, sort = wipe, pairs, tostring, tinsert, assert, tonumber, table.sort;
 local tContains, strjoin, unpack = tContains, strjoin, unpack;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
-local getClass = TRP3_API.extended.getClass;
-local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
@@ -658,9 +656,9 @@ function editor.loadList(context)
 	editor.currentContext = context;
 	refreshWorkflowList();
 	-- Select first
-	for id, _ in pairs(toolFrame.specificDraft.SC) do
+	local id = next(toolFrame.specificDraft.SC);
+	if id then
 		openWorkflow(id);
-		break;
 	end
 end
 
@@ -732,8 +730,8 @@ editor.init = function(ToolFrame, effectMenu)
 	toolFrame = ToolFrame;
 
 	-- Resize
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
-		editor.workflow.container.scroll.list:SetWidth( containerwidth - 580 );
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerWidth, containerHeight) -- luacheck: ignore 212
+		editor.workflow.container.scroll.list:SetWidth( containerWidth - 580 );
 	end);
 
 	-- List

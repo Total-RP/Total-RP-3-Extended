@@ -16,8 +16,8 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, wipe, tostring, tinsert, strsplit, pairs, type, tonumber = _G, wipe, tostring, tinsert, strsplit, pairs, type, tonumber;
+local Utils = TRP3_API.utils;
+local wipe, tostring, strsplit, pairs, tonumber = wipe, tostring, strsplit, pairs, tonumber;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
@@ -55,7 +55,7 @@ local function playTextAnim(context)
 	if not dialogFrame.textLineToken or not dialogFrame.ND or dialogFrame.ND == "NONE" then
 		return;
 	end
---	Log.log("AnimWithToken: " .. context);
+	Log.log("AnimWithToken: " .. context);
 
 	-- Animations
 	local targetModel = dialogFrame.ND == "LEFT" and modelLeft or modelRight;
@@ -104,12 +104,6 @@ local function reinitModel(frame)
 	frame.unit = nil;
 end
 
-local function loadModel(frame, unit)
-	reinitModel(frame);
-	frame.unit = unit;
-	frame:SetUnit(unit, false);
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TEXT ANIMATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -142,7 +136,6 @@ end
 -- API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local UnitName = UnitName;
 local processDialogStep;
 local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
 local after = C_Timer.After;
@@ -150,7 +143,7 @@ local after = C_Timer.After;
 local function finishDialog()
 	dialogFrame:Hide();
 	if dialogFrame.classID and dialogFrame.class.LI and dialogFrame.class.LI.OE and dialogFrame.class.SC then
-		local retCode = TRP3_API.script.executeClassScript(dialogFrame.class.LI.OE, dialogFrame.class.SC, {}, dialogFrame.classID);
+		TRP3_API.script.executeClassScript(dialogFrame.class.LI.OE, dialogFrame.class.SC, {}, dialogFrame.classID);
 	end
 end
 
@@ -404,7 +397,7 @@ function processDialogStep()
 	dialogFrame.dialogStepClass = dialogStepClass;
 
 	if dialogFrame.classID and dialogStepClass.WO then
-		local retCode = TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC, {}, dialogFrame.classID);
+		TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC, {}, dialogFrame.classID);
 	end
 
 	playDialogStep();
@@ -431,7 +424,7 @@ local function startDialog(dialogID, class, args)
 	end
 
 	if dialogID and dialogClass.LI and dialogClass.LI.OS and dialogClass.SC then
-		local retCode = TRP3_API.script.executeClassScript(dialogClass.LI.OS, dialogClass.SC, {}, dialogID);
+		TRP3_API.script.executeClassScript(dialogClass.LI.OS, dialogClass.SC, {}, dialogID);
 	end
 
 	historyFrame.container:AddMessage("---------------------------------------------------------------");
@@ -481,7 +474,7 @@ function TRP3_API.extended.dialog.onStart()
 	TRP3_API.script.registerEffects({
 		dialog_start = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			method = function(structure, cArgs, eArgs)
+			method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 				local dialogID = cArgs[1];
 				eArgs.LAST = startDialog(dialogID, nil, eArgs);
 			end,
@@ -491,7 +484,7 @@ function TRP3_API.extended.dialog.onStart()
 	TRP3_API.script.registerEffects({
 		dialog_quick = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			method = function(structure, cArgs, eArgs)
+			method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 				local dialogText = cArgs[1];
 				eArgs.LAST = startQuickDialog(dialogText);
 			end,

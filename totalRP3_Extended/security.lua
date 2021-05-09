@@ -23,8 +23,8 @@ local Ellyb = TRP3_API.Ellyb;
 local COLORS = Ellyb.ColorManager;
 --}}}
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local assert, pairs, tinsert, wipe = assert, pairs, tinsert, wipe;
+local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
+local assert, pairs, tinsert = assert, pairs, tinsert;
 local tsize = Utils.table.size;
 local iterateObject = TRP3_API.extended.iterateObject;
 local loc = TRP3_API.loc;
@@ -111,10 +111,10 @@ local function computeSecurity(rootObjectID, rootObject, details)
 
 	local minSecurity = SECURITY_LEVEL.HIGH;
 	iterateObject(rootObjectID, rootObject, function(childID, childClass)
-		for workflowID, workflow in pairs(childClass.SC or EMPTY) do
-			for stepID, step in pairs(workflow.ST or EMPTY) do
+		for _, workflow in pairs(childClass.SC or EMPTY) do
+			for _, step in pairs(workflow.ST or EMPTY) do
 				if step.t == ELEMENT_TYPE.EFFECT then
-					for effectIndex, effect in pairs(step.e or EMPTY) do
+					for _, effect in pairs(step.e or EMPTY) do
 						local effectID = effect.id;
 						local securityLevel = getEffectSecurity(effectID);
 						minSecurity = math.min(minSecurity, securityLevel);
@@ -184,7 +184,7 @@ local NORMAL_HEIGHT = 310;
 local ACTION_FLAG_THIS = "1";
 local ACTION_FLAG_ALL = "2";
 
-local function onLineActionSelected(value, button)
+local function onLineActionSelected(value)
 	local action = value:sub(1, 1);
 	local effectGroup = value:sub(2);
 
@@ -214,7 +214,7 @@ local function decorateLine(line, effectGroup)
 	line.click:SetScript("OnClick", onLineClick);
 
 	local accepted, reason = resolveEffectGroupSecurity(securityFrame.classID, effectGroup);
-	local stateText = "";
+	local stateText;
 	if accepted then
 		stateText = COLORS.GREEN(loc.SEC_LEVEL_DETAILS_ACCEPTED);
 	else

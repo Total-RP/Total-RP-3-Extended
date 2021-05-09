@@ -29,7 +29,6 @@ if not TRP3_Extended_Flyway then
 end
 
 local function applyPatches(fromBuild, toBuild)
-    local i;
     for i=fromBuild, toBuild do
         if type(TRP3_API.extended.flyway.patches[tostring(i)]) == "function" then
             TRP3_API.utils.log.log(("Applying patch %s for Extended"):format(i));

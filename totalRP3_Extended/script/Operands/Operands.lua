@@ -40,7 +40,7 @@ function Operand:initialize(operandId, environment)
 	TRP3_API.script.registerOperand(self)
 end
 
---[[ Override ]] function Operand:CodeReplacement(args)
+--[[ Override ]] function Operand:CodeReplacement(args)	-- luacheck: ignore 212
 	error("Operand:CodeReplacement(args) should be overriden by the operand to execute the desired code replacement.");
 end
 

@@ -21,10 +21,8 @@
 local TRP3_API = TRP3_API;
 local Ellyb = TRP3_API.Ellyb;
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;
-local tsize = Utils.table.size;
-local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;

@@ -24,7 +24,7 @@ local _, Private_TRP3E = ...;
 ---@type SecuredMacroCommandsEnclave
 local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave;
 
-local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
+local assert, type, tostring, tonumber, pairs = assert, type, tostring, tonumber, pairs;
 local loc = TRP3_API.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -102,7 +102,7 @@ local security = TRP3_API.security.SECURITY_LEVEL;
 local EFFECTS = {
 
 	["MISSING"] = {
-		method = function(structure, args, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			TRP3_API.utils.message.displayMessage("|cffff0000" .. loc.SCRIPT_UNKNOWN_EFFECT, 1);
 			eArgs.LAST = 0;
 		end,
@@ -113,12 +113,12 @@ local EFFECTS = {
 	["text"] = {
 		getCArgs = function(args)
 			local text = args[1] or "";
-			local type = tonumber(args[2]) or 1;
-			return text, type;
+			local textType = tonumber(args[2]) or 1;
+			return text, textType;
 		end,
 		method = function(structure, args, eArgs)
-			local text, type = structure.getCArgs(args);
-			TRP3_API.utils.message.displayMessage(TRP3_API.script.parseArgs(text, eArgs), type);
+			local text, textType = structure.getCArgs(args);
+			TRP3_API.utils.message.displayMessage(TRP3_API.script.parseArgs(text, eArgs), textType);
 			eArgs.LAST = 0;
 		end,
 		secured = security.HIGH,
@@ -126,12 +126,12 @@ local EFFECTS = {
 
 	-- Speech
 	["speech_env"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local text = cArgs[1] or "";
 			SendChatMessage(TRP3_API.script.parseArgs("|| " .. text, eArgs), 'EMOTE');
 			eArgs.LAST = 0;
 		end,
-		securedMethod = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local text = cArgs[1] or "";
 			TRP3_API.utils.message.displayMessage(TRP3_API.script.parseArgs(text, eArgs), 1);
 			eArgs.LAST = 0;
@@ -141,18 +141,18 @@ local EFFECTS = {
 	["speech_npc"] = {
 		getCArgs = function(args)
 			local name = args[1] or "";
-			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
+			local speechType = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
-			return name, type, text;
+			return name, speechType, text;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local name, type, text = structure.getCArgs(cArgs);
-			SendChatMessage(TRP3_API.script.parseArgs("|| " .. getSpeechPrefixText(type, name, text), eArgs), 'EMOTE');
+			local name, speechType, text = structure.getCArgs(cArgs);
+			SendChatMessage(TRP3_API.script.parseArgs("|| " .. getSpeechPrefixText(speechType, name, text), eArgs), 'EMOTE');
 			eArgs.LAST = 0;
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
-			local name, type, text = structure.getCArgs(cArgs);
-			TRP3_API.utils.message.displayMessage(TRP3_API.script.parseArgs(getSpeechPrefixText(type, name, text), eArgs), 1);
+			local name, speechType, text = structure.getCArgs(cArgs);
+			TRP3_API.utils.message.displayMessage(TRP3_API.script.parseArgs(getSpeechPrefixText(speechType, name, text), eArgs), 1);
 			eArgs.LAST = 0;
 		end,
 		secured = security.LOW,
@@ -187,8 +187,8 @@ local EFFECTS = {
 			DoEmote(emoteToken, target, hold);
 			eArgs.LAST = 0;
 		end,
-		securedMethod = function(structure, cArgs, eArgs)
-			-- TBD
+		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
+			-- TODO: Secured emote effect.
 			eArgs.LAST = 0;
 		end,
 		secured = security.MEDIUM,
@@ -300,7 +300,7 @@ local EFFECTS = {
 	},
 
 	["sound_music_self"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local musicPath = cArgs[1] or "";
 			local musicID = tonumber(musicPath) or TRP3_API.utils.music.convertPathToID(musicPath) or musicPath;
 			eArgs.LAST = TRP3_API.utils.music.playMusic(musicID);
@@ -309,7 +309,7 @@ local EFFECTS = {
 	},
 
 	["sound_music_stop"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			TRP3_API.utils.music.stopMusic();
 			eArgs.LAST = 0;
 		end,
@@ -325,8 +325,8 @@ local EFFECTS = {
 			return soundID, channel, distance, source;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local soundID, channel, distance, source = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.playLocalSoundID(soundID, channel, distance, source);
+			local soundID, channel, distance = structure.getCArgs(cArgs);
+			eArgs.LAST = TRP3_API.utils.music.playLocalSoundID(soundID, channel, distance);
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
 			local soundID, channel, _, source = structure.getCArgs(cArgs);
@@ -357,8 +357,8 @@ local EFFECTS = {
 			return musicID, distance, source;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local musicID, distance, source = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.playLocalMusic(musicID, distance, source);
+			local musicID, distance = structure.getCArgs(cArgs);
+			eArgs.LAST = TRP3_API.utils.music.playLocalMusic(musicID, distance);
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
 			local musicID = structure.getCArgs(cArgs);
@@ -368,7 +368,7 @@ local EFFECTS = {
 	},
 
 	["sound_music_local_stop"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			TRP3_API.utils.music.stopLocalMusic();
 			eArgs.LAST = 0;
 		end,
@@ -377,18 +377,18 @@ local EFFECTS = {
 
 	-- Companions
 	["companion_dismiss_mount"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			DismissCompanion("MOUNT");
 			eArgs.LAST = 0;
 		end,
-		securedMethod = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			eArgs.LAST = 0;
 		end,
 		secured = security.MEDIUM,
 	},
 
 	["companion_dismiss_critter"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			if C_PetJournal.GetSummonedPetGUID() then
 				C_PetJournal.SummonPetByGUID(C_PetJournal.GetSummonedPetGUID());
 			end
@@ -411,12 +411,12 @@ local EFFECTS = {
 	},
 
 	["companion_summon_mount"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local mountId = tonumber(cArgs[1] or 0);
 			C_MountJournal.SummonByID(mountId);
 			eArgs.LAST = 0;
 		end,
-		securedMethod = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			eArgs.LAST = 0;
 		end,
 		secured = security.MEDIUM,
@@ -424,7 +424,7 @@ local EFFECTS = {
 
 	-- Camera effects
 	["cam_zoom_in"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local distance = cArgs[1] or "0";
 			CameraZoomIn(tonumber(TRP3_API.script.parseArgs(distance, eArgs)) or 0);
 			eArgs.LAST = 0;
@@ -432,7 +432,7 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 	["cam_zoom_out"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local distance = cArgs[1] or "0";
 			CameraZoomOut(tonumber(TRP3_API.script.parseArgs(distance, eArgs)) or 0);
 			eArgs.LAST = 0;
@@ -440,7 +440,7 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 	["cam_save"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local slot = tonumber(cArgs[1]) or 1;
 			SaveView(slot);
 			eArgs.LAST = 0;
@@ -448,7 +448,7 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 	["cam_load"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local slot = tonumber(cArgs[1]) or 1;
 			SetView(slot);
 			eArgs.LAST = 0;
@@ -458,12 +458,12 @@ local EFFECTS = {
 
 	-- SCRIPT
 	["script"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local value = tostring(cArgs[1]);
 			TRP3_API.script.runLuaScriptEffect(value, eArgs, false);
 			eArgs.LAST = 0;
 		end,
-		securedMethod = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local value = tostring(cArgs[1]);
 			TRP3_API.script.runLuaScriptEffect(value, eArgs, true);
 			eArgs.LAST = 0;
@@ -473,13 +473,13 @@ local EFFECTS = {
 
 	-- SECURED MACRO
 	["secure_macro"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local macroText = tostring(cArgs[1]);
 			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
 			SecuredMacroCommandsEnclave:AddSecureCommands(macroText);
 			eArgs.LAST = 0
 		end,
-		securedMethod = function(structure, cArgs, eArgs)
+		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local macroText = tostring(cArgs[1]);
 			macroText = TRP3_API.script.parseArgs(macroText, eArgs);
 			TRP3_API.utils.message.displayMessage(loc.EFFECT_SECURE_MACRO_BLOCKED .. " " .. tostring(macroText), 1);
@@ -490,7 +490,7 @@ local EFFECTS = {
 
 	-- PROMPT
 	["var_prompt"] = {
-		method = function(structure, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			TRP3_API.popup.showTextInputPopup(cArgs[1] or "",
 			function(value)
 				TRP3_API.script.setVar(eArgs, cArgs[3] or "o", "=", cArgs[2] or "var", value);
@@ -499,7 +499,7 @@ local EFFECTS = {
 					C_Timer.After(0.1, function() TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4]) end);
 				end
 			end,
-			function(value)
+			function()
 				if cArgs[4] and cArgs[4] ~= "" then
 					C_Timer.After(0.1, function() TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4]) end);
 				end

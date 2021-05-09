@@ -15,7 +15,7 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Utils = TRP3_API.utils;
 local pairs, strsplit = pairs, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;

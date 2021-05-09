@@ -17,13 +17,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, pairs, tinsert, sort, date = wipe, pairs, tinsert, table.sort, date;
-local tsize = Utils.table.size;
-local getClass = TRP3_API.extended.getClass;
-local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.loc;
-local toolFrame;
 
 function TRP3_API.extended.tools.getEffectOperandLocale()
 	local effectMenu = {

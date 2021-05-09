@@ -18,9 +18,7 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local Communications = AddOn_TotalRP3.Communications;
 local tonumber, assert, strsplit, tostring, wipe, pairs, type = tonumber, assert, strsplit, tostring, wipe, pairs, type;
-local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
-local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
-local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
+local getClass = TRP3_API.extended.getClass;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
@@ -67,10 +65,6 @@ local function getItemClass(id)
 	end
 end
 
-local function getItemClassSecurityLevel()
-
-end
-
 local function reloadDownloads()
 	local yourData = exchangeFrame.yourData;
 	local myData = exchangeFrame.myData;
@@ -88,7 +82,6 @@ local function reloadDownloads()
 				if class.securityLevel ~= SECURITY_LEVEL.HIGH then
 					-- If at least one effectgroup is blocked, only then we bother the user
 					if TRP3_API.security.atLeastOneBlocked(rootClassId) then
-						local secLevelText = ("|cffffffff%s: %s"):format(loc.SEC_LEVEL, TRP3_API.security.getSecurityText(class.securityLevel));
 						slot.details:SetText("|cffff0000" .. loc.SEC_EFFECT_BLOCKED);
 						slot.security:Show();
 						setTooltipForSameFrame(slot.security, "TOP", 0, 5, loc.SEC_EFFECT_BLOCKED, loc.SEC_EFFECT_BLOCKED_TT);
@@ -456,13 +449,12 @@ end
 
 local function receivedDataRequest(request, sender)
 	local classID = request.id;
-	local version = request.v;
 	local messageID = request.mId;
 
 	local class = getClass(classID);
 	local response = {
 		id = classID,
-		class = class;
+		class = class,
 	}
 
 	Communications.sendObject(SEND_DATA_QUERY_PREFIX, response, sender, SEND_DATE_PRIORITY, messageID);
@@ -586,7 +578,7 @@ function exchangeFrame.init()
 		end);
 		slot.download:Hide();
 	end
-	for index, slot in pairs(exchangeFrame.rightSlots) do
+	for _, slot in pairs(exchangeFrame.rightSlots) do
 		slot:SetScript("OnEnter", function(self)
 			TRP3_API.inventory.showItemTooltip(self, self.slotInfo, self.itemClass);
 		end);
@@ -612,7 +604,7 @@ function exchangeFrame.init()
 	Communications.registerSubSystemPrefix(SEND_DATA_QUERY_PREFIX, receivedDataResponse);
 	Communications.registerSubSystemPrefix(FINISH_EXCHANGE_QUERY_PREFIX, receivedFinish);
 
-	TRP3_API.events.listenToEvent(TRP3_API.security.EVENT_SECURITY_CHANGED, function(arg)
+	TRP3_API.events.listenToEvent(TRP3_API.security.EVENT_SECURITY_CHANGED, function()
 		if exchangeFrame:IsVisible() then
 			reloadDownloads();
 		end

@@ -27,12 +27,10 @@ local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.loc;
-local Log = Utils.log;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
 local showItemTooltip = TRP3_API.inventory.showItemTooltip;
 local IsAltKeyDown = IsAltKeyDown;
-local tContains = tContains;
 local ToolFrame, onLineActionSelected;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
 local TRP3_MainTooltip, TRP3_ItemTooltip = TRP3_MainTooltip, TRP3_ItemTooltip;
@@ -218,11 +216,11 @@ function refresh()
 		local depth = #parts;
 		local isOpen = idList[index + 1] and idList[index + 1]:sub(1, objectID:len() + 1) == objectID .. " ";
 		local hasChildren = isOpen or objectHasChildren(class);
-		local icon, name, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
+		local icon, _, description = TRP3_API.extended.tools.getClassDataSafeByType(class);
 		local link = TRP3_API.inventory.getItemLink(class, objectID);
 		local locale = TRP3_API.extended.tools.getObjectLocale(rootClass);
 
-		-- idData is wipe frequently: DO NOT STORE PERSISTENT DATA IN IT !!!
+		-- idData is wiped frequently: DO NOT STORE PERSISTENT DATA IN IT !!!
 		idData[index] = {
 			type = class.TY,
 			mode = (class.MD and class.MD.MO) or TRP3_DB.modes.NORMAL,
@@ -241,7 +239,7 @@ function refresh()
 
 	end
 
-	for index, idData in pairs(idData) do
+	for index, data in pairs(idData) do
 
 		local lineWidget = linesWidget[index];
 		if not lineWidget then
@@ -254,26 +252,26 @@ function refresh()
 			tinsert(linesWidget, lineWidget);
 		end
 
-		local tt = ("|cff00ff00%s: %s|r"):format(getTypeLocale(idData.type) or UNKNOWN, idData.text or UNKNOWN);
+		local tt = ("|cff00ff00%s: %s|r"):format(getTypeLocale(data.type) or UNKNOWN, data.text or UNKNOWN);
 		lineWidget.Text:SetText(tt);
 
 		local locale = "";
-		if idData.depth == 1 or ToolFrame.list.hasSearch then
-			locale = "  |T" .. TRP3_API.extended.tools.getObjectLocaleImage(idData.locale) .. ":11:16|t";
+		if data.depth == 1 or ToolFrame.list.hasSearch then
+			locale = "  |T" .. TRP3_API.extended.tools.getObjectLocaleImage(data.locale) .. ":11:16|t";
 		end
 		if ToolFrame.list.hasSearch then
-			local totalPath = TRP3_API.inventory.getItemLink(getClass(idData.fullID), idData.fullID, true);
+			local totalPath = TRP3_API.inventory.getItemLink(getClass(data.fullID), data.fullID, true);
 			lineWidget.Right:SetText(totalPath .. locale);
 		else
-			lineWidget.Right:SetText(("|cff00ffff%s"):format(idData.ID == idData.fullID and loc.ROOT_GEN_ID .. locale or idData.ID));
+			lineWidget.Right:SetText(("|cff00ffff%s"):format(data.ID == data.fullID and loc.ROOT_GEN_ID .. locale or data.ID));
 		end
 
 
 		lineWidget.Expand:Hide();
-		if idData.hasChildren and not ToolFrame.list.hasSearch then
+		if data.hasChildren and not ToolFrame.list.hasSearch then
 			lineWidget.Expand:Show();
-			lineWidget.Expand.isOpen = idData.isOpen;
-			if idData.isOpen then
+			lineWidget.Expand.isOpen = data.isOpen;
+			if data.isOpen then
 				lineWidget.Expand:SetNormalTexture("Interface\\Buttons\\UI-MinusButton-UP");
 				lineWidget.Expand:SetPushedTexture("Interface\\Buttons\\UI-MinusButton-DOWN");
 			else
@@ -282,15 +280,15 @@ function refresh()
 			end
 		end
 
-		setTooltipForSameFrame(lineWidget.Click, "BOTTOMRIGHT", 0, 0, tt, idData.metadataTooltip);
+		setTooltipForSameFrame(lineWidget.Click, "BOTTOMRIGHT", 0, 0, tt, data.metadataTooltip);
 
 		lineWidget:ClearAllPoints();
-		local depth = ToolFrame.list.hasSearch and 1 or idData.depth;
+		local depth = ToolFrame.list.hasSearch and 1 or data.depth;
 		lineWidget:SetPoint("LEFT", LEFT_DEPTH_STEP_MARGIN * (depth - 1), 0);
 		lineWidget:SetPoint("RIGHT", -15, 0);
 		lineWidget:SetPoint("TOP", 0, (-LINE_TOP_MARGIN) * (index - 1));
 
-		lineWidget.idData = idData;
+		lineWidget.idData = data;
 		lineWidget:Show();
 	end
 
@@ -339,7 +337,6 @@ local function filterList(typeSearch, localeSearch)
 				local rootID = TRP3_API.extended.getRootClassID(objectID);
 				local rootClass = getDB(currentTab)[rootID];
 				if rootClass then
-					local rootClass = getDB(currentTab)[rootID]
 					if checkType(typeFilter, object) and checkOwner(createdFilter, rootClass)
 							and checkName(nameFilter, object) and checkID(idFilter, objectID)
 						and checkLocale(localeFilter, rootClass)
@@ -383,7 +380,7 @@ local function getDBSize(dbType)
 	return count;
 end
 
-local function onTabChanged(tabWidget, tab)
+local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 	tabGroup.tabs[1]:SetText(loc.DB_MY:format(getDBSize(TABS.MY_DB)));
 	tabGroup.tabs[2]:SetText(loc.DB_OTHERS:format(getDBSize(TABS.OTHERS_DB)));
 	tabGroup.tabs[3]:SetText(loc.DB_BACKERS:format(getDBSize(TABS.BACKERS_DB)));
@@ -405,8 +402,6 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.container.Empty:SetText(loc.DB_MY_EMPTY .. "\n\n\n" .. Utils.str.icon("misc_arrowdown", 50));
 	elseif currentTab == TABS.OTHERS_DB then
 		ToolFrame.list.container.Empty:SetText(loc.DB_OTHERS_EMPTY);
-	elseif currentTab == TABS.BACKERS_DB then
-
 	elseif currentTab == TABS.FULL_DB then
 		ToolFrame.list.bottom.import:Show();
 		ToolFrame.list.bottom.importFull:Show();
@@ -417,7 +412,7 @@ local function onTabChanged(tabWidget, tab)
 		ToolFrame.list.backers:Show();
 
 		ToolFrame.list.backers.child.HTML:SetText(Utils.str.toHTML(TRP3_KS_BACKERS:format(TRP3_API.extended.tools.formatVersion())));
-		ToolFrame.list.backers.child.HTML:SetScript("OnHyperlinkClick", function(self, url, text, button)
+		ToolFrame.list.backers.child.HTML:SetScript("OnHyperlinkClick", function(self, url, text, button) -- luacheck: ignore 212
 			TRP3_API.Ellyb.Popups:OpenURL(url);
 		end)
 	end
@@ -495,7 +490,7 @@ local ACTION_FLAG_COPY = "6";
 local ACTION_FLAG_EXPORT = "7";
 local ACTION_FLAG_FULL_EXPORT = "8";
 
-function onLineActionSelected(value, button)
+function onLineActionSelected(value, button) -- luacheck: ignore 212
 	local action = value:sub(1, 1);
 	local objectID = value:sub(2);
 	if action == ACTION_FLAG_DELETE then
@@ -506,8 +501,8 @@ function onLineActionSelected(value, button)
 		end);
 	elseif action == ACTION_FLAG_ADD then
 		local class = TRP3_API.extended.getClass(objectID);
-		TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(class)), function(value)
-			TRP3_API.inventory.addItem(nil, objectID, {count = value or 1, madeBy = class.BA and class.BA.CR});
+		TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(class)), function(inputValue)
+			TRP3_API.inventory.addItem(nil, objectID, {count = inputValue or 1, madeBy = class.BA and class.BA.CR});
 		end, nil, 1);
 	elseif action == ACTION_FLAG_COPY_ID then
 		TRP3_API.popup.showTextInputPopup(loc.EDITOR_ID_COPY_POPUP, nil, nil, objectID);
@@ -657,8 +652,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	createTabBar();
 	createTutorialStructure();
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
-		ToolFrame.list.container.scroll.child:SetWidth(containerwidth - 100);
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerWidth, containerHeight) -- luacheck: ignore 212
+		ToolFrame.list.container.scroll.child:SetWidth(containerWidth - 100);
 	end);
 
 	-- Button on toolbar
@@ -689,7 +684,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.campaign, "achievement_quests_completed_07");
 
 	-- Events
-	Events.listenToEvent(Events.ON_OBJECT_UPDATED, function(objectID, objectType)
+	Events.listenToEvent(Events.ON_OBJECT_UPDATED, function(objectID, objectType) -- luacheck: ignore 212
 		onTabChanged(nil, currentTab);
 	end);
 

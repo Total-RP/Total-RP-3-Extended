@@ -371,8 +371,8 @@ end
 -- Fixing wrong array key for drops in 1.2.0
 TRP3_API.extended.flyway.patches["2"] = function()
     if TRP3_Drop then
-        for realmID, realmTab in pairs(TRP3_Drop) do
-            for dropID, drop in pairs(realmTab) do
+        for _, realmTab in pairs(TRP3_Drop) do
+            for _, drop in pairs(realmTab) do
                 if drop.mapID then
                     drop.uiMapID = drop.mapID;
                     drop.mapID = nil;

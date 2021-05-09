@@ -16,9 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
+local Utils, EMPTY = TRP3_API.utils, TRP3_API.globals.empty;
 local wipe, pairs, strsplit, tinsert, tonumber, strtrim = wipe, pairs, strsplit, tinsert, tonumber, strtrim;
-local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
@@ -71,11 +70,11 @@ function delayEditor.init()
 	setTooltipForSameFrame(delayEditor.text.help, "RIGHT", 0, 5, loc.WO_DELAY_CAST_TEXT, loc.WO_DELAY_CAST_TEXT_TT);
 
 	-- Delay type
-	local type = {
+	local delayTypes = {
 		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_TYPE, loc.WO_DELAY_TYPE_1), 1, loc.WO_DELAY_TYPE_1_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_TYPE, loc.WO_DELAY_TYPE_2), 2, loc.WO_DELAY_TYPE_2_TT}
 	}
-	TRP3_API.ui.listbox.setupListBox(delayEditor.type, type, function(value)
+	TRP3_API.ui.listbox.setupListBox(delayEditor.type, delayTypes, function(value)
 		if value == 2 then
 			delayEditor.sound:Show();
 			delayEditor.text:Show();
@@ -86,11 +85,11 @@ function delayEditor.init()
 	end, nil, 200, true);
 
 	-- Interruption
-	local type = {
+	local interruptTypes = {
 		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_INTERRUPT, loc.WO_DELAY_INTERRUPT_1), 1},
 		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_INTERRUPT, loc.WO_DELAY_INTERRUPT_2), 2}
 	}
-	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, type, nil, nil, 200, true);
+	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, interruptTypes, nil, nil, 200, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -101,7 +100,6 @@ local objectBrowser = TRP3_ObjectBrowser;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local CreateFrame = CreateFrame;
 local initList = TRP3_API.ui.list.initList;
-local safeMatch = TRP3_API.utils.str.safeMatch;
 local filteredObjectList = {};
 
 local function onBrowserClose()
@@ -123,7 +121,6 @@ local fieldFormat = "%s: " .. TRP3_API.Ellyb.ColorManager.YELLOW("%s|r");
 local function decorateBrowserLine(frame, index)
 	local objectID = filteredObjectList[index];
 	local class = getClass(objectID);
-	local icon, name = TRP3_API.extended.tools.getClassDataSafeByType(class);
 	local fullLink = TRP3_API.inventory.getItemLink(class, objectID, true);
 	local link = TRP3_API.inventory.getItemLink(class, objectID);
 
@@ -172,7 +169,7 @@ local function filterMatch(filter, value)
 	if filter == nil or filter:len() == 0 then
 		return true;
 	end
-	return safeMatch(value:lower(), filter:lower());
+	return string.find(value:lower(), filter:lower(), 1, true);
 end
 
 local function filteredObjectBrowser()

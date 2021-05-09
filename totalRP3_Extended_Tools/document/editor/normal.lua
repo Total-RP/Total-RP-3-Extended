@@ -16,11 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local pairs, max, tonumber, tremove, strtrim, assert, tinsert = pairs, math.max, tonumber, tremove, strtrim, assert, tinsert;
-local tContains = tContains;
-local tsize = Utils.table.size;
-local getClass = TRP3_API.extended.getClass;
+local Utils = TRP3_API.utils;
+local pairs, max, tonumber, tremove, strtrim, assert = pairs, math.max, tonumber, tremove, strtrim, assert;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -40,14 +37,6 @@ local function loadDefaultPanel()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
 	params.title:SetText(loc.DO_PARAMS_GLOBAL);
-
-	params:Show();
-end
-
-local function loadCustomPanel(page)
-	assert(toolFrame.specificDraft, "specificDraft is nil");
-
-	params.title:SetText(loc.DO_PARAMS_CUSTOM);
 
 	params:Show();
 end
@@ -129,7 +118,7 @@ end
 
 local function storeDataScript()
 	-- TODO: compute all workflow order
-	for workflowID, workflow in pairs(toolFrame.specificDraft.SC) do
+	for _, workflow in pairs(toolFrame.specificDraft.SC) do
 		TRP3_ScriptEditorNormal.linkElements(workflow);
 	end
 end
@@ -141,7 +130,7 @@ end
 
 local currentTab, tabGroup;
 
-local function onTabChanged(tabWidget, tab)
+local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 	assert(toolFrame.fullClassID, "fullClassID is nil");
 
 	-- Hide all
@@ -332,7 +321,7 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	-- Pages
 	pages = toolFrame.document.normal.pages;
 	TRP3_API.ui.text.setupToolbar(pages.toolbar, pages.editor.scroll.text, pages, "RIGHT", "LEFT");
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerwidth, containerHeight)
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerWidth, containerHeight) -- luacheck: ignore 212
 		pages.editor.scroll.text:GetScript("OnShow")(pages.editor.scroll.text);
 	end);
 	pages.remove:SetText(loc.DO_PAGE_REMOVE);

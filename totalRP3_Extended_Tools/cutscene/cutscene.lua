@@ -16,9 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, tostring, error, assert, date = wipe, tostring, error, assert, date;
-local loc = TRP3_API.loc;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local error, assert, date = error, assert, date;
 local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

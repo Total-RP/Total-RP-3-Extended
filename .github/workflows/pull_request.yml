@@ -1,0 +1,48 @@
+---
+name: Pull Request
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Destination Branch
+        uses: marocchino/sticky-pull-request-comment@v1.4.0
+        if: github.base_ref == 'master'
+        with:
+          message: Warning - This pull request is targeting master.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
+      - uses: actions/setup-python@v2
+      - uses: actions/setup-ruby@v1
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Run Luacheck
+        uses: nebularg/actions-luacheck@v1
+        with:
+          args: --no-color -q
+          annotate: warning
+
+      - name: Create Retail Package
+        uses: BigWigsMods/packager@master
+        with:
+          args: -d -z
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: totalRP3_Extended-PR-${{ github.event.number }}
+          path: .release/
+
+      - name: Send Webhook Notification
+        if: failure()
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
+        env:
+          JOB_STATUS: ${{ job.status }}
+          HOOK_OS_NAME: ${{ runner.os }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          WORKFLOW_NAME: ${{ github.workflow }}

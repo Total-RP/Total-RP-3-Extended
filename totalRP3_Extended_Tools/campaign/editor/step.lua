@@ -16,15 +16,11 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
-local tsize = Utils.table.size;
-local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
+local Utils = TRP3_API.utils;
+local strtrim, pairs, assert = strtrim, pairs, assert;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-local color = Utils.str.color;
 local toolFrame, main;
 
 local TABS = {
@@ -112,7 +108,7 @@ end
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onTabChanged(tabWidget, tab)
+local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 	assert(toolFrame.fullClassID, "fullClassID is nil");
 
 	-- Hide all
