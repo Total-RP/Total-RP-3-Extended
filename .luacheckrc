@@ -167,6 +167,7 @@ read_globals = {
 	"SetCursor",
 	"SetView",
 	"SPELL_FAILED_BAD_IMPLICIT_TARGETS",
+	"SPELL_FAILED_CASTER_AURASTATE",
 	"SPELL_FAILED_MOVING",
 	"SpellBook_GetSpellBookSlot",
 	"SpellBookFrame",
