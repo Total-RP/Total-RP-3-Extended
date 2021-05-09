@@ -517,7 +517,6 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 		slot:RegisterForDrag("LeftButton");
 		slot:SetScript("OnDragStart", slotOnDragStart);
 		slot:SetScript("OnDragStop", slotOnDragStop);
-		--slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 
 		slot:SetAttribute("type", "macro");
 		-- OnMouseDown is called before the OnClick script, which gives us the opportunity to setup the macro behavior before use

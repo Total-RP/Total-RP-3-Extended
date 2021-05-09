@@ -474,7 +474,7 @@ function TRP3_API.extended.dialog.onStart()
 	TRP3_API.script.registerEffects({
 		dialog_start = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			method = function(_, cArgs, eArgs)
+			method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 				local dialogID = cArgs[1];
 				eArgs.LAST = startDialog(dialogID, nil, eArgs);
 			end,
@@ -484,7 +484,7 @@ function TRP3_API.extended.dialog.onStart()
 	TRP3_API.script.registerEffects({
 		dialog_quick = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			method = function(_, cArgs, eArgs)
+			method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 				local dialogText = cArgs[1];
 				eArgs.LAST = startQuickDialog(dialogText);
 			end,

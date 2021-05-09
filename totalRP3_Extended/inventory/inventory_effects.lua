@@ -53,14 +53,14 @@ TRP3_API.inventory.EFFECTS = {
 
 	["item_sheath"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-		method = function(_, _, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			ToggleSheath(); eArgs.LAST = 0;
 		end,
 	},
 
 	["item_consume"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-		method = function(_, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local amount = tonumber(cArgs[1]) or 1;
 			eArgs.LAST = TRP3_API.inventory.consumeItem(eArgs.object, eArgs.container, amount);
 		end,
@@ -113,7 +113,7 @@ TRP3_API.inventory.EFFECTS = {
 
 	["item_cooldown"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-		method = function(_, cArgs, eArgs)
+		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local duration = tonumber(TRP3_API.script.parseArgs(cArgs[1], eArgs)) or 1;
 			eArgs.LAST = TRP3_API.inventory.startCooldown(eArgs.object, duration, eArgs.container);
 		end,

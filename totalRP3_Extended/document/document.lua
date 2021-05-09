@@ -196,7 +196,7 @@ function TRP3_API.extended.document.onStart()
 	TRP3_API.script.registerEffects({
 		document_show = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			method = function(_, cArgs, eArgs)
+			method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 				local documentID = cArgs[1];
 				eArgs.LAST = showDocument(documentID, eArgs);
 			end,
@@ -204,7 +204,7 @@ function TRP3_API.extended.document.onStart()
 
 		document_close = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			method = function(_, _, eArgs)
+			method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 				eArgs.LAST = closeDocument();
 			end,
 		}
