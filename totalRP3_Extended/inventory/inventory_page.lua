@@ -246,6 +246,10 @@ function onInventoryShow()
 
 	TRP3_API.inventory.loadContainerPageSlots(mainInventoryFrame);
 	TRP3_ContainerInvPageSlot17:SetFrameLevel(inventoryModel.Blocker:GetFrameLevel() + 1);
+
+	-- A bit of a hack, this ensures that we get a TOPLEFT point for the marker during its MouseUp script.
+	TRP3_MainFrame:StartMoving();
+	TRP3_MainFrame:StopMovingOrSizing();
 end
 
 local function containerFrameUpdate(self)
