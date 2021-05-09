@@ -245,7 +245,6 @@ local function playDialogStep()
 				-- End point
 				dialogFrame.Chat.NextButton:SetScript("OnClick", finishDialog);
 			else
-				print(dialogFrame.stepIndex)
 				dialogFrame.stepIndex = dialogStepClass.N or (dialogFrame.stepIndex + 1);
 
 				-- Else go to the next step if exists
