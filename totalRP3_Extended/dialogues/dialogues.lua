@@ -435,7 +435,7 @@ local function startDialog(dialogID, class, args)
 	end
 
 	historyFrame.container:AddMessage("---------------------------------------------------------------");
-	processDialogStep();
+	processDialogStep(true);
 	newDialogStarted = true;
 
 	dialogFrame:Show();
