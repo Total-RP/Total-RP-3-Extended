@@ -159,7 +159,9 @@ broadcast.registerCommand(STASHES_SCAN_COMMAND, function(sender, mapID)
 	for _, stash in pairs(stashData) do
 		if stash.uiMapID == tonumber(mapID) and not stash.BA.NS then
 			local total = TRP3_API.utils.table.size(stash.item);
-			broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total, stash.CR);
+			if total > 0 then
+				broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total, stash.CR);
+			end
 		end
 	end
 end)
