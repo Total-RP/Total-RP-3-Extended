@@ -146,6 +146,7 @@ local function finishDialog()
 	if dialogFrame.classID and dialogFrame.class.LI and dialogFrame.class.LI.OE and dialogFrame.class.SC then
 		TRP3_API.script.executeClassScript(dialogFrame.class.LI.OE, dialogFrame.class.SC, {}, dialogFrame.classID);
 	end
+    dialogFrame.classID = nil;
 end
 
 local function setupChoices(choices)
@@ -411,6 +412,11 @@ function processDialogStep(isNewDialog)
 end
 
 local function startDialog(dialogID, class, args)
+    -- Sending the previous "On cutscene end" workflow if we're playing a cutscene from another cutscene
+    if dialogFrame.classID and dialogFrame.class.LI and dialogFrame.class.LI.OE and dialogFrame.class.SC then
+        TRP3_API.script.executeClassScript(dialogFrame.class.LI.OE, dialogFrame.class.SC, {}, dialogFrame.classID);
+    end
+
 	local dialogClass = dialogID and getClass(dialogID) or class;
 	-- By default, launch the step 1
 	image.previous = nil;
