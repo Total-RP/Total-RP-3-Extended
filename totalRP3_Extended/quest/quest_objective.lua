@@ -34,8 +34,6 @@ local function display()
 	frame.Actions:Hide();
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
 	if playerQuestLog and playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign] then
-		frame.Actions:Show();
-
 		local campaignID = playerQuestLog.currentCampaign;
 		local campaignClass = getClass(campaignID);
 		local campaignIcon, campaignName, _ = getClassDataSafe(campaignClass);
@@ -109,15 +107,25 @@ local function display()
 			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}" .. HTML;
 		end
 
+		local hasOneActionActive = false;
+
 		-- Fading non-relevant actions
 		for action, button in pairs(ACTION_FRAMES) do
 			if activeActions[action] then
 				button:GetNormalTexture():SetDesaturated(false);
 				button:SetAlpha(1);
+				hasOneActionActive = true;
 			else
 				button:GetNormalTexture():SetDesaturated(true);
 				button:SetAlpha(0.5);
 			end
+		end
+
+		if hasOneActionActive then
+			frame.Tracker:SetPoint("TOP", frame.Actions, "BOTTOM", 0, -10);
+			frame.Actions:Show();
+		else
+			frame.Tracker:SetPoint("TOP", frame.Actions, "BOTTOM", 0, 50);
 		end
 	end
 	frame.Tracker.html = Utils.str.toHTML(HTML, true, true);
