@@ -491,20 +491,22 @@ local EFFECTS = {
 	-- PROMPT
 	["var_prompt"] = {
 		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
-			TRP3_API.popup.showTextInputPopup(cArgs[1] or "",
-			function(value)
-				TRP3_API.script.setVar(eArgs, cArgs[3] or "o", "=", cArgs[2] or "var", value);
-				if cArgs[4] and cArgs[4] ~= "" then
-					TRP3_API.script.setVar(eArgs, "w", "=", cArgs[2] or "var", value);
-					C_Timer.After(0.1, function() TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4]) end);
-				end
-			end,
-			function()
-				if cArgs[4] and cArgs[4] ~= "" then
-					C_Timer.After(0.1, function() TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4]) end);
-				end
-			end, "");
+			C_Timer.After(0.1, function()
+				TRP3_API.popup.showTextInputPopup(cArgs[1] or "",
+				function(value)
+					TRP3_API.script.setVar(eArgs, cArgs[3] or "o", "=", cArgs[2] or "var", value);
+					if cArgs[4] and cArgs[4] ~= "" then
+						TRP3_API.script.setVar(eArgs, "w", "=", cArgs[2] or "var", value);
+						TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4])
+					end
+				end,
+				function()
+					if cArgs[4] and cArgs[4] ~= "" then
+						TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4]);
+					end
+				end, "");
 			eArgs.LAST = 0;
+			end);
 		end,
 		secured = security.HIGH,
 	},
