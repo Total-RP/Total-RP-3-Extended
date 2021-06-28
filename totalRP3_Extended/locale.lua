@@ -722,6 +722,8 @@ The function is in the form of:
 	EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT = "SFX is for effect sounds. It uses the sound volume game option.\n\nMultiple different SFX sounds can be played simultaneously.",
 	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE = "Ambience",
 	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT = "Ambience is for ambiant sound. It uses the ambience volume game option\n\nMultiple different ambience sounds can be played simultaneously.\n\n|cffff9900Please do not use this effect to play music as this won't stop the current game music and you would have musics overlaping each other. If you want to play a music use the proper music effect.",
+	EFFECT_SOUND_ID_SELF_SOUNDFILE = "Sound File ID",
+	EFFECT_SOUND_ID_SELF_SOUNDFILE_TT = "If you are using a specific file ID as you would find in the files list of wow.tools, check this box.\n\nIf it is a sound ID as you would find on Wowhead, leave it unchecked.",
 	EFFECT_SOUND_MUSIC_SELF = "Play music",
 	EFFECT_SOUND_MUSIC_SELF_TT = "Plays a music. Only the player will hear it.\n\nNote that the music will loop until the game plays a music of his own (when entering a zone for example), or until a \"stop music\" effect is played. Also the player can always manually stop the music through the sound history frame.",
 	EFFECT_SOUND_MUSIC_SELF_PREVIEW = "Plays music: %s",

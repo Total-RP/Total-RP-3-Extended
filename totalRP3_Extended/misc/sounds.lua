@@ -29,6 +29,7 @@ local UnitPosition = TRP3_API.extended.getUnitPositionSafe;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LOCAL_SOUND_COMMAND = "PLS";
+local LOCAL_SOUNDFILE_COMMAND = "PSF";
 local LOCAL_STOPSOUND_COMMAND = "STS";
 
 local function getPosition()
@@ -43,6 +44,14 @@ function Utils.music.playLocalSoundID(soundID, channel, distance)
 	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
 		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, channel, distance, instanceID, posY, posX, posZ);
+	end
+end
+
+function Utils.music.playLocalSoundFileID(soundFileID, channel, distance)
+	-- Get current position
+	local posY, posX, posZ, instanceID = getPosition();
+	if instanceID then
+		Communications.broadcast.broadcast(LOCAL_SOUNDFILE_COMMAND, soundFileID, channel, distance, instanceID, posY, posX, posZ);
 	end
 end
 
@@ -110,6 +119,34 @@ local function initSharedSound()
 		end
 	end);
 
+	Communications.broadcast.registerCommand(LOCAL_SOUNDFILE_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
+			if soundID and channel and distance and instanceID and posY and posX and posZ then
+				distance = tonumber(distance) or 0;
+				posY = tonumber(posY) or 0;
+				posX = tonumber(posX) or 0;
+				instanceID = tonumber(instanceID) or -1;
+
+				if sender == Globals.player_id then
+					Utils.music.playSoundFileID(soundID, channel, Globals.player_id);
+				else
+					-- Get current position
+					local myPosY, myPosX, _, myInstanceID = UnitPosition("player");
+					myPosY = floor(myPosY + 0.5);
+					myPosX = floor(myPosX + 0.5);
+
+					if instanceID == myInstanceID and isInRadius(distance, posY, posX, myPosY, myPosX) then
+						if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_METHOD) == TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY then
+							Utils.music.playSoundFileID(soundID, channel, sender);
+							--else
+							-- TODO: ask permission in chat
+						end
+					end
+				end
+			end
+		end
+	end);
+
 	Communications.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel)
 		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
 			Utils.music.stopSoundID(soundID, channel, sender);
@@ -126,7 +163,7 @@ local historyFrame = TRP3_SoundsHistoryFrame;
 
 local function onLinkClicked(self, link)
 
-	local mode, id, channel = strsplit(":", link);
+	local mode, id, channel, soundType = strsplit(":", link);
 
 	if mode == "stop" then
 		if channel == "Music" then
@@ -137,6 +174,8 @@ local function onLinkClicked(self, link)
 	elseif mode == "replay" then
 		if channel == "Music" then
 			Utils.music.playMusic(id);
+		elseif soundType == "1" then
+			Utils.music.playSoundFileID(id, channel, Globals.player_id);
 		else
 			Utils.music.playSoundID(id, channel, Globals.player_id);
 		end
@@ -159,7 +198,7 @@ local function showHistory()
 			"|cffffffff" .. handler.channel .. " (" .. handler.handlerID .. ")|r"
 		);
 		string = string .. (" |Hstop:%s:%s|h|cffff0000[%s]|h"):format(handler.handlerID, handler.channel, loc.EX_SOUND_HISTORY_STOP);
-		string = string .. (" |Hreplay:%s:%s|h|cffffff00[%s]|h"):format(handler.id, handler.channel, loc.EX_SOUND_HISTORY_REPLAY);
+		string = string .. (" |Hreplay:%s:%s:%s|h|cffffff00[%s]|h"):format(handler.id, handler.channel, handler.soundFile and "1" or "0", loc.EX_SOUND_HISTORY_REPLAY);
 		historyFrame.container:AddMessage(string);
 	end
 end

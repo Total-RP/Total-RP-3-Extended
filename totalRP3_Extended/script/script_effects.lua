@@ -277,11 +277,16 @@ local EFFECTS = {
 			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
 			local source = "Script"; -- TODO: get source
-			return soundID, channel, source;
+            local isSoundFileID = args[3] or false;
+			return soundID, channel, source, isSoundFileID;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local soundID, channel, source = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
+			local soundID, channel, source, isSoundFileID = structure.getCArgs(cArgs);
+            if isSoundFileID then
+                eArgs.LAST = TRP3_API.utils.music.playSoundFileID(soundID, channel, source);
+            else
+                eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
+            end
 		end,
 		secured = security.HIGH,
 	},
@@ -322,15 +327,24 @@ local EFFECTS = {
 			local channel = args[1] or "SFX";
 			local distance = tonumber(args[3] or 0);
 			local source = "Script"; -- TODO: get source
-			return soundID, channel, distance, source;
+            local isSoundFileID = args[4] or false;
+			return soundID, channel, distance, source, isSoundFileID;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local soundID, channel, distance = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.playLocalSoundID(soundID, channel, distance);
+			local soundID, channel, distance, _, isSoundFileID = structure.getCArgs(cArgs);
+            if isSoundFileID then
+                eArgs.LAST = TRP3_API.utils.music.playLocalSoundFileID(soundID, channel, distance);
+            else
+                eArgs.LAST = TRP3_API.utils.music.playLocalSoundID(soundID, channel, distance);
+            end
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
-			local soundID, channel, _, source = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
+			local soundID, channel, _, source, isSoundFileID = structure.getCArgs(cArgs);
+            if isSoundFileID then
+                eArgs.LAST = TRP3_API.utils.music.playSoundFileID(soundID, channel, source);
+            else
+                eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
+            end
 		end,
 		secured = security.MEDIUM,
 	},

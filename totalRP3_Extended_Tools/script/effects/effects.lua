@@ -924,7 +924,7 @@ local function sound_id_self_init()
 			scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_SELF_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
 		end,
 		getDefaultArgs = function()
-			return {"SFX", 43569};
+			return {"SFX", 43569, false};
 		end,
 		editor = SoundIDSelfEditor,
 	});
@@ -944,19 +944,28 @@ local function sound_id_self_init()
 	SoundIDSelfEditor.play:SetScript("OnClick", function(self)
 		local soundID = tonumber(strtrim(SoundIDSelfEditor.id:GetText()));
 		if soundID then
-			Utils.music.playSoundID(soundID, SoundIDSelfEditor.channel:GetSelectedValue() or "SFX");
+			if SoundIDSelfEditor.soundFile:GetChecked() then
+				Utils.music.playSoundFileID(soundID, SoundIDSelfEditor.channel:GetSelectedValue() or "SFX");
+			else
+				Utils.music.playSoundID(soundID, SoundIDSelfEditor.channel:GetSelectedValue() or "SFX");
+			end
 		end
 	end);
+
+	SoundIDSelfEditor.soundFile.Text:SetText(loc.EFFECT_SOUND_ID_SELF_SOUNDFILE);
+	setTooltipForSameFrame(SoundIDSelfEditor.soundFile, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_SOUNDFILE, loc.EFFECT_SOUND_ID_SELF_SOUNDFILE_TT);
 
 	function SoundIDSelfEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		SoundIDSelfEditor.channel:SetSelectedValue(data[1] or "SFX");
 		SoundIDSelfEditor.id:SetText(data[2] or "");
+		SoundIDSelfEditor.soundFile:SetChecked(data[3] or false);
 	end
 
 	function SoundIDSelfEditor.save(scriptData)
 		scriptData.args[1] = SoundIDSelfEditor.channel:GetSelectedValue() or "SFX";
 		scriptData.args[2] = tonumber(strtrim(SoundIDSelfEditor.id:GetText()));
+		scriptData.args[3] = SoundIDSelfEditor.soundFile:GetChecked();
 	end
 end
 
@@ -1074,7 +1083,7 @@ local function sound_id_local_init()
 			));
 		end,
 		getDefaultArgs = function()
-			return {"SFX", 43569, 20};
+			return {"SFX", 43569, 20, false};
 		end,
 		editor = soundLocalEditor,
 	});
@@ -1093,7 +1102,11 @@ local function sound_id_local_init()
 	soundLocalEditor.play:SetScript("OnClick", function(self)
 		local soundID = tonumber(strtrim(soundLocalEditor.id:GetText()));
 		if soundID then
-			Utils.music.playSoundID(soundID, soundLocalEditor.channel:GetSelectedValue() or "SFX");
+			if soundLocalEditor.soundFile:GetChecked() then
+				Utils.music.playSoundFileID(soundID, soundLocalEditor.channel:GetSelectedValue() or "SFX");
+			else
+				Utils.music.playSoundID(soundID, soundLocalEditor.channel:GetSelectedValue() or "SFX");
+			end
 		end
 	end);
 
@@ -1101,17 +1114,22 @@ local function sound_id_local_init()
 	soundLocalEditor.distance.title:SetText(loc.EFFECT_SOUND_LOCAL_DISTANCE);
 	setTooltipForSameFrame(soundLocalEditor.distance.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_LOCAL_DISTANCE, loc.EFFECT_SOUND_LOCAL_DISTANCE_TT);
 
+	soundLocalEditor.soundFile.Text:SetText(loc.EFFECT_SOUND_ID_SELF_SOUNDFILE);
+	setTooltipForSameFrame(soundLocalEditor.soundFile, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_SOUNDFILE, loc.EFFECT_SOUND_ID_SELF_SOUNDFILE_TT);
+
 	function soundLocalEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
 		soundLocalEditor.channel:SetSelectedValue(data[1] or "SFX");
 		soundLocalEditor.id:SetText(data[2] or "");
 		soundLocalEditor.distance:SetText(data[3] or "");
+		soundLocalEditor.soundFile:SetChecked(data[4] or false);
 	end
 
 	function soundLocalEditor.save(scriptData)
 		scriptData.args[1] = soundLocalEditor.channel:GetSelectedValue() or "SFX";
 		scriptData.args[2] = tonumber(strtrim(soundLocalEditor.id:GetText()));
 		scriptData.args[3] = tonumber(strtrim(soundLocalEditor.distance:GetText()));
+		scriptData.args[4] = soundLocalEditor.soundFile:GetChecked();
 	end
 end
 
