@@ -137,6 +137,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local processDialogStep;
+local newDialogStarted;
 local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
 local after = C_Timer.After;
 
@@ -157,6 +158,7 @@ local function setupChoices(choices)
 			choiceButton.Click:SetScript("OnClick", function()
 				if choiceData.N and choiceData.N ~= 0 and (dialogFrame.class.DS or EMPTY)[choiceData.N] then
 					dialogFrame.stepIndex = choiceData.N;
+					newDialogStarted = nil;
 					processDialogStep();
 				else
 					finishDialog();
@@ -248,6 +250,7 @@ local function playDialogStep()
 				-- Else go to the next step if exists
 				if (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] then
 					dialogFrame.Chat.NextButton:SetScript("OnClick", function()
+						newDialogStarted = nil;
 						processDialogStep();
 					end);
 				else
@@ -301,7 +304,7 @@ local function setModel(model, dialogStepClass, field)
 end
 
 -- Prepare all the texts for a step
-function processDialogStep()
+function processDialogStep(isNewDialog)
 	wipe(dialogFrame.texts);
 	local dialogClass = dialogFrame.class;
 	local dialogStepClass  = (dialogClass.DS or EMPTY)[dialogFrame.stepIndex] or EMPTY;
@@ -400,11 +403,15 @@ function processDialogStep()
 		TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC, {}, dialogFrame.classID);
 	end
 
-	playDialogStep();
+	-- If a cutscene has been started during the workflow execution, whether it's a new one or restarting the current one, we don't execute the next dialog step.
+	-- Otherwise it will skip the second step in the new cutscene.
+	if isNewDialog or not newDialogStarted then
+		playDialogStep();
+	end
 end
 
 local function startDialog(dialogID, class, args)
-	local dialogClass = dialogID and getClass(dialogID) or class;
+    local dialogClass = dialogID and getClass(dialogID) or class;
 	-- By default, launch the step 1
 	image.previous = nil;
 	dialogFrame.classID = dialogID;
@@ -428,7 +435,8 @@ local function startDialog(dialogID, class, args)
 	end
 
 	historyFrame.container:AddMessage("---------------------------------------------------------------");
-	processDialogStep();
+	processDialogStep(true);
+	newDialogStarted = true;
 
 	dialogFrame:Show();
 	dialogFrame:Raise();
