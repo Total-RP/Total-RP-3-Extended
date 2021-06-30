@@ -16,11 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local wipe, tinsert, error, assert, date = wipe, tinsert, error, assert, date;
-local tsize = Utils.table.size;
-local getClass, classExists = TRP3_API.extended.getClass, TRP3_API.extended.classExists;
-local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local tinsert, error, assert, date = tinsert, error, assert, date;
 local loc = TRP3_API.loc;
 local toolFrame;
 

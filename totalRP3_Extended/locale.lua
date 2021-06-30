@@ -168,7 +168,6 @@ TRP3_API.loc = {
 	QE_QUEST_OBJ_UPDATED = "|cffffff00Objective updated: |cff00ff00%s",
 	QE_QUEST_OBJ_FINISHED = "|cffffff00Objective complete: |cff00ff00%s",
 	QE_QUEST_LIST = "Quests for this campaign",
-	QE_STEP = "Step",
 	QE_STEP_LIST = "Steps for this quest",
 	QE_STEP_LIST_CURRENT = "Available quests",
 	QE_STEP_LIST_FINISHED = "Finished quests",
@@ -194,8 +193,6 @@ TRP3_API.loc = {
 	QE_MACRO = "Create macro",
 	QE_MACRO_TT = "Creates a macro for this action type and pickup the macro on your cursor to be placed in any action bars.",
 	QE_MACRO_MAX = "You can't have more macro. Please free a macro slot before trying again.",
-	QE_PROGRESS = "Campaign progression",
-	DI_NEXT = "Next",
 	DI_WAIT_LOOT = "Please loot all items",
 	QE_ACTION_NO_CURRENT = "You don't have any active campaign. You should activate a campaign before trying to do an action..",
 	QE_CAMPAIGN_NO = "No started yet",
@@ -720,13 +717,13 @@ The function is in the form of:
 	EFFECT_SOUND_ID_SELF_TT = "Plays a sound in a particular channel. Only the player will hear it.",
 	EFFECT_SOUND_ID_SELF_PREVIEW = "Plays sound ID %s in channel %s.",
 	EFFECT_SOUND_ID_SELF_ID = "Sound ID",
-	EFFECT_SOUND_ID_SELF_ID_TT = "The ID is an internal identifier for sounds in the game.\n\n|cff00ff00You can easily find all ID on websites like wowhead.\n\n|cffff9900Note that if the ID points to multiple sub-sounds, a sub-sound will be chosen randomly.",
 	EFFECT_SOUND_ID_SELF_CHANNEL = "Channel",
 	EFFECT_SOUND_ID_SELF_CHANNEL_SFX = "SFX",
 	EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT = "SFX is for effect sounds. It uses the sound volume game option.\n\nMultiple different SFX sounds can be played simultaneously.",
 	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE = "Ambience",
 	EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT = "Ambience is for ambiant sound. It uses the ambience volume game option\n\nMultiple different ambience sounds can be played simultaneously.\n\n|cffff9900Please do not use this effect to play music as this won't stop the current game music and you would have musics overlaping each other. If you want to play a music use the proper music effect.",
-	EFFECT_SOUND_ID_SELF_ID_TT = "The ID is an internal identifier for sounds in the game.\n\n|cff00ff00You can easily find all ID on websites like wowhead.\n\n|cffff9900Leave empty to stop all sounds played on the selected channel.",
+	EFFECT_SOUND_ID_SELF_SOUNDFILE = "Sound File ID",
+	EFFECT_SOUND_ID_SELF_SOUNDFILE_TT = "If you are using a specific file ID as you would find in the files list of wow.tools, check this box.\n\nIf it is a sound ID as you would find on Wowhead, leave it unchecked.",
 	EFFECT_SOUND_MUSIC_SELF = "Play music",
 	EFFECT_SOUND_MUSIC_SELF_TT = "Plays a music. Only the player will hear it.\n\nNote that the music will loop until the game plays a music of his own (when entering a zone for example), or until a \"stop music\" effect is played. Also the player can always manually stop the music through the sound history frame.",
 	EFFECT_SOUND_MUSIC_SELF_PREVIEW = "Plays music: %s",
@@ -1703,6 +1700,12 @@ TRP3_KS_BACKERS =
 [[#Total RP 3: Extended (version %s)
 
 Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Morgane "Ellypse" Parize|r.
+
+## Thanks to our helpful members on Discord:
+
+- Obidiah
+- Ovokalia
+- Seleves
 
 ## To all our Kickstarter backers: many thanks for the support!
 

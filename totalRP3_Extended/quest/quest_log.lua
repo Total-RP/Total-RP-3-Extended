@@ -18,15 +18,13 @@
 
 local Ellyb = TRP3_API.Ellyb;
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
+local Events, Utils = TRP3_API.events, TRP3_API.utils;
+local assert, tostring, tinsert, pairs = assert, tostring, tinsert, pairs;
 local CreateFrame = CreateFrame;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
-local Log = Utils.log;
 local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
 local getQuestLog = TRP3_API.quest.getQuestLog;
-local IsShiftKeyDown = IsShiftKeyDown;
 
 local TRP3_QuestLogPage = TRP3_QuestLogPage;
 
@@ -82,8 +80,6 @@ local DEFAULT_CAMPAIGN_IMAGE = "GarrZoneAbility-Stables";
 
 local function getCampaignProgression(campaignID)
 	local campaignClass = getClass(campaignID);
-	local progression = 0;
-	local progressionQuestIds = {};
 	local completed, total = 0, 0;
 	local campaignLog = (getQuestLog()[campaignID] or EMPTY).QUEST or EMPTY;
 	for questID, quest in pairs(campaignClass.QE or EMPTY) do
@@ -104,7 +100,7 @@ TRP3_API.quest.getCampaignProgression = getCampaignProgression;
 
 local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 	local campaignClass = getClass(campaignID);
-	local campaignIcon, campaignName, campaignDescription = getClassDataSafe(campaignClass);
+	local campaignIcon, campaignName = getClassDataSafe(campaignClass);
 	local author = campaignClass.MD.CB;
 	local logEntry = getQuestLog()[campaignID];
 	local progression = getCampaignProgression(campaignID);
@@ -175,7 +171,7 @@ local onQuestTabClick;
 
 local function onQuestButtonEnter(button)
 	local questClass = getClass(button.campaignID, button.questID) or EMPTY;
-	local questIcon, questName = getClassDataSafe(questClass);
+	local _, questName = getClassDataSafe(questClass);
 	local currentStep = button.questInfo.CS;
 	local objectives = button.questInfo.OB;
 	local stepText, objectivesText;
@@ -412,8 +408,8 @@ end
 local function initStepFrame()
 	TRP3_QuestLogPage.Step.Title.Name:SetTextColor(0.1, 0.1, 0.1);
 	TRP3_QuestLogPage.Step.Title.InfoText:SetTextColor(0.1, 0.1, 0.1);
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-		stepHTML:SetSize(containerwidth - 130, 5);
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+		stepHTML:SetSize(containerWidth - 130, 5);
 		stepHTML:SetText(stepHTML.html);
 	end);
 
@@ -694,7 +690,7 @@ local function init()
 	BINDING_NAME_TRP3_QUEST_TALK = loc.BINDING_NAME_TRP3_QUEST_TALK;
 
 	-- Events
-	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function(rootClassID)
+	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
 		if getCurrentPageID() == "player_quest" then
 			goToPage(false, TAB_CAMPAIGNS);
 		end

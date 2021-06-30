@@ -56,14 +56,14 @@ local setBackground = TRP3_API.extended.tools.setBackground;
 local PAGE_BY_TYPE = {
 	[TRP3_DB.types.CAMPAIGN] = {
 		frame = "campaign",
-		tabTextGetter = function(id, class)
+		tabTextGetter = function(id, class) -- luacheck: ignore 212
 			return ("%s: %s"):format(loc.TYPE_CAMPAIGN,  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 2,
 	},
 	[TRP3_DB.types.QUEST] = {
 		frame = "quest",
-		tabTextGetter = function(id, class)
+		tabTextGetter = function(id, class) -- luacheck: ignore 212
 			return ("%s: %s"):format(loc.TYPE_QUEST,  TRP3_API.inventory.getItemLink(class));
 		end,
 		background = 2,
@@ -77,7 +77,7 @@ local PAGE_BY_TYPE = {
 	},
 	[TRP3_DB.types.ITEM] = {
 		frame = "item",
-		tabTextGetter = function(id, class)
+		tabTextGetter = function(id, class) -- luacheck: ignore 212
 			return ("%s: %s"):format(loc.TYPE_ITEM,  TRP3_API.inventory.getItemLink(class));
 		end,
 		tutorial = true,
@@ -180,7 +180,7 @@ local function openObjectAndGetDraft(rootClassID, forceDraftReload)
 	return draftData;
 end
 
-local function displayRootInfo(rootClassID, rootClass, classFullID, classID, specificDraft)
+local function displayRootInfo(rootClassID, rootClass, classID, specificDraft)
 	assert(rootClass.MD, "No metadata MD in root class.");
 	assert(specificDraft.MD, "No metadata MD in specific class.");
 	local color = "|cffffff00";
@@ -210,15 +210,14 @@ end
 -- Editor save delegate
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local getClass = TRP3_API.extended.getClass;
 local goToPage;
 
 local function checkCreation(classID, data)
 	local warnings = {};
-	TRP3_API.extended.iterateObject(classID, data, function(classID, class)
-		local frame = toolFrame[PAGE_BY_TYPE[class.TY].frame or ""];
+	TRP3_API.extended.iterateObject(classID, data, function(childClassID, childClass)
+		local frame = toolFrame[PAGE_BY_TYPE[childClass.TY].frame or ""];
 		if frame and frame.validator then
-			frame.validator(classID, class, warnings);
+			frame.validator(childClassID, childClass, warnings);
 		end
 	end);
 	return warnings;
@@ -254,7 +253,6 @@ local function onSave(editor)
 	assert(editor.onSave, "No save method in editor.");
 	assert(toolFrame.rootClassID, "No rootClassID in editor.");
 	assert(toolFrame.fullClassID, "No fullClassID in editor.");
-	local rootClassID, fullClassID = toolFrame.rootClassID, toolFrame.fullClassID;
 
 	-- Force save the current view in draft
 	editor.onSave();
@@ -335,7 +333,7 @@ function goToPage(fullClassID, forceDraftReload)
 
 	-- Show selected
 	setBackground(selectedPageData.background or 1);
-	displayRootInfo(rootClassID, rootDraft, fullClassID, specificClassID, specificDraft);
+	displayRootInfo(rootClassID, rootDraft, specificClassID, specificDraft);
 	toolFrame.rootClassID = rootClassID;
 	toolFrame.currentEditor = selectedPageFrame;
 	toolFrame.fullClassID = fullClassID;
@@ -360,7 +358,7 @@ function goToPage(fullClassID, forceDraftReload)
 		fullId = getFullID(fullId, part);
 		local reconstruct = fullId;
 		local class = draftRegister[reconstruct];
-		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part, class, part == parts[1]);
+		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part, class);
 		NavBar_AddButton(toolFrame.navBar, {id = reconstruct, name = text, OnClick = function()
 			goToPage(reconstruct);
 		end});

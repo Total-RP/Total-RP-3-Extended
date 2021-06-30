@@ -98,12 +98,16 @@ function ItemsChatLinksModule:GetTooltipLines(tooltipData)
 
 	-- Unique item
 	if class.BA.UN and class.BA.UN > 0 then
-		tooltipLines:AddLine(ITEM_UNIQUE .. " (" .. class.BA.UN .. ")", Colors.WHITE);
+		local uniqueText = ITEM_UNIQUE;
+		if class.BA.UN > 1 then
+			uniqueText = uniqueText .. " (" .. class.BA.UN .. ")";
+		end
+		tooltipLines:AddLine(uniqueText, Colors.WHITE);
 	end
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine(parseArgs(description, args), Colors.ORANGE)
+		tooltipLines:AddLine("\"" .. parseArgs(description, args) .. "\"", Colors.YELLOW)
 	end
 
 	-- On use effect

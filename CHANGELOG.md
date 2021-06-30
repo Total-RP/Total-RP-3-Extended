@@ -1,3 +1,24 @@
+# Changelog for version 1.4.1
+
+## Added
+
+- Added variable parsing in campaign NPC descriptions.
+- Added an option to play a sound file ID instead of a sound ID for the "Play sound ID" and "Play local sound" effects.
+
+## Changed
+
+- Changed creation tooltip description color and added quotation marks to more accurately match regular item tooltips.
+- Items with a Unique count of 1 will no longer show that number.
+- Empty stashes will no longer appear on the map scan for other players.
+- Cast delays can now be started while moving if they will not be interrupted on movement.
+- Cast delays will no longer cancel each other. If a cast is currently in progress, the other cast will return an error.
+- The campaign action toolbar will now be hidden if no action is currently active.
+
+## Fixed
+
+- Fixed an issue when trying to place wearable markers on the inventory page if the TRP window had never been moved.
+- Fixed an issue with a cutscene step being skipped when starting that cutscene from another cutscene.
+
 # Changelog for version 1.4
 
 ## Added

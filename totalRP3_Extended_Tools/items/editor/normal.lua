@@ -16,11 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, pairs, tonumber, tinsert, strtrim, assert = wipe, pairs, tonumber, tinsert, strtrim, assert;
-local tsize = Utils.table.size;
-local getClass = TRP3_API.extended.getClass;
-local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local pairs, tonumber, tinsert, strtrim, assert = pairs, tonumber, tinsert, strtrim, assert;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
@@ -221,15 +218,13 @@ local function loadDataScript()
 		TRP3_ScriptEditorNormal.scriptTitle = loc.IT_ON_USE;
 		TRP3_ScriptEditorNormal.scriptDescription = loc.IT_ON_USE_TT;
 		TRP3_ScriptEditorNormal.workflowIDToLoad = "onUse";
-	elseif toolFrame.specificDraft.MD.MO == TRP3_DB.modes.EXPERT then
-
 	end
 	TRP3_ScriptEditorNormal.loadList(TRP3_DB.types.ITEM);
 end
 
 local function storeDataScript()
 	-- TODO: compute all workflow order
-	for workflowID, workflow in pairs(toolFrame.specificDraft.SC) do
+	for _, workflow in pairs(toolFrame.specificDraft.SC) do
 		TRP3_ScriptEditorNormal.linkElements(workflow);
 	end
 end
@@ -247,7 +242,7 @@ end
 -- Tabs in the list section are just pre-filters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onTabChanged(tabWidget, tab)
+local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 	assert(toolFrame.fullClassID, "fullClassID is nil");
 
 	-- Hide all

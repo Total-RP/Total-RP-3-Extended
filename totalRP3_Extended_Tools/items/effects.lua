@@ -17,10 +17,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;
+local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
+local tonumber, pairs, tostring, strtrim = tonumber, pairs, tostring, strtrim;
 local tinsert = tinsert;
-local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
@@ -137,14 +136,11 @@ local function document_show_init()
 end
 
 local function document_close_init()
-	local editor = TRP3_EffectEditorDocumentShow;
-
 	registerEffectEditor("document_close", {
 		title = loc.EFFECT_DOC_CLOSE,
 		icon = "trade_archaeology_silverscrollcase",
 		description = loc.EFFECT_DOC_CLOSE_TT,
 	});
-
 end
 
 local function item_add_init()

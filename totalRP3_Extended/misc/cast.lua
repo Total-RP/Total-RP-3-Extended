@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Comm, Utils = TRP3_API.globals, TRP3_API.communication, TRP3_API.utils;
+local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 
 local frame = TRP3_CastingBarFrame;
@@ -49,8 +49,13 @@ local function interrupt()
 end
 
 function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundID, castText)
-	if GetUnitSpeed("player") > 0 then
+	if GetUnitSpeed("player") > 0 and interruptMode == 2 then
 		Utils.message.displayMessage(SPELL_FAILED_MOVING, 4);
+		return;
+	end
+
+	if frame.casting then
+		Utils.message.displayMessage(SPELL_FAILED_CASTER_AURASTATE, 4);
 		return;
 	end
 

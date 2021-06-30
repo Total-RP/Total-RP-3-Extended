@@ -16,13 +16,9 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local CAMPAIGN_DB = TRP3_DB.campaign;
-local EMPTY = TRP3_API.globals.empty;
-local tostring, assert, pairs, wipe, tinsert = tostring, assert, pairs, wipe, tinsert;
+local Utils = TRP3_API.utils;
+local pairs = pairs;
 local loc = TRP3_API.loc;
-local Log = Utils.log;
-local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
 local tooltip = TRP3_NPCTooltip;
 
@@ -99,7 +95,7 @@ local function onMouseOver()
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 			if (npcData.DE or ""):len() > 0 then
-				local text = strtrim(npcData.DE);
+				local text = strtrim(TRP3_API.script.parseArgs(npcData.DE, TRP3_API.quest.getCampaignVarStorage()));
 				if text:len() > getCurrentMaxSize() then
 					text = text:sub(1, getCurrentMaxSize()) .. "…";
 				end

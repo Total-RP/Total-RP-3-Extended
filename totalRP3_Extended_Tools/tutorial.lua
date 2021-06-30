@@ -16,8 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, pairs, strsplit, tinsert, type, _G = wipe, pairs, strsplit, tinsert, type, _G;
+local Utils = TRP3_API.utils;
+local wipe, pairs, tinsert, type, _G = wipe, pairs, tinsert, type, _G;
 local loc = TRP3_API.loc;
 
 local ToolFrame, buttonWidget;

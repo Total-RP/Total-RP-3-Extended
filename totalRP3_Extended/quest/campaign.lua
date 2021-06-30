@@ -16,10 +16,9 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local CAMPAIGN_DB = TRP3_DB.campaign;
+local Events, Utils = TRP3_API.events, TRP3_API.utils;
 local EMPTY = TRP3_API.globals.empty;
-local tostring, assert, pairs, wipe, tinsert = tostring, assert, pairs, wipe, tinsert;
+local tostring, pairs, wipe = tostring, pairs, wipe;
 local loc = TRP3_API.loc;
 local Log = Utils.log;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
@@ -32,7 +31,8 @@ local CUSTOM_EVENTS = {
 	TRP3_KILL = "TRP3_KILL",
 	TRP3_ROLL = "TRP3_ROLL",
 	TRP3_SIGNAL = "TRP3_SIGNAL",
-	TRP3_ITEM_USED = "TRP3_ITEM_USED"
+	TRP3_ITEM_USED = "TRP3_ITEM_USED",
+	TRP3_EMOTE = "TRP3_EMOTE",
 };
 
 local playerQuestLog;
@@ -65,7 +65,7 @@ local function onCampaignCallback(campaignID, scriptID, condition, eventID, ...)
 		end
 		local args = { object = playerQuestLog[campaignID], event = payload };
 		if TRP3_API.script.generateAndRunCondition(condition, args) then
-			local retCode = TRP3_API.script.executeClassScript(scriptID, class.SC, args, campaignID);
+			TRP3_API.script.executeClassScript(scriptID, class.SC, args, campaignID);
 		end
 	end
 end
@@ -172,7 +172,7 @@ local function activateCampaign(campaignID, force)
 
 		-- Initial script
 		if campaignClass.LI and campaignClass.LI.OS then
-			local retCode = TRP3_API.script.executeClassScript(campaignClass.LI.OS, campaignClass.SC, { object = playerQuestLog[campaignID] }, campaignID);
+			TRP3_API.script.executeClassScript(campaignClass.LI.OS, campaignClass.SC, { object = playerQuestLog[campaignID] }, campaignID);
 		end
 
 		for questID, quest in pairs(campaignClass.QE or EMPTY) do
@@ -256,7 +256,7 @@ function TRP3_API.quest.campaignInit()
 
 	-- Emote event (yes, I put it here because I'm the boss)
 	TRP3_API.extended.EMOTE_EVENT = "TRP3_EMOTE";
-	hooksecurefunc("DoEmote", function(emote, arg2, arg3)
+	hooksecurefunc("DoEmote", function(emote)
 		Events.fireEvent(TRP3_API.extended.EMOTE_EVENT, emote);
 	end);
 

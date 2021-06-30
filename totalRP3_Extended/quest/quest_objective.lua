@@ -16,9 +16,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Utils = TRP3_API.utils;
 local pairs, tinsert, sort = pairs, tinsert, table.sort;
-local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
+local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
 local frame = TRP3_QuestObjectives;
 
@@ -34,8 +34,6 @@ local function display()
 	frame.Actions:Hide();
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
 	if playerQuestLog and playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign] then
-		frame.Actions:Show();
-
 		local campaignID = playerQuestLog.currentCampaign;
 		local campaignClass = getClass(campaignID);
 		local campaignIcon, campaignName, _ = getClassDataSafe(campaignClass);
@@ -109,15 +107,25 @@ local function display()
 			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. TRP3_API.Ellyb.ColorManager.YELLOW("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}" .. HTML;
 		end
 
+		local hasOneActionActive = false;
+
 		-- Fading non-relevant actions
 		for action, button in pairs(ACTION_FRAMES) do
 			if activeActions[action] then
 				button:GetNormalTexture():SetDesaturated(false);
 				button:SetAlpha(1);
+				hasOneActionActive = true;
 			else
 				button:GetNormalTexture():SetDesaturated(true);
 				button:SetAlpha(0.5);
 			end
+		end
+
+		if hasOneActionActive then
+			frame.Tracker:SetPoint("TOP", frame.Actions, "BOTTOM", 0, -10);
+			frame.Actions:Show();
+		else
+			frame.Tracker:SetPoint("TOP", frame.Actions, "BOTTOM", 0, 50);
 		end
 	end
 	frame.Tracker.html = Utils.str.toHTML(HTML, true, true);
@@ -146,7 +154,7 @@ function frame.init()
 	frame.Tracker:SetFontObject("p", GameFontNormal);
 	frame.Tracker:SetTextColor("p", 0.95, 0.95, 0.95);
 
-	frame.Tracker:SetScript("OnHyperlinkClick", function(self, link, text, button)
+	frame.Tracker:SetScript("OnHyperlinkClick", function(self, link)
 		if not link:find(TRP3_API.extended.ID_SEPARATOR) then
 			local class = getClass(link);
 			local _, campaignName, _ = getClassDataSafe(class);
@@ -164,7 +172,7 @@ function frame.init()
 		end
 	end);
 
-	local ticker = C_Timer.NewTicker(0.5, function()
+	C_Timer.NewTicker(0.5, function()
 		frame:Hide();
 		if ObjectiveTrackerBlocksFrame:IsShown() then
 			local top = ObjectiveTrackerBlocksFrame.contentsHeight

@@ -26,7 +26,6 @@ local Ellyb = TRP3_API.Ellyb;
 
 -- Lua imports
 local tcopy = Ellyb.Tables.copy;
-local date = date;
 
 -- Total RP 3 imports
 local iconToString = TRP3_API.utils.str.icon;
@@ -69,7 +68,7 @@ function CampaignsChatLinksModule:GetTooltipLines(tooltipData)
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine(parseArgs(description), Colors.ORANGE)
+		tooltipLines:AddLine("\"" .. parseArgs(description) .. "\"", Colors.YELLOW)
 	end
 
 	tooltipLines:AddLine(" ");

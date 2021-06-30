@@ -24,17 +24,15 @@ local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave
 
 local Ellyb = TRP3_API.Ellyb;
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs, time = _G, assert, tostring, tinsert, wipe, pairs, time;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local _G, assert, tostring, tinsert, pairs, time = _G, assert, tostring, tinsert, pairs, time;
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local loc = TRP3_API.loc;
-local Log = Utils.log;
 local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inventory.getBaseClassDataSafe, TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.isUsableByClass;
-local getClass, isContainerByClassID = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID;
+local getClass = TRP3_API.extended.getClass;
 local getQualityColorRGB, getQualityColorText = TRP3_API.inventory.getQualityColorRGB, TRP3_API.inventory.getQualityColorText;
 local EMPTY = TRP3_API.globals.empty;
-local color = Utils.str.color;
 local getItemLink = TRP3_API.inventory.getItemLink;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -53,21 +51,13 @@ local function incrementLine(line)
 	return line;
 end
 
-local function incrementLineIfFirst(first, line)
-	if first then
-		first = false;
-		line = line .. "\n";
-	end
-	return first, line;
-end
-
 local function parseArgs(text, info)
 	return TRP3_API.script.parseArgs(text, info);
 end
 
 local function getItemTooltipLines(slotInfo, class, forceAlt)
 	local title, left, right, text1, text1_lower, text2,  extension1, extension2;
-	local icon, name = getBaseClassDataSafe(class);
+	local _, name = getBaseClassDataSafe(class);
 	local rootClassID = TRP3_API.extended.getRootClassID(slotInfo.id);
 	local rootClass = TRP3_API.extended.classExists(rootClassID) and getClass(rootClassID);
 	local argsStructure = {object = slotInfo};
@@ -96,7 +86,11 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(ITEM_UNIQUE .. " (" .. class.BA.UN .. ")");
+		local uniqueText = ITEM_UNIQUE;
+		if class.BA.UN > 1 then
+			uniqueText = uniqueText ..  " (" .. class.BA.UN .. ")";
+		end
+		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(uniqueText);
 	end
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
@@ -218,7 +212,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text1 and text1:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.ORANGE:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
+		local r, g, b = TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
 		TRP3_ItemTooltip:AddLine(text1, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
@@ -251,7 +245,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		i = i + 1;
+		--i = i + 1;
 	end
 
 	TRP3_ItemTooltip.ref = frame;
@@ -271,7 +265,7 @@ local function containerSlotUpdate(self, elapsed)
 	self.Icon:SetDesaturated(false);
 	if self.info then
 		local class = self.class;
-		local icon, name = getBaseClassDataSafe(class);
+		local icon = getBaseClassDataSafe(class);
 		self.Icon:Show();
 		self.Icon:SetTexture("Interface\\ICONS\\" .. icon);
 		if class.BA and class.BA.QE then
@@ -357,7 +351,7 @@ local function doPickUpLoot(slotFrom, containerTo, slotIDTo, itemCount)
 	Utils.table.copy(lootInfo, slotFrom.info);
 	lootInfo.count = itemCount;
 
-	local returnCode, count = TRP3_API.inventory.addItem(containerTo, lootInfo.id, lootInfo, nil, slotIDTo);
+	local _, count = TRP3_API.inventory.addItem(containerTo, lootInfo.id, lootInfo, nil, slotIDTo);
 
 	slotFrom.info.count = slotFrom.info.count - count;
 
@@ -373,7 +367,7 @@ local function doPickUpLoot(slotFrom, containerTo, slotIDTo, itemCount)
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, containerTo);
 
 	if not containerFromFrame.info.stash then
-		for index, slot in pairs(lootFrame.slots) do
+		for _, slot in pairs(lootFrame.slots) do
 			if slot.info then
 				return;
 			end
@@ -422,7 +416,7 @@ local function discardLoot(slotFrom, containerFrame)
 	end
 
 	if containerFrame.info and not containerFrame.info.stash then
-		for index, slot in pairs(containerFrame.slots) do
+		for _, slot in pairs(containerFrame.slots) do
 			if slot.info then
 				return;
 			end
@@ -457,7 +451,6 @@ local function slotOnDragStop(slotFrom)
 					end
 				else
 					local itemClass = getClass(slotFrom.info.id);
-					local itemLink = getItemLink(itemClass);
 
 					TRP3_API.inventory.dropOrDestroy(itemClass, function()
 						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1ID, slotFrom.info, true);
@@ -506,17 +499,13 @@ local function slotOnDragStop(slotFrom)
 	end
 end
 
-local function slotOnDragReceive(self)
-
-end
-
 local function splitStack(slot, quantity)
 	if slot and slot.info and slot:GetParent().info then
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_SPLIT_SLOT, slot.info, slot:GetParent().info, quantity);
 	end
 end
 
-local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown;
+local IsShiftKeyDown = IsShiftKeyDown;
 local COLUMN_SPACING = 43;
 local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
@@ -532,7 +521,6 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 		slot:RegisterForDrag("LeftButton");
 		slot:SetScript("OnDragStart", slotOnDragStart);
 		slot:SetScript("OnDragStop", slotOnDragStop);
-		slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 
 		slot:SetAttribute("type", "macro");
 		-- OnMouseDown is called before the OnClick script, which gives us the opportunity to setup the macro behavior before use
@@ -615,9 +603,9 @@ local function initContainerSlots(containerFrame, rowCount, colCount, loot, loot
 	local slotNum = 1;
 	local rowY = -58;
 	containerFrame.slots = {};
-	for row = 1, rowCount do
+	for _ = 1, rowCount do
 		local colX = 22;
-		for col = 1, colCount do
+		for _ = 1, colCount do
 			local slot = CreateFrame("Button",
 				containerFrame:GetName() .. "Slot" .. slotNum,
 				containerFrame, "TRP3_ContainerSlotTemplate");
@@ -644,7 +632,7 @@ function loadContainerPageSlots(containerFrame)
 	assert(containerFrame.info, "Missing container info");
 	local containerContent = containerFrame.info.content or EMPTY;
 	local slotCounter = 1;
-	for index, slot in pairs(containerFrame.slots) do
+	for _, slot in pairs(containerFrame.slots) do
 		slot.slotID = tostring(slotCounter);
 		if containerContent[slot.slotID] then
 			slot.info = containerContent[slot.slotID];
@@ -659,7 +647,7 @@ function loadContainerPageSlots(containerFrame)
 end
 TRP3_API.inventory.loadContainerPageSlots = loadContainerPageSlots;
 
-local function containerFrameUpdate(self, elapsed)
+local function containerFrameUpdate(self)
 	if not self.info or not self.info.id or not TRP3_API.extended.classExists(self.info.id) then
 		self:Hide();
 		return;
@@ -691,14 +679,14 @@ local function containerFrameUpdate(self, elapsed)
 	end
 end
 
-local function decorateContainer(containerFrame, class, container)
+local function decorateContainer(containerFrame, class)
 	local icon, name = getBaseClassDataSafe(class);
 	Utils.texture.applyRoundTexture(containerFrame.Icon, "Interface\\ICONS\\" .. icon, "Interface\\ICONS\\TEMP");
 	containerFrame.Title:SetText(name);
 end
 TRP3_API.inventory.decorateContainer = decorateContainer;
 
-function highlightContainerInstance(container, except)
+function highlightContainerInstance(container)
 	for _, ref in pairs(containerInstances) do
 		ref.Glow:Hide();
 		if ref.info == container and ref:IsVisible() then
@@ -740,8 +728,7 @@ end
 
 local function containerOnDragStop(self)
 	self:StopMovingOrSizing();
-	local anchor, _, _, x, y = self:GetPoint(1);
-	local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint(1);
+	local point, _, relativePoint, xOfs, yOfs = self:GetPoint(1);
 	self.info.point = point;
 	self.info.relativePoint = relativePoint;
 	self.info.xOfs = xOfs;
@@ -779,7 +766,7 @@ local function onContainerShow(self)
 	self.IconButton.info = self.info;
 	self.IconButton.class = self.class;
 	lockOnContainer(self, self.originContainer);
-	decorateContainer(self, self.class, self.info);
+	decorateContainer(self, self.class);
 	loadContainerPageSlots(self);
 	TRP3_API.ui.misc.playSoundKit(12206, "SFX");
 end
@@ -789,7 +776,7 @@ local function onContainerHide(self)
 	-- Free resources for garbage collection.
 	self.info = nil;
 	self.class = nil;
-	for index, slot in pairs(self.slots) do
+	for _, slot in pairs(self.slots) do
 		slot.info = nil;
 		slot.class = nil;
 	end
@@ -911,7 +898,7 @@ local function presentLoot(loot, onLootCallback, forceLoot, checker, onDiscardCa
 
 		local slotCounter = 1;
 		lootFrame.info.content = loot.IT or EMPTY;
-		for index, slot in pairs(lootFrame.slots) do
+		for _, slot in pairs(lootFrame.slots) do
 			slot.slotID = tostring(slotCounter);
 			if lootFrame.info.content[slot.slotID] then
 				slot.info = lootFrame.info.content[slot.slotID];

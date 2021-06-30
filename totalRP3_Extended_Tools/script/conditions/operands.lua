@@ -16,9 +16,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local tonumber, tostring, type, tinsert, wipe, strtrim = tonumber, tostring, type, tinsert, wipe, strtrim;
-local tsize, EMPTY = Utils.table.size, Globals.empty;
+local Globals = TRP3_API.globals;
+local tonumber, tostring, strtrim = tonumber, tostring, strtrim;
+local EMPTY = Globals.empty;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
@@ -456,7 +456,7 @@ local function char_facing_init()
 		title = loc.OP_OP_CHAR_FACING,
 		description = loc.OP_OP_CHAR_FACING_TT,
 		returnType = 0,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_FACING;
 		end,
 	});
@@ -467,7 +467,7 @@ local function char_falling_init()
 		title = loc.OP_OP_CHAR_FALLING,
 		description = loc.OP_OP_CHAR_FALLING_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_FALLING;
 		end,
 	});
@@ -478,7 +478,7 @@ local function char_stealth_init()
 		title = loc.OP_OP_CHAR_STEALTH,
 		description = loc.OP_OP_CHAR_STEALTH_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_STEALTH;
 		end,
 	});
@@ -489,7 +489,7 @@ local function char_flying_init()
 		title = loc.OP_OP_CHAR_FLYING,
 		description = loc.OP_OP_CHAR_FLYING_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_FLYING;
 		end,
 	});
@@ -500,7 +500,7 @@ local function char_mounted_init()
 		title = loc.OP_OP_CHAR_MOUNTED,
 		description = loc.OP_OP_CHAR_MOUNTED_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_MOUNTED;
 		end,
 	});
@@ -511,7 +511,7 @@ local function char_resting_init()
 		title = loc.OP_OP_CHAR_RESTING,
 		description = loc.OP_OP_CHAR_RESTING_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_RESTING;
 		end,
 	});
@@ -522,7 +522,7 @@ local function char_swimming_init()
 		title = loc.OP_OP_CHAR_SWIMMING,
 		description = loc.OP_OP_CHAR_SWIMMING_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_SWIMMING;
 		end,
 	});
@@ -533,7 +533,7 @@ local function char_indoors_init()
 		title = loc.OP_OP_CHAR_INDOORS,
 		description = loc.OP_OP_CHAR_INDOORS_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_INDOORS;
 		end,
 	});
@@ -544,7 +544,7 @@ local function char_zone_init()
 		title = loc.OP_OP_CHAR_ZONE,
 		description = loc.OP_OP_CHAR_ZONE_TT,
 		returnType = "",
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_ZONE;
 		end,
 	});
@@ -555,7 +555,7 @@ local function char_subzone_init()
 		title = loc.OP_OP_CHAR_SUBZONE,
 		description = loc.OP_OP_CHAR_SUBZONE_TT,
 		returnType = "",
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_SUBZONE;
 		end,
 	});
@@ -566,7 +566,7 @@ local function char_minimap_init()
 		title = loc.OP_OP_CHAR_MINIMAP,
 		description = loc.OP_OP_CHAR_MINIMAP_TT,
 		returnType = "",
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_MINIMAP;
 		end,
 	});
@@ -577,7 +577,7 @@ local function char_cam_distance_init()
 		title = loc.OP_OP_CHAR_CAM_DISTANCE,
 		description = loc.OP_OP_CHAR_CAM_DISTANCE_TT,
 		returnType = 1,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_CHAR_CAM_DISTANCE;
 		end,
 	});
@@ -585,23 +585,23 @@ end
 
 local function char_achievement_init()
 	local editor = TRP3_OperandEditorAchievementSelection;
-	
+
 	local typesText = {
 		account = loc.OP_OP_CHAR_ACHIEVEMENT_ACC,
 		character = loc.OP_OP_CHAR_ACHIEVEMENT_CHAR
 	}
-	
+
 	-- Achievement ID
 	editor.id.title:SetText(loc.OP_OP_CHAR_ACHIEVEMENT_ID);
 	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.OP_OP_CHAR_ACHIEVEMENT_ID, loc.OP_OP_CHAR_ACHIEVEMENT_ID_TT);
-	
+
 	local types = {
 		{TRP3_API.formats.dropDownElements:format(loc.OP_OP_CHAR_ACHIEVEMENT_WHO, loc.OP_OP_CHAR_ACHIEVEMENT_ACC), "account", loc.OP_OP_CHAR_ACHIEVEMENT_ACC_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.OP_OP_CHAR_ACHIEVEMENT_WHO, loc.OP_OP_CHAR_ACHIEVEMENT_CHAR), "character", loc.OP_OP_CHAR_ACHIEVEMENT_CHAR_TT}
 	}
-	
+
 	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 200, true);
-	
+
 	function editor.load(args)
 		editor.type:SetSelectedValue((args or EMPTY)[1] or "account");
 		editor.id:SetText((args or EMPTY)[2] or "");
@@ -610,7 +610,7 @@ local function char_achievement_init()
 	function editor.save()
 		return {editor.type:GetSelectedValue() or "account", tonumber(strtrim(editor.id:GetText())) or 0};
 	end
-	
+
 	registerOperandEditor("char_achievement" , {
 		title = loc.OP_OP_CHAR_ACHIEVEMENT,
 		description = loc.OP_OP_CHAR_ACHIEVEMENT_TT,
@@ -764,7 +764,7 @@ local function time_hour_init()
 		title = loc.OP_OP_TIME_HOUR,
 		description = loc.OP_OP_TIME_HOUR_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_TIME_HOUR;
 		end,
 	});
@@ -775,7 +775,7 @@ local function time_minute_init()
 		title = loc.OP_OP_TIME_MINUTE,
 		description = loc.OP_OP_TIME_MINUTE_TT,
 		returnType = true,
-		getText = function(args)
+		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_TIME_MINUTE;
 		end,
 	});

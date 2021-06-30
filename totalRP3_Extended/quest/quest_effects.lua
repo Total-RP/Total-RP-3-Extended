@@ -18,10 +18,9 @@
 ----------------------------------------------------------------------------------
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Effetc structure
+-- Effect structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tostring, strtrim = tostring, strtrim;
 local security = TRP3_API.security.SECURITY_LEVEL;
 
 TRP3_API.quest.EFFECTS = {

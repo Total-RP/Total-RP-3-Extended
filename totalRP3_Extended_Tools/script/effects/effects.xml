@@ -324,6 +324,12 @@
 				</Anchors>
 			</EditBox>
 
+			<CheckButton parentKey="soundFile" inherits="TRP3_CheckBox" name="$parentSoundFile">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-20"/>
+				</Anchors>
+			</CheckButton>
+
 			<Button parentKey="play" inherits="TRP3_CommonButton">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.id" x="5" y="2"/>
@@ -362,7 +368,7 @@
 	</Frame>
 
 	<Frame name="TRP3_EffectEditorSoundIDLocal" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="250"/>
+		<Size x="500" y="290"/>
 		<Frames>
 
 			<Frame parentKey="channel" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
@@ -384,10 +390,16 @@
 				</Anchors>
 			</Button>
 
+			<CheckButton parentKey="soundFile" inherits="TRP3_CheckBox" name="$parentSoundFile">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-20"/>
+				</Anchors>
+			</CheckButton>
+
 			<EditBox parentKey="distance" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.soundFile" x="0" y="-20"/>
 				</Anchors>
 			</EditBox>
 

@@ -15,7 +15,7 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local Communications = AddOn_TotalRP3.Communications;
 local tinsert, tostring, _G, wipe, pairs, time, tonumber = tinsert, tostring, _G, wipe, pairs, time, tonumber;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
@@ -25,7 +25,6 @@ local CreateFrame = CreateFrame;
 local parseArgs = TRP3_API.script.parseArgs;
 
 local inspectionFrame = TRP3_InspectionFrame;
-local decorateSlot;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DATA EXCHANGE
@@ -221,7 +220,7 @@ function inspectionFrame.init()
 					end
 					return false;
 				end,
-				onClick = function(_, _, buttonType, _)
+				onClick = function()
 					onToolbarButtonClicked();
 				end,
 				tooltip = loc.INV_PAGE_CHARACTER_INSPECTION,

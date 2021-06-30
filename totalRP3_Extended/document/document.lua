@@ -15,10 +15,9 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
+local Utils = TRP3_API.utils;
+local _G, assert = _G, assert;
 local loc = TRP3_API.loc;
-local Log = Utils.log;
 local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
 
@@ -121,7 +120,7 @@ local function showDocumentClass(document, documentID, parentArgs)
 
 	if documentFrame.ID then
 		if document.LI and document.LI.OO and document.SC and document.SC[document.LI.OO] then
-			local retCode = TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC, {
+			TRP3_API.script.executeClassScript(document.LI.OO, documentFrame.class.SC, {
 				object = parentArgs.object
 			}, documentFrame.ID);
 		end
@@ -144,7 +143,7 @@ local function onLinkClicked(self, url)
 		local document = documentFrame.class;
 		local parentArgs = documentFrame.parentArgs;
 		if document.SC and document.SC[url] then
-			local retCode = TRP3_API.script.executeClassScript(url, document.SC, {
+			TRP3_API.script.executeClassScript(url, document.SC, {
 				object = parentArgs.object
 			}, documentFrame.ID);
 		else
@@ -153,22 +152,22 @@ local function onLinkClicked(self, url)
 	end
 end
 
-local function closeDocumentFrame(parentArgs)
+local function closeDocumentFrame()
 	documentFrame:Hide();
 	if documentFrame.ID and documentFrame.class then
 		local document = documentFrame.class;
 		local parentArgs = documentFrame.parentArgs;
 		if document.LI and document.LI.OC and document.SC and document.SC[document.LI.OC] then
-			local retCode = TRP3_API.script.executeClassScript(document.LI.OC, document.SC, {
+			TRP3_API.script.executeClassScript(document.LI.OC, document.SC, {
 				object = parentArgs.object
 			}, documentFrame.ID);
 		end
 	end
 end
 
-local function closeDocument(parentArgs)
+local function closeDocument()
 	if documentFrame:IsVisible() then
-		closeDocumentFrame(parentArgs);
+		closeDocumentFrame();
 	end
 end
 TRP3_API.extended.document.closeDocument = closeDocument;
@@ -197,7 +196,7 @@ function TRP3_API.extended.document.onStart()
 	TRP3_API.script.registerEffects({
 		document_show = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			method = function(structure, cArgs, eArgs)
+			method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 				local documentID = cArgs[1];
 				eArgs.LAST = showDocument(documentID, eArgs);
 			end,
@@ -205,8 +204,8 @@ function TRP3_API.extended.document.onStart()
 
 		document_close = {
 			secured = TRP3_API.security.SECURITY_LEVEL.HIGH,
-			method = function(structure, cArgs, eArgs)
-				eArgs.LAST = closeDocument(eArgs);
+			method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
+				eArgs.LAST = closeDocument();
 			end,
 		}
 	});

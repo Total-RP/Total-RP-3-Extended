@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 
 ---@type TotalRP3_Extended_Operand
-local Operand = TRP3_API.script.Operand;
+--local Operand = TRP3_API.script.Operand;
 
 --[[[ TODO Test and implement these operands
 

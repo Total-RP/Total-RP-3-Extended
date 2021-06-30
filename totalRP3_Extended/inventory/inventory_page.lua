@@ -16,15 +16,14 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
+local _G, tostring, tinsert, wipe = _G, tostring, tinsert, wipe;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
-local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
-local TRP3_ItemTooltip = TRP3_ItemTooltip;
+local CreateFrame, IsAltKeyDown = CreateFrame, IsAltKeyDown;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local EMPTY = TRP3_API.globals.empty;
 
-local model, main;
+local inventoryModel, mainInventoryFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Slot equipement management
@@ -34,9 +33,9 @@ local QUICK_SLOT_ID = TRP3_API.inventory.QUICK_SLOT_ID;
 local DEFAULT_SEQUENCE = 193;
 local DEFAULT_TIME = 1;
 
-local function resetEquip(Main, Model)
-	local main = Main or main;
-	local model = Model or model;
+local function resetEquip(main, model)
+	if not main then main = mainInventoryFrame end;
+	if not model then model = inventoryModel end;
 	model:ResetModel();
 	if main.Equip then
 		main.Equip:Hide();
@@ -54,9 +53,6 @@ local function setModelPosition(self, rotation)
 	self:RefreshCamera();
 end
 
-local SLOT_MARGIN = 35;
-local SLOT_SPACING = 12;
-
 local function drawLine(from, quality, model)
 	model.Line:Show();
 	model.Line:SetStartPoint("CENTER", from);
@@ -67,7 +63,7 @@ local function drawLine(from, quality, model)
 end
 
 local function moveMarker(self, diffX, diffY, oX, oY, quality, frame)
-	local model = frame or model;
+	local model = frame or inventoryModel;
 	local width, height = model:GetWidth() / 2, model:GetHeight() / 2;
 	self:ClearAllPoints();
 	self.posX = math.max(-width, math.min(oX + diffX, width));
@@ -79,8 +75,8 @@ local function moveMarker(self, diffX, diffY, oX, oY, quality, frame)
 end
 
 local function setButtonModelPosition(self, force, frame)
-	local main = (frame and frame.Main) or main;
-	local model = (frame and frame.Main.Model) or model;
+	local main = (frame and frame.Main) or mainInventoryFrame;
+	local model = (frame and frame.Main.Model) or inventoryModel;
 
 	if self.info and self.class then
 		local isWearable = self.class.BA and self.class.BA.WA;
@@ -107,13 +103,13 @@ end
 TRP3_API.inventory.setWearableConfiguration = setButtonModelPosition;
 
 local function onSlotEnter(self)
-	if not main.Equip:IsVisible() then
+	if not mainInventoryFrame.Equip:IsVisible() then
 		setButtonModelPosition(self);
 	end
 end
 
 local function onSlotLeave()
-	if not main.Equip:IsVisible() then
+	if not mainInventoryFrame.Equip:IsVisible() then
 		resetEquip();
 	end
 end
@@ -123,10 +119,10 @@ local function onSlotDrag()
 end
 
 local function onSlotDoubleClick()
-	main.Equip:Hide();
+	mainInventoryFrame.Equip:Hide();
 end
 
-local function onSlotUpdate(self, elapsed)
+local function onSlotUpdate(self)
 	if self.info and self.class and self.class.BA.WA then
 		self.Locator:Show();
 	else
@@ -138,14 +134,14 @@ local function onLocatorClick(button, mode)
 	button = button:GetParent();
 
 	if mode == "LeftButton" then
-		if main.Equip:IsVisible() and main.Equip.isOn == button then
-			main.Equip:Hide();
+		if mainInventoryFrame.Equip:IsVisible() and mainInventoryFrame.Equip.isOn == button then
+			mainInventoryFrame.Equip:Hide();
 			return;
 		end
 
 		if button.info and button.class then
 			if not button.class.BA or not button.class.BA.WA then
-				main.Equip:Hide();
+				mainInventoryFrame.Equip:Hide();
 				return;
 			end
 		end
@@ -154,8 +150,8 @@ local function onLocatorClick(button, mode)
 		if button.slotNumber > 8 then
 			position, x, y = "LEFT", 10, 0;
 		end
-		TRP3_API.ui.frame.configureHoverFrame(main.Equip, button.Locator, position, x, y);
-		main.Equip.isOn = button;
+		TRP3_API.ui.frame.configureHoverFrame(mainInventoryFrame.Equip, button.Locator, position, x, y);
+		mainInventoryFrame.Equip.isOn = button;
 
 		setButtonModelPosition(button, true);
 	else
@@ -171,23 +167,23 @@ end
 
 local function onEquipRefresh(self)
 	-- Camera
-	local rotation = model.rotation;
+	local rotation = inventoryModel.rotation;
 	self.Camera:SetText(loc.INV_PAGE_CAMERA_CONFIG:format(rotation));
 
-	local button = main.Equip.isOn
+	local button = mainInventoryFrame.Equip.isOn
 	if button and button.info then
 		local pos =  button.info.pos or {};
-		pos.rotation = model.rotation;
-		pos.x = model.Marker.posX or 0;
-		pos.y = model.Marker.posY or 0;
-		pos.sequenceTime = model.sequenceTime or DEFAULT_TIME;
-		pos.sequence = model.sequence or DEFAULT_SEQUENCE;
+		pos.rotation = inventoryModel.rotation;
+		pos.x = inventoryModel.Marker.posX or 0;
+		pos.y = inventoryModel.Marker.posY or 0;
+		pos.sequenceTime = inventoryModel.sequenceTime or DEFAULT_TIME;
+		pos.sequence = inventoryModel.sequence or DEFAULT_SEQUENCE;
 		button.info.pos = pos;
 	end
 
 	-- Marker
-	local x = model.Marker.posX or 0;
-	local y = model.Marker.posY or 0;
+	local x = inventoryModel.Marker.posX or 0;
+	local y = inventoryModel.Marker.posY or 0;
 	self.Marker:SetText(loc.INV_PAGE_MARKER:format(x, y));
 end
 
@@ -198,14 +194,14 @@ end
 local function onSlotClickAction(action, slot)
 	local slotID = slot.slotID;
 	if action == 1 then
-		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = main, point = "CENTER", parentPoint = "CENTER"}, {function(fromID)
+		TRP3_API.popup.showPopup(TRP3_API.popup.OBJECTS, {parent = mainInventoryFrame, point = "CENTER", parentPoint = "CENTER"}, {function(fromID)
 			TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(fromID))), function(value)
 				local class = TRP3_API.extended.getClass(fromID);
 				TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), fromID, {count = value or 1, madeBy = class.BA and class.BA.CR}, nil, slotID);
 			end, nil, 1);
 		end, TRP3_DB.types.ITEM, true});
 	elseif action == 2 then
-		TRP3_API.extended.tools.openItemQuickEditor(main, function(classID, _)
+		TRP3_API.extended.tools.openItemQuickEditor(mainInventoryFrame, function(classID, _)
 			local class = TRP3_API.extended.getClass(classID);
 			TRP3_API.inventory.addItem(TRP3_API.inventory.getInventory(), classID, {count = 1, madeBy = class.BA and class.BA.CR}, nil, slotID);
 		end, nil, true);
@@ -225,7 +221,7 @@ local function onSlotClick(slot, button)
 		elseif button == "LeftButton" and IsAltKeyDown() and slot.info then
 			if TRP3_API.extended.isObjectMine(slot.info.id) then
 				if (TRP3_API.extended.getClass(slot.info.id).MD or EMPTY).MO == TRP3_DB.modes.QUICK then
-					TRP3_API.extended.tools.openItemQuickEditor(main, nil, slot.info.id, true);
+					TRP3_API.extended.tools.openItemQuickEditor(mainInventoryFrame, nil, slot.info.id, true);
 				else
 					Utils.message.displayMessage(loc.INV_PAGE_EDIT_ERROR2, 4);
 				end
@@ -244,21 +240,25 @@ local onInventoryShow;
 
 function onInventoryShow()
 	local playerInventory = TRP3_API.inventory.getInventory();
-	main.info = playerInventory;
-	model:SetUnit("player", true);
+	mainInventoryFrame.info = playerInventory;
+	inventoryModel:SetUnit("player", true);
 	resetEquip();
 
-	TRP3_API.inventory.loadContainerPageSlots(main);
-	TRP3_ContainerInvPageSlot17:SetFrameLevel(model.Blocker:GetFrameLevel() + 1);
+	TRP3_API.inventory.loadContainerPageSlots(mainInventoryFrame);
+	TRP3_ContainerInvPageSlot17:SetFrameLevel(inventoryModel.Blocker:GetFrameLevel() + 1);
+
+	-- A bit of a hack, this ensures that we get a TOPLEFT point for the marker during its MouseUp script.
+	TRP3_MainFrame:StartMoving();
+	TRP3_MainFrame:StopMovingOrSizing();
 end
 
-local function containerFrameUpdate(self, elapsed)
+local function containerFrameUpdate(self)
 	-- Weight and value
 	local current = self.info.totalWeight or 0;
 	local weight = TRP3_API.extended.formatWeight(current) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
 	local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, GetCoinTextureString(self.info.totalValue or 0));
-	model.WeightText:SetText(weight);
-	model.ValueText:SetText(formatedValue);
+	inventoryModel.WeightText:SetText(weight);
+	inventoryModel.ValueText:SetText(formatedValue);
 end
 
 local function onToolbarButtonClicked(buttonType)
@@ -298,7 +298,7 @@ local function createTutorialStructure()
 	TUTORIAL_STRUCTURE = {
 		{
 			box = {
-				allPoints = main.slots[1]
+				allPoints = mainInventoryFrame.slots[1]
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -309,7 +309,7 @@ local function createTutorialStructure()
 		},
 		{
 			box = {
-				allPoints = main.slots[17]
+				allPoints = mainInventoryFrame.slots[17]
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -331,7 +331,7 @@ local function createTutorialStructure()
 		},
 		{
 			box = {
-				allPoints = main.slots[12]
+				allPoints = mainInventoryFrame.slots[12]
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -342,7 +342,7 @@ local function createTutorialStructure()
 		},
 		{
 			box = {
-				allPoints = main.slots[15]
+				allPoints = mainInventoryFrame.slots[15]
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -356,7 +356,7 @@ end
 
 function TRP3_API.inventory.initInventoryPage()
 
-	model, main = TRP3_InventoryPage.Main.Model, TRP3_InventoryPage.Main;
+	inventoryModel, mainInventoryFrame = TRP3_InventoryPage.Main.Model, TRP3_InventoryPage.Main;
 
 	TRP3_API.navigation.menu.registerMenu({
 		id = "main_13_player_inventory",
@@ -378,27 +378,27 @@ function TRP3_API.inventory.initInventoryPage()
 		initPlayerInventoryButton();
 	end);
 
-	createRefreshOnFrame(main, 0.15, containerFrameUpdate);
-	model.setAnimation = function(self, sequence, sequenceTime)
+	createRefreshOnFrame(mainInventoryFrame, 0.15, containerFrameUpdate);
+	inventoryModel.setAnimation = function(self, sequence, sequenceTime)
 		if sequence then
 			self:FreezeAnimation(sequence, 0, sequenceTime or DEFAULT_TIME);
 		end
 	end
 
 	-- Create model slots
-	main.lockX = 110;
-	main.slots = {};
+	mainInventoryFrame.lockX = 110;
+	mainInventoryFrame.slots = {};
 	local wearText = loc.INV_PAGE_WEAR_TT
 			.. "\n\n|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION
 			.. "\n|cffffff00" .. loc.CM_R_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION_RESET;
 	for i=1, 17 do
-		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, main, "TRP3_InventoryPageSlotTemplate");
+		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, mainInventoryFrame, "TRP3_InventoryPageSlotTemplate");
 		if i == 1 then
-			button:SetPoint("TOPRIGHT", model, "TOPLEFT", -15, 0);
+			button:SetPoint("TOPRIGHT", inventoryModel, "TOPLEFT", -15, 0);
 		elseif i == 9 then
-			button:SetPoint("TOPLEFT", model, "TOPRIGHT", 15, 0);
+			button:SetPoint("TOPLEFT", inventoryModel, "TOPRIGHT", 15, 0);
 		elseif i == 17 then
-			button:SetPoint("BOTTOMLEFT", model, "BOTTOMLEFT", 5, 10);
+			button:SetPoint("BOTTOMLEFT", inventoryModel, "BOTTOMLEFT", 5, 10);
 			button.First:SetText(loc.INV_PAGE_QUICK_SLOT);
 			button.Second:SetText(loc.INV_PAGE_QUICK_SLOT_TT);
 			button.Locator:Hide();
@@ -413,7 +413,7 @@ function TRP3_API.inventory.initInventoryPage()
 			setTooltipForSameFrame(button.Locator, "RIGHT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
 		end
 
-		tinsert(main.slots, button);
+		tinsert(mainInventoryFrame.slots, button);
 		button.slotNumber = i;
 		button.slotID = tostring(i);
 		TRP3_API.inventory.initContainerSlot(button);
@@ -458,7 +458,7 @@ function TRP3_API.inventory.initInventoryPage()
 			button.Second:SetJustifyH("RIGHT");
 		end
 	end
-	TRP3_API.inventory.initContainerInstance(main, 16);
+	TRP3_API.inventory.initContainerInstance(mainInventoryFrame, 16);
 
 	-- On profile changed
 	local refreshInventory = function()
@@ -469,42 +469,42 @@ function TRP3_API.inventory.initInventoryPage()
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
 
 	-- Equip
-	model.defaultRotation = 0;
-	main.Equip.Title:SetText(loc.INV_PAGE_ITEM_LOCATION);
-	createRefreshOnFrame(main.Equip, 0.15, onEquipRefresh);
-	main.Equip:SetScript("OnShow", function() model.Blocker:Hide() end);
-	main.Equip:SetScript("OnHide", function() model.Blocker:Show() end);
-	setTooltipForSameFrame(model.Blocker.ValueHelp, "RIGHT", 0, 0, loc.INV_PAGE_TOTAL_VALUE, loc.INV_PAGE_TOTAL_VALUE_TT);
+	inventoryModel.defaultRotation = 0;
+	mainInventoryFrame.Equip.Title:SetText(loc.INV_PAGE_ITEM_LOCATION);
+	createRefreshOnFrame(mainInventoryFrame.Equip, 0.15, onEquipRefresh);
+	mainInventoryFrame.Equip:SetScript("OnShow", function() inventoryModel.Blocker:Hide() end);
+	mainInventoryFrame.Equip:SetScript("OnHide", function() inventoryModel.Blocker:Show() end);
+	setTooltipForSameFrame(inventoryModel.Blocker.ValueHelp, "RIGHT", 0, 0, loc.INV_PAGE_TOTAL_VALUE, loc.INV_PAGE_TOTAL_VALUE_TT);
 
 	-- Hide unwanted model adaptation
-	model.controlFrame:SetPoint("TOP", 0, 25);
-	model.controlFrame:SetWidth(55);
-	_G[model.controlFrame:GetName() .. "RotateLeftButton"]:ClearAllPoints();
-	_G[model.controlFrame:GetName() .. "RotateLeftButton"]:SetPoint("Left", 2, 0);
-	_G[model.controlFrame:GetName() .. "ZoomInButton"]:Hide();
-	_G[model.controlFrame:GetName() .. "ZoomOutButton"]:Hide();
-	_G[model.controlFrame:GetName() .. "PanButton"]:Hide();
+	inventoryModel.controlFrame:SetPoint("TOP", 0, 25);
+	inventoryModel.controlFrame:SetWidth(55);
+	_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:ClearAllPoints();
+	_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:SetPoint("Left", 2, 0);
+	_G[inventoryModel.controlFrame:GetName() .. "ZoomInButton"]:Hide();
+	_G[inventoryModel.controlFrame:GetName() .. "ZoomOutButton"]:Hide();
+	_G[inventoryModel.controlFrame:GetName() .. "PanButton"]:Hide();
 	local MOVE_SCALE = 1;
-	model.Marker:SetScript("OnMouseUp", function(self)
+	inventoryModel.Marker:SetScript("OnMouseUp", function(self)
 		local _, _, _, x, y = self:GetPoint("TOPLEFT");
 		local diffX = x - self.x;
 		local diffY = y - self.y;
 		self:StopMovingOrSizing();
-		moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY, model);
+		moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY, inventoryModel);
 	end);
 
-	main.Equip.time:SetScript("OnValueChanged", function(self)
-		model.sequenceTime = self:GetValue();
-		model:setAnimation(model.sequence, model.sequenceTime);
+	mainInventoryFrame.Equip.time:SetScript("OnValueChanged", function(self)
+		inventoryModel.sequenceTime = self:GetValue();
+		inventoryModel:setAnimation(inventoryModel.sequence, inventoryModel.sequenceTime);
 	end);
 	local onChange = function(self)
-		model.sequence = tonumber(self:GetText()) or DEFAULT_SEQUENCE;
-		model:setAnimation(model.sequence, model.sequenceTime);
+		inventoryModel.sequence = tonumber(self:GetText()) or DEFAULT_SEQUENCE;
+		inventoryModel:setAnimation(inventoryModel.sequence, inventoryModel.sequenceTime);
 	end;
-	main.Equip.sequence:SetScript("OnTextChanged", onChange);
-	main.Equip.sequence:SetScript("OnEnterPressed", onChange);
-	main.Equip.sequence.title:SetText(loc.INV_PAGE_SEQUENCE);
-	setTooltipForSameFrame(main.Equip.sequence.help, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_TT);
+	mainInventoryFrame.Equip.sequence:SetScript("OnTextChanged", onChange);
+	mainInventoryFrame.Equip.sequence:SetScript("OnEnterPressed", onChange);
+	mainInventoryFrame.Equip.sequence.title:SetText(loc.INV_PAGE_SEQUENCE);
+	setTooltipForSameFrame(mainInventoryFrame.Equip.sequence.help, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_TT);
 
 	-- Preset
 	local presets = {
@@ -544,12 +544,12 @@ function TRP3_API.inventory.initInventoryPage()
 			{"/?", 65},
 		}},
 	};
-	main.Equip.preset:SetScript("OnClick", function(self)
+	mainInventoryFrame.Equip.preset:SetScript("OnClick", function(self)
 		TRP3_API.ui.listbox.displayDropDown(self, presets, function(value)
-			main.Equip.sequence:SetText(value or "");
+			mainInventoryFrame.Equip.sequence:SetText(value or "");
 		end, 0, true);
 	end);
-	setTooltipForSameFrame(main.Equip.preset, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_PRESET);
+	setTooltipForSameFrame(mainInventoryFrame.Equip.preset, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_PRESET);
 
 	createTutorialStructure();
 end

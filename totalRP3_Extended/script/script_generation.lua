@@ -118,7 +118,7 @@ local function operand(operandID, eArgs, ...)
 	end
 end
 
-local function effect(effectID, eArgs, ...)
+local function unsecuredEffect(effectID, eArgs, ...)
 	playEffect(effectID, false, eArgs, ...);
 end
 
@@ -212,7 +212,7 @@ end
 local function writeTest(testStructure, env)
 	assert(testStructure, "testStructure is nil");
 	assert(#testStructure == 3, "testStructure should have three components");
-	local comparator, comparatorType;
+	local comparatorType;
 
 	-- Comparator
 	assert(type(testStructure[2]) == "string", "testStructure comparator is not a string");
@@ -333,7 +333,7 @@ local function writeEffect(effectStructure)
 
 	-- Compilation args
 	local cArgs = escapeArguments(effectStructure.args) or EMPTY;
-	for i, v in pairs(cArgs) do
+	for _, v in pairs(cArgs) do
 		effectCode = effectCode .. ", ";
 		if type(v) == "string" then
 			effectCode = effectCode .. "\"" .. v .. "\"";
@@ -613,7 +613,7 @@ function TRP3_API.script.clearCompilation(classID)
 end
 
 function TRP3_API.script.clearRootCompilation(rootClassID)
-	for classID, compilations in pairs(compiledScript) do
+	for classID, _ in pairs(compiledScript) do
 		if classID:sub(1, rootClassID:len()) == rootClassID then
 			wipe(compiledScript[classID]);
 			compiledScript[classID] = nil;
@@ -840,10 +840,10 @@ function TRP3_API.script.parseArgs(text, args)
 		if directReplacement[capture] then
 			return directReplacement[capture](args);
 		elseif capture:match("gender%:%w+%:[^%:]+%:[^%:]+") then
-			local type, male, female = capture:match("gender%:(%w+)%:([^%:]+)%:([^%:]+)");
-			if UnitSex(type) == 2 then
+			local unitID, male, female = capture:match("gender%:(%w+)%:([^%:]+)%:([^%:]+)");
+			if UnitSex(unitID) == 2 then
 				return male;
-			elseif UnitSex(type) == 3 then
+			elseif UnitSex(unitID) == 3 then
 				return female;
 			end
 			return UNKNOWN;
@@ -999,7 +999,7 @@ function TRP3_API.script.runLuaScriptEffect(code, args, secured)
 	if secured then
 		env["effect"] = securedEffect;
 	else
-		env["effect"] = effect;
+		env["effect"] = unsecuredEffect;
 	end
 
 	env["op"] = operand;
