@@ -1,3 +1,9 @@
+# Changelog for version 1.4.2
+
+## Fixed
+
+- Fixed a Lua error on login.
+
 # Changelog for version 1.4.1
 
 ## Added
