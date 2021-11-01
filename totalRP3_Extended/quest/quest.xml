@@ -22,7 +22,7 @@
 	<!-- Made quest log progression text bigger to fit 2-digit percentages (Paul Corlay) -->
 
 	<!-- NPC tooltip -->
-	<GameTooltip name="TRP3_NPCTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
+	<GameTooltip name="TRP3_NPCTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="TRP3_TooltipTemplate">
 		<Scripts>
 			<OnHide>
 				self.isFading = nil;

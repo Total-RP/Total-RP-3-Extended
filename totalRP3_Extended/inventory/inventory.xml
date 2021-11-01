@@ -22,7 +22,7 @@
 
 	<!-- Please note that the loading order matters a lot -->
 
-	<GameTooltip name="TRP3_ItemTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
+	<GameTooltip name="TRP3_ItemTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
 
 
 	<Script file="ItemsChatLinkModule.lua"/>
