@@ -87,7 +87,7 @@
 
 		<Frames>
 
-			<Frame parentKey="left" inherits="TRP3_BackdropTemplate">
+			<Frame parentKey="left" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_24_5555" type="global"/>
 				</KeyValues>
@@ -154,7 +154,7 @@
 				</Frames>
 			</Frame>
 
-			<Frame parentKey="right" inherits="TRP3_BackdropTemplate">
+			<Frame parentKey="right" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_24_5555" type="global"/>
 				</KeyValues>
