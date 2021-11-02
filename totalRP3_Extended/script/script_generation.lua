@@ -99,6 +99,7 @@ local function playEffect(effectID, shouldBeSecured, eArgs, ...)
 end
 TRP3_API.script.playEffect = playEffect;
 
+local IMPORT_PATTERN = "local %s = %s;";
 
 local function operand(operandID, eArgs, ...)
 	local cArgs = {...};
@@ -108,6 +109,9 @@ local function operand(operandID, eArgs, ...)
 		local code = "return function(args)\nreturn " .. operandInfo:CodeReplacement(escapeArguments(cArgs) or EMPTY) .. "\nend;";
 		-- Compile
 		-- TODO: with proper method
+		for alias, global in pairs(operandInfo.env) do
+			code = IMPORT_PATTERN:format(alias, global) .. "\n" .. code;
+		end
 		local factory, errorMessage = loadstring(code, "Generated direct operand code");
 		if not factory then
 			error("Error in script effect:\n" .. errorMessage);
@@ -492,8 +496,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 local BASE_ENV = { ["tostring, EMPTY, delayed, eval, tonumber, var, effect"]
 = "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval, tonumber, TRP3_API.script.parseArgs, TRP3_API.script.playEffect" };
-
-local IMPORT_PATTERN = "local %s = %s;";
 
 local function generateFromCode(code)
 	-- Generating factory

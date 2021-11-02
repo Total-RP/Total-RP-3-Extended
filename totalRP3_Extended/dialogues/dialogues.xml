@@ -143,7 +143,7 @@
 				</Frames>
 			</Frame>
 
-			<Frame parentKey="Chat" frameLevel="4" inherits="TRP3_BackdropTemplate">
+			<Frame parentKey="Chat" frameLevel="4" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_16_16_3333" type="global"/>
 				</KeyValues>
@@ -170,7 +170,7 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame parentKey="Left" frameLevel="5" inherits="TRP3_BackdropTemplate">
+					<Frame parentKey="Left" frameLevel="5" inherits="BackdropTemplate">
 						<KeyValues>
 							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_100_16_4222" type="global"/>
 						</KeyValues>
@@ -199,7 +199,7 @@
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="Right" frameLevel="5" inherits="TRP3_BackdropTemplate">
+					<Frame parentKey="Right" frameLevel="5" inherits="BackdropTemplate">
 						<KeyValues>
 							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_100_16_4222" type="global"/>
 						</KeyValues>

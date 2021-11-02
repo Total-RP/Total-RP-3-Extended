@@ -1,3 +1,15 @@
+# Changelog for version 1.4.3
+
+## Fixed
+
+- Fixed tooltip issues for patch 9.1.5.
+
+# Changelog for version 1.4.2
+
+## Fixed
+
+- Fixed a Lua error on login.
+
 # Changelog for version 1.4.1
 
 ## Added

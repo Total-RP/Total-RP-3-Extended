@@ -96,13 +96,17 @@
                 </Texture>
             </Layer>
             <Layer level="ARTWORK" textureSubLevel="2">
-                <Texture parentKey="RightHide" inherits="PlayerChoiceRightHide">
+                <Texture parentKey="RightHide" file="Interface\QuestionFrame\Question-Main">
+                    <Size x="61" y="32"/>
+                    <TexCoords left="0.76953125" right="0.88867188" top="0.00195313" bottom="0.06445313"/>
                     <Anchors>
                         <Anchor point="TOPRIGHT" relativeKey="$parent.BorderTopRight" relativePoint="BOTTOMRIGHT" x="-8"
                                 y="8"/>
                     </Anchors>
                 </Texture>
-                <Texture parentKey="RightHide2" inherits="PlayerChoiceRightHide">
+                <Texture parentKey="RightHide2" file="Interface\QuestionFrame\Question-Main">
+                    <Size x="61" y="32"/>
+                    <TexCoords left="0.76953125" right="0.88867188" top="0.00195313" bottom="0.06445313"/>
                     <Anchors>
                         <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BorderBottomRight" relativePoint="TOPRIGHT"
                                 x="-10" y="-10"/>

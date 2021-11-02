@@ -22,7 +22,7 @@
 
 	<!-- Please note that the loading order matters a lot -->
 
-	<GameTooltip name="TRP3_ItemTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
+	<GameTooltip name="TRP3_ItemTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
 
 
 	<Script file="ItemsChatLinkModule.lua"/>
@@ -517,7 +517,7 @@
 		</Anchors>
 		<Frames>
 
-			<Frame parentKey="Main" inherits="TRP3_BackdropTemplate">
+			<Frame parentKey="Main" inherits="BackdropTemplate">
 				<!--<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
 					<EdgeSize><AbsValue val="24"/></EdgeSize>
 					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
