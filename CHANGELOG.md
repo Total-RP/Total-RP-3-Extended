@@ -1,3 +1,9 @@
+# Changelog for version 1.4.3
+
+## Fixed
+
+- Fixed tooltip issues for patch 9.1.5.
+
 # Changelog for version 1.4.2
 
 ## Fixed
