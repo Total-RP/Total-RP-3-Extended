@@ -510,7 +510,6 @@ local EFFECTS = {
 				function(value)
 					TRP3_API.script.setVar(eArgs, cArgs[3] or "o", "=", cArgs[2] or "var", value);
 					if cArgs[4] and cArgs[4] ~= "" then
-						TRP3_API.script.setVar(eArgs, "w", "=", cArgs[2] or "var", value);
 						TRP3_API.script.runWorkflow(eArgs, cArgs[5] or "o", cArgs[4])
 					end
 				end,
