@@ -519,6 +519,11 @@ local getEvaluatedOperands = function(structure)
 		--			"pet_mount_name",
 		--		},
 		[loc.INV_PAGE_CHARACTER_INV] = {
+			"inv_item_name",
+			"inv_item_icon",
+			"inv_item_quality",
+			"inv_item_id_weight",
+			"inv_item_value",
 			"inv_item_count",
 			"inv_item_weight"
 			--			"inv_durability",

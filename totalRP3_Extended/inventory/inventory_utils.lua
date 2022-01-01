@@ -156,6 +156,26 @@ local function getItemLink(itemClass, id, complete)
 end
 TRP3_API.inventory.getItemLink = getItemLink;
 
+local function getItemWeight(id)
+	local class = getClass(id);
+	if class and class.TY == TRP3_DB.types.ITEM and class.BA and class.BA.WE then
+		return class.BA.WE;
+	else
+		return 0;
+	end
+end
+TRP3_API.inventory.getItemWeight = getItemWeight;
+
+local function getItemValue(id)
+	local class = getClass(id);
+	if class and class.TY == TRP3_DB.types.ITEM and class.BA and class.BA.VA then
+		return class.BA.VA;
+	else
+		return 0;
+	end
+end
+TRP3_API.inventory.getItemValue = getItemValue;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CONTAINER func
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

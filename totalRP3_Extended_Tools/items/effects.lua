@@ -589,8 +589,180 @@ local function initItemSelectionEditor(editor)
 
 	-- Text
 	editor.id.title:SetText(loc.ITEM_ID);
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.ITEM_ID, loc.EFFECT_ITEM_SOURCE_ID);
+	if editor.id.help then
+		setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.ITEM_ID, loc.EFFECT_ITEM_SOURCE_ID);
+	end
 
+end
+
+local function inv_item_name_init()
+	local editor = TRP3_OperandEditorItemInfo;
+
+	registerOperandEditor("inv_item_name", {
+		title = loc.OP_OP_INV_NAME,
+		description = loc.OP_OP_INV_NAME_TT,
+		returnType = "",
+		getText = function(args)
+			local data = args or EMPTY;
+			local id = data[1] or "";
+			local class = getClass(id);
+			if not class.missing then
+				id = TRP3_API.inventory.getItemLink(class);
+			else
+				id = "|cff00ff00" .. id;
+			end
+			return loc.OP_OP_INV_NAME_PREVIEW:format(id);
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+
+	function editor.load(args)
+		local data = args or EMPTY;
+		editor.id:SetText(data[1] or "");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or ""};
+	end
+end
+
+local function inv_item_icon_init()
+	local editor = TRP3_OperandEditorItemInfo;
+
+	registerOperandEditor("inv_item_icon", {
+		title = loc.OP_OP_INV_ICON,
+		description = loc.OP_OP_INV_ICON_TT,
+		returnType = "",
+		getText = function(args)
+			local data = args or EMPTY;
+			local id = data[1] or "";
+			local class = getClass(id);
+			if not class.missing then
+				id = TRP3_API.inventory.getItemLink(class);
+			else
+				id = "|cff00ff00" .. id;
+			end
+			return loc.OP_OP_INV_ICON_PREVIEW:format(id);
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+
+	function editor.load(args)
+		local data = args or EMPTY;
+		editor.id:SetText(data[1] or "");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or ""};
+	end
+end
+
+local function inv_item_quality_init()
+	local editor = TRP3_OperandEditorItemInfo;
+
+	registerOperandEditor("inv_item_ICON", {
+		title = loc.OP_OP_INV_QUALITY,
+		description = loc.OP_OP_INV_QUALITY_TT,
+		returnType = "",
+		getText = function(args)
+			local data = args or EMPTY;
+			local id = data[1] or "";
+			local class = getClass(id);
+			if not class.missing then
+				id = TRP3_API.inventory.getItemLink(class);
+			else
+				id = "|cff00ff00" .. id;
+			end
+			return loc.OP_OP_INV_QUALITY_PREVIEW:format(id);
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+
+	function editor.load(args)
+		local data = args or EMPTY;
+		editor.id:SetText(data[1] or "");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or ""};
+	end
+end
+
+local function inv_item_id_weight_init()
+	local editor = TRP3_OperandEditorItemInfo;
+
+	registerOperandEditor("inv_item_id_weight", {
+		title = loc.OP_OP_INV_ITEM_WEIGHT,
+		description = loc.OP_OP_INV_ITEM_WEIGHT_TT,
+		returnType = "",
+		getText = function(args)
+			local data = args or EMPTY;
+			local id = data[1] or "";
+			local class = getClass(id);
+			if not class.missing then
+				id = TRP3_API.inventory.getItemLink(class);
+			else
+				id = "|cff00ff00" .. id;
+			end
+			return loc.OP_OP_INV_ITEM_WEIGHT_PREVIEW:format(id);
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+
+	function editor.load(args)
+		local data = args or EMPTY;
+		editor.id:SetText(data[1] or "");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or ""};
+	end
+end
+
+local function inv_item_value_init()
+	local editor = TRP3_OperandEditorItemInfo;
+
+	registerOperandEditor("inv_item_value", {
+		title = loc.OP_OP_INV_VALUE,
+		description = loc.OP_OP_INV_VALUE_TT,
+		returnType = "",
+		getText = function(args)
+			local data = args or EMPTY;
+			local id = data[1] or "";
+			local class = getClass(id);
+			if not class.missing then
+				id = TRP3_API.inventory.getItemLink(class);
+			else
+				id = "|cff00ff00" .. id;
+			end
+			return loc.OP_OP_INV_VALUE_PREVIEW:format(id);
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+
+	function editor.load(args)
+		local data = args or EMPTY;
+		editor.id:SetText(data[1] or "");
+	end
+
+	function editor.save()
+		return {strtrim(editor.id:GetText()) or ""};
+	end
 end
 
 local function inv_item_count_init()
@@ -699,6 +871,13 @@ function TRP3_API.extended.tools.initItemEffects()
 	document_close_init();
 
 	-- Operands
+	inv_item_name_init();
+	inv_item_icon_init();
+	inv_item_quality_init();
+	inv_item_id_weight_init();
+	inv_item_value_init();
 	inv_item_count_init();
-	inv_item_weight_init();
+	inv_item_weight_init()
+
+	initItemSelectionEditor(TRP3_OperandEditorItemInfo);
 end
