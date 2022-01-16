@@ -67,6 +67,13 @@
 				</ScrollChild>
 			</ScrollFrame>
 
+			<Button parentKey="first" inherits="TRP3_CommonButton">
+				<Size x="40" y="20"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOM" x="-70" y="10"/>
+				</Anchors>
+			</Button>
+
 			<Button parentKey="previous" inherits="TRP3_CommonButton">
 				<Size x="40" y="20"/>
 				<Anchors>
@@ -78,6 +85,13 @@
 				<Size x="40" y="20"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOM" x="10" y="10"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="last" inherits="TRP3_CommonButton">
+				<Size x="40" y="20"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOM" x="70" y="10"/>
 				</Anchors>
 			</Button>
 

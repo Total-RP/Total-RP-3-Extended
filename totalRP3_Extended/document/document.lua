@@ -56,12 +56,16 @@ local function loadPage(page)
 	local total = #pages;
 
 	documentFrame.next:Disable();
+	documentFrame.last:Disable();
 	documentFrame.previous:Disable();
+	documentFrame.first:Disable();
 	if page > 1 then
 		documentFrame.previous:Enable();
+		documentFrame.first:Enable();
 	end
 	if page < total then
 		documentFrame.next:Enable();
+		documentFrame.last:Enable();
 	end
 
 	local text = TRP3_API.script.parseArgs(pages[page] and pages[page].TX or "", documentFrame.parentArgs);
@@ -142,9 +146,37 @@ local function onLinkClicked(self, url)
 	if documentFrame.ID and documentFrame.class then
 		local document = documentFrame.class;
 		local parentArgs = documentFrame.parentArgs;
-		if document.SC and document.SC[url] then
+
+		local isWorkflowLink = false
+		local cArgs = {}
+
+		if document.SC and url then
+			if document.SC[url] then
+				isWorkflowLink = true
+			else
+				local variables;
+				url, variables = url:match("(.+)%((.+)%)") -- workflowID(var1=value1,var2=value2,...)
+				print(url);
+				print(variables);
+				if document.SC[url] then -- trigger only, if part 1 is a workflow
+					print("hello?")
+					local parts = variables:gmatch("[^,]+"); -- split by ,
+					for x in parts do
+						print(x);
+						local _, _, key, value = strtrim(x):find("([^=]+)=(.+)")
+						if key and value then
+							cArgs[key] = value
+						end
+					end
+					isWorkflowLink = true
+				end
+			end
+		end
+
+		if isWorkflowLink then
 			TRP3_API.script.executeClassScript(url, document.SC, {
-				object = parentArgs.object
+				object = parentArgs.object,
+				custom = cArgs
 			}, documentFrame.ID);
 		else
 			TRP3_API.Ellyb.Popups:OpenURL(url, loc.UI_LINK_WARNING);
@@ -187,9 +219,13 @@ function TRP3_API.extended.document.onStart()
 	setTooltipForSameFrame(documentFrame.next, "BOTTOM", 0, -5, loc.DO_PAGE_NEXT);
 	setTooltipForSameFrame(documentFrame.previous, "BOTTOM", 0, -5, loc.DO_PAGE_PREVIOUS);
 	documentFrame.next:SetText(">");
+	documentFrame.last:SetText(">>");
 	documentFrame.previous:SetText("<");
+	documentFrame.first:SetText("<<");
 	documentFrame.previous:SetScript("OnClick", function() loadPage(documentFrame.current - 1); end);
+	documentFrame.first:SetScript("OnClick", function() loadPage(1); end);
 	documentFrame.next:SetScript("OnClick", function() loadPage(documentFrame.current + 1); end);
+	documentFrame.last:SetScript("OnClick", function() loadPage(#documentFrame.class.PA); end);
 	documentFrame.Close:SetScript("OnClick", function() closeDocumentFrame(); end);
 
 	-- Effect and operands
