@@ -1004,7 +1004,6 @@ We should begin with some examples:
 	OP_OP_INV_CONTAINER_SLOT_ID_PREVIEW = "Item ID in slot %s",
 	OP_OP_QUEST_ACTIVE_CAMPAIGN = "Active campaign",
 	OP_OP_QUEST_ACTIVE_CAMPAIGN_TT = "Return the current active campaign ID. If no campaign is currently active, returns nil.",
-	OP_OP_QUEST_ACTIVE_CAMPAIGN_PREVIEW = "Active campaign",
 	OP_OP_QUEST_STEP = "Quest current step",
 	OP_OP_QUEST_STEP_TT = "Return the current quest step ID. If the quest is not revealed or has no current step, returns nil.",
 	OP_OP_QUEST_STEP_PREVIEW = "%s current step",

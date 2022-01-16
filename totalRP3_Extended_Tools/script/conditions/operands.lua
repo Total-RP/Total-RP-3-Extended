@@ -743,7 +743,7 @@ local function random_init()
 	end
 
 	function editor.save()
-		return {tonumber(strtrim(editor.from:GetText())) or 1, tonumber(strtrim(editor.to:GetText())) or 100};
+		return {strtrim(editor.from:GetText()) or 1, strtrim(editor.to:GetText()) or 100};
 	end
 
 	registerOperandEditor("random", {
