@@ -56,12 +56,16 @@ local function loadPage(page)
 	local total = #pages;
 
 	documentFrame.next:Disable();
+	documentFrame.last:Disable();
 	documentFrame.previous:Disable();
+	documentFrame.first:Disable();
 	if page > 1 then
 		documentFrame.previous:Enable();
+		documentFrame.first:Enable();
 	end
 	if page < total then
 		documentFrame.next:Enable();
+		documentFrame.last:Enable();
 	end
 
 	local text = TRP3_API.script.parseArgs(pages[page] and pages[page].TX or "", documentFrame.parentArgs);
@@ -215,9 +219,13 @@ function TRP3_API.extended.document.onStart()
 	setTooltipForSameFrame(documentFrame.next, "BOTTOM", 0, -5, loc.DO_PAGE_NEXT);
 	setTooltipForSameFrame(documentFrame.previous, "BOTTOM", 0, -5, loc.DO_PAGE_PREVIOUS);
 	documentFrame.next:SetText(">");
+	documentFrame.last:SetText(">>");
 	documentFrame.previous:SetText("<");
+	documentFrame.first:SetText("<<");
 	documentFrame.previous:SetScript("OnClick", function() loadPage(documentFrame.current - 1); end);
+	documentFrame.first:SetScript("OnClick", function() loadPage(1); end);
 	documentFrame.next:SetScript("OnClick", function() loadPage(documentFrame.current + 1); end);
+	documentFrame.last:SetScript("OnClick", function() loadPage(#documentFrame.class.PA); end);
 	documentFrame.Close:SetScript("OnClick", function() closeDocumentFrame(); end);
 
 	-- Effect and operands
