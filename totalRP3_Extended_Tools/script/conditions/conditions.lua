@@ -525,11 +525,13 @@ local getEvaluatedOperands = function(structure)
 			"inv_item_id_weight",
 			"inv_item_value",
 			"inv_item_count",
-			"inv_item_weight"
+			"inv_item_weight",
+			"inv_container_slot_id",
 			--			"inv_durability",
 			--			"inv_empty_slot",
 		},
 		[loc.EFFECT_CAT_CAMPAIGN] = {
+			"quest_active_campaign",
 			"quest_is_step",
 			"quest_obj",
 			"quest_obj_current",

@@ -666,7 +666,7 @@ end
 local function inv_item_quality_init()
 	local editor = TRP3_OperandEditorItemInfo;
 
-	registerOperandEditor("inv_item_ICON", {
+	registerOperandEditor("inv_item_quality", {
 		title = loc.OP_OP_INV_QUALITY,
 		description = loc.OP_OP_INV_QUALITY_TT,
 		returnType = "",
@@ -871,11 +871,11 @@ local function inv_container_slot_id_init()
 
     function editor.load(args)
         local data = args or EMPTY;
-        editor.id:SetText(tostring(data[1]) or "1");
+        editor.slotID:SetText(tostring(data[1] or 1));
     end
 
     function editor.save()
-        return tonumber(editor.id:GetText()) or 1;
+        return { tonumber(editor.slotID:GetText()) or 1 };
     end
 end
 

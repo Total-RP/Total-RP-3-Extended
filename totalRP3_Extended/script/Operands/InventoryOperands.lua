@@ -115,5 +115,5 @@ local containerSlotIDOperand = Operand("inv_container_slot_id", {
 
 function containerSlotIDOperand:CodeReplacement(args)
 	local slotID = getSafe(args, 1, "");
-	return ("((args.object.content or EMPTY)[%s] or EMPTY).id"):format(slotID);
+	return ([[((args.object.content or EMPTY)["%s"] or EMPTY).id]]):format(slotID);
 end
