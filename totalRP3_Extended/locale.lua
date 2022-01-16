@@ -172,6 +172,9 @@ TRP3_API.loc = {
 	QE_STEP_LIST_CURRENT = "Available quests",
 	QE_STEP_LIST_FINISHED = "Finished quests",
 	QE_STEP_MISSING = "Missing step information.",
+	QE_STEP_DD_COPY = "Copy step content",
+	QE_STEP_DD_PASTE = "Paste step content",
+	QE_STEP_DD_REMOVE = "Remove step",
 	QE_BUTTON = "Open quest log",
 	QE_NPC = "Campaign NPC",
 	QE_RESET_CONFIRM = "Reset this campaign?\n\nThis will lose all your progression for ALL the quests in this campaign.\n\nNote that you will keep all items you gained through this campaign.",
@@ -864,6 +867,11 @@ The function is in the form of:
 	EFFECT_CAT_CAMERA_LOAD_TT = "Sets the player's camera position based on a previously saved position.",
 	EFFECT_CAT_CAMERA_SLOT = "Slot number",
 	EFFECT_CAT_CAMERA_SLOT_TT = "The index of one of the slots available, 1 to 5.",
+	EFFECT_DO_EMOTE = "Do emote",
+	EFFECT_DO_EMOTE_TT = "Make the player do a specific animated emote.",
+	EFFECT_DO_EMOTE_SPOKEN = "Spoken",
+	EFFECT_DO_EMOTE_ANIMATED = "Animated",
+	EFFECT_DO_EMOTE_OTHER =  "Others",
 
 -- Inner objects
 	IN_INNER = "Inner objects",
@@ -1115,6 +1123,9 @@ We should begin with some examples:
 	CA_QUEST_REMOVE = "Remove this quest?",
 	CA_QUEST_NO = "No quest",
 	CA_QUEST_EXIST = "There is already a quest with the ID %s.",
+	CA_QUEST_DD_COPY = "Copy quest content",
+	CA_QUEST_DD_PASTE = "Paste quest content",
+	CA_QUEST_DD_REMOVE = "Remove quest",
 	QE_NAME_NEW = "New quest",
 	CA_QE_ID = "Change quest ID",
 	CA_QUEST_CREATE = "Please enter the quest ID. You can't have two quests with the same ID within the same campaign.\n\n|cffff9900Please note that the quests will be listed in alphabetical order of IDs in the quest log.\n\n|cff00ff00So it's a good practice to always start your ID by quest_# where # is the quest number in the campaign.",
@@ -1636,17 +1647,7 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	EFFECT_DO_EMOTE = "Do emote",
-	EFFECT_DO_EMOTE_TT = "Make the player do a specific animated emote.",
-	EFFECT_DO_EMOTE_SPOKEN = "Spoken",
-	EFFECT_DO_EMOTE_ANIMATED = "Animated",
-	EFFECT_DO_EMOTE_OTHER =  "Others",
-	CA_QUEST_DD_COPY = "Copy quest content",
-	CA_QUEST_DD_PASTE = "Paste quest content",
-	CA_QUEST_DD_REMOVE = "Remove quest",
-	QE_STEP_DD_COPY = "Copy step content",
-	QE_STEP_DD_PASTE = "Paste step content",
-	QE_STEP_DD_REMOVE = "Remove step",
+
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
