@@ -108,3 +108,12 @@ function itemContainerWeightOperand:CodeReplacement(args)
 	end
 	return ([[getContainerWeight(%s)]]):format(source);
 end
+
+local containerSlotIDOperand = Operand("inv_container_slot_id", {
+	["EMPTY"] = "TRP3_API.globals.empty"
+});
+
+function containerSlotIDOperand:CodeReplacement(args)
+	local slotID = getSafe(args, 1, "");
+	return ("((args.object.content or EMPTY)[%s] or EMPTY).id"):format(slotID);
+end
