@@ -142,9 +142,37 @@ local function onLinkClicked(self, url)
 	if documentFrame.ID and documentFrame.class then
 		local document = documentFrame.class;
 		local parentArgs = documentFrame.parentArgs;
-		if document.SC and document.SC[url] then
+
+		local isWorkflowLink = false
+		local cArgs = {}
+
+		if document.SC and url then
+			if document.SC[url] then
+				isWorkflowLink = true
+			else
+				local variables;
+				url, variables = url:match("(.+)%((.+)%)") -- workflowID(var1=value1,var2=value2,...)
+				print(url);
+				print(variables);
+				if document.SC[url] then -- trigger only, if part 1 is a workflow
+					print("hello?")
+					local parts = variables:gmatch("[^,]+"); -- split by ,
+					for x in parts do
+						print(x);
+						local _, _, key, value = strtrim(x):find("([^=]+)=(.+)")
+						if key and value then
+							cArgs[key] = value
+						end
+					end
+					isWorkflowLink = true
+				end
+			end
+		end
+
+		if isWorkflowLink then
 			TRP3_API.script.executeClassScript(url, document.SC, {
-				object = parentArgs.object
+				object = parentArgs.object,
+				custom = cArgs
 			}, documentFrame.ID);
 		else
 			TRP3_API.Ellyb.Popups:OpenURL(url, loc.UI_LINK_WARNING);
