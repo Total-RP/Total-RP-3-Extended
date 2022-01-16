@@ -910,7 +910,7 @@ function TRP3_API.extended.tools.initItemEffects()
 	inv_item_value_init();
 	inv_item_count_init();
 	inv_item_weight_init();
-    inv_container_slot_id_init();
+	inv_container_slot_id_init();
 
 	initItemSelectionEditor(TRP3_OperandEditorItemInfo);
 end
