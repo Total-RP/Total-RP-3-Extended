@@ -63,9 +63,10 @@ function Utils.music.playLocalMusic(soundID, distance)
 	end
 end
 
-function Utils.music.stopLocalSoundID(soundID, channel)
+function Utils.music.stopLocalSoundID(soundID, channel, fadeout)
 	soundID = soundID or 0;
-	Communications.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel);
+	fadeout = fadeout or 0;
+	Communications.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel, fadeout);
 end
 
 function Utils.music.stopLocalMusic(soundID)
@@ -147,9 +148,10 @@ local function initSharedSound()
 		end
 	end);
 
-	Communications.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel)
+	Communications.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel, fadeout)
 		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
-			Utils.music.stopSoundID(soundID, channel, sender);
+			fadeout = (fadeout or 0) * 1000
+			Utils.music.stopSoundID(soundID, channel, sender, fadeout);
 		end
 	end);
 

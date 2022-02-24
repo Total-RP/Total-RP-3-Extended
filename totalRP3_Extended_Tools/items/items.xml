@@ -249,6 +249,23 @@
 		</Frames>
 	</Frame>
 
+	<Frame name="TRP3_OperandEditorItemInfo" hidden="true">
+		<Frames>
+			<EditBox parentKey="id" inherits="TRP3_TitledEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-40"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
+			<Button parentKey="browse" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
 	<Frame name="TRP3_OperandEditorItemCount" inherits="TRP3_OperandEditorItemTemplate" hidden="true">
 		<Frames>
 			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
@@ -269,6 +286,18 @@
 					<Anchor point="RIGHT" x="-15" y="0"/>
 				</Anchors>
 			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_OperandContainerSlotID">
+		<Frames>
+			<EditBox parentKey="slotID" inherits="TRP3_TitledHelpEditBox">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-40"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-15" y="0"/>
+				</Anchors>
+			</EditBox>
 		</Frames>
 	</Frame>
 

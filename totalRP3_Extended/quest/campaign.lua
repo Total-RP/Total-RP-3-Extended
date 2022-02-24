@@ -202,6 +202,7 @@ TRP3_API.quest.resetCampaign = resetCampaign;
 local function getCurrentCampaignID()
 	return playerQuestLog and playerQuestLog.currentCampaign;
 end
+TRP3_API.quest.getCurrentCampaignID = getCurrentCampaignID;
 
 local function getCurrentCampaignClass()
 	if getCurrentCampaignID() then

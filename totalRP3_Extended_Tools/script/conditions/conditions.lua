@@ -519,12 +519,19 @@ local getEvaluatedOperands = function(structure)
 		--			"pet_mount_name",
 		--		},
 		[loc.INV_PAGE_CHARACTER_INV] = {
+			"inv_item_name",
+			"inv_item_icon",
+			"inv_item_quality",
+			"inv_item_id_weight",
+			"inv_item_value",
 			"inv_item_count",
-			"inv_item_weight"
+			"inv_item_weight",
+			"inv_container_slot_id",
 			--			"inv_durability",
 			--			"inv_empty_slot",
 		},
 		[loc.EFFECT_CAT_CAMPAIGN] = {
+			"quest_active_campaign",
 			"quest_is_step",
 			"quest_obj",
 			"quest_obj_current",
@@ -541,6 +548,10 @@ local getEvaluatedOperands = function(structure)
 			"random",
 			"time_hour",
 			"time_minute",
+			"date_day",
+			"date_month",
+			"date_year",
+			"date_day_of_week",
 		},
 	}
 

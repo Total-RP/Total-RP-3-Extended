@@ -81,3 +81,11 @@ function isUnitAQuestNpcOperand:CodeReplacement(args)
 	local unitId = getSafe(args, 1, "target");
 	return ([[UnitIsCampaignNPC("%s")]]):format(unitId);
 end
+
+local activeCampaignOperand = Operand("quest_active_campaign", {
+	["getCurrentCampaignID"] = "TRP3_API.quest.getCurrentCampaignID"
+});
+
+function activeCampaignOperand:CodeReplacement()
+	return ([[getCurrentCampaignID()]]);
+end

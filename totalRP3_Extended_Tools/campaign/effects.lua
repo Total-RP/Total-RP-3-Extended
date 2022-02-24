@@ -299,6 +299,17 @@ local function quest_is_npc_init()
 	});
 end
 
+local function quest_active_campaign_init()
+	registerOperandEditor("quest_active_campaign", {
+		title = loc.OP_OP_QUEST_ACTIVE_CAMPAIGN,
+		description = loc.OP_OP_QUEST_ACTIVE_CAMPAIGN_TT,
+		returnType = "",
+		getText = function()
+			return loc.OP_OP_QUEST_ACTIVE_CAMPAIGN;
+		end,
+	});
+end
+
 function TRP3_API.extended.tools.initCampaignEffects()
 
 	-- Effect
@@ -307,6 +318,7 @@ function TRP3_API.extended.tools.initCampaignEffects()
 	quest_revealObjective_init();
 
 	-- Operands
+	quest_active_campaign_init();
 	quest_is_step_init();
 	quest_obj_init();
 	quest_is_npc_init();
