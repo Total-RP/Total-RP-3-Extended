@@ -359,7 +359,7 @@ local EFFECTS = {
 		end,
 		method = function(structure, cArgs, eArgs)
 			local soundID, channel, fadeout = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.stopLocalSoundID(soundID, channel);
+			eArgs.LAST = TRP3_API.utils.music.stopLocalSoundID(soundID, channel, fadeout);
 		end,
 		secured = security.HIGH,
 	},
