@@ -1650,7 +1650,7 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	EFFECT_SOUND_ID_FADEOUT = "Fadeout duration (optional)",
 	EFFECT_SOUND_ID_FADEOUT_TT = "The duration (in seconds) over which the sound will be stopped.\n\nLeave empty to stop immediately.",
 	EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW = "Stops sound ID %s in channel %s over %s seconds.",
-	EFFECT_SOUND_ID_STOP_FADEOUT_ALL_PREVIEW = "Stops |cff00ff00all|cffffff00 sounds in channel %s over %s seconds.",
+	EFFECT_SOUND_ID_STOP_FADEOUT_ALL_PREVIEW = "Stops |cff00ff00all|r sounds in channel %s over %s seconds.",
 	OP_OP_DATE_DAY = "Date: Day",
 	OP_OP_DATE_DAY_TT = "The current day, local time.",
 	OP_OP_DATE_MONTH = "Date: Month",

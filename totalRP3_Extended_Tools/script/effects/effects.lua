@@ -979,9 +979,9 @@ local function sound_id_stop_init()
 		effectFrameDecorator = function(scriptStepFrame, args)
 			if args[2] then
 				if args[3] then
-					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r", "|cff00ff00" .. tostring(args[3]) .. "|r"));
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|r", "|cff00ff00" .. tostring(args[1]) .. "|r", "|cff00ff00" .. tostring(args[3]) .. "|r"));
 				else
-					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|r", "|cff00ff00" .. tostring(args[1]) .. "|r"));
 				end
 			else
 				if args[3] then
@@ -1163,9 +1163,9 @@ local function sound_id_local_stop_init()
 		effectFrameDecorator = function(scriptStepFrame, args)
 			if args[2] then
 				if args[3] then
-					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r", "|cff00ff00" .. tostring(args[3]) .. "|r"));
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|r", "|cff00ff00" .. tostring(args[1]) .. "|r", "|cff00ff00" .. tostring(args[3]) .. "|r"));
 				else
-					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|r", "|cff00ff00" .. tostring(args[1]) .. "|r"));
 				end
 			else
 				if args[3] then
