@@ -156,13 +156,9 @@ local function onLinkClicked(self, url)
 			else
 				local variables;
 				url, variables = url:match("(.+)%((.+)%)") -- workflowID(var1=value1,var2=value2,...)
-				print(url);
-				print(variables);
 				if document.SC[url] then -- trigger only, if part 1 is a workflow
-					print("hello?")
 					local parts = variables:gmatch("[^,]+"); -- split by ,
 					for x in parts do
-						print(x);
 						local _, _, key, value = strtrim(x):find("([^=]+)=(.+)")
 						if key and value then
 							cArgs[key] = value
