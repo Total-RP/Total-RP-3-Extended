@@ -67,11 +67,13 @@ function checkEventNumericVariableValueOperand:CodeReplacement(args)
 end
 
 local randomOperand = NumericOperand("random", {
-	["random"] = "math.random"
+	["parseArgs"] = "TRP3_API.script.parseArgs",
+	["random"] = "math.random",
+	["tonumber"] = "tonumber"
 });
 
 function randomOperand:CodeReplacement(args)
 	local from = getSafe(args, 1, 1);
 	local to = getSafe(args, 2, 100)
-	return ("random(%s, %s)"):format(from, to);
+	return ([[random(tonumber(parseArgs("%s", args)) or 1, tonumber(parseArgs("%s", args)) or 100)]]):format(from, to);
 end

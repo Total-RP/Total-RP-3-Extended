@@ -1647,6 +1647,34 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	OP_OP_DATE_DAY = "Date: Day";
+	OP_OP_DATE_DAY_TT = "The current day, local time.";
+	OP_OP_DATE_MONTH = "Date: Month";
+	OP_OP_DATE_MONTH_TT = "The current month, local time.";
+	OP_OP_DATE_YEAR = "Date: Year";
+	OP_OP_DATE_YEAR_TT = "The current year, local time.";
+	OP_OP_DATE_DAY_OF_WEEK = "Date: Day of the week";
+	OP_OP_DATE_DAY_OF_WEEK_TT = "The current day of the week, local time. From 1 (Sunday) to 7 (Saturday).";
+	OP_OP_INV_NAME = "Item name",
+	OP_OP_INV_NAME_PREVIEW = "Name of %s",
+	OP_OP_INV_NAME_TT = "|cff00ff00The name of the item with the given ID.",
+	OP_OP_INV_ICON = "Item icon",
+	OP_OP_INV_ICON_PREVIEW = "Icon of %s",
+	OP_OP_INV_ICON_TT = "|cff00ff00The icon of the item with the given ID.",
+	OP_OP_INV_QUALITY = "Item quality",
+	OP_OP_INV_QUALITY_PREVIEW = "Quality of %s",
+	OP_OP_INV_QUALITY_TT = "|cff00ff00The quality of the item with the given ID.",
+	OP_OP_INV_ITEM_WEIGHT = "Item weight",
+	OP_OP_INV_ITEM_WEIGHT_PREVIEW = "Weight of %s",
+	OP_OP_INV_ITEM_WEIGHT_TT = "|cff00ff00The weight of the item with the given ID.",
+	OP_OP_INV_VALUE = "Item value",
+	OP_OP_INV_VALUE_PREVIEW = "Value of %s",
+	OP_OP_INV_VALUE_TT = "|cff00ff00The value of the item with the given ID.",
+	OP_OP_INV_CONTAINER_SLOT_ID = "Container slot ID",
+	OP_OP_INV_CONTAINER_SLOT_ID_TT = "|cff00ff00The ID of the item in a container slot.\n\n|cffff9900Only works if this workflow is triggered by a container.",
+	OP_OP_INV_CONTAINER_SLOT_ID_PREVIEW = "Item ID in slot %s",
+	OP_OP_QUEST_ACTIVE_CAMPAIGN = "Active campaign",
+	OP_OP_QUEST_ACTIVE_CAMPAIGN_TT = "Return the current active campaign ID. If no campaign is currently active, returns nil.",
 
 }
 
