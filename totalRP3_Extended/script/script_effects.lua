@@ -295,11 +295,12 @@ local EFFECTS = {
 		getCArgs = function(args)
 			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
-			return soundID, channel;
+			local fadeout = args[3] or 0;
+			return soundID, channel, fadeout;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local soundID, channel = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.stopSoundID(soundID, channel);
+			local soundID, channel, fadeout = structure.getCArgs(cArgs);
+			eArgs.LAST = TRP3_API.utils.music.stopSoundID(soundID, channel, nil, fadeout * 1000);
 		end,
 		secured = security.HIGH,
 	},
@@ -353,11 +354,12 @@ local EFFECTS = {
 		getCArgs = function(args)
 			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
-			return soundID, channel;
+			local fadeout = args[3] or 0;
+			return soundID, channel, fadeout;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local soundID, channel = structure.getCArgs(cArgs);
-			eArgs.LAST = TRP3_API.utils.music.stopLocalSoundID(soundID, channel);
+			local soundID, channel, fadeout = structure.getCArgs(cArgs);
+			eArgs.LAST = TRP3_API.utils.music.stopLocalSoundID(soundID, channel, fadeout);
 		end,
 		secured = security.HIGH,
 	},
