@@ -978,13 +978,21 @@ local function sound_id_stop_init()
 		description = loc.EFFECT_SOUND_ID_STOP_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			if args[2] then
-				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+				if args[3] then
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|r", "|cff00ff00" .. tostring(args[1]) .. "|r", "|cff00ff00" .. tostring(args[3]) .. "|r"));
+				else
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|r", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+				end
 			else
-				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_ALL_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+				if args[3] then
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_FADEOUT_ALL_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r", "|cff00ff00" .. tostring(args[3]) .. "|r"));
+				else
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_ALL_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+				end
 			end
 		end,
 		getDefaultArgs = function()
-			return {"SFX", nil};
+			return {"SFX", nil, nil};
 		end,
 		editor = SoundIDStopEditor,
 	});
@@ -1000,6 +1008,10 @@ local function sound_id_stop_init()
 	SoundIDStopEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
 	setTooltipForSameFrame(SoundIDStopEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_ID, loc.EFFECT_SOUND_ID_STOP_ID_TT);
 
+	-- Fadeout
+	SoundIDStopEditor.fadeout.title:SetText(loc.EFFECT_SOUND_ID_FADEOUT);
+	setTooltipForSameFrame(SoundIDStopEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_FADEOUT, loc.EFFECT_SOUND_ID_FADEOUT_TT);
+
 	SoundIDStopEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	SoundIDStopEditor.play:SetScript("OnClick", function(self)
 		local soundID = tonumber(strtrim(SoundIDStopEditor.id:GetText()));
@@ -1012,11 +1024,19 @@ local function sound_id_stop_init()
 		local data = scriptData.args or Globals.empty;
 		SoundIDStopEditor.channel:SetSelectedValue(data[1] or "SFX");
 		SoundIDStopEditor.id:SetText(data[2] or "");
+		SoundIDStopEditor.fadeout:SetText(data[3] or "");
 	end
 
 	function SoundIDStopEditor.save(scriptData)
 		scriptData.args[1] = SoundIDStopEditor.channel:GetSelectedValue() or "SFX";
 		scriptData.args[2] = tonumber(strtrim(SoundIDStopEditor.id:GetText()));
+		if scriptData.args[2] == 0 then
+			scriptData.args[2] = nil;
+		end
+		scriptData.args[3] = tonumber(strtrim(SoundIDStopEditor.fadeout:GetText()));
+		if scriptData.args[3] == 0 then
+			scriptData.args[3] = nil;
+		end
 	end
 end
 
@@ -1142,13 +1162,21 @@ local function sound_id_local_stop_init()
 		description = loc.EFFECT_SOUND_ID_LOCAL_STOP_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			if args[2] then
-				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|cffffff00", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+				if args[3] then
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|r", "|cff00ff00" .. tostring(args[1]) .. "|r", "|cff00ff00" .. tostring(args[3]) .. "|r"));
+				else
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_PREVIEW:format("|cff00ff00" .. tostring(args[2]) .. "|r", "|cff00ff00" .. tostring(args[1]) .. "|r"));
+				end
 			else
-				scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_ALL_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+				if args[3] then
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_FADEOUT_ALL_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r", "|cff00ff00" .. tostring(args[3]) .. "|r"));
+				else
+					scriptStepFrame.description:SetText("|cffffff00" .. loc.EFFECT_SOUND_ID_STOP_ALL_PREVIEW:format("|cff00ff00" .. tostring(args[1]) .. "|r"));
+				end
 			end
 		end,
 		getDefaultArgs = function()
-			return {"SFX", nil};
+			return {"SFX", nil, nil};
 		end,
 		editor = SoundIDLocalStopEditor,
 	});
@@ -1164,6 +1192,10 @@ local function sound_id_local_stop_init()
 	SoundIDLocalStopEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
 	setTooltipForSameFrame(SoundIDLocalStopEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_ID, loc.EFFECT_SOUND_ID_STOP_ID_TT);
 
+	-- Fadeout
+	SoundIDLocalStopEditor.fadeout.title:SetText(loc.EFFECT_SOUND_ID_FADEOUT);
+	setTooltipForSameFrame(SoundIDLocalStopEditor.id.help, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_FADEOUT, loc.EFFECT_SOUND_ID_FADEOUT_TT);
+
 	SoundIDLocalStopEditor.play:SetText(loc.EFFECT_SOUND_PLAY);
 	SoundIDLocalStopEditor.play:SetScript("OnClick", function(self)
 		local soundID = tonumber(strtrim(SoundIDLocalStopEditor.id:GetText()));
@@ -1176,6 +1208,7 @@ local function sound_id_local_stop_init()
 		local data = scriptData.args or Globals.empty;
 		SoundIDLocalStopEditor.channel:SetSelectedValue(data[1] or "SFX");
 		SoundIDLocalStopEditor.id:SetText(data[2] or "");
+		SoundIDLocalStopEditor.fadeout:SetText(data[3] or "");
 	end
 
 	function SoundIDLocalStopEditor.save(scriptData)
@@ -1183,6 +1216,10 @@ local function sound_id_local_stop_init()
 		scriptData.args[2] = tonumber(strtrim(SoundIDLocalStopEditor.id:GetText()));
 		if scriptData.args[2] == 0 then
 			scriptData.args[2] = nil;
+		end
+		scriptData.args[3] = tonumber(strtrim(SoundIDLocalStopEditor.fadeout:GetText()));
+		if scriptData.args[3] == 0 then
+			scriptData.args[3] = nil;
 		end
 	end
 end
