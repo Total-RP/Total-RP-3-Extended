@@ -763,7 +763,7 @@ local function time_hour_init()
 	registerOperandEditor("time_hour", {
 		title = loc.OP_OP_TIME_HOUR,
 		description = loc.OP_OP_TIME_HOUR_TT,
-		returnType = true,
+		returnType = 1,
 		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_TIME_HOUR;
 		end,
@@ -774,9 +774,53 @@ local function time_minute_init()
 	registerOperandEditor("time_minute", {
 		title = loc.OP_OP_TIME_MINUTE,
 		description = loc.OP_OP_TIME_MINUTE_TT,
-		returnType = true,
+		returnType = 1,
 		getText = function(args) -- luacheck: ignore 212
 			return loc.OP_OP_TIME_MINUTE;
+		end,
+	});
+end
+
+local function date_day_init()
+	registerOperandEditor("date_day", {
+		title = loc.OP_OP_DATE_DAY,
+		description = loc.OP_OP_DATE_DAY_TT,
+		returnType = 1,
+		getText = function(args) -- luacheck: ignore 212
+			return loc.OP_OP_DATE_DAY;
+		end,
+	});
+end
+
+local function date_month_init()
+	registerOperandEditor("date_month", {
+		title = loc.OP_OP_DATE_MONTH,
+		description = loc.OP_OP_DATE_MONTH_TT,
+		returnType = 1,
+		getText = function(args) -- luacheck: ignore 212
+			return loc.OP_OP_DATE_MONTH;
+		end,
+	});
+end
+
+local function date_year_init()
+	registerOperandEditor("date_year", {
+		title = loc.OP_OP_DATE_YEAR,
+		description = loc.OP_OP_DATE_YEAR_TT,
+		returnType = 1,
+		getText = function(args) -- luacheck: ignore 212
+			return loc.OP_OP_DATE_YEAR;
+		end,
+	});
+end
+
+local function date_day_of_week_init()
+	registerOperandEditor("date_day_of_week", {
+		title = loc.OP_OP_DATE_DAY_OF_WEEK,
+		description = loc.OP_OP_DATE_DAY_OF_WEEK_TT,
+		returnType = 1,
+		getText = function(args) -- luacheck: ignore 212
+			return loc.OP_OP_DATE_DAY_OF_WEEK;
 		end,
 	});
 end
@@ -850,5 +894,9 @@ function TRP3_ConditionEditor.initOperands()
 
 	time_hour_init();
 	time_minute_init();
+	date_day_init();
+	date_month_init();
+	date_year_init();
+	date_day_of_week_init();
 
 end
