@@ -994,7 +994,7 @@ local LUA_ENV = {
 	["type"] = type,
 	["tonumber"] = tonumber,
 	["tostring"] = tostring,
-    ["date"] = date,
+	["date"] = date,
 };
 function TRP3_API.script.runLuaScriptEffect(code, args, secured)
 	code = "return function(args)\n" .. code .. "\nend;";
