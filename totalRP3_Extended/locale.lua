@@ -1647,14 +1647,16 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	OP_OP_DATE_DAY = "Date: Day";
-	OP_OP_DATE_DAY_TT = "The current day, local time.";
-	OP_OP_DATE_MONTH = "Date: Month";
-	OP_OP_DATE_MONTH_TT = "The current month, local time.";
-	OP_OP_DATE_YEAR = "Date: Year";
-	OP_OP_DATE_YEAR_TT = "The current year, local time.";
-	OP_OP_DATE_DAY_OF_WEEK = "Date: Day of the week";
-	OP_OP_DATE_DAY_OF_WEEK_TT = "The current day of the week, local time. From 1 (Sunday) to 7 (Saturday).";
+	EFFECT_SOUND_ID_FADEOUT = "Fadeout duration (optional)",
+	EFFECT_SOUND_ID_FADEOUT_TT = "The duration (in seconds) over which the sound will be stopped.\n\nLeave empty to stop immediately.",
+	OP_OP_DATE_DAY = "Date: Day",
+	OP_OP_DATE_DAY_TT = "The current day, local time.",
+	OP_OP_DATE_MONTH = "Date: Month",
+	OP_OP_DATE_MONTH_TT = "The current month, local time.",
+	OP_OP_DATE_YEAR = "Date: Year",
+	OP_OP_DATE_YEAR_TT = "The current year, local time.",
+	OP_OP_DATE_DAY_OF_WEEK = "Date: Day of the week",
+	OP_OP_DATE_DAY_OF_WEEK_TT = "The current day of the week, local time. From 1 (Sunday) to 7 (Saturday).",
 	OP_OP_INV_NAME = "Item name",
 	OP_OP_INV_NAME_PREVIEW = "Name of %s",
 	OP_OP_INV_NAME_TT = "|cff00ff00The name of the item with the given ID.",

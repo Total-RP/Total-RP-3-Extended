@@ -363,6 +363,13 @@
 				</Anchors>
 			</Button>
 
+			<EditBox parentKey="fadeout" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
+
 		</Frames>
 
 	</Frame>
@@ -429,6 +436,13 @@
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.id" x="5" y="2"/>
 				</Anchors>
 			</Button>
+
+			<EditBox parentKey="fadeout" inherits="TRP3_TitledHelpEditBox">
+				<Size x="260" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="0" y="-20"/>
+				</Anchors>
+			</EditBox>
 
 		</Frames>
 
