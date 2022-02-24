@@ -1176,7 +1176,7 @@ local function sound_id_local_stop_init()
 			end
 		end,
 		getDefaultArgs = function()
-			return {"SFX", nil};
+			return {"SFX", nil, nil};
 		end,
 		editor = SoundIDLocalStopEditor,
 	});
