@@ -42,7 +42,7 @@ local dateDayOperand = NumericOperand("date_day", {
 })
 
 function dateDayOperand:CodeReplacement()
-	return "date(*t).day";
+	return "date(\"*t\").day";
 end
 
 local dateMonthOperand = NumericOperand("date_month", {
@@ -50,7 +50,7 @@ local dateMonthOperand = NumericOperand("date_month", {
 })
 
 function dateMonthOperand:CodeReplacement()
-	return "date(*t).month";
+	return "date(\"*t\").month";
 end
 
 local dateYearOperand = NumericOperand("date_year", {
@@ -58,7 +58,7 @@ local dateYearOperand = NumericOperand("date_year", {
 })
 
 function dateYearOperand:CodeReplacement()
-	return "date(*t).year";
+	return "date(\"*t\").year";
 end
 
 local dateDayOfWeekOperand = NumericOperand("date_day_of_week", {
@@ -66,6 +66,6 @@ local dateDayOfWeekOperand = NumericOperand("date_day_of_week", {
 })
 
 function dateDayOfWeekOperand:CodeReplacement()
-	return "date(*t).wday";
+	return "date(\"*t\").wday";
 end
 

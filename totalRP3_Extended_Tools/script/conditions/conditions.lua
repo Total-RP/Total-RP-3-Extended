@@ -548,6 +548,10 @@ local getEvaluatedOperands = function(structure)
 			"random",
 			"time_hour",
 			"time_minute",
+			"date_day",
+			"date_month",
+			"date_year",
+			"date_day_of_week",
 		},
 	}
 
