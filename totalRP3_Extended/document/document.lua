@@ -154,9 +154,8 @@ local function onLinkClicked(self, url)
 			if document.SC[url] then
 				isWorkflowLink = true
 			else
-				local variables;
-				url, variables = url:match("(.+)%((.+)%)") -- workflowID(var1=value1,var2=value2,...)
-				if document.SC[url] then -- trigger only, if part 1 is a workflow
+				local workflowID, variables = url:match("(.+)%((.+)%)") -- workflowID(var1=value1,var2=value2,...)
+				if workflowID and document.SC[workflowID] then -- trigger only, if part 1 is a workflow
 					local parts = variables:gmatch("[^,]+"); -- split by ,
 					for x in parts do
 						local _, _, key, value = strtrim(x):find("([^=]+)=(.+)")
@@ -164,6 +163,7 @@ local function onLinkClicked(self, url)
 							cArgs[key] = value
 						end
 					end
+					url = workflowID;
 					isWorkflowLink = true
 				end
 			end
