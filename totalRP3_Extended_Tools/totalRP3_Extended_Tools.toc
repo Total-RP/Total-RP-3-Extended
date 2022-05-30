@@ -1,4 +1,4 @@
-## Interface: 90200
+## Interface: 90205
 ## Title: Total RP 3: Extended tools
 ## Author: Telkostrasz & Ellypse
 ## Notes: Creation tools for Total RP 3 Extended
