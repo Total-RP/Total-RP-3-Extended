@@ -119,11 +119,15 @@ local function computeSecurity(rootObjectID, rootObject, details)
 						local effectID = effect.id;
 						local securityLevel = getEffectSecurity(effectID);
 						minSecurity = math.min(minSecurity, securityLevel);
-						if details and securityLevel < SECURITY_LEVEL.HIGH and transposition[effectID] then
-							if not details[transposition[effectID]] then
-								details[transposition[effectID]] = {};
+						if details and securityLevel < SECURITY_LEVEL.HIGH then
+							local transpositionID = transposition[effectID];
+							if not transpositionID then
+								transpositionID = effectID;
 							end
-							tinsert(details[transposition[effectID]], childID);
+							if not details[transpositionID] then
+								details[transpositionID] = {};
+							end
+							tinsert(details[transpositionID], childID);
 						end
 					end
 				end
