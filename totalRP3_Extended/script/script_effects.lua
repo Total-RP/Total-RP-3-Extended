@@ -26,6 +26,7 @@ local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave;
 
 local assert, type, tostring, tonumber, pairs = assert, type, tostring, tonumber, pairs;
 local loc = TRP3_API.loc;
+local stEtN = TRP3_API.utils.str.emptyToNil;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC speech
@@ -177,18 +178,24 @@ local EFFECTS = {
 	},
 	["do_emote"] = {
 		getCArgs = function(args)
-			local channel = args[1] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
-			local text = args[2] or "";
-			return channel, text;
+			local emoteToken = args[1] or "";
+			return emoteToken;
 		end,
 		method = function(structure, cArgs, eArgs)
-			local emoteToken, target, hold= structure.getCArgs(cArgs);
-			emoteToken = swapFactionRestrictedEmotesIfNeeded(emoteToken)
-			DoEmote(emoteToken, target, hold);
+			local emoteToken = structure.getCArgs(cArgs);
+			emoteToken = swapFactionRestrictedEmotesIfNeeded(emoteToken);
+			if stEtN(emoteToken) then
+				DoEmote(emoteToken);
+			end
 			eArgs.LAST = 0;
 		end,
 		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			-- TODO: Secured emote effect.
+			local emoteToken = structure.getCArgs(cArgs);
+			emoteToken = swapFactionRestrictedEmotesIfNeeded(emoteToken);
+			if stEtN(emoteToken) then
+				TRP3_API.utils.message.displayMessage("/" .. emoteToken:lower(), 1);
+			end
 			eArgs.LAST = 0;
 		end,
 		secured = security.MEDIUM,
