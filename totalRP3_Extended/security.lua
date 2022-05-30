@@ -58,6 +58,7 @@ local transposition = {
 	speech_env = "SEC_REASON_TALK",
 	speech_npc = "SEC_REASON_TALK",
 	speech_player = "SEC_REASON_TALK",
+	do_emote = "SEC_REASON_EMOTE",
 	sound_id_local = "SEC_REASON_SOUND",
 	sound_music_local = "SEC_REASON_SOUND",
 	companion_dismiss_mount = "SEC_REASON_DISMOUNT",
@@ -315,6 +316,7 @@ function TRP3_API.security.initSecurity()
 	securityFrame.reasons["SEC_REASON_DISMOUNT"] = COLORS.WHITE(loc.SEC_REASON_DISMOUNT_WHY);
 	securityFrame.reasons["SEC_REASON_SCRIPT"] = COLORS.WHITE(loc.SEC_REASON_SCRIPT_WHY);
 	securityFrame.reasons["SEC_REASON_MACRO"] = COLORS.WHITE(loc.SEC_REASON_MACRO_WHY);
+	securityFrame.reasons["SEC_REASON_EMOTE"] = COLORS.WHITE(loc.SEC_REASON_EMOTE_WHY);
 
 	securityFrame.securityDetails = {};
 	securityFrame.widgetTab = {};
