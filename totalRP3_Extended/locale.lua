@@ -1681,7 +1681,7 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 
 	SEC_REASON_EMOTE = "Character emote",
 	SEC_REASON_EMOTE_WHY = "This object could force your character to emote.\n\n|cffff0000It may be used in a malicious way to force you to spam emotes, which can make you banned from the game.\n\n|cff00ff00If blocked, the emote token will be printed only for you (and not be executed by your character).",
-
+	ERROR_SPEECH_EFFECT = "Cannot use /say or /yell after a delay or an event.",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
