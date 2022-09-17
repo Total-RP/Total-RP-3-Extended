@@ -1674,14 +1674,20 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	SEC_RESOLUTION_AUTHOR = "You are the author",
 	EFFECT_SECURE_MACRO_BLOCKED = "Blocked macro effect:",
 
+	SEC_REASON_EMOTE = "Character emote",
+	SEC_REASON_EMOTE_WHY = "This object could force your character to emote.\n\n|cffff0000It may be used in a malicious way to force you to spam emotes, which can make you banned from the game.\n\n|cff00ff00If blocked, the emote token will be printed only for you (and not be executed by your character).",
+	ERROR_SPEECH_EFFECT = "Cannot use /say or /yell after a delay or an event.",
+
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	SEC_REASON_EMOTE = "Character emote",
-	SEC_REASON_EMOTE_WHY = "This object could force your character to emote.\n\n|cffff0000It may be used in a malicious way to force you to spam emotes, which can make you banned from the game.\n\n|cff00ff00If blocked, the emote token will be printed only for you (and not be executed by your character).",
-	ERROR_SPEECH_EFFECT = "Cannot use /say or /yell after a delay or an event.",
+	CONF_NPC_TOOLTIP = "Campaign NPC tooltips",
+	CONF_NPC_HIDE_ORIGINAL = "Hide original tooltip",
+	CONF_NPC_EMBED_ORIGINAL = "Embed original tooltip",
+	CONF_NPC_EMBED_ORIGINAL_TT = "Adds the original tooltip text to the bottom of the NPC tooltip",
+
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);

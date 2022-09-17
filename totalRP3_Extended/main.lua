@@ -260,6 +260,9 @@ TRP3_API.extended.CONFIG_SOUNDS_METHODS = {
 };
 TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE = "extended_sounds_maxrange";
 
+TRP3_API.extended.CONFIG_NPC_HIDE_ORIGINAL = "extended_tooltip_npc_hide_original";
+TRP3_API.extended.CONFIG_NPC_EMBED_ORIGINAL = "extended_tooltip_npc_embed_original";
+
 local function initConfig()
 	local WEIGHT_UNIT_TAB = {
 		{loc.CONF_UNIT_WEIGHT_1, TRP3_API.extended.WEIGHT_UNITS.GRAMS},
@@ -274,11 +277,16 @@ local function initConfig()
 
 	-- Config default value
 	registerConfigKey(TRP3_API.extended.CONFIG_WEIGHT_UNIT, TRP3_API.extended.WEIGHT_UNITS.GRAMS);
+
 	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE, true);
 	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_METHOD, TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY);
 	registerConfigKey(TRP3_API.extended.CONFIG_MUSIC_ACTIVE, true);
 	registerConfigKey(TRP3_API.extended.CONFIG_MUSIC_METHOD, TRP3_API.extended.CONFIG_SOUNDS_METHODS.ASK_FOR_PERMISSION);
 	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE, 100);
+
+	registerConfigKey(TRP3_API.extended.CONFIG_NPC_HIDE_ORIGINAL, true);
+	registerConfigKey(TRP3_API.extended.CONFIG_NPC_EMBED_ORIGINAL, false);
+
 
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
@@ -342,6 +350,22 @@ local function initConfig()
 				max = 200,
 				step = 10,
 				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc.CONF_NPC_TOOLTIP,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CONF_NPC_HIDE_ORIGINAL,
+				configKey = TRP3_API.extended.CONFIG_NPC_HIDE_ORIGINAL,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CONF_NPC_EMBED_ORIGINAL,
+				configKey = TRP3_API.extended.CONFIG_NPC_EMBED_ORIGINAL,
+				help = loc.CONF_NPC_EMBED_ORIGINAL_TT,
+				dependentOnOptions = { TRP3_API.extended.CONFIG_NPC_HIDE_ORIGINAL },
 			},
 		}
 	};
@@ -485,8 +509,8 @@ local function onStart()
     dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
-Globals.extended_version = 1032;
-Globals.required_trp3_build = 105;
+Globals.extended_version = 1033;
+Globals.required_trp3_build = 107;
 
 --@debug@
 Globals.extended_display_version = "v-dev";

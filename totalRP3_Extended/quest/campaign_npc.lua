@@ -19,6 +19,8 @@
 local Utils = TRP3_API.utils;
 local pairs = pairs;
 local loc = TRP3_API.loc;
+local getConfigValue = TRP3_API.configuration.getValue;
+local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 
 local tooltip = TRP3_NPCTooltip;
 
@@ -55,8 +57,12 @@ local function showIcon()
 	return true;
 end
 
+local function hideOriginal()
+	return getConfigValue(TRP3_API.extended.CONFIG_NPC_HIDE_ORIGINAL);
+end
+
 local function embedOriginal()
-	return false;
+	return getConfigValue(TRP3_API.extended.CONFIG_NPC_EMBED_ORIGINAL);
 end
 
 local function onMouseOver()
@@ -68,10 +74,24 @@ local function onMouseOver()
 			local npcData = campaignClass.ND[npcID];
 			local originalName = UnitName("mouseover");
 			local originalTexts = TRP3_API.ui.tooltip.getGameTooltipTexts(GameTooltip);
+			local tooltipColors = TRP3_API.ui.tooltip.getTooltipTextColors();
 
 			tooltip.unitType = unitType;
 			tooltip.targetID = npcID;
-			tooltip:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
+			if hideOriginal() then
+				tooltip:SetOwner(UIParent, "ANCHOR_NONE");
+				tooltip:SetPoint(GameTooltip:GetPoint(1));
+			else
+				-- Retrieving tooltip anchor settings
+				local anchoredFrameName = getConfigValue("tooltip_char_AnchoredFrame");
+				local anchoredFrame = GameTooltip;
+				if anchoredFrameName and _G[anchoredFrameName] then
+					anchoredFrame = _G[anchoredFrameName];
+				end
+				local anchoredPosition = getConfigValue("tooltip_char_Anchor");
+
+				tooltip:SetOwner(anchoredFrame, anchoredPosition);
+			end
 
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 			-- Icon and name
@@ -86,9 +106,9 @@ local function onMouseOver()
 				end
 			end
 
-			npcTooltipBuilder:AddLine(leftIcons .. (npcData.NA or originalName), 1, 1, 1, TRP3_API.ui.tooltip.getMainLineFontSize());
+			npcTooltipBuilder:AddLine(leftIcons .. (npcData.NA or originalName), Ellyb.Color.CreateFromRGBA(1.00, 1.00, 1.00, 1.00), TRP3_API.ui.tooltip.getMainLineFontSize());
 
-			npcTooltipBuilder:AddLine("< " .. loc.QE_NPC .. " >", 0, 1, 0, TRP3_API.ui.tooltip.getSubLineFontSize());
+			npcTooltipBuilder:AddLine("< " .. loc.QE_NPC .. " >", tooltipColors.TITLE, TRP3_API.ui.tooltip.getSubLineFontSize());
 
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 			-- Description
@@ -100,17 +120,17 @@ local function onMouseOver()
 					text = text:sub(1, getCurrentMaxSize()) .. "…";
 				end
 				npcTooltipBuilder:AddSpace();
-				npcTooltipBuilder:AddLine("\"" .. text .. "\"", 1, 0.75, 0, TRP3_API.ui.tooltip.getSmallLineFontSize(), true);
+				npcTooltipBuilder:AddLine("\"" .. text .. "\"", tooltipColors.SECONDARY, TRP3_API.ui.tooltip.getSmallLineFontSize(), true);
 			end
 
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 			-- Original text
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-			if embedOriginal() then
+			if hideOriginal() and embedOriginal() then
 				npcTooltipBuilder:AddSpace();
 				for _, text in pairs(originalTexts) do
-					npcTooltipBuilder:AddLine(text, 1, 1, 1, TRP3_API.ui.tooltip.getSmallLineFontSize());
+					npcTooltipBuilder:AddLine(text, tooltipColors.MAIN, TRP3_API.ui.tooltip.getSmallLineFontSize());
 				end
 			end
 
@@ -120,7 +140,7 @@ local function onMouseOver()
 
 			npcTooltipBuilder:Build();
 
-			if embedOriginal() then
+			if hideOriginal() then
 				GameTooltip:Hide();
 			end
 			tooltip:ClearAllPoints();
@@ -137,7 +157,11 @@ local function onTooltipUpdate(self, elapsed)
 			if self.unitType ~= unitType or self.targetID ~= npcID then
 				self.isFading = true;
 				self.targetID = nil;
-				self:FadeOut();
+				if getConfigValue("tooltip_no_fade_out") then
+					self:Hide();
+				else
+					self:FadeOut();
+				end
 			end
 		end
 	end
@@ -179,6 +203,12 @@ end
 local function init()
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
+
+	GameTooltip:HookScript("OnShow", function()
+		if not GameTooltip:GetUnit() then
+			tooltip:Hide();
+		end
+	end);
 
 	tooltip.TimeSinceLastUpdate = 0;
 	tooltip:SetScript("OnUpdate", onTooltipUpdate);
