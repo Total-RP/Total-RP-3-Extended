@@ -141,10 +141,16 @@ local newDialogStarted;
 local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
 local after = C_Timer.After;
 
+local function getParentObject()
+	if dialogFrame.args then
+		return dialogFrame.args.object;
+	end
+end
+
 local function finishDialog()
 	dialogFrame:Hide();
 	if dialogFrame.classID and dialogFrame.class.LI and dialogFrame.class.LI.OE and dialogFrame.class.SC then
-		TRP3_API.script.executeClassScript(dialogFrame.class.LI.OE, dialogFrame.class.SC, {}, dialogFrame.classID);
+		TRP3_API.script.executeClassScript(dialogFrame.class.LI.OE, dialogFrame.class.SC, {object = getParentObject()}, dialogFrame.classID);
 	end
 end
 
@@ -400,7 +406,7 @@ function processDialogStep(isNewDialog)
 	dialogFrame.dialogStepClass = dialogStepClass;
 
 	if dialogFrame.classID and dialogStepClass.WO then
-		TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC, {}, dialogFrame.classID);
+		TRP3_API.script.executeClassScript(dialogStepClass.WO, dialogClass.SC, {object = getParentObject()}, dialogFrame.classID);
 	end
 
 	-- If a cutscene has been started during the workflow execution, whether it's a new one or restarting the current one, we don't execute the next dialog step.
@@ -431,7 +437,7 @@ local function startDialog(dialogID, class, args)
 	end
 
 	if dialogID and dialogClass.LI and dialogClass.LI.OS and dialogClass.SC then
-		TRP3_API.script.executeClassScript(dialogClass.LI.OS, dialogClass.SC, {}, dialogID);
+		TRP3_API.script.executeClassScript(dialogClass.LI.OS, dialogClass.SC, {object = getParentObject()}, dialogID);
 	end
 
 	historyFrame.container:AddMessage("---------------------------------------------------------------");
