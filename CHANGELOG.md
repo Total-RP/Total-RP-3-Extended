@@ -1,3 +1,17 @@
+# Changelog for version 1.5.2
+
+## Added
+- Campaign NPC tooltips now hide the original NPC tooltip.
+  - You can show the original tooltip or add its information at the bottom of the campaign NPC tooltip in Extended settings.
+
+## Changed
+- Applied tooltip color settings to campaign NPC tooltips
+
+## Fixed
+
+- Fixed campaign NPC tooltips not showing with Total RP 3 version 2.3.12.
+- Fixed the object scope in cutscenes not working.
+
 # Changelog for version 1.5.1
 
 ## Fixed
