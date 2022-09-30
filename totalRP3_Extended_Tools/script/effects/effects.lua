@@ -662,7 +662,7 @@ local function speech_npc_init()
 		icon = "ability_warrior_rallyingcry",
 		description = loc.EFFECT_SPEECH_NPC_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(TRP3_API.ui.misc.getSpeechPrefixText(args[2], args[1], args[3]));
+			scriptStepFrame.description:SetText(TRP3_API.ui.misc.getSpeechPrefixText(args[2], tostring(args[1]), tostring(args[3])));
 		end,
 		getDefaultArgs = function()
 			return {"Tish", TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc.EFFECT_SPEECH_NPC_DEFAULT};
@@ -708,7 +708,7 @@ local function speech_player_init()
 		icon = "ability_warrior_warcry",
 		description = loc.EFFECT_SPEECH_PLAYER_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(TRP3_API.ui.misc.getSpeech(args[2], args[1]));
+			scriptStepFrame.description:SetText(TRP3_API.ui.misc.getSpeech(tostring(args[2]), args[1]));
 		end,
 		getDefaultArgs = function()
 			return {TRP3_API.ui.misc.SPEECH_PREFIX.SAYS, loc.EFFECT_SPEECH_PLAYER_DEFAULT};
