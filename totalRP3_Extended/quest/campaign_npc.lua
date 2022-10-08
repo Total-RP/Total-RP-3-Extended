@@ -37,7 +37,7 @@ local function onTargetChanged()
 		if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
 			local npcData = campaignClass.ND[npcID];
 			if npcData.NA then
-				TargetFrameTextureFrameName:SetText(npcData.NA);
+				TargetFrame.TargetFrameContent.TargetFrameContentMain.Name:SetText(npcData.NA);
 			end
 		end
 	end
