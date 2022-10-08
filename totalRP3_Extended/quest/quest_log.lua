@@ -390,7 +390,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 	end
 
 	stepHTML.html = Utils.str.toHTML(TRP3_API.script.parseArgs(html, TRP3_API.quest.getCampaignVarStorage()));
-	stepHTML:SetText(stepHTML.html);
+	stepHTML:SetText(stepHTML.html or "");
 end
 
 local function goToStepPage(skipButton, campaignID, questID, questName)
@@ -410,7 +410,7 @@ local function initStepFrame()
 	TRP3_QuestLogPage.Step.Title.InfoText:SetTextColor(0.1, 0.1, 0.1);
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
 		stepHTML:SetSize(containerWidth - 130, 5);
-		stepHTML:SetText(stepHTML.html);
+		stepHTML:SetText(stepHTML.html or "");
 	end);
 
 	stepHTML:SetFontObject("p", GameTooltipHeader);
