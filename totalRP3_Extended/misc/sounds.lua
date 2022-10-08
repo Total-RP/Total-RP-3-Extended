@@ -243,6 +243,8 @@ local function initHistory()
 		end
 	end);
 
+	historyFrame.container:SetTimeVisible(120.0);
+	historyFrame.container:SetMaxLines(128);
 	historyFrame.container:SetFontObject(ChatFontNormal);
 	historyFrame.container:SetHyperlinksEnabled(true);
 	historyFrame.container:SetJustifyH("LEFT");
