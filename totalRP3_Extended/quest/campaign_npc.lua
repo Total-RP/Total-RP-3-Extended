@@ -20,7 +20,6 @@ local Utils = TRP3_API.utils;
 local pairs = pairs;
 local loc = TRP3_API.loc;
 local getConfigValue = TRP3_API.configuration.getValue;
-local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 
 local tooltip = TRP3_NPCTooltip;
 

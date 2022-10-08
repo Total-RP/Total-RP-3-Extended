@@ -133,7 +133,7 @@ local function macro_init()
 		end)
 	end
 
-	EventRegistry:RegisterCallback("SpellMixinButton.OnModifiedClick", function(_, self, button)
+	EventRegistry:RegisterCallback("SpellMixinButton.OnModifiedClick", function(_, self)
 		if IsModifiedClick("CHATLINK")and editor.macroText.scroll.text:HasFocus() then
 			textbox:Insert(GetSpellBookItemName(SpellBook_GetSpellBookSlot(self), SpellBookFrame.bookType));
 		end
