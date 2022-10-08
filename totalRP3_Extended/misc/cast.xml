@@ -26,7 +26,7 @@
 		</Anchors>
 		<Scripts>
 			<OnLoad>
-				CastingBarFrame_OnLoad(self, nil, false, false);
+				self:OnLoad(nil, false, false);
 			</OnLoad>
 			<OnEvent function="" />
 			<OnShow function="" />

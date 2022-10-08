@@ -35,15 +35,18 @@ end
 local function interrupt()
 	if frame.interruptMode == 2 then
 		frame:SetValue(frame.maxValue);
-		frame:SetStatusBarColor(frame.failedCastColor:GetRGB());
+		frame.barType = "interrupted"; -- failed and interrupted use same bar art
+		frame:SetStatusBarTexture(frame:GetTypeInfo(frame.barType).full);
 		frame.Spark:Hide();
 		frame.Text:SetText(INTERRUPTED);
 		frame.casting = nil;
 		frame.channeling = nil;
 		frame.fadeOut = true;
-		frame.holdTime = GetTime() + CASTING_BAR_HOLD_TIME;
 		frame.castID = nil;
 		frame.interruptMode = nil;
+
+		frame:PlayInterruptAnims();
+
 		removeSound();
 	end
 end
@@ -59,14 +62,12 @@ function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundI
 		return;
 	end
 
-	local startColor = CastingBarFrame_GetEffectiveStartColor(frame, false, interruptMode ~= 2);
-	frame:SetStatusBarColor(startColor:GetRGB());
+	frame.barType = frame:GetEffectiveType(false, interruptMode ~= 2, false, false);
+	frame:SetStatusBarTexture(frame:GetTypeInfo(frame.barType).filling);
 
-	if frame.flashColorSameAsStart then
-		frame.Flash:SetVertexColor(startColor:GetRGB());
-	else
-		frame.Flash:SetVertexColor(1, 1, 1);
-	end
+	frame:ClearStages();
+
+	frame:ShowSpark();
 
 	frame.castID = Utils.str.id();
 	frame.interruptMode = interruptMode;
@@ -84,13 +85,14 @@ function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundI
 		frame.Text:SetText(loc.IT_CAST);
 	end
 
-	CastingBarFrame_ApplyAlpha(frame, 1.0);
 	frame.holdTime = 0;
 	frame.casting = true;
 	frame.channeling = nil;
+	frame.reverseChanneling = nil;
 	frame.fadeOut = nil;
 
-	frame.Spark:Show();
+	frame:StopAnims();
+	frame:ApplyAlpha(1.0);
 
 	frame:Show();
 
@@ -109,7 +111,7 @@ local function onUpdate(self, elapsed)
 		if ( self.value >= self.maxValue ) then
 			self:SetValue(self.maxValue);
 			removeSound();
-			CastingBarFrame_FinishSpell(self, self.Spark, self.Flash);
+			self:FinishSpell(self, self.Spark, self.Flash);
 			return;
 		end
 		self:SetValue(self.value);
@@ -119,31 +121,6 @@ local function onUpdate(self, elapsed)
 		if ( self.Spark ) then
 			local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
 			self.Spark:SetPoint("CENTER", self, "LEFT", sparkPosition, self.Spark.offsetY or 2);
-		end
-	elseif ( GetTime() < self.holdTime ) then
-		return;
-	elseif ( self.flash ) then
-		local alpha = 0;
-		if ( self.Flash ) then
-			alpha = self.Flash:GetAlpha() + CASTING_BAR_FLASH_STEP;
-		end
-		if ( alpha < 1 ) then
-			if ( self.Flash ) then
-				self.Flash:SetAlpha(alpha);
-			end
-		else
-			if ( self.Flash ) then
-				self.Flash:SetAlpha(1.0);
-			end
-			self.flash = nil;
-		end
-	elseif ( self.fadeOut ) then
-		local alpha = self:GetAlpha() - CASTING_BAR_ALPHA_STEP;
-		if ( alpha > 0 ) then
-			CastingBarFrame_ApplyAlpha(self, alpha);
-		else
-			self.fadeOut = nil;
-			self:Hide();
 		end
 	end
 end
