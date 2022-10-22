@@ -526,7 +526,7 @@ if TRP3_API.globals.version < Globals.required_trp3_build then
 The Total RP 3: Extended version you have installed (%s) requires a newer version of the main Total RP 3 add-on.
 
 Please download the latest version of Total RP 3 using the Twitch app or by manually downloading it on Curse at http://curse.totalrp.com.
-]]):format(Globals.extended_display_version));
+]]):format(Utils.str.sanitizeVersion(Globals.extended_display_version)));
 end
 
 local MODULE_STRUCTURE = {

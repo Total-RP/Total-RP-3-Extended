@@ -422,7 +422,7 @@ end
 
 function TRP3_API.extended.tools.formatVersion(version)
 	if not version then
-		return Globals.extended_display_version;
+		return Utils.str.sanitizeVersion(Globals.extended_display_version);
 	end
 
 	-- Fixing the mess
@@ -523,7 +523,7 @@ function onLineActionSelected(value, button) -- luacheck: ignore 212
 		TRP3_InnerObjectEditor.copy_fullClassID = objectID;
 	elseif action == ACTION_FLAG_EXPORT then
 		local class = getClass(objectID);
-		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class, Globals.extended_display_version});
+		local serial = Utils.serial.serialize({Globals.extended_version, objectID, class, Utils.str.sanitizeVersion(Globals.extended_display_version)});
 		serial = serial:gsub("|", "||");
 		serial = AddOn_TotalRP3.Compression.compress(serial, false);
 		serial = "!" .. LibDeflate:EncodeForPrint(serial);
@@ -541,7 +541,7 @@ function onLineActionSelected(value, button) -- luacheck: ignore 212
 			TRP3_Extended_ImpExport.object = {};
 			TRP3_Extended_ImpExport.date = date("%d/%m/%y %H:%M:%S");
 			TRP3_Extended_ImpExport.version = Globals.extended_version;
-			TRP3_Extended_ImpExport.display_version = Globals.extended_display_version;
+			TRP3_Extended_ImpExport.display_version = Utils.str.sanitizeVersion(Globals.extended_display_version);
 			Utils.table.copy(TRP3_Extended_ImpExport.object, getClass(objectID));
 			TRP3_Tools_Flags.exportAlert = true;
 			ReloadUI();
@@ -759,6 +759,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		local objectVersion = data.MD.V or 0;
 		local author = data.MD.CB;
 
+		displayVersion = Utils.str.sanitizeVersion(displayVersion)
+
 		assert(type and author, "Corrupted import structure.");
 
 		local import = function()
@@ -832,7 +834,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			local version = object[1];
 			local ID = object[2];
 			local data = object[3];
-			local displayVersion = object[4];
+			local displayVersion = Utils.str.sanitizeVersion(object[4]);
 			local link = TRP3_API.inventory.getItemLink(data);
 			local by = data.MD.CB;
 			local objectVersion = data.MD.V or 0;
@@ -883,7 +885,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 				local version = TRP3_Extended_ImpExport.version;
 				local ID = TRP3_Extended_ImpExport.id;
 				local data = TRP3_Extended_ImpExport.object;
-				local displayVersion = TRP3_Extended_ImpExport.display_version;
+				local displayVersion = Utils.str.sanitizeVersion(TRP3_Extended_ImpExport.display_version);
 				local link = TRP3_API.inventory.getItemLink(data);
 				local by = data.MD.CB;
 				local objectVersion = data.MD.V or 0;
