@@ -822,7 +822,7 @@ local function getContainerInstance(container, class)
 		containerFrame = available;
 	else -- Else: we create a new one
 		containerFrame = CreateFrame("Frame", "TRP3_Container" .. size .. "_" .. (count + 1), nil, "TRP3_Container" .. size .. "Template");
-		containerFrame:SetParent("UIParent");
+		containerFrame:SetParent(UIParent);
 		createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
 		initContainerSlots(containerFrame, class.CO.SR or 5, class.CO.SC or 4);
 		containerFrame:SetScript("OnShow", onContainerShow);

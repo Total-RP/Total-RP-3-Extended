@@ -129,7 +129,7 @@ local function display()
 		end
 	end
 	frame.Tracker.html = Utils.str.toHTML(HTML, true, true);
-	frame.Tracker:SetText(frame.Tracker.html);
+	frame.Tracker:SetText(frame.Tracker.html or "");
 end
 
 function frame.init()

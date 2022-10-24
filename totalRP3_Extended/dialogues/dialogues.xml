@@ -337,7 +337,7 @@
 
 		<Frames>
 
-			<ScrollingMessageFrame parentKey="container" displayDuration="120.0" maxLines="256" insertMode="BOTTOM" enableMouse="true">
+			<ScrollingMessageFrame parentKey="container" enableMouse="true">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
 					<Anchor point="RIGHT" x="-20" y="0"/>

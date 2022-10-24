@@ -20,7 +20,6 @@ local Utils = TRP3_API.utils;
 local pairs = pairs;
 local loc = TRP3_API.loc;
 local getConfigValue = TRP3_API.configuration.getValue;
-local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 
 local tooltip = TRP3_NPCTooltip;
 
@@ -37,7 +36,7 @@ local function onTargetChanged()
 		if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
 			local npcData = campaignClass.ND[npcID];
 			if npcData.NA then
-				TargetFrameTextureFrameName:SetText(npcData.NA);
+				TargetFrame.TargetFrameContent.TargetFrameContentMain.Name:SetText(npcData.NA);
 			end
 		end
 	end
