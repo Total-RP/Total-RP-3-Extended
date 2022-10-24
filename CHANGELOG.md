@@ -1,10 +1,22 @@
+# Changelog for version 1.5.3
+
+## Added
+
+- Added support for Retail 10.0.0.
+
+## Fixed
+
+- Fixed a crash when speech effects were given an empty text.
+
 # Changelog for version 1.5.2
 
 ## Added
+
 - Campaign NPC tooltips now hide the original NPC tooltip.
   - You can show the original tooltip or add its information at the bottom of the campaign NPC tooltip in Extended settings.
 
 ## Changed
+
 - Applied tooltip color settings to campaign NPC tooltips
 
 ## Fixed
