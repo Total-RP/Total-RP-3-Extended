@@ -565,6 +565,8 @@ function TRP3_API.extended.dialog.onStart()
 		historyFrame.container:ScrollToBottom();
 	end);
 
+	historyFrame.container:SetTimeVisible(120.0);
+	historyFrame.container:SetMaxLines(256);
 	historyFrame.container:SetFontObject(ChatFontNormal);
 	historyFrame.container:SetJustifyH("LEFT");
 

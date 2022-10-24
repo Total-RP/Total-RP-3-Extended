@@ -486,7 +486,7 @@ function TRP3_API.inventory.initInventoryPage()
 	_G[inventoryModel.controlFrame:GetName() .. "PanButton"]:Hide();
 	local MOVE_SCALE = 1;
 	inventoryModel.Marker:SetScript("OnMouseUp", function(self)
-		local _, _, _, x, y = self:GetPoint("TOPLEFT");
+		local _, _, _, x, y = self:GetPoint(1);
 		local diffX = x - self.x;
 		local diffY = y - self.y;
 		self:StopMovingOrSizing();

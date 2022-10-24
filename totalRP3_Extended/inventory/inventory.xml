@@ -442,11 +442,11 @@
 								</Layers>
 								<Scripts>
 									<OnMouseDown>
-										local _, _, _, origX, origY = self:GetPoint("CENTER");
+										local _, _, _, origX, origY = self:GetPoint(1);
 										self.origX = origX;
 										self.origY = origY;
 										self:StartMoving();
-										local _, _, _, x, y = self:GetPoint("TOPLEFT");
+										local _, _, _, x, y = self:GetPoint(1);
 										self.x = x;
 										self.y = y;
 									</OnMouseDown>
