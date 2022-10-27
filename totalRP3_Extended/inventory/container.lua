@@ -513,7 +513,7 @@ TRP3_API.inventory.CONTAINER_SLOT_UPDATE_FREQUENCY = CONTAINER_SLOT_UPDATE_FREQU
 
 local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 	createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
-	slot:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	slot:RegisterForClicks("LeftButtonUp", "LeftButtonDown", "RightButtonUp", "RightButtonDown");
 	slot:SetScript("OnEnter", slotOnEnter);
 	slot:SetScript("OnLeave", slotOnLeave);
 
