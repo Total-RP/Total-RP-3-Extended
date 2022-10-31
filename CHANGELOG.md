@@ -1,3 +1,9 @@
+# Changelog for version 1.5.4
+
+## Fixed
+
+- Fixed macro effects failing to execute.
+
 # Changelog for version 1.5.3
 
 ## Added
