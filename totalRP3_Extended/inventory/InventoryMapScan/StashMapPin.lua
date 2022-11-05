@@ -92,6 +92,9 @@ function TRP3_StashMapPinMixin:Decorate(displayData)
 
 	self.Texture:SetAtlas("VignetteLoot");
 
+	-- Right-click is pass-through by default, so this disables it while letting us left-click through it.
+	self:SetPassThroughButtons("LeftButton");
+
 	Ellyb.Tooltips.getTooltip(self)
 			:SetTitle(ORANGE(loc.DR_STASHES))
 			:ClearLines()
