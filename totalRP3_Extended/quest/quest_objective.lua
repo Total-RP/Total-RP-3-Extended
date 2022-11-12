@@ -175,7 +175,7 @@ function frame.init()
 	C_Timer.NewTicker(0.5, function()
 		frame:Hide();
 		if ObjectiveTrackerBlocksFrame:IsShown() then
-			local top = ObjectiveTrackerBlocksFrame.contentsHeight
+			local top = ObjectiveTrackerBlocksFrame.contentsHeight or 0;
 			if top > 0 then
 				top = top + 10
 			end
