@@ -508,7 +508,9 @@ local function onStart()
 	end);
 
 	setTooltipForSameFrame(toolFrame.navBar.home, "TOP", 0, 5, loc.DB, loc.DB_WARNING);
+	local DummyDropdownFrame = CreateFrame("Frame");
 	NavBar_Initialize(toolFrame.navBar, "NavButtonTemplate", homeData, toolFrame.navBar.home, toolFrame.navBar.overflow);
+	UIDropDownMenu_Initialize(DummyDropdownFrame, nop); -- Some voodoo magic to prevent taint due to Edit Mode
 
 	-- Init effects and operands
 	local effectMenu = TRP3_API.extended.tools.getEffectOperandLocale();

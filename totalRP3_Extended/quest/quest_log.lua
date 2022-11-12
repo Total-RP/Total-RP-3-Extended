@@ -601,7 +601,9 @@ local function init()
 		end,
 	}
 	TRP3_QuestLogPage.navBar.home:SetWidth(110);
+	local DummyDropdownFrame = CreateFrame("Frame");
 	NavBar_Initialize(TRP3_QuestLogPage.navBar, "NavButtonTemplate", homeData, TRP3_QuestLogPage.navBar.home, TRP3_QuestLogPage.navBar.overflow);
+	UIDropDownMenu_Initialize(DummyDropdownFrame, nop); -- Some voodoo magic to prevent taint due to Edit Mode
 
 	-- Campaign page init
 	TRP3_QuestLogPage.Campaign.widgetTab = {};
