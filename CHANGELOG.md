@@ -1,3 +1,11 @@
+# Changelog for version 1.5.5
+
+## Fixed
+
+- Fixed right-click on stashes zooming out.
+- Fixed an issue that could lead to blocked actions and spells under certain circumstances.
+- Fixed an error when the default tracker is not visible. The campaign tracker remains invisible in such cases for now.
+
 # Changelog for version 1.5.4
 
 ## Fixed
