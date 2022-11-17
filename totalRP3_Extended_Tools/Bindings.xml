@@ -16,7 +16,7 @@
 -->
 
 <Bindings header="TRP3">
-    <Binding name="TRP3_EXTENDED_TOOLS">
+    <Binding name="TRP3_EXTENDED_TOOLS" category="ADDONS">
         if TRP3_ToolFrame:IsVisible() then
             TRP3_ToolFrame:Hide();
         else

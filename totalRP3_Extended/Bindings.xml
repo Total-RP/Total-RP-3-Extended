@@ -16,37 +16,37 @@
 -->
 
 <Bindings header="TRP3">
-    <Binding name="TRP3_MAIN_CONTAINER">
+    <Binding name="TRP3_MAIN_CONTAINER" category="ADDONS">
         local playerInventory = TRP3_API.inventory.getInventory();
         local quickSlot = playerInventory.content[TRP3_API.inventory.QUICK_SLOT_ID];
         if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
             TRP3_API.inventory.switchContainerBySlotID(playerInventory, TRP3_API.inventory.QUICK_SLOT_ID);
         end
     </Binding>
-    <Binding name="TRP3_INVENTORY">
+    <Binding name="TRP3_INVENTORY" category="ADDONS">
         TRP3_API.navigation.openMainFrame();
         TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");
     </Binding>
-    <Binding name="TRP3_SEARCH_FOR_ITEMS">
+    <Binding name="TRP3_SEARCH_FOR_ITEMS" category="ADDONS">
         TRP3_API.inventory.searchForItems();
     </Binding>
-    <Binding name="TRP3_QUESTLOG">
+    <Binding name="TRP3_QUESTLOG" category="ADDONS">
         TRP3_API.navigation.openMainFrame();
         TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
     </Binding>
-    <Binding name="TRP3_QUEST_LOOK">
+    <Binding name="TRP3_QUEST_LOOK" category="ADDONS">
         TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.LOOK)
     </Binding>
-    <Binding name="TRP3_QUEST_LISTEN">
+    <Binding name="TRP3_QUEST_LISTEN" category="ADDONS">
         TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.LISTEN)
     </Binding>
-    <Binding name="TRP3_QUEST_ACTION">
+    <Binding name="TRP3_QUEST_ACTION" category="ADDONS">
         TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.ATION)
     </Binding>
-    <Binding name="TRP3_QUEST_TALK">
+    <Binding name="TRP3_QUEST_TALK" category="ADDONS">
         TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.TALK)
     </Binding>
-    <Binding name="TRP3_STASHES_LOOKUP">
+    <Binding name="TRP3_STASHES_LOOKUP" category="ADDONS">
         TRP3_API.inventory.searchForStashesAtPlayerLocation();
     </Binding>
 </Bindings>
