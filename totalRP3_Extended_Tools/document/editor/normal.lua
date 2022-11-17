@@ -44,7 +44,8 @@ end
 local function saveCurrentPage()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 	local data = toolFrame.specificDraft;
-	data.PA[manager.current].TX = stEtN(strtrim(pages.editor.scroll.text:GetText()));
+	local text = pages.editor.scroll.text:GetText();
+	data.PA[manager.current].TX = text and strtrim(text):len() > 0 and text;
 end
 
 local function loadPage(page)
