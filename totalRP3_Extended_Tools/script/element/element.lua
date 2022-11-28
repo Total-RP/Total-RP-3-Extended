@@ -30,7 +30,7 @@ local delayEditor = TRP3_ScriptEditorDelay;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function delayEditor.decorate(scriptStep)
-	local strToFormat = "%s: " .. TRP3_API.Ellyb.ColorManager.YELLOW("%s %s|r");
+	local strToFormat = "%s: " .. TRP3_API.Colors.YELLOW("%s %s|r");
 	local delayText;
 	if scriptStep.c == 2 then
 		delayText = loc.WO_DELAY_CAST;
@@ -116,7 +116,7 @@ end
 
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local ID_SEPARATOR = TRP3_API.extended.ID_SEPARATOR;
-local fieldFormat = "%s: " .. TRP3_API.Ellyb.ColorManager.YELLOW("%s|r");
+local fieldFormat = "%s: " .. TRP3_API.Colors.YELLOW("%s|r");
 
 local function decorateBrowserLine(frame, index)
 	local objectID = filteredObjectList[index];
@@ -144,18 +144,18 @@ local function decorateBrowserLine(frame, index)
 		text = text .. "\n" .. Utils.str.icon(base.IC or "temp", 25) .. " " .. link;
 		if base.LE or base.RI then
 			if base.LE and not base.RI then
-				text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(base.LE);
+				text = text .. "\n" .. TRP3_API.Colors.WHITE(base.LE);
 			elseif base.RI and not base.LE then
-				text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(base.RI);
+				text = text .. "\n" .. TRP3_API.Colors.WHITE(base.RI);
 			else
-				text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(base.LE .. " - " .. base.RI);
+				text = text .. "\n" .. TRP3_API.Colors.WHITE(base.LE .. " - " .. base.RI);
 			end
 		end
 		if base.DE then
 			local argsStructure = {object = {id = objectID}};
-			text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.YELLOW("\"" .. TRP3_API.script.parseArgs(base.DE .. "\"", argsStructure));
+			text = text .. "\n" .. TRP3_API.Colors.YELLOW("\"" .. TRP3_API.script.parseArgs(base.DE .. "\"", argsStructure));
 		end
-		text = text .. "\n" .. TRP3_API.Ellyb.ColorManager.WHITE(TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0));
+		text = text .. "\n" .. TRP3_API.Colors.WHITE(TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0));
 
 	end
 

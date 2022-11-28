@@ -27,10 +27,6 @@ local loc = TRP3_API.loc;
 local getItemLink = TRP3_API.inventory.getItemLink;
 --}}}
 
---{{{ Ellyb imports
-local ORANGE = Ellyb.ColorManager.ORANGE;
----}}}
-
 -- Create the pin template, above group members
 ---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{Texture: Texture, GetMap: fun():MapCanvasMixin}
 TRP3_StashMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
@@ -71,7 +67,7 @@ function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	--}}}
 
 	local line = Utils.str.icon(poiInfo.BA.IC) .. " " .. getItemLink(poiInfo);
-	displayData.scanLine = line .. " - " .. Ellyb.ColorManager.ORANGE(total .. "/8");
+	displayData.scanLine = line .. " - " .. TRP3_API.Colors.ORANGE(total .. "/8");
 
 	return displayData
 end
@@ -93,7 +89,7 @@ function TRP3_StashMapPinMixin:Decorate(displayData)
 	self.Texture:SetAtlas("VignetteLoot");
 
 	Ellyb.Tooltips.getTooltip(self)
-			:SetTitle(ORANGE(loc.DR_STASHES))
+			:SetTitle(TRP3_API.Colors.ORANGE(loc.DR_STASHES))
 			:ClearLines()
 			:AddLine(displayData.scanLine)
 

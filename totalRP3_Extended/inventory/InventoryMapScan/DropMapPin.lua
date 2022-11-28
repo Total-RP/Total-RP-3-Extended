@@ -26,10 +26,6 @@ local loc = TRP3_API.loc;
 local getClass, getItemLink = TRP3_API.extended.getClass, TRP3_API.inventory.getItemLink;
 --}}}
 
---{{{ Ellyb imports
-local ORANGE = Ellyb.ColorManager.ORANGE;
----}}}
-
 -- Create the pin template, above group members
 ---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{Texture: Texture, GetMap: fun():MapCanvasMixin}
 TRP3_DropMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
@@ -61,5 +57,5 @@ function TRP3_DropMapPinMixin:Decorate(displayData)
 	self.Texture:SetAtlas("VignetteLoot");
 	self.tooltipLine = displayData.scanLine;
 
-	Ellyb.Tooltips.getTooltip(self):SetTitle(ORANGE(loc.TYPE_ITEMS)):ClearLines();
+	Ellyb.Tooltips.getTooltip(self):SetTitle(TRP3_API.Colors.ORANGE(loc.TYPE_ITEMS)):ClearLines();
 end

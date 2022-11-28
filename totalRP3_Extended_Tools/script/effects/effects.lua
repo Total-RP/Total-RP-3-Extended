@@ -105,7 +105,7 @@ local function macro_init()
 		icon = "inv_eng_gizmo3",
 		description = loc.EFFECT_SECURE_MACRO_DESCRIPTION,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(Ellyb.ColorManager.YELLOW(loc.EFFECT_SECURE_MACRO_ACTION_NAME .. ": ") .. tostring(args[1]));
+			scriptStepFrame.description:SetText(TRP3_API.Colors.YELLOW(loc.EFFECT_SECURE_MACRO_ACTION_NAME .. ": ") .. tostring(args[1]));
 		end,
 		getDefaultArgs = function()
 			return {""};
@@ -891,7 +891,7 @@ local function do_emote_init()
 		icon = "Achievement_Faction_Celestials",
 		description = loc.EFFECT_DO_EMOTE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			scriptStepFrame.description:SetText(Ellyb.ColorManager.YELLOW(loc.EFFECT_DO_EMOTE .. ": ") .. tostring(getEmoteNameFromToken(args[1])));
+			scriptStepFrame.description:SetText(TRP3_API.Colors.YELLOW(loc.EFFECT_DO_EMOTE .. ": ") .. tostring(getEmoteNameFromToken(args[1])));
 		end,
 		getDefaultArgs = function()
 			return {};

@@ -566,7 +566,6 @@ local pcall = pcall;
 local function executeFunction(func, args, scriptID)
 	local status, ret, _ = pcall(func, args);
 	if status then
-		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
 	else
 		TRP3_API.utils.message.displayMessage(loc.SEC_SCRIPT_ERROR:format(scriptID or "preview"), 4);

@@ -203,7 +203,7 @@ local function playDialogStep()
 
 	-- Text color (emote)
 	if text:byte() == 60 or text:byte() == 42 then
-		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
+		local color = TRP3_API.GetColorFromChatType("MONSTER_EMOTE"):GenerateHexColorMarkup();
 		text = text:gsub("<", color):gsub(">", "|r");
 		text = text:gsub("^%*", color):gsub("%*$", "|r");
 	else

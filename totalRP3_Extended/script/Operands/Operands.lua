@@ -29,13 +29,6 @@ function Operand:initialize(operandId, environment)
 	self.id = operandId
 	self.env = environment or {};
 
-	-- Backward compatibility: provide a non object oriented method
-	---@deprecated
-	self.codeReplacement = function(args)
-		TRP3_API.Ellyb.DeprecationWarnings.warn("Operand.codeReplacement(args) is deprecated, please use Operand:CodeReplacement(args) from now on.")
-		return self:CodeReplacement(args)
-	end
-
 	-- The operand register itself when created
 	TRP3_API.script.registerOperand(self)
 end

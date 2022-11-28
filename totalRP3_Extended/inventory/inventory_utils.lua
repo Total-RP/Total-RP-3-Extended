@@ -21,9 +21,6 @@ local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local loc = TRP3_API.loc;
 
--- Ellyb imports
-local Ellyb = TRP3_API.Ellyb;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tooltip func
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -92,25 +89,23 @@ function TRP3_API.inventory.getItemTextLine(itemClass)
 	return Utils.str.icon(icon, 25) .. " " .. name;
 end
 
-local colorCodeFloatTab = Utils.color.colorCodeFloatTab;
-
 local ITEM_COLORS = {
-	[Enum.ItemQuality.Poor] = Ellyb.ColorManager.ITEM_POOR,
-	[Enum.ItemQuality.Common] = Ellyb.ColorManager.ITEM_COMMON,
-	[Enum.ItemQuality.Uncommon] = Ellyb.ColorManager.ITEM_UNCOMMON,
-	[Enum.ItemQuality.Rare] = Ellyb.ColorManager.ITEM_RARE,
-	[Enum.ItemQuality.Epic] = Ellyb.ColorManager.ITEM_EPIC,
-	[Enum.ItemQuality.Legendary] = Ellyb.ColorManager.ITEM_LEGENDARY,
-	[Enum.ItemQuality.Artifact] = Ellyb.ColorManager.ITEM_ARTIFACT,
-	[Enum.ItemQuality.Heirloom] = Ellyb.ColorManager.ITEM_HEIRLOOM,
-	[Enum.ItemQuality.WoWToken] = Ellyb.ColorManager.ITEM_WOW_TOKEN,
+	[Enum.ItemQuality.Poor] = TRP3_API.Colors.ITEM_POOR,
+	[Enum.ItemQuality.Common] = TRP3_API.Colors.ITEM_COMMON,
+	[Enum.ItemQuality.Uncommon] = TRP3_API.Colors.ITEM_UNCOMMON,
+	[Enum.ItemQuality.Rare] = TRP3_API.Colors.ITEM_RARE,
+	[Enum.ItemQuality.Epic] = TRP3_API.Colors.ITEM_EPIC,
+	[Enum.ItemQuality.Legendary] = TRP3_API.Colors.ITEM_LEGENDARY,
+	[Enum.ItemQuality.Artifact] = TRP3_API.Colors.ITEM_ARTIFACT,
+	[Enum.ItemQuality.Heirloom] = TRP3_API.Colors.ITEM_HEIRLOOM,
+	[Enum.ItemQuality.WoWToken] = TRP3_API.Colors.ITEM_WOW_TOKEN,
 }
 local NEUTRAL_COLOR = ITEM_COLORS[Enum.ItemQuality.Common];
 
 local function getQualityColorTab(quality)
 	---@type Color
 	local color = ITEM_COLORS[quality] or NEUTRAL_COLOR;
-	return color:GetRGBATable();
+	return color;
 end
 TRP3_API.inventory.getQualityColorTab = getQualityColorTab;
 
@@ -120,7 +115,7 @@ function TRP3_API.inventory.getQualityColor(quality)
 end
 
 local function getQualityColorText(quality)
-	return colorCodeFloatTab(getQualityColorTab(quality));
+	return TRP3_API.CreateColorFromTable(getQualityColorTab(quality)):GenerateHexColorMarkup();
 end
 TRP3_API.inventory.getQualityColorText = getQualityColorText;
 

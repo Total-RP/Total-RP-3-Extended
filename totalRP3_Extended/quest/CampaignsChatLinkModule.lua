@@ -32,9 +32,6 @@ local iconToString = TRP3_API.utils.str.icon;
 local loc = TRP3_API.loc;
 local parseArgs = TRP3_API.script.parseArgs;
 
--- Ellyb imports
-local Colors = Ellyb.ColorManager;
-
 local CAMPAIGN_PROGRESSION_FORMAT = loc.CL_CAMPAIGN_PROGRESSION .. " %s%%";
 
 local CampaignsChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_EXTENDED_CAMPAIGN, "EXTENDED_DB_CAMPAIGN_LINK");
@@ -68,13 +65,13 @@ function CampaignsChatLinksModule:GetTooltipLines(tooltipData)
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine("\"" .. parseArgs(description) .. "\"", Colors.YELLOW)
+		tooltipLines:AddLine("\"" .. parseArgs(description) .. "\"", TRP3_API.Colors.YELLOW)
 	end
 
 	tooltipLines:AddLine(" ");
 	local progress = TRP3_API.quest.getCampaignProgression(tooltipData.campaignID);
 	if progress == 100 then
-		tooltipLines:AddLine(loc.CL_CAMPAIGN_PROGRESSION:format(TRP3_API.r.name("player")) .. " " .. loc.QE_CAMPAIGN_FULL, Colors.GREEN);
+		tooltipLines:AddLine(loc.CL_CAMPAIGN_PROGRESSION:format(TRP3_API.r.name("player")) .. " " .. loc.QE_CAMPAIGN_FULL, TRP3_API.Colors.GREEN, TRP3_API.Colors.YELLOW);
 	else
 		tooltipLines:AddLine(CAMPAIGN_PROGRESSION_FORMAT:format(TRP3_API.r.name("player"), progress))
 	end

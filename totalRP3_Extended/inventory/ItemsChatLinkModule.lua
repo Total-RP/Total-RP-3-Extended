@@ -33,8 +33,7 @@ local iconToString = TRP3_API.utils.str.icon;
 local loc = TRP3_API.loc;
 local parseArgs = TRP3_API.script.parseArgs;
 
-local Colors = Ellyb.ColorManager;
-local USED_FOR_PROFESSIONS_COLOR = Ellyb.Color("66BBFF"):Freeze();
+local USED_FOR_PROFESSIONS_COLOR = TRP3_API.CreateColorFromBytes(102, 187, 255);
 
 local ItemsChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_EXTENDED_ITEM, "EXTENDED_DB_ITEM_LINK");
 
@@ -76,24 +75,24 @@ function ItemsChatLinksModule:GetTooltipLines(tooltipData)
 	if class.BA.LE or class.BA.RI then
 		local left = class.BA.LE or "";
 		local right = class.BA.RI or "";
-		tooltipLines:AddDoubleLine(parseArgs(left, args), parseArgs(right, args), Colors.WHITE, Colors.WHITE)
+		tooltipLines:AddDoubleLine(parseArgs(left, args), parseArgs(right, args), TRP3_API.Colors.WHITE, TRP3_API.Colors.WHITE)
 	end
 
 	-- Flagged as quest item
 	if class.BA.QE then
-		tooltipLines:AddLine(ITEM_BIND_QUEST, Colors.WHITE)
+		tooltipLines:AddLine(ITEM_BIND_QUEST, TRP3_API.Colors.WHITE)
 	end
 
 	-- Flagged as soulbound
 	if class.BA.SB then
-		tooltipLines:AddLine(ITEM_SOULBOUND, Colors.WHITE);
+		tooltipLines:AddLine(ITEM_SOULBOUND, TRP3_API.Colors.WHITE);
 	end
 
 	-- Specific to containers
 	if TRP3_API.inventory.isContainerByClass(class) then
 		local slotCount = (class.CO.SR or 5) * (class.CO.SC or 4);
 		local slotUsed = TRP3_API.inventory.countUsedSlot(class, tooltipData.slotInfo);
-		tooltipLines:AddLine(loc.IT_CON_TT:format(slotUsed, slotCount), Colors.WHITE);
+		tooltipLines:AddLine(loc.IT_CON_TT:format(slotUsed, slotCount), TRP3_API.Colors.WHITE);
 	end
 
 	-- Unique item
@@ -102,17 +101,17 @@ function ItemsChatLinksModule:GetTooltipLines(tooltipData)
 		if class.BA.UN > 1 then
 			uniqueText = uniqueText .. " (" .. class.BA.UN .. ")";
 		end
-		tooltipLines:AddLine(uniqueText, Colors.WHITE);
+		tooltipLines:AddLine(uniqueText, TRP3_API.Colors.WHITE);
 	end
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine("\"" .. parseArgs(description, args) .. "\"", Colors.YELLOW)
+		tooltipLines:AddLine("\"" .. parseArgs(description, args) .. "\"", TRP3_API.Colors.YELLOW)
 	end
 
 	-- On use effect
 	if class.US and class.US.AC then
-		tooltipLines:AddLine(USE .. ": " .. class.US.AC, Colors.GREEN);
+		tooltipLines:AddLine(USE .. ": " .. class.US.AC, TRP3_API.Colors.GREEN);
 	end
 
 	-- Used for profession flag

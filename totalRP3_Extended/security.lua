@@ -17,12 +17,6 @@
 ---	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Ellyb = TRP3_API.Ellyb;
-
---{{{ Ellyb imports
-local COLORS = Ellyb.ColorManager;
---}}}
-
 local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
 local assert, pairs, tinsert = assert, pairs, tinsert;
 local tsize = Utils.table.size;
@@ -221,9 +215,9 @@ local function decorateLine(line, effectGroup)
 	local accepted, reason = resolveEffectGroupSecurity(securityFrame.classID, effectGroup);
 	local stateText;
 	if accepted then
-		stateText = COLORS.GREEN(loc.SEC_LEVEL_DETAILS_ACCEPTED);
+		stateText = TRP3_API.Colors.GREEN(loc.SEC_LEVEL_DETAILS_ACCEPTED);
 	else
-		stateText = COLORS.RED(loc.SEC_LEVEL_DETAILS_BLOCKED);
+		stateText = TRP3_API.Colors.RED(loc.SEC_LEVEL_DETAILS_BLOCKED);
 	end
 	if reason then
 		stateText = stateText .. " (" .. securityResolutionText[reason] .. ")"
@@ -254,7 +248,7 @@ function showSecurityDetailFrame(classID, frameFrom)
 		height = height - 50;
 	else
 		securityFrame.whitelist:SetChecked(securityVault.whitelist[securityFrame.sender]);
-		securityFrame.whitelist.Text:SetText(loc.SEC_LEVEL_DETAILS_FROM:format(COLORS.GREEN(securityFrame.sender)));
+		securityFrame.whitelist.Text:SetText(loc.SEC_LEVEL_DETAILS_FROM:format(TRP3_API.Colors.GREEN(securityFrame.sender)));
 	end
 
 	initList(securityFrame, securityFrame.securityDetails, securityFrame.slider);
@@ -296,9 +290,9 @@ TRP3_API.security.atLeastOneBlocked = atLeastOneBlocked;
 function TRP3_API.security.initSecurity()
 	securityVault = TRP3_Security;
 
-	securityLevelText[SECURITY_LEVEL.LOW] = COLORS.RED(loc.SEC_LOW);
-	securityLevelText[SECURITY_LEVEL.MEDIUM] = COLORS.ORANGE(loc.SEC_MEDIUM);
-	securityLevelText[SECURITY_LEVEL.HIGH] = COLORS.GREEN(loc.SEC_HIGH);
+	securityLevelText[SECURITY_LEVEL.LOW] = TRP3_API.Colors.RED(loc.SEC_LOW);
+	securityLevelText[SECURITY_LEVEL.MEDIUM] = TRP3_API.Colors.ORANGE(loc.SEC_MEDIUM);
+	securityLevelText[SECURITY_LEVEL.HIGH] = TRP3_API.Colors.GREEN(loc.SEC_HIGH);
 
 	securityLevelDetailText[SECURITY_LEVEL.LOW] = loc.SEC_LOW_TT;
 	securityLevelDetailText[SECURITY_LEVEL.MEDIUM] = loc.SEC_MEDIUM_TT;
@@ -315,12 +309,12 @@ function TRP3_API.security.initSecurity()
 	securityFrame.empty:SetText(loc.SEC_LEVEL_DETAILS_SECURED);
 
 	securityFrame.reasons = {};
-	securityFrame.reasons["SEC_REASON_TALK"] = COLORS.WHITE(loc.SEC_REASON_TALK_WHY);
-	securityFrame.reasons["SEC_REASON_SOUND"] = COLORS.WHITE(loc.SEC_REASON_SOUND_WHY);
-	securityFrame.reasons["SEC_REASON_DISMOUNT"] = COLORS.WHITE(loc.SEC_REASON_DISMOUNT_WHY);
-	securityFrame.reasons["SEC_REASON_SCRIPT"] = COLORS.WHITE(loc.SEC_REASON_SCRIPT_WHY);
-	securityFrame.reasons["SEC_REASON_MACRO"] = COLORS.WHITE(loc.SEC_REASON_MACRO_WHY);
-	securityFrame.reasons["SEC_REASON_EMOTE"] = COLORS.WHITE(loc.SEC_REASON_EMOTE_WHY);
+	securityFrame.reasons["SEC_REASON_TALK"] = TRP3_API.Colors.WHITE(loc.SEC_REASON_TALK_WHY);
+	securityFrame.reasons["SEC_REASON_SOUND"] = TRP3_API.Colors.WHITE(loc.SEC_REASON_SOUND_WHY);
+	securityFrame.reasons["SEC_REASON_DISMOUNT"] = TRP3_API.Colors.WHITE(loc.SEC_REASON_DISMOUNT_WHY);
+	securityFrame.reasons["SEC_REASON_SCRIPT"] = TRP3_API.Colors.WHITE(loc.SEC_REASON_SCRIPT_WHY);
+	securityFrame.reasons["SEC_REASON_MACRO"] = TRP3_API.Colors.WHITE(loc.SEC_REASON_MACRO_WHY);
+	securityFrame.reasons["SEC_REASON_EMOTE"] = TRP3_API.Colors.WHITE(loc.SEC_REASON_EMOTE_WHY);
 
 	securityFrame.securityDetails = {};
 	securityFrame.widgetTab = {};

@@ -187,7 +187,7 @@ local function onLineExpandClick(self)
 	end
 end
 
-local ARG_STRING_FORMAT = "%s: " .. TRP3_API.Ellyb.ColorManager.WHITE("%s") .. " (" .. TRP3_API.Ellyb.ColorManager.GREEN("%s") .. ")";
+local ARG_STRING_FORMAT = "%s: " .. TRP3_API.Colors.WHITE("%s") .. " (" .. TRP3_API.Colors.GREEN("%s") .. ")";
 
 local function getEventTooltip(payload)
 	local text = "";
@@ -231,7 +231,7 @@ function refreshEventsList()
 			lineWidget.Click:SetScript("OnClick", onLineExpandClick);
 		end
 
-		lineWidget.Text:SetText(TRP3_API.Ellyb.ColorManager.WHITE(name));
+		lineWidget.Text:SetText(TRP3_API.Colors.WHITE(name));
 
 		local depth;
 		lineWidget.Expand:Hide();
@@ -251,7 +251,7 @@ function refreshEventsList()
 			local tooltipContent;
 			if element.NA == "COMBAT_LOG_EVENT" or element.NA == "COMBAT_LOG_EVENT_UNFILTERED" then
 				-- Showing custom message for combat log events as there is no payload but we can still get event arguments
-				tooltipContent = TRP3_API.Ellyb.ColorManager.RED(loc.WO_EVENT_EX_BROWSER_COMBAT_LOG_ERROR);
+				tooltipContent = TRP3_API.Colors.RED(loc.WO_EVENT_EX_BROWSER_COMBAT_LOG_ERROR);
 			else
 				tooltipContent = getEventTooltip(element.PA);
 			end

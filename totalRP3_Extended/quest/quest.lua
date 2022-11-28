@@ -22,9 +22,6 @@ local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
--- Ellyb imports
-local Ellyb = TRP3_API.Ellyb;
-
 -- List of custom events for Extended
 local CUSTOM_EVENTS = {
 	TRP3_KILL = "TRP3_KILL",
@@ -105,7 +102,7 @@ local function activateQuestHandlers(campaignID, questID, questClass)
 
 	for _, event in pairs(questClass.HA or EMPTY) do
 		if event.EV and not pcall(registerQuestHandler, campaignID, questID, fullID, event) then
-			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
+			Utils.message.displayMessage(TRP3_API.Colors.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
 	end
 
@@ -343,7 +340,7 @@ local function activateStepHandlers(campaignID, questID, stepID, stepClass)
 
 	for _, event in pairs(stepClass.HA or EMPTY) do
 		if event.EV and not pcall(registerStepHandler, campaignID, questID, stepID, fullID, event) then
-			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
+			Utils.message.displayMessage(TRP3_API.Colors.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
 	end
 end
