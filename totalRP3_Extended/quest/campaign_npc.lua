@@ -268,6 +268,9 @@ local function init()
 	TRP3_API.events.registerCallback(TRP3_API.quest.EVENT_ACTIVE_CAMPAIGN_CHANGED, function()
 		TRP3_NamePlates:UpdateAllNamePlates();
 	end);
+	TRP3_API.events.registerCallback(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
+		TRP3_NamePlates:UpdateAllNamePlates();
+	end);
 end
 
 TRP3_API.quest.npcInit = init;
