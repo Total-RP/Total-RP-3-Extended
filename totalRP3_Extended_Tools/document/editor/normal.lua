@@ -16,7 +16,6 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Utils = TRP3_API.utils;
 local pairs, max, tonumber, tremove, strtrim, assert = pairs, math.max, tonumber, tremove, strtrim, assert;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
