@@ -18,7 +18,6 @@
 
 local Utils = TRP3_API.utils;
 local pairs, max, tonumber, tremove, strtrim, assert = pairs, math.max, tonumber, tremove, strtrim, assert;
-local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local toolFrame, main, pages, params, manager, linksStructure;
