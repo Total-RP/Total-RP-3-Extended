@@ -107,7 +107,7 @@ local function onMouseOver()
 
 			npcTooltipBuilder:AddLine(leftIcons .. (npcData.NA or originalName), Ellyb.Color.CreateFromRGBA(1.00, 1.00, 1.00, 1.00), TRP3_API.ui.tooltip.getMainLineFontSize());
 
-			npcTooltipBuilder:AddLine("< " .. loc.QE_NPC .. " >", tooltipColors.TITLE, TRP3_API.ui.tooltip.getSubLineFontSize());
+			npcTooltipBuilder:AddLine("< " .. (npcData.FT or loc.QE_NPC) .. " >", tooltipColors.TITLE, TRP3_API.ui.tooltip.getSubLineFontSize());
 
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 			-- Description
