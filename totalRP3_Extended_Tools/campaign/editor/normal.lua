@@ -69,7 +69,7 @@ local function decorateNPCLine(line, npcID)
 
 	TRP3_API.ui.frame.setupIconButton(line.Icon, npcData.IC or Globals.icons.profile_default);
 	line.Name:SetText(npcData.NA or loc.CA_NPC_NAME);
-	line.Description:SetText(npcData.DE or "");
+	line.Description:SetText(npcData.FT or npcData.DE or "");
 	line.ID:SetText(loc.CA_NPC_ID .. ": " .. npcID);
 	line.click.npcID = npcID;
 end
@@ -95,6 +95,7 @@ local function newNPC(npcID)
 		end
 	end
 	npc.editor.name:SetText("");
+	npc.editor.fulltitle:SetText("");
 	npc.editor.description.scroll.text:SetText("");
 	onNPCIconSelected(Globals.icons.profile_default);
 	TRP3_API.ui.frame.configureHoverFrame(npc.editor, npc.list.add, "TOP", 0, 5, false);
@@ -107,6 +108,7 @@ local function createFrom(npcID)
 		local npcData = toolFrame.specificDraft.ND[npcID];
 		newNPC(npcID);
 		npc.editor.name:SetText(npcData.NA or "");
+		npc.editor.fulltitle:SetText(npcData.FT or "");
 		npc.editor.description.scroll.text:SetText(npcData.DE or "");
 		onNPCIconSelected(npcData.IC or Globals.icons.profile_default);
 	end
@@ -121,6 +123,7 @@ local function openNPC(npcID, frame)
 			npc.editor.oldID = npcID;
 			npc.editor.id:SetText(npcID);
 			npc.editor.name:SetText(npcData.NA or "");
+			npc.editor.fulltitle:SetText(npcData.FT or "");
 			npc.editor.description.scroll.text:SetText(npcData.DE or "");
 			onNPCIconSelected(npcData.IC or Globals.icons.profile_default);
 			TRP3_API.ui.frame.configureHoverFrame(npc.editor, frame, "RIGHT", 0, 5);
@@ -135,6 +138,7 @@ local function onNPCSaved()
 	local ID = tostring(tonumber(strtrim(npc.editor.id:GetText())) or 0);
 	local data = {
 		NA = stEtN(strtrim(npc.editor.name:GetText())),
+		FT = stEtN(strtrim(npc.editor.fulltitle:GetText())),
 		DE = stEtN(strtrim(npc.editor.description.scroll.text:GetText())),
 		IC = npc.editor.icon.selectedIcon or Globals.icons.profile_default
 	}
@@ -519,6 +523,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	npc.editor.id.title:SetText(loc.CA_NPC_ID);
 	setTooltipForSameFrame(npc.editor.id.help, "RIGHT", 0, 5, loc.CA_NPC_ID, loc.CA_NPC_ID_TT);
 	npc.editor.name.title:SetText(loc.CA_NPC_EDITOR_NAME);
+	npc.editor.fulltitle.title:SetText(loc.CA_NPC_EDITOR_TITLE);
 	npc.editor.description.title:SetText(loc.CA_NPC_EDITOR_DESC);
 	npc.editor.icon:SetScript("OnClick", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected});

@@ -199,6 +199,7 @@ local function onNamePlateDataUpdated(unitToken, displayInfo)
 	-- have nothing ourselves to supply.
 
 	displayInfo.name = npcData.NA or displayInfo.name;
+	displayInfo.fullTitle = npcData.FT or displayInfo.fullTitle;
 
 	if TRP3_NamePlatesSettings.CustomizeIcons then
 		displayInfo.icon = npcData.IC or displayInfo.icon;
@@ -232,6 +233,20 @@ function TRP3_API.quest.GetCampaignNPCName(unit)
 			local npcData = campaignClass.ND[npcID];
 			if npcData.NA then
 				return npcData.NA;
+			end
+		end
+	end
+	return nil;
+end
+
+function TRP3_API.quest.GetCampaignNPCTitle(unit)
+	local unitType, npcID = getUnitDataFromGUID(unit);
+	if unitType == "Creature" and npcID then
+		local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+		if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
+			local npcData = campaignClass.ND[npcID];
+			if npcData.FT then
+				return npcData.FT;
 			end
 		end
 	end
