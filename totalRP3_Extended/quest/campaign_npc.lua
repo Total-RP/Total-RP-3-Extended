@@ -199,7 +199,10 @@ local function onNamePlateDataUpdated(unitToken, displayInfo)
 	-- have nothing ourselves to supply.
 
 	displayInfo.name = npcData.NA or displayInfo.name;
-	displayInfo.fullTitle = npcData.FT or displayInfo.fullTitle;
+
+	if TRP3_NamePlatesSettings.CustomizeFullTitles then
+		displayInfo.fullTitle = npcData.FT or displayInfo.fullTitle;
+	end
 
 	if TRP3_NamePlatesSettings.CustomizeIcons then
 		displayInfo.icon = npcData.IC or displayInfo.icon;
