@@ -261,10 +261,10 @@ local function init()
 		end
 	});
 
-	-- TODO: Do we care about a new version of extended + an old version of TRP?
-	if TRP3_NamePlates.RegisterDisplayInfoFilter then
-		TRP3_NamePlates:RegisterDisplayInfoFilter(onNamePlateDataUpdated);
-	end
+	TRP3_NamePlates:RegisterDisplayInfoFilter(onNamePlateDataUpdated);
+	TRP3_API.events.registerCallback(TRP3_API.quest.EVENT_ACTIVE_CAMPAIGN_CHANGED, function()
+		TRP3_NamePlates:UpdateAllNamePlates();
+	end);
 end
 
 TRP3_API.quest.npcInit = init;

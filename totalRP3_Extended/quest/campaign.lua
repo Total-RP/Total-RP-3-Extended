@@ -123,6 +123,7 @@ local function deactivateCurrentCampaign(skipMessage)
 			Utils.message.displayMessage(loc.QE_CAMPAIGN_PAUSE, Utils.message.type.CHAT_FRAME);
 		end
 		playerQuestLog.currentCampaign = nil;
+		Events.fireEvent(TRP3_API.quest.EVENT_ACTIVE_CAMPAIGN_CHANGED, nil);
 	end
 	clearCampaignHandlers();
 end
@@ -182,6 +183,8 @@ local function activateCampaign(campaignID, force)
 		end
 
 	end
+
+	Events.fireEvent(TRP3_API.quest.EVENT_ACTIVE_CAMPAIGN_CHANGED, playerQuestLog.currentCampaign);
 end
 
 TRP3_API.quest.activateCampaign = activateCampaign;
@@ -228,6 +231,9 @@ TRP3_API.quest.getCampaignVarStorage = getCampaignVarStorage;
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+TRP3_API.quest.EVENT_REFRESH_CAMPAIGN = "EVENT_REFRESH_CAMPAIGN";
+TRP3_API.quest.EVENT_ACTIVE_CAMPAIGN_CHANGED = "EVENT_ACTIVE_CAMPAIGN_CHANGED";
+
 function TRP3_API.quest.campaignInit()
 	local refreshQuestLog = function()
 		playerQuestLog = TRP3_API.quest.getQuestLog();
@@ -244,7 +250,6 @@ function TRP3_API.quest.campaignInit()
 		activateCampaign(playerQuestLog.currentCampaign, true); -- Force reloading the current campaign
 	end
 
-	TRP3_API.quest.EVENT_REFRESH_CAMPAIGN = "EVENT_REFRESH_CAMPAIGN";
 	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
 		if getActiveCampaignLog() and not TRP3_API.extended.classExists(playerQuestLog.currentCampaign) then
 			deactivateCurrentCampaign();
