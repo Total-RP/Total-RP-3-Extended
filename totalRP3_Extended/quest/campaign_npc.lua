@@ -166,6 +166,46 @@ local function onTooltipUpdate(self, elapsed)
 	end
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Nameplates
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function onNamePlateDataUpdated(unitToken, displayInfo)
+	local guidType, npcID = getUnitDataFromGUID(unitToken);
+
+	if guidType ~= "Creature" or not npcID then
+		return;
+	end
+
+	local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+	local npcData = campaignClass and campaignClass.ND and campaignClass.ND[npcID] or nil;
+
+	if not npcData then
+		return;
+	end
+
+	-- Unit has NPC data; the 'shouldHide' flag should be set to false as this
+	-- is now considered to be a roleplay unit.
+
+	displayInfo.shouldHide = false;
+
+	-- If any display info field is left with a nil value then an appropriate
+	-- default will be displayed on the nameplate automatically; eg. if there's
+	-- 'name' is left as nil then the original name of the unit will be
+	-- displayed.
+	--
+	-- Filters act similar to chat message filters; it's possible that there's
+	-- multiple in-place so most fields should preserve existing values if we
+	-- have nothing ourselves to supply.
+
+	displayInfo.name = npcData.NA or displayInfo.name;
+	displayInfo.icon = npcData.IC or displayInfo.icon;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Utilities
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 local UnitExists = UnitExists;
 
 function TRP3_API.quest.UnitIsCampaignNPC(unit)
@@ -220,6 +260,11 @@ local function init()
 			print(getUnitDataFromGUID("target"));
 		end
 	});
+
+	-- TODO: Do we care about a new version of extended + an old version of TRP?
+	if TRP3_NamePlates.RegisterDisplayInfoFilter then
+		TRP3_NamePlates:RegisterDisplayInfoFilter(onNamePlateDataUpdated);
+	end
 end
 
 TRP3_API.quest.npcInit = init;
