@@ -198,14 +198,16 @@ local function onNamePlateDataUpdated(unitToken, displayInfo)
 	-- multiple in-place so most fields should preserve existing values if we
 	-- have nothing ourselves to supply.
 
-	displayInfo.name = npcData.NA or displayInfo.name;
-
-	if TRP3_NamePlatesSettings.CustomizeFullTitles then
-		displayInfo.fullTitle = npcData.FT or displayInfo.fullTitle;
+	if TRP3_NamePlatesSettings.CustomizeNames and npcData.NA then
+		displayInfo.name = TRP3_NamePlatesUtil.GenerateCroppedNameText(npcData.NA);
 	end
 
-	if TRP3_NamePlatesSettings.CustomizeIcons then
-		displayInfo.icon = npcData.IC or displayInfo.icon;
+	if TRP3_NamePlatesSettings.CustomizeFullTitles and npcData.FT then
+		displayInfo.fullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(npcData.FT);
+	end
+
+	if TRP3_NamePlatesSettings.CustomizeIcons and npcData.IC then
+		displayInfo.icon = npcData.IC;
 	end
 end
 
