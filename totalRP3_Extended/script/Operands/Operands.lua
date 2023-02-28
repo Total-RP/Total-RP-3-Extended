@@ -25,7 +25,7 @@ local Operand = TRP3_API.Ellyb.Class("TotalRP3_Extended_Operand");
 ---@param operandId string A unique ID to refer to this operand
 ---@param environment table<string, string> An environment table that will be used to map functions that will be made available to the operand code when executed.
 function Operand:initialize(operandId, environment)
-	Ellyb.Assertions.isType(operandId, "string", "operandId");
+	TRP3_API.Ellyb.Assertions.isType(operandId, "string", "operandId");
 	self.id = operandId
 	self.env = environment or {};
 
