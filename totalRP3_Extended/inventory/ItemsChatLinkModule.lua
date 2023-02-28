@@ -25,7 +25,6 @@ local TRP3_API = TRP3_API;
 local Ellyb = TRP3_API.Ellyb;
 
 -- Lua imports
-local tcopy = Ellyb.Tables.copy;
 local date = date;
 
 -- Total RP 3 imports
@@ -43,8 +42,8 @@ function ItemsChatLinksModule:GetLinkData(fullID, rootID, slotInfo, canBeImporte
 	local itemData = TRP3_API.extended.getClass(fullID);
 
 	local tooltipData = {
-		class = tcopy(itemData),
-		rootClass = tcopy(TRP3_API.extended.getClass(rootID)),
+		class = CopyTable(itemData),
+		rootClass = CopyTable(TRP3_API.extended.getClass(rootID)),
 		fullID = fullID,
 		rootID = rootID,
 		slotInfo = slotInfo,
@@ -132,7 +131,7 @@ end
 function DatabaseItemsImportButton:OnAnswerCommandReceived(data, sender)
 	local itemID = data.rootID;
 	local fromClass = data.rootClass;
-	local copiedData = tcopy(fromClass);
+	local copiedData = CopyTable(fromClass);
 
 	copiedData.MD.SD = date("%d/%m/%y %H:%M:%S");
 	copiedData.MD.SB = TRP3_API.globals.player_id;
@@ -162,7 +161,7 @@ end
 function ImportItemInInventoryButton:OnAnswerCommandReceived(data, sender)
 	local rootID = data.rootID;
 	local fromClass = data.rootClass;
-	local copiedData = tcopy(fromClass);
+	local copiedData = CopyTable(fromClass);
 	copiedData.MD.SD = date("%d/%m/%y %H:%M:%S");
 	copiedData.MD.SB = TRP3_API.globals.player_id;
 

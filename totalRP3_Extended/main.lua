@@ -461,7 +461,7 @@ local function onStart()
 				Log.log("Received signal from yourself");
 				Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, id, value, Utils.str.getUnitID("player"));
 			else
-				TRP3_API.communication.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
+				AddOn_TotalRP3.Communications.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
 			end
 		end
 	end
