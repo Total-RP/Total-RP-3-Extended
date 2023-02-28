@@ -20,7 +20,6 @@ local Utils = TRP3_API.utils;
 local wipe, tostring, strsplit, pairs, tonumber = wipe, tostring, strsplit, pairs, tonumber;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
-local Log = Utils.log;
 local getClass = TRP3_API.extended.getClass;
 local UnitExists = UnitExists;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
@@ -55,7 +54,7 @@ local function playTextAnim(context)
 	if not dialogFrame.textLineToken or not dialogFrame.ND or dialogFrame.ND == "NONE" then
 		return;
 	end
-	Log.log("AnimWithToken: " .. context);
+	TRP3_API.Log("AnimWithToken: " .. context);
 
 	-- Animations
 	local targetModel = dialogFrame.ND == "LEFT" and modelLeft or modelRight;

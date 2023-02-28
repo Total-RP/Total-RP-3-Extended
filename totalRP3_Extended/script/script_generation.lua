@@ -22,7 +22,6 @@ TRP3_API.script = {};
 local EMPTY = TRP3_API.globals.empty;
 local assert, type, tostring, error, tonumber, pairs, ipairs, loadstring, wipe, strsplit = assert, type, tostring, error, tonumber, pairs, ipairs, loadstring, wipe, strsplit;
 local tableCopy = TRP3_API.utils.table.copy;
-local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local getUnitID, isUnitIDKnown, getUnitIDCurrentProfile = TRP3_API.utils.str.getUnitID, TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCurrentProfile;
 local writeElement;
 local loc = TRP3_API.loc;
@@ -544,7 +543,7 @@ local function generateCode(effectStructure, rootClassID)
 end
 
 local function generate(effectStructure, rootClassID)
-	log("Generate FX", logLevel.DEBUG);
+	TRP3_API.Log("Generate FX");
 	local code = generateCode(effectStructure, rootClassID);
 	return generateFromCode(code);
 end

@@ -138,7 +138,7 @@ local function computeSecurity(rootObjectID, rootObject, details)
 	rootObject.securityLevel = minSecurity;
 	rootObject.details = details;
 
-	Utils.log.log(("Security: found %d security issues in %s (%s)."):format(Utils.table.size(details), rootObjectID, minSecurity));
+	TRP3_API.Log(("Security: found %d security issues in %s (%s)."):format(Utils.table.size(details), rootObjectID, minSecurity));
 
 	return details;
 end
