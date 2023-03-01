@@ -480,8 +480,8 @@ end
 
 function TRP3_API.extended.dialog.onStart()
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_LOOT_ALL, onLootAll);
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function(_, ...) onLoaded(...); end);
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.LOOT_ALL, function(_, ...) onLootAll(...); end);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects({

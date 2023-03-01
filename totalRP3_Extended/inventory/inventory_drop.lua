@@ -15,7 +15,7 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 ----------------------------------------------------------------------------------
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local EMPTY = Globals.empty;
 local Communications = AddOn_TotalRP3.Communications;
 local type, tremove = type, tremove;
@@ -419,7 +419,7 @@ local function doStashSlot(slotFrom, container, slotID, itemCount)
 						TRP3_API.inventory.removeSlotContent(container, slotID, slotInfo);
 					else
 						TRP3_API.inventory.recomputeAllInventory();
-						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+						TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, container);
 					end
 				else
 					Utils.message.displayMessage(loc.DR_STASHES_FULL, Utils.message.type.ALERT_MESSAGE);
@@ -510,9 +510,9 @@ local function onUnstashResponse(response, sender)
 					TRP3_API.extended.registerObject(classID, class, 0);
 					TRP3_API.script.clearRootCompilation(classID);
 					TRP3_API.security.registerSender(classID, sender);
-					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-					TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
-					TRP3_API.events.fireEvent(Events.ON_OBJECT_UPDATED);
+					TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+					TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
+					TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_OBJECT_UPDATED);
 				end
 			end
 
@@ -864,7 +864,7 @@ function dropFrame.init()
 
 	-- UI
 	-- Button on toolbar
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		if TRP3_API.toolbar then
 			local toolbarButton = {
 				id = "bb_extended_drop",

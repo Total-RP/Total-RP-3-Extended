@@ -364,7 +364,7 @@ local function doPickUpLoot(slotFrom, containerTo, slotIDTo, itemCount)
 		containerFromFrame.onLootCallback(slotFrom.info, count, slotFrom);
 	end
 
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, containerTo);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, containerTo);
 
 	if not containerFromFrame.info.stash then
 		for _, slot in pairs(lootFrame.slots) do
@@ -373,7 +373,7 @@ local function doPickUpLoot(slotFrom, containerTo, slotIDTo, itemCount)
 			end
 		end
 		lootFrame.forceLoot = nil;
-		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.LOOT_ALL);
 		lootFrame:Hide();
 	end
 end
@@ -422,7 +422,7 @@ local function discardLoot(slotFrom, containerFrame)
 			end
 		end
 		containerFrame.forceLoot = nil;
-		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_LOOT_ALL);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.LOOT_ALL);
 		containerFrame:Hide();
 	end
 end
@@ -453,7 +453,7 @@ local function slotOnDragStop(slotFrom)
 					local itemClass = getClass(slotFrom.info.id);
 
 					TRP3_API.inventory.dropOrDestroy(itemClass, function()
-						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1ID, slotFrom.info, true);
+						TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_SLOT_REMOVE, container1, slot1ID, slotFrom.info, true);
 					end, function()
 						TRP3_API.inventory.dropItem(container1, slot1ID, slotFrom.info);
 					end);
@@ -479,7 +479,7 @@ local function slotOnDragStop(slotFrom)
 			slot2ID = slotTo.slotID;
 			container2 = slotTo:GetParent().info;
 			if not container1.loot then
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1ID, container2, slot2ID);
+				TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_SLOT_SWAP, container1, slot1ID, container2, slot2ID);
 			elseif slotFrom:GetParent() == TRP3_StashContainer and TRP3_StashContainer.sharedData then
 				if not slotFrom:GetParent().sync then
 					TRP3_API.inventory.unstashSlot(slotFrom, container2, slot2ID);
@@ -501,7 +501,7 @@ end
 
 local function splitStack(slot, quantity)
 	if slot and slot.info and slot:GetParent().info then
-		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_SPLIT_SLOT, slot.info, slot:GetParent().info, quantity);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.SPLIT_SLOT, slot.info, slot:GetParent().info, quantity);
 	end
 end
 
@@ -552,7 +552,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 							TRP3_API.security.showSecurityDetailFrame(rootClass);
 						end
 					else
-						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+						TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_SLOT_USE, self, self:GetParent());
 					end
 				end
 			elseif self.loot and self.info and button == "RightButton" then
@@ -582,7 +582,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 		slot.SplitStack = splitStack;
 
 		-- Listen to refresh event
-		TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
+		TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.DETACH_SLOT, function(_, slotInfo)
 			if slot.info == slotInfo then
 				slot.info = nil;
 				slot.class = nil;
@@ -789,7 +789,7 @@ local CONTAINER_UPDATE_FREQUENCY = 0.15;
 local function initContainerInstance(containerFrame, size)
 	containerFrame.containerSize = size;
 	-- Listen to refresh event
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, function(containerInfo)
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.REFRESH_BAG, function(_, containerInfo)
 		if containerFrame:IsVisible() and (containerInfo == nil or containerFrame.info == containerInfo) then
 			loadContainerPageSlots(containerFrame);
 		end

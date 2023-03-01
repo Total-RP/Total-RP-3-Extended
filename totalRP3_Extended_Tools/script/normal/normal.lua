@@ -730,7 +730,7 @@ editor.init = function(ToolFrame, effectMenu)
 	toolFrame = ToolFrame;
 
 	-- Resize
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerWidth, containerHeight) -- luacheck: ignore 212
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.NAVIGATION_EXTENDED_RESIZED, function(_, containerWidth, containerHeight) -- luacheck: ignore 212
 		editor.workflow.container.scroll.list:SetWidth( containerWidth - 580 );
 	end);
 

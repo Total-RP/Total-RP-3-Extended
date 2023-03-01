@@ -16,11 +16,10 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.utils;
 local pairs, assert, tostring, strsplit, wipe, date = pairs, assert, tostring, strsplit, wipe, date;
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.loc;
-local fireEvent = TRP3_API.events.fireEvent;
 local after  = C_Timer.After;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -241,8 +240,8 @@ local function doSave()
 	TRP3_API.extended.unregisterObject(rootClassID);
 	TRP3_API.extended.registerObject(rootClassID, object, 0);
 	TRP3_API.script.clearRootCompilation(rootClassID);
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, rootClassID);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN, rootClassID);
 
 	goToPage(fullClassID, true);
 end
@@ -415,10 +414,6 @@ function TRP3_API.extended.tools.showFrame()
 end
 
 local function onStart()
-
-	-- Events
-	Events.ON_OBJECT_UPDATED = "ON_OBJECT_UPDATED";
-
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.root, loc.ROOT_TITLE, 150);
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.actions, loc.DB_ACTIONS, 100);
 	toolFrame.actions.cancel:SetText(CANCEL)
@@ -446,8 +441,6 @@ local function onStart()
 
 	toolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
 
-	TRP3_API.events.NAVIGATION_EXTENDED_RESIZED = "NAVIGATION_EXTENDED_RESIZED";
-
 	toolFrame.Resize.minWidth = 1150;
 	toolFrame.Resize.minHeight = 730;
 	toolFrame:SetSize(toolFrame.Resize.minWidth, toolFrame.Resize.minHeight);
@@ -455,7 +448,7 @@ local function onStart()
 	toolFrame.Resize.onResizeStop = function()
 		toolFrame.Minimize:Hide();
 		toolFrame.Maximize:Show();
-		fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
 	end;
 
 	toolFrame.Maximize:SetScript("OnClick", function()
@@ -463,7 +456,7 @@ local function onStart()
 		toolFrame.Minimize:Show();
 		toolFrame:SetSize(UIParent:GetWidth(), UIParent:GetHeight());
 		after(0.1, function()
-			fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
+			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
 		end);
 	end);
 
@@ -530,13 +523,13 @@ local function onStart()
 	TRP3_API.extended.tools.initList(toolFrame);
 	TRP3_ExtendedTutorial.init(toolFrame);
 
-	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
 
 	-- Bindings
 
 	BINDING_NAME_TRP3_EXTENDED_TOOLS = loc.TB_TOOLS;
 
-	Events.listenToEvent(Events.WORKFLOW_ON_FINISH, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_FINISH, function()
 		goToListPage();
 	end);
 

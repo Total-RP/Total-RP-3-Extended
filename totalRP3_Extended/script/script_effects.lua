@@ -167,15 +167,14 @@ local EFFECTS = {
 		method = function(structure, cArgs, eArgs)
 			local channel, text = structure.getCArgs(cArgs);
 
-			local handlerID = TRP3_API.utils.event.registerHandler("ADDON_ACTION_BLOCKED", function(addon)
+			local registration = TRP3_API.RegisterCallback(TRP3_API.GameEvents, "ADDON_ACTION_BLOCKED", function(_, addon)
 				if addon == "totalRP3_Extended" then
 					TRP3_API.utils.message.displayMessage(loc.ERROR_SPEECH_EFFECT, 4);
 				end
 			end);
 
 			SendChatMessage(TRP3_API.script.parseArgs(text, eArgs), getSpeechChannel(channel));
-
-			TRP3_API.utils.event.unregisterHandler(handlerID);
+			registration:Unregister();
 
 			eArgs.LAST = 0;
 		end,

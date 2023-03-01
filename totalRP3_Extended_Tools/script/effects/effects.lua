@@ -146,7 +146,7 @@ local function macro_init()
 		return GetItemInfo(link)
 	end)
 
-	Ellyb.GameEvents.registerCallback("ADDON_LOADED", function(name)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "ADDON_LOADED", function(_, name)
 		if name == "Blizzard_TalentUI" then
 			hookLinkInsert("HandleGeneralTalentFrameChatLink", function(self)
 				return self.name:GetText();

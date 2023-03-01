@@ -143,9 +143,9 @@ function DatabaseItemsImportButton:OnAnswerCommandReceived(data, sender)
 	TRP3_API.extended.registerObject(itemID, copiedData, 0);
 	TRP3_API.script.clearRootCompilation(itemID);
 	TRP3_API.security.registerSender(itemID, sender);
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
-	TRP3_API.events.fireEvent(TRP3_API.events.ON_OBJECT_UPDATED);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_OBJECT_UPDATED);
 
 	TRP3_API.extended.tools.showFrame();
 	TRP3_API.extended.tools.goToPage(itemID);
@@ -172,9 +172,9 @@ function ImportItemInInventoryButton:OnAnswerCommandReceived(data, sender)
 	TRP3_API.extended.registerObject(rootID, copiedData, 0);
 	TRP3_API.script.clearRootCompilation(rootID);
 	TRP3_API.security.registerSender(rootID, sender);
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
-	TRP3_API.events.fireEvent(TRP3_API.events.ON_OBJECT_UPDATED);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_OBJECT_UPDATED);
 	TRP3_API.inventory.addItem(nil, data.fullID, { count = 1, madeBy = copiedData.BA and copiedData.BA.CR });
 end
 

@@ -155,13 +155,13 @@ function TRP3_API.security.whitelistSender(sender, whitelist)
 		securityVault.whitelist[sender] = nil;
 	end
 	TRP3_API.script.clearAllCompilations();
-	TRP3_API.events.fireEvent(TRP3_API.security.EVENT_SECURITY_CHANGED);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.SECURITY_CHANGED);
 end
 
 function TRP3_API.security.acceptEffectGroup(effectGroupID, accept)
 	securityVault.global[effectGroupID] = accept;
 	TRP3_API.script.clearAllCompilations();
-	TRP3_API.events.fireEvent(TRP3_API.security.EVENT_SECURITY_CHANGED);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.SECURITY_CHANGED);
 end
 
 function TRP3_API.security.acceptSpecificEffectGroup(classID, effectGroupID, accept)
@@ -170,7 +170,7 @@ function TRP3_API.security.acceptSpecificEffectGroup(classID, effectGroupID, acc
 	end
 	securityVault.specific[classID][effectGroupID] = accept;
 	TRP3_API.script.clearRootCompilation(classID);
-	TRP3_API.events.fireEvent(TRP3_API.security.EVENT_SECURITY_CHANGED);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.SECURITY_CHANGED);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -336,8 +336,6 @@ function TRP3_API.security.initSecurity()
 		TRP3_API.security.whitelistSender(securityFrame.sender, self:GetChecked());
 		showSecurityDetailFrame(securityFrame.classID, securityFrame.frameFrom);
 	end);
-
-	TRP3_API.security.EVENT_SECURITY_CHANGED = "EVENT_SECURITY_CHANGED";
 
 	TRP3_API.ui.frame.setupMove(securityFrame);
 end

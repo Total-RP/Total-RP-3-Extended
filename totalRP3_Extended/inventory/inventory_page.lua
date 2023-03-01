@@ -15,7 +15,7 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.utils;
 local _G, tostring, tinsert, wipe = _G, tostring, tinsert, wipe;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local CreateFrame, IsAltKeyDown = CreateFrame, IsAltKeyDown;
@@ -374,7 +374,7 @@ function TRP3_API.inventory.initInventoryPage()
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		initPlayerInventoryButton();
 	end);
 
@@ -466,7 +466,7 @@ function TRP3_API.inventory.initInventoryPage()
 			onInventoryShow();
 		end
 	end
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, refreshInventory);
 
 	-- Equip
 	inventoryModel.defaultRotation = 0;
