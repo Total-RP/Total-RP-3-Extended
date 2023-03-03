@@ -24,6 +24,7 @@
     <Script file="CharacterOperands.lua"/>
     <Script file="ExpertOperands.lua"/>
     <Script file="MiscellaneousOperands.lua"/>
+    <Script file="AuraOperands.lua"/>
 
     <!--@debug@-->
     <Include file="_tests\tests.xml" />

@@ -71,6 +71,18 @@ local function createInnerObject(innerID, innerType, innerMode, innerData)
 			},
 			BT = true,
 		}
+	elseif innerType == "AU" then
+		toolFrame.specificDraft.IN[innerID] = innerData or {
+			TY = "AU",
+			MD = {
+				MO = TRP3_DB.modes.NORMAL,
+			},
+			BA = {
+				NA = loc.AU_NEW_NAME,
+				HE = true,
+				CC = true,
+			}
+		}
 	elseif innerType == TRP3_DB.types.DIALOG then
 		toolFrame.specificDraft.IN[innerID] = innerData or TRP3_API.extended.tools.getCutsceneData();
 	elseif innerType == "quick" then
@@ -262,6 +274,7 @@ local function onAddClicked(self)
 	tinsert(values, {loc.TYPE_ITEM, TRP3_DB.types.ITEM});
 	tinsert(values, {loc.TYPE_DOCUMENT, TRP3_DB.types.DOCUMENT});
 	tinsert(values, {loc.TYPE_DIALOG, TRP3_DB.types.DIALOG});
+	tinsert(values, {loc.TYPE_AURA, TRP3_DB.types.AURA});
 	TRP3_API.ui.listbox.displayDropDown(self, values, addInnerObject, 0, true);
 end
 

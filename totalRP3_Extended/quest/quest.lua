@@ -25,14 +25,7 @@ local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended
 -- Ellyb imports
 local Ellyb = TRP3_API.Ellyb;
 
--- List of custom events for Extended
-local CUSTOM_EVENTS = {
-	TRP3_KILL = "TRP3_KILL",
-	TRP3_ROLL = "TRP3_ROLL",
-	TRP3_SIGNAL = "TRP3_SIGNAL",
-	TRP3_ITEM_USED = "TRP3_ITEM_USED",
-	TRP3_EMOTE = "TRP3_EMOTE",
-};
+local CUSTOM_EVENTS = TRP3_API.extended.CUSTOM_EVENTS;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- QUEST API

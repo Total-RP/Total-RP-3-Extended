@@ -61,6 +61,13 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			"document_show",
 			"document_close",
 		},
+		[loc.TYPE_AURA] = {
+			"aura_apply",
+			"aura_duration",
+			"aura_remove",
+			"aura_var_set",
+			"aura_run_workflow",
+		},
 		[loc.EFFECT_CAT_CAMPAIGN] = {
 			"quest_start",
 			"quest_goToStep",
@@ -90,6 +97,7 @@ function TRP3_API.extended.tools.getEffectOperandLocale()
 			loc.EFFECT_CAT_SPEECH,
 			loc.INV_PAGE_CHARACTER_INV,
 			loc.TYPE_DOCUMENT,
+			loc.TYPE_AURA,
 			loc.EFFECT_CAT_CAMPAIGN,
 			loc.EFFECT_CAT_SOUND,
 			loc.REG_COMPANIONS,

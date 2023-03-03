@@ -300,6 +300,7 @@ TRP3_API.loc = {
 	TYPE_LOOT = "Loot",
 	TYPE_DOCUMENT = "Document",
 	TYPE_DIALOG = "Cutscene",
+	TYPE_AURA = "Aura",
 	TYPE_ITEMS = "Item(s)",
 
 -- MODES
@@ -399,6 +400,7 @@ You can browse their website for other people's creations and paste them here.]]
 	SPECIFIC = "Specific object",
 	ITEM_ID = "Item ID",
 	QUEST_ID = "Quest ID",
+	AURA_ID = "Aura ID",
 
 -- Editor common
 	EDITOR_MORE = "More",
@@ -1268,6 +1270,102 @@ We should begin with some examples:
 	DI_GET_ID = "Target ID",
 	DI_GET_ID_TT = "Copy the target's NPC ID. Only works if your current target is an NPC.",
 
+-- Aura
+	AURA_FRAME_TITLE = "Total RP 3 Extended Auras",
+	AURA_INTRO = [[
+Auras (Buffs/Debuffs) are status effects that a player has.
+
+An Extended aura is |cff00ff00bound to a player's profile|r. If the player switches their profile, auras from the first profile won't be visible anymore but they are still there. The aura will become "dormant".
+Alternatively, you can choose to bind the aura to the enclosing campaign, if it is an inner item of a campaign. This binding is more strict, since campaigns are also bound to profiles.
+
+If your aura runs for a very long time (e.g. an egg, that hatches after 3 real time days), you might set the aura to "always active". This will cause to dormant time to be connsidered as run time.
+]],
+	AU_EXPIRY = "%1$s remaining",
+	AU_CANCEL_TEXT = "right click to cancel",
+	AURA_DURATION = "Duration",
+	AURA_DURATION_TT = "Aura duration in seconds",
+	EFFECT_AURA_ID_TT = [[Please specify the aura full id.\n\nUse the "Browse" button below to search your database.]],
+	EFFECT_AURA_APPLY = "Apply aura",
+	EFFECT_AURA_APPLY_TT = "Casts an aura on the player.\n\n|cffff9900If the aura is already active, it won't be overwritten.",
+	EFFECT_AURA_APPLY_PREVIEW = "Apply%2$s aura |cff00ff00%1$s|r",
+	EFFECT_AURA_APPLY_EXTEND_FRAGMENT = " or extend",
+	EFFECT_AURA_APPLY_EXTEND = "Extend duration if active",
+	EFFECT_AURA_APPLY_EXTEND_TT = "If the aura is already active, this effect would do nothing, unless you select the extend option. In that case, the aura's remaining duration will be extended by its regular duration.",
+	EFFECT_AURA_REMOVE = "Remove aura",
+	EFFECT_AURA_REMOVE_TT = "Removes an aura from the player.\n\n|cffff9900This effect will not trigger the Expiry or Cancel events.",
+	EFFECT_AURA_REMOVE_PREVIEW = "Remove aura |cff00ff00%1$s|r",
+	EFFECT_AURA_DURATION = "Aura duration",
+	EFFECT_AURA_DURATION_TT = "Changes the duration of an aura.",
+	EFFECT_AURA_DURATION_SET = "set",
+	EFFECT_AURA_DURATION_SET_TT = "Sets the duration to an amount of seconds.",
+	EFFECT_AURA_DURATION_ADD = "add",
+	EFFECT_AURA_DURATION_ADD_TT = "Adds an amount of seconds to the duration.",
+	EFFECT_AURA_DURATION_SUBTRACT = "subtract",
+	EFFECT_AURA_DURATION_SUBTRACT_TT = "Subtracts an amount of seconds from the duration.",
+	EFFECT_AURA_DURATION_PREVIEW = "Duration of aura |cff00ff00%1$s|r |cff00ff00%3$s|r |cffffff00%2$s seconds|r",
+	EFFECT_VAR_AURA_CHANGE = "Aura variable operation",
+	EFFECT_VAR_AURA_CHANGE_TT = "Performs an operation on an aura variable.\n\n|cffff9900For math operations: If the variable does not exist or can't be cast as a number, it will be initialized at 0.",
+	EFFECT_VAR_AURA_CHANGE_PREVIEW = "|cffffff00Aura variable operation: |cff00ff00(%1$s)|r %3$s |cff00ff00=|r %3$s |cff00ff00%2$s|r %4$s",
+	EFFECT_AURA_RUN_WORKFLOW = "Run aura workflow",
+	EFFECT_AURA_RUN_WORKFLOW_TT = "Run workflow of an active aura. The aura's workflow has access to workflow variables of the current workflow.",
+	EFFECT_AURA_RUN_WORKFLOW_PREVIEW = "Run workflow |cff00ff00%1$s|r in aura |cff00ff00%2$s|r.",
+	OP_OP_AURA_ACTIVE = "Aura is active",
+	OP_OP_AURA_ACTIVE_TT = "Returns whether or not an aura is currently active on the player.",
+	OP_OP_AURA_ACTIVE_PREVIEW = "Aura |cff00ff00%1$s|r is active",
+	OP_OP_AURA_DURATION = "Aura duration",
+	OP_OP_AURA_DURATION_TT = "Returns the remaining duration of an aura in seconds or 0, if the aura isn't active.",
+	OP_OP_AURA_DURATION_PREVIEW = "Remaining duration of aura |cff00ff00%1$s|r",
+	OP_OP_AURA_CHECK_VAR = "Aura variable string value",
+	OP_OP_AURA_CHECK_VAR_TT = "Returns the value of an aura variable, |cff00ff00interpreted as a string|r.\n\nIf the variable does not exist or can't be reached, returns the string 'nil'.\n\n|cffff9900As the value depends on runtime, it cannot be previewed.",
+	OP_OP_AURA_CHECK_VAR_PREVIEW = "Aura |cff00ff00%1$s:|r %2$s",
+	OP_OP_AURA_CHECK_VAR_N_PREVIEW = "Aura |cff00ff00%1$s:|r |cffff9900(n)|r %2$s",
+	OP_OP_AURA_CHECK_VAR_N = "Aura variable numeric value",
+	OP_OP_AURA_CHECK_VAR_N_TT = "Returns the value of an aura variable, |cff00ff00interpreted as a number|r.\n\nIf the variable does not exist, can't be reached or can't be interpreted as a number, returns 0.\n\n|cffff9900As the value depends on runtime, it cannot be previewed.",
+	AU_NEW_NAME = "New aura",
+	AU_DISPLAY_ATT = "Display attributes",
+	AU_GAMEPLAY_ATT = "Aura behavior",
+	AU_FIELD_NAME = "Aura name",
+	AU_FIELD_NAME_TT = "It's your aura's name, as it will appear on the tooltip.",
+	AU_FIELD_DESCRIPTION = "Aura description",
+	AU_FIELD_DESCRIPTION_TT = "Tell the player what your aura does, but try to be concise, since it needs to fit within a tooltip.\n\n|cff00ff00You can use variable tags here.|r",
+	AU_FIELD_FLAVOR = "Secondary description",
+	AU_FIELD_FLAVOR_TT = [[This field can be used for "flavor" text, which isn't as important as the main description.\nIt will appear in the tooltip below the description.]],
+	AU_FIELD_OVERLAY = "Overlay text",
+	AU_FIELD_OVERLAY_TT = "Text that will appear on the aura icon, e.g. a stack counter.\n\n|cffff9900Keep this text VERY short, as the space on the icon is limited!|r\n\n|cff00ff00You can use variable tags here.|r",
+	AU_FIELD_HELPFUL = "Helpful",
+	AU_FIELD_HELPFUL_TT = "Is your aura helpful (buff) or harmful (debuff)?\n\nA helpful aura is usually something that the players want to have or keep, while a harmful aura is something they do not want to have. If you debuff a player, make sure to also give them a way out.",
+	AU_FIELD_HAS_DURATION = "Expire automatically",
+	AU_FIELD_HAS_DURATION_TT = "This aura will expire after a given amount of time.\n\nWhen the aura expires, the |cff00ff00On expire|r event triggers.",
+	AU_FIELD_DURATION = "Duration",
+	AU_FIELD_DURATION_TT = "Enter how long the aura lasts (in seconds).\n\n60 seconds = 1 minute\n3600 seconds = 1 hour\n86400 seconds = 1 day",
+	AU_FIELD_ALWAYS_ACTIVE = "Use real time",
+	AU_FIELD_ALWAYS_ACTIVE_TT = [[The time you spend offline or on another profile normally doesn't count towards your aura run time, but with this option you can make it do.
+
+This is useful for auras that last very long.
+
+|cffff9900Aura ticks and aura events will still be skipped while offline or on another profile.|r
+]],
+	AU_FIELD_BOUND_TO_CAMPAIGN = "Bound to enclosing campaign",
+	AU_FIELD_BOUND_TO_CAMPAIGN_TT = "Make this aura depend on its enclosing campaign.\n\nIf the campaign is reset, the aura will be removed.\n\nIf the campaign is paused, the aura is paused as well.\n\n|cffff9900Works only, if the root object is a campaign.|r",
+	AU_FIELD_CANCELLABLE = "Can be cancelled by player",
+	AU_FIELD_CANCELLABLE_TT = [[Allow the player to remove the aura with a right mouse click.
+
+When the player removes the aura, the |cff00ff00On cancel|r event triggers.
+
+Please make sure to always give the player a way to get rid of an aura.
+]],
+	AU_FIELD_HAS_INTERVAL = "Tick schedule",
+	AU_FIELD_HAS_INTERVAL_TT = [[If enabled, the aura will "tick" every given amount of time, triggering the |cff00ff00On tick|r event.]],
+	AU_FIELD_INTERVAL = "Tick interval",
+	AU_FIELD_INTERVAL_TT = "Enter the period (in seconds) between two ticks.",
+	AU_LINKS_ON_APPLY = "On apply",
+	AU_LINKS_ON_APPLY_TT = "Triggers just after the aura has been applied.",
+	AU_LINKS_ON_EXPIRE = "On expire",
+	AU_LINKS_ON_EXPIRE_TT = "Triggers when the aura is about to expire.",
+	AU_LINKS_ON_CANCEL = "On cancel",
+	AU_LINKS_ON_CANCEL_TT = "Triggers when the aura is cancelled by the player",
+	AU_LINKS_ON_TICK = "On tick",
+	AU_LINKS_ON_TICK_TT = "Triggers when the aura ticks.",
 
 	DEBUG_QUEST_STEP = "Go to a quest step.",
 	DEBUG_QUEST_STEP_USAGE = "Usage: /trp3 debug_quest_step questID stepID",
