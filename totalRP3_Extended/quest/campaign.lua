@@ -22,9 +22,6 @@ local tostring, pairs, wipe = tostring, pairs, wipe;
 local loc = TRP3_API.loc;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
--- Ellyb imports
-local Ellyb = TRP3_API.Ellyb;
-
 -- List of custom events for Extended
 local CUSTOM_EVENTS = {
 	TRP3_KILL = "TRP3_KILL",
@@ -96,7 +93,7 @@ local function activateCampaignHandlers(campaignID, campaignClass)
 	TRP3_API.Log("activateCampaignHandlers: " .. campaignID);
 	for _, event in pairs(campaignClass.HA or EMPTY) do
 		if event.EV and not pcall(registerCampaignHandler, campaignID, event) then
-			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, campaignID)));
+			Utils.message.displayMessage(TRP3_API.Colors.Red(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, campaignID)));
 		end
 	end
 	-- Active handlers for known quests

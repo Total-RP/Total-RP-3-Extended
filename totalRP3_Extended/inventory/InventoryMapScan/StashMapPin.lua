@@ -28,7 +28,7 @@ local getItemLink = TRP3_API.inventory.getItemLink;
 --}}}
 
 --{{{ Ellyb imports
-local ORANGE = Ellyb.ColorManager.ORANGE;
+local ORANGE = TRP3_API.Colors.Orange;
 ---}}}
 
 -- Create the pin template, above group members
@@ -71,7 +71,7 @@ function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	--}}}
 
 	local line = Utils.str.icon(poiInfo.BA.IC) .. " " .. getItemLink(poiInfo);
-	displayData.scanLine = line .. " - " .. Ellyb.ColorManager.ORANGE(total .. "/8");
+	displayData.scanLine = line .. " - " .. TRP3_API.Colors.Orange(total .. "/8");
 
 	return displayData
 end
