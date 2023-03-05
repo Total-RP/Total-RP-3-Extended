@@ -243,8 +243,8 @@ local function run_workflow_init()
 
 end
 
-local function aura_active_init()
-	local editor = TRP3_OperandEditorAuraActive;
+local function aura_property_init()
+	local editor = TRP3_OperandEditorAuraProperty;
 
 	registerOperandEditor("aura_active", {
 		title = L.OP_OP_AURA_ACTIVE,
@@ -259,26 +259,38 @@ local function aura_active_init()
 		end,
 	});
 	
-	setupAuraBrowser(editor);
-
-	function editor.load(args)
-		editor.id:SetText(args and args[1] or "");
-	end
-
-	function editor.save()
-		return {strtrim(editor.id:GetText()) or ""};
-	end
-end
-
-local function aura_expiry_init()
-	local editor = TRP3_OperandEditorAuraDuration;
-
 	registerOperandEditor("aura_duration", {
 		title = L.OP_OP_AURA_DURATION,
 		description = L.OP_OP_AURA_DURATION_TT,
 		returnType = 0,
 		getText = function(args)
 			return L.OP_OP_AURA_DURATION_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+	
+	registerOperandEditor("aura_helpful", {
+		title = L.OP_OP_AURA_HELPFUL,
+		description = L.OP_OP_AURA_HELPFUL_TT,
+		returnType = false,
+		getText = function(args)
+			return L.OP_OP_AURA_HELPFUL_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+	
+	registerOperandEditor("aura_cancellable", {
+		title = L.OP_OP_AURA_CANCELLABLE,
+		description = L.OP_OP_AURA_CANCELLABLE_TT,
+		returnType = false,
+		getText = function(args)
+			return L.OP_OP_AURA_CANCELLABLE_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -345,6 +357,44 @@ local function check_var_init()
 
 end
 
+function aura_id_init()
+	local editor = TRP3_OperandEditorAuraId;
+	registerOperandEditor("aura_id", {
+		title = L.OP_OP_AURA_ID,
+		description = L.OP_OP_AURA_ID_TT,
+		returnType = "",
+		noPreview = true,
+		getText = function(args)
+			return L.OP_OP_AURA_ID_PREVIEW:format(
+				args and args[1] or "1"
+			);
+		end,
+		editor = editor,
+	});
+	
+	editor.index.title:SetText(L.OP_OP_AURA_ID_INDEX)
+	setTooltipForSameFrame(editor.index.help, "RIGHT", 0, 5, L.OP_OP_AURA_ID_INDEX, L.OP_OP_AURA_ID_INDEX_TT);
+
+	function editor.load(args)
+		editor.index:SetText((args or EMPTY)[1] or "1");
+	end
+
+	function editor.save()
+		return {strtrim(editor.index:GetText()) or "1"};
+	end
+end
+
+function aura_count_init()
+	registerOperandEditor("aura_count", {
+		title = L.OP_OP_AURA_COUNT,
+		description = L.OP_OP_AURA_COUNT_TT,
+		returnType = 0,
+		getText = function(args) -- luacheck: ignore 212
+			return L.OP_OP_AURA_COUNT;
+		end,
+	});
+end
+
 TRP3_API.extended.tools.initAuraEffects = function()
 	aura_apply_init()
 	aura_remove_init()
@@ -352,7 +402,8 @@ TRP3_API.extended.tools.initAuraEffects = function()
 	aura_var_set_init()
 	run_workflow_init()
 	
-	aura_active_init()
-	aura_expiry_init()
+	aura_count_init()
+	aura_id_init()
+	aura_property_init()
 	check_var_init()
 end

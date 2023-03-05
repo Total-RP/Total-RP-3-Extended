@@ -132,6 +132,8 @@ local function load()
 	gameplay.duration:SetText(data.BA.DU or "300")
 	
 	gameplay.alwaysActive:SetChecked(data.BA.AA or false)
+	gameplay.ensureExpiry:SetChecked(data.BA.EE or false)
+	gameplay.ensureExpiry:SetShown(data.BA.AA)
 	
 	gameplay.boundToCampaign:SetChecked(data.BA.BC or false)
 	
@@ -141,6 +143,7 @@ local function load()
 	gameplay.hasInterval:SetChecked(hasInterval)
 	gameplay.interval:SetShown(hasInterval)
 	gameplay.interval:SetText(data.BA.IV or "10")
+	gameplay.inspectable:SetChecked(data.BA.WE or false)
 	
 	notes.frame.scroll.text:SetText(data.NT or "");
 
@@ -173,8 +176,10 @@ local function saveToDraft()
 	end
 	
 	data.BA.AA = gameplay.alwaysActive:GetChecked()
+	data.BA.EE = gameplay.ensureExpiry:GetChecked()
 	data.BA.BC = gameplay.boundToCampaign:GetChecked()
 	data.BA.CC = gameplay.cancellable:GetChecked()
+	data.BA.WE = gameplay.inspectable:GetChecked()
 	
 	if gameplay.hasInterval:GetChecked() then
 		data.BA.IV = math.max(gameplay.interval:GetNumber(), 0.1) -- because I say so
@@ -269,6 +274,12 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 
 	gameplay.alwaysActive.Text:SetText(L.AU_FIELD_ALWAYS_ACTIVE);
 	setTooltipForSameFrame(gameplay.alwaysActive, "RIGHT", 0, 5, L.AU_FIELD_ALWAYS_ACTIVE, L.AU_FIELD_ALWAYS_ACTIVE_TT);
+	gameplay.alwaysActive:SetScript("OnClick", function()
+		gameplay.ensureExpiry:SetShown(gameplay.alwaysActive:GetChecked())
+	end)
+	
+	gameplay.ensureExpiry.Text:SetText(L.AU_FIELD_ENSURE_EXPIRY);
+	setTooltipForSameFrame(gameplay.ensureExpiry, "RIGHT", 0, 5, L.AU_FIELD_ENSURE_EXPIRY, L.AU_FIELD_ENSURE_EXPIRY_TT);
 	
 	gameplay.boundToCampaign.Text:SetText(L.AU_FIELD_BOUND_TO_CAMPAIGN);
 	setTooltipForSameFrame(gameplay.boundToCampaign, "RIGHT", 0, 5, L.AU_FIELD_BOUND_TO_CAMPAIGN, L.AU_FIELD_BOUND_TO_CAMPAIGN_TT);
@@ -292,6 +303,9 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 
 	gameplay.interval.title:SetText(L.AU_FIELD_INTERVAL);
 	setTooltipForSameFrame(gameplay.interval.help, "RIGHT", 0, 5, L.AU_FIELD_INTERVAL, L.AU_FIELD_INTERVAL_TT);
+
+	gameplay.inspectable.Text:SetText(L.AU_FIELD_INSPECTABLE);
+	setTooltipForSameFrame(gameplay.inspectable, "RIGHT", 0, 5, L.AU_FIELD_INSPECTABLE, L.AU_FIELD_INSPECTABLE_TT);
 
 	gameplay.text:SetText(L.AURA_INTRO);
 

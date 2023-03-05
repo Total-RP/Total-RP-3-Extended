@@ -4,7 +4,7 @@ local TRP3_API = TRP3_API
 local L = TRP3_API.loc
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 
-local TRP3_AuraFrame, TRP3_AuraFrameCollapseAndExpandButton = TRP3_AuraFrame, TRP3_AuraFrameCollapseAndExpandButton;
+local TRP3_AuraFrame, TRP3_AuraFrameCollapseAndExpandButton, TRP3_InspectionFrame = TRP3_AuraFrame, TRP3_AuraFrameCollapseAndExpandButton, TRP3_InspectionFrame;
 
 local getRootClassID = TRP3_API.extended.getRootClassID
 
@@ -66,6 +66,14 @@ local auraCore = {
 	Initialize = function(self)
 		self.baseTime = time() - GetTime()
 		self.auraFramePool = CreateFramePool("Frame", TRP3_AuraFrame, "TRP3_AuraTemplate", function(pool, frame)
+			frame:Hide()
+			frame:ClearAllPoints()
+			frame.overlay:SetText("")
+			frame.duration:SetText("")
+			frame.aura = nil
+		end)
+		
+		self.inspectionAuraFramePool = CreateFramePool("Frame", TRP3_InspectionFrame.Main, "TRP3_AuraTemplate", function(pool, frame)
 			frame:Hide()
 			frame:ClearAllPoints()
 			frame.overlay:SetText("")
@@ -218,17 +226,14 @@ local auraCore = {
 			if class.missing or persistent.invalid then
 				persistent.invalid = true
 			else
-				--if class.BA.AA and persistent.expiry < now then -- always active aura has expired during dormancy
-				--	persistent.invalid = true
-					-- TODO: decide whether or not to run the expiry workflow
-				--else
-				
-				if not class.BA.BC or self.currentCampaignClassId == getRootClassID(persistent.id) then
+				if class.BA.AA and persistent.expiry < now and not class.BA.EE then
+					persistent.invalid = true
+				elseif not class.BA.BC or self.currentCampaignClassId == getRootClassID(persistent.id) then
 					local dormancyDuration = 0
 					if not class.BA.AA then
 						dormancyDuration = now - persistent.dormantSince
 					end
-					persistent.expiry = persistent.expiry + dormancyDuration -- note that always active auras might have long expired, but i want the expiry event to fire
+					persistent.expiry = persistent.expiry + dormancyDuration
 					
 					if class.BA.IV and class.BA.IV < math.huge then
 						local elapsedTime = now - persistent.lastTick - dormancyDuration
@@ -360,6 +365,30 @@ local auraCore = {
 			end
 		end
 		return nil
+	end,
+	
+	GetAuraAt = function(self, index)
+		local j = 1
+		for i = 1,#self.activeAuras do
+			if not self.activeAuras[i].persistent.invalid then
+				if j == index then
+					return self.activeAuras[i]
+				end
+				j = j + 1
+			end
+
+		end
+		return nil
+	end,
+	
+	CountActiveAuras = function(self)
+		local count = 0
+		for i = 1,#self.activeAuras do
+			if not self.activeAuras[i].persistent.invalid then
+				count = count + 1
+			end
+		end
+		return count
 	end,
 	
 	IsAuraActive = function(self, auraId)
@@ -664,10 +693,68 @@ local auraCore = {
 		end
 		
 		return title, description, flavor, expiry, cancelText
+	end,
+	
+	GetAurasForInspection = function(self)
+		local auras = {}
+		for i = 1,#self.activeAuras do
+			local aura = self.activeAuras[i]
+			if not aura.persistent.invalid and aura.class.BA.WE then
+				tinsert(auras, {
+					class = {
+						BA = {
+							NA = aura.class.BA.NA,
+							DE = TRP3_API.script.parseArgs(aura.class.BA.DE, { object = aura.persistent }),
+							OV = TRP3_API.script.parseArgs(aura.class.BA.OV, { object = aura.persistent }),
+							IC = aura.class.BA.IC,
+							HE = aura.class.BA.HE,
+							FL = aura.class.BA.FL
+						}						
+					},
+					persistent = {
+						expiry = aura.persistent.expiry
+					}
+				})
+			end
+		end
+		return auras
+	end,
+	
+	UpdateInspectionFrame = function(self, auras)
+		self.inspectionAuraFramePool:ReleaseAll()
 		
-	end
+		if not auras then return end
+		
+		local numBuffs, numDebuffs = 0, 0
+		for i = 1,#auras do
+			if auras[i].class.BA.HE then
+				numBuffs = numBuffs + 1
+			else
+				numDebuffs = numDebuffs + 1
+			end
+		end
+		
+		local buffNum, debuffNum = 0, 0
+		
+		for i = 1,#auras do
+			local frame = self.inspectionAuraFramePool:Acquire()
+			if auras[i].class.BA.HE then
+				frame:SetPoint("TOPLEFT", TRP3_InspectionFrame.Main.Model, "TOPLEFT", 10 + math.floor(buffNum/8)*36, -10 - (buffNum % 8) * 36)
+				buffNum = buffNum + 1	
+			else
+				frame:SetPoint("TOPRIGHT", TRP3_InspectionFrame.Main.Model, "TOPRIGHT", -(10 + math.floor(debuffNum/8)*36), -10 - (debuffNum % 8) * 36)
+				debuffNum = debuffNum + 1
+			end
+			frame.icon:SetTexture("Interface\\ICONS\\" .. (auras[i].class.BA.IC or "TEMP"))
+			frame.overlay:SetText(auras[i].class.BA.OV)
+			frame.duration:SetText("")
+			frame:Show()
+			frame.aura = auras[i]
+			auras[i].frame = frame
+		end
+		
+	end,
 }
-
 
 TRP3_API.extended.auras.apply = function(auraId, extend)
 	local class = TRP3_API.extended.getClass(auraId)
@@ -703,6 +790,24 @@ TRP3_API.extended.auras.getDuration = function(auraId)
 	end
 end
 
+TRP3_API.extended.auras.isHelpful = function(auraId)
+	local aura = auraCore:FindAura(auraId)
+	if aura then
+		return aura.class.HE
+	else
+		return false
+	end
+end
+
+TRP3_API.extended.auras.isCancellable = function(auraId)
+	local aura = auraCore:FindAura(auraId)
+	if aura then
+		return aura.class.CC
+	else
+		return false
+	end
+end
+
 TRP3_API.extended.auras.auraVarCheck = function(auraId, varName)
 	local aura = auraCore:FindAura(auraId)
 	if aura and aura.persistent.vars and aura.persistent.vars[varName] then
@@ -718,6 +823,19 @@ TRP3_API.extended.auras.auraVarCheckN = function(auraId, varName)
 		return tonumber(aura.persistent.vars[varName]) or 0
 	else
 		return 0
+	end
+end
+
+TRP3_API.extended.auras.getCount = function()
+	return auraCore:CountActiveAuras()
+end
+
+TRP3_API.extended.auras.getId = function(index)
+	local aura = auraCore:GetAuraAt(index)
+	if aura then
+		return aura.persistent.id
+	else
+		return "nil"
 	end
 end
 
@@ -814,6 +932,14 @@ TRP3_API.extended.auras.showTooltip = function(frame)
 		end)
 	end
 	
+end
+
+TRP3_API.extended.auras.getAurasForInspection = function()
+	return auraCore:GetAurasForInspection()
+end
+
+TRP3_API.extended.auras.showInspectAuras = function(auras)
+	return auraCore:UpdateInspectionFrame(auras)
 end
 
 TRP3_API.extended.auras.hideTooltip = function()

@@ -540,9 +540,13 @@ local getEvaluatedOperands = function(structure)
 		},
 		[loc.TYPE_AURA] = {
 			"aura_active",
+			"aura_count",
+			"aura_id",
 			"aura_duration",
 			"aura_var_check",
 			"aura_var_check_n",
+			"aura_helpful",
+			"aura_cancellable",
 		},
 		["Expert"] = {-- TODO: locals
 			"var_check",

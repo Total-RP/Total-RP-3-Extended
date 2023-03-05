@@ -216,7 +216,9 @@
 			</OnMouseUp>
 			<OnEnter>
 				if self.aura then
-					self:GetParent():GetScript("OnEnter")(self:GetParent())
+					if self:GetParent() == TRP3_AuraFrame then
+						TRP3_AuraFrame:GetScript("OnEnter")(TRP3_AuraFrame)
+					end
 					TRP3_API.extended.auras.showTooltip(self)
 				end
 			</OnEnter>

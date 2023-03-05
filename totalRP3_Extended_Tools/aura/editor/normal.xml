@@ -124,6 +124,13 @@
 						</Anchors>
 					</CheckButton>
 					
+					<CheckButton parentKey="ensureExpiry" inherits="TRP3_CheckBox" name="$parentEnsureExpiry">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="0" relativePoint="TOP" relativeKey="$parent.alwaysActive"/>
+							<Anchor point="LEFT" x="2" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</CheckButton>
+					
 					<CheckButton parentKey="boundToCampaign" inherits="TRP3_CheckBox" name="$parentBoundToCampaign">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.alwaysActive"/>
@@ -150,6 +157,12 @@
 							<Anchor point="RIGHT" x="-35" y="-2"/>
 						</Anchors>
 					</EditBox>
+					
+					<CheckButton parentKey="inspectable" inherits="TRP3_CheckBox" name="$parentInspectable">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.hasInterval"/>
+						</Anchors>
+					</CheckButton>
 
 				</Frames>
 				
@@ -158,7 +171,7 @@
 						<FontString parentKey="text" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 							<Size x="0" y="10"/>
 							<Anchors>
-								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.interval" x="0" y="-50"/>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.inspectable" x="0" y="-50"/>
 								<Anchor point="LEFT" x="30" y="0"/>
 								<Anchor point="RIGHT" x="-30" y="0"/>
 								<Anchor point="BOTTOM" x="0" y="10"/>

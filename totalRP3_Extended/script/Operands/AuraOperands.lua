@@ -15,12 +15,35 @@ function hasAuraOperand:CodeReplacement(args)
 	return ([[isAuraActive("%s")]]):format(id);
 end
 
+local AuraCountOperand = NumericOperand("aura_count", {
+	["getAuraCount"] = "TRP3_API.extended.auras.getCount"
+});
+function AuraCountOperand:CodeReplacement(args)
+	return [[getAuraCount()]];
+end
+
 local AuraDurationOperand = NumericOperand("aura_duration", {
 	["getAuraDuration"] = "TRP3_API.extended.auras.getDuration"
 });
 function AuraDurationOperand:CodeReplacement(args)
 	local id = getSafe(args, 1, "");
 	return ([[getAuraDuration("%s")]]):format(id);
+end
+
+local AuraHelpfulOperand = Operand("aura_helpful", {
+	["isAuraHelpful"] = "TRP3_API.extended.auras.isHelpful"
+});
+function AuraHelpfulOperand:CodeReplacement(args)
+	local id = getSafe(args, 1, "");
+	return ([[isAuraHelpful("%s")]]):format(id);
+end
+
+local AuraCancellableOperand = Operand("aura_cancellable", {
+	["isAuraCancellable"] = "TRP3_API.extended.auras.isCancellable"
+});
+function AuraCancellableOperand:CodeReplacement(args)
+	local id = getSafe(args, 1, "");
+	return ([[isAuraCancellable("%s")]]):format(id);
 end
 
 local checkAuraVariableValueOperand = Operand("aura_var_check", {
@@ -39,4 +62,14 @@ function checkNumericAuraVariableValueOperand:CodeReplacement(args)
 	local id = getSafe(args, 1, "");
 	local var = getSafe(args, 2, "");
 	return ([[auraVarCheckN("%s", "%s")]]):format(id, var);
+end
+
+local AuraIdOperand = Operand("aura_id", {
+	["parseArgs"] = "TRP3_API.script.parseArgs",
+	["getAuraId"] = "TRP3_API.extended.auras.getId",
+	["tonumber"] = "tonumber"
+});
+function AuraIdOperand:CodeReplacement(args)
+	local index = getSafe(args, 1, "");
+	return ([[getAuraId(tonumber(parseArgs("%s", args)))]]):format(index);
 end

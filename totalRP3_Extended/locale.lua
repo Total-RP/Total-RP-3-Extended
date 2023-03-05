@@ -1309,12 +1309,25 @@ If your aura runs for a very long time (e.g. an egg, that hatches after 3 real t
 	EFFECT_AURA_RUN_WORKFLOW = "Run aura workflow",
 	EFFECT_AURA_RUN_WORKFLOW_TT = "Run workflow of an active aura. The aura's workflow has access to workflow variables of the current workflow.",
 	EFFECT_AURA_RUN_WORKFLOW_PREVIEW = "Run workflow |cff00ff00%1$s|r in aura |cff00ff00%2$s|r.",
+	OP_OP_AURA_COUNT = "Number of active auras",
+	OP_OP_AURA_COUNT_TT = "Returns the number of auras that are currently active on a player.",
+	OP_OP_AURA_ID = "Aura id",
+	OP_OP_AURA_ID_TT = "Returns the aura id at a given index, in the order they were applied.",
+	OP_OP_AURA_ID_PREVIEW = "Aura id at index |cff00ff00%1$s|r",
+	OP_OP_AURA_ID_INDEX = "Index",
+	OP_OP_AURA_ID_INDEX_TT = "The numerical index of the aura, from 1 to the number of active auras.\nAuras are ordered application time, the oldest comes first.\n\n|cff00ff00You can use variable tags here.|r",
 	OP_OP_AURA_ACTIVE = "Aura is active",
 	OP_OP_AURA_ACTIVE_TT = "Returns whether or not an aura is currently active on the player.",
 	OP_OP_AURA_ACTIVE_PREVIEW = "Aura |cff00ff00%1$s|r is active",
 	OP_OP_AURA_DURATION = "Aura duration",
 	OP_OP_AURA_DURATION_TT = "Returns the remaining duration of an aura in seconds or 0, if the aura isn't active.",
 	OP_OP_AURA_DURATION_PREVIEW = "Remaining duration of aura |cff00ff00%1$s|r",
+	OP_OP_AURA_HELPFUL = "Aura is helpful";
+	OP_OP_AURA_HELPFUL_TT = "Returns, whether an aura is currently active and helpful.";
+	OP_OP_AURA_HELPFUL_PREVIEW = "Active aura |cff00ff00%1$s|r is helpful.";
+	OP_OP_AURA_CANCELLABLE = "Aura is cancellable";
+	OP_OP_AURA_CANCELLABLE_TT = "Returns, whether an aura is currently active and cancellable by the player.";
+	OP_OP_AURA_CANCELLABLE_PREVIEW = "Active aura |cff00ff00%1$s|r is cancellable.";
 	OP_OP_AURA_CHECK_VAR = "Aura variable string value",
 	OP_OP_AURA_CHECK_VAR_TT = "Returns the value of an aura variable, |cff00ff00interpreted as a string|r.\n\nIf the variable does not exist or can't be reached, returns the string 'nil'.\n\n|cffff9900As the value depends on runtime, it cannot be previewed.",
 	OP_OP_AURA_CHECK_VAR_PREVIEW = "Aura |cff00ff00%1$s:|r %2$s",
@@ -1345,6 +1358,9 @@ This is useful for auras that last very long.
 
 |cffff9900Aura ticks and aura events will still be skipped while offline or on another profile.|r
 ]],
+	AU_FIELD_ENSURE_EXPIRY = "Ensure expiry workflow",
+	AU_FIELD_ENSURE_EXPIRY_TT = [[Make sure the |cff00ff00On expire|r event triggers even if the aura expires while the player is logged off or on another profile.
+In that case, the workflow runs just after the next login or profile switch.]],
 	AU_FIELD_BOUND_TO_CAMPAIGN = "Bound to enclosing campaign",
 	AU_FIELD_BOUND_TO_CAMPAIGN_TT = "Make this aura depend on its enclosing campaign.\n\nIf the campaign is reset, the aura will be removed.\n\nIf the campaign is paused, the aura is paused as well.\n\n|cffff9900Works only, if the root object is a campaign.|r",
 	AU_FIELD_CANCELLABLE = "Can be cancelled by player",
@@ -1358,6 +1374,8 @@ Please make sure to always give the player a way to get rid of an aura.
 	AU_FIELD_HAS_INTERVAL_TT = [[If enabled, the aura will "tick" every given amount of time, triggering the |cff00ff00On tick|r event.]],
 	AU_FIELD_INTERVAL = "Tick interval",
 	AU_FIELD_INTERVAL_TT = "Enter the period (in seconds) between two ticks.",
+	AU_FIELD_INSPECTABLE = "Visible to others",
+	AU_FIELD_INSPECTABLE_TT = "If checked, other Extended users can see the aura when they inspect the player.",
 	AU_LINKS_ON_APPLY = "On apply",
 	AU_LINKS_ON_APPLY_TT = "Triggers just after the aura has been applied.",
 	AU_LINKS_ON_EXPIRE = "On expire",
