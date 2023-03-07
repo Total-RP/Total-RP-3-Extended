@@ -101,7 +101,7 @@ function TRP3_StashMapPinMixin:Decorate(displayData)
 		-- Right-click is pass-through by default, so this disables it while letting us left-click through it.
 		self:SetPassThroughButtons("LeftButton");
 
-		Ellyb.Tooltips.getTooltip(self):AddEmptyLine():AddLine(Ellyb.Strings.clickInstruction(loc.CM_R_CLICK, loc.DB_ACTIONS))
+		Ellyb.Tooltips.getTooltip(self):AddEmptyLine():AddLine(TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.DB_ACTIONS))
 	end
 
 end

@@ -164,10 +164,10 @@ local function getMetadataTooltipText(rootID, rootClass, isRoot, innerID, type)
 	end
 
 	text = text .. "\n" .. fieldFormat:format(loc.SPECIFIC_MODE, TRP3_API.extended.tools.getModeLocale(metadata.MO) or "?");
-	text = text .. "\n\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.LEFT_CLICK, loc.CM_OPEN);
-	text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.DB_ACTIONS);
+	text = text .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.CM_OPEN);
+	text = text .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.DB_ACTIONS);
 	if type == "CA" or type == "IT" then
-		text = text .. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),  loc.CL_TOOLTIP);
+		text = text .. "\n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP);
 	end
 	return text;
 end
