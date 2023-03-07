@@ -222,6 +222,7 @@ local auraCore = {
 		
 		for i = 1,#self.currentProfile.auras do
 			local persistent = self.currentProfile.auras[i]
+			persistent.expiry = persistent.expiry or math.huge -- Inf is stored as nil
 			local class = TRP3_API.extended.getClass(persistent.id)
 			if class.missing or persistent.invalid then
 				persistent.invalid = true
@@ -712,7 +713,7 @@ local auraCore = {
 						}						
 					},
 					persistent = {
-						expiry = aura.persistent.expiry
+						expiry = aura.persistent.expiry or math.huge
 					}
 				})
 			end
@@ -749,6 +750,7 @@ local auraCore = {
 			frame.overlay:SetText(auras[i].class.BA.OV)
 			frame.duration:SetText("")
 			frame:Show()
+			auras[i].persistent.expiry = auras[i].persistent.expiry or math.huge
 			frame.aura = auras[i]
 			auras[i].frame = frame
 		end
