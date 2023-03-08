@@ -86,7 +86,7 @@ local auraCore = {
 		self.timeFormatterCompact:SetDesiredUnitCount(1)
 		
 		self.timeFormatterNormal = CreateFromMixins(SecondsFormatterMixin)
-		self.timeFormatterNormal:Init(r)
+		self.timeFormatterNormal:Init()
 		
 		local this = self
 		
@@ -725,15 +725,6 @@ local auraCore = {
 		self.inspectionAuraFramePool:ReleaseAll()
 		
 		if not auras then return end
-		
-		local numBuffs, numDebuffs = 0, 0
-		for i = 1,#auras do
-			if auras[i].class.BA.HE then
-				numBuffs = numBuffs + 1
-			else
-				numDebuffs = numDebuffs + 1
-			end
-		end
 		
 		local buffNum, debuffNum = 0, 0
 		
