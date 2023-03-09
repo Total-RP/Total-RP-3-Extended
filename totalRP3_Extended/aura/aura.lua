@@ -22,7 +22,9 @@ local MAX_AURA_UPDATE_CYCLES = 10
 	Update calls via event do not adhere to this minimum, however Update will ensure
 	that there is at maximum one active C_Timer
 ]]--
-local MIN_AURA_UPDATE_INTERVAL = 0.02
+local MIN_AURA_UPDATE_INTERVAL = 0.1
+
+local TOOLTIP_REFRESH_INTERVAL = 0.2
 
 --[[
 	Update frequency for dynamic auras. Since variables can change at any time, let's just update
@@ -957,13 +959,11 @@ TRP3_API.extended.auras.showTooltip = function(frame)
 	
 	TRP3_AuraTooltip:Show()
 	
-	if frame.aura.hasDynamicDescription or frame.aura.persistent.expiry < math.huge then
-		C_Timer.After(0.2, function()
-			if TRP3_AuraTooltip:IsOwned(frame) then
-				TRP3_API.extended.auras.showTooltip(frame)
-			end
-		end)
-	end
+	C_Timer.After(TOOLTIP_REFRESH_INTERVAL, function()
+		if TRP3_AuraTooltip:IsOwned(frame) then
+			TRP3_API.extended.auras.showTooltip(frame)
+		end
+	end)
 	
 end
 
