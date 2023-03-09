@@ -5,6 +5,7 @@ local stEtN = Utils.str.emptyToNil;
 local L = TRP3_API.loc;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local toolFrame, main, pages, params, manager, linksStructure, display, gameplay, notes;
+local numberToHexa, hexaToNumber, hexaToFloat = Utils.color.numberToHexa, Utils.color.hexaToNumber, Utils.color.hexaToFloat;
 
 local TABS = {
 	MAIN = 1,
@@ -104,7 +105,7 @@ local function loadDataInner()
 end
 
 local function onIconSelected(icon)
-	display.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
+	display.preview.icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
 	display.preview.selectedIcon = icon;
 end
 
@@ -120,6 +121,13 @@ local function load()
 	end
 	
 	display.name:SetText(data.BA.NA or "")
+	display.category:SetText(data.BA.CA or "")
+	if data.BA.CO then
+		display.borderPicker.setColor(hexaToNumber(data.BA.CO))
+	else
+		display.borderPicker.setColor(nil)
+	end
+	
 	display.description.scroll.text:SetText(data.BA.DE or "")
 	display.flavor.scroll.text:SetText(data.BA.FL or "")
 	display.overlay:SetText(data.BA.OV or "")
@@ -160,6 +168,12 @@ local function saveToDraft()
 
 	local data = toolFrame.specificDraft
 	data.BA.NA = stEtN(strtrim(display.name:GetText()))
+	data.BA.CA = stEtN(strtrim(display.category:GetText()))
+	if display.borderPicker.red and display.borderPicker.green and display.borderPicker.blue then
+		data.BA.CO = strconcat(numberToHexa(display.borderPicker.red), numberToHexa(display.borderPicker.green), numberToHexa(display.borderPicker.blue))
+	else
+		data.BA.CO = nil
+	end
 	data.BA.DE = stEtN(strtrim(display.description.scroll.text:GetText()))
 	data.BA.FL = stEtN(strtrim(display.flavor.scroll.text:GetText()))
 	data.BA.OV = stEtN(strtrim(display.overlay:GetText()))
@@ -192,6 +206,34 @@ local function saveToDraft()
 	storeDataScript();
 end
 
+local presetBuffs = {
+	{category = ""                 , color = nil      , helpful = true},
+	{category = L.AU_PRESET_CURSE  , color = "9600ff", helpful = false},
+	{category = L.AU_PRESET_DISEASE, color = "966400", helpful = false},
+	{category = L.AU_PRESET_MAGIC  , color = "3296ff", helpful = false},
+	{category = L.AU_PRESET_POISON , color = "009600", helpful = false},
+	{category = ""                 , color = "c80000", helpful = false},
+}
+
+local presetMenu = {
+	{"|cffffffff" .. L.AU_PRESET_BUFF    .. "|r", 1},
+	{"|cff9600ff" .. L.AU_PRESET_CURSE   .. "|r", 2},
+	{"|cff966400" .. L.AU_PRESET_DISEASE .. "|r", 3},
+	{"|cff3296ff" .. L.AU_PRESET_MAGIC   .. "|r", 4},
+	{"|cff009600" .. L.AU_PRESET_POISON  .. "|r", 5},
+	{"|cffc80000" .. L.AU_PRESET_OTHER   .. "|r", 6},
+};
+
+local function applyPreset(presetId)
+	display.category:SetText(presetBuffs[presetId].category)
+	display.helpful:SetChecked(presetBuffs[presetId].helpful)
+	if presetBuffs[presetId].color then
+		display.borderPicker.setColor(hexaToNumber(presetBuffs[presetId].color))
+	else
+		display.borderPicker.setColor(nil)
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -211,6 +253,14 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 	
 	display.name.title:SetText(L.AU_FIELD_NAME);
 	setTooltipForSameFrame(display.name.help, "RIGHT", 0, 5, L.AU_FIELD_NAME, L.AU_FIELD_NAME_TT);
+	
+	display.category.title:SetText(L.AU_FIELD_CATEGORY);
+	setTooltipForSameFrame(display.category.help, "RIGHT", 0, 5, L.AU_FIELD_CATEGORY, L.AU_FIELD_CATEGORY_TT);
+
+	display.preset:SetText(L.AU_PRESET);
+	display.preset:SetScript("OnClick", function(self)
+		TRP3_API.ui.listbox.displayDropDown(self, presetMenu, applyPreset, 0, true);
+	end);
 
 	display.description.title:SetText(L.AU_FIELD_DESCRIPTION);
 	setTooltipAll(display.description.dummy, "RIGHT", 0, 5, L.AU_FIELD_DESCRIPTION, L.AU_FIELD_DESCRIPTION_TT);
@@ -223,35 +273,53 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 	
 	display.helpful.Text:SetText(L.AU_FIELD_HELPFUL);
 	setTooltipForSameFrame(display.helpful, "RIGHT", 0, 5, L.AU_FIELD_HELPFUL, L.AU_FIELD_HELPFUL_TT);
-
-	display.preview.Name:SetText(L.EDITOR_PREVIEW);
-	display.preview.InfoText:SetText(L.EDITOR_ICON_SELECT);
-	display.preview:SetScript("OnEnter", function(self)
-		if display.preview.aura then
-			wipe(display.preview.aura)
-		end
-		display.preview.aura = {
-			persistent = {
-				expiry = time() + (gameplay.hasDuration:GetChecked() and tonumber(gameplay.duration:GetText()) or math.huge)
-			},
-			class = {
-				BA = {
-					DE = TRP3_API.script.parseArgs(stEtN(strtrim(display.description.scroll.text:GetText())), {}),
-					NA = stEtN(strtrim(display.name:GetText())),
-					FL = stEtN(strtrim(display.flavor.scroll.text:GetText())),
-					CC = gameplay.cancellable:GetChecked()
-				}
+	
+	display.borderPicker.onSelection = function(red, green, blue)
+		if red and green and blue then
+			display.preview.aura.color = {
+				h = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue)),
+				r = red/255,
+				g = green/255,
+				b = blue/255,
 			}
-		}
+		else
+			display.preview.aura.color = nil
+		end
+		if display.preview.aura.color then
+			display.preview.border:SetVertexColor(display.preview.aura.color.r, display.preview.aura.color.g, display.preview.aura.color.b)
+			display.preview.border:Show()
+		else
+			display.preview.border:Hide()
+		end
+	end
+	setTooltipForSameFrame(display.borderPicker, "RIGHT", 0, 5, L.AU_FIELD_COLOR, L.AU_FIELD_COLOR_TT .. L.REG_PLAYER_COLOR_TT);
+
+	display.previewText:SetText(L.EDITOR_PREVIEW);
+	display.previewInfo:SetText(L.EDITOR_ICON_SELECT);
+	display.preview.aura = {
+		persistent = {
+			expiry = math.huge,
+		},
+		class = {
+			BA = {
+			}
+		},
+	};
+	display.preview:SetScript("OnEnter", function(self)
+		display.preview.aura.persistent.expiry = time() + (gameplay.hasDuration:GetChecked() and tonumber(gameplay.duration:GetText()) or math.huge)
+		display.preview.aura.class.BA.DE = TRP3_API.script.parseArgs(stEtN(strtrim(display.description.scroll.text:GetText())), {})
+		display.preview.aura.class.BA.NA = stEtN(strtrim(display.name:GetText()))
+		display.preview.aura.class.BA.CA = stEtN(strtrim(display.category:GetText()))
+		display.preview.aura.class.BA.FL = stEtN(strtrim(display.flavor.scroll.text:GetText()))
+		display.preview.aura.class.BA.CC = gameplay.cancellable:GetChecked()
 		TRP3_API.extended.auras.showTooltip(display.preview)
 	end);
 	display.preview:SetScript("OnLeave", function(self)
 		TRP3_API.extended.auras.hideTooltip()
 	end);
-	display.preview:SetScript("OnClick", function(self)
+	display.preview:SetScript("OnMouseUp", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
 	end);
-
 
 	gameplay.title:SetText(L.AU_GAMEPLAY_ATT);
 

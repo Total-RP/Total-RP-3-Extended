@@ -56,6 +56,11 @@
 					<Anchor point="TOPLEFT" x="50" y="-285"/>
 				</Anchors>
 			</Button>
+			<Button parentKey="aura" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="400" y="-285"/>
+				</Anchors>
+			</Button>
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">

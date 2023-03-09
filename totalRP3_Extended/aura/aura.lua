@@ -3,6 +3,7 @@ local C_Timer, GetTime = C_Timer, GetTime
 local TRP3_API = TRP3_API
 local L = TRP3_API.loc
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local hexaToFloat = Utils.color.hexaToFloat;
 
 local TRP3_AuraFrame, TRP3_AuraFrameCollapseAndExpandButton, TRP3_InspectionFrame = TRP3_AuraFrame, TRP3_AuraFrameCollapseAndExpandButton, TRP3_InspectionFrame;
 
@@ -55,7 +56,8 @@ local DYN_AURA_UPDATE_INTERVAL = 1
 
 local CUSTOM_EVENTS = TRP3_API.extended.CUSTOM_EVENTS;
 
-local auraCore = {
+local auraCore;
+auraCore = {
 	
 	activeAuras = {},
 	-- a more precise version of time() that includes milliseconds
@@ -88,14 +90,12 @@ local auraCore = {
 		self.timeFormatterNormal = CreateFromMixins(SecondsFormatterMixin)
 		self.timeFormatterNormal:Init()
 		
-		local this = self
-		
 		Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, function()
-			this:LoadProfile()
+			auraCore:LoadProfile()
 		end)
 		
 		Utils.event.registerHandler("PLAYER_LEAVING_WORLD", function()
-			this:UpdateDormancy(this:Now())
+			auraCore:UpdateDormancy(auraCore:Now())
 		end)
 		 
 		self:LoadProfile()
@@ -243,7 +243,8 @@ local auraCore = {
 					persistent.dormantSince = now
 					local aura = {
 						class = class,
-						persistent = persistent
+						persistent = persistent,
+						color = self:GetAuraColorFromClass(class),
 					}
 					self:AnalyzeAuraClass(aura)
 					tinsert(self.activeAuras, aura)
@@ -318,6 +319,18 @@ local auraCore = {
 		end
 	end,
 	
+	GetAuraColorFromClass = function(self, class)
+		if class.BA.CO then
+			local colorCached = {
+				h = class.BA.CO
+			}
+			colorCached.r, colorCached.g, colorCached.b = hexaToFloat(class.BA.CO)
+			return colorCached
+		else
+			return nil
+		end
+	end,
+	
 	InsertNewAura = function(self, auraId, class)
 		local now = self:Now()
 		local newAuraPersistent = {
@@ -330,6 +343,7 @@ local auraCore = {
 		local newAura = {
 			class = class,
 			persistent = newAuraPersistent,
+			color = self:GetAuraColorFromClass(class),
 			initialize = true
 		}
 		self:AnalyzeAuraClass(newAura)
@@ -554,9 +568,8 @@ local auraCore = {
 		end
 		
 		if nextTimestamp < math.huge then
-			local this = self
 			self.timer = C_Timer.NewTimer(math.max(nextTimestamp - now, MIN_AURA_UPDATE_INTERVAL), function() 
-				this:Update()
+				auraCore:Update()
 			end)
 		end
 		
@@ -632,6 +645,14 @@ local auraCore = {
 				debuffNum = debuffNum + 1
 			end
 			frame.icon:SetTexture("Interface\\ICONS\\" .. (self.activeAuras[i].class.BA.IC or "TEMP"))
+			
+			if self.activeAuras[i].color then
+				frame.border:SetVertexColor(self.activeAuras[i].color.r, self.activeAuras[i].color.g, self.activeAuras[i].color.b)
+				frame.border:Show()
+			else
+				frame.border:Hide()
+			end
+			
 			frame:Show()
 			frame.aura = self.activeAuras[i]
 			self.activeAuras[i].frame = frame
@@ -671,10 +692,18 @@ local auraCore = {
 	end,
 	
 	GetAuraTooltipLines = function(self, aura)
-		local title, description, flavor, expiry, cancelText
+		local title, category, description, flavor, expiry, cancelText
 	
 		if aura.class.BA.NA then
 			title = aura.class.BA.NA
+		end
+		
+		if aura.class.BA.CA and aura.class.BA.CA:len() > 0 then
+			if aura.color then
+				category = "|cff" ..aura.color.h .. aura.class.BA.CA .. "|r"
+			else
+				category = aura.class.BA.CA
+			end
 		end
 		
 		if aura.class.BA.DE then
@@ -693,7 +722,7 @@ local auraCore = {
 			cancelText = L.AU_CANCEL_TEXT
 		end
 		
-		return title, description, flavor, expiry, cancelText
+		return title, category, description, flavor, expiry, cancelText
 	end,
 	
 	GetAurasForInspection = function(self)
@@ -705,11 +734,13 @@ local auraCore = {
 					class = {
 						BA = {
 							NA = aura.class.BA.NA,
+							CA = aura.class.BA.CA,
 							DE = TRP3_API.script.parseArgs(aura.class.BA.DE, { object = aura.persistent }),
 							OV = TRP3_API.script.parseArgs(aura.class.BA.OV, { object = aura.persistent }),
 							IC = aura.class.BA.IC,
 							HE = aura.class.BA.HE,
-							FL = aura.class.BA.FL
+							FL = aura.class.BA.FL,
+							CO = aura.class.BA.CO,
 						}						
 					},
 					persistent = {
@@ -740,10 +771,17 @@ local auraCore = {
 			frame.icon:SetTexture("Interface\\ICONS\\" .. (auras[i].class.BA.IC or "TEMP"))
 			frame.overlay:SetText(auras[i].class.BA.OV)
 			frame.duration:SetText("")
-			frame:Show()
 			auras[i].persistent.expiry = auras[i].persistent.expiry or math.huge
+			auras[i].color = self:GetAuraColorFromClass(auras[i].class)
+			if auras[i].color then
+				frame.border:SetVertexColor(auras[i].color.r, auras[i].color.g, auras[i].color.b)
+				frame.border:Show()
+			else
+				frame.border:Hide()
+			end
 			frame.aura = auras[i]
 			auras[i].frame = frame
+			frame:Show()
 		end
 		
 	end,
@@ -870,14 +908,16 @@ TRP3_API.extended.auras.showTooltip = function(frame)
 	TRP3_AuraTooltip:Hide()
 	TRP3_AuraTooltip:SetOwner(frame, TRP3_AuraFrame.tooltipAnchor, 0, 0)
 
-	local title, description, flavor, expiry, cancelText = auraCore:GetAuraTooltipLines(frame.aura)
-
+	local title, category, description, flavor, expiry, cancelText = auraCore:GetAuraTooltipLines(frame.aura)
+	
 	local i = 1;
-	if title and title:len() > 0 then
+	if title or category then
 		local r, g, b = TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB();
-		TRP3_AuraTooltip:AddLine(title, r, g, b,true);
+		TRP3_AuraTooltip:AddDoubleLine(title or "", category or "", r, g, b, r, g, b);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		_G["TRP3_AuraTooltipTextRight"..i]:SetFontObject(GameFontNormalLarge);
+		_G["TRP3_AuraTooltipTextRight"..i]:SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 

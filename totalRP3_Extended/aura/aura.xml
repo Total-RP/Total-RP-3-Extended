@@ -186,13 +186,20 @@
 		<Layers>
 			<Layer level="ARTWORK">
 				<Texture parentKey="icon" file="Interface\ICONS\ability_paladin_handoflight">
+					<Size x="32" y="32"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="0" y="0"/>
-						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+						<Anchor point="CENTER"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
+				<Texture parentKey="border" file="Interface\Buttons\UI-Debuff-Overlays">
+					<Size x="33" y="32"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.icon"/>
+					</Anchors>
+					<TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+				</Texture>
 				<FontString parentKey="overlay" text="" inherits="NumberFontNormal" justifyH="RIGHT" justifyV="BOTTOM">
 					<Size x="32" y="10"/>
 					<Anchors>
