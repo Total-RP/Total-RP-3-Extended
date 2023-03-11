@@ -547,6 +547,9 @@ local getEvaluatedOperands = function(structure)
 			"aura_var_check_n",
 			"aura_helpful",
 			"aura_cancellable",
+			"aura_name",
+			"aura_icon",
+			"aura_color",
 		},
 		["Expert"] = {-- TODO: locals
 			"var_check",

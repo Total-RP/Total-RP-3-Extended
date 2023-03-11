@@ -4,6 +4,7 @@ local TRP3_API = TRP3_API
 local L = TRP3_API.loc
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local hexaToFloat = Utils.color.hexaToFloat;
+local getClass = TRP3_API.extended.getClass;
 
 local TRP3_AuraFrame, TRP3_AuraFrameCollapseAndExpandButton, TRP3_InspectionFrame = TRP3_AuraFrame, TRP3_AuraFrameCollapseAndExpandButton, TRP3_InspectionFrame;
 
@@ -31,6 +32,17 @@ local TOOLTIP_REFRESH_INTERVAL = 0.2
 	auras every DYN_AURA_UPDATE_INTERVAL seconds, if they happen to display variables
 ]]--
 local DYN_AURA_UPDATE_INTERVAL = 1
+
+local INSPECT_AURA_OFFSET = 10
+local INSPECT_AURA_HEIGHT = 36
+local INSPECT_AURA_COL_WIDTH = 36
+local INSPECT_AURAS_PER_COL = 8
+
+local AURA_HEIGHT = 48
+local AURA_WIDTH = 36
+local AURA_MARGIN = 16
+local AURA_MARGIN_TOP = 24
+local AURA_ROW_LENGTH = 8
 
 --[[ DATA MAP
 
@@ -106,7 +118,7 @@ auraCore = {
 	InvalidateCampaignAuras = function(self, campaignId)
 		local hasChanges = false
 		for i = 1,#self.currentProfile.auras do
-			local class = TRP3_API.extended.getClass(self.currentProfile.auras[i].id)
+			local class = getClass(self.currentProfile.auras[i].id)
 			if class.missing then
 				self.currentProfile.auras[i].invalid = true
 				hasChanges = true
@@ -225,7 +237,7 @@ auraCore = {
 		for i = 1,#self.currentProfile.auras do
 			local persistent = self.currentProfile.auras[i]
 			persistent.expiry = persistent.expiry or math.huge -- Inf is stored as nil
-			local class = TRP3_API.extended.getClass(persistent.id)
+			local class = getClass(persistent.id)
 			if class.missing or persistent.invalid then
 				persistent.invalid = true
 			else
@@ -623,10 +635,10 @@ auraCore = {
 			end
 		end
 		
-		local buffY = 20
-		local debuffY = 20
+		local buffY = AURA_MARGIN_TOP
+		local debuffY = AURA_MARGIN_TOP
 		if numBuffs > 0 then
-			debuffY = debuffY + 24 + (math.ceil(numBuffs/8) * 48)
+			debuffY = debuffY + AURA_HEIGHT/2 + (math.ceil(numBuffs/AURA_ROW_LENGTH) * AURA_HEIGHT)
 		end
 		
 		local buffNum, debuffNum = 0, 0
@@ -634,15 +646,15 @@ auraCore = {
 		for i = 1,#self.activeAuras do
 			local frame = self.auraFramePool:Acquire()
 			if self.activeAuras[i].class.BA.HE then
-				frame:SetPoint("TOPRIGHT", -(16 + (buffNum % 8)*36), -buffY)
-				if buffNum % 8 == 7 then
-					buffY = buffY + 48
+				frame:SetPoint("TOPRIGHT", -(AURA_MARGIN + (buffNum % AURA_ROW_LENGTH)*AURA_WIDTH), -buffY)
+				if buffNum % AURA_ROW_LENGTH == AURA_ROW_LENGTH-1 then
+					buffY = buffY + AURA_HEIGHT
 				end
 				buffNum = buffNum + 1	
 			else
-				frame:SetPoint("TOPRIGHT", -(16 + (debuffNum % 8)*36), -debuffY)
-				if debuffNum % 8 == 7 then
-					debuffY = debuffY + 48
+				frame:SetPoint("TOPRIGHT", -(AURA_MARGIN + (debuffNum % 8)*AURA_WIDTH), -debuffY)
+				if debuffNum % AURA_ROW_LENGTH == AURA_ROW_LENGTH-1 then
+					debuffY = debuffY + AURA_HEIGHT
 				end
 				debuffNum = debuffNum + 1
 			end
@@ -661,13 +673,13 @@ auraCore = {
 		end
 		
 		if numBuffs > 0 or numDebuffs > 0 then
-			local w = math.max(math.min(8, math.max(numBuffs, numDebuffs))*36 + 32, 200)
-			local h = 36
-			h = h + math.ceil(numBuffs/8) * 48
+			local w = math.max(math.min(AURA_ROW_LENGTH, math.max(numBuffs, numDebuffs))*AURA_WIDTH + AURA_MARGIN*2, 200)
+			local h = AURA_MARGIN_TOP + AURA_MARGIN
+			h = h + math.ceil(numBuffs/AURA_ROW_LENGTH) * AURA_HEIGHT
 			if numBuffs > 0 and numDebuffs > 0 then
-				h = h + 24
+				h = h + AURA_HEIGHT/2
 			end
-			h = h + math.ceil(numDebuffs/8) * 48
+			h = h + math.ceil(numDebuffs/AURA_ROW_LENGTH) * AURA_HEIGHT
 			TRP3_AuraFrame:SetSize(w, h)
 			TRP3_AuraFrame:SetShown(TRP3_AuraFrameCollapseAndExpandButton:GetChecked())
 			TRP3_AuraFrameCollapseAndExpandButton:Show()
@@ -760,14 +772,19 @@ auraCore = {
 		if not auras then return end
 		
 		local buffNum, debuffNum = 0, 0
+		local x, y		
 		
 		for i = 1,#auras do
 			local frame = self.inspectionAuraFramePool:Acquire()
 			if auras[i].class.BA.HE then
-				frame:SetPoint("TOPLEFT", TRP3_InspectionFrame.Main.Model, "TOPLEFT", 10 + math.floor(buffNum/8)*36, -10 - (buffNum % 8) * 36)
+				x =  INSPECT_AURA_OFFSET + math.floor(buffNum/INSPECT_AURAS_PER_COL)*INSPECT_AURA_COL_WIDTH
+				y = -INSPECT_AURA_OFFSET - (buffNum % INSPECT_AURAS_PER_COL) * INSPECT_AURA_HEIGHT
+				frame:SetPoint("TOPLEFT", TRP3_InspectionFrame.Main.Model, "TOPLEFT", x, y)
 				buffNum = buffNum + 1	
 			else
-				frame:SetPoint("TOPRIGHT", TRP3_InspectionFrame.Main.Model, "TOPRIGHT", -(10 + math.floor(debuffNum/8)*36), -10 - (debuffNum % 8) * 36)
+				x = -INSPECT_AURA_OFFSET - math.floor(debuffNum/INSPECT_AURAS_PER_COL)*INSPECT_AURA_COL_WIDTH
+				y = -INSPECT_AURA_OFFSET - (debuffNum % INSPECT_AURAS_PER_COL) * INSPECT_AURA_HEIGHT
+				frame:SetPoint("TOPRIGHT", TRP3_InspectionFrame.Main.Model, "TOPRIGHT", x, y)
 				debuffNum = debuffNum + 1
 			end
 			frame.icon:SetTexture("Interface\\ICONS\\" .. (auras[i].class.BA.IC or "TEMP"))
@@ -790,7 +807,7 @@ auraCore = {
 }
 
 TRP3_API.extended.auras.apply = function(auraId, extend)
-	local class = TRP3_API.extended.getClass(auraId)
+	local class = getClass(auraId)
 	if class.missing then return end
 	if class.BA.BC and auraCore.currentCampaignClassId ~= getRootClassID(auraId) then return end
 	local aura = auraCore:FindAura(auraId)
@@ -824,21 +841,18 @@ TRP3_API.extended.auras.getDuration = function(auraId)
 end
 
 TRP3_API.extended.auras.isHelpful = function(auraId)
-	local aura = auraCore:FindAura(auraId)
-	if aura then
-		return aura.class.HE
-	else
-		return false
-	end
+	local class = getClass(auraId)
+	return class.BA.HE or false;
 end
 
 TRP3_API.extended.auras.isCancellable = function(auraId)
-	local aura = auraCore:FindAura(auraId)
-	if aura then
-		return aura.class.CC
-	else
-		return false
-	end
+	local class = getClass(auraId)
+	return class.BA.CC or false;
+end
+
+TRP3_API.extended.auras.getStringProperty = function(auraId, property)
+	local class = getClass(auraId)
+	return class.BA[property] or "";
 end
 
 TRP3_API.extended.auras.auraVarCheck = function(auraId, varName)
@@ -880,7 +894,7 @@ TRP3_API.extended.auras.setDuration = function(auraId, duration, method)
 end
 
 TRP3_API.extended.auras.cancel = function(auraId)
-	local class = TRP3_API.extended.getClass(auraId)
+	local class = getClass(auraId)
 	if class.missing or not class.BA.CC then return false end
 	return auraCore:CancelAura(auraId)
 end

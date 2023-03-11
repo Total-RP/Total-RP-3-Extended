@@ -53,6 +53,7 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 					IC = trait.IC,
 					HE = true,
 					CC = true,
+					WE = true,
 				},
 			};
 			local step = {

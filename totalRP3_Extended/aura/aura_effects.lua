@@ -4,7 +4,7 @@ TRP3_API.extended.auras.EFFECTS = {
 		method = function(structure, cArgs, eArgs)
 			eArgs.LAST = 0
 			TRP3_API.extended.auras.apply(
-				cArgs[1] or "", 
+				TRP3_API.script.parseArgs(cArgs[1] or "", eArgs), 
 				cArgs[2]
 			)
 		end,
@@ -14,7 +14,7 @@ TRP3_API.extended.auras.EFFECTS = {
 		method = function(structure, cArgs, eArgs)
 			eArgs.LAST = 0
 			TRP3_API.extended.auras.setDuration(
-				cArgs[1] or "",
+				TRP3_API.script.parseArgs(cArgs[1] or "", eArgs),
 				tonumber(TRP3_API.script.parseArgs(cArgs[2] or "0", eArgs)), 
 				cArgs[3] or "+"
 			)
@@ -25,7 +25,7 @@ TRP3_API.extended.auras.EFFECTS = {
 		method = function(structure, cArgs, eArgs)
 			eArgs.LAST = 0
 			TRP3_API.extended.auras.remove(
-				cArgs[1] or ""
+				TRP3_API.script.parseArgs(cArgs[1] or "", eArgs)
 			)
 		end,
 	},
@@ -34,7 +34,7 @@ TRP3_API.extended.auras.EFFECTS = {
 		method = function(structure, cArgs, eArgs)
 			eArgs.LAST = 0
 			TRP3_API.extended.auras.setVariable(
-				cArgs[1] or "",
+				TRP3_API.script.parseArgs(cArgs[1] or "", eArgs),
 				cArgs[2] or "[=]",
 				cArgs[3] or "",
 				TRP3_API.script.parseArgs(cArgs[4], eArgs)
@@ -46,7 +46,7 @@ TRP3_API.extended.auras.EFFECTS = {
 		method = function(structure, cArgs, eArgs)
 			eArgs.LAST = 0
 			TRP3_API.extended.auras.runWorkflow(
-				cArgs[1] or "",
+				TRP3_API.script.parseArgs(cArgs[1] or "", eArgs),
 				cArgs[2] or "",
 				eArgs
 			)

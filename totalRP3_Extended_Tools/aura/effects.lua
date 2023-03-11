@@ -298,6 +298,45 @@ local function aura_property_init()
 		end,
 	});
 	
+	registerOperandEditor("aura_name", {
+		title = L.OP_OP_AURA_NAME,
+		description = L.OP_OP_AURA_NAME_TT,
+		returnType = "",
+		getText = function(args)
+			return L.OP_OP_AURA_NAME_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+	
+	registerOperandEditor("aura_icon", {
+		title = L.OP_OP_AURA_ICON,
+		description = L.OP_OP_AURA_ICON_TT,
+		returnType = "",
+		getText = function(args)
+			return L.OP_OP_AURA_ICON_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+	
+	registerOperandEditor("aura_color", {
+		title = L.OP_OP_AURA_COLOR,
+		description = L.OP_OP_AURA_COLOR_TT,
+		returnType = "",
+		getText = function(args)
+			return L.OP_OP_AURA_COLOR_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+	
 	setupAuraBrowser(editor);
 
 	function editor.load(args)
