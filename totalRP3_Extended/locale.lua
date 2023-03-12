@@ -1311,7 +1311,7 @@ If your aura runs for a very long time (e.g. an egg, that hatches after 3 real t
 	EFFECT_VAR_AURA_CHANGE_PREVIEW = "|cffffff00Aura variable operation: |cff00ff00(%1$s)|r %3$s |cff00ff00=|r %3$s |cff00ff00%2$s|r %4$s",
 	EFFECT_AURA_RUN_WORKFLOW = "Run aura workflow",
 	EFFECT_AURA_RUN_WORKFLOW_TT = "Run workflow of an active aura. The aura's workflow has access to workflow variables of the current workflow.",
-	EFFECT_AURA_RUN_WORKFLOW_PREVIEW = "Run workflow |cff00ff00%1$s|r in aura |cff00ff00%2$s|r.",
+	EFFECT_AURA_RUN_WORKFLOW_PREVIEW = "Run workflow |cff00ff00%2$s|r in aura |cff00ff00%1$s|r.",
 	OP_OP_AURA_COUNT = "Number of active auras",
 	OP_OP_AURA_COUNT_TT = "Returns the number of auras that are currently active on a player.",
 	OP_OP_AURA_ID = "Aura id",

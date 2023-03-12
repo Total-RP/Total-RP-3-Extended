@@ -212,8 +212,7 @@ local function run_workflow_init()
 		icon = "inv_engineering_90_electrifiedether",
 		description = L.EFFECT_AURA_RUN_WORKFLOW_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
-			local id = tostring(args[2]);
-			scriptStepFrame.description:SetText(
+			scriptStepFrame.description:SetFormattedText(
 				L.EFFECT_AURA_RUN_WORKFLOW_PREVIEW,
 				getAuraNameFromClassId(args[1]),
 				tostring(args[2])

@@ -905,7 +905,7 @@ end
 
 TRP3_API.extended.auras.runWorkflow = function(auraId, workflowId, eArgs)
 	local aura = auraCore:FindAura(auraId)
-	if aura and aura.class.LI and aura.class.LI[workflowId] then
+	if aura and aura.class.SC and aura.class.SC[workflowId] then
 		local args = {
 			object = aura.persistent
 		}
@@ -913,7 +913,7 @@ TRP3_API.extended.auras.runWorkflow = function(auraId, workflowId, eArgs)
 			args.custom = eArgs.custom
 			args.event = eArgs.event
 		end
-		TRP3_API.script.executeClassScript(aura.class.LI[workflowId], aura.class.SC or {}, args, aura.persistent.id)
+		TRP3_API.script.executeClassScript(workflowId, aura.class.SC or {}, args, aura.persistent.id)
 	end	
 end
 
