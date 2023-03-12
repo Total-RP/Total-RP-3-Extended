@@ -41,7 +41,7 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 	for index, trait in pairs(profile.player.misc.PE) do
 		if trait.AC then
 			currTrait = currTrait + 1
-			local innerId = "aura" .. tostring(index)
+			local innerId = "aura" .. tostring(currTrait)
 			data.IN[innerId] = {
 				MD = {
 					MO = TRP3_DB.modes.NORMAL,
