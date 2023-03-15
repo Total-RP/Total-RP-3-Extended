@@ -538,7 +538,7 @@ local function onStart()
 	TRP3_API.extended.tools.initStep(toolFrame)
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initCutscene(toolFrame);
-	TRP3_API.extended.tools.initAura(toolFrame)
+	TRP3_API.extended.tools.initAura(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 	TRP3_ExtendedTutorial.init(toolFrame);
 

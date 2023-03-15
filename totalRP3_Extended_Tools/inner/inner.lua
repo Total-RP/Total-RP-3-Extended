@@ -55,7 +55,7 @@ local function createInnerObject(innerID, innerType, innerMode, innerData)
 			BA = {
 				NA = loc.IT_NEW_NAME,
 			},
-		}
+		};
 
 		if innerMode then
 			toolFrame.specificDraft.IN[innerID].MD.MO = innerMode;
@@ -70,7 +70,7 @@ local function createInnerObject(innerID, innerType, innerMode, innerData)
 				NA = loc.DO_NEW_DOC,
 			},
 			BT = true,
-		}
+		};
 	elseif innerType == "AU" then
 		toolFrame.specificDraft.IN[innerID] = innerData or {
 			TY = "AU",
@@ -82,7 +82,7 @@ local function createInnerObject(innerID, innerType, innerMode, innerData)
 				HE = true,
 				CC = true,
 			}
-		}
+		};
 	elseif innerType == TRP3_DB.types.DIALOG then
 		toolFrame.specificDraft.IN[innerID] = innerData or TRP3_API.extended.tools.getCutsceneData();
 	elseif innerType == "quick" then

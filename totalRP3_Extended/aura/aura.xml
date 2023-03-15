@@ -75,51 +75,51 @@
 		</Layers>
 		<Scripts>
 			<OnEnter>
-				self.Text:Show()
-				self.BottomLeft:Show()
-				self.BottomRight:Show()
-				self.TopLeft:Show()
-				self.TopRight:Show()
-				self.TopEdge:Show()
-				self.BottomEdge:Show()
-				self.Center:Show()
+				self.Text:Show();
+				self.BottomLeft:Show();
+				self.BottomRight:Show();
+				self.TopLeft:Show();
+				self.TopRight:Show();
+				self.TopEdge:Show();
+				self.BottomEdge:Show();
+				self.Center:Show();
 			</OnEnter>
 			<OnLeave>
-				self.Text:Hide()
-				self.BottomLeft:Hide()
-				self.BottomRight:Hide()
-				self.TopLeft:Hide()
-				self.TopRight:Hide()
-				self.TopEdge:Hide()
-				self.BottomEdge:Hide()
-				self.Center:Hide()
+				self.Text:Hide();
+				self.BottomLeft:Hide();
+				self.BottomRight:Hide();
+				self.TopLeft:Hide();
+				self.TopRight:Hide();
+				self.TopEdge:Hide();
+				self.BottomEdge:Hide();
+				self.Center:Hide();
 			</OnLeave>
 			<OnLoad>
 				self.UpdatePosition = function(self)
 					if self:GetNumPoints() >= 1 then
-						self.positionKey = self:GetPoint()
+						self.positionKey = self:GetPoint();
 					else
-						self.positionKey = "TOPRIGHT"
+						self.positionKey = "TOPRIGHT";
 					end
 					if self.positionKey == "TOPRIGHT" or self.positionKey == "TOP" or self.positionKey == "RIGHT" or self.positionKey == "CENTER" then
-						self.tooltipAnchor = "ANCHOR_BOTTOMLEFT"
+						self.tooltipAnchor = "ANCHOR_BOTTOMLEFT";
 					elseif self.positionKey == "TOPLEFT" or self.positionKey == "LEFT" then
-						self.tooltipAnchor = "ANCHOR_BOTTOMRIGHT"
+						self.tooltipAnchor = "ANCHOR_BOTTOMRIGHT";
 					elseif self.positionKey == "BOTTOMLEFT" then
-						self.tooltipAnchor = "ANCHOR_TOPRIGHT"
+						self.tooltipAnchor = "ANCHOR_TOPRIGHT";
 					else
-						self.tooltipAnchor = "ANCHOR_TOPLEFT"
+						self.tooltipAnchor = "ANCHOR_TOPLEFT";
 					end
 				end;
-				self:RegisterForDrag("LeftButton")
+				self:RegisterForDrag("LeftButton");
 			</OnLoad>
 			<OnDragStart>
-				self:StartMoving()
+				self:StartMoving();
 			</OnDragStart>
 			<OnDragStop>
-				self:StopMovingOrSizing()
-				self:UpdatePosition()
-				TRP3_AuraFrameCollapseAndExpandButton:UpdatePosition()
+				self:StopMovingOrSizing();
+				self:UpdatePosition();
+				TRP3_AuraFrameCollapseAndExpandButton:UpdatePosition();
 			</OnDragStop>
 		</Scripts>
 	</Frame>
@@ -133,7 +133,7 @@
 			<OnLoad>
 				self.UpdatePosition = function(self)
 					self:ClearAllPoints();
-					local p = TRP3_AuraFrame.positionKey
+					local p = TRP3_AuraFrame.positionKey;
 					if p == "TOPRIGHT" or p == "RIGHT" or p == "CENTER" then
 						self:SetPoint("LEFT", TRP3_AuraFrame, "RIGHT");
 						self.orientation = 0;
@@ -218,19 +218,19 @@
 		<Scripts>
 			<OnMouseUp>
 				if self.aura and button == "RightButton" then
-					TRP3_API.extended.auras.cancel(self.aura.persistent.id)
+					TRP3_API.extended.auras.cancel(self.aura.persistent.id);
 				end
 			</OnMouseUp>
 			<OnEnter>
 				if self.aura then
 					if self:GetParent() == TRP3_AuraFrame then
-						TRP3_AuraFrame:GetScript("OnEnter")(TRP3_AuraFrame)
+						TRP3_AuraFrame:GetScript("OnEnter")(TRP3_AuraFrame);
 					end
-					TRP3_API.extended.auras.showTooltip(self)
+					TRP3_API.extended.auras.showTooltip(self);
 				end
 			</OnEnter>
 			<OnLeave>
-				TRP3_API.extended.auras.hideTooltip()
+				TRP3_API.extended.auras.hideTooltip();
 			</OnLeave>
 		</Scripts>
 	</Frame>

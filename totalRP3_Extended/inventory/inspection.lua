@@ -63,7 +63,7 @@ local function receiveResponse(response, sender)
 				};
 			end
 		end
-		TRP3_API.extended.auras.showInspectAuras(response.auras)
+		TRP3_API.extended.auras.showInspectAuras(response.auras);
 	end
 end
 

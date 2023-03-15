@@ -1,11 +1,11 @@
 local EMPTY = TRP3_API.globals.empty;
-local getClass = TRP3_API.extended.getClass
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame
-local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor
-local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor
-local L = TRP3_API.loc
-local TRP3_DB = TRP3_DB
-local stEtN = TRP3_API.utils.str.emptyToNil
+local getClass = TRP3_API.extended.getClass;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor;
+local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
+local loc = TRP3_API.loc;
+local TRP3_DB = TRP3_DB;
+local stEtN = TRP3_API.utils.str.emptyToNil;
 
 local function getAuraNameFromClassId(classId)
 	local id = tostring(classId);
@@ -25,22 +25,22 @@ local function setupAuraBrowser(editor)
 		end, "AU"});
 	end);
 
-	editor.id.title:SetText(L.AURA_ID);
-	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, L.AURA_ID, L.EFFECT_AURA_ID_TT);
+	editor.id.title:SetText(loc.AURA_ID);
+	setTooltipForSameFrame(editor.id.help, "RIGHT", 0, 5, loc.AURA_ID, loc.EFFECT_AURA_ID_TT);
 end
 
 local function aura_apply_init()
 	local editor = TRP3_EffectEditorAuraApply;
 
 	registerEffectEditor("aura_apply", {
-		title = L.EFFECT_AURA_APPLY,
+		title = loc.EFFECT_AURA_APPLY,
 		icon = "ability_priest_spiritoftheredeemer",
-		description = L.EFFECT_AURA_APPLY_TT,
+		description = loc.EFFECT_AURA_APPLY_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetFormattedText(
-				L.EFFECT_AURA_APPLY_PREVIEW,
+				loc.EFFECT_AURA_APPLY_PREVIEW,
 				getAuraNameFromClassId(args[1]),
-				args[2] and L.EFFECT_AURA_APPLY_EXTEND_FRAGMENT or ""
+				args[2] and loc.EFFECT_AURA_APPLY_EXTEND_FRAGMENT or ""
 			);
 		end,
 		getDefaultArgs = function()
@@ -51,8 +51,8 @@ local function aura_apply_init()
 
 	setupAuraBrowser(editor);
 	
-	editor.extend.Text:SetText(L.EFFECT_AURA_APPLY_EXTEND);
-	setTooltipForSameFrame(editor.extend, "RIGHT", 0, 5, L.EFFECT_AURA_APPLY_EXTEND, L.EFFECT_AURA_APPLY_EXTEND_TT);
+	editor.extend.Text:SetText(loc.EFFECT_AURA_APPLY_EXTEND);
+	setTooltipForSameFrame(editor.extend, "RIGHT", 0, 5, loc.EFFECT_AURA_APPLY_EXTEND, loc.EFFECT_AURA_APPLY_EXTEND_TT);
 	
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;
@@ -70,12 +70,12 @@ local function aura_remove_init()
 	local editor = TRP3_EffectEditorAuraRemove;
 
 	registerEffectEditor("aura_remove", {
-		title = L.EFFECT_AURA_REMOVE,
+		title = loc.EFFECT_AURA_REMOVE,
 		icon = "ability_titankeeper_cleansingorb",
-		description = L.EFFECT_AURA_REMOVE,
+		description = loc.EFFECT_AURA_REMOVE,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetFormattedText(
-				L.EFFECT_AURA_REMOVE_PREVIEW,
+				loc.EFFECT_AURA_REMOVE_PREVIEW,
 				getAuraNameFromClassId(args[1])
 			);
 		end,
@@ -101,12 +101,12 @@ local function aura_duration_init()
 	local editor = TRP3_EffectEditorAuraDuration;
 
 	registerEffectEditor("aura_duration", {
-		title = L.EFFECT_AURA_DURATION,
+		title = loc.EFFECT_AURA_DURATION,
 		icon = "achievement_guildperk_workingovertime",
-		description = L.EFFECT_AURA_DURATION_TT,
+		description = loc.EFFECT_AURA_DURATION_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetFormattedText(
-				L.EFFECT_AURA_DURATION_PREVIEW,
+				loc.EFFECT_AURA_DURATION_PREVIEW,
 				getAuraNameFromClassId(args[1]),
 				args[2],
 				args[3]
@@ -120,13 +120,13 @@ local function aura_duration_init()
 
 	setupAuraBrowser(editor);
 
-	editor.duration.title:SetText(L.AURA_DURATION);
-	setTooltipForSameFrame(editor.duration.help, "RIGHT", 0, 5, L.AURA_DURATION, L.AURA_DURATION_TT);
+	editor.duration.title:SetText(loc.AURA_DURATION);
+	setTooltipForSameFrame(editor.duration.help, "RIGHT", 0, 5, loc.AURA_DURATION, loc.AURA_DURATION_TT);
 	
 	local methods = {
-		{TRP3_API.formats.dropDownElements:format(L.AURA_DURATION, L.EFFECT_AURA_DURATION_SET), "=", L.EFFECT_AURA_DURATION_SET_TT},
-		{TRP3_API.formats.dropDownElements:format(L.AURA_DURATION, L.EFFECT_AURA_DURATION_ADD), "+", L.EFFECT_AURA_DURATION_ADD_TT},
-		{TRP3_API.formats.dropDownElements:format(L.AURA_DURATION, L.EFFECT_AURA_DURATION_SUBTRACT), "-", L.EFFECT_AURA_DURATION_SUBTRACT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_SET), "=", loc.EFFECT_AURA_DURATION_SET_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_ADD), "+", loc.EFFECT_AURA_DURATION_ADD_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_SUBTRACT), "-", loc.EFFECT_AURA_DURATION_SUBTRACT_TT},
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.method, methods, nil, nil, 250, true);
 	
@@ -134,13 +134,13 @@ local function aura_duration_init()
 		local data = scriptData.args or EMPTY;
 		editor.id:SetText(data[1] or "");
 		editor.duration:SetText(data[2] or "0");
-		editor.method:SetSelectedValue(data[3] or "=")
+		editor.method:SetSelectedValue(data[3] or "=");
 	end
 
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
 		scriptData.args[2] = stEtN(strtrim(editor.duration:GetText()));
-		scriptData.args[3] = editor.method:GetSelectedValue()
+		scriptData.args[3] = editor.method:GetSelectedValue();
 	end
 end
 
@@ -148,12 +148,12 @@ local function aura_var_set_init()
 	local editor = TRP3_EffectEditorAuraVarChange;
 
 	registerEffectEditor("aura_var_set", {
-		title = L.EFFECT_VAR_AURA_CHANGE,
+		title = loc.EFFECT_VAR_AURA_CHANGE,
 		icon = "inv_10_inscription2_repcontracts_scroll_02_uprez",
-		description = L.EFFECT_VAR_AURA_CHANGE_TT,
+		description = loc.EFFECT_VAR_AURA_CHANGE_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetFormattedText(
-				L.EFFECT_VAR_AURA_CHANGE_PREVIEW,
+				loc.EFFECT_VAR_AURA_CHANGE_PREVIEW,
 				getAuraNameFromClassId(args[1]),
 				args[2],
 				tostring(args[3]),
@@ -169,22 +169,22 @@ local function aura_var_set_init()
 	setupAuraBrowser(editor);
 	
 	-- Var name
-	editor.var.title:SetText(L.EFFECT_VAR)
-	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, L.EFFECT_VAR, "");
+	editor.var.title:SetText(loc.EFFECT_VAR);
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc.EFFECT_VAR, "");
 
 	-- Var value
-	editor.value.title:SetText(L.EFFECT_OPERATION_VALUE);
-	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, L.EFFECT_OPERATION_VALUE, "");
+	editor.value.title:SetText(loc.EFFECT_OPERATION_VALUE);
+	setTooltipForSameFrame(editor.value.help, "RIGHT", 0, 5, loc.EFFECT_OPERATION_VALUE, "");
 
 	-- Type
 	local types = {
-		{TRP3_API.formats.dropDownElements:format(L.EFFECT_OPERATION_TYPE, L.EFFECT_OPERATION_TYPE_INIT), "[=]", L.EFFECT_OPERATION_TYPE_INIT_TT},
-		{TRP3_API.formats.dropDownElements:format(L.EFFECT_OPERATION_TYPE, L.EFFECT_OPERATION_TYPE_SET), "=", L.EFFECT_OPERATION_TYPE_SET_TT},
-		{TRP3_API.formats.dropDownElements:format(L.EFFECT_OPERATION_TYPE, L.EFFECT_OPERATION_TYPE_ADD), "+"},
-		{TRP3_API.formats.dropDownElements:format(L.EFFECT_OPERATION_TYPE, L.EFFECT_OPERATION_TYPE_SUB), "-"},
-		{TRP3_API.formats.dropDownElements:format(L.EFFECT_OPERATION_TYPE, L.EFFECT_OPERATION_TYPE_MULTIPLY), "x"},
-		{TRP3_API.formats.dropDownElements:format(L.EFFECT_OPERATION_TYPE, L.EFFECT_OPERATION_TYPE_DIV), "/"}
-	}
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_INIT), "[=]", loc.EFFECT_OPERATION_TYPE_INIT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_SET), "=", loc.EFFECT_OPERATION_TYPE_SET_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_ADD), "+"},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_SUB), "-"},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_MULTIPLY), "x"},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_DIV), "/"}
+	};
 	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 250, true);
 
 	function editor.load(scriptData)
@@ -208,12 +208,12 @@ local function run_workflow_init()
 	local editor = TRP3_EffectEditorRunAuraWorkflow;
 
 	registerEffectEditor("aura_run_workflow", {
-		title = L.EFFECT_AURA_RUN_WORKFLOW,
+		title = loc.EFFECT_AURA_RUN_WORKFLOW,
 		icon = "inv_engineering_90_electrifiedether",
-		description = L.EFFECT_AURA_RUN_WORKFLOW_TT,
+		description = loc.EFFECT_AURA_RUN_WORKFLOW_TT,
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetFormattedText(
-				L.EFFECT_AURA_RUN_WORKFLOW_PREVIEW,
+				loc.EFFECT_AURA_RUN_WORKFLOW_PREVIEW,
 				getAuraNameFromClassId(args[1]),
 				tostring(args[2])
 			);
@@ -226,8 +226,8 @@ local function run_workflow_init()
 
 	setupAuraBrowser(editor);
 
-	editor.workflow.title:SetText(L.EFFECT_RUN_WORKFLOW_ID);
-	setTooltipForSameFrame(editor.workflow.help, "RIGHT", 0, 5, L.EFFECT_RUN_WORKFLOW_ID, L.EFFECT_RUN_WORKFLOW_ID_TT);
+	editor.workflow.title:SetText(loc.EFFECT_RUN_WORKFLOW_ID);
+	setTooltipForSameFrame(editor.workflow.help, "RIGHT", 0, 5, loc.EFFECT_RUN_WORKFLOW_ID, loc.EFFECT_RUN_WORKFLOW_ID_TT);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;
@@ -246,11 +246,11 @@ local function aura_property_init()
 	local editor = TRP3_OperandEditorAuraProperty;
 
 	registerOperandEditor("aura_active", {
-		title = L.OP_OP_AURA_ACTIVE,
-		description = L.OP_OP_AURA_ACTIVE_TT,
+		title = loc.OP_OP_AURA_ACTIVE,
+		description = loc.OP_OP_AURA_ACTIVE_TT,
 		returnType = false,
 		getText = function(args)
-			return L.OP_OP_AURA_ACTIVE_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+			return loc.OP_OP_AURA_ACTIVE_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -259,11 +259,11 @@ local function aura_property_init()
 	});
 	
 	registerOperandEditor("aura_duration", {
-		title = L.OP_OP_AURA_DURATION,
-		description = L.OP_OP_AURA_DURATION_TT,
+		title = loc.OP_OP_AURA_DURATION,
+		description = loc.OP_OP_AURA_DURATION_TT,
 		returnType = 0,
 		getText = function(args)
-			return L.OP_OP_AURA_DURATION_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+			return loc.OP_OP_AURA_DURATION_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -272,11 +272,11 @@ local function aura_property_init()
 	});
 	
 	registerOperandEditor("aura_helpful", {
-		title = L.OP_OP_AURA_HELPFUL,
-		description = L.OP_OP_AURA_HELPFUL_TT,
+		title = loc.OP_OP_AURA_HELPFUL,
+		description = loc.OP_OP_AURA_HELPFUL_TT,
 		returnType = false,
 		getText = function(args)
-			return L.OP_OP_AURA_HELPFUL_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+			return loc.OP_OP_AURA_HELPFUL_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -285,11 +285,11 @@ local function aura_property_init()
 	});
 	
 	registerOperandEditor("aura_cancellable", {
-		title = L.OP_OP_AURA_CANCELLABLE,
-		description = L.OP_OP_AURA_CANCELLABLE_TT,
+		title = loc.OP_OP_AURA_CANCELLABLE,
+		description = loc.OP_OP_AURA_CANCELLABLE_TT,
 		returnType = false,
 		getText = function(args)
-			return L.OP_OP_AURA_CANCELLABLE_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+			return loc.OP_OP_AURA_CANCELLABLE_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -298,11 +298,11 @@ local function aura_property_init()
 	});
 	
 	registerOperandEditor("aura_name", {
-		title = L.OP_OP_AURA_NAME,
-		description = L.OP_OP_AURA_NAME_TT,
+		title = loc.OP_OP_AURA_NAME,
+		description = loc.OP_OP_AURA_NAME_TT,
 		returnType = "",
 		getText = function(args)
-			return L.OP_OP_AURA_NAME_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+			return loc.OP_OP_AURA_NAME_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -311,11 +311,11 @@ local function aura_property_init()
 	});
 	
 	registerOperandEditor("aura_icon", {
-		title = L.OP_OP_AURA_ICON,
-		description = L.OP_OP_AURA_ICON_TT,
+		title = loc.OP_OP_AURA_ICON,
+		description = loc.OP_OP_AURA_ICON_TT,
 		returnType = "",
 		getText = function(args)
-			return L.OP_OP_AURA_ICON_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+			return loc.OP_OP_AURA_ICON_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -324,11 +324,11 @@ local function aura_property_init()
 	});
 	
 	registerOperandEditor("aura_color", {
-		title = L.OP_OP_AURA_COLOR,
-		description = L.OP_OP_AURA_COLOR_TT,
+		title = loc.OP_OP_AURA_COLOR,
+		description = loc.OP_OP_AURA_COLOR_TT,
 		returnType = "",
 		getText = function(args)
-			return L.OP_OP_AURA_COLOR_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+			return loc.OP_OP_AURA_COLOR_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
 		end,
 		editor = editor,
 		getDefaultArgs = function()
@@ -351,12 +351,12 @@ local function check_var_init()
 	local editor = TRP3_OperandEditorAuraCheckVar;
 
 	registerOperandEditor("aura_var_check", {
-		title = L.OP_OP_AURA_CHECK_VAR,
-		description = L.OP_OP_AURA_CHECK_VAR_TT,
+		title = loc.OP_OP_AURA_CHECK_VAR,
+		description = loc.OP_OP_AURA_CHECK_VAR_TT,
 		returnType = "",
 		noPreview = true,
 		getText = function(args)
-			return L.OP_OP_AURA_CHECK_VAR_PREVIEW:format(
+			return loc.OP_OP_AURA_CHECK_VAR_PREVIEW:format(
 				getAuraNameFromClassId(args and args[1] or ""), 
 				tostring((args or EMPTY)[2] or "var")
 			);
@@ -365,12 +365,12 @@ local function check_var_init()
 	});
 	
 	registerOperandEditor("aura_var_check_n", {
-		title = L.OP_OP_AURA_CHECK_VAR_N,
-		description = L.OP_OP_AURA_CHECK_VAR_N_TT,
+		title = loc.OP_OP_AURA_CHECK_VAR_N,
+		description = loc.OP_OP_AURA_CHECK_VAR_N_TT,
 		returnType = 0,
 		noPreview = true,
 		getText = function(args)
-			return L.OP_OP_AURA_CHECK_VAR_N_PREVIEW:format(
+			return loc.OP_OP_AURA_CHECK_VAR_N_PREVIEW:format(
 				getAuraNameFromClassId(args and args[1] or ""), 
 				tostring((args or EMPTY)[2] or "var")
 			);
@@ -381,8 +381,8 @@ local function check_var_init()
 	setupAuraBrowser(editor);
 
 	-- Var name
-	editor.var.title:SetText(L.EFFECT_VAR)
-	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, L.EFFECT_VAR, "");
+	editor.var.title:SetText(loc.EFFECT_VAR);
+	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc.EFFECT_VAR, "");
 
 	function editor.load(args)
 		editor.id:SetText((args or EMPTY)[1] or "");
@@ -398,20 +398,20 @@ end
 function aura_id_init()
 	local editor = TRP3_OperandEditorAuraId;
 	registerOperandEditor("aura_id", {
-		title = L.OP_OP_AURA_ID,
-		description = L.OP_OP_AURA_ID_TT,
+		title = loc.OP_OP_AURA_ID,
+		description = loc.OP_OP_AURA_ID_TT,
 		returnType = "",
 		noPreview = true,
 		getText = function(args)
-			return L.OP_OP_AURA_ID_PREVIEW:format(
+			return loc.OP_OP_AURA_ID_PREVIEW:format(
 				args and args[1] or "1"
 			);
 		end,
 		editor = editor,
 	});
 	
-	editor.index.title:SetText(L.OP_OP_AURA_ID_INDEX)
-	setTooltipForSameFrame(editor.index.help, "RIGHT", 0, 5, L.OP_OP_AURA_ID_INDEX, L.OP_OP_AURA_ID_INDEX_TT);
+	editor.index.title:SetText(loc.OP_OP_AURA_ID_INDEX);
+	setTooltipForSameFrame(editor.index.help, "RIGHT", 0, 5, loc.OP_OP_AURA_ID_INDEX, loc.OP_OP_AURA_ID_INDEX_TT);
 
 	function editor.load(args)
 		editor.index:SetText((args or EMPTY)[1] or "1");
@@ -424,24 +424,24 @@ end
 
 function aura_count_init()
 	registerOperandEditor("aura_count", {
-		title = L.OP_OP_AURA_COUNT,
-		description = L.OP_OP_AURA_COUNT_TT,
+		title = loc.OP_OP_AURA_COUNT,
+		description = loc.OP_OP_AURA_COUNT_TT,
 		returnType = 0,
 		getText = function(args) -- luacheck: ignore 212
-			return L.OP_OP_AURA_COUNT;
+			return loc.OP_OP_AURA_COUNT;
 		end,
 	});
 end
 
 TRP3_API.extended.tools.initAuraEffects = function()
-	aura_apply_init()
-	aura_remove_init()
-	aura_duration_init()
-	aura_var_set_init()
-	run_workflow_init()
+	aura_apply_init();
+	aura_remove_init();
+	aura_duration_init();
+	aura_var_set_init();
+	run_workflow_init();
 	
-	aura_count_init()
-	aura_id_init()
-	aura_property_init()
-	check_var_init()
+	aura_count_init();
+	aura_id_init();
+	aura_property_init();
+	check_var_init();
 end

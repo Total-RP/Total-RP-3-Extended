@@ -2,7 +2,7 @@
 local Utils = TRP3_API.utils;
 local pairs, max, tonumber, tremove, strtrim, assert, wipe = pairs, math.max, tonumber, tremove, strtrim, assert, wipe;
 local stEtN = Utils.str.emptyToNil;
-local L = TRP3_API.loc;
+local loc = TRP3_API.loc;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local toolFrame, main, pages, params, manager, linksStructure, display, gameplay, notes;
 local numberToHexa, hexaToNumber, hexaToFloat = Utils.color.numberToHexa, Utils.color.hexaToNumber, Utils.color.hexaToFloat;
@@ -12,7 +12,7 @@ local TABS = {
 	WORKFLOWS = 2,
 	INNER = 3,
 	EXPERT = 4,
-}
+};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script tab
@@ -83,10 +83,10 @@ local function createTabBar()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ L.EDITOR_MAIN, TABS.MAIN, 150 },
-			{ L.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
-			{ L.IN_INNER, TABS.INNER, 150 },
-			{ L.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.EDITOR_MAIN, TABS.MAIN, 150 },
+			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
+			{ loc.IN_INNER, TABS.INNER, 150 },
+			{ loc.WO_LINKS, TABS.EXPERT, 150 },
 		},
 		onTabChanged
 	);
@@ -120,38 +120,38 @@ local function load()
 		data.BA = {};
 	end
 	
-	display.name:SetText(data.BA.NA or "")
-	display.category:SetText(data.BA.CA or "")
+	display.name:SetText(data.BA.NA or "");
+	display.category:SetText(data.BA.CA or "");
 	if data.BA.CO then
-		display.borderPicker.setColor(hexaToNumber(data.BA.CO))
+		display.borderPicker.setColor(hexaToNumber(data.BA.CO));
 	else
-		display.borderPicker.setColor(nil)
+		display.borderPicker.setColor(nil);
 	end
 	
-	display.description.scroll.text:SetText(data.BA.DE or "")
-	display.flavor.scroll.text:SetText(data.BA.FL or "")
-	display.overlay:SetText(data.BA.OV or "")
-	display.helpful:SetChecked(data.BA.HE or false)
-	onIconSelected(data.BA.IC)
+	display.description.scroll.text:SetText(data.BA.DE or "");
+	display.flavor.scroll.text:SetText(data.BA.FL or "");
+	display.overlay:SetText(data.BA.OV or "");
+	display.helpful:SetChecked(data.BA.HE or false);
+	onIconSelected(data.BA.IC);
 	
-	local hasDuration = (data.BA.DU or math.huge) < math.huge
-	gameplay.hasDuration:SetChecked(hasDuration)
-	gameplay.duration:SetShown(hasDuration)
-	gameplay.duration:SetText(data.BA.DU or "300")
+	local hasDuration = (data.BA.DU or math.huge) < math.huge;
+	gameplay.hasDuration:SetChecked(hasDuration);
+	gameplay.duration:SetShown(hasDuration);
+	gameplay.duration:SetText(data.BA.DU or "300");
 	
-	gameplay.alwaysActive:SetChecked(data.BA.AA or false)
-	gameplay.ensureExpiry:SetChecked(data.BA.EE or false)
-	gameplay.ensureExpiry:SetShown(data.BA.AA)
+	gameplay.alwaysActive:SetChecked(data.BA.AA or false);
+	gameplay.ensureExpiry:SetChecked(data.BA.EE or false);
+	gameplay.ensureExpiry:SetShown(data.BA.AA);
 	
-	gameplay.boundToCampaign:SetChecked(data.BA.BC or false)
+	gameplay.boundToCampaign:SetChecked(data.BA.BC or false);
 	
-	gameplay.cancellable:SetChecked(data.BA.CC or false)
+	gameplay.cancellable:SetChecked(data.BA.CC or false);
 	
-	local hasInterval = (data.BA.IV or math.huge) < math.huge
-	gameplay.hasInterval:SetChecked(hasInterval)
-	gameplay.interval:SetShown(hasInterval)
-	gameplay.interval:SetText(data.BA.IV or "10")
-	gameplay.inspectable:SetChecked(data.BA.WE or false)
+	local hasInterval = (data.BA.IV or math.huge) < math.huge;
+	gameplay.hasInterval:SetChecked(hasInterval);
+	gameplay.interval:SetShown(hasInterval);
+	gameplay.interval:SetText(data.BA.IV or "10");
+	gameplay.inspectable:SetChecked(data.BA.WE or false);
 	
 	notes.frame.scroll.text:SetText(data.NT or "");
 
@@ -166,39 +166,39 @@ end
 local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
-	local data = toolFrame.specificDraft
-	data.BA.NA = stEtN(strtrim(display.name:GetText()))
-	data.BA.CA = stEtN(strtrim(display.category:GetText()))
+	local data = toolFrame.specificDraft;
+	data.BA.NA = stEtN(strtrim(display.name:GetText()));
+	data.BA.CA = stEtN(strtrim(display.category:GetText()));
 	if display.borderPicker.red and display.borderPicker.green and display.borderPicker.blue then
-		data.BA.CO = strconcat(numberToHexa(display.borderPicker.red), numberToHexa(display.borderPicker.green), numberToHexa(display.borderPicker.blue))
+		data.BA.CO = strconcat(numberToHexa(display.borderPicker.red), numberToHexa(display.borderPicker.green), numberToHexa(display.borderPicker.blue));
 	else
-		data.BA.CO = nil
+		data.BA.CO = nil;
 	end
-	data.BA.DE = stEtN(strtrim(display.description.scroll.text:GetText()))
-	data.BA.FL = stEtN(strtrim(display.flavor.scroll.text:GetText()))
-	data.BA.OV = stEtN(strtrim(display.overlay:GetText()))
-	data.BA.HE = display.helpful:GetChecked()
+	data.BA.DE = stEtN(strtrim(display.description.scroll.text:GetText()));
+	data.BA.FL = stEtN(strtrim(display.flavor.scroll.text:GetText()));
+	data.BA.OV = stEtN(strtrim(display.overlay:GetText()));
+	data.BA.HE = display.helpful:GetChecked();
 	data.BA.IC = display.preview.selectedIcon;
 	
 	if gameplay.hasDuration:GetChecked() then
-		data.BA.DU = gameplay.duration:GetNumber()
+		data.BA.DU = gameplay.duration:GetNumber();
 		if data.BA.DU <= 0 then
-			data.BA.DU = nil
+			data.BA.DU = nil;
 		end
 	else
-		data.BA.DU = nil
+		data.BA.DU = nil;
 	end
 	
-	data.BA.AA = gameplay.alwaysActive:GetChecked()
-	data.BA.EE = gameplay.ensureExpiry:GetChecked()
-	data.BA.BC = gameplay.boundToCampaign:GetChecked()
-	data.BA.CC = gameplay.cancellable:GetChecked()
-	data.BA.WE = gameplay.inspectable:GetChecked()
+	data.BA.AA = gameplay.alwaysActive:GetChecked();
+	data.BA.EE = gameplay.ensureExpiry:GetChecked();
+	data.BA.BC = gameplay.boundToCampaign:GetChecked();
+	data.BA.CC = gameplay.cancellable:GetChecked();
+	data.BA.WE = gameplay.inspectable:GetChecked();
 	
 	if gameplay.hasInterval:GetChecked() then
-		data.BA.IV = math.max(gameplay.interval:GetNumber(), 0.1) -- because I say so
+		data.BA.IV = math.max(gameplay.interval:GetNumber(), 0.1); -- because I say so
 	else
-		data.BA.IV = nil
+		data.BA.IV = nil;
 	end
 	
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
@@ -208,29 +208,29 @@ end
 
 local presetBuffs = {
 	{category = ""                 , color = nil      , helpful = true},
-	{category = L.AU_PRESET_CURSE  , color = "9600ff", helpful = false},
-	{category = L.AU_PRESET_DISEASE, color = "966400", helpful = false},
-	{category = L.AU_PRESET_MAGIC  , color = "3296ff", helpful = false},
-	{category = L.AU_PRESET_POISON , color = "009600", helpful = false},
+	{category = loc.AU_PRESET_CURSE  , color = "9600ff", helpful = false},
+	{category = loc.AU_PRESET_DISEASE, color = "966400", helpful = false},
+	{category = loc.AU_PRESET_MAGIC  , color = "3296ff", helpful = false},
+	{category = loc.AU_PRESET_POISON , color = "009600", helpful = false},
 	{category = ""                 , color = "c80000", helpful = false},
-}
+};
 
 local presetMenu = {
-	{"|cffffffff" .. L.AU_PRESET_BUFF    .. "|r", 1},
-	{"|cff9600ff" .. L.AU_PRESET_CURSE   .. "|r", 2},
-	{"|cff966400" .. L.AU_PRESET_DISEASE .. "|r", 3},
-	{"|cff3296ff" .. L.AU_PRESET_MAGIC   .. "|r", 4},
-	{"|cff009600" .. L.AU_PRESET_POISON  .. "|r", 5},
-	{"|cffc80000" .. L.AU_PRESET_OTHER   .. "|r", 6},
+	{"|cffffffff" .. loc.AU_PRESET_BUFF    .. "|r", 1},
+	{"|cff9600ff" .. loc.AU_PRESET_CURSE   .. "|r", 2},
+	{"|cff966400" .. loc.AU_PRESET_DISEASE .. "|r", 3},
+	{"|cff3296ff" .. loc.AU_PRESET_MAGIC   .. "|r", 4},
+	{"|cff009600" .. loc.AU_PRESET_POISON  .. "|r", 5},
+	{"|cffc80000" .. loc.AU_PRESET_OTHER   .. "|r", 6},
 };
 
 local function applyPreset(presetId)
-	display.category:SetText(presetBuffs[presetId].category)
-	display.helpful:SetChecked(presetBuffs[presetId].helpful)
+	display.category:SetText(presetBuffs[presetId].category);
+	display.helpful:SetChecked(presetBuffs[presetId].helpful);
 	if presetBuffs[presetId].color then
-		display.borderPicker.setColor(hexaToNumber(presetBuffs[presetId].color))
+		display.borderPicker.setColor(hexaToNumber(presetBuffs[presetId].color));
 	else
-		display.borderPicker.setColor(nil)
+		display.borderPicker.setColor(nil);
 	end
 end
 
@@ -249,30 +249,30 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 	gameplay = toolFrame.aura.normal.gameplay;
 	notes = toolFrame.aura.normal.notes;
 
-	display.title:SetText(L.AU_DISPLAY_ATT);
+	display.title:SetText(loc.AU_DISPLAY_ATT);
 	
-	display.name.title:SetText(L.AU_FIELD_NAME);
-	setTooltipForSameFrame(display.name.help, "RIGHT", 0, 5, L.AU_FIELD_NAME, L.AU_FIELD_NAME_TT);
+	display.name.title:SetText(loc.AU_FIELD_NAME);
+	setTooltipForSameFrame(display.name.help, "RIGHT", 0, 5, loc.AU_FIELD_NAME, loc.AU_FIELD_NAME_TT);
 	
-	display.category.title:SetText(L.AU_FIELD_CATEGORY);
-	setTooltipForSameFrame(display.category.help, "RIGHT", 0, 5, L.AU_FIELD_CATEGORY, L.AU_FIELD_CATEGORY_TT);
+	display.category.title:SetText(loc.AU_FIELD_CATEGORY);
+	setTooltipForSameFrame(display.category.help, "RIGHT", 0, 5, loc.AU_FIELD_CATEGORY, loc.AU_FIELD_CATEGORY_TT);
 
-	display.preset:SetText(L.AU_PRESET);
+	display.preset:SetText(loc.AU_PRESET);
 	display.preset:SetScript("OnClick", function(self)
 		TRP3_API.ui.listbox.displayDropDown(self, presetMenu, applyPreset, 0, true);
 	end);
 
-	display.description.title:SetText(L.AU_FIELD_DESCRIPTION);
-	setTooltipAll(display.description.dummy, "RIGHT", 0, 5, L.AU_FIELD_DESCRIPTION, L.AU_FIELD_DESCRIPTION_TT);
+	display.description.title:SetText(loc.AU_FIELD_DESCRIPTION);
+	setTooltipAll(display.description.dummy, "RIGHT", 0, 5, loc.AU_FIELD_DESCRIPTION, loc.AU_FIELD_DESCRIPTION_TT);
 
-	display.flavor.title:SetText(L.AU_FIELD_FLAVOR);
-	setTooltipAll(display.flavor.dummy, "RIGHT", 0, 5, L.AU_FIELD_FLAVOR, L.AU_FIELD_FLAVOR_TT);
+	display.flavor.title:SetText(loc.AU_FIELD_FLAVOR);
+	setTooltipAll(display.flavor.dummy, "RIGHT", 0, 5, loc.AU_FIELD_FLAVOR, loc.AU_FIELD_FLAVOR_TT);
 
-	display.overlay.title:SetText(L.AU_FIELD_OVERLAY);
-	setTooltipForSameFrame(display.overlay.help, "RIGHT", 0, 5, L.AU_FIELD_OVERLAY, L.AU_FIELD_OVERLAY_TT);
+	display.overlay.title:SetText(loc.AU_FIELD_OVERLAY);
+	setTooltipForSameFrame(display.overlay.help, "RIGHT", 0, 5, loc.AU_FIELD_OVERLAY, loc.AU_FIELD_OVERLAY_TT);
 	
-	display.helpful.Text:SetText(L.AU_FIELD_HELPFUL);
-	setTooltipForSameFrame(display.helpful, "RIGHT", 0, 5, L.AU_FIELD_HELPFUL, L.AU_FIELD_HELPFUL_TT);
+	display.helpful.Text:SetText(loc.AU_FIELD_HELPFUL);
+	setTooltipForSameFrame(display.helpful, "RIGHT", 0, 5, loc.AU_FIELD_HELPFUL, loc.AU_FIELD_HELPFUL_TT);
 	
 	display.borderPicker.onSelection = function(red, green, blue)
 		if red and green and blue then
@@ -281,21 +281,21 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 				r = red/255,
 				g = green/255,
 				b = blue/255,
-			}
+			};
 		else
-			display.preview.aura.color = nil
+			display.preview.aura.color = nil;
 		end
 		if display.preview.aura.color then
-			display.preview.border:SetVertexColor(display.preview.aura.color.r, display.preview.aura.color.g, display.preview.aura.color.b)
-			display.preview.border:Show()
+			display.preview.border:SetVertexColor(display.preview.aura.color.r, display.preview.aura.color.g, display.preview.aura.color.b);
+			display.preview.border:Show();
 		else
-			display.preview.border:Hide()
+			display.preview.border:Hide();
 		end
 	end
-	setTooltipForSameFrame(display.borderPicker, "RIGHT", 0, 5, L.AU_FIELD_COLOR, L.AU_FIELD_COLOR_TT .. L.REG_PLAYER_COLOR_TT);
+	setTooltipForSameFrame(display.borderPicker, "RIGHT", 0, 5, loc.AU_FIELD_COLOR, loc.AU_FIELD_COLOR_TT .. loc.REG_PLAYER_COLOR_TT);
 
-	display.previewText:SetText(L.EDITOR_PREVIEW);
-	display.previewInfo:SetText(L.EDITOR_ICON_SELECT);
+	display.previewText:SetText(loc.EDITOR_PREVIEW);
+	display.previewInfo:SetText(loc.EDITOR_ICON_SELECT);
 	display.preview.aura = {
 		persistent = {
 			expiry = math.huge,
@@ -306,105 +306,105 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 		},
 	};
 	display.preview:SetScript("OnEnter", function(self)
-		display.preview.aura.persistent.expiry = time() + (gameplay.hasDuration:GetChecked() and tonumber(gameplay.duration:GetText()) or math.huge)
-		display.preview.aura.class.BA.DE = TRP3_API.script.parseArgs(stEtN(strtrim(display.description.scroll.text:GetText())), {})
-		display.preview.aura.class.BA.NA = stEtN(strtrim(display.name:GetText()))
-		display.preview.aura.class.BA.CA = stEtN(strtrim(display.category:GetText()))
-		display.preview.aura.class.BA.FL = stEtN(strtrim(display.flavor.scroll.text:GetText()))
-		display.preview.aura.class.BA.CC = gameplay.cancellable:GetChecked()
-		TRP3_API.extended.auras.showTooltip(display.preview)
+		display.preview.aura.persistent.expiry = time() + (gameplay.hasDuration:GetChecked() and tonumber(gameplay.duration:GetText()) or math.huge);
+		display.preview.aura.class.BA.DE = TRP3_API.script.parseArgs(stEtN(strtrim(display.description.scroll.text:GetText())), {});
+		display.preview.aura.class.BA.NA = stEtN(strtrim(display.name:GetText()));
+		display.preview.aura.class.BA.CA = stEtN(strtrim(display.category:GetText()));
+		display.preview.aura.class.BA.FL = stEtN(strtrim(display.flavor.scroll.text:GetText()));
+		display.preview.aura.class.BA.CC = gameplay.cancellable:GetChecked();
+		TRP3_API.extended.auras.showTooltip(display.preview);
 	end);
 	display.preview:SetScript("OnLeave", function(self)
-		TRP3_API.extended.auras.hideTooltip()
+		TRP3_API.extended.auras.hideTooltip();
 	end);
 	display.preview:SetScript("OnMouseUp", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
 	end);
 
-	gameplay.title:SetText(L.AU_GAMEPLAY_ATT);
+	gameplay.title:SetText(loc.AU_GAMEPLAY_ATT);
 
-	gameplay.hasDuration.Text:SetText(L.AU_FIELD_HAS_DURATION);
-	setTooltipForSameFrame(gameplay.hasDuration, "RIGHT", 0, 5, L.AU_FIELD_HAS_DURATION, L.AU_FIELD_HAS_DURATION_TT);
+	gameplay.hasDuration.Text:SetText(loc.AU_FIELD_HAS_DURATION);
+	setTooltipForSameFrame(gameplay.hasDuration, "RIGHT", 0, 5, loc.AU_FIELD_HAS_DURATION, loc.AU_FIELD_HAS_DURATION_TT);
 	gameplay.hasDuration:SetScript("OnClick", function()
 		if gameplay.hasDuration:GetChecked() then
-			local currDuration = tonumber(gameplay.duration:GetText())
+			local currDuration = tonumber(gameplay.duration:GetText());
 			if not currDuration or currDuration >= math.huge or currDuration <= 0 then
-				gameplay.duration:SetText("300")
+				gameplay.duration:SetText("300");
 			end
-			gameplay.duration:Show()
+			gameplay.duration:Show();
 		else
-			gameplay.duration:Hide()
+			gameplay.duration:Hide();
 		end
 	end)
 
-	gameplay.duration.title:SetText(L.AU_FIELD_DURATION);
-	setTooltipForSameFrame(gameplay.duration.help, "RIGHT", 0, 5, L.AU_FIELD_DURATION, L.AU_FIELD_DURATION_TT);
+	gameplay.duration.title:SetText(loc.AU_FIELD_DURATION);
+	setTooltipForSameFrame(gameplay.duration.help, "RIGHT", 0, 5, loc.AU_FIELD_DURATION, loc.AU_FIELD_DURATION_TT);
 
-	gameplay.alwaysActive.Text:SetText(L.AU_FIELD_ALWAYS_ACTIVE);
-	setTooltipForSameFrame(gameplay.alwaysActive, "RIGHT", 0, 5, L.AU_FIELD_ALWAYS_ACTIVE, L.AU_FIELD_ALWAYS_ACTIVE_TT);
+	gameplay.alwaysActive.Text:SetText(loc.AU_FIELD_ALWAYS_ACTIVE);
+	setTooltipForSameFrame(gameplay.alwaysActive, "RIGHT", 0, 5, loc.AU_FIELD_ALWAYS_ACTIVE, loc.AU_FIELD_ALWAYS_ACTIVE_TT);
 	gameplay.alwaysActive:SetScript("OnClick", function()
-		gameplay.ensureExpiry:SetShown(gameplay.alwaysActive:GetChecked())
+		gameplay.ensureExpiry:SetShown(gameplay.alwaysActive:GetChecked());
 	end)
 	
-	gameplay.ensureExpiry.Text:SetText(L.AU_FIELD_ENSURE_EXPIRY);
-	setTooltipForSameFrame(gameplay.ensureExpiry, "RIGHT", 0, 5, L.AU_FIELD_ENSURE_EXPIRY, L.AU_FIELD_ENSURE_EXPIRY_TT);
+	gameplay.ensureExpiry.Text:SetText(loc.AU_FIELD_ENSURE_EXPIRY);
+	setTooltipForSameFrame(gameplay.ensureExpiry, "RIGHT", 0, 5, loc.AU_FIELD_ENSURE_EXPIRY, loc.AU_FIELD_ENSURE_EXPIRY_TT);
 	
-	gameplay.boundToCampaign.Text:SetText(L.AU_FIELD_BOUND_TO_CAMPAIGN);
-	setTooltipForSameFrame(gameplay.boundToCampaign, "RIGHT", 0, 5, L.AU_FIELD_BOUND_TO_CAMPAIGN, L.AU_FIELD_BOUND_TO_CAMPAIGN_TT);
+	gameplay.boundToCampaign.Text:SetText(loc.AU_FIELD_BOUND_TO_CAMPAIGN);
+	setTooltipForSameFrame(gameplay.boundToCampaign, "RIGHT", 0, 5, loc.AU_FIELD_BOUND_TO_CAMPAIGN, loc.AU_FIELD_BOUND_TO_CAMPAIGN_TT);
 	
-	gameplay.cancellable.Text:SetText(L.AU_FIELD_CANCELLABLE);
-	setTooltipForSameFrame(gameplay.cancellable, "RIGHT", 0, 5, L.AU_FIELD_CANCELLABLE, L.AU_FIELD_CANCELLABLE_TT);
+	gameplay.cancellable.Text:SetText(loc.AU_FIELD_CANCELLABLE);
+	setTooltipForSameFrame(gameplay.cancellable, "RIGHT", 0, 5, loc.AU_FIELD_CANCELLABLE, loc.AU_FIELD_CANCELLABLE_TT);
 
-	gameplay.hasInterval.Text:SetText(L.AU_FIELD_HAS_INTERVAL);
-	setTooltipForSameFrame(gameplay.hasInterval, "RIGHT", 0, 5, L.AU_FIELD_HAS_INTERVAL, L.AU_FIELD_HAS_INTERVAL_TT);
+	gameplay.hasInterval.Text:SetText(loc.AU_FIELD_HAS_INTERVAL);
+	setTooltipForSameFrame(gameplay.hasInterval, "RIGHT", 0, 5, loc.AU_FIELD_HAS_INTERVAL, loc.AU_FIELD_HAS_INTERVAL_TT);
 	gameplay.hasInterval:SetScript("OnClick", function()
 		if gameplay.hasInterval:GetChecked() then
-			local currInterval = tonumber(gameplay.interval:GetText())
+			local currInterval = tonumber(gameplay.interval:GetText());
 			if not currInterval or currInterval >= math.huge or currInterval <= 0 then
-				gameplay.interval:SetText("10")
+				gameplay.interval:SetText("10");
 			end
-			gameplay.interval:Show()
+			gameplay.interval:Show();
 		else
-			gameplay.interval:Hide()
+			gameplay.interval:Hide();
 		end
 	end)
 
-	gameplay.interval.title:SetText(L.AU_FIELD_INTERVAL);
-	setTooltipForSameFrame(gameplay.interval.help, "RIGHT", 0, 5, L.AU_FIELD_INTERVAL, L.AU_FIELD_INTERVAL_TT);
+	gameplay.interval.title:SetText(loc.AU_FIELD_INTERVAL);
+	setTooltipForSameFrame(gameplay.interval.help, "RIGHT", 0, 5, loc.AU_FIELD_INTERVAL, loc.AU_FIELD_INTERVAL_TT);
 
-	gameplay.inspectable.Text:SetText(L.AU_FIELD_INSPECTABLE);
-	setTooltipForSameFrame(gameplay.inspectable, "RIGHT", 0, 5, L.AU_FIELD_INSPECTABLE, L.AU_FIELD_INSPECTABLE_TT);
+	gameplay.inspectable.Text:SetText(loc.AU_FIELD_INSPECTABLE);
+	setTooltipForSameFrame(gameplay.inspectable, "RIGHT", 0, 5, loc.AU_FIELD_INSPECTABLE, loc.AU_FIELD_INSPECTABLE_TT);
 
-	gameplay.text:SetText(L.AURA_INTRO);
+	gameplay.text:SetText(loc.AURA_INTRO);
 
-	notes.title:SetText(L.EDITOR_NOTES);
+	notes.title:SetText(loc.EDITOR_NOTES);
 
 	-- Workflows links
 	linksStructure = {
 		{
-			text = L.AU_LINKS_ON_APPLY,
-			tt = L.AU_LINKS_ON_APPLY_TT,
+			text = loc.AU_LINKS_ON_APPLY,
+			tt = loc.AU_LINKS_ON_APPLY_TT,
 			icon = "Interface\\ICONS\\ability_priest_spiritoftheredeemer",
 			field = "OA",
 		},
 		{
-			text = L.AU_LINKS_ON_TICK,
-			tt = L.AU_LINKS_ON_TICK_TT,
+			text = loc.AU_LINKS_ON_TICK,
+			tt = loc.AU_LINKS_ON_TICK_TT,
 			icon = "Interface\\ICONS\\spell_holy_borrowedtime",
 			field = "OT",
 		},
 		{
-			text = L.AU_LINKS_ON_EXPIRE,
-			tt = L.AU_LINKS_ON_EXPIRE_TT,
+			text = loc.AU_LINKS_ON_EXPIRE,
+			tt = loc.AU_LINKS_ON_EXPIRE_TT,
 			icon = "Interface\\ICONS\\ability_titankeeper_cleansingorb",
 			field = "OE",
 		},
 		{
-			text = L.AU_LINKS_ON_CANCEL,
-			tt = L.AU_LINKS_ON_CANCEL_TT,
+			text = loc.AU_LINKS_ON_CANCEL,
+			tt = loc.AU_LINKS_ON_CANCEL_TT,
 			icon = "Interface\\ICONS\\misc_rnrredxbutton",
 			field = "OC",
 		},
-	}
+	};
 
 end
