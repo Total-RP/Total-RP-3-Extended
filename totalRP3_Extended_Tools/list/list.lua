@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 ---@type Ellyb;
-local Ellyb = Ellyb("totalRP3");
+local Ellyb = TRP3_API.Ellyb;
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
 
 local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
