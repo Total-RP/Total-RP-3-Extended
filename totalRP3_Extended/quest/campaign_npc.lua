@@ -107,7 +107,7 @@ local function onMouseOver()
 
 			npcTooltipBuilder:AddLine(leftIcons .. (npcData.NA or originalName), Ellyb.Color.CreateFromRGBA(1.00, 1.00, 1.00, 1.00), TRP3_API.ui.tooltip.getMainLineFontSize());
 
-			npcTooltipBuilder:AddLine("< " .. loc.QE_NPC .. " >", tooltipColors.TITLE, TRP3_API.ui.tooltip.getSubLineFontSize());
+			npcTooltipBuilder:AddLine("< " .. (npcData.FT or loc.QE_NPC) .. " >", tooltipColors.TITLE, TRP3_API.ui.tooltip.getSubLineFontSize());
 
 			--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 			-- Description
@@ -166,6 +166,55 @@ local function onTooltipUpdate(self, elapsed)
 	end
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Nameplates
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function onNamePlateDataUpdated(unitToken, displayInfo)
+	local guidType, npcID = getUnitDataFromGUID(unitToken);
+
+	if guidType ~= "Creature" or not npcID then
+		return;
+	end
+
+	local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+	local npcData = campaignClass and campaignClass.ND and campaignClass.ND[npcID] or nil;
+
+	if not npcData then
+		return;
+	end
+
+	-- Unit has NPC data; the 'shouldHide' flag should be set to false as this
+	-- is now considered to be a roleplay unit.
+
+	displayInfo.shouldHide = false;
+
+	-- If any display info field is left with a nil value then an appropriate
+	-- default will be displayed on the nameplate automatically; eg. if there's
+	-- 'name' is left as nil then the original name of the unit will be
+	-- displayed.
+	--
+	-- Filters act similar to chat message filters; it's possible that there's
+	-- multiple in-place so most fields should preserve existing values if we
+	-- have nothing ourselves to supply.
+
+	if TRP3_NamePlatesSettings.CustomizeNames and npcData.NA then
+		displayInfo.name = TRP3_NamePlatesUtil.GenerateCroppedNameText(npcData.NA);
+	end
+
+	if TRP3_NamePlatesSettings.CustomizeFullTitles and npcData.FT then
+		displayInfo.fullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(npcData.FT);
+	end
+
+	if TRP3_NamePlatesSettings.CustomizeIcons and npcData.IC then
+		displayInfo.icon = npcData.IC;
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Utilities
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 local UnitExists = UnitExists;
 
 function TRP3_API.quest.UnitIsCampaignNPC(unit)
@@ -189,6 +238,20 @@ function TRP3_API.quest.GetCampaignNPCName(unit)
 			local npcData = campaignClass.ND[npcID];
 			if npcData.NA then
 				return npcData.NA;
+			end
+		end
+	end
+	return nil;
+end
+
+function TRP3_API.quest.GetCampaignNPCTitle(unit)
+	local unitType, npcID = getUnitDataFromGUID(unit);
+	if unitType == "Creature" and npcID then
+		local campaignClass = TRP3_API.quest.getCurrentCampaignClass();
+		if campaignClass and campaignClass.ND and campaignClass.ND[npcID] then
+			local npcData = campaignClass.ND[npcID];
+			if npcData.FT then
+				return npcData.FT;
 			end
 		end
 	end
@@ -220,6 +283,14 @@ local function init()
 			print(getUnitDataFromGUID("target"));
 		end
 	});
+
+	TRP3_NamePlates:RegisterDisplayInfoFilter(onNamePlateDataUpdated);
+	TRP3_API.events.registerCallback(TRP3_API.quest.EVENT_ACTIVE_CAMPAIGN_CHANGED, function()
+		TRP3_NamePlates:UpdateAllNamePlates();
+	end);
+	TRP3_API.events.registerCallback(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
+		TRP3_NamePlates:UpdateAllNamePlates();
+	end);
 end
 
 TRP3_API.quest.npcInit = init;
