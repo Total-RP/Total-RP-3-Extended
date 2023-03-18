@@ -403,7 +403,7 @@ function TRP3_API.extended.tools.truncateDecimals(args, decimals)
 		local tenpow = 10 ^ decimals;
 		args = tostring( floor( tonumber(args) * tenpow + 0.5 ) / tenpow ) or "0";
 	end
-	return args;
+	return tostring(args);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
