@@ -237,7 +237,7 @@ local EFFECTS = {
 			---@type TotalRP3_Extended_Operand
 			local operand = TRP3_API.script.getOperand(operandID);
 			local code = "";
-			if operand and operand.codeReplacement then
+			if operand and operand.CodeReplacement then
 				code = operand:CodeReplacement(operandArgs);
 			end
 			return source, varName, code, operand;

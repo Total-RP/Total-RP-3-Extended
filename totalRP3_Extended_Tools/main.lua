@@ -19,7 +19,6 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local pairs, assert, tostring, strsplit, wipe, date = pairs, assert, tostring, strsplit, wipe, date;
 local EMPTY = TRP3_API.globals.empty;
-local Log = Utils.log;
 local loc = TRP3_API.loc;
 local fireEvent = TRP3_API.events.fireEvent;
 local after  = C_Timer.After;
@@ -170,7 +169,7 @@ local function openObjectAndGetDraft(rootClassID, forceDraftReload)
 		draftRegister[k] = nil;
 	end
 	if forceDraftReload or toolFrame.rootClassID ~= rootClassID then
-		Log.log(("Refreshing root draft.\nPrevious: %s\nNex: %s"):format(tostring(toolFrame.rootClassID), tostring(rootClassID)));
+		TRP3_API.Log(("Refreshing root draft.\nPrevious: %s\nNex: %s"):format(tostring(toolFrame.rootClassID), tostring(rootClassID)));
 		wipe(TRP3_Tools_Parameters.editortabs);
 		wipe(draftData);
 		toolFrame.rootClassID = rootClassID;

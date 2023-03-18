@@ -25,16 +25,9 @@ local Operand = TRP3_API.Ellyb.Class("TotalRP3_Extended_Operand");
 ---@param operandId string A unique ID to refer to this operand
 ---@param environment table<string, string> An environment table that will be used to map functions that will be made available to the operand code when executed.
 function Operand:initialize(operandId, environment)
-	Ellyb.Assertions.isType(operandId, "string", "operandId");
+	TRP3_API.Ellyb.Assertions.isType(operandId, "string", "operandId");
 	self.id = operandId
 	self.env = environment or {};
-
-	-- Backward compatibility: provide a non object oriented method
-	---@deprecated
-	self.codeReplacement = function(args)
-		TRP3_API.Ellyb.DeprecationWarnings.warn("Operand.codeReplacement(args) is deprecated, please use Operand:CodeReplacement(args) from now on.")
-		return self:CodeReplacement(args)
-	end
 
 	-- The operand register itself when created
 	TRP3_API.script.registerOperand(self)

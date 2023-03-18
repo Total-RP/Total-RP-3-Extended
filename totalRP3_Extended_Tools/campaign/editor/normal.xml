@@ -243,6 +243,15 @@
 								</Anchors>
 							</EditBox>
 
+							<EditBox parentKey="fulltitle" inherits="TRP3_TitledHelpEditBox">
+								<Size x="0" y="18"/>
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeKey="$parent.name"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+									<Anchor point="RIGHT" x="-20" y="0"/>
+								</Anchors>
+							</EditBox>
+
 							<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
 								<Anchors>
 									<Anchor point="BOTTOM" x="0" y="10"/>
@@ -251,7 +260,7 @@
 
 							<Button parentKey="icon" inherits="TRP3_IconButton">
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-50"/>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.fulltitle" x="0" y="-50"/>
 									<Anchor point="LEFT" x="25" y="0"/>
 								</Anchors>
 							</Button>
@@ -270,7 +279,7 @@
 									</Layer>
 								</Layers>
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.name" x="0" y="-21"/>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.fulltitle" x="0" y="-21"/>
 									<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.save" x="0" y="10"/>
 									<Anchor point="LEFT" x="70" y="0"/>
 									<Anchor point="RIGHT" x="-20" y="0"/>
