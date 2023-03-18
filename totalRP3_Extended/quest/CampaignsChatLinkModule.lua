@@ -24,9 +24,6 @@ local TRP3_API = TRP3_API;
 ---@type Ellyb
 local Ellyb = TRP3_API.Ellyb;
 
--- Lua imports
-local tcopy = Ellyb.Tables.copy;
-
 -- Total RP 3 imports
 local iconToString = TRP3_API.utils.str.icon;
 local loc = TRP3_API.loc;
@@ -43,7 +40,7 @@ function CampaignsChatLinksModule:GetLinkData(campaignID, canBeImported)
 	local campaignInfo = TRP3_API.extended.getClass(campaignID);
 
 	local tooltipData = {
-		campaignInfo = tcopy(campaignInfo),
+		campaignInfo = CopyTable(campaignInfo),
 		campaignID = campaignID,
 		canBeImported = canBeImported,
 	};
@@ -91,8 +88,7 @@ end
 function DatabaseCampaignImportButton:OnAnswerCommandReceived(data, sender)
 	local campaignID = data.campaignID;
 	local fromClass = data.campaignInfo;
-	local copiedData = {};
-	tcopy(copiedData, fromClass);
+	local copiedData = CopyTable(fromClass);
 
 	TRP3_DB.exchange[data.campaignID] = copiedData;
 
