@@ -523,7 +523,7 @@ local function onUnstashResponse(response, sender)
 			callForStashRefresh(stashContainer.sharedData[1], stashContainer.sharedData[2]);
 
 		elseif response == "0" then
-			Utils.log.log("Stash out of sync: " .. response);
+			TRP3_API.Log("Stash out of sync: " .. response);
 			stashContainer:Hide();
 			Utils.message.displayMessage(loc.DR_STASHES_ERROR_OUT_SYNC, 4);
 		end
@@ -541,13 +541,13 @@ local function onUnstashRequest(request, sender)
 
 	for _, stash in pairs(stashesData) do
 		if slotID and stash.id == stashID then
-			Utils.log.log("Stash found.");
+			TRP3_API.Log("Stash found.");
 			if slotID and stash.item[slotID] then
-				Utils.log.log("Stash slot found.");
+				TRP3_API.Log("Stash slot found.");
 				local localData = stash.item[slotID];
 				local localRootId = TRP3_API.extended.getRootClassID(localData.id);
 				if rootID == localRootId then
-					Utils.log.log("Stash item class matches.");
+					TRP3_API.Log("Stash item class matches.");
 
 					local localRootClass = getClass(localRootId);
 					local localVersion = localRootClass.MD.V or 0;
@@ -614,7 +614,7 @@ local function receiveStashResponse(response)
 		stashContainer.sync = false;
 		showStash(stashContainer.stashInfo, nil, stashContainer.sharedData);
 	else
-		Utils.log.log("Stash out of sync: " .. response);
+		TRP3_API.Log("Stash out of sync: " .. response);
 		stashContainer:Hide();
 		Utils.message.displayMessage(loc.DR_STASHES_ERROR_OUT_SYNC, 4);
 	end
@@ -713,7 +713,7 @@ local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 	mapID = tonumber(mapID or 0) or 0;
 	posY = tonumber(posY or 0) or 0;
 	posX = tonumber(posX or 0) or 0;
-	Utils.log.log(("%s is asking for stashes in zone %s."):format(sender, mapID));
+	TRP3_API.Log(("%s is asking for stashes in zone %s."):format(sender, mapID));
 	for _, stash in pairs(stashesData) do
 		if stash.uiMapID == mapID then
 			local inRadius = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
@@ -727,11 +727,11 @@ local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 end
 
 local function receivedStashesResponse(sender, id, name, icon, slot, cID, creator)
-	Utils.log.log(("Received stash %s from %s."):format(name, sender));
+	TRP3_API.Log(("Received stash %s from %s."):format(name, sender));
 	if TRP3_CastingBarFrame.castID == cID then
 		tinsert(stashResponse, {sender, id, name, icon, slot, creator});
 	else
-		Utils.log.log(("Wrong cast ID for stashes response."));
+		TRP3_API.Log(("Wrong cast ID for stashes response."));
 	end
 end
 

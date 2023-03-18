@@ -20,7 +20,6 @@ local Events, Utils = TRP3_API.events, TRP3_API.utils;
 local EMPTY = TRP3_API.globals.empty;
 local tostring, pairs, wipe = tostring, pairs, wipe;
 local loc = TRP3_API.loc;
-local Log = Utils.log;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
 -- Ellyb imports
@@ -71,7 +70,7 @@ local function onCampaignCallback(campaignID, scriptID, condition, eventID, ...)
 end
 
 local function clearCampaignHandlers()
-	Log.log("clearCampaignHandlers", Log.level.DEBUG);
+	TRP3_API.Log("clearCampaignHandlers");
 
 	for handlerID, eventID in pairs(campaignHandlers) do
 		if (CUSTOM_EVENTS[eventID] ~= nil) then
@@ -99,7 +98,7 @@ local function registerCampaignHandler(campaignID, event)
 end
 
 local function activateCampaignHandlers(campaignID, campaignClass)
-	Log.log("activateCampaignHandlers: " .. campaignID, Log.level.DEBUG);
+	TRP3_API.Log("activateCampaignHandlers: " .. campaignID);
 	for _, event in pairs(campaignClass.HA or EMPTY) do
 		if event.EV and not pcall(registerCampaignHandler, campaignID, event) then
 			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, campaignID)));
@@ -142,7 +141,7 @@ local function activateCampaign(campaignID, force)
 	end
 
 	if not TRP3_API.extended.classExists(campaignID) then
-		Log.log("Unknown campaignID, abord activateCampaign: " .. tostring(campaignID), Log.level.WARNING);
+		TRP3_API.Log("Unknown campaignID, abord activateCampaign: " .. tostring(campaignID));
 		return;
 	end
 
@@ -164,7 +163,7 @@ local function activateCampaign(campaignID, force)
 		Utils.message.displayMessage(loc.QE_CAMPAIGN_RESUME:format(campaignName), Utils.message.type.CHAT_FRAME);
 	end
 
-	Log.log("Activated campaign: " .. campaignID .. " with init at " .. tostring(init), Log.level.DEBUG);
+	TRP3_API.Log("Activated campaign: " .. campaignID .. " with init at " .. tostring(init));
 	activateCampaignHandlers(campaignID, campaignClass);
 
 	playerQuestLog.currentCampaign = campaignID;
@@ -246,7 +245,7 @@ function TRP3_API.quest.campaignInit()
 
 	-- Resuming last campaign
 	if playerQuestLog.currentCampaign then
-		Log.log("Init campaign on launch: " .. playerQuestLog.currentCampaign, Log.level.DEBUG);
+		TRP3_API.Log("Init campaign on launch: " .. playerQuestLog.currentCampaign);
 		activateCampaign(playerQuestLog.currentCampaign, true); -- Force reloading the current campaign
 	end
 

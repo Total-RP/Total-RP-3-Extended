@@ -19,7 +19,6 @@ local Events, Utils = TRP3_API.events, TRP3_API.utils;
 local assert, tinsert, wipe, pairs = assert, tinsert, wipe, pairs;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
-local Log = Utils.log;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
 -- Ellyb imports
@@ -57,7 +56,7 @@ local function onQuestCallback(campaignID, questID, scriptID, condition, eventID
 end
 
 local function clearQuestHandlers(questFullID)
-	Log.log("clearQuestHandlers: " .. questFullID, Log.level.DEBUG);
+	TRP3_API.Log("clearQuestHandlers: " .. questFullID);
 
 	if questHandlers[questFullID] then
 		for handlerID, eventID in pairs(questHandlers[questFullID]) do
@@ -101,7 +100,7 @@ end
 
 local function activateQuestHandlers(campaignID, questID, questClass)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
-	Log.log("activateQuestHandlers: " .. fullID, Log.level.DEBUG);
+	TRP3_API.Log("activateQuestHandlers: " .. fullID);
 
 	for _, event in pairs(questClass.HA or EMPTY) do
 		if event.EV and not pcall(registerQuestHandler, campaignID, questID, fullID, event) then
@@ -152,7 +151,7 @@ end
 TRP3_API.quest.startQuest = startQuest;
 
 local function startQuestForReal(campaignID, questID)
-	Log.log("Starting quest " .. campaignID .. " " .. questID);
+	TRP3_API.Log("Starting quest " .. campaignID .. " " .. questID);
 
 	local campaignClass = getClass(campaignID);
 	local questClass = getClass(campaignID, questID);
@@ -287,7 +286,7 @@ local function onStepCallback(campaignID, questID, stepID, scriptID, condition, 
 end
 
 local function clearStepHandlers(stepFullID)
-	Log.log("clearStepHandlers: " .. stepFullID, Log.level.DEBUG);
+	TRP3_API.Log("clearStepHandlers: " .. stepFullID);
 
 	if stepHandlers[stepFullID] then
 		for handlerID, eventID in pairs(stepHandlers[stepFullID]) do
@@ -311,7 +310,7 @@ end
 TRP3_API.quest.clearAllStepHandlers = clearAllStepHandlers;
 
 function TRP3_API.quest.clearStepHandlersForQuest(questFullID)
-	Log.log("clearStepHandlersForQuest: " .. questFullID, Log.level.DEBUG);
+	TRP3_API.Log("clearStepHandlersForQuest: " .. questFullID);
 
 	for stepFullID, _ in pairs(stepHandlers) do
 		if stepFullID:sub(1, questFullID:len()) == questFullID then
@@ -339,7 +338,7 @@ end
 
 local function activateStepHandlers(campaignID, questID, stepID, stepClass)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
-	Log.log("activateStepHandlers: " .. fullID, Log.level.DEBUG);
+	TRP3_API.Log("activateStepHandlers: " .. fullID);
 
 	for _, event in pairs(stepClass.HA or EMPTY) do
 		if event.EV and not pcall(registerStepHandler, campaignID, questID, stepID, fullID, event) then

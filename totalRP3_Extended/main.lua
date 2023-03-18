@@ -21,7 +21,6 @@ local pairs, strjoin, tostring, strtrim, wipe, assert, strsplit = pairs, strjoin
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.loc;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
-local Log = Utils.log;
 
 TRP3_API.extended = {
 	document = {},
@@ -93,7 +92,7 @@ local function getClass(...)
 	local id = getFullID(...);
 	local class = DB[id];
 	if not class then
-		Log.log("Unknown classID: " .. tostring(id));
+		TRP3_API.Log("Unknown classID: " .. tostring(id));
 	end
 	return class or missing;
 end
@@ -190,7 +189,7 @@ local function unregisterObject(objectFullID)
 	for id, _ in pairs(TRP3_DB.global) do
 		if id == objectFullID or id:sub(1, objectFullID:len()) == objectFullID then
 			TRP3_DB.global[id] = nil;
-			Log.log("Unregistered: " .. id);
+			TRP3_API.Log("Unregistered: " .. id);
 		end
 	end
 end
@@ -207,7 +206,7 @@ local function removeObject(objectFullID)
 		TRP3_DB.my[objectFullID] = nil;
 		TRP3_Tools_DB[objectFullID] = nil;
 	end
-	Log.log("Removed object: " .. objectFullID);
+	TRP3_API.Log("Removed object: " .. objectFullID);
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
 end
@@ -451,14 +450,14 @@ local function onStart()
 	TRP3_API.extended.SIGNAL_EVENT = "TRP3_SIGNAL";
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
 		if sender ~= Globals.player_id then
-			Log.log(("Received signal from %s"):format(sender));
+			TRP3_API.Log(("Received signal from %s"):format(sender));
 			Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v, sender);
 		end
 	end);
 	function TRP3_API.extended.sendSignal(id, value)
 		if UnitExists("target") and UnitIsPlayer("target") then
 			if UnitIsUnit("player", "target") then
-				Log.log("Received signal from yourself");
+				TRP3_API.Log("Received signal from yourself");
 				Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, id, value, Utils.str.getUnitID("player"));
 			else
 				AddOn_TotalRP3.Communications.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
@@ -469,12 +468,12 @@ local function onStart()
 	-- Calculate global environement with all ids
 	local countInner, countExchange, countMy;
 	countInner = registerDB(TRP3_DB.inner, 0);
-	Log.log(("Registred %s inner ceations"):format(countInner));
+	TRP3_API.Log(("Registred %s inner ceations"):format(countInner));
 	countExchange = registerDB(TRP3_DB.exchange, 0);
-	Log.log(("Registred %s exchange ceations"):format(countExchange));
+	TRP3_API.Log(("Registred %s exchange ceations"):format(countExchange));
 	countMy = registerDB(TRP3_DB.my, 0);
-	Log.log(("Registred %s my ceations"):format(countMy));
-	Log.log(("Registred %s total ceations"):format(countInner + countExchange + countMy));
+	TRP3_API.Log(("Registred %s my ceations"):format(countMy));
+	TRP3_API.Log(("Registred %s total ceations"):format(countInner + countExchange + countMy));
 
 	-- Start other systems
 	TRP3_API.security.initSecurity();
