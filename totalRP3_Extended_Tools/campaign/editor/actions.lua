@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Utils  = TRP3_API.globals, TRP3_API.utils;
+local Utils  = TRP3_API.utils;
 local IsControlKeyDown = IsControlKeyDown;
 local tremove, tinsert, wipe = tremove, tinsert, wipe;
 local tsize = Utils.table.size;

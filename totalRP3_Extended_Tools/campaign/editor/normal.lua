@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
+local Utils, EMPTY = TRP3_API.utils, TRP3_API.globals.empty;
 local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
 local tsize = Utils.table.size;
 local getFullID = TRP3_API.extended.getFullID;
