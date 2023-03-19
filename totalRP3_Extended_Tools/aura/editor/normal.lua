@@ -1,10 +1,9 @@
 
 local Utils = TRP3_API.utils;
-local pairs, max, tonumber, tremove, strtrim, assert, wipe = pairs, math.max, tonumber, tremove, strtrim, assert, wipe;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
-local toolFrame, main, pages, params, manager, linksStructure, display, gameplay, notes;
+local toolFrame, linksStructure, display, gameplay, notes;
 local numberToHexa, hexaToNumber, hexaToFloat = Utils.color.numberToHexa, Utils.color.hexaToNumber, Utils.color.hexaToFloat;
 
 local TABS = {
@@ -105,8 +104,8 @@ local function loadDataInner()
 end
 
 local function onIconSelected(icon)
-	display.preview.icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
-	display.preview.selectedIcon = icon;
+	display.preview.aura.class.BA.IC = icon;
+	display.preview:SetAuraAndShow(display.preview.aura);
 end
 
 local function load()
@@ -178,7 +177,7 @@ local function saveToDraft()
 	data.BA.FL = stEtN(strtrim(display.flavor.scroll.text:GetText()));
 	data.BA.OV = stEtN(strtrim(display.overlay:GetText()));
 	data.BA.HE = display.helpful:GetChecked();
-	data.BA.IC = display.preview.selectedIcon;
+	data.BA.IC = display.preview.aura.class.BA.IC;
 	
 	if gameplay.hasDuration:GetChecked() then
 		data.BA.DU = gameplay.duration:GetNumber();
@@ -285,13 +284,19 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 		else
 			display.preview.aura.color = nil;
 		end
-		if display.preview.aura.color then
-			display.preview.border:SetVertexColor(display.preview.aura.color.r, display.preview.aura.color.g, display.preview.aura.color.b);
-			display.preview.border:Show();
-		else
-			display.preview.border:Hide();
-		end
+		display.preview:SetAuraAndShow(display.preview.aura);
 	end
+	display.borderPicker:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+				TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+			else
+				TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, {parent = TRP3_ToolFrame}, {self.setColor, self.red, self.green, self.blue});
+			end
+		elseif button == "RightButton" then
+			self.setColor(nil, nil, nil);
+		end
+	end);
 	setTooltipForSameFrame(display.borderPicker, "RIGHT", 0, 5, loc.AU_FIELD_COLOR, loc.AU_FIELD_COLOR_TT .. loc.REG_PLAYER_COLOR_TT);
 
 	display.previewText:SetText(loc.EDITOR_PREVIEW);

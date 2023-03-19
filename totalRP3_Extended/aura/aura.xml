@@ -2,14 +2,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 	
-	<Frame name="TRP3_AuraFrame" parent="UIParent" enableMouse="true" movable="true" clampedToScreen="true">
+	<Script file="aura/aura_mixins.lua"/>
+	
+	<Frame name="TRP3_AuraBarFrame" parent="UIParent" enableMouse="true" movable="true" clampedToScreen="true" mixin="TRP3_AuraBarMixin">
 		<Size x="200" y="50"/>
 		<Anchors>
 			<Anchor point="BOTTOMRIGHT" x="-50" y="0" relativePoint="BOTTOMLEFT" relativeTo="Minimap" />
 		</Anchors>
 		<Layers>
 			<Layer level="ARTWORK">
-				<FontString parentKey="Text" text="" inherits="GameFontNormal" justifyH="CENTER" justifyV="BOTTOM" hidden="true">
+				<FontString parentKey="text" text="" parentArray="backgroundRegions" inherits="GameFontNormal" justifyH="CENTER" justifyV="BOTTOM" hidden="true">
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="0" y="-16"/>
@@ -18,7 +20,7 @@
 				</FontString>
 			</Layer>
 			<Layer level="BACKGROUND">
-				<Texture parentKey="BottomLeft" file="Interface\FrameGeneral\UIFrameBackground" hidden="true">
+				<Texture parentKey="bottomLeft" parentArray="backgroundRegions" file="Interface\FrameGeneral\UIFrameBackground" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT"/>
@@ -26,7 +28,7 @@
 					<TexCoords top="0.03125" left="0.015625" bottom="0.53125" right="0.265625"/>
 					<Color r="0.12" g="0.12" b="0.12" a="0.5"/>
 				</Texture>
-				<Texture parentKey="BottomRight" file="Interface\FrameGeneral\UIFrameBackground" hidden="true">
+				<Texture parentKey="bottomRight" parentArray="backgroundRegions" file="Interface\FrameGeneral\UIFrameBackground" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT"/>
@@ -34,7 +36,7 @@
 					<TexCoords top="0.03125" left="0.265625" bottom="0.53125" right="0.015625"/>
 					<Color r="0.12" g="0.12" b="0.12" a="0.5"/>
 				</Texture>
-				<Texture parentKey="TopLeft" file="Interface\FrameGeneral\UIFrameBackground" hidden="true">
+				<Texture parentKey="topLeft" parentArray="backgroundRegions" file="Interface\FrameGeneral\UIFrameBackground" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
@@ -42,7 +44,7 @@
 					<TexCoords top="0.53125" left="0.015625" bottom="0.03125" right="0.265625"/>
 					<Color r="0.12" g="0.12" b="0.12" a="0.5"/>
 				</Texture>
-				<Texture parentKey="TopRight" file="Interface\FrameGeneral\UIFrameBackground" hidden="true">
+				<Texture parentKey="topRight" parentArray="backgroundRegions" file="Interface\FrameGeneral\UIFrameBackground" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="TOPRIGHT"/>
@@ -50,116 +52,46 @@
 					<TexCoords top="0.53125" left="0.265625" bottom="0.03125" right="0.015625"/>
 					<Color r="0.12" g="0.12" b="0.12" a="0.5"/>
 				</Texture>
-				<Texture parentKey="TopEdge" hidden="true">
+				<Texture parentKey="topEdge" parentArray="backgroundRegions" hidden="true">
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="TOPRIGHT"/>
-						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.TopRight" relativePoint="BOTTOMLEFT"/>
+						<Anchor point="TOPLEFT" relativeKey="$parent.topLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.topRight" relativePoint="BOTTOMLEFT"/>
 					</Anchors>
 					<Color r="0.12" g="0.12" b="0.12" a="0.5"/>
 				</Texture>
-				<Texture parentKey="BottomEdge" hidden="true">
+				<Texture parentKey="bottomEdge" parentArray="backgroundRegions" hidden="true">
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.BottomLeft" relativePoint="TOPRIGHT"/>
-						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomRight" relativePoint="BOTTOMLEFT"/>
+						<Anchor point="TOPLEFT" relativeKey="$parent.bottomLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.bottomRight" relativePoint="BOTTOMLEFT"/>
 					</Anchors>
 					<Color r="0.12" g="0.12" b="0.12" a="0.5"/>
 				</Texture>
-				<Texture parentKey="Center" hidden="true">
+				<Texture parentKey="center" parentArray="backgroundRegions" hidden="true">
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="BOTTOMLEFT"/>
-						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomRight" relativePoint="TOPRIGHT"/>
+						<Anchor point="TOPLEFT" relativeKey="$parent.topLeft" relativePoint="BOTTOMLEFT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.bottomRight" relativePoint="TOPRIGHT"/>
 					</Anchors>
 					<Color r="0.12" g="0.12" b="0.12" a="0.5"/>
 				</Texture>
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnEnter>
-				self.Text:Show();
-				self.BottomLeft:Show();
-				self.BottomRight:Show();
-				self.TopLeft:Show();
-				self.TopRight:Show();
-				self.TopEdge:Show();
-				self.BottomEdge:Show();
-				self.Center:Show();
-			</OnEnter>
-			<OnLeave>
-				self.Text:Hide();
-				self.BottomLeft:Hide();
-				self.BottomRight:Hide();
-				self.TopLeft:Hide();
-				self.TopRight:Hide();
-				self.TopEdge:Hide();
-				self.BottomEdge:Hide();
-				self.Center:Hide();
-			</OnLeave>
-			<OnLoad>
-				self.UpdatePosition = function(self)
-					if self:GetNumPoints() >= 1 then
-						self.positionKey = self:GetPoint();
-					else
-						self.positionKey = "TOPRIGHT";
-					end
-					if self.positionKey == "TOPRIGHT" or self.positionKey == "TOP" or self.positionKey == "RIGHT" or self.positionKey == "CENTER" then
-						self.tooltipAnchor = "ANCHOR_BOTTOMLEFT";
-					elseif self.positionKey == "TOPLEFT" or self.positionKey == "LEFT" then
-						self.tooltipAnchor = "ANCHOR_BOTTOMRIGHT";
-					elseif self.positionKey == "BOTTOMLEFT" then
-						self.tooltipAnchor = "ANCHOR_TOPRIGHT";
-					else
-						self.tooltipAnchor = "ANCHOR_TOPLEFT";
-					end
-				end;
-				self:RegisterForDrag("LeftButton");
-			</OnLoad>
-			<OnDragStart>
-				self:StartMoving();
-			</OnDragStart>
-			<OnDragStop>
-				self:StopMovingOrSizing();
-				self:UpdatePosition();
-				TRP3_AuraFrameCollapseAndExpandButton:UpdatePosition();
-			</OnDragStop>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnLoad method="OnLoad"/>
+			<OnDragStart method="OnDragStart"/>
+			<OnDragStop method="OnDragStop"/>
 		</Scripts>
 	</Frame>
 	
-	<CheckButton name="TRP3_AuraFrameCollapseAndExpandButton" mixin="CollapseAndExpandButtonMixin">
+	<CheckButton name="TRP3_AuraFrameCollapseAndExpandButton" mixin="CollapseAndExpandButtonMixin,TRP3_AuraFrameCollapseAndExpandButtonMixin">
 		<Size x="15" y="30"/>
 		<Anchors>
-			<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="TRP3_AuraFrame"/>
+			<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="TRP3_AuraBarFrame"/>
 		</Anchors>
 		<Scripts>
-			<OnLoad>
-				self.UpdatePosition = function(self)
-					self:ClearAllPoints();
-					local p = TRP3_AuraFrame.positionKey;
-					if p == "TOPRIGHT" or p == "RIGHT" or p == "CENTER" then
-						self:SetPoint("LEFT", TRP3_AuraFrame, "RIGHT");
-						self.orientation = 0;
-						self.expandDirection = 0;
-					elseif p == "TOPLEFT" or p == "LEFT" or p == "BOTTOMLEFT" then
-						self:SetPoint("RIGHT", TRP3_AuraFrame, "LEFT");
-						self.orientation = 0;
-						self.expandDirection = 1;
-					elseif p == "TOP" then
-						self:SetPoint("BOTTOM", TRP3_AuraFrame, "TOP");
-						self.orientation = 1;
-						self.expandDirection = 0;
-					else
-						self:SetPoint("TOP", TRP3_AuraFrame, "BOTTOM");
-						self.orientation = 1;
-						self.expandDirection = 1;
-					end
-					self:UpdateOrientation();
-				end;
-			
-				self:SetChecked(true);
-			</OnLoad>
-			<OnClick>
-				TRP3_AuraFrame:SetShown(self:GetChecked());
-				self:UpdateOrientation();
-			</OnClick>
+			<OnLoad method="OnLoad"/>
+			<OnClick method="OnClick"/>
 		</Scripts>
 		<NormalTexture parentKey="NormalTexture" atlas="bag-arrow" useAtlasSize="false">
 			<Size x="10" y="16"/>
@@ -181,11 +113,11 @@
 		</HighlightTexture>
 	</CheckButton>
 	
-	<Frame name="TRP3_AuraTemplate" virtual="true">
+	<Frame name="TRP3_AuraTemplate" virtual="true" mixin="TRP3_AuraMixin">
 		<Size x="32" y="32"/>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture parentKey="icon" file="Interface\ICONS\ability_paladin_handoflight">
+				<Texture parentKey="icon">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -216,26 +148,13 @@
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnMouseUp>
-				if self.aura and button == "RightButton" then
-					TRP3_API.extended.auras.cancel(self.aura.persistent.id);
-				end
-			</OnMouseUp>
-			<OnEnter>
-				if self.aura then
-					if self:GetParent() == TRP3_AuraFrame then
-						TRP3_AuraFrame:GetScript("OnEnter")(TRP3_AuraFrame);
-					end
-					TRP3_API.extended.auras.showTooltip(self);
-				end
-			</OnEnter>
-			<OnLeave>
-				TRP3_API.extended.auras.hideTooltip();
-			</OnLeave>
+			<OnMouseUp method="OnMouseUp"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
 		</Scripts>
 	</Frame>
 	
-	<GameTooltip name="TRP3_AuraTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
+	<GameTooltip name="TRP3_AuraTooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
 	
 	<Script file="aura/aura.lua"/>
 	<Script file="aura/aura_effects.lua"/>

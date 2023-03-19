@@ -42,11 +42,11 @@
 				</Anchors>
 			</Button>
 			
-			<CheckButton parentKey="extend" inherits="TRP3_CheckBox" name="$parentExtend">
+			<Frame parentKey="mergeMode" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parent.id">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-50" relativePoint="BOTTOMLEFT" relativeKey="$parent.id"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="-20" y="-50"/>
 				</Anchors>
-			</CheckButton>
+			</Frame>
 
 		</Frames>
 	</Frame>

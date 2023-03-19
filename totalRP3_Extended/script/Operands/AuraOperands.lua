@@ -1,6 +1,3 @@
----@type TRP3_API
-local TRP3_API = TRP3_API;
-
 ---@type TotalRP3_Extended_Operand
 local Operand = TRP3_API.script.Operand;
 ---@type TotalRP3_Extended_NumericOperand

@@ -4,7 +4,6 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local registerEffectEditor = TRP3_API.extended.tools.registerEffectEditor;
 local registerOperandEditor = TRP3_API.extended.tools.registerOperandEditor;
 local loc = TRP3_API.loc;
-local TRP3_DB = TRP3_DB;
 local stEtN = TRP3_API.utils.str.emptyToNil;
 
 local function getAuraNameFromClassId(classId)
@@ -39,8 +38,7 @@ local function aura_apply_init()
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetFormattedText(
 				loc.EFFECT_AURA_APPLY_PREVIEW,
-				getAuraNameFromClassId(args[1]),
-				args[2] and loc.EFFECT_AURA_APPLY_EXTEND_FRAGMENT or ""
+				getAuraNameFromClassId(args[1])
 			);
 		end,
 		getDefaultArgs = function()
@@ -51,18 +49,22 @@ local function aura_apply_init()
 
 	setupAuraBrowser(editor);
 	
-	editor.extend.Text:SetText(loc.EFFECT_AURA_APPLY_EXTEND);
-	setTooltipForSameFrame(editor.extend, "RIGHT", 0, 5, loc.EFFECT_AURA_APPLY_EXTEND, loc.EFFECT_AURA_APPLY_EXTEND_TT);
+	local methods = {
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_AURA_APPLY_MERGE_MODE, loc.EFFECT_AURA_APPLY_DO_NOTHING), "", loc.EFFECT_AURA_APPLY_DO_NOTHING_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_AURA_APPLY_MERGE_MODE, loc.EFFECT_AURA_APPLY_REFRESH), "=", loc.EFFECT_AURA_APPLY_REFRESH_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_AURA_APPLY_MERGE_MODE, loc.EFFECT_AURA_APPLY_EXTEND), "+", loc.EFFECT_AURA_APPLY_EXTEND_TT},
+	}
+	TRP3_API.ui.listbox.setupListBox(editor.mergeMode, methods, nil, nil, 250, true);
 	
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;
 		editor.id:SetText(data[1] or "");
-		editor.extend:SetChecked(data[2]);
+		editor.mergeMode:SetSelectedValue(data[2] or "");
 	end
 
 	function editor.save(scriptData)
 		scriptData.args[1] = stEtN(strtrim(editor.id:GetText()));
-		scriptData.args[2] = editor.extend:GetChecked();
+		scriptData.args[2] = editor.mergeMode:GetSelectedValue();
 	end
 end
 
