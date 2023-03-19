@@ -35,7 +35,7 @@ local function decorateActionLine(line, actionIndex)
 	local data = toolFrame.specificDraft;
 	local actionData = data.AC[actionIndex];
 
-	TRP3_API.ui.frame.setupIconButton(line.Icon, TRP3_API.quest.getActionTypeIcon(actionData.TY) or Globals.icons.default);
+	TRP3_API.ui.frame.setupIconButton(line.Icon, TRP3_API.quest.getActionTypeIcon(actionData.TY) or TRP3_InterfaceIcons.Default);
 	line.Name:SetText(TRP3_API.quest.getActionTypeLocale(actionData.TY or UNKNOWN));
 	if actionData.CO then
 		line.Description:SetText("|cff00ff00" .. loc.CA_ACTIONS_COND_ON);
