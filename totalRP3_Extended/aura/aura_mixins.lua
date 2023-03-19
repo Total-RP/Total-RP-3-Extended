@@ -29,13 +29,13 @@ function TRP3_AuraMixin:Reset()
 end
 
 function TRP3_AuraMixin:SetAuraAndShow(aura)
-	self.icon:SetTexture("Interface\\ICONS\\" .. (aura.class.BA.IC or "TEMP"));	
+	self.icon:SetTexture("Interface\\ICONS\\" .. (aura.class.BA.IC or "TEMP"));
 	if aura.color then
 		self.border:SetVertexColor(aura.color.r, aura.color.g, aura.color.b);
 		self.border:Show();
 	else
 		self.border:Hide();
-	end		
+	end
 	self.aura = aura;
 	self:Show();
 end

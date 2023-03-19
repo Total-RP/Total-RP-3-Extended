@@ -48,14 +48,14 @@ local function aura_apply_init()
 	});
 
 	setupAuraBrowser(editor);
-	
+
 	local methods = {
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_AURA_APPLY_MERGE_MODE, loc.EFFECT_AURA_APPLY_DO_NOTHING), "", loc.EFFECT_AURA_APPLY_DO_NOTHING_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_AURA_APPLY_MERGE_MODE, loc.EFFECT_AURA_APPLY_REFRESH), "=", loc.EFFECT_AURA_APPLY_REFRESH_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_AURA_APPLY_MERGE_MODE, loc.EFFECT_AURA_APPLY_EXTEND), "+", loc.EFFECT_AURA_APPLY_EXTEND_TT},
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.mergeMode, methods, nil, nil, 250, true);
-	
+
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;
 		editor.id:SetText(data[1] or "");
@@ -88,7 +88,7 @@ local function aura_remove_init()
 	});
 
 	setupAuraBrowser(editor);
-	
+
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;
 		editor.id:SetText(data[1] or "");
@@ -124,14 +124,14 @@ local function aura_duration_init()
 
 	editor.duration.title:SetText(loc.AURA_DURATION);
 	setTooltipForSameFrame(editor.duration.help, "RIGHT", 0, 5, loc.AURA_DURATION, loc.AURA_DURATION_TT);
-	
+
 	local methods = {
 		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_SET), "=", loc.EFFECT_AURA_DURATION_SET_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_ADD), "+", loc.EFFECT_AURA_DURATION_ADD_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_SUBTRACT), "-", loc.EFFECT_AURA_DURATION_SUBTRACT_TT},
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.method, methods, nil, nil, 250, true);
-	
+
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;
 		editor.id:SetText(data[1] or "");
@@ -169,7 +169,7 @@ local function aura_var_set_init()
 	});
 
 	setupAuraBrowser(editor);
-	
+
 	-- Var name
 	editor.var.title:SetText(loc.EFFECT_VAR);
 	setTooltipForSameFrame(editor.var.help, "RIGHT", 0, 5, loc.EFFECT_VAR, "");
@@ -259,7 +259,7 @@ local function aura_property_init()
 			return {""};
 		end,
 	});
-	
+
 	registerOperandEditor("aura_duration", {
 		title = loc.OP_OP_AURA_DURATION,
 		description = loc.OP_OP_AURA_DURATION_TT,
@@ -272,7 +272,7 @@ local function aura_property_init()
 			return {""};
 		end,
 	});
-	
+
 	registerOperandEditor("aura_helpful", {
 		title = loc.OP_OP_AURA_HELPFUL,
 		description = loc.OP_OP_AURA_HELPFUL_TT,
@@ -285,7 +285,7 @@ local function aura_property_init()
 			return {""};
 		end,
 	});
-	
+
 	registerOperandEditor("aura_cancellable", {
 		title = loc.OP_OP_AURA_CANCELLABLE,
 		description = loc.OP_OP_AURA_CANCELLABLE_TT,
@@ -298,7 +298,7 @@ local function aura_property_init()
 			return {""};
 		end,
 	});
-	
+
 	registerOperandEditor("aura_name", {
 		title = loc.OP_OP_AURA_NAME,
 		description = loc.OP_OP_AURA_NAME_TT,
@@ -311,7 +311,7 @@ local function aura_property_init()
 			return {""};
 		end,
 	});
-	
+
 	registerOperandEditor("aura_icon", {
 		title = loc.OP_OP_AURA_ICON,
 		description = loc.OP_OP_AURA_ICON_TT,
@@ -324,7 +324,7 @@ local function aura_property_init()
 			return {""};
 		end,
 	});
-	
+
 	registerOperandEditor("aura_color", {
 		title = loc.OP_OP_AURA_COLOR,
 		description = loc.OP_OP_AURA_COLOR_TT,
@@ -337,7 +337,7 @@ local function aura_property_init()
 			return {""};
 		end,
 	});
-	
+
 	setupAuraBrowser(editor);
 
 	function editor.load(args)
@@ -359,13 +359,13 @@ local function check_var_init()
 		noPreview = true,
 		getText = function(args)
 			return loc.OP_OP_AURA_CHECK_VAR_PREVIEW:format(
-				getAuraNameFromClassId(args and args[1] or ""), 
+				getAuraNameFromClassId(args and args[1] or ""),
 				tostring((args or EMPTY)[2] or "var")
 			);
 		end,
 		editor = editor,
 	});
-	
+
 	registerOperandEditor("aura_var_check_n", {
 		title = loc.OP_OP_AURA_CHECK_VAR_N,
 		description = loc.OP_OP_AURA_CHECK_VAR_N_TT,
@@ -373,7 +373,7 @@ local function check_var_init()
 		noPreview = true,
 		getText = function(args)
 			return loc.OP_OP_AURA_CHECK_VAR_N_PREVIEW:format(
-				getAuraNameFromClassId(args and args[1] or ""), 
+				getAuraNameFromClassId(args and args[1] or ""),
 				tostring((args or EMPTY)[2] or "var")
 			);
 		end,
@@ -397,7 +397,7 @@ local function check_var_init()
 
 end
 
-function aura_id_init()
+local function aura_id_init()
 	local editor = TRP3_OperandEditorAuraId;
 	registerOperandEditor("aura_id", {
 		title = loc.OP_OP_AURA_ID,
@@ -411,7 +411,7 @@ function aura_id_init()
 		end,
 		editor = editor,
 	});
-	
+
 	editor.index.title:SetText(loc.OP_OP_AURA_ID_INDEX);
 	setTooltipForSameFrame(editor.index.help, "RIGHT", 0, 5, loc.OP_OP_AURA_ID_INDEX, loc.OP_OP_AURA_ID_INDEX_TT);
 
@@ -424,7 +424,7 @@ function aura_id_init()
 	end
 end
 
-function aura_count_init()
+local function aura_count_init()
 	registerOperandEditor("aura_count", {
 		title = loc.OP_OP_AURA_COUNT,
 		description = loc.OP_OP_AURA_COUNT_TT,
@@ -441,7 +441,7 @@ TRP3_API.extended.tools.initAuraEffects = function()
 	aura_duration_init();
 	aura_var_set_init();
 	run_workflow_init();
-	
+
 	aura_count_init();
 	aura_id_init();
 	aura_property_init();

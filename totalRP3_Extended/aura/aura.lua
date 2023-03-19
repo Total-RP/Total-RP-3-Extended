@@ -39,11 +39,11 @@ local AURA_ROW_LENGTH = 8;
 
 --[[ DATA MAP
 
-	            auraCore.activeAuras[i]                        TRP3_API.profile.getPlayerCurrentProfile().auras[j]
-	
-	                     |                                                              |
-	                    \|/                                                            \|/
-	
+				auraCore.activeAuras[i]                        TRP3_API.profile.getPlayerCurrentProfile().auras[j]
+
+						 |                                                              |
+						\|/                                                            \|/
+
 	+-----------------------------------------------+          +------------------------------------------------+
 	| t persistent  pointer to stored part ---------|--------> | s id            full class id                  |
 	| t class       cached class data (pointer)     |          | t vars          aura variables                 |
@@ -74,7 +74,7 @@ local function NextValidAura(auras, index)
 end
 
 local function EnumerateValidAuras(auras)
-    return NextValidAura, auras, 0;
+	return NextValidAura, auras, 0;
 end
 
 local auraCore = {
@@ -91,7 +91,7 @@ local auraCore = {
 };
 
 -- a more precise version of time() that includes milliseconds
-function auraCore:Now() 
+function auraCore:Now()
 	return self.baseTime + GetTime();
 end
 
@@ -100,26 +100,26 @@ function auraCore:Initialize()
 	self.auraFramePool = CreateFramePool("Frame", TRP3_AuraBarFrame, "TRP3_AuraTemplate", function(_, frame)
 		frame:Reset();
 	end);
-	
+
 	self.inspectionAuraFramePool = CreateFramePool("Frame", TRP3_InspectionFrame.Main, "TRP3_AuraTemplate", function(_, frame)
 		frame:Reset();
 	end);
-	
+
 	self.timeFormatterCompact = CreateFromMixins(SecondsFormatterMixin);
 	self.timeFormatterCompact:Init(0, SecondsFormatter.Abbreviation.OneLetter);
 	self.timeFormatterCompact:SetDesiredUnitCount(1);
-	
+
 	self.timeFormatterNormal = CreateFromMixins(SecondsFormatterMixin);
 	self.timeFormatterNormal:Init();
-	
+
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, function()
 		auraCore:LoadProfile();
 	end);
-	
+
 	Utils.event.registerHandler("PLAYER_LEAVING_WORLD", function()
 		auraCore:UpdateDormancy();
 	end);
-	 
+
 	self:LoadProfile();
 end
 
@@ -190,7 +190,7 @@ function auraCore:UnregisterAuraEvents(aura)
 end
 
 function auraCore:LoadProfile()
-	
+
 	self.isUpdating = false;
 	if self.timer then
 		self.timer:Cancel();
@@ -198,19 +198,19 @@ function auraCore:LoadProfile()
 	end
 
 	local now = self:Now();
-	
+
 	for _, aura in ipairs(self.activeAuras) do
 		self:UnregisterAuraEvents(aura);
 		aura.persistent.dormantSince = now;
 	end
-	
+
 	self.currentProfile = TRP3_API.profile.getPlayerCurrentProfile();
-	assert(self.currentProfile, "currentProfile is nil")
+	assert(self.currentProfile, "currentProfile is nil");
 	self.currentProfile.auras = self.currentProfile.auras or {};
 	self.activeAuras = {};
-	
+
 	self.currentCampaignClassId = TRP3_API.quest.getQuestLog().currentCampaign; -- might be nil
-	
+
 	for _, persistent in ipairs(self.currentProfile.auras) do
 		persistent.expiry = persistent.expiry or math.huge; -- Inf is stored as nil
 		local class = getClass(persistent.id);
@@ -224,7 +224,7 @@ function auraCore:LoadProfile()
 				dormancyDuration = now - persistent.dormantSince;
 			end
 			persistent.expiry = persistent.expiry + dormancyDuration;
-			
+
 			if class.BA.IV and class.BA.IV < math.huge then
 				local elapsedTime = now - persistent.lastTick - dormancyDuration;
 				persistent.lastTick = now - (elapsedTime % math.abs(class.BA.IV));
@@ -240,9 +240,9 @@ function auraCore:LoadProfile()
 			self:RegisterAuraEvents(aura);
 		end
 	end
-	
+
 	self:RemoveInvalidAuras();
-	
+
 	self:Update(true);
 end
 
@@ -251,7 +251,7 @@ function auraCore:AnalyzeAuraClass(aura)
 	aura.hasDynamicDescription = aura.class.BA.DE and aura.class.BA.DE:match("%$%{(.-)%}");
 	aura.hasDynamicOverlay     = aura.class.BA.OV and aura.class.BA.OV:match("%$%{(.-)%}");
 end
-	
+
 function auraCore:ModifyAuraDuration(aura, duration, method)
 	local currentExpiry = aura.persistent.expiry;
 	local newExpiry = currentExpiry;
@@ -301,7 +301,7 @@ function auraCore:SetAuraVariable(aura, opType, varName, value)
 		end
 		shouldUpdate = aura.hasDynamicOverlay;
 	end
-	
+
 	if shouldUpdate then
 		self:Update();
 	end
@@ -335,7 +335,7 @@ function auraCore:InsertNewAura(auraId, class)
 	};
 	self:AnalyzeAuraClass(aura);
 	tinsert(self.activeAuras, aura);
-	self:RegisterAuraEvents(aura);	
+	self:RegisterAuraEvents(aura);
 	if aura.class.LI and aura.class.LI.OA then
 		TRP3_API.script.executeClassScript(aura.class.LI.OA, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 	end
@@ -380,14 +380,14 @@ function auraCore:GetAuraAt(index)
 	for i, aura in EnumerateValidAuras(self.activeAuras) do
 		if i == index then
 			return aura;
-		end	
+		end
 	end
 	return nil;
 end
-	
+
 function auraCore:CountActiveAuras()
 	local count = 0;
-	for _, aura in EnumerateValidAuras(self.activeAuras) do
+	for _ in EnumerateValidAuras(self.activeAuras) do
 		count = count + 1;
 	end
 	return count;
@@ -398,20 +398,20 @@ function auraCore:IsAuraActive(auraId)
 end
 
 function auraCore:Update(doHardRefresh)
-	if self.isUpdating then 
+	if self.isUpdating then
 		self.doHardRefresh = doHardRefresh;
 		self.repeatUpdate = true;
 		return;
 	end
-	
+
 	self.isUpdating = true
 	if self.timer then
 		self.timer:Cancel();
 	end
-	
+
 	local now = self:Now();
 	self.doHardRefresh = doHardRefresh;
-	
+
 	for _ = 1,MAX_AURA_UPDATE_CYCLES do
 		for _, aura in EnumerateValidAuras(self.activeAuras) do
 			if aura.class.BA.IV and aura.class.BA.IV < math.huge then
@@ -438,13 +438,13 @@ function auraCore:Update(doHardRefresh)
 			break;
 		end
 	end
-	
+
 	if self:RemoveInvalidAuras() then
 		self.doHardRefresh = true;
 	end
-	
+
 	local nextTimestamp = math.huge;
-	
+
 	for _, aura in ipairs(self.activeAuras) do
 		aura.persistent.dormantSince = now;
 		if aura.class.BA.OV then
@@ -452,22 +452,22 @@ function auraCore:Update(doHardRefresh)
 		else
 			aura.overlay = nil;
 		end
-		
+
 		if aura.persistent.expiry < math.huge then
 			aura.duration = self.timeFormatterCompact:Format(aura.persistent.expiry - now);
 		else
 			aura.duration = nil;
 		end
-		
+
 		if aura.class.BA.IV and aura.class.BA.IV < math.huge then
 			local nextTick = aura.persistent.lastTick + math.abs(aura.class.BA.IV);
 			nextTimestamp = math.min(nextTimestamp, nextTick);
 		end
-		
+
 		if aura.hasDynamicOverlay then
 			nextTimestamp = math.min(nextTimestamp, now + DYN_AURA_UPDATE_INTERVAL);
 		end
-		
+
 		if aura.persistent.expiry < math.huge then
 			nextTimestamp = math.min(nextTimestamp, aura.persistent.expiry);
 			local timeTillExpiry = aura.persistent.expiry - now;
@@ -479,21 +479,21 @@ function auraCore:Update(doHardRefresh)
 				nextTimestamp = math.min(nextTimestamp, aura.persistent.expiry - math.floor(timeTillExpiry/3600) * 3600);
 			end
 		end
-		
+
 	end
-	
+
 	if self.doHardRefresh then
 		self:HardRefresh();
 	else
 		self:SoftRefresh();
 	end
-	
+
 	if nextTimestamp < math.huge then
-		self.timer = C_Timer.NewTimer(math.max(nextTimestamp - now, MIN_AURA_UPDATE_INTERVAL), function() 
+		self.timer = C_Timer.NewTimer(math.max(nextTimestamp - now, MIN_AURA_UPDATE_INTERVAL), function()
 			auraCore:Update();
 		end)
 	end
-	
+
 	self.repeatUpdate = false;
 	self.isUpdating = false;
 end
@@ -516,8 +516,8 @@ function auraCore:RemoveInvalidAuras()
 		end
 	end
 	-- 2nd pass: remove from all auras list
-	local n = #self.currentProfile.auras;
-	local j = 1;
+	n = #self.currentProfile.auras;
+	j = 1;
 	for i = 1,n do
 		if self.currentProfile.auras[i].invalid then
 			self.currentProfile.auras[i] = nil;
@@ -552,10 +552,10 @@ end
 -- do this, when auras are added or removed
 function auraCore:HardRefresh()
 	self.auraFramePool:ReleaseAll();
-	
+
 	self.buffs = {};
 	self.debuffs = {};
-	
+
 	for _, aura in ipairs(self.activeAuras) do
 		if aura.class.BA.HE then
 			tinsert(self.buffs, aura);
@@ -563,10 +563,10 @@ function auraCore:HardRefresh()
 			tinsert(self.debuffs, aura);
 		end
 	end
-	
+
 	local buffCount = #self.buffs;
 	local debuffCount = #self.debuffs;
-	
+
 	local debuffOffset = AURA_MARGIN_TOP;
 	if buffCount > 0 then
 		local buffAnchor = AnchorUtil.CreateAnchor("TOPRIGHT", TRP3_AuraBarFrame, "TOPRIGHT", -AURA_MARGIN, -AURA_MARGIN_TOP);
@@ -577,7 +577,7 @@ function auraCore:HardRefresh()
 		local debuffAnchor = AnchorUtil.CreateAnchor("TOPRIGHT", TRP3_AuraBarFrame, "TOPRIGHT", -AURA_MARGIN, -debuffOffset);
 		AnchorUtil.GridLayoutFactoryByCount(getDebuffByIndex, debuffCount, debuffAnchor, self.auraLayout);
 	end
-	
+
 	if buffCount > 0 or debuffCount > 0 then
 		local w = math.max(math.min(AURA_ROW_LENGTH, math.max(buffCount, debuffCount))*AURA_WIDTH + AURA_MARGIN*2, 200);
 		local h = AURA_MARGIN_TOP + AURA_MARGIN;
@@ -593,7 +593,7 @@ function auraCore:HardRefresh()
 		TRP3_AuraBarFrame:Hide();
 		TRP3_AuraFrameCollapseAndExpandButton:Hide();
 	end
-	
+
 	self:SoftRefresh();
 end
 
@@ -615,7 +615,7 @@ function auraCore:GetAuraTooltipLines(aura)
 	if aura.class.BA.NA then
 		title = aura.class.BA.NA;
 	end
-	
+
 	if aura.class.BA.CA and aura.class.BA.CA:len() > 0 then
 		if aura.color then
 			category = "|cff" ..aura.color.h .. aura.class.BA.CA .. "|r";
@@ -623,23 +623,23 @@ function auraCore:GetAuraTooltipLines(aura)
 			category = aura.class.BA.CA;
 		end
 	end
-	
+
 	if aura.class.BA.DE then
 		description = TRP3_API.script.parseArgs(aura.class.BA.DE, { object = aura.persistent });
 	end
-	
+
 	if aura.class.BA.FL then
 		flavor = aura.class.BA.FL;
 	end
-	
+
 	if aura.persistent.expiry < math.huge then
 		expiry = loc.AU_EXPIRY:format(self.timeFormatterNormal:Format(aura.persistent.expiry - self:Now()));
 	end
-	
+
 	if aura.class.BA.CC then
 		cancelText = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, CANCEL);
 	end
-	
+
 	return title, category, description, flavor, expiry, cancelText;
 end
 
@@ -658,7 +658,7 @@ function auraCore:GetAurasForInspection()
 						HE = aura.class.BA.HE,
 						FL = aura.class.BA.FL,
 						CO = aura.class.BA.CO,
-					}						
+					}
 				},
 				persistent = {
 					expiry = aura.persistent.expiry or math.huge
@@ -689,12 +689,12 @@ end
 
 function auraCore:UpdateInspectionFrame(auras)
 	self.inspectionAuraFramePool:ReleaseAll();
-	
+
 	if not auras then return end
-	
+
 	self.inspectBuffs = {};
 	self.inspectDebuffs = {};
-	
+
 	for _, aura in ipairs(auras) do
 		if aura.class.BA.HE then
 			tinsert(self.inspectBuffs, aura);
@@ -704,20 +704,20 @@ function auraCore:UpdateInspectionFrame(auras)
 		aura.persistent.expiry = aura.persistent.expiry or math.huge;
 		aura.color = self:GetAuraColorFromClass(aura.class);
 	end
-	
+
 	local buffCount = #self.inspectBuffs;
 	local debuffCount = #self.inspectDebuffs;
-	
+
 	if buffCount > 0 then
 		local buffAnchor = AnchorUtil.CreateAnchor("TOPLEFT", TRP3_InspectionFrame.Main.Model, "TOPLEFT", INSPECT_AURA_OFFSET, -INSPECT_AURA_OFFSET);
 		AnchorUtil.GridLayoutFactoryByCount(getInspectBuffByIndex, buffCount, buffAnchor, self.inspectBuffLayout);
 	end
-	
+
 	if debuffCount > 0 then
 		local debuffAnchor = AnchorUtil.CreateAnchor("TOPRIGHT", TRP3_InspectionFrame.Main.Model, "TOPRIGHT", -INSPECT_AURA_OFFSET, -INSPECT_AURA_OFFSET);
 		AnchorUtil.GridLayoutFactoryByCount(getInspectDebuffByIndex, debuffCount, debuffAnchor, self.inspectDebuffLayout);
 	end
-	
+
 end
 
 TRP3_API.extended.auras.apply = function(auraId, mergeMode)
@@ -828,18 +828,18 @@ TRP3_API.extended.auras.runWorkflow = function(auraId, workflowId, eArgs)
 			args.event = eArgs.event;
 		end
 		TRP3_API.script.executeClassScript(workflowId, aura.class.SC or {}, args, aura.persistent.id);
-	end	
+	end
 end
 
 TRP3_API.extended.auras.showTooltip = function(frame)
-	
+
 	if not frame.aura or frame.aura.persistent.invalid then return end
 
 	TRP3_AuraTooltip:Hide();
 	TRP3_AuraTooltip:SetOwner(frame, TRP3_AuraBarFrame.tooltipAnchor, 0, 0);
 
 	local title, category, description, flavor, expiry, cancelText = auraCore:GetAuraTooltipLines(frame.aura);
-	
+
 	local i = 1;
 	if title or category then
 		local r, g, b = TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB();
@@ -884,15 +884,15 @@ TRP3_API.extended.auras.showTooltip = function(frame)
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 	end
-	
+
 	TRP3_AuraTooltip:Show();
-	
+
 	C_Timer.After(TOOLTIP_REFRESH_INTERVAL, function()
 		if TRP3_AuraTooltip:IsOwned(frame) then
 			TRP3_API.extended.auras.showTooltip(frame);
 		end
 	end)
-	
+
 end
 
 TRP3_API.extended.auras.getAurasForInspection = function()

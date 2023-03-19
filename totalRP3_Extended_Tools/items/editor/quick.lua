@@ -258,7 +258,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame.list.bottom.item.templates.from.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_FROM_TT);
 	toolFrame.list.bottom.item.templates.aura.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_AURA);
 	toolFrame.list.bottom.item.templates.aura.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_AURA_TT);
-	
+
 	toolFrame.list.bottom.campaign.templates.blank.Name:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_BLANK);
 	toolFrame.list.bottom.campaign.templates.blank.InfoText:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_BLANK_TT);
 	toolFrame.list.bottom.campaign.templates.from.Name:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_FROM);
@@ -325,7 +325,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getDocumentItemData(generatedID), generatedID);
 		TRP3_API.extended.tools.goToPage(itemID);
 	end);
-	
+
 	toolFrame.list.bottom.item.templates.aura:SetScript("OnClick", function()
 		toolFrame.list.bottom.item.templates:Hide();
 		local generatedID = Utils.str.id();

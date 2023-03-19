@@ -4,7 +4,7 @@ local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local toolFrame, linksStructure, display, gameplay, notes;
-local numberToHexa, hexaToNumber, hexaToFloat = Utils.color.numberToHexa, Utils.color.hexaToNumber, Utils.color.hexaToFloat;
+local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 
 local TABS = {
 	MAIN = 1,
@@ -118,7 +118,7 @@ local function load()
 	if not data.BA then
 		data.BA = {};
 	end
-	
+
 	display.name:SetText(data.BA.NA or "");
 	display.category:SetText(data.BA.CA or "");
 	if data.BA.CO then
@@ -126,32 +126,32 @@ local function load()
 	else
 		display.borderPicker.setColor(nil);
 	end
-	
+
 	display.description.scroll.text:SetText(data.BA.DE or "");
 	display.flavor.scroll.text:SetText(data.BA.FL or "");
 	display.overlay:SetText(data.BA.OV or "");
 	display.helpful:SetChecked(data.BA.HE or false);
 	onIconSelected(data.BA.IC);
-	
+
 	local hasDuration = (data.BA.DU or math.huge) < math.huge;
 	gameplay.hasDuration:SetChecked(hasDuration);
 	gameplay.duration:SetShown(hasDuration);
 	gameplay.duration:SetText(data.BA.DU or "300");
-	
+
 	gameplay.alwaysActive:SetChecked(data.BA.AA or false);
 	gameplay.ensureExpiry:SetChecked(data.BA.EE or false);
 	gameplay.ensureExpiry:SetShown(data.BA.AA);
-	
+
 	gameplay.boundToCampaign:SetChecked(data.BA.BC or false);
-	
+
 	gameplay.cancellable:SetChecked(data.BA.CC or false);
-	
+
 	local hasInterval = (data.BA.IV or math.huge) < math.huge;
 	gameplay.hasInterval:SetChecked(hasInterval);
 	gameplay.interval:SetShown(hasInterval);
 	gameplay.interval:SetText(data.BA.IV or "10");
 	gameplay.inspectable:SetChecked(data.BA.WE or false);
-	
+
 	notes.frame.scroll.text:SetText(data.NT or "");
 
 	loadDataInner();
@@ -178,7 +178,7 @@ local function saveToDraft()
 	data.BA.OV = stEtN(strtrim(display.overlay:GetText()));
 	data.BA.HE = display.helpful:GetChecked();
 	data.BA.IC = display.preview.aura.class.BA.IC;
-	
+
 	if gameplay.hasDuration:GetChecked() then
 		data.BA.DU = gameplay.duration:GetNumber();
 		if data.BA.DU <= 0 then
@@ -187,19 +187,19 @@ local function saveToDraft()
 	else
 		data.BA.DU = nil;
 	end
-	
+
 	data.BA.AA = gameplay.alwaysActive:GetChecked();
 	data.BA.EE = gameplay.ensureExpiry:GetChecked();
 	data.BA.BC = gameplay.boundToCampaign:GetChecked();
 	data.BA.CC = gameplay.cancellable:GetChecked();
 	data.BA.WE = gameplay.inspectable:GetChecked();
-	
+
 	if gameplay.hasInterval:GetChecked() then
 		data.BA.IV = math.max(gameplay.interval:GetNumber(), 0.1); -- because I say so
 	else
 		data.BA.IV = nil;
 	end
-	
+
 	data.NT = stEtN(strtrim(notes.frame.scroll.text:GetText()));
 
 	storeDataScript();
@@ -249,10 +249,10 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 	notes = toolFrame.aura.normal.notes;
 
 	display.title:SetText(loc.AU_DISPLAY_ATT);
-	
+
 	display.name.title:SetText(loc.AU_FIELD_NAME);
 	setTooltipForSameFrame(display.name.help, "RIGHT", 0, 5, loc.AU_FIELD_NAME, loc.AU_FIELD_NAME_TT);
-	
+
 	display.category.title:SetText(loc.AU_FIELD_CATEGORY);
 	setTooltipForSameFrame(display.category.help, "RIGHT", 0, 5, loc.AU_FIELD_CATEGORY, loc.AU_FIELD_CATEGORY_TT);
 
@@ -269,10 +269,10 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 
 	display.overlay.title:SetText(loc.AU_FIELD_OVERLAY);
 	setTooltipForSameFrame(display.overlay.help, "RIGHT", 0, 5, loc.AU_FIELD_OVERLAY, loc.AU_FIELD_OVERLAY_TT);
-	
+
 	display.helpful.Text:SetText(loc.AU_FIELD_HELPFUL);
 	setTooltipForSameFrame(display.helpful, "RIGHT", 0, 5, loc.AU_FIELD_HELPFUL, loc.AU_FIELD_HELPFUL_TT);
-	
+
 	display.borderPicker.onSelection = function(red, green, blue)
 		if red and green and blue then
 			display.preview.aura.color = {
@@ -350,13 +350,13 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 	gameplay.alwaysActive:SetScript("OnClick", function()
 		gameplay.ensureExpiry:SetShown(gameplay.alwaysActive:GetChecked());
 	end)
-	
+
 	gameplay.ensureExpiry.Text:SetText(loc.AU_FIELD_ENSURE_EXPIRY);
 	setTooltipForSameFrame(gameplay.ensureExpiry, "RIGHT", 0, 5, loc.AU_FIELD_ENSURE_EXPIRY, loc.AU_FIELD_ENSURE_EXPIRY_TT);
-	
+
 	gameplay.boundToCampaign.Text:SetText(loc.AU_FIELD_BOUND_TO_CAMPAIGN);
 	setTooltipForSameFrame(gameplay.boundToCampaign, "RIGHT", 0, 5, loc.AU_FIELD_BOUND_TO_CAMPAIGN, loc.AU_FIELD_BOUND_TO_CAMPAIGN_TT);
-	
+
 	gameplay.cancellable.Text:SetText(loc.AU_FIELD_CANCELLABLE);
 	setTooltipForSameFrame(gameplay.cancellable, "RIGHT", 0, 5, loc.AU_FIELD_CANCELLABLE, loc.AU_FIELD_CANCELLABLE_TT);
 

@@ -13,7 +13,7 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 		return nil
 	end
 	local numTraits = 0;
-	for index, trait in pairs(profile.player.misc.PE) do
+	for _, trait in pairs(profile.player.misc.PE) do
 		if trait.AC then
 			numTraits = numTraits + 1
 		end
@@ -21,7 +21,7 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 	if numTraits == 0 then
 		return nil
 	end
-	
+
 	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
 	data.BA.IC = "ability_priest_spiritoftheredeemer";
 	data.BA.US = true;
@@ -38,7 +38,7 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 	data.IN = {
 	};
 	local currTrait = 0
-	for index, trait in pairs(profile.player.misc.PE) do
+	for _, trait in pairs(profile.player.misc.PE) do
 		if trait.AC then
 			currTrait = currTrait + 1
 			local innerId = "aura" .. tostring(currTrait)
@@ -70,7 +70,7 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 			};
 			if currTrait < numTraits then
 				step.n = tostring(currTrait + 1)
-			end	
+			end
 			data.SC["onUse"].ST[tostring(currTrait)] = step;
 		end
 	end

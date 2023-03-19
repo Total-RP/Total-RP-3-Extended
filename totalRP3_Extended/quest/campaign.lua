@@ -180,7 +180,6 @@ local function activateCampaign(campaignID, force)
 		end
 
 	end
-	
 end
 
 TRP3_API.quest.activateCampaign = activateCampaign;

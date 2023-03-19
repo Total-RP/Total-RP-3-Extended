@@ -16,7 +16,7 @@ end
 local AuraCountOperand = NumericOperand("aura_count", {
 	["getAuraCount"] = "TRP3_API.extended.auras.getCount"
 });
-function AuraCountOperand:CodeReplacement(args)
+function AuraCountOperand:CodeReplacement(_)
 	return [[getAuraCount()]];
 end
 
