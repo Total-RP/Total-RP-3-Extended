@@ -49,14 +49,10 @@ local AURA_ROW_LENGTH = 8;
 	| t class       cached class data (pointer)     |          | t vars          aura variables                 |
 	| s duration    remaining duration string       |          | n expiry        expiry timestamp               |
 	| s overlay     overlay string                  |          | n dormantSince  timestamp of last deactivation |
-	| b initialize  flag to run the onInit script   |          | n lastTick      timestamp of the last onTick   |
-	| b expired     flags the aura as expired       |          | b invalid       invalidated flag (aura should  |
-	| b cancel      flag to run the onCancel script |          |                 be removed on next Update)     |
-	| b cancelled   flags the aura as cancelled     |          +------------------------------------------------+
-	| b hasDynamicDescription   whether or not the  |
-	|               description text has tags       |
-	| b hasDynamicOverlay       whether or not the  |
-	|               overlay text has tags           |
+	| b hasDynamicDescription   whether or not the  |          | n lastTick      timestamp of the last onTick   |
+	|               description text has tags       |          | b invalid       invalidated flag (aura should  |
+	| b hasDynamicOverlay       whether or not the  |          |                 be removed on next Update)     |
+	|               overlay text has tags           |          +------------------------------------------------+
 	+-----------------------------------------------+
 
 ]]--
@@ -267,9 +263,6 @@ function auraCore:ModifyAuraDuration(aura, duration, method)
 	end
 	if newExpiry ~= currentExpiry then
 		aura.persistent.expiry = newExpiry;
-		if newExpiry > now then
-			aura.expired = nil;
-		end
 		self:Update();
 	end
 end
@@ -399,7 +392,7 @@ end
 
 function auraCore:Update(doHardRefresh)
 	if self.isUpdating then
-		self.doHardRefresh = doHardRefresh;
+		self.doHardRefresh = self.doHardRefresh or doHardRefresh;
 		self.repeatUpdate = true;
 		return;
 	end
