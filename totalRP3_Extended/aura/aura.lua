@@ -397,7 +397,7 @@ function auraCore:Update(doHardRefresh)
 		return;
 	end
 
-	self.isUpdating = true
+	self.isUpdating = true;
 	if self.timer then
 		self.timer:Cancel();
 	end
@@ -430,6 +430,7 @@ function auraCore:Update(doHardRefresh)
 		if not self.repeatUpdate then
 			break;
 		end
+		self.repeatUpdate = false;
 	end
 
 	if self:RemoveInvalidAuras() then
@@ -487,7 +488,6 @@ function auraCore:Update(doHardRefresh)
 		end)
 	end
 
-	self.repeatUpdate = false;
 	self.isUpdating = false;
 end
 
