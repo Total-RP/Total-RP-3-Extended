@@ -1,3 +1,16 @@
+# Changelog for version 1.5.6
+
+## Added
+
+- Added nameplate customization for campaign NPCs.
+
+## Fixed
+
+- Fixed Extended bindings not showing up properly in the Addons keybindings section.
+- Fixed space characters being trimmed at the beginning/end of a document page.
+- Fixed color issues in the creation information section.
+- Fixed an issue when trying to display text containing a variable with a boolean value.
+
 # Changelog for version 1.5.5
 
 ## Fixed
