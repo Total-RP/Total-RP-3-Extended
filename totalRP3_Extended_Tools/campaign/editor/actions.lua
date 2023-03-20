@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Utils  = TRP3_API.globals, TRP3_API.utils;
+local Utils  = TRP3_API.utils;
 local IsControlKeyDown = IsControlKeyDown;
 local tremove, tinsert, wipe = tremove, tinsert, wipe;
 local tsize = Utils.table.size;
@@ -35,7 +35,7 @@ local function decorateActionLine(line, actionIndex)
 	local data = toolFrame.specificDraft;
 	local actionData = data.AC[actionIndex];
 
-	TRP3_API.ui.frame.setupIconButton(line.Icon, TRP3_API.quest.getActionTypeIcon(actionData.TY) or Globals.icons.default);
+	TRP3_API.ui.frame.setupIconButton(line.Icon, TRP3_API.quest.getActionTypeIcon(actionData.TY) or TRP3_InterfaceIcons.Default);
 	line.Name:SetText(TRP3_API.quest.getActionTypeLocale(actionData.TY or UNKNOWN));
 	if actionData.CO then
 		line.Description:SetText("|cff00ff00" .. loc.CA_ACTIONS_COND_ON);
