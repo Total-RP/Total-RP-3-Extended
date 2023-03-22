@@ -312,6 +312,19 @@ local function aura_property_init()
 		end,
 	});
 
+	registerOperandEditor("aura_category", {
+		title = loc.OP_OP_AURA_CATEGORY,
+		description = loc.OP_OP_AURA_CATEGORY_TT,
+		returnType = "",
+		getText = function(args)
+			return loc.OP_OP_AURA_CATEGORY_PREVIEW:format(getAuraNameFromClassId(args and args[1] or ""));
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return {""};
+		end,
+	});
+
 	registerOperandEditor("aura_icon", {
 		title = loc.OP_OP_AURA_ICON,
 		description = loc.OP_OP_AURA_ICON_TT,

@@ -154,7 +154,7 @@
 		</Scripts>
 	</Frame>
 	
-	<GameTooltip name="TRP3_AuraTooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
+	<GameTooltip name="TRP3_AuraTooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="TRP3_TooltipTemplate" mixin="TRP3_AuraTooltipMixin"/>
 	
 	<Script file="aura/aura.lua"/>
 	<Script file="aura/aura_effects.lua"/>

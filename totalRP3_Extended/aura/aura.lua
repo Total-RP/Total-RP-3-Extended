@@ -18,8 +18,6 @@ local MAX_AURA_UPDATE_CYCLES = 10;
 ]]--
 local MIN_AURA_UPDATE_INTERVAL = 0.1;
 
-local TOOLTIP_REFRESH_INTERVAL = 0.2;
-
 --[[
 	Update frequency for dynamic auras. Since variables can change at any time, let's just update
 	auras every DYN_AURA_UPDATE_INTERVAL seconds, if they happen to display variables
@@ -107,6 +105,8 @@ function auraCore:Initialize()
 
 	self.timeFormatterNormal = CreateFromMixins(SecondsFormatterMixin);
 	self.timeFormatterNormal:Init();
+
+	TRP3_AuraTooltip:Init(self);
 
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, function()
 		auraCore:LoadProfile();
@@ -597,9 +597,6 @@ function auraCore:SoftRefresh()
 			aura.frame:SetAuraTexts(aura.duration, aura.overlay);
 		end
 	end
-	if TRP3_AuraTooltip:IsShown() then
-		TRP3_API.extended.auras.showTooltip(TRP3_AuraTooltip:GetOwner());
-	end
 end
 
 function auraCore:GetAuraTooltipLines(aura)
@@ -822,70 +819,6 @@ TRP3_API.extended.auras.runWorkflow = function(auraId, workflowId, eArgs)
 		end
 		TRP3_API.script.executeClassScript(workflowId, aura.class.SC or {}, args, aura.persistent.id);
 	end
-end
-
-TRP3_API.extended.auras.showTooltip = function(frame)
-
-	if not frame.aura or frame.aura.persistent.invalid then return end
-
-	TRP3_AuraTooltip:Hide();
-	TRP3_AuraTooltip:SetOwner(frame, TRP3_AuraBarFrame.tooltipAnchor, 0, 0);
-
-	local title, category, description, flavor, expiry, cancelText = auraCore:GetAuraTooltipLines(frame.aura);
-
-	local i = 1;
-	if title or category then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB();
-		TRP3_AuraTooltip:AddDoubleLine(title or "", category or "", r, g, b, r, g, b);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		_G["TRP3_AuraTooltipTextRight"..i]:SetFontObject(GameFontNormalLarge);
-		_G["TRP3_AuraTooltipTextRight"..i]:SetNonSpaceWrap(true);
-		i = i + 1;
-	end
-
-	if description and description:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
-		TRP3_AuraTooltip:AddLine(description, r, g, b,true);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		i = i + 1;
-	end
-
-	if flavor and flavor:len() > 0 then
-		TRP3_AuraTooltip:AddLine(flavor, 0.0, 0.667, 0.6,true); -- 00AA99
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		i = i + 1;
-	end
-
-	if expiry and expiry:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.GREEN:GetRGB();
-		TRP3_AuraTooltip:AddLine(expiry, r, g, b,true);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		i = i + 1;
-	end
-
-	if cancelText and cancelText:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
-		TRP3_AuraTooltip:AddLine(cancelText, r, g, b,true);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-	end
-
-	TRP3_AuraTooltip:Show();
-
-	C_Timer.After(TOOLTIP_REFRESH_INTERVAL, function()
-		if TRP3_AuraTooltip:IsOwned(frame) then
-			TRP3_API.extended.auras.showTooltip(frame);
-		end
-	end)
-
 end
 
 TRP3_API.extended.auras.getAurasForInspection = function()

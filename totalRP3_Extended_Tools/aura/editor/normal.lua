@@ -317,10 +317,7 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 		display.preview.aura.class.BA.CA = stEtN(strtrim(display.category:GetText()));
 		display.preview.aura.class.BA.FL = stEtN(strtrim(display.flavor.scroll.text:GetText()));
 		display.preview.aura.class.BA.CC = gameplay.cancellable:GetChecked();
-		TRP3_API.extended.auras.showTooltip(display.preview);
-	end);
-	display.preview:SetScript("OnLeave", function(self)
-		TRP3_API.extended.auras.hideTooltip();
+		TRP3_AuraTooltip:Attach(display.preview);
 	end);
 	display.preview:SetScript("OnMouseUp", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});

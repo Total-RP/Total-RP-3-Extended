@@ -56,6 +56,15 @@ function AuraNameOperand:CodeReplacement(args)
 	return ([[getAuraStringProperty(parseArgs("%s", args), "NA")]]):format(id);
 end
 
+local AuraCategoryOperand = Operand("aura_category", {
+	["parseArgs"] = "TRP3_API.script.parseArgs",
+	["getAuraStringProperty"] = "TRP3_API.extended.auras.getStringProperty"
+});
+function AuraCategoryOperand:CodeReplacement(args)
+	local id = getSafe(args, 1, "");
+	return ([[getAuraStringProperty(parseArgs("%s", args), "CA")]]):format(id);
+end
+
 local AuraIconOperand = Operand("aura_icon", {
 	["parseArgs"] = "TRP3_API.script.parseArgs",
 	["getAuraStringProperty"] = "TRP3_API.extended.auras.getStringProperty"

@@ -71,9 +71,9 @@ local function createInnerObject(innerID, innerType, innerMode, innerData)
 			},
 			BT = true,
 		};
-	elseif innerType == "AU" then
+	elseif innerType == TRP3_DB.types.AURA then
 		toolFrame.specificDraft.IN[innerID] = innerData or {
-			TY = "AU",
+			TY = TRP3_DB.types.AURA,
 			MD = {
 				MO = TRP3_DB.modes.NORMAL,
 			},

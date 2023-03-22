@@ -548,6 +548,7 @@ local getEvaluatedOperands = function(structure)
 			"aura_helpful",
 			"aura_cancellable",
 			"aura_name",
+			"aura_category",
 			"aura_icon",
 			"aura_color",
 		},
