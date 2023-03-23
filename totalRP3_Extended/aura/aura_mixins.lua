@@ -12,7 +12,7 @@ function TRP3_AuraTooltipMixin:Init(dataSource)
 	WHITE = TRP3_API.Ellyb.ColorManager.WHITE;
 	YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
 	GREEN = TRP3_API.Ellyb.ColorManager.GREEN;
-	DARKTURQUOISE = Ellyb.Color:new("#00AA99"):Freeze();
+	DARKTURQUOISE = TRP3_API.Ellyb.Color:new("#00AA99"):Freeze();
 end
 
 function TRP3_AuraTooltipMixin:Refresh(newOwner)
