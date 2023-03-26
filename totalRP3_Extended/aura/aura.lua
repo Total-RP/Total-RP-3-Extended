@@ -75,6 +75,7 @@ local auraCore = {
 	activeAuras = {},
 	timer       = nil,
 	isUpdating  = false,
+	scriptsEnabled = true,
 	buffs = {},
 	debuffs = {},
 	inspectBuffs = {},
@@ -119,6 +120,20 @@ function auraCore:Initialize()
 	self:LoadProfile();
 end
 
+function auraCore:SetScriptsEnabled(scriptsEnabled)
+	self.scriptsEnabled = scriptsEnabled;
+end
+
+function auraCore:IsScriptsEnabled()
+	return self.scriptsEnabled;
+end
+
+function auraCore:RunAuraScript(scriptId, classScripts, args, classId)
+	if self.scriptsEnabled then
+		TRP3_API.script.executeClassScript(scriptId, classScripts, args, classId);
+	end
+end
+
 function auraCore:InvalidateCampaignAuras(campaignId)
 	local hasChanges = false;
 	for _, persistent in ipairs(self.currentProfile.auras) do
@@ -132,6 +147,11 @@ function auraCore:InvalidateCampaignAuras(campaignId)
 		end
 	end
 	if hasChanges then
+		for _, aura in ipairs(self.activeAuras) do
+			if aura.persistent.invalid then
+				self:UnregisterAuraEvents(aura);
+			end
+		end
 		self:Update(true);
 	end
 end
@@ -150,7 +170,7 @@ local function onAuraEvent(aura, eventId, handler, ...)
 	end
 	local args = { object = aura.persistent, event = payload };
 	if not handler.CO or TRP3_API.script.generateAndRunCondition(handler.CO, args) then
-		TRP3_API.script.executeClassScript(handler.SC, aura.class.SC, args, aura.persistent.id);
+		auraCore:RunAuraScript(handler.SC, aura.class.SC, args, aura.persistent.id);
 	end
 end
 
@@ -237,7 +257,7 @@ function auraCore:LoadProfile()
 		end
 	end
 
-	self:RemoveInvalidAuras();
+	self:SetScriptsEnabled(true);
 
 	self:Update(true);
 end
@@ -330,7 +350,7 @@ function auraCore:InsertNewAura(auraId, class)
 	tinsert(self.activeAuras, aura);
 	self:RegisterAuraEvents(aura);
 	if aura.class.LI and aura.class.LI.OA then
-		TRP3_API.script.executeClassScript(aura.class.LI.OA, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
+		auraCore:RunAuraScript(aura.class.LI.OA, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 	end
 	self:Update(true);
 end
@@ -339,7 +359,7 @@ function auraCore:CancelAura(auraId)
 	local aura = self:FindAura(auraId);
 	if aura then
 		if aura.class.LI and aura.class.LI.OC then
-			TRP3_API.script.executeClassScript(aura.class.LI.OC, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
+			auraCore:RunAuraScript(aura.class.LI.OC, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 		end
 		aura.persistent.invalid = true;
 		self:UnregisterAuraEvents(aura);
@@ -412,13 +432,13 @@ function auraCore:Update(doHardRefresh)
 				if nextTick <= now then
 					aura.persistent.lastTick = nextTick;
 					if aura.class.LI and aura.class.LI.OT then
-						TRP3_API.script.executeClassScript(aura.class.LI.OT, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
+						auraCore:RunAuraScript(aura.class.LI.OT, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 					end
 				end
 			end
 			if aura.persistent.expiry <= now then
 				if aura.class.LI and aura.class.LI.OE then
-					TRP3_API.script.executeClassScript(aura.class.LI.OE, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
+					auraCore:RunAuraScript(aura.class.LI.OE, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 				end
 				if aura.persistent.expiry <= now then -- the script might have delayed the expiry
 					aura.persistent.invalid = true;
@@ -799,7 +819,8 @@ end
 
 TRP3_API.extended.auras.cancel = function(auraId)
 	local class = getClass(auraId);
-	if class.missing or not class.BA.CC then return false end
+	if class.missing then return false end
+	if auraCore:IsScriptsEnabled() and not class.BA.CC then return false end
 	return auraCore:CancelAura(auraId);
 end
 
@@ -817,7 +838,7 @@ TRP3_API.extended.auras.runWorkflow = function(auraId, workflowId, eArgs)
 			args.custom = eArgs.custom;
 			args.event = eArgs.event;
 		end
-		TRP3_API.script.executeClassScript(workflowId, aura.class.SC or {}, args, aura.persistent.id);
+		auraCore:RunAuraScript(workflowId, aura.class.SC or {}, args, aura.persistent.id);
 	end
 end
 
@@ -835,6 +856,14 @@ end
 
 TRP3_API.extended.auras.refresh = function()
 	auraCore:LoadProfile();
+end
+
+TRP3_API.extended.auras.setScriptsEnabled = function(enabled)
+	auraCore:SetScriptsEnabled(enabled);
+end
+
+TRP3_API.extended.auras.isScriptsEnabled = function()
+	return auraCore:IsScriptsEnabled();
 end
 
 TRP3_API.extended.auras.resetCampaignAuras = function(campaignId)
