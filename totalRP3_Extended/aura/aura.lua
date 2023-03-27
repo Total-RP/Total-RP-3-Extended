@@ -350,7 +350,7 @@ function auraCore:InsertNewAura(auraId, class)
 	tinsert(self.activeAuras, aura);
 	self:RegisterAuraEvents(aura);
 	if aura.class.LI and aura.class.LI.OA then
-		auraCore:RunAuraScript(aura.class.LI.OA, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
+		self:RunAuraScript(aura.class.LI.OA, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 	end
 	self:Update(true);
 end
@@ -359,7 +359,7 @@ function auraCore:CancelAura(auraId)
 	local aura = self:FindAura(auraId);
 	if aura then
 		if aura.class.LI and aura.class.LI.OC then
-			auraCore:RunAuraScript(aura.class.LI.OC, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
+			self:RunAuraScript(aura.class.LI.OC, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 		end
 		aura.persistent.invalid = true;
 		self:UnregisterAuraEvents(aura);
@@ -432,13 +432,13 @@ function auraCore:Update(doHardRefresh)
 				if nextTick <= now then
 					aura.persistent.lastTick = nextTick;
 					if aura.class.LI and aura.class.LI.OT then
-						auraCore:RunAuraScript(aura.class.LI.OT, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
+						self:RunAuraScript(aura.class.LI.OT, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 					end
 				end
 			end
 			if aura.persistent.expiry <= now then
 				if aura.class.LI and aura.class.LI.OE then
-					auraCore:RunAuraScript(aura.class.LI.OE, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
+					self:RunAuraScript(aura.class.LI.OE, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 				end
 				if aura.persistent.expiry <= now then -- the script might have delayed the expiry
 					aura.persistent.invalid = true;
