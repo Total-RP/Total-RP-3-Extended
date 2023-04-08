@@ -92,7 +92,7 @@ local function createTabBar()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Load ans save
+-- Load and save
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function loadDataInner()

@@ -7,74 +7,48 @@ local loc = TRP3_API.loc;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.extended.tools.getAuraItemData(id)
-
-	local profile = TRP3_API.profile.getPlayerCurrentProfile();
-	if not profile or not profile.player or not profile.player.misc or not profile.player.misc.PE then
-		return nil
-	end
-	local numTraits = 0;
-	for _, trait in pairs(profile.player.misc.PE) do
-		if trait.AC then
-			numTraits = numTraits + 1
-		end
-	end
-	if numTraits == 0 then
-		return nil
-	end
-
 	local data = TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.NORMAL);
 	data.BA.IC = "ability_priest_spiritoftheredeemer";
 	data.BA.US = true;
 	data.US = {
-		AC = loc.AU_EXAMPLE_ACTION,
+		AC = loc.AU_TEMPLATE_ACTION,
 		SC = "onUse"
 	};
 	data.SC = {
 		["onUse"] = {
 			ST = {
+				["1"] = {
+					e = {
+						{
+							id = "aura_apply",
+							args = {
+								id .. TRP3_API.extended.ID_SEPARATOR .. "aura",
+								"=",
+							},
+						},
+					},
+					t = "list",
+				}
 			}
 		}
 	};
 	data.IN = {
+		["aura"] = {
+			MD = {
+				MO = TRP3_DB.modes.NORMAL,
+			},
+			TY = TRP3_DB.types.AURA,
+			BA = {
+				NA = loc.AU_NEW_NAME,
+				DE = loc.AU_TEMPLATE_DESCRIPTION,
+				IC = "ability_priest_spiritoftheredeemer",
+				DU = 300,
+				HE = true,
+				CC = true,
+				WE = true,
+			},
+		},
 	};
-	local currTrait = 0
-	for _, trait in pairs(profile.player.misc.PE) do
-		if trait.AC then
-			currTrait = currTrait + 1
-			local innerId = "aura" .. tostring(currTrait)
-			data.IN[innerId] = {
-				MD = {
-					MO = TRP3_DB.modes.NORMAL,
-				},
-				TY = TRP3_DB.types.AURA,
-				BA = {
-					NA = trait.TI,
-					DE = trait.TX,
-					IC = trait.IC,
-					HE = true,
-					CC = true,
-					WE = true,
-				},
-			};
-			local step = {
-				e = {
-					{
-						id = "aura_apply",
-						args = {
-							id .. TRP3_API.extended.ID_SEPARATOR .. innerId,
-							false,
-						},
-					},
-				},
-				t = "list",
-			};
-			if currTrait < numTraits then
-				step.n = tostring(currTrait + 1)
-			end
-			data.SC["onUse"].ST[tostring(currTrait)] = step;
-		end
-	end
-
 	return data;
 end
 

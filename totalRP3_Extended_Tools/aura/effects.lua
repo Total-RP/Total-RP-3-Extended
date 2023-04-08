@@ -30,6 +30,11 @@ end
 
 local function aura_apply_init()
 	local editor = TRP3_EffectEditorAuraApply;
+	local mergeModeText = {
+		[""] = loc.EFFECT_AURA_APPLY_DO_NOTHING,
+		["="] = loc.EFFECT_AURA_APPLY_REFRESH,
+		["+"] = loc.EFFECT_AURA_APPLY_EXTEND,
+	};
 
 	registerEffectEditor("aura_apply", {
 		title = loc.EFFECT_AURA_APPLY,
@@ -38,11 +43,12 @@ local function aura_apply_init()
 		effectFrameDecorator = function(scriptStepFrame, args)
 			scriptStepFrame.description:SetFormattedText(
 				loc.EFFECT_AURA_APPLY_PREVIEW,
-				getAuraNameFromClassId(args[1])
+				getAuraNameFromClassId(args[1]),
+				mergeModeText[args[2] or ""] or mergeModeText[""]
 			);
 		end,
 		getDefaultArgs = function()
-			return {"", false};
+			return {"", ""};
 		end,
 		editor = editor;
 	});
@@ -110,7 +116,7 @@ local function aura_duration_init()
 			scriptStepFrame.description:SetFormattedText(
 				loc.EFFECT_AURA_DURATION_PREVIEW,
 				getAuraNameFromClassId(args[1]),
-				args[2],
+				args[2] or "0",
 				args[3]
 			);
 		end,
@@ -158,12 +164,12 @@ local function aura_var_set_init()
 				loc.EFFECT_VAR_AURA_CHANGE_PREVIEW,
 				getAuraNameFromClassId(args[1]),
 				args[2],
-				tostring(args[3]),
-				tostring(args[4])
+				args[3] or "",
+				args[4] or ""
 			);
 		end,
 		getDefaultArgs = function()
-			return {"", "[=]", "varName", 0};
+			return {"", "[=]", "varName", "0"};
 		end,
 		editor = editor,
 	});
@@ -217,7 +223,7 @@ local function run_workflow_init()
 			scriptStepFrame.description:SetFormattedText(
 				loc.EFFECT_AURA_RUN_WORKFLOW_PREVIEW,
 				getAuraNameFromClassId(args[1]),
-				tostring(args[2])
+				args[2] or ""
 			);
 		end,
 		getDefaultArgs = function()
@@ -358,7 +364,7 @@ local function aura_property_init()
 	end
 
 	function editor.save()
-		return {strtrim(editor.id:GetText()) or ""};
+		return {stEtN(strtrim(editor.id:GetText()))};
 	end
 end
 
@@ -373,7 +379,7 @@ local function check_var_init()
 		getText = function(args)
 			return loc.OP_OP_AURA_CHECK_VAR_PREVIEW:format(
 				getAuraNameFromClassId(args and args[1] or ""),
-				tostring((args or EMPTY)[2] or "var")
+				(args or EMPTY)[2] or "var"
 			);
 		end,
 		editor = editor,
@@ -387,7 +393,7 @@ local function check_var_init()
 		getText = function(args)
 			return loc.OP_OP_AURA_CHECK_VAR_N_PREVIEW:format(
 				getAuraNameFromClassId(args and args[1] or ""),
-				tostring((args or EMPTY)[2] or "var")
+				(args or EMPTY)[2] or "var"
 			);
 		end,
 		editor = editor,
@@ -405,7 +411,7 @@ local function check_var_init()
 	end
 
 	function editor.save()
-		return {strtrim(editor.id:GetText()) or "", strtrim(editor.var:GetText()) or "var"};
+		return {stEtN(strtrim(editor.id:GetText())), stEtN(strtrim(editor.var:GetText())) or "var"};
 	end
 
 end
@@ -433,7 +439,7 @@ local function aura_id_init()
 	end
 
 	function editor.save()
-		return {strtrim(editor.index:GetText()) or "1"};
+		return {stEtN(strtrim(editor.index:GetText())) or "1"};
 	end
 end
 

@@ -330,9 +330,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		toolFrame.list.bottom.item.templates:Hide();
 		local generatedID = Utils.str.id();
 		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getAuraItemData(generatedID), generatedID);
-		if itemID then
-			TRP3_API.extended.tools.goToPage(itemID); -- TODO maybe tell the user it didn't work
-		end
+		TRP3_API.extended.tools.goToPage(itemID);
 	end);
 
 	toolFrame.list.bottom.item.templates.from:SetScript("OnClick", function()

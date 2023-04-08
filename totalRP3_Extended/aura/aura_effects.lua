@@ -15,7 +15,7 @@ TRP3_API.extended.auras.EFFECTS = {
 			eArgs.LAST = 0;
 			TRP3_API.extended.auras.setDuration(
 				TRP3_API.script.parseArgs(cArgs[1] or "", eArgs),
-				tonumber(TRP3_API.script.parseArgs(cArgs[2] or "0", eArgs)),
+				tonumber(TRP3_API.script.parseArgs(cArgs[2], eArgs)) or 0,
 				cArgs[3] or "+"
 			);
 		end,

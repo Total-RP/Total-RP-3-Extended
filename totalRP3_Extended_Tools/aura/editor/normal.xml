@@ -30,20 +30,14 @@
 						</Anchors>
 					</EditBox>
 					
-					<CheckButton parentKey="helpful" inherits="TRP3_CheckBox" name="$parentHelpful">
+					<EditBox parentKey="overlay" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
 						<Anchors>
-							<Anchor point="TOP" x="0" y="3" relativePoint="TOP" relativeKey="$parent.name"/>
-							<Anchor point="LEFT" x="2" y="0" relativePoint="CENTER"/>
+							<Anchor point="TOP" x="0" y="0" relativePoint="TOP" relativeKey="$parent.name"/>
+							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+							<Anchor point="RIGHT" x="-35" y="-2"/>
 						</Anchors>
-					</CheckButton>
-					
-					<Button parentKey="preset" inherits="TRP3_CommonButton">
-						<Size x="120" y="20"/>
-						<Anchors>
-							<Anchor point="TOP" relativePoint="TOP" relativeKey="$parent.name" x="0" y="0"/>
-							<Anchor point="RIGHT" x="-30" y="0"/>
-						</Anchors>
-					</Button>
+					</EditBox>
 
 					<Frame parentKey="description" inherits="TRP3_TextArea">
 						<Size x="0" y="75"/>
@@ -78,27 +72,33 @@
 							</Layer>
 						</Layers>
 						<Anchors>
-							<Anchor point="LEFT" x="16" y="0" relativePoint="RIGHT" relativeKey="$parent.description"/>
+							<Anchor point="LEFT" x="18" y="0" relativePoint="RIGHT" relativeKey="$parent.description"/>
 							<Anchor point="RIGHT" x="-35" y="-2"/>
 						</Anchors>
 					</Frame>
 
-					<EditBox parentKey="overlay" inherits="TRP3_TitledHelpEditBox">
-						<Size x="0" y="18"/>
+					<CheckButton parentKey="helpful" inherits="TRP3_CheckBox" name="$parentHelpful">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.description"/>
-							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+							<Anchor point="TOPLEFT" x="0" y="-8" relativePoint="BOTTOMLEFT" relativeKey="$parent.description"/>
 						</Anchors>
-					</EditBox>
-					
+					</CheckButton>
+
+					<Button parentKey="preset" inherits="TRP3_CommonButton">
+						<Size x="120" y="20"/>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.description" x="0" y="-10"/>
+							<Anchor point="RIGHT" relativeKey="$parent.description" x="0" y="0"/>
+						</Anchors>
+					</Button>
+
 					<EditBox parentKey="category" inherits="TRP3_TitledHelpEditBox">
 						<Size x="0" y="18"/>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.overlay"/>
+							<Anchor point="TOPLEFT" x="8" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.helpful"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-45" y="0"/>
 						</Anchors>
 					</EditBox>
-					
+
 					<Button parentKey="borderPicker" name="$parentBorderColorPicker" inherits="TRP3_ColorPickerButton">
 						<Anchors>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeKey="$parent.category"/>
@@ -118,7 +118,7 @@
 						<FontString parentKey="previewText" inherits="SystemFont_Large" justifyH="LEFT" text="[TEXT_NAME]">
 							<Size x="300" y="0"/>
 							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.preview" x="15" y="-4"/>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.preview" x="15" y="-2"/>
 							</Anchors>
 							<Color r="0.95" g="0.95" b="0.95"/>
 						</FontString>
