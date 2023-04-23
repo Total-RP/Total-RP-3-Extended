@@ -50,18 +50,22 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 	end
 
 	if expiry and expiry:len() > 0 then
-		self:AddLine(GREEN(expiry), 1, 1, 1, true);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
+		self:AddLine(YELLOW(expiry), 1, 1, 1, true);
+		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if cancelText and cancelText:len() > 0 then
+		self:AddLine(" ", 1, 1, 1, true);
+		i = i + 1;
+
 		self:AddLine(cancelText, 1, 1, 1, true);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		i = i + 1;
 	end
 	self:Show();
 end
