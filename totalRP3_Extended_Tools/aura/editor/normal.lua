@@ -142,6 +142,12 @@ local function load()
 	gameplay.ensureExpiry:SetChecked(data.BA.EE or false);
 	gameplay.ensureExpiry:SetShown(data.BA.AA);
 
+	local isRootCampaign = toolFrame.rootDraft.TY == TRP3_DB.types.CAMPAIGN;
+	if isRootCampaign then
+		gameplay.boundToCampaign:Show();
+	else
+		gameplay.boundToCampaign:Hide();
+	end
 	gameplay.boundToCampaign:SetChecked(data.BA.BC or false);
 
 	gameplay.cancellable:SetChecked(data.BA.CC or false);

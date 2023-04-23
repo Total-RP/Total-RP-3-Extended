@@ -154,7 +154,7 @@
 					<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
 						<Size x="0" y="18"/>
 						<Anchors>
-							<Anchor point="TOP" x="0" y="0" relativePoint="TOP" relativeKey="$parent.hasDuration"/>
+							<Anchor point="TOP" x="0" y="-4" relativePoint="TOP" relativeKey="$parent.hasDuration"/>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
 							<Anchor point="RIGHT" x="-35" y="-2"/>
 						</Anchors>
@@ -172,16 +172,10 @@
 							<Anchor point="LEFT" x="2" y="0" relativePoint="CENTER"/>
 						</Anchors>
 					</CheckButton>
-					
-					<CheckButton parentKey="boundToCampaign" inherits="TRP3_CheckBox" name="$parentBoundToCampaign">
-						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.alwaysActive"/>
-						</Anchors>
-					</CheckButton>
-					
+
 					<CheckButton parentKey="cancellable" inherits="TRP3_CheckBox" name="$parentCancellable">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.boundToCampaign"/>
+							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.alwaysActive"/>
 						</Anchors>
 					</CheckButton>
 					
@@ -194,7 +188,7 @@
 					<EditBox parentKey="interval" inherits="TRP3_TitledHelpEditBox">
 						<Size x="0" y="18"/>
 						<Anchors>
-							<Anchor point="TOP" x="0" y="0" relativePoint="TOP" relativeKey="$parent.hasInterval"/>
+							<Anchor point="TOP" x="0" y="-4" relativePoint="TOP" relativeKey="$parent.hasInterval"/>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
 							<Anchor point="RIGHT" x="-35" y="-2"/>
 						</Anchors>
@@ -206,6 +200,12 @@
 						</Anchors>
 					</CheckButton>
 
+					<CheckButton parentKey="boundToCampaign" inherits="TRP3_CheckBox" name="$parentBoundToCampaign">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.inspectable"/>
+						</Anchors>
+					</CheckButton>
+
 				</Frames>
 				
 				<Layers>
@@ -213,7 +213,7 @@
 						<FontString parentKey="text" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 							<Size x="0" y="10"/>
 							<Anchors>
-								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.inspectable" x="0" y="-50"/>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.boundToCampaign" x="0" y="-35"/>
 								<Anchor point="LEFT" x="30" y="0"/>
 								<Anchor point="RIGHT" x="-30" y="0"/>
 								<Anchor point="BOTTOM" x="0" y="10"/>
