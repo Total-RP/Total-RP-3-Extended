@@ -229,6 +229,10 @@ TRP3_API.loc = {
 	CONF_MUSIC_METHOD_TT = "Determine how you will hear a local music when you are in range.",
 	CONF_SOUNDS_MAXRANGE = "Playback maximum range",
 	CONF_SOUNDS_MAXRANGE_TT = "Set the maximum range (in yards) within which you will hear local sounds/musics.\n\n|cff00ff00Usefull to avoid people playing sounds through the whole contient.\n\n|cffff9900Zero means no limit!",
+	CONF_NPC_TOOLTIP = "Campaign NPC tooltips",
+	CONF_NPC_HIDE_ORIGINAL = "Hide original tooltip",
+	CONF_NPC_EMBED_ORIGINAL = "Embed original tooltip",
+	CONF_NPC_EMBED_ORIGINAL_TT = "Adds the original tooltip text to the bottom of the NPC tooltip",
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SPEECH
@@ -1830,10 +1834,7 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	CONF_NPC_TOOLTIP = "Campaign NPC tooltips",
-	CONF_NPC_HIDE_ORIGINAL = "Hide original tooltip",
-	CONF_NPC_EMBED_ORIGINAL = "Embed original tooltip",
-	CONF_NPC_EMBED_ORIGINAL_TT = "Adds the original tooltip text to the bottom of the NPC tooltip",
+	CA_NPC_EDITOR_TITLE = "NPC title",
 
 }
 

@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
+local Utils, EMPTY = TRP3_API.utils, TRP3_API.globals.empty;
 local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
 local tsize = Utils.table.size;
 local getFullID = TRP3_API.extended.getFullID;
@@ -67,9 +67,9 @@ local function decorateNPCLine(line, npcID)
 	local data = toolFrame.specificDraft;
 	local npcData = data.ND[npcID];
 
-	TRP3_API.ui.frame.setupIconButton(line.Icon, npcData.IC or Globals.icons.profile_default);
+	TRP3_API.ui.frame.setupIconButton(line.Icon, npcData.IC or TRP3_InterfaceIcons.ProfileDefault);
 	line.Name:SetText(npcData.NA or loc.CA_NPC_NAME);
-	line.Description:SetText(npcData.DE or "");
+	line.Description:SetText(npcData.FT or npcData.DE or "");
 	line.ID:SetText(loc.CA_NPC_ID .. ": " .. npcID);
 	line.click.npcID = npcID;
 end
@@ -95,8 +95,9 @@ local function newNPC(npcID)
 		end
 	end
 	npc.editor.name:SetText("");
+	npc.editor.fulltitle:SetText("");
 	npc.editor.description.scroll.text:SetText("");
-	onNPCIconSelected(Globals.icons.profile_default);
+	onNPCIconSelected(TRP3_InterfaceIcons.ProfileDefault);
 	TRP3_API.ui.frame.configureHoverFrame(npc.editor, npc.list.add, "TOP", 0, 5, false);
 end
 
@@ -107,8 +108,9 @@ local function createFrom(npcID)
 		local npcData = toolFrame.specificDraft.ND[npcID];
 		newNPC(npcID);
 		npc.editor.name:SetText(npcData.NA or "");
+		npc.editor.fulltitle:SetText(npcData.FT or "");
 		npc.editor.description.scroll.text:SetText(npcData.DE or "");
-		onNPCIconSelected(npcData.IC or Globals.icons.profile_default);
+		onNPCIconSelected(npcData.IC or TRP3_InterfaceIcons.ProfileDefault);
 	end
 end
 
@@ -121,8 +123,9 @@ local function openNPC(npcID, frame)
 			npc.editor.oldID = npcID;
 			npc.editor.id:SetText(npcID);
 			npc.editor.name:SetText(npcData.NA or "");
+			npc.editor.fulltitle:SetText(npcData.FT or "");
 			npc.editor.description.scroll.text:SetText(npcData.DE or "");
-			onNPCIconSelected(npcData.IC or Globals.icons.profile_default);
+			onNPCIconSelected(npcData.IC or TRP3_InterfaceIcons.ProfileDefault);
 			TRP3_API.ui.frame.configureHoverFrame(npc.editor, frame, "RIGHT", 0, 5);
 		else
 			newNPC();
@@ -135,8 +138,9 @@ local function onNPCSaved()
 	local ID = tostring(tonumber(strtrim(npc.editor.id:GetText())) or 0);
 	local data = {
 		NA = stEtN(strtrim(npc.editor.name:GetText())),
+		FT = stEtN(strtrim(npc.editor.fulltitle:GetText())),
 		DE = stEtN(strtrim(npc.editor.description.scroll.text:GetText())),
-		IC = npc.editor.icon.selectedIcon or Globals.icons.profile_default
+		IC = npc.editor.icon.selectedIcon or TRP3_InterfaceIcons.ProfileDefault
 	}
 	if ID then
 		local structure = toolFrame.specificDraft.ND;
@@ -170,7 +174,7 @@ local function decorateQuestLine(line, questID)
 	local data = toolFrame.specificDraft;
 	local questData = data.QE[questID];
 
-	TRP3_API.ui.frame.setupIconButton(line.Icon, questData.BA.IC or Globals.icons.default);
+	TRP3_API.ui.frame.setupIconButton(line.Icon, questData.BA.IC or TRP3_InterfaceIcons.ProfileDefault);
 	line.Name:SetText(questData.BA.NA or UNKNOWN);
 	if questData.BA.IN then
 		line.ID:SetText(questID .. "\n|cff00ff00" .. loc.QE_AUTO_REVEAL);
@@ -519,6 +523,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	npc.editor.id.title:SetText(loc.CA_NPC_ID);
 	setTooltipForSameFrame(npc.editor.id.help, "RIGHT", 0, 5, loc.CA_NPC_ID, loc.CA_NPC_ID_TT);
 	npc.editor.name.title:SetText(loc.CA_NPC_EDITOR_NAME);
+	npc.editor.fulltitle.title:SetText(loc.CA_NPC_EDITOR_TITLE);
 	npc.editor.description.title:SetText(loc.CA_NPC_EDITOR_DESC);
 	npc.editor.icon:SetScript("OnClick", function(self)
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected});

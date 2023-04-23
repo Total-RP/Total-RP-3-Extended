@@ -19,7 +19,6 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local pairs, assert, tostring, strsplit, wipe, date = pairs, assert, tostring, strsplit, wipe, date;
 local EMPTY = TRP3_API.globals.empty;
-local Log = Utils.log;
 local loc = TRP3_API.loc;
 local fireEvent = TRP3_API.events.fireEvent;
 local after  = C_Timer.After;
@@ -177,7 +176,7 @@ local function openObjectAndGetDraft(rootClassID, forceDraftReload)
 		draftRegister[k] = nil;
 	end
 	if forceDraftReload or toolFrame.rootClassID ~= rootClassID then
-		Log.log(("Refreshing root draft.\nPrevious: %s\nNex: %s"):format(tostring(toolFrame.rootClassID), tostring(rootClassID)));
+		TRP3_API.Log(("Refreshing root draft.\nPrevious: %s\nNex: %s"):format(tostring(toolFrame.rootClassID), tostring(rootClassID)));
 		wipe(TRP3_Tools_Parameters.editortabs);
 		wipe(draftData);
 		toolFrame.rootClassID = rootClassID;
@@ -191,20 +190,20 @@ local function displayRootInfo(rootClassID, rootClass, classID, specificDraft)
 	assert(rootClass.MD, "No metadata MD in root class.");
 	assert(specificDraft.MD, "No metadata MD in specific class.");
 	local color = "|cffffff00";
-	local fieldFormat = "|cffff9900%s: " .. color .. "%s";
+	local fieldFormat = "|cffff9900%s: " .. color .. "%s|r";
 
 	local objectText = ("%s (%s: |cff00ffff%s|r)"):format(TRP3_API.inventory.getItemLink(rootClass, rootClassID), loc.ROOT_GEN_ID, rootClassID);
 	objectText = objectText .. "\n\n" .. fieldFormat:format(loc.ROOT_VERSION, rootClass.MD.V or 0);
-	objectText = objectText .. "\n\n|cffff9900" .. loc.ROOT_CREATED:format(color .. (rootClass.MD.CB or "?") .. "|cffff9900", color .. (rootClass.MD.CD or "?"));
-	objectText = objectText .. "\n\n|cffff9900" .. loc.ROOT_SAVED:format(color .. (rootClass.MD.SB or "?") .. "|cffff9900", color .. (rootClass.MD.SD or "?"));
+	objectText = objectText .. "\n\n|cffff9900" .. loc.ROOT_CREATED:format(color .. (rootClass.MD.CB or "?") .. "|r|cffff9900", "|r" .. color .. (rootClass.MD.CD or "?") .. "|r");
+	objectText = objectText .. "\n\n|cffff9900" .. loc.ROOT_SAVED:format(color .. (rootClass.MD.SB or "?") .. "|r|cffff9900", "|r" .. color .. (rootClass.MD.SD or "?") .. "|r");
 	toolFrame.root.text:SetText(objectText);
 
 	TRP3_API.ui.frame.setupFieldPanel(toolFrame.specific, getTypeLocale(specificDraft.TY), 150);
 	local specificText = "";
 	if rootClassID == classID then
-		specificText = specificText .. fieldFormat:format(loc.ROOT_GEN_ID, "|cff00ffff" .. classID);
+		specificText = specificText .. fieldFormat:format(loc.ROOT_GEN_ID, "|cff00ffff" .. classID .. "|r");
 	else
-		specificText = specificText .. fieldFormat:format(loc.SPECIFIC_INNER_ID, "|cff00ffff" .. classID);
+		specificText = specificText .. fieldFormat:format(loc.SPECIFIC_INNER_ID, "|cff00ffff" .. classID .. "|r");
 	end
 	specificText = specificText .. "\n\n" .. fieldFormat:format(loc.TYPE, getTypeLocale(specificDraft.TY));
 	specificText = specificText .. "\n\n" .. fieldFormat:format(loc.SPECIFIC_MODE, getModeLocale(specificDraft.MD.MO));
@@ -411,7 +410,7 @@ function TRP3_API.extended.tools.truncateDecimals(args, decimals)
 		local tenpow = 10 ^ decimals;
 		args = tostring( floor( tonumber(args) * tenpow + 0.5 ) / tenpow ) or "0";
 	end
-	return args;
+	return tostring(args);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

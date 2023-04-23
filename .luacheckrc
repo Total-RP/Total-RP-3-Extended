@@ -90,6 +90,7 @@ read_globals = {
 	"ChatTypeInfo",
 	"CheckInteractDistance",
 	"CombatLogGetCurrentEventInfo",
+	"CopyTable",
 	"CreateFrame",
 	"CreateFramePool",
 	"CreateFromMixins",
