@@ -31,7 +31,7 @@ local TABS = {
 	STEPS = 2,
 	INNER = 3,
 	WORKFLOWS = 4,
-	EXPERT = 5,
+	EVENTS = 5,
 	ACTIONS = 6
 }
 
@@ -314,7 +314,7 @@ local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 		TRP3_InnerObjectEditor:SetParent(toolFrame.quest);
 		TRP3_InnerObjectEditor:SetAllPoints();
 		TRP3_InnerObjectEditor:Show();
-	elseif currentTab == TABS.EXPERT then
+	elseif currentTab == TABS.EVENTS then
 		TRP3_LinksEditor:SetParent(toolFrame.quest);
 		TRP3_LinksEditor:SetAllPoints();
 		TRP3_LinksEditor:Show();
@@ -337,7 +337,7 @@ local function createTabBar()
 			{ loc.QE_STEPS, TABS.STEPS, 150 },
 			{ loc.IN_INNER, TABS.INNER, 150 },
 			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
-			{ loc.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.WO_LINKS, TABS.EVENTS, 150 },
 			{ loc.CA_ACTIONS, TABS.ACTIONS, 150 },
 		},
 		onTabChanged

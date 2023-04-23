@@ -10,7 +10,7 @@ local TABS = {
 	MAIN = 1,
 	WORKFLOWS = 2,
 	INNER = 3,
-	EXPERT = 4,
+	EVENTS = 4,
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -65,7 +65,7 @@ local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 		TRP3_InnerObjectEditor:SetParent(toolFrame.aura.normal);
 		TRP3_InnerObjectEditor:SetAllPoints();
 		TRP3_InnerObjectEditor:Show();
-	elseif currentTab == TABS.EXPERT then
+	elseif currentTab == TABS.EVENTS then
 		TRP3_LinksEditor:SetParent(toolFrame.aura.normal);
 		TRP3_LinksEditor:SetAllPoints();
 		TRP3_LinksEditor:Show();
@@ -85,7 +85,7 @@ local function createTabBar()
 			{ loc.EDITOR_MAIN, TABS.MAIN, 150 },
 			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
 			{ loc.IN_INNER, TABS.INNER, 150 },
-			{ loc.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.WO_LINKS, TABS.EVENTS, 150 },
 		},
 		onTabChanged
 	);

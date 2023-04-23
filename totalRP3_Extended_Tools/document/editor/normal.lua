@@ -24,7 +24,7 @@ local toolFrame, main, pages, params, manager, linksStructure;
 local TABS = {
 	MAIN = 1,
 	WORKFLOWS = 2,
-	EXPERT = 3,
+	EVENTS = 3,
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -152,7 +152,7 @@ local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.document.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
 		TRP3_ScriptEditorNormal:Show();
-	elseif currentTab == TABS.EXPERT then
+	elseif currentTab == TABS.EVENTS then
 		TRP3_LinksEditor:SetParent(toolFrame.document.normal);
 		TRP3_LinksEditor:SetAllPoints();
 		TRP3_LinksEditor:Show();
@@ -171,7 +171,7 @@ local function createTabBar()
 		{
 			{ loc.EDITOR_MAIN, TABS.MAIN, 150 },
 			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
-			{ loc.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.WO_LINKS, TABS.EVENTS, 150 },
 		},
 		onTabChanged
 	);

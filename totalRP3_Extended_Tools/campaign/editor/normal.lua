@@ -31,7 +31,7 @@ local TABS = {
 	QUESTS = 2,
 	INNER = 3,
 	WORKFLOWS = 4,
-	EXPERT = 5,
+	EVENTS = 5,
 	ACTIONS = 6
 }
 
@@ -345,7 +345,7 @@ local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 		innerEditor:SetParent(toolFrame.campaign.normal);
 		innerEditor:SetAllPoints();
 		innerEditor:Show();
-	elseif currentTab == TABS.EXPERT then
+	elseif currentTab == TABS.EVENTS then
 		linksEditor:SetParent(toolFrame.campaign.normal);
 		linksEditor:SetAllPoints();
 		linksEditor:Show();
@@ -368,7 +368,7 @@ local function createTabBar()
 			{ loc.QE_QUESTS, TABS.QUESTS, 150 },
 			{ loc.IN_INNER, TABS.INNER, 150 },
 			{ loc.WO_WORKFLOW, TABS.WORKFLOWS, 150 },
-			{ loc.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.WO_LINKS, TABS.EVENTS, 150 },
 			{ loc.CA_ACTIONS, TABS.ACTIONS, 150 },
 		},
 		onTabChanged
