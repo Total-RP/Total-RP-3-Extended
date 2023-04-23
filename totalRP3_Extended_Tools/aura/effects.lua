@@ -44,7 +44,8 @@ local function aura_apply_init()
 			scriptStepFrame.description:SetFormattedText(
 				loc.EFFECT_AURA_APPLY_PREVIEW,
 				getAuraNameFromClassId(args[1]),
-				mergeModeText[args[2] or ""] or mergeModeText[""]
+				loc.EFFECT_AURA_APPLY_MERGE_MODE,
+				"|cff00ff00" .. mergeModeText[args[2] or ""] .. "|r"
 			);
 		end,
 		getDefaultArgs = function()

@@ -11,7 +11,7 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 	data.BA.IC = "ability_priest_spiritoftheredeemer";
 	data.BA.US = true;
 	data.US = {
-		AC = loc.AU_TEMPLATE_ACTION,
+		AC = loc.EFFECT_AURA_APPLY,
 		SC = "onUse"
 	};
 	data.SC = {
