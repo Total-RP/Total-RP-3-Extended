@@ -117,6 +117,14 @@ function auraCore:Initialize()
 		auraCore:UpdateDormancy();
 	end);
 
+	TRP3_API.slash.registerCommand({
+		id = "debug_clear_auras",
+		helpLine = " " .. loc.DEBUG_CLEAR_AURAS,
+		handler = function()
+			auraCore:RemoveAllAuras();
+		end
+	});
+
 	self:LoadProfile();
 end
 
@@ -378,6 +386,14 @@ function auraCore:RemoveAura(auraId)
 		return true;
 	end
 	return false;
+end
+
+function auraCore:RemoveAllAuras()
+	for _, aura in EnumerateValidAuras(self.activeAuras) do
+		aura.persistent.invalid = true;
+		self:UnregisterAuraEvents(aura);
+		self:Update(true);
+	end
 end
 
 function auraCore:FindAura(auraId)

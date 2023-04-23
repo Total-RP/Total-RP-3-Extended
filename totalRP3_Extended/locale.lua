@@ -1833,7 +1833,7 @@ Please make sure to always give the player a way to get rid of an aura.
 	AU_LINKS_ON_CANCEL_TT = "Triggered when the aura is cancelled by the player",
 	AU_LINKS_ON_TICK = "On tick",
 	AU_LINKS_ON_TICK_TT = "Triggered when the aura ticks.",
-
+	DEBUG_CLEAR_AURAS = "Clear all auras on the current profile. Only use in case of emergency.",
 
 }
 
