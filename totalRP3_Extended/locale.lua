@@ -304,7 +304,6 @@ TRP3_API.loc = {
 	TYPE_LOOT = "Loot",
 	TYPE_DOCUMENT = "Document",
 	TYPE_DIALOG = "Cutscene",
-	TYPE_AURA = "Aura",
 	TYPE_ITEMS = "Item(s)",
 
 -- MODES
@@ -374,8 +373,6 @@ You can browse their website for other people's creations and paste them here.]]
 	DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT = "A container template.\nContainer can hold other items.",
 	DB_CREATE_ITEM_TEMPLATES_FROM = "Create from ...",
 	DB_CREATE_ITEM_TEMPLATES_FROM_TT = "Create a copy of an existing item.",
-	DB_CREATE_ITEM_TEMPLATES_AURA = "Aura item",
-	DB_CREATE_ITEM_TEMPLATES_AURA_TT = "An item template that gives you a buff.",
 	DB_ADD_ITEM = "Add to main inventory",
 	DB_TO_EXPERT = "Convert to expert mode",
 	DB_CREATE_CAMPAIGN = "Create campaign",
@@ -406,7 +403,6 @@ You can browse their website for other people's creations and paste them here.]]
 	SPECIFIC = "Specific object",
 	ITEM_ID = "Item ID",
 	QUEST_ID = "Quest ID",
-	AURA_ID = "Aura ID",
 
 -- Editor common
 	EDITOR_MORE = "More",
@@ -1277,6 +1273,7 @@ We should begin with some examples:
 	DI_GET_ID = "Target ID",
 	DI_GET_ID_TT = "Copy the target's NPC ID. Only works if your current target is an NPC.",
 
+
 	DEBUG_QUEST_STEP = "Go to a quest step.",
 	DEBUG_QUEST_STEP_USAGE = "Usage: /trp3 debug_quest_step questID stepID",
 	DEBUG_QUEST_START = "Start quest",
@@ -1690,6 +1687,16 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
+
+	-- TYPES
+	TYPE_AURA = "Aura",
+
+	-- DATABASE
+	DB_CREATE_ITEM_TEMPLATES_AURA = "Aura item",
+	DB_CREATE_ITEM_TEMPLATES_AURA_TT = "An item template that gives you a buff.",
+
+	-- Creation
+	AURA_ID = "Aura ID",
 
 	-- Aura
 	AURA_FRAME_TITLE = "Total RP 3 Extended Auras",
