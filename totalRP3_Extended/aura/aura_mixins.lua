@@ -19,10 +19,10 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 	local owner = newOwner or self:GetOwner();
 	self:Hide();
 	if not owner or not owner.aura or owner.aura.persistent.invalid then return end
-	
+
 	self:SetOwner(owner, TRP3_AuraBarFrame.tooltipAnchor, 0, 0);
 	local title, category, description, flavor, expiry, cancelText = auraDataSource:GetAuraTooltipLines(owner.aura);
-	
+
 	local i = 1;
 	if title or category then
 		self:AddDoubleLine(YELLOW(title or ""), category or "", 1, 1, 1, 1, 1, 1);
