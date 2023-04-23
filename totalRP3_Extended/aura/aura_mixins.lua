@@ -25,7 +25,7 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 
 	local i = 1;
 	if title or category then
-		self:AddDoubleLine(YELLOW(title or ""), category or "", 1, 1, 1, 1, 1, 1);
+		self:AddDoubleLine(YELLOW(title or ""), YELLOW(category or ""), 1, 1, 1, 1, 1, 1);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		_G["TRP3_AuraTooltipTextRight"..i]:SetFontObject(GameFontNormalLarge);

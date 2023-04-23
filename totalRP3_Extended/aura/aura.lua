@@ -643,11 +643,7 @@ function auraCore:GetAuraTooltipLines(aura)
 	end
 
 	if aura.class.BA.CA and aura.class.BA.CA:len() > 0 then
-		if aura.color then
-			category = "|cff" ..aura.color.h .. aura.class.BA.CA .. "|r";
-		else
-			category = aura.class.BA.CA;
-		end
+		category = aura.class.BA.CA;
 	end
 
 	if aura.class.BA.DE then
