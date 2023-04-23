@@ -1366,7 +1366,6 @@ If your aura runs for a very long time (e.g. an egg, that hatches after 3 real t
 	AU_PRESET_POISON = "Poison",
 	AU_PRESET_OTHER = "Other Debuff",
 	AU_TEMPLATE_ACTION = "buff yourself",
-	AU_TEMPLATE_DESCRIPTION = "your buff description here",
 	AU_FIELD_NAME = "Aura name",
 	AU_FIELD_NAME_TT = "It's your aura's name, as it will appear on the tooltip.",
 	AU_FIELD_CATEGORY = "Category",

@@ -40,7 +40,6 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 			TY = TRP3_DB.types.AURA,
 			BA = {
 				NA = loc.AU_NEW_NAME,
-				DE = loc.AU_TEMPLATE_DESCRIPTION,
 				IC = "ability_priest_spiritoftheredeemer",
 				DU = 300,
 				HE = true,
