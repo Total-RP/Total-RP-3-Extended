@@ -1279,17 +1279,18 @@ We should begin with some examples:
 -- Aura
 	AURA_FRAME_TITLE = "Total RP 3 Extended Auras",
 	AURA_INTRO = [[
-Auras (Buffs/Debuffs) are status effects that a player has.
+Auras (Buffs/Debuffs) are status effects applied to the character.
 
-An Extended aura is |cff00ff00bound to a player's profile|r. If the player switches their profile, auras from the first profile won't be visible anymore but they are still there. The aura will become "dormant".
-Alternatively, you can choose to bind the aura to the enclosing campaign, if it is an inner item of a campaign. This binding is more strict, since campaigns are also bound to profiles.
+An Extended aura is |cff00ff00bound to a character profile|r. If the player switches their profile, auras from the first profile will be paused until that profile is activated again.
 
-If your aura runs for a very long time (e.g. an egg, that hatches after 3 real time days), you might set the aura to "always active". This will cause to dormant time to be connsidered as run time.
+If your aura runs for a very long time (e.g. an egg, that hatches after 3 real time days), you might want to set the aura to "use real time". The aura duration will keep running while the profile is inactive or the player is logged out.
+
+Auras created as inner items of a campaign can be bound to it, so that they will be paused when the campaign is paused, and removed when the campaign is reset.
 ]],
 	AU_EXPIRY = "%1$s remaining",
 	AURA_DURATION = "Duration",
 	AURA_DURATION_TT = "Aura duration in seconds",
-	EFFECT_AURA_ID_TT = [[Please specify the aura full id.\n\nUse the "Browse" button below to search your database.]],
+	EFFECT_AURA_ID_TT = [[Please specify the aura full ID.\n\nUse the "Browse" button below to search your database.]],
 	EFFECT_AURA_APPLY = "Apply aura",
 	EFFECT_AURA_APPLY_TT = "Casts an aura on the player.\n\n|cffff9900If the aura is already present, it won't be overwritten.",
 	EFFECT_AURA_APPLY_PREVIEW = "Apply aura |cff00ff00%1$s|r (%2$s: %3$s)",
@@ -1374,18 +1375,18 @@ If your aura runs for a very long time (e.g. an egg, that hatches after 3 real t
 	AU_FIELD_DESCRIPTION = "Aura description",
 	AU_FIELD_DESCRIPTION_TT = "Tell the player what your aura does, but try to be concise, since it needs to fit within a tooltip.\n\n|cff00ff00You can use variable tags here.|r",
 	AU_FIELD_FLAVOR = "Secondary description",
-	AU_FIELD_FLAVOR_TT = [[This field can be used for "flavor" text, which isn't as important as the main description.
+	AU_FIELD_FLAVOR_TT = [[This field can be used for flavor text, which isn't as important as the main description.
 It will appear in the tooltip below the description.]],
 	AU_FIELD_OVERLAY = "Overlay text",
 	AU_FIELD_OVERLAY_TT = "Text that will appear on the aura icon, e.g. a stack counter.\n\n|cffff9900Keep this text VERY short, as the space on the icon is limited!|r\n\n|cff00ff00You can use variable tags here.|r",
 	AU_FIELD_HELPFUL = "Helpful",
 	AU_FIELD_HELPFUL_TT = "Is your aura helpful (buff) or harmful (debuff)?\n\nA helpful aura is usually something that the players want to have or keep, while a harmful aura is something they do not want to have. If you debuff a player, make sure to also give them a way out.",
-	AU_FIELD_HAS_DURATION = "Expire automatically",
+	AU_FIELD_HAS_DURATION = "Expiration time",
 	AU_FIELD_HAS_DURATION_TT = "This aura will expire after a given amount of time.\n\nWhen the aura expires, the |cff00ff00On expire|r event triggers.",
 	AU_FIELD_DURATION = "Duration",
 	AU_FIELD_DURATION_TT = "Enter how long the aura lasts (in seconds).\n\n60 seconds = 1 minute\n3600 seconds = 1 hour\n86400 seconds = 1 day",
 	AU_FIELD_ALWAYS_ACTIVE = "Use real time",
-	AU_FIELD_ALWAYS_ACTIVE_TT = [[The time you spend offline or on another profile normally doesn't count towards your aura run time, but with this option you can make it do.
+	AU_FIELD_ALWAYS_ACTIVE_TT = [[If checked, the time spent offline or on another profile will count towards the aura run time.
 
 This is useful for auras that last very long.
 
@@ -1395,9 +1396,9 @@ This is useful for auras that last very long.
 	AU_FIELD_ENSURE_EXPIRY_TT = [[Make sure the |cff00ff00On expire|r event triggers even if the aura expires while the player is logged off or on another profile.
 In that case, the workflow runs just after the next login or profile switch.]],
 	AU_FIELD_BOUND_TO_CAMPAIGN = "Bound to enclosing campaign",
-	AU_FIELD_BOUND_TO_CAMPAIGN_TT = "Make this aura depend on its enclosing campaign.\n\nIf the campaign is reset, the aura will be removed.\n\nIf the campaign is paused, the aura is paused as well.\n\n|cffff9900Works only, if the root object is a campaign.|r",
+	AU_FIELD_BOUND_TO_CAMPAIGN_TT = "Make this aura depend on its enclosing campaign.\n\nIf the campaign is reset, the aura will be removed.\n\nIf the campaign is paused, the aura is paused as well.\n\n|cffff9900Works only if the root object is a campaign.|r",
 	AU_FIELD_CANCELLABLE = "Can be cancelled by player",
-	AU_FIELD_CANCELLABLE_TT = [[Allow the player to remove the aura with a right mouse click.
+	AU_FIELD_CANCELLABLE_TT = [[Allow the aura to be removed with a right mouse click.
 
 When the player removes the aura, the |cff00ff00On cancel|r event triggers.
 
@@ -1408,7 +1409,7 @@ Please make sure to always give the player a way to get rid of an aura.
 	AU_FIELD_INTERVAL = "Tick interval",
 	AU_FIELD_INTERVAL_TT = "Enter the period (in seconds) between two ticks.",
 	AU_FIELD_INSPECTABLE = "Visible to others",
-	AU_FIELD_INSPECTABLE_TT = "If checked, other Extended users can see the aura when they inspect the player.",
+	AU_FIELD_INSPECTABLE_TT = "If checked, the aura will be visible to other Extended users when they inspect the player.",
 	AU_LINKS_ON_APPLY = "On apply",
 	AU_LINKS_ON_APPLY_TT = "Triggers just after the aura has been applied.",
 	AU_LINKS_ON_EXPIRE = "On expire",
