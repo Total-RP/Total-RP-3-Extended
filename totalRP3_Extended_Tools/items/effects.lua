@@ -373,9 +373,9 @@ local function item_roll_dice_init()
 		effectFrameDecorator = function(scriptStepFrame, args)
 			if args[2] ~= "" then
 				local source = sourcesText[args[3]] or "?";
-				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_DICE_PREVIEW_STORED:format(TRP3_API.Ellyb.ColorManager.GREEN(tostring(args[1])), TRP3_API.Ellyb.ColorManager.GREEN("(" .. source .. ") ") .. tostring(args[2])));
+				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_DICE_PREVIEW_STORED:format(TRP3_API.Colors.Green(tostring(args[1])), TRP3_API.Colors.Green("(" .. source .. ") ") .. tostring(args[2])));
 			else
-				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_DICE_PREVIEW:format(TRP3_API.Ellyb.ColorManager.GREEN(tostring(args[1]))));
+				scriptStepFrame.description:SetText(loc.EFFECT_ITEM_DICE_PREVIEW:format(TRP3_API.Colors.Green(tostring(args[1]))));
 			end
 		end,
 		getDefaultArgs = function()

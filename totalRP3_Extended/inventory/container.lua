@@ -64,25 +64,25 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 	title = getQualityColorText(class.BA.QA) .. name;
 
 	if class.BA.LE then
-		left = TRP3_API.Ellyb.ColorManager.WHITE(parseArgs(class.BA.LE, argsStructure));
+		left = TRP3_API.Colors.White(parseArgs(class.BA.LE, argsStructure));
 	end
 	if class.BA.RI then
-		right = TRP3_API.Ellyb.ColorManager.WHITE(parseArgs(class.BA.RI, argsStructure));
+		right = TRP3_API.Colors.White(parseArgs(class.BA.RI, argsStructure));
 	end
 
 	text1 = "";
 	if class.BA.QE then
-		text1 = TRP3_API.Ellyb.ColorManager.WHITE(ITEM_BIND_QUEST);
+		text1 = TRP3_API.Colors.White(ITEM_BIND_QUEST);
 	end
 	if class.BA.SB then
 		text1 = incrementLine(text1);
-		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(ITEM_SOULBOUND);
+		text1 = text1 .. TRP3_API.Colors.White(ITEM_SOULBOUND);
 	end
 	if isContainerByClass(class) then
 		local slotCount = (class.CO.SR or 5) * (class.CO.SC or 4);
 		local slotUsed = TRP3_API.inventory.countUsedSlot(class, slotInfo);
 		text1 = incrementLine(text1);
-		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(loc.IT_CON_TT:format(slotUsed, slotCount));
+		text1 = text1 .. TRP3_API.Colors.White(loc.IT_CON_TT:format(slotUsed, slotCount));
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
@@ -90,7 +90,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		if class.BA.UN > 1 then
 			uniqueText = uniqueText ..  " (" .. class.BA.UN .. ")";
 		end
-		text1 = text1 .. TRP3_API.Ellyb.ColorManager.WHITE(uniqueText);
+		text1 = text1 .. TRP3_API.Colors.White(uniqueText);
 	end
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
@@ -105,7 +105,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 	if class.BA.CO then
 		text1_lower = incrementLine(text1_lower);
-		text1_lower = text1_lower .. TRP3_API.Ellyb.ColorManager.CRAFTING_REAGENT(PROFESSIONS_USED_IN_COOKING);
+		text1_lower = text1_lower .. TRP3_API.Colors.CraftingReagent(PROFESSIONS_USED_IN_COOKING);
 	end
 
 	if class.BA.CR and slotInfo.madeBy then
@@ -118,7 +118,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 		extension1 = "";
 		local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * (class.BA.WE or 0));
 		local formatedWeight = TRP3_API.extended.formatWeight(weight);
-		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. " " .. TRP3_API.Ellyb.ColorManager.WHITE(formatedWeight);
+		extension1 = extension1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. " " .. TRP3_API.Colors.White(formatedWeight);
 
 		if (class.BA.VA or 0) > 0 or (isContainerByClass(class) and (slotInfo.totalValue or 0) > 0) then
 			extension2 = "";
@@ -129,7 +129,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 				value = (class.BA.VA or 0) * (slotInfo.count or 1);
 			end
 			value = GetCoinTextureString(value);
-			extension2 = extension2 .. TRP3_API.Ellyb.ColorManager.WHITE(value);
+			extension2 = extension2 .. TRP3_API.Colors.White(value);
 
 		end
 
@@ -150,7 +150,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 			if class.missing then
 				text2 = text2 .. "\n";
-				text2 = text2 .. TRP3_API.Ellyb.ColorManager.YELLOW(loc.IT_CON_TT_MISSING_CLASS .. ":|cffff9900 " .. slotInfo.id);
+				text2 = text2 .. TRP3_API.Colors.Yellow(loc.IT_CON_TT_MISSING_CLASS .. ":|cffff9900 " .. slotInfo.id);
 			else
 				if TRP3_DB.exchange[rootClassID] or TRP3_DB.my[rootClassID] then
 					text2 = text2 .. "\n";
@@ -163,7 +163,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 				end
 				if not rootClass.MD.tV or rootClass.MD.tV < Globals.extended_version then
 					text2 = text2 .. "\n\n";
-					text2 = text2 .. TRP3_API.Ellyb.ColorManager.ORANGE(loc.SET_TT_OLD:format(TRP3_API.extended.tools.getClassVersion(rootClass)));
+					text2 = text2 .. TRP3_API.Colors.Orange(loc.SET_TT_OLD:format(TRP3_API.extended.tools.getClassVersion(rootClass)));
 				end
 			end
 		end
@@ -177,8 +177,8 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 			end
 		end
 		if alertCount > 0 then
-			extension1 = TRP3_API.Ellyb.ColorManager.YELLOW(loc.SET_TT_DETAILS_2:format(alertCount));
-			extension2 = TRP3_API.Ellyb.ColorManager.YELLOW(loc.SET_TT_DETAILS_1);
+			extension1 = TRP3_API.Colors.Yellow(loc.SET_TT_DETAILS_2:format(alertCount));
+			extension2 = TRP3_API.Colors.Yellow(loc.SET_TT_DETAILS_1);
 		end
 	end
 
@@ -194,7 +194,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 
 	local i = 1;
 	if title and title:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		local r, g, b = TRP3_API.Colors.White:GetRGB();
 		TRP3_ItemTooltip:AddLine(title, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
@@ -202,7 +202,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if (left and left:len() > 0) or (right and right:len() > 0) then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		local r, g, b = TRP3_API.Colors.White:GetRGB();
 		TRP3_ItemTooltip:AddDoubleLine(left or "", right or "", r, g, b, r, g, b);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
@@ -212,7 +212,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text1 and text1:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
+		local r, g, b = TRP3_API.Colors.Yellow:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
 		TRP3_ItemTooltip:AddLine(text1, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
@@ -221,7 +221,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text1_lower and text1_lower:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.GREEN:GetRGB();	-- corresponds to color("g") = 00FF00 for the use text
+		local r, g, b = TRP3_API.Colors.Green:GetRGB();	-- corresponds to color("g") = 00FF00 for the use text
 		TRP3_ItemTooltip:AddLine(text1_lower, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
@@ -230,7 +230,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if (extension1 and extension1:len() > 0) or (extension2 and extension2:len() > 0) then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		local r, g, b = TRP3_API.Colors.White:GetRGB();
 		TRP3_ItemTooltip:AddDoubleLine(extension1 or "", extension2 or "", r, g, b, r, g, b);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
@@ -240,7 +240,7 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	end
 
 	if text2 and text2:len() > 0 then
-		local r, g, b = TRP3_API.Ellyb.ColorManager.WHITE:GetRGB();
+		local r, g, b = TRP3_API.Colors.White:GetRGB();
 		TRP3_ItemTooltip:AddLine(text2, r, g, b,true);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
 		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);

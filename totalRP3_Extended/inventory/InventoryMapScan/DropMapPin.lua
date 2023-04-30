@@ -27,7 +27,7 @@ local getClass, getItemLink = TRP3_API.extended.getClass, TRP3_API.inventory.get
 --}}}
 
 --{{{ Ellyb imports
-local ORANGE = Ellyb.ColorManager.ORANGE;
+local ORANGE = TRP3_API.Colors.Orange;
 ---}}}
 
 -- Create the pin template, above group members

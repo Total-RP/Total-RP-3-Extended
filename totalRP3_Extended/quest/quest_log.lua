@@ -222,10 +222,10 @@ local function decorateQuestButton(questFrame, campaignID, questID, questInfo, q
 	questFrame.Completed:Hide();
 	if questInfo.FI == true then
 		questFrame.Completed:Show();
-		questFrame.Name:SetText(questName .. " " .. Ellyb.ColorManager.GREEN("(" .. loc.QE_COMPLETED .. ")"));
+		questFrame.Name:SetText(questName .. " " .. TRP3_API.Colors.Green("(" .. loc.QE_COMPLETED .. ")"));
 	elseif questInfo.FI == false then
 		questFrame.Completed:Show();
-		questFrame.Name:SetText(questName .. " " .. Ellyb.ColorManager.RED("(" .. loc.QE_FAILED .. ")"));
+		questFrame.Name:SetText(questName .. " " .. TRP3_API.Colors.Red("(" .. loc.QE_FAILED .. ")"));
 	end
 	questFrame:SetScript("OnClick", questClick);
 	questFrame:SetScript("OnEnter", onQuestButtonEnter);

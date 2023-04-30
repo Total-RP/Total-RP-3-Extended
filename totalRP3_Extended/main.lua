@@ -566,7 +566,7 @@ Globals.extended_display_version = "@project-version@";
 --@end-non-debug@]===]
 
 if TRP3_API.globals.version < Globals.required_trp3_build then
-	print(TRP3_API.Ellyb.ColorManager.RED([[
+	print(TRP3_API.Colors.Red([[
 
 The Total RP 3: Extended version you have installed (%s) requires a newer version of the main Total RP 3 add-on.
 
