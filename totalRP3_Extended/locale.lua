@@ -1753,7 +1753,7 @@ Auras created as inner items of a campaign can be bound to it, so that they will
 	OP_OP_AURA_DURATION_TT = "Returns the remaining duration of an aura in seconds, or 0 if the aura isn't active.",
 	OP_OP_AURA_DURATION_PREVIEW = "Remaining duration of aura |cff00ff00%1$s|r",
 	OP_OP_AURA_HELPFUL = "Aura is helpful";
-	OP_OP_AURA_HELPFUL_TT = "Returns, whether an aura is helpful.",
+	OP_OP_AURA_HELPFUL_TT = "Returns whether an aura is helpful.",
 	OP_OP_AURA_HELPFUL_PREVIEW = "Aura |cff00ff00%1$s|r is helpful.",
 	OP_OP_AURA_CANCELLABLE = "Aura is cancellable",
 	OP_OP_AURA_CANCELLABLE_TT = "Returns whether an aura is cancellable by the player.",
