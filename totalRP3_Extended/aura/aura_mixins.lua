@@ -1,16 +1,11 @@
 -- aura tooltip
 local TOOLTIP_REFRESH_INTERVAL = 0.2;
 local auraDataSource;
-local WHITE;
-local YELLOW;
-local DARKTURQUOISE;
+local flavorTextColor = TRP3_API.CreateColorFromBytes(0, 170, 153);
 
 TRP3_AuraTooltipMixin = {};
 function TRP3_AuraTooltipMixin:Init(dataSource)
 	auraDataSource = dataSource;
-	WHITE = TRP3_API.Ellyb.ColorManager.WHITE;
-	YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
-	DARKTURQUOISE = TRP3_API.Ellyb.Color:new("#00AA99"):Freeze();
 end
 
 function TRP3_AuraTooltipMixin:Refresh(newOwner)
@@ -23,7 +18,7 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 
 	local i = 1;
 	if title or category then
-		self:AddDoubleLine(YELLOW(title or ""), YELLOW(category or ""), 1, 1, 1, 1, 1, 1);
+		self:AddDoubleLine(TRP3_API.Colors.Yellow(title or ""), TRP3_API.Colors.Yellow(category or ""), 1, 1, 1, 1, 1, 1);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
 		_G["TRP3_AuraTooltipTextRight"..i]:SetFontObject(GameFontNormalLarge);
@@ -32,7 +27,7 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 	end
 
 	if description and description:len() > 0 then
-		self:AddLine(WHITE(description), 1, 1, 1, true);
+		self:AddLine(TRP3_API.Colors.White(description), 1, 1, 1, true);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
@@ -40,7 +35,7 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 	end
 
 	if flavor and flavor:len() > 0 then
-		self:AddLine(DARKTURQUOISE(flavor), 1, 1, 1, true);
+		self:AddLine(flavorTextColor(flavor), 1, 1, 1, true);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
@@ -48,7 +43,7 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 	end
 
 	if expiry and expiry:len() > 0 then
-		self:AddLine(YELLOW(expiry), 1, 1, 1, true);
+		self:AddLine(TRP3_API.Colors.Yellow(expiry), 1, 1, 1, true);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
