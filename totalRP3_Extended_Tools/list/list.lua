@@ -17,7 +17,6 @@
 ----------------------------------------------------------------------------------
 
 ---@type Ellyb;
-local Ellyb = TRP3_API.Ellyb;
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
 
 local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;

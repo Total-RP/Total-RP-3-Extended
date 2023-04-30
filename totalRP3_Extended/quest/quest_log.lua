@@ -16,8 +16,6 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Ellyb = TRP3_API.Ellyb;
-
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;

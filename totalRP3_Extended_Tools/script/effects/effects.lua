@@ -19,7 +19,6 @@
 
 ---@type TRP3_API
 local TRP3_API = TRP3_API;
-local Ellyb = TRP3_API.Ellyb;
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local tonumber, pairs, tostring, strtrim, assert = tonumber, pairs, tostring, strtrim, assert;

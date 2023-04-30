@@ -22,8 +22,6 @@ local _, Private_TRP3E = ...;
 ---@type SecuredMacroCommandsEnclave
 local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave
 
-local Ellyb = TRP3_API.Ellyb;
-
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local _G, assert, tostring, tinsert, pairs, time = _G, assert, tostring, tinsert, pairs, time;
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus;

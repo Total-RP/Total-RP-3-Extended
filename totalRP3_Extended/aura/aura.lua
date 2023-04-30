@@ -1,6 +1,4 @@
 local loc            = TRP3_API.loc;
-local Events         = TRP3_API.events;
-local Utils          = TRP3_API.utils;
 local getClass       = TRP3_API.extended.getClass;
 local getRootClassID = TRP3_API.extended.getRootClassID;
 local CUSTOM_EVENTS  = TRP3_API.extended.CUSTOM_EVENTS;
