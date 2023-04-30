@@ -3,7 +3,6 @@ local TOOLTIP_REFRESH_INTERVAL = 0.2;
 local auraDataSource;
 local WHITE;
 local YELLOW;
-local GREEN;
 local DARKTURQUOISE;
 
 TRP3_AuraTooltipMixin = {};
@@ -11,7 +10,6 @@ function TRP3_AuraTooltipMixin:Init(dataSource)
 	auraDataSource = dataSource;
 	WHITE = TRP3_API.Ellyb.ColorManager.WHITE;
 	YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
-	GREEN = TRP3_API.Ellyb.ColorManager.GREEN;
 	DARKTURQUOISE = TRP3_API.Ellyb.Color:new("#00AA99"):Freeze();
 end
 
@@ -65,7 +63,6 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
 		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		i = i + 1;
 	end
 	self:Show();
 end
