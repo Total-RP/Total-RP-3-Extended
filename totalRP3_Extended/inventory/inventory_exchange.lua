@@ -15,7 +15,7 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local Communications = AddOn_TotalRP3.Communications;
 local tonumber, assert, strsplit, tostring, wipe, pairs, type = tonumber, assert, strsplit, tostring, wipe, pairs, type;
 local getClass = TRP3_API.extended.getClass;
@@ -397,7 +397,7 @@ local function lootTransaction()
 		if exchangeFrame.myData[index] then
 			local slotData = exchangeFrame.myData[index].c;
 			if slotMapping[slotData] then
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, slotMapping[slotData][1], slotMapping[slotData][2], slotData);
+				TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_SLOT_REMOVE, slotMapping[slotData][1], slotMapping[slotData][2], slotData);
 			end
 		end
 	end
@@ -472,9 +472,9 @@ local function receivedDataResponse(response, sender)
 		TRP3_API.extended.registerObject(classID, class, 0);
 		TRP3_API.script.clearRootCompilation(classID);
 		TRP3_API.security.registerSender(classID, sender);
-		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-		TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
-		TRP3_API.events.fireEvent(Events.ON_OBJECT_UPDATED);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_OBJECT_UPDATED);
 	end
 
 	currentDownloads[classID] = nil;
@@ -604,7 +604,7 @@ function exchangeFrame.init()
 	Communications.registerSubSystemPrefix(SEND_DATA_QUERY_PREFIX, receivedDataResponse);
 	Communications.registerSubSystemPrefix(FINISH_EXCHANGE_QUERY_PREFIX, receivedFinish);
 
-	TRP3_API.events.listenToEvent(TRP3_API.security.EVENT_SECURITY_CHANGED, function()
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.SECURITY_CHANGED, function()
 		if exchangeFrame:IsVisible() then
 			reloadDownloads();
 		end
@@ -614,7 +614,7 @@ function exchangeFrame.init()
 end
 
 -- Button on toolbar
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		local UnitIsKnown = TRP3_API.register.isUnitKnown;
 		local UnitIsIgnored = TRP3_API.register.isIDIgnored;

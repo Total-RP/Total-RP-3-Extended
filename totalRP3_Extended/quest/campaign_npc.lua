@@ -105,7 +105,7 @@ local function onMouseOver()
 				end
 			end
 
-			npcTooltipBuilder:AddLine(leftIcons .. (npcData.NA or originalName), TRP3_API.Ellyb.Color.CreateFromRGBA(1.00, 1.00, 1.00, 1.00), TRP3_API.ui.tooltip.getMainLineFontSize());
+			npcTooltipBuilder:AddLine(leftIcons .. (npcData.NA or originalName), TRP3_API.Colors.White, TRP3_API.ui.tooltip.getMainLineFontSize());
 
 			npcTooltipBuilder:AddLine("< " .. (npcData.FT or loc.QE_NPC) .. " >", tooltipColors.TITLE, TRP3_API.ui.tooltip.getSubLineFontSize());
 
@@ -263,8 +263,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function init()
-	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", function() onMouseOver(); end);
 
 	GameTooltip:HookScript("OnShow", function()
 		if not GameTooltip:GetUnit() then
@@ -285,10 +285,12 @@ local function init()
 	});
 
 	TRP3_NamePlates:RegisterDisplayInfoFilter(onNamePlateDataUpdated);
-	TRP3_API.events.registerCallback(TRP3_API.quest.EVENT_ACTIVE_CAMPAIGN_CHANGED, function()
+
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.ACTIVE_CAMPAIGN_CHANGED, function()
 		TRP3_NamePlates:UpdateAllNamePlates();
 	end);
-	TRP3_API.events.registerCallback(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
+
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.REFRESH_CAMPAIGN, function()
 		TRP3_NamePlates:UpdateAllNamePlates();
 	end);
 end

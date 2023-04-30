@@ -15,7 +15,7 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.utils;
 local assert, tostring, wipe, pairs, type, time = assert, tostring, wipe, pairs, type, time;
 local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
@@ -37,7 +37,7 @@ TRP3_API.inventory.QUICK_SLOT_ID = QUICK_SLOT_ID;
 local function onItemAddEnd(container, itemClass, returnType, count, ...)
 	if count ~= 0 then
 		Utils.message.displayMessage(loc.IT_INV_GOT:format(getItemLink(itemClass), count));
-		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, container);
 		TRP3_API.inventory.recomputeAllInventory();
 	end
 	return returnType, count, ...;
@@ -216,7 +216,7 @@ function TRP3_API.inventory.removeItem(classID, amount, container)
 				foundContainer.content[slotID] = nil;
 			end
 			amount = amount - amountToRemove;
-			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, foundContainer);
+			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, foundContainer);
 		else
 			break;
 		end
@@ -275,9 +275,9 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 	end
 
 	TRP3_API.inventory.recomputeAllInventory();
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container1);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, container1);
 	if container1 ~= container2 then
-		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container2);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, container2);
 	end
 end
 
@@ -291,7 +291,7 @@ local function doUseSlot(info, class, container)
 		end
 		local retCode = TRP3_API.script.executeClassScript(useWorkflow, class.SC,
 			{object = info, container = container, class = class}, info.id);
-		Events.fireEvent(TRP3_API.extended.ITEM_USED_EVENT, info.id, retCode);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_ITEM_USED, info.id, retCode);
 		return retCode;
 	end
 end
@@ -299,7 +299,7 @@ end
 local function useContainerSlot(slotButton, containerFrame)
 	if slotButton.info then
 		if slotButton.class.missing then -- If using a missing item : remove it
-			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, slotButton.info);
+			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.DETACH_SLOT, slotButton.info);
 			if containerFrame.info.content[slotButton.slotID] then
 				wipe(containerFrame.info.content[slotButton.slotID]);
 			end
@@ -330,7 +330,7 @@ function TRP3_API.inventory.consumeItem(slotInfo, containerInfo, quantity) -- Et
 					wipe(containerInfo.content[slotIndex]);
 					containerInfo.content[slotIndex] = nil;
 					TRP3_API.inventory.recomputeAllInventory();
-					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, containerInfo);
+					TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, containerInfo);
 				end
 			end
 		end
@@ -364,7 +364,7 @@ function TRP3_API.inventory.startCooldown(slotInfo, duration, container)
 			slotInfo.cooldown = time() + duration;
 		end
 		if container then
-			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, container);
 		end
 	end
 end
@@ -387,7 +387,7 @@ local function removeSlotContent(container, slotID, slotInfo, manuallyDestroyed)
 		wipe(container.content[slotID]);
 		container.content[slotID] = nil;
 		TRP3_API.inventory.recomputeAllInventory();
-		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, container);
 	end
 end
 TRP3_API.inventory.removeSlotContent = removeSlotContent;
@@ -419,7 +419,7 @@ local function splitSlot(slot, container, quantity)
 
 	slot.count = slot.count - quantity;
 
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG, container);
 end
 
 function TRP3_API.inventory.getInventory()
@@ -496,21 +496,13 @@ function TRP3_API.inventory.onStart()
 		-- Recompute weight and value
 		recomputeContainerWeightValue(playerInventory);
 	end
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, refreshInventory);
 	refreshInventory();
 
-	TRP3_API.extended.ITEM_USED_EVENT = "TRP3_ITEM_USED";
-	TRP3_API.inventory.EVENT_ON_SLOT_USE = "EVENT_ON_SLOT_USE";
-	TRP3_API.inventory.EVENT_ON_SLOT_SWAP = "EVENT_ON_SLOT_SWAP";
-	TRP3_API.inventory.EVENT_DETACH_SLOT = "EVENT_DETACH_SLOT";
-	TRP3_API.inventory.EVENT_REFRESH_BAG = "EVENT_REFRESH_BAG";
-	TRP3_API.inventory.EVENT_ON_SLOT_REMOVE = "EVENT_ON_SLOT_REMOVE";
-	TRP3_API.inventory.EVENT_SPLIT_SLOT = "EVENT_SPLIT_SLOT";
-	TRP3_API.inventory.EVENT_LOOT_ALL = "EVENT_LOOT_ALL";
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, swapContainersSlots);
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, useContainerSlot);
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, removeSlotContent);
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_SPLIT_SLOT, splitSlot);
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.ON_SLOT_SWAP, function(_, ...) swapContainersSlots(...); end);
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.ON_SLOT_USE, function(_, ...) useContainerSlot(...); end);
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.ON_SLOT_REMOVE, function(_, ...) removeSlotContent(...); end);
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.SPLIT_SLOT, function(_, ...) splitSlot(...); end);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects(TRP3_API.inventory.EFFECTS);

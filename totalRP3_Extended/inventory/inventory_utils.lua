@@ -21,9 +21,6 @@ local EMPTY = TRP3_API.globals.empty;
 local getClass = TRP3_API.extended.getClass;
 local loc = TRP3_API.loc;
 
--- Ellyb imports
-local Ellyb = TRP3_API.Ellyb;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tooltip func
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -92,18 +89,16 @@ function TRP3_API.inventory.getItemTextLine(itemClass)
 	return Utils.str.icon(icon, 25) .. " " .. name;
 end
 
-local colorCodeFloatTab = Utils.color.colorCodeFloatTab;
-
 local ITEM_COLORS = {
-	[Enum.ItemQuality.Poor] = Ellyb.ColorManager.ITEM_POOR,
-	[Enum.ItemQuality.Common] = Ellyb.ColorManager.ITEM_COMMON,
-	[Enum.ItemQuality.Uncommon] = Ellyb.ColorManager.ITEM_UNCOMMON,
-	[Enum.ItemQuality.Rare] = Ellyb.ColorManager.ITEM_RARE,
-	[Enum.ItemQuality.Epic] = Ellyb.ColorManager.ITEM_EPIC,
-	[Enum.ItemQuality.Legendary] = Ellyb.ColorManager.ITEM_LEGENDARY,
-	[Enum.ItemQuality.Artifact] = Ellyb.ColorManager.ITEM_ARTIFACT,
-	[Enum.ItemQuality.Heirloom] = Ellyb.ColorManager.ITEM_HEIRLOOM,
-	[Enum.ItemQuality.WoWToken] = Ellyb.ColorManager.ITEM_WOW_TOKEN,
+	[Enum.ItemQuality.Poor] = TRP3_API.ItemQualityColors.Poor,
+	[Enum.ItemQuality.Common] = TRP3_API.ItemQualityColors.Common,
+	[Enum.ItemQuality.Uncommon] = TRP3_API.ItemQualityColors.Uncommon,
+	[Enum.ItemQuality.Rare] = TRP3_API.ItemQualityColors.Rare,
+	[Enum.ItemQuality.Epic] = TRP3_API.ItemQualityColors.Epic,
+	[Enum.ItemQuality.Legendary] = TRP3_API.ItemQualityColors.Legendary,
+	[Enum.ItemQuality.Artifact] = TRP3_API.ItemQualityColors.Artifact,
+	[Enum.ItemQuality.Heirloom] = TRP3_API.ItemQualityColors.Heirloom,
+	[Enum.ItemQuality.WoWToken] = TRP3_API.ItemQualityColors.WoWToken,
 }
 local NEUTRAL_COLOR = ITEM_COLORS[Enum.ItemQuality.Common];
 
@@ -120,7 +115,7 @@ function TRP3_API.inventory.getQualityColor(quality)
 end
 
 local function getQualityColorText(quality)
-	return colorCodeFloatTab(getQualityColorTab(quality));
+	return TRP3_API.CreateColorFromTable(getQualityColorTab(quality)):GenerateHexColorMarkup();
 end
 TRP3_API.inventory.getQualityColorText = getQualityColorText;
 

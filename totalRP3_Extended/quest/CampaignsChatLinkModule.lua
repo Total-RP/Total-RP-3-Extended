@@ -21,16 +21,10 @@
 ---@type TRP3_API
 local TRP3_API = TRP3_API;
 
----@type Ellyb
-local Ellyb = TRP3_API.Ellyb;
-
 -- Total RP 3 imports
 local iconToString = TRP3_API.utils.str.icon;
 local loc = TRP3_API.loc;
 local parseArgs = TRP3_API.script.parseArgs;
-
--- Ellyb imports
-local Colors = Ellyb.ColorManager;
 
 local CAMPAIGN_PROGRESSION_FORMAT = loc.CL_CAMPAIGN_PROGRESSION .. " %s%%";
 
@@ -65,13 +59,13 @@ function CampaignsChatLinksModule:GetTooltipLines(tooltipData)
 
 	-- Description
 	if description and description:len() > 0 then
-		tooltipLines:AddLine("\"" .. parseArgs(description) .. "\"", Colors.YELLOW)
+		tooltipLines:AddLine("\"" .. parseArgs(description) .. "\"", TRP3_API.Colors.Yellow)
 	end
 
 	tooltipLines:AddLine(" ");
 	local progress = TRP3_API.quest.getCampaignProgression(tooltipData.campaignID);
 	if progress == 100 then
-		tooltipLines:AddLine(loc.CL_CAMPAIGN_PROGRESSION:format(TRP3_API.r.name("player")) .. " " .. loc.QE_CAMPAIGN_FULL, Colors.GREEN);
+		tooltipLines:AddLine(loc.CL_CAMPAIGN_PROGRESSION:format(TRP3_API.r.name("player")) .. " " .. loc.QE_CAMPAIGN_FULL, TRP3_API.Colors.Green);
 	else
 		tooltipLines:AddLine(CAMPAIGN_PROGRESSION_FORMAT:format(TRP3_API.r.name("player"), progress))
 	end
@@ -97,9 +91,9 @@ function DatabaseCampaignImportButton:OnAnswerCommandReceived(data, sender)
 	TRP3_API.extended.registerObject(campaignID, copiedData, 0);
 	TRP3_API.script.clearRootCompilation(campaignID);
 	TRP3_API.security.registerSender(campaignID, sender);
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
-	TRP3_API.events.fireEvent(TRP3_API.events.ON_OBJECT_UPDATED);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_OBJECT_UPDATED);
 
 	TRP3_API.extended.tools.showFrame();
 	TRP3_API.extended.tools.goToPage(campaignID);

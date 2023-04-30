@@ -202,7 +202,7 @@ local function playDialogStep()
 
 	-- Text color (emote)
 	if text:byte() == 60 or text:byte() == 42 then
-		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
+		local color = TRP3_API.GetChatTypeColor("MONSTER_EMOTE"):GenerateHexColorMarkup();
 		text = text:gsub("<", color):gsub(">", "|r");
 		text = text:gsub("^%*", color):gsub("%*$", "|r");
 	else
@@ -480,8 +480,8 @@ end
 
 function TRP3_API.extended.dialog.onStart()
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
-	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_LOOT_ALL, onLootAll);
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function(_, ...) onLoaded(...); end);
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.LOOT_ALL, function(_, ...) onLootAll(...); end);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects({

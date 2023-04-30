@@ -20,8 +20,7 @@
 local Ellyb = TRP3_API.Ellyb;
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
 
-local Globals, Events, Utils, EMPTY = TRP3_API.globals, TRP3_API.events, TRP3_API.utils, TRP3_API.globals.empty;
-local wipe, pairs, strsplit, tinsert, table, strtrim = wipe, pairs, strsplit, tinsert, table, strtrim;
+local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
 local stEtN = Utils.str.emptyToNil;
 local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
@@ -652,12 +651,12 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	createTabBar();
 	createTutorialStructure();
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, function(containerWidth, containerHeight) -- luacheck: ignore 212
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.NAVIGATION_EXTENDED_RESIZED, function(_, containerWidth, containerHeight) -- luacheck: ignore 212
 		ToolFrame.list.container.scroll.child:SetWidth(containerWidth - 100);
 	end);
 
 	-- Button on toolbar
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		if TRP3_API.toolbar then
 			local toolbarButton = {
 				id = "bb_extended_tools",
@@ -684,7 +683,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	TRP3_API.ui.frame.setupIconButton(ToolFrame.list.bottom.campaign, "achievement_quests_completed_07");
 
 	-- Events
-	Events.listenToEvent(Events.ON_OBJECT_UPDATED, function(objectID, objectType) -- luacheck: ignore 212
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.ON_OBJECT_UPDATED, function(_, objectID, objectType) -- luacheck: ignore 212
 		onTabChanged(nil, currentTab);
 	end);
 
@@ -780,8 +779,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 			ToolFrame.list.container.import:Hide();
 			onTabChanged(nil, currentTab);
 			Utils.message.displayMessage(loc.DB_IMPORT_DONE, 3);
-			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-			TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
 
 			if DB[ID].securityLevel ~= 3 then
 				TRP3_API.security.showSecurityDetailFrame(ID, ToolFrame);

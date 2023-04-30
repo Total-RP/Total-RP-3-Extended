@@ -206,7 +206,7 @@ function inspectionFrame.init()
 		end
 	end
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		inspectionFrame:Hide();
 		if TRP3_API.target then
 			TRP3_API.target.registerButton({

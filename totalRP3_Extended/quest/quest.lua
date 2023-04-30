@@ -15,14 +15,10 @@
 --	See the License for the specific language governing permissions and
 --	limitations under the License.
 ----------------------------------------------------------------------------------
-local Events, Utils = TRP3_API.events, TRP3_API.utils;
-local assert, tinsert, wipe, pairs = assert, tinsert, wipe, pairs;
+local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
-
--- Ellyb imports
-local Ellyb = TRP3_API.Ellyb;
 
 local CUSTOM_EVENTS = TRP3_API.extended.CUSTOM_EVENTS;
 
@@ -30,7 +26,7 @@ local CUSTOM_EVENTS = TRP3_API.extended.CUSTOM_EVENTS;
 -- QUEST API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local questHandlers = {};
+local questHandlers = TRP3_API.CreateCallbackGroupCollection();
 
 local function onQuestCallback(campaignID, questID, scriptID, condition, eventID, ...)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID);
@@ -51,44 +47,37 @@ end
 local function clearQuestHandlers(questFullID)
 	TRP3_API.Log("clearQuestHandlers: " .. questFullID);
 
-	if questHandlers[questFullID] then
-		for handlerID, eventID in pairs(questHandlers[questFullID]) do
-			if (CUSTOM_EVENTS[eventID] ~= nil) then
-				Events.unregisterCallback(handlerID);
-			else
-				Utils.event.unregisterHandler(handlerID);
-			end
-		end
-		wipe(questHandlers[questFullID]);
-		questHandlers[questFullID] = nil;
+	local group = questHandlers:GetGroup(questFullID);
+
+	if group then
+		group:Unregister();
+		group:Clear();
 		TRP3_API.quest.clearStepHandlersForQuest(questFullID);
 	end
 end
 TRP3_API.quest.clearQuestHandlers = clearQuestHandlers;
 
 local function clearAllQuestHandlers()
-	for questFullID, _ in pairs(questHandlers) do
-		clearQuestHandlers(questFullID);
-	end
+	questHandlers:Unregister();
+	questHandlers:Clear();
 	TRP3_API.quest.clearAllStepHandlers();
 end
 TRP3_API.quest.clearAllQuestHandlers = clearAllQuestHandlers;
 
 local function registerQuestHandler(campaignID, questID, fullID, event)
-	local handlerID;
+	local source;
+
 	if (CUSTOM_EVENTS[event.EV] ~= nil) then
-		handlerID = Events.registerCallback(event.EV, function(...)
-			onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
-		end);
+		source = TRP3_Extended;
 	else
-		handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
-		end);
+		source = TRP3_API.GameEvents;
 	end
-	if not questHandlers[fullID] then
-		questHandlers[fullID] = {};
+
+	local function OnEventTriggered(_, ...)
+		onQuestCallback(campaignID, questID, event.SC, event.CO, event.EV, ...);
 	end
-	questHandlers[fullID][handlerID] = event.EV;
+
+	questHandlers:RegisterCallback(fullID, source, event.EV, OnEventTriggered);
 end
 
 local function activateQuestHandlers(campaignID, questID, questClass)
@@ -97,7 +86,7 @@ local function activateQuestHandlers(campaignID, questID, questClass)
 
 	for _, event in pairs(questClass.HA or EMPTY) do
 		if event.EV and not pcall(registerQuestHandler, campaignID, questID, fullID, event) then
-			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
+			Utils.message.displayMessage(TRP3_API.Colors.Red(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
 	end
 
@@ -196,7 +185,7 @@ local function startQuestForReal(campaignID, questID)
 	TRP3_QuestToast.campaignName = campaignClass.BA.NA;
 	TRP3_QuestToast:Show();
 
-	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.CAMPAIGN_REFRESH_LOG);
 end
 TRP3_API.quest.startQuestForReal = startQuestForReal;
 
@@ -260,7 +249,7 @@ end
 -- STEP API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local stepHandlers = {};
+local stepHandlers = TRP3_API.CreateCallbackGroupCollection();
 
 local function onStepCallback(campaignID, questID, stepID, scriptID, condition, eventID, ...)
 	local fullID = TRP3_API.extended.getFullID(campaignID, questID, stepID);
@@ -281,31 +270,25 @@ end
 local function clearStepHandlers(stepFullID)
 	TRP3_API.Log("clearStepHandlers: " .. stepFullID);
 
-	if stepHandlers[stepFullID] then
-		for handlerID, eventID in pairs(stepHandlers[stepFullID]) do
-			if (CUSTOM_EVENTS[eventID] ~= nil) then
-				Events.unregisterCallback(handlerID);
-			else
-				Utils.event.unregisterHandler(handlerID);
-			end
-		end
-		wipe(stepHandlers[stepFullID]);
-		stepHandlers[stepFullID] = nil;
+	local group = stepHandlers:GetGroup(stepFullID);
+
+	if group then
+		group:Unregister();
+		group:Clear();
 	end
 end
 TRP3_API.quest.clearStepHandlers = clearStepHandlers;
 
 local function clearAllStepHandlers()
-	for stepFullID, _ in pairs(stepHandlers) do
-		clearStepHandlers(stepFullID);
-	end
+	stepHandlers:Unregister();
+	stepHandlers:Clear();
 end
 TRP3_API.quest.clearAllStepHandlers = clearAllStepHandlers;
 
 function TRP3_API.quest.clearStepHandlersForQuest(questFullID)
 	TRP3_API.Log("clearStepHandlersForQuest: " .. questFullID);
 
-	for stepFullID, _ in pairs(stepHandlers) do
+	for stepFullID in stepHandlers:EnumerateKeyedGroups() do
 		if stepFullID:sub(1, questFullID:len()) == questFullID then
 			clearStepHandlers(stepFullID);
 		end
@@ -313,20 +296,19 @@ function TRP3_API.quest.clearStepHandlersForQuest(questFullID)
 end
 
 local function registerStepHandler(campaignID, questID, stepID, fullID, event)
-	local handlerID;
+	local source;
+
 	if (CUSTOM_EVENTS[event.EV] ~= nil) then
-		handlerID = Events.registerCallback(event.EV, function(...)
-			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
-		end);
+		source = TRP3_Extended;
 	else
-		handlerID = Utils.event.registerHandler(event.EV, function(...)
-			onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
-		end);
+		source = TRP3_API.GameEvents;
 	end
-	if not stepHandlers[fullID] then
-		stepHandlers[fullID] = {};
+
+	local function OnEventTriggered(_, ...)
+		onStepCallback(campaignID, questID, stepID, event.SC, event.CO, event.EV, ...);
 	end
-	stepHandlers[fullID][handlerID] = event.EV;
+
+	stepHandlers:RegisterCallback(fullID, source, event.EV, OnEventTriggered);
 end
 
 local function activateStepHandlers(campaignID, questID, stepID, stepClass)
@@ -335,7 +317,7 @@ local function activateStepHandlers(campaignID, questID, stepID, stepClass)
 
 	for _, event in pairs(stepClass.HA or EMPTY) do
 		if event.EV and not pcall(registerStepHandler, campaignID, questID, stepID, fullID, event) then
-			Utils.message.displayMessage(Ellyb.ColorManager.RED(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
+			Utils.message.displayMessage(TRP3_API.Colors.Red(loc.WO_EVENT_EX_UNKNOWN_ERROR:format(event.EV, fullID)));
 		end
 	end
 end
@@ -429,7 +411,7 @@ local function goToStepForReal(campaignID, questID, stepID)
 		clearQuestHandlers(TRP3_API.extended.getFullID(campaignID, questID));
 	end
 
-	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.CAMPAIGN_REFRESH_LOG);
 end
 TRP3_API.quest.goToStepForReal = goToStepForReal;
 
@@ -515,7 +497,7 @@ local function revealObjectiveForReal(campaignID, questID, objectiveID)
 	else
 		Utils.message.displayMessage(loc.QE_QUEST_OBJ_UPDATED:format(obectiveText), Utils.message.type.ALERT_MESSAGE);
 	end
-	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.CAMPAIGN_REFRESH_LOG);
 end
 TRP3_API.quest.revealObjectiveForReal = revealObjectiveForReal;
 
@@ -589,7 +571,7 @@ local function markObjectiveDoneForReal(campaignID, questID, objectiveID)
 	local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 	Utils.message.displayMessage(loc.QE_QUEST_OBJ_FINISHED:format(obectiveText), Utils.message.type.ALERT_MESSAGE);
 	questLog.OB[objectiveID] = true;
-	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.CAMPAIGN_REFRESH_LOG);
 
 	-- Initial script
 	if questClass.LI and questClass.LI.OOC then
@@ -743,8 +725,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.quest.onStart()
-	Events.CAMPAIGN_REFRESH_LOG = "CAMPAIGN_REFRESH_LOG";
-
 	TRP3_QuestToast.title:SetText(loc.QE_NEW);
 
 	TRP3_API.quest.npcInit();
