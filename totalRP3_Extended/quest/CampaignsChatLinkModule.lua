@@ -97,9 +97,9 @@ function DatabaseCampaignImportButton:OnAnswerCommandReceived(data, sender)
 	TRP3_API.extended.registerObject(campaignID, copiedData, 0);
 	TRP3_API.script.clearRootCompilation(campaignID);
 	TRP3_API.security.registerSender(campaignID, sender);
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
-	TRP3_API.events.fireEvent(TRP3_API.events.ON_OBJECT_UPDATED);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_OBJECT_UPDATED);
 
 	TRP3_API.extended.tools.showFrame();
 	TRP3_API.extended.tools.goToPage(campaignID);

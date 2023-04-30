@@ -18,9 +18,7 @@
 
 local Ellyb = TRP3_API.Ellyb;
 
-local Events, Utils = TRP3_API.events, TRP3_API.utils;
-local assert, tostring, tinsert, pairs = assert, tostring, tinsert, pairs;
-local CreateFrame = CreateFrame;
+local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
 local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
@@ -408,7 +406,7 @@ end
 local function initStepFrame()
 	TRP3_QuestLogPage.Step.Title.Name:SetTextColor(0.1, 0.1, 0.1);
 	TRP3_QuestLogPage.Step.Title.InfoText:SetTextColor(0.1, 0.1, 0.1);
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		stepHTML:SetSize(containerWidth - 130, 5);
 		stepHTML:SetText(stepHTML.html or "");
 	end);
@@ -524,8 +522,7 @@ local function createTutorialStructure()
 end
 
 local function init()
-
-	Events.listenToEvent(Events.CAMPAIGN_REFRESH_LOG, refreshLog);
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.CAMPAIGN_REFRESH_LOG, refreshLog);
 
 	-- Quest log page and menu
 	TRP3_API.navigation.menu.registerMenu({
@@ -557,7 +554,7 @@ local function init()
 	});
 
 	-- Quest log button on target bar
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		if TRP3_API.toolbar then
 			local toolbarButton = {
 				id = "hh_player_e_quest",
@@ -692,7 +689,7 @@ local function init()
 	BINDING_NAME_TRP3_QUEST_TALK = loc.BINDING_NAME_TRP3_QUEST_TALK;
 
 	-- Events
-	Events.listenToEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN, function()
+	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.REFRESH_CAMPAIGN, function()
 		if getCurrentPageID() == "player_quest" then
 			goToPage(false, TAB_CAMPAIGNS);
 		end

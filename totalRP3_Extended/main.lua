@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local pairs, strjoin, tostring, strtrim, wipe, assert, strsplit = pairs, strjoin, tostring, strtrim, wipe, assert, strsplit;
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.loc;
@@ -28,6 +28,51 @@ TRP3_API.extended = {
 };
 TRP3_API.inventory = {};
 TRP3_API.quest = {};
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Ace3 Module
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-- TODO: This should get fleshed out later with the module rework in Core to
+--       make use of the OnInitialize/OnEnable lifecycle. This is omitted for
+--       now as at this time of writing we only need to make Extended stop
+--       adding events to Core's registry.
+
+TRP3_Extended = TRP3_Addon:NewModule("Extended");
+
+TRP3_Extended.Events =
+{
+	ACTIVE_CAMPAIGN_CHANGED = "ACTIVE_CAMPAIGN_CHANGED",
+	CAMPAIGN_REFRESH_LOG = "CAMPAIGN_REFRESH_LOG",
+	DETACH_SLOT = "DETACH_SLOT",
+	LOOT_ALL = "LOOT_ALL",
+	NAVIGATION_EXTENDED_RESIZED = "NAVIGATION_EXTENDED_RESIZED",
+	ON_OBJECT_UPDATED = "ON_OBJECT_UPDATED",
+	ON_SLOT_REMOVE = "ON_SLOT_REMOVE",
+	ON_SLOT_SWAP = "ON_SLOT_SWAP",
+	ON_SLOT_USE = "ON_SLOT_USE",
+	REFRESH_BAG = "REFRESH_BAG",
+	REFRESH_CAMPAIGN = "REFRESH_CAMPAIGN",
+	SECURITY_CHANGED = "SECURITY_CHANGED",
+	SPLIT_SLOT = "SPLIT_SLOT",
+
+	-- Custom events for use in workflows. Do not rename!
+
+	TRP3_EMOTE = "TRP3_EMOTE",
+	TRP3_ITEM_USED = "TRP3_ITEM_USED",
+	TRP3_KILL = "TRP3_KILL",
+	TRP3_ROLL = "TRP3_ROLL",
+	TRP3_SIGNAL = "TRP3_SIGNAL",
+};
+
+function TRP3_Extended:OnInitialize()
+	self.callbacks = TRP3_API.InitCallbackRegistryWithEvents(self, self.Events);
+end
+
+function TRP3_Extended:TriggerEvent(event, ...)
+	assert(self:IsEventValid(event), "attempted to trigger an invalid extended event");
+	self.callbacks:Fire(event, ...);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- GLOBAL DB
@@ -207,8 +252,8 @@ local function removeObject(objectFullID)
 		TRP3_Tools_DB[objectFullID] = nil;
 	end
 	TRP3_API.Log("Removed object: " .. objectFullID);
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
-	TRP3_API.events.fireEvent(TRP3_API.quest.EVENT_REFRESH_CAMPAIGN);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
 end
 TRP3_API.extended.removeObject = removeObject;
 
@@ -444,21 +489,19 @@ local function onInit()
 end
 
 local function onStart()
-
 	-- Signal
 	TRP3_API.extended.SIGNAL_PREFIX = "EXSI";
-	TRP3_API.extended.SIGNAL_EVENT = "TRP3_SIGNAL";
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(TRP3_API.extended.SIGNAL_PREFIX, function(arg, sender)
 		if sender ~= Globals.player_id then
 			TRP3_API.Log(("Received signal from %s"):format(sender));
-			Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, arg.i, arg.v, sender);
+			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_SIGNAL, arg.i, arg.v, sender);
 		end
 	end);
 	function TRP3_API.extended.sendSignal(id, value)
 		if UnitExists("target") and UnitIsPlayer("target") then
 			if UnitIsUnit("player", "target") then
 				TRP3_API.Log("Received signal from yourself");
-				Events.fireEvent(TRP3_API.extended.SIGNAL_EVENT, id, value, Utils.str.getUnitID("player"));
+				TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_SIGNAL, id, value, Utils.str.getUnitID("player"));
 			else
 				AddOn_TotalRP3.Communications.sendObject(TRP3_API.extended.SIGNAL_PREFIX, {i = id, v = value}, Utils.str.getUnitID("target"));
 			end
@@ -485,21 +528,24 @@ local function onStart()
 	TRP3_API.extended.dialog.onStart();
 
 	-- Config
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, initConfig);
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, initConfig);
 
 	-- Simplier combat kill event
-	TRP3_API.extended.KILL_EVENT = "TRP3_KILL";
-	Utils.event.registerHandler("COMBAT_LOG_EVENT_UNFILTERED", function()
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "COMBAT_LOG_EVENT_UNFILTERED", function()
 		local _, event, _, source, sourceName, _, _, dest, destName = CombatLogGetCurrentEventInfo();	-- No payload for combat log events in 8.0
 		if event == "PARTY_KILL" then
 			local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(dest);
 			if (unitType == "Player") then
 				local className, classID, raceName, raceID, gender = GetPlayerInfoByGUID(dest);
-				Events.fireEvent(TRP3_API.extended.KILL_EVENT, unitType, source, sourceName, dest, destName, classID, className, raceID, raceName, gender);
+				TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_KILL, unitType, source, sourceName, dest, destName, classID, className, raceID, raceName, gender);
 			else
-				Events.fireEvent(TRP3_API.extended.KILL_EVENT, unitType, source, sourceName, dest, destName, NPC_ID);
+				TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_KILL, unitType, source, sourceName, dest, destName, NPC_ID);
 			end
 		end
+	end);
+
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.DICE_ROLL, function(_, ...)
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_ROLL, ...);
 	end);
 
     local dashboard = TRP3_Dashboard;

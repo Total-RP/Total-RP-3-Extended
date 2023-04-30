@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local pairs, tonumber, date, strtrim = pairs, tonumber, date, strtrim;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
@@ -68,7 +68,7 @@ local function onSave(toMode)
 	TRP3_API.security.computeSecurity(ID, data);
 	TRP3_API.extended.registerObject(ID, data, 0);
 
-	Events.fireEvent(Events.ON_OBJECT_UPDATED, ID, TRP3_DB.types.ITEM);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_OBJECT_UPDATED, ID, TRP3_DB.types.ITEM);
 	return ID;
 end
 
