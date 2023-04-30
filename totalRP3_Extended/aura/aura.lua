@@ -121,7 +121,9 @@ function auraCore:Initialize()
 		id = "debug_clear_auras",
 		helpLine = " " .. loc.DEBUG_CLEAR_AURAS,
 		handler = function()
+            auraCore:SetScriptsEnabled(false);
 			auraCore:RemoveAllAuras();
+            auraCore:SetScriptsEnabled(true);
 		end
 	});
 
@@ -392,8 +394,8 @@ function auraCore:RemoveAllAuras()
 	for _, aura in EnumerateValidAuras(self.activeAuras) do
 		aura.persistent.invalid = true;
 		self:UnregisterAuraEvents(aura);
-		self:Update(true);
 	end
+    self:Update(true);
 end
 
 function auraCore:FindAura(auraId)
