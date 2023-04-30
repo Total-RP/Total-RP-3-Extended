@@ -4,6 +4,7 @@
 ## Notes: Advanced features for Total RP 3
 ## Version: @project-version@
 ## URL: http://extended.totalrp3.info
+## IconTexture: Interface\AddOns\totalRP3_Extended\resources\extendedicon
 ## RequiredDeps: totalRP3
 ## OptionalDeps: WoWUnit
 ## DefaultState: Enabled
