@@ -1710,8 +1710,6 @@ If your aura runs for a very long time (e.g. an egg, that hatches after 3 real t
 Auras created as inner items of a campaign can be bound to it, so that they will be paused when the campaign is paused, and removed when the campaign is reset.
 ]],
 	AU_EXPIRY = "%1$s remaining",
-	AURA_DURATION = "Duration",
-	AURA_DURATION_TT = "Aura duration in seconds",
 	EFFECT_AURA_ID_TT = [[Please specify the aura full ID.\n\nUse the "Browse" button below to search your database.]],
 	EFFECT_AURA_APPLY = "Apply aura",
 	EFFECT_AURA_APPLY_TT = "Casts an aura on the player.\n\n|cffff9900If the aura is already present, it won't be overwritten.",

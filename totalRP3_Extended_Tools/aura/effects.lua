@@ -129,13 +129,13 @@ local function aura_duration_init()
 
 	setupAuraBrowser(editor);
 
-	editor.duration.title:SetText(loc.AURA_DURATION);
-	setTooltipForSameFrame(editor.duration.help, "RIGHT", 0, 5, loc.AURA_DURATION, loc.AURA_DURATION_TT);
+	editor.duration.title:SetText(loc.AURA_FIELD_DURATION);
+	setTooltipForSameFrame(editor.duration.help, "RIGHT", 0, 5, loc.AURA_FIELD_DURATION, loc.AURA_FIELD_DURATION_TT);
 
 	local methods = {
-		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_SET), "=", loc.EFFECT_AURA_DURATION_SET_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_ADD), "+", loc.EFFECT_AURA_DURATION_ADD_TT},
-		{TRP3_API.formats.dropDownElements:format(loc.AURA_DURATION, loc.EFFECT_AURA_DURATION_SUBTRACT), "-", loc.EFFECT_AURA_DURATION_SUBTRACT_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.AURA_FIELD_DURATION, loc.EFFECT_AURA_DURATION_SET), "=", loc.EFFECT_AURA_DURATION_SET_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.AURA_FIELD_DURATION, loc.EFFECT_AURA_DURATION_ADD), "+", loc.EFFECT_AURA_DURATION_ADD_TT},
+		{TRP3_API.formats.dropDownElements:format(loc.AURA_FIELD_DURATION, loc.EFFECT_AURA_DURATION_SUBTRACT), "-", loc.EFFECT_AURA_DURATION_SUBTRACT_TT},
 	}
 	TRP3_API.ui.listbox.setupListBox(editor.method, methods, nil, nil, 250, true);
 
