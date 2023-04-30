@@ -4,7 +4,6 @@ local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local toolFrame, linksStructure, display, gameplay, notes;
-local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 
 local TABS = {
 	MAIN = 1,
@@ -122,7 +121,7 @@ local function load()
 	display.name:SetText(data.BA.NA or "");
 	display.category:SetText(data.BA.CA or "");
 	if data.BA.CO then
-		display.borderPicker.setColor(hexaToNumber(data.BA.CO));
+		display.borderPicker.setColor(TRP3_API.CreateColorFromHexString(data.BA.CO):GetRGBAsBytes());
 	else
 		display.borderPicker.setColor(nil);
 	end
@@ -175,7 +174,8 @@ local function saveToDraft()
 	data.BA.NA = stEtN(strtrim(display.name:GetText()));
 	data.BA.CA = stEtN(strtrim(display.category:GetText()));
 	if display.borderPicker.red and display.borderPicker.green and display.borderPicker.blue then
-		data.BA.CO = strconcat(numberToHexa(display.borderPicker.red), numberToHexa(display.borderPicker.green), numberToHexa(display.borderPicker.blue));
+		local r, g, b = display.borderPicker.red, display.borderPicker.green, display.borderPicker.blue;
+		data.BA.CO = TRP3_API.CreateColorFromBytes(r, g, b):GenerateHexColorOpaque();
 	else
 		data.BA.CO = nil;
 	end
@@ -233,7 +233,7 @@ local function applyPreset(presetId)
 	display.category:SetText(presetBuffs[presetId].category);
 	display.helpful:SetChecked(presetBuffs[presetId].helpful);
 	if presetBuffs[presetId].color then
-		display.borderPicker.setColor(hexaToNumber(presetBuffs[presetId].color));
+		display.borderPicker.setColor(TRP3_API.CreateColorFromHexString(presetBuffs[presetId].color):GetRGBAsBytes());
 	else
 		display.borderPicker.setColor(nil);
 	end
@@ -282,7 +282,7 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 	display.borderPicker.onSelection = function(red, green, blue)
 		if red and green and blue then
 			display.preview.aura.color = {
-				h = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue)),
+				h = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque(),
 				r = red/255,
 				g = green/255,
 				b = blue/255,

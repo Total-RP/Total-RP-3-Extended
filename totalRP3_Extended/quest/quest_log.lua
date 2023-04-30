@@ -16,8 +16,6 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Ellyb = TRP3_API.Ellyb;
-
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
@@ -137,9 +135,9 @@ local function decorateCampaignButton(campaignButton, campaignID, noTooltip)
 			createdBy:format(loc.DB_FILTERS_OWNER, author)
 			.. progress:format(loc.QE_PROGRESS, progression)
 			.. ("|r\n")
-			.. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.LEFT_CLICK, loc.CM_OPEN)
-			.. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.CM_ACTIONS)
-			.. "\n" .. Ellyb.Strings.clickInstruction(Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.RIGHT_CLICK), loc.CL_TOOLTIP)
+			.. "\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.CM_OPEN)
+			.. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.CM_ACTIONS)
+			.. "\n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-RCLICK", loc.CL_TOOLTIP)
 		);
 	else
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(campaignButton);

@@ -1,6 +1,4 @@
 local loc            = TRP3_API.loc;
-local Events         = TRP3_API.events;
-local Utils          = TRP3_API.utils;
 local getClass       = TRP3_API.extended.getClass;
 local getRootClassID = TRP3_API.extended.getRootClassID;
 local CUSTOM_EVENTS  = TRP3_API.extended.CUSTOM_EVENTS;
@@ -109,11 +107,11 @@ function auraCore:Initialize()
 
 	TRP3_AuraTooltip:Init(self);
 
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
 		auraCore:LoadProfile();
 	end);
 
-	Utils.event.registerHandler("PLAYER_LEAVING_WORLD", function()
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_LEAVING_WORLD", function()
 		auraCore:UpdateDormancy();
 	end);
 
@@ -186,33 +184,33 @@ end
 
 function auraCore:RegisterAuraEvents(aura)
 	if not aura.class.HA then return end
-	local events = {};
+
+	local events = TRP3_API.CreateCallbackGroup();
+
 	for _, handler in ipairs(aura.class.HA) do
-		local handlerId;
+		local source;
+
 		if CUSTOM_EVENTS[handler.EV] then
-			handlerId = Events.registerCallback(handler.EV, function(...)
-				onAuraEvent(aura, handler.EV, handler, ...);
-			end)
+			source = TRP3_Extended;
 		else
-			handlerId = Utils.event.registerHandler(handler.EV, function(...)
-				onAuraEvent(aura, handler.EV, handler, ...);
-			end);
+			source = TRP3_API.GameEvents;
 		end
-		events[handlerId] = handler.EV;
+
+		local function OnEventTriggered(_, ...)
+			onAuraEvent(aura, handler.EV, handler, ...);
+		end
+
+		events:RegisterCallback(source, handler.EV, OnEventTriggered);
 	end
+
 	aura.events = events;
 end
 
 function auraCore:UnregisterAuraEvents(aura)
-	if not aura.events then return end
-	for handlerId, eventId in pairs(aura.events) do
-		if CUSTOM_EVENTS[eventId] then
-			Events.unregisterCallback(handlerId);
-		else
-			Utils.event.unregisterHandler(handlerId);
-		end
+	if aura.events then
+		aura.events:Unregister();
+		aura.events = nil;
 	end
-	aura.events = nil;
 end
 
 function auraCore:LoadProfile()
@@ -335,7 +333,7 @@ function auraCore:GetAuraColorFromClass(class)
 		local colorCached = {
 			h = class.BA.CO
 		}
-		colorCached.r, colorCached.g, colorCached.b = Utils.color.hexaToFloat(class.BA.CO);
+		colorCached.r, colorCached.g, colorCached.b = TRP3_API.CreateColorFromHexString(class.BA.CO):GetRGB();
 		return colorCached;
 	else
 		return nil;
@@ -661,7 +659,7 @@ function auraCore:GetAuraTooltipLines(aura)
 	end
 
 	if aura.class.BA.CC then
-		cancelText = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, CANCEL);
+		cancelText = TRP3_API.FormatShortcutWithInstruction("RCLICK", CANCEL);
 	end
 
 	return title, category, description, flavor, expiry, cancelText;
