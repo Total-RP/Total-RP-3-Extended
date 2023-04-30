@@ -63,6 +63,7 @@ local function receiveResponse(response, sender)
 				};
 			end
 		end
+		TRP3_API.extended.auras.showInspectAuras(response.auras);
 	end
 end
 
@@ -74,6 +75,7 @@ local function receiveRequest(request, sender)
 		totalWeight = playerInventory.totalWeight,
 		totalValue = playerInventory.totalValue,
 		slots = {},
+		auras = TRP3_API.extended.auras.getAurasForInspection(),
 	};
 	for slotID, slot in pairs(playerInventory.content or EMPTY) do
 		-- Don't send the default bag

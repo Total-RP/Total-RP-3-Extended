@@ -95,6 +95,13 @@ local PAGE_BY_TYPE = {
 		end,
 		background = 5,
 	},
+	[TRP3_DB.types.AURA] = {
+		frame = "aura",
+		tabTextGetter = function(id, class)
+			return ("%s: %s"):format(loc.TYPE_AURA,  TRP3_API.inventory.getItemLink(class, id));
+		end,
+		background = 6,
+	},
 }
 
 local function getTypeLocale(type)
@@ -106,7 +113,7 @@ end
 TRP3_API.extended.tools.getTypeLocale = getTypeLocale;
 
 local function getClassDataSafeByType(class)
-	if class.TY == TRP3_DB.types.CAMPAIGN or class.TY == TRP3_DB.types.QUEST or class.TY == TRP3_DB.types.ITEM then
+	if class.TY == TRP3_DB.types.CAMPAIGN or class.TY == TRP3_DB.types.QUEST or class.TY == TRP3_DB.types.ITEM or class.TY == TRP3_DB.types.AURA then
 		return TRP3_API.extended.getClassDataSafe(class);
 	end
 	if class.TY == TRP3_DB.types.DOCUMENT then
@@ -240,6 +247,7 @@ local function doSave()
 	TRP3_API.extended.unregisterObject(rootClassID);
 	TRP3_API.extended.registerObject(rootClassID, object, 0);
 	TRP3_API.script.clearRootCompilation(rootClassID);
+	TRP3_API.extended.auras.refresh();
 	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
 	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN, rootClassID);
 
@@ -438,6 +446,7 @@ local function onStart()
 	PAGE_BY_TYPE[TRP3_DB.types.ITEM].loc = loc.TYPE_ITEM;
 	PAGE_BY_TYPE[TRP3_DB.types.DOCUMENT].loc = loc.TYPE_DOCUMENT;
 	PAGE_BY_TYPE[TRP3_DB.types.DIALOG].loc = loc.TYPE_DIALOG;
+	PAGE_BY_TYPE[TRP3_DB.types.AURA].loc = loc.TYPE_AURA;
 
 	toolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
 
@@ -509,6 +518,7 @@ local function onStart()
 	TRP3_API.extended.tools.initBaseEffects();
 	TRP3_API.extended.tools.initCampaignEffects();
 	TRP3_API.extended.tools.initItemEffects();
+	TRP3_API.extended.tools.initAuraEffects();
 
 	-- Init editors
 	TRP3_API.extended.tools.initScript(toolFrame, effectMenu);
@@ -520,6 +530,7 @@ local function onStart()
 	TRP3_API.extended.tools.initStep(toolFrame)
 	TRP3_API.extended.tools.initItems(toolFrame);
 	TRP3_API.extended.tools.initCutscene(toolFrame);
+	TRP3_API.extended.tools.initAura(toolFrame);
 	TRP3_API.extended.tools.initList(toolFrame);
 	TRP3_ExtendedTutorial.init(toolFrame);
 

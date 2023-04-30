@@ -1146,6 +1146,7 @@ We should begin with some examples:
 	CA_NPC_EDITOR = "NPC editor",
 	CA_NPC_EDITOR_NAME = "NPC name",
 	CA_NPC_EDITOR_DESC = "NPC description",
+	CA_NPC_EDITOR_TITLE = "NPC title",
 	CA_NO_NPC = "No customized NPC",
 	CA_NAME_NEW = "New campaign",
 	CA_NAME = "Campaign name",
@@ -1687,7 +1688,157 @@ You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	CA_NPC_EDITOR_TITLE = "NPC title",
+	-- TYPES
+	TYPE_AURA = "Aura",
+
+	-- DATABASE
+	DB_CREATE_ITEM_TEMPLATES_AURA = "Aura item",
+	DB_CREATE_ITEM_TEMPLATES_AURA_TT = "An item template that gives you a buff.",
+
+	-- Creation
+	AURA_ID = "Aura ID",
+
+	-- Aura
+	AURA_FRAME_TITLE = "Total RP 3 Extended Auras",
+	AURA_INTRO = [[
+Auras (Buffs/Debuffs) are status effects applied to the character.
+
+An Extended aura is |cff00ff00bound to a character profile|r. If the player switches their profile, auras from the first profile will be paused until that profile is activated again.
+
+If your aura runs for a very long time (e.g. an egg, that hatches after 3 real time days), you might want to set the aura to "use real time". The aura duration will keep running while the profile is inactive or the player is logged out.
+
+Auras created as inner items of a campaign can be bound to it, so that they will be paused when the campaign is paused, and removed when the campaign is reset.
+]],
+	AU_EXPIRY = "%1$s remaining",
+	EFFECT_AURA_ID_TT = [[Please specify the aura full ID.\n\nUse the "Browse" button below to search your database.]],
+	EFFECT_AURA_APPLY = "Apply aura",
+	EFFECT_AURA_APPLY_TT = "Casts an aura on the player.\n\n|cffff9900If the aura is already present, its variables will not be overwritten.",
+	EFFECT_AURA_APPLY_PREVIEW = "Apply aura |cff00ff00%1$s|r (%2$s: %3$s)",
+	EFFECT_AURA_APPLY_MERGE_MODE = "If already applied",
+	EFFECT_AURA_APPLY_DO_NOTHING = "do nothing",
+	EFFECT_AURA_APPLY_DO_NOTHING_TT = "If the aura is already cast on the player, ignore this effect.",
+	EFFECT_AURA_APPLY_REFRESH = "refresh duration",
+	EFFECT_AURA_APPLY_REFRESH_TT = "If the aura is already cast on the player, set its duration as if it was freshly applied.",
+	EFFECT_AURA_APPLY_EXTEND = "extend duration",
+	EFFECT_AURA_APPLY_EXTEND_TT = "If the aura is already cast on the player, add the default aura duration to its currently remaining duration.",
+	EFFECT_AURA_REMOVE = "Remove aura",
+	EFFECT_AURA_REMOVE_TT = "Removes an aura from the player.\n\n|cffff9900This effect will not trigger the Expiry or Cancel events.",
+	EFFECT_AURA_REMOVE_PREVIEW = "Remove aura |cff00ff00%1$s|r",
+	EFFECT_AURA_DURATION = "Aura duration",
+	EFFECT_AURA_DURATION_TT = "Changes the duration of an aura.",
+	EFFECT_AURA_DURATION_SET = "set",
+	EFFECT_AURA_DURATION_SET_TT = "Sets the duration to an amount of seconds.",
+	EFFECT_AURA_DURATION_ADD = "add",
+	EFFECT_AURA_DURATION_ADD_TT = "Adds an amount of seconds to the duration.",
+	EFFECT_AURA_DURATION_SUBTRACT = "subtract",
+	EFFECT_AURA_DURATION_SUBTRACT_TT = "Subtracts an amount of seconds from the duration.",
+	EFFECT_AURA_DURATION_PREVIEW = "Duration of aura |cff00ff00%1$s|r |cff00ff00%3$s|r |cffffff00%2$s seconds|r",
+	EFFECT_VAR_AURA_CHANGE = "Aura variable operation",
+	EFFECT_VAR_AURA_CHANGE_TT = "Performs an operation on an aura variable.\n\n|cffff9900For math operations: If the variable does not exist or can't be cast as a number, it will be initialized at 0.",
+	EFFECT_VAR_AURA_CHANGE_PREVIEW = "|cffffff00Aura variable operation: |cff00ff00(%1$s)|r %3$s |cff00ff00=|r %3$s |cff00ff00%2$s|r %4$s",
+	EFFECT_AURA_RUN_WORKFLOW = "Run aura workflow",
+	EFFECT_AURA_RUN_WORKFLOW_TT = "Run workflow of an active aura. The aura's workflow has access to workflow variables of the current workflow.",
+	EFFECT_AURA_RUN_WORKFLOW_PREVIEW = "Run workflow |cff00ff00%2$s|r in aura |cff00ff00%1$s|r.",
+	OP_OP_AURA_COUNT = "Number of active auras",
+	OP_OP_AURA_COUNT_TT = "Returns the number of auras that are currently active on a player.",
+	OP_OP_AURA_ID = "Aura ID",
+	OP_OP_AURA_ID_TT = "Returns the aura ID at a given index, in the order they were applied.",
+	OP_OP_AURA_ID_PREVIEW = "Aura ID at index |cff00ff00%1$s|r",
+	OP_OP_AURA_ID_INDEX = "Index",
+	OP_OP_AURA_ID_INDEX_TT = "The numerical index of the aura, from 1 to the number of active auras.\nAuras are ordered application time, the oldest comes first.\n\n|cff00ff00You can use variable tags here.|r",
+	OP_OP_AURA_ACTIVE = "Aura is active",
+	OP_OP_AURA_ACTIVE_TT = "Returns whether or not an aura is currently active on the player.",
+	OP_OP_AURA_ACTIVE_PREVIEW = "Aura |cff00ff00%1$s|r is active",
+	OP_OP_AURA_DURATION = "Aura duration",
+	OP_OP_AURA_DURATION_TT = "Returns the remaining duration of an aura in seconds, or 0 if the aura isn't active.",
+	OP_OP_AURA_DURATION_PREVIEW = "Remaining duration of aura |cff00ff00%1$s|r",
+	OP_OP_AURA_HELPFUL = "Aura is helpful";
+	OP_OP_AURA_HELPFUL_TT = "Returns, whether an aura is helpful.",
+	OP_OP_AURA_HELPFUL_PREVIEW = "Aura |cff00ff00%1$s|r is helpful.",
+	OP_OP_AURA_CANCELLABLE = "Aura is cancellable",
+	OP_OP_AURA_CANCELLABLE_TT = "Returns whether an aura is cancellable by the player.",
+	OP_OP_AURA_CANCELLABLE_PREVIEW = "Aura |cff00ff00%1$s|r is cancellable.",
+	OP_OP_AURA_NAME = "Aura name",
+	OP_OP_AURA_NAME_TT = "Returns the name of an aura.",
+	OP_OP_AURA_NAME_PREVIEW = "Name of aura |cff00ff00%1$s|r.",
+	OP_OP_AURA_CATEGORY = "Aura category",
+	OP_OP_AURA_CATEGORY_TT = "Returns the category of an aura.",
+	OP_OP_AURA_CATEGORY_PREVIEW = "Category of aura |cff00ff00%1$s|r.",
+	OP_OP_AURA_ICON = "Aura icon",
+	OP_OP_AURA_ICON_TT = "Returns the icon of an aura.",
+	OP_OP_AURA_ICON_PREVIEW = "Icon of aura |cff00ff00%1$s|r.",
+	OP_OP_AURA_COLOR = "Aura color",
+	OP_OP_AURA_COLOR_TT = "Returns the hexadecimal color code of an aura.",
+	OP_OP_AURA_COLOR_PREVIEW = "Color of aura |cff00ff00%1$s|r.",
+	OP_OP_AURA_CHECK_VAR = "Aura variable string value",
+	OP_OP_AURA_CHECK_VAR_TT = "Returns the value of an aura variable, |cff00ff00interpreted as a string|r.\n\nIf the variable does not exist or can't be reached, returns the string 'nil'.\n\n|cffff9900As the value depends on runtime, it cannot be previewed.",
+	OP_OP_AURA_CHECK_VAR_PREVIEW = "Aura |cff00ff00%1$s:|r %2$s",
+	OP_OP_AURA_CHECK_VAR_N_PREVIEW = "Aura |cff00ff00%1$s:|r |cffff9900(n)|r %2$s",
+	OP_OP_AURA_CHECK_VAR_N = "Aura variable numeric value",
+	OP_OP_AURA_CHECK_VAR_N_TT = "Returns the value of an aura variable, |cff00ff00interpreted as a number|r.\n\nIf the variable does not exist, can't be reached or can't be interpreted as a number, returns 0.\n\n|cffff9900As the value depends on runtime, it cannot be previewed.",
+	AU_NEW_NAME = "New aura",
+	AU_DISPLAY_ATT = "Display attributes",
+	AU_GAMEPLAY_ATT = "Aura behavior",
+	AU_PRESET = "Template",
+	AU_PRESET_BUFF = "Buff",
+	AU_PRESET_CURSE = "Curse",
+	AU_PRESET_DISEASE = "Disease",
+	AU_PRESET_MAGIC = "Magic",
+	AU_PRESET_POISON = "Poison",
+	AU_PRESET_OTHER = "Other Debuff",
+	AU_FIELD_NAME = "Aura name",
+	AU_FIELD_NAME_TT = "It's your aura's name, as it will appear on the tooltip.",
+	AU_FIELD_CATEGORY = "Category",
+	AU_FIELD_CATEGORY_TT = [[Enter a category for your aura, e.g. "Magical" or "Curse".]],
+	AU_FIELD_COLOR = "Color",
+	AU_FIELD_COLOR_TT = "Pick the color of the border.\n\nUsually, only debuffs have a color.\n\n",
+	AU_FIELD_DESCRIPTION = "Aura description",
+	AU_FIELD_DESCRIPTION_TT = "Tell the player what your aura does, but try to be concise, since it needs to fit within a tooltip.\n\n|cff00ff00You can use variable tags here.|r",
+	AU_FIELD_FLAVOR = "Secondary description",
+	AU_FIELD_FLAVOR_TT = [[This field can be used for flavor text, which isn't as important as the main description.
+It will appear in the tooltip below the description.]],
+	AU_FIELD_OVERLAY = "Overlay text",
+	AU_FIELD_OVERLAY_TT = "Text that will appear on the aura icon, e.g. a stack counter.\n\n|cffff9900Keep this text VERY short, as the space on the icon is limited!|r\n\n|cff00ff00You can use variable tags here.|r",
+	AU_FIELD_HELPFUL = "Helpful",
+	AU_FIELD_HELPFUL_TT = "Is your aura helpful (buff) or harmful (debuff)?\n\nA helpful aura is usually something that the players want to have or keep, while a harmful aura is something they do not want to have. If you debuff a player, make sure to also give them a way out.",
+	AU_FIELD_HAS_DURATION = "Expiration time",
+	AU_FIELD_HAS_DURATION_TT = "This aura will expire after a given amount of time.\n\nWhen the aura expires, the |cff00ff00On expire|r event triggers.",
+	AU_FIELD_DURATION = "Duration",
+	AU_FIELD_DURATION_TT = "Enter how long the aura lasts (in seconds).\n\n60 seconds = 1 minute\n3600 seconds = 1 hour\n86400 seconds = 1 day",
+	AU_FIELD_ALWAYS_ACTIVE = "Use real time",
+	AU_FIELD_ALWAYS_ACTIVE_TT = [[If checked, the time spent offline or on another profile will count towards the aura run time.
+
+This is useful for auras that last very long.
+
+|cffff9900Aura ticks and aura events will still be skipped while offline or on another profile.|r
+]],
+	AU_FIELD_ENSURE_EXPIRY = "Ensure expiry workflow",
+	AU_FIELD_ENSURE_EXPIRY_TT = [[Make sure the |cff00ff00On expire|r event triggers even if the aura expires while the player is logged off or on another profile.
+In that case, the workflow runs just after the next login or profile switch.]],
+	AU_FIELD_BOUND_TO_CAMPAIGN = "Bound to enclosing campaign",
+	AU_FIELD_BOUND_TO_CAMPAIGN_TT = "Make this aura depend on its enclosing campaign.\n\nIf the campaign is reset, the aura will be removed.\n\nIf the campaign is paused, the aura is paused as well.\n\n|cffff9900Works only if the root object is a campaign.|r",
+	AU_FIELD_CANCELLABLE = "Can be cancelled by player",
+	AU_FIELD_CANCELLABLE_TT = [[Allow the aura to be removed with a right mouse click.
+
+When the player removes the aura, the |cff00ff00On cancel|r event triggers.
+
+Please make sure to always give the player a way to get rid of an aura.
+]],
+	AU_FIELD_HAS_INTERVAL = "Tick schedule",
+	AU_FIELD_HAS_INTERVAL_TT = [[If enabled, the aura will "tick" every given amount of time, triggering the |cff00ff00On tick|r event.]],
+	AU_FIELD_INTERVAL = "Tick interval",
+	AU_FIELD_INTERVAL_TT = "Enter the period (in seconds) between two ticks.",
+	AU_FIELD_INSPECTABLE = "Visible to others",
+	AU_FIELD_INSPECTABLE_TT = "If checked, the aura will be visible to other Extended users when they inspect the player.",
+	AU_LINKS_ON_APPLY = "On apply",
+	AU_LINKS_ON_APPLY_TT = "Triggered just after the aura has been applied.",
+	AU_LINKS_ON_EXPIRE = "On expire",
+	AU_LINKS_ON_EXPIRE_TT = "Triggered when the aura is about to expire.",
+	AU_LINKS_ON_CANCEL = "On cancel",
+	AU_LINKS_ON_CANCEL_TT = "Triggered when the aura is cancelled by the player.",
+	AU_LINKS_ON_TICK = "On tick",
+	AU_LINKS_ON_TICK_TT = "Triggered when the aura ticks.",
+	DEBUG_CLEAR_AURAS = "Clear all auras on the current profile. Only use in case of emergency.",
 
 }
 

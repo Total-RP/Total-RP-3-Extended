@@ -22,14 +22,7 @@ local tostring, pairs, wipe = tostring, pairs, wipe;
 local loc = TRP3_API.loc;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
--- List of custom events for Extended
-local CUSTOM_EVENTS = {
-	TRP3_KILL = "TRP3_KILL",
-	TRP3_ROLL = "TRP3_ROLL",
-	TRP3_SIGNAL = "TRP3_SIGNAL",
-	TRP3_ITEM_USED = "TRP3_ITEM_USED",
-	TRP3_EMOTE = "TRP3_EMOTE",
-};
+local CUSTOM_EVENTS = TRP3_API.extended.CUSTOM_EVENTS;
 
 local playerQuestLog;
 
@@ -116,6 +109,8 @@ local function deactivateCurrentCampaign(skipMessage)
 		playerQuestLog.currentCampaign = nil;
 		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ACTIVE_CAMPAIGN_CHANGED, nil);
 	end
+	-- refresh auras
+	TRP3_API.extended.auras.refresh();
 	clearCampaignHandlers();
 end
 
@@ -160,6 +155,9 @@ local function activateCampaign(campaignID, force)
 
 	playerQuestLog.currentCampaign = campaignID;
 
+	-- refresh auras
+	TRP3_API.extended.auras.refresh();
+
 	if init then
 
 		-- Initial script
@@ -181,6 +179,7 @@ end
 TRP3_API.quest.activateCampaign = activateCampaign;
 
 local function resetCampaign(campaignID)
+	TRP3_API.extended.auras.resetCampaignAuras(campaignID);
 	if playerQuestLog[campaignID] then
 		wipe(playerQuestLog[campaignID]);
 		playerQuestLog[campaignID] = nil;

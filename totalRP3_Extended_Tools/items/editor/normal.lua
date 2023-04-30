@@ -28,7 +28,7 @@ local TABS = {
 	EFFECTS = 2,
 	CONTAINER = 3,
 	INNER = 4,
-	EXPERT = 5
+	EVENTS = 5
 }
 
 local TUTORIAL, CONTAINER_TUTORIAL;
@@ -274,7 +274,7 @@ local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 		TRP3_InnerObjectEditor:SetParent(toolFrame.item.normal);
 		TRP3_InnerObjectEditor:SetAllPoints();
 		TRP3_InnerObjectEditor:Show();
-	elseif currentTab == TABS.EXPERT then
+	elseif currentTab == TABS.EVENTS then
 		TRP3_LinksEditor:SetParent(toolFrame.item.normal);
 		TRP3_LinksEditor:SetAllPoints();
 		TRP3_LinksEditor:Show();
@@ -295,7 +295,7 @@ local function createTabBar()
 			{ loc.WO_WORKFLOW, TABS.EFFECTS, 150 },
 			{ loc.IT_CON, TABS.CONTAINER, 150 },
 			{ loc.IN_INNER, TABS.INNER, 150 },
-			{ loc.WO_LINKS, TABS.EXPERT, 150 },
+			{ loc.WO_LINKS, TABS.EVENTS, 150 },
 		},
 		onTabChanged
 	);

@@ -55,7 +55,7 @@ local function createInnerObject(innerID, innerType, innerMode, innerData)
 			BA = {
 				NA = loc.IT_NEW_NAME,
 			},
-		}
+		};
 
 		if innerMode then
 			toolFrame.specificDraft.IN[innerID].MD.MO = innerMode;
@@ -70,7 +70,19 @@ local function createInnerObject(innerID, innerType, innerMode, innerData)
 				NA = loc.DO_NEW_DOC,
 			},
 			BT = true,
-		}
+		};
+	elseif innerType == TRP3_DB.types.AURA then
+		toolFrame.specificDraft.IN[innerID] = innerData or {
+			TY = TRP3_DB.types.AURA,
+			MD = {
+				MO = TRP3_DB.modes.NORMAL,
+			},
+			BA = {
+				NA = loc.AU_NEW_NAME,
+				HE = true,
+				CC = true,
+			}
+		};
 	elseif innerType == TRP3_DB.types.DIALOG then
 		toolFrame.specificDraft.IN[innerID] = innerData or TRP3_API.extended.tools.getCutsceneData();
 	elseif innerType == "quick" then
@@ -262,6 +274,7 @@ local function onAddClicked(self)
 	tinsert(values, {loc.TYPE_ITEM, TRP3_DB.types.ITEM});
 	tinsert(values, {loc.TYPE_DOCUMENT, TRP3_DB.types.DOCUMENT});
 	tinsert(values, {loc.TYPE_DIALOG, TRP3_DB.types.DIALOG});
+	tinsert(values, {loc.TYPE_AURA, TRP3_DB.types.AURA});
 	TRP3_API.ui.listbox.displayDropDown(self, values, addInnerObject, 0, true);
 end
 

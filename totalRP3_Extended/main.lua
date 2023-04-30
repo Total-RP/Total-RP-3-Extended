@@ -25,6 +25,7 @@ local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 TRP3_API.extended = {
 	document = {},
 	dialog = {},
+	auras = {},
 };
 TRP3_API.inventory = {};
 TRP3_API.quest = {};
@@ -88,6 +89,7 @@ TRP3_DB = {
 		ITEM = "IT",
 		DOCUMENT = "DO",
 		DIALOG = "DI",
+		AURA = "AU"
 	},
 	modes = {
 		QUICK = "QU",
@@ -118,6 +120,15 @@ local ID_SEPARATOR = " ";
 TRP3_API.extended.ID_SEPARATOR = ID_SEPARATOR;
 TRP3_API.extended.ID_EXCLUSION_PATTERN = "[^%w%_]";
 TRP3_API.extended.ID_EXCLUSION_REPLACEMENT = "_";
+
+-- List of custom events for Extended
+TRP3_API.extended.CUSTOM_EVENTS = {
+	TRP3_KILL = "TRP3_KILL",
+	TRP3_ROLL = "TRP3_ROLL",
+	TRP3_SIGNAL = "TRP3_SIGNAL",
+	TRP3_ITEM_USED = "TRP3_ITEM_USED",
+	TRP3_EMOTE = "TRP3_EMOTE",
+};
 
 function TRP3_API.extended.checkID(ID)
 	return ID:lower():gsub(TRP3_API.extended.ID_EXCLUSION_PATTERN, TRP3_API.extended.ID_EXCLUSION_REPLACEMENT);
@@ -523,6 +534,7 @@ local function onStart()
 	TRP3_CastingBarFrame.init();
 	TRP3_SoundsHistoryFrame.initSound();
 	TRP3_API.inventory.onStart();
+	TRP3_API.extended.auras.onStart();
 	TRP3_API.quest.onStart();
 	TRP3_API.extended.document.onStart();
 	TRP3_API.extended.dialog.onStart();

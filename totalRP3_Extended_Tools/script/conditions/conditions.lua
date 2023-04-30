@@ -538,6 +538,20 @@ local getEvaluatedOperands = function(structure)
 			"quest_obj_all",
 			"quest_is_npc",
 		},
+		[loc.TYPE_AURA] = {
+			"aura_active",
+			"aura_count",
+			"aura_id",
+			"aura_duration",
+			"aura_var_check",
+			"aura_var_check_n",
+			"aura_helpful",
+			"aura_cancellable",
+			"aura_name",
+			"aura_category",
+			"aura_icon",
+			"aura_color",
+		},
 		["Expert"] = {-- TODO: locals
 			"var_check",
 			"var_check_n",
@@ -562,6 +576,7 @@ local getEvaluatedOperands = function(structure)
 		--		"Pets and companions", -- TODO: locals
 		loc.INV_PAGE_CHARACTER_INV,
 		loc.EFFECT_CAT_CAMPAIGN,
+		loc.TYPE_AURA,
 		"Others", -- TODO: locals
 		"",
 		"Expert", -- TODO: locals

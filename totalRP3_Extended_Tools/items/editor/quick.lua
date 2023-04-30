@@ -256,6 +256,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	toolFrame.list.bottom.item.templates.container.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT);
 	toolFrame.list.bottom.item.templates.from.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_FROM);
 	toolFrame.list.bottom.item.templates.from.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_FROM_TT);
+	toolFrame.list.bottom.item.templates.aura.Name:SetText(loc.DB_CREATE_ITEM_TEMPLATES_AURA);
+	toolFrame.list.bottom.item.templates.aura.InfoText:SetText(loc.DB_CREATE_ITEM_TEMPLATES_AURA_TT);
 
 	toolFrame.list.bottom.campaign.templates.blank.Name:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_BLANK);
 	toolFrame.list.bottom.campaign.templates.blank.InfoText:SetText(loc.DB_CREATE_CAMPAIGN_TEMPLATES_BLANK_TT);
@@ -268,6 +270,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.document, "inv_misc_book_16");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.quick, "petbattle_speed");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.from, "spell_nature_mirrorimage");
+	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item.templates.aura, "ability_priest_spiritoftheredeemer");
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.item, "inv_garrison_blueprints1");
 
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.campaign.templates.blank, "inv_inscription_scroll");
@@ -320,6 +323,13 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		toolFrame.list.bottom.item.templates:Hide();
 		local generatedID = Utils.str.id();
 		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getDocumentItemData(generatedID), generatedID);
+		TRP3_API.extended.tools.goToPage(itemID);
+	end);
+
+	toolFrame.list.bottom.item.templates.aura:SetScript("OnClick", function()
+		toolFrame.list.bottom.item.templates:Hide();
+		local generatedID = Utils.str.id();
+		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getAuraItemData(generatedID), generatedID);
 		TRP3_API.extended.tools.goToPage(itemID);
 	end);
 
