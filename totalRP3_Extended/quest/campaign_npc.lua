@@ -184,10 +184,10 @@ local function onNamePlateDataUpdated(unitToken, displayInfo)
 		return;
 	end
 
-	-- Unit has NPC data; the 'shouldHide' flag should be set to false as this
-	-- is now considered to be a roleplay unit.
+	-- Unit has NPC data; the 'isRoleplayUnit' flag should be set to false
+	-- to flag it as having roleplay data.
 
-	displayInfo.shouldHide = false;
+	displayInfo.isRoleplayUnit = true;
 
 	-- If any display info field is left with a nil value then an appropriate
 	-- default will be displayed on the nameplate automatically; eg. if there's
@@ -198,7 +198,7 @@ local function onNamePlateDataUpdated(unitToken, displayInfo)
 	-- multiple in-place so most fields should preserve existing values if we
 	-- have nothing ourselves to supply.
 
-	if TRP3_NamePlatesSettings.CustomizeNames and npcData.NA then
+	if TRP3_NamePlatesSettings.CustomizeNames ~= TRP3_NamePlateUnitNameDisplayMode.OriginalName and npcData.NA then
 		displayInfo.name = TRP3_NamePlatesUtil.GenerateCroppedNameText(npcData.NA);
 	end
 
