@@ -523,6 +523,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Include file="list/list.lua"/>
+	<Include file="List.lua"/>
 
 </Ui>

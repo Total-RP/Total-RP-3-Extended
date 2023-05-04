@@ -9,10 +9,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Include file="document/document.lua"/>
+	<Include file="Document.lua"/>
 
-	<Include file="document/editor/normal.xml"/>
-	<Include file="document/editor/normal.lua"/>
+	<Include file="Editor\Normal.xml"/>
+	<Include file="Editor\Normal.lua"/>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Base frame      -->

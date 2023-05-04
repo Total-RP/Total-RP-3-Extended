@@ -8,10 +8,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Include file="aura/aura.lua"/>
+	<Include file="Aura.lua"/>
 
-	<Include file="aura/editor/normal.xml"/>
-	<Include file="aura/editor/normal.lua"/>
+	<Include file="Editor\Normal.xml"/>
+	<Include file="Editor\Normal.lua"/>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Base frame      -->
@@ -226,6 +226,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Include file="aura/effects.lua"/>
+	<Include file="Effects.lua"/>
 
 </Ui>

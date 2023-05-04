@@ -4,17 +4,17 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Include file="main.lua"/>
+	<Include file="Main.lua"/>
 
-	<Include file="script/script.xml"/>
-	<Include file="inner/inner.xml"/>
-	<Include file="links/links.xml"/>
-	<Include file="items/items.xml"/>
-	<Include file="document/document.xml"/>
-	<Include file="campaign/campaign.xml"/>
-	<Include file="cutscene/cutscene.xml"/>
-	<Include file="aura/aura.xml"/>
-	<Include file="list/list.xml"/>
+	<Include file="Script\Script.xml"/>
+	<Include file="Inner\Inner.xml"/>
+	<Include file="Links\Links.xml"/>
+	<Include file="Items\Items.xml"/>
+	<Include file="Document\Document.xml"/>
+	<Include file="Campaign\Campaign.xml"/>
+	<Include file="Cutscene\Cutscene.xml"/>
+	<Include file="Aura\Aura.xml"/>
+	<Include file="List\List.xml"/>
 
 	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true" movable="true">
 		<Anchors>
@@ -352,6 +352,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Include file="tutorial.lua"/>
+	<Include file="Tutorial.lua"/>
 
 </Ui>

@@ -8,10 +8,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Include file="cutscene/cutscene.lua"/>
+	<Include file="Cutscene.lua"/>
 
-	<Include file="cutscene/editor/normal.xml"/>
-	<Include file="cutscene/editor/normal.lua"/>
+	<Include file="Editor\Normal.xml"/>
+	<Include file="Editor\Normal.lua"/>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Base frame      -->
@@ -70,5 +70,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 
 
-	<Include file="cutscene/effects.lua"/>
+	<Include file="Effects.lua"/>
 </Ui>
