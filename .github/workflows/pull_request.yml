@@ -18,7 +18,13 @@ jobs:
           args: --no-color -q
           annotate: warning
 
-      - name: Create Retail Package
+      - name: Run editorconfig-checker
+        uses: wow-rp-addons/actions-editorconfig-check@v1.0.2
+        with:
+          args: -no-color
+          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3_Extended/*' ':!:totalRP3_Extended/Locales/*.lua')
+
+      - name: Create Package
         uses: BigWigsMods/packager@master
         with:
           args: -d -z
@@ -38,3 +44,4 @@ jobs:
           HOOK_OS_NAME: ${{ runner.os }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           WORKFLOW_NAME: ${{ github.workflow }}
+
