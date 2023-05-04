@@ -1,7 +1,9 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-
+﻿<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -20,7 +22,7 @@
 			<Frame inherits="TRP3_Tools_AuraEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
 		</Frames>
 	</Frame>
-	
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--    Effect Editors    -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -41,7 +43,7 @@
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
 				</Anchors>
 			</Button>
-			
+
 			<Frame parentKey="mergeMode" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parent.id">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="-20" y="-50"/>
@@ -50,7 +52,7 @@
 
 		</Frames>
 	</Frame>
-	
+
 	<Frame name="TRP3_EffectEditorAuraRemove" hidden="true" inherits="TRP3_EditorEffectTemplate">
 		<Size x="500" y="275"/>
 		<Frames>
@@ -103,7 +105,7 @@
 
 		</Frames>
 	</Frame>
-	
+
 	<Frame name="TRP3_EffectEditorAuraVarChange" inherits="TRP3_EditorEffectTemplate" hidden="true">
 		<Size x="500" y="310"/>
 		<Frames>
@@ -143,7 +145,7 @@
 
 		</Frames>
 	</Frame>
-	
+
 	<Frame name="TRP3_EffectEditorRunAuraWorkflow" inherits="TRP3_EditorEffectTemplate" hidden="true">
 		<Size x="500" y="250"/>
 		<Frames>
@@ -170,7 +172,7 @@
 
 		</Frames>
 	</Frame>
-	
+
 	<Frame name="TRP3_OperandEditorAuraProperty" hidden="true">
 		<Frames>
 			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
@@ -187,7 +189,7 @@
 			</Button>
 		</Frames>
 	</Frame>
-	
+
 	<Frame name="TRP3_OperandEditorAuraId" hidden="true">
 		<Frames>
 			<EditBox parentKey="index" inherits="TRP3_TitledHelpEditBox">
@@ -199,7 +201,7 @@
 			</EditBox>
 		</Frames>
 	</Frame>
-	
+
 	<Frame name="TRP3_OperandEditorAuraCheckVar" hidden="true">
 		<Frames>
 			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
@@ -223,7 +225,7 @@
 			</EditBox>
 		</Frames>
 	</Frame>
-	
+
 	<Script file="aura/effects.lua"/>
 
 </Ui>
