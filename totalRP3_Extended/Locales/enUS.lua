@@ -1,13 +1,9 @@
--- Copyright The Total RP 3 Extended Authors
+-- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Localization = TRP3_API.loc;
+local L;
 
---- This is a trick to get IntelliJ's code completion to work on a table that was already initialized elsewhere.
---- We are not redefining TRP3_API.loc, but IntelliJ thinks so
----@type TRP3_API
-local TRP3_API = {}
-TRP3_API.loc = {
+L = {
 
 	NEW_EXTENDED_VERSION = "|cffff9900A new version for TRP3:Extended is available (%s). |cff00ff00Go check it out on Curse!",
 
@@ -1824,156 +1820,8 @@ Please make sure to always give the player a way to get rid of an aura.
 	AU_LINKS_ON_TICK = "On tick",
 	AU_LINKS_ON_TICK_TT = "Triggered when the aura ticks.",
 	DEBUG_CLEAR_AURAS = "Clear all auras on the current profile. Only use in case of emergency.",
+};
 
-}
-
-Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
-
-
--- Register all locales into the localization system
--- Note the localeContent is filled by the publishing script using CurseForge's localization tool when packaging builds
--- See https://wow.curseforge.com/projects/total-rp-3-extended/localization
-local localeContent = {};
-
---@localization(locale="enUS", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("enUS"):AddTexts(localeContent);
---@localization(locale="deDE", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("deDE"):AddTexts(localeContent);
---@localization(locale="frFR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("frFR"):AddTexts(localeContent);
---@localization(locale="esES", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("esES"):AddTexts(localeContent);
-
---[[ Removed while CurseForge is malfunctioning
---@localization(locale="esMX", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("esMX"):AddTexts(localeContent);
-]]
-
---[[ Removed while CurseForge is malfunctioning
---@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("itIT"):AddTexts(localeContent);
-]]
-
---@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("koKR"):AddTexts(localeContent);
-
---[[ Removed while CurseForge is malfunctioning
---@localization(locale="ptBR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("ptBR"):AddTexts(localeContent);
-]]
-
---@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("ruRU"):AddTexts(localeContent);
-
-
---@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("zhCN"):AddTexts(localeContent);
-
---[[ Removed while CurseForge is malfunctioning
---@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-Localization:GetLocale("zhTW"):AddTexts(localeContent);
-]]
-
-TRP3_KS_BACKERS =
-[[#Total RP 3: Extended (version %s)
-
-Created by |cff00ff00Sylvain "Telkostrasz" Cossement|r and |cff00ff00Morgane "Ellypse" Parize|r.
-
-## Thanks to our helpful members on Discord:
-
-- Obidiah
-- Ovokalia
-- Seleves
-
-## To all our Kickstarter backers: many thanks for the support!
-
-- Abyssaloth
-- Alex Stromboli (Strom)
-- Alex Villescas
-- Alexander Salminen
-- Andrew P. Thayer
-- Andy Austin Polycarp Tymczyszyn
-- Antonio Campos jr from McAllen Texas
-- Arranax
-- Ashley Ann
-- Austin Lang
-- Brendan Steward
-- Caleb Peyton
-- Cave
-- Charles Gingras
-- Cheezedogg
-- Chris Magalee
-- Christine Brandon
-- Colin Stent
-- Dave
-- Dwargoth 
-- Dylan Garrett
-- Edward Ryan
-- Ella
-- Erzan
-- Fannar Vilhelmsson
-- GreenGrass
-- Herman Duyker
-- James Lofshult ((Solav))
-- James Turner
-- Juan
-- Kaeril
-- Kerry PMack
-- Keti
-- Kevin Kerrigan
-- krinklebearcat
-- Kristin Aurora Brayman
-- Laerith
-- Laleila
-- Lilithsahl from Moon Guard US
-- Linreia 
-- Lium Alxcen
-- Lodjay
-- Maethi
-- Managan Southpaw
-- Manuel Robador Merino
-- Max Juchheim
-- Meg Karper
-- Miajensen 
-- Michael Bell
-- MisticTiger
-- Nat
-- Nicolo Dresp
-- Nimsy
-- Orion Cain
-- Patrick D Fletcher
-- Paul Corlay
-- Phahi
-- Rob G
-- Robinson Gracely
-- Rocky Aldridge
-- Ryan McGilloway
-- Ryldor
-- Sachiel
-- Saelora
-- Samaramon
-- Sean "Pommie" K
-- Selendis
-- Simon Abadei
-- Sindaru
-- Soraptor
-- Sunkara
-- Taurii from House of Crows of Wyrmrest Accord
-- TeegeeUK
-- thedreameater
-- Thêmys
-- Thomas
-- Thomas Laurberg Sørensen
-- Valnoressa
-- Victor Nilsson
-- Vinayack 
-- W. Kristoph "Calmorlayne" Nolen
-- Defilers of Arathor
-- Yann
-- Ydara
-- Zach Platzer
-- Zack Wannemacher
-- Zencore
-
-##  You are the best!
-]];
+-- TODO: Put Extended strings into its own namespace - don't insert into Core.
+--       This change also needs applying to .github/scripts/localization.py.
+TRP3_API.loc:GetDefaultLocale():AddTexts(L);
