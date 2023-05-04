@@ -1,4 +1,4 @@
-﻿<!--
+<!--
 	Copyright The Total RP 3 Extended Authors
 	SPDX-License-Identifier: Apache-2.0
 -->
@@ -24,7 +24,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Script\ScriptEffects.lua"/>
 
 	<!-- Locales -->
-	<Include file="Locale.lua"/>
+	<Include file="Locales\Locales.xml"/>
 
 	<Include file="Flyway\Flyway.lua"/>
 	<Include file="Flyway\FlywayPatches.lua"/>

@@ -21,6 +21,13 @@ check: .github/scripts/ui.xsd
 dist:
 	@curl -s $(PACKAGER_URL) | bash -s -- -d
 
+translations: translations/upload translations/download
+
+translations/download:
+	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) -n download
+
+translations/upload:
+	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) -n upload
 
 .github/scripts/ui.xsd: .FORCE
 	curl -s $(SCHEMA_URL) -o $@
