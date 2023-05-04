@@ -12,7 +12,7 @@ Total RP 3 brought you the best way to customize your characters and companions 
 
 # Highlights
 
-- Create highly customizable items and share them securely with other people. When you receive an item from someone, the new security level system will warn you about potentially harmful effects and you can authorize them or not. 
+- Create highly customizable items and share them securely with other people. When you receive an item from someone, the new security level system will warn you about potentially harmful effects and you can authorize them or not.
 - Place items on the ground to get them back later or place them in stashes that other players will be able to find and open.
 - Total RP 3: Extended gives you a brand new RP inventory to place items on your character visually. People with Total RP 3: Extend will be able to see the items you are wearing and you can inspect them too.
 - Create rich campaigns with multiple quests and steps, customize in game NPCs to fit your needs and create immersive 3D dialogs with multiple choices.
