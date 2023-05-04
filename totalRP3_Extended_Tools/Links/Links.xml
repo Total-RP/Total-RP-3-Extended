@@ -347,6 +347,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Include file="links/links.lua"/>
+	<Include file="Links.lua"/>
 
 </Ui>

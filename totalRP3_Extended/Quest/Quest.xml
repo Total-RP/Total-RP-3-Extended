@@ -572,13 +572,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="CampaignsChatLinkModule.lua"/>
 
-	<Include file="db.lua"/>
-	<Include file="quest_effects.lua"/>
-	<Include file="campaign_npc.lua"/>
-	<Include file="campaign.lua"/>
-	<Include file="quest.lua"/>
-	<Include file="quest_log.lua"/>
-	<Include file="quest_objective.lua"/>
+	<Include file="DB.lua"/>
+	<Include file="QuestEffects.lua"/>
+	<Include file="CampaignNpc.lua"/>
+	<Include file="Campaign.lua"/>
+	<Include file="Quest.lua"/>
+	<Include file="QuestLog.lua"/>
+	<Include file="QuestObjective.lua"/>
 
 
 </Ui>

@@ -9,12 +9,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="ItemsChatLinkModule.lua"/>
 
-	<Include file="db.lua"/>
-	<Include file="inventory_effects.lua"/>
-	<Include file="inventory_utils.lua"/>
-	<Include file="inventory.lua"/>
-	<Include file="container.lua"/>
-	<Include file="inventory_page.lua"/>
+	<Include file="DB.lua"/>
+	<Include file="InventoryEffects.lua"/>
+	<Include file="InventoryUtils.lua"/>
+	<Include file="Inventory.lua"/>
+	<Include file="Container.lua"/>
+	<Include file="InventoryPage.lua"/>
 
 	<Button name="TRP3_QuestButtonTemplate" virtual="true">
 		<Size x="37" y="37"/>
@@ -603,13 +603,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Include file="inspection.lua"/>
+	<Include file="Inspection.lua"/>
 
-	<Include file="inventory_exchange.xml"/>
-	<Include file="inventory_exchange.lua"/>
+	<Include file="InventoryExchange.xml"/>
+	<Include file="InventoryExchange.lua"/>
 
-	<Include file="inventory_drop.xml"/>
-	<Include file="inventory_drop.lua"/>
+	<Include file="InventoryDrop.xml"/>
+	<Include file="InventoryDrop.lua"/>
 
 	<Include file="InventoryMapScan\InventoryMapScan.xml"/>
 

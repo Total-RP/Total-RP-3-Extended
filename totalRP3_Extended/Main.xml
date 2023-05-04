@@ -6,37 +6,37 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Please note that the loading order matters a lot -->
 
-	<Include file="libs\libs.xml"/>
+	<Include file="Libs\Libs.xml"/>
 
 	<!-- Backdrop templates -->
-	<Include file="widgets.xml"/>
+	<Include file="Widgets.xml"/>
 
 	<!-- Main -->
-	<Script file="main.lua"/>
+	<Include file="Main.lua"/>
 
 	<!-- Security system -->
-	<Include file="security.xml"/>
-	<Script file="security.lua"/>
+	<Include file="Security.xml"/>
+	<Include file="Security.lua"/>
 
-	<Script file="script\script_generation.lua"/>
-	<Script file="script\script_operands.lua"/>
-	<Include file="script\Operands\Operands.xml"/>
-	<Script file="script\script_effects.lua"/>
+	<Include file="Script\ScriptGeneration.lua"/>
+	<Include file="Script\ScriptOperands.lua"/>
+	<Include file="Script\Operands\Operands.xml"/>
+	<Include file="Script\ScriptEffects.lua"/>
 
 	<!-- Locales -->
-	<Script file="locale.lua"/>
+	<Include file="Locale.lua"/>
 
-	<Script file="flyway\flyway.lua"/>
-	<Script file="flyway\flyway_patches.lua"/>
+	<Include file="Flyway\Flyway.lua"/>
+	<Include file="Flyway\FlywayPatches.lua"/>
 
 	<!-- Sub-Modules -->
-	<Script file="misc\utils.lua"/>
-	<Include file="misc\cast.xml"/>
-	<Include file="misc\sounds.xml"/>
-	<Include file="inventory\inventory.xml"/>
-	<Include file="quest\quest.xml"/>
-	<Include file="document\document.xml"/>
-	<Include file="dialogues\dialogues.xml"/>
-	<Include file="aura\aura.xml"/>
+	<Include file="Misc\Utils.lua"/>
+	<Include file="Misc\Cast.xml"/>
+	<Include file="Misc\Sounds.xml"/>
+	<Include file="Inventory\Inventory.xml"/>
+	<Include file="Quest\Quest.xml"/>
+	<Include file="Document\Document.xml"/>
+	<Include file="Dialogues\Dialogues.xml"/>
+	<Include file="Aura\Aura.xml"/>
 
 </Ui>

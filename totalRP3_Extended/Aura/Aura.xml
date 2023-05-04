@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Include file="aura/aura_mixins.lua"/>
+	<Include file="AuraMixins.lua"/>
 
 	<Frame name="TRP3_AuraBarFrame" parent="UIParent" enableMouse="true" movable="true" clampedToScreen="true" mixin="TRP3_AuraBarMixin">
 		<Size x="200" y="50"/>
@@ -158,8 +158,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<GameTooltip name="TRP3_AuraTooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="TRP3_TooltipTemplate" mixin="TRP3_AuraTooltipMixin"/>
 
-	<Include file="aura/aura.lua"/>
-	<Include file="aura/aura_effects.lua"/>
+	<Include file="Aura.lua"/>
+	<Include file="AuraEffects.lua"/>
 
 
 </Ui>

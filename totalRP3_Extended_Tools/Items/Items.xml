@@ -8,13 +8,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Script file="items/items.lua"/>
+	<Include file="Items.lua"/>
 
-	<Include file="items/editor/quick.xml"/>
-	<Script file="items/editor/quick.lua"/>
+	<Include file="Editor\Quick.xml"/>
+	<Include file="Editor\Quick.lua"/>
 
-	<Include file="items/editor/normal.xml"/>
-	<Script file="items/editor/normal.lua"/>
+	<Include file="Editor\Normal.xml"/>
+	<Include file="Editor\Normal.lua"/>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Base frame      -->
@@ -379,6 +379,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	</Frame>
 
-	<Script file="items/effects.lua"/>
+	<Include file="Effects.lua"/>
 
 </Ui>

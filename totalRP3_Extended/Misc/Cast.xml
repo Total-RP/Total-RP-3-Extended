@@ -18,6 +18,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</StatusBar>
 
-	<Include file="cast.lua"/>
+	<Include file="Cast.lua"/>
 
 </Ui>
