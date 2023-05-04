@@ -65,4 +65,3 @@ function Tests:Random()
 	local operand = getOperand("random");
 	WoWUnit.AreEqual(42, execute(operand, { 5, 10 }))
 end
-
