@@ -1,3 +1,6 @@
+-- Copyright The Total RP 3 Extended Authors
+-- SPDX-License-Identifier: Apache-2.0
+
 TRP3_API.extended.auras.EFFECTS = {
 	["aura_apply"] = {
 		secured = TRP3_API.security.SECURITY_LEVEL.HIGH,

@@ -1,3 +1,6 @@
+-- Copyright The Total RP 3 Extended Authors
+-- SPDX-License-Identifier: Apache-2.0
+
 local loc            = TRP3_API.loc;
 local getClass       = TRP3_API.extended.getClass;
 local getRootClassID = TRP3_API.extended.getRootClassID;
