@@ -106,7 +106,7 @@ function Tests:MinimapZone()
 	local operand = getOperand("char_achievement");
 
 	--region Account achievement test
-	WoWUnit.Replace('GetAchievementInfo', function(achievementId, completedByFlag)
+	WoWUnit.Replace('GetAchievementInfo', function(achievementId)
 		WoWUnit.AreEqual(achievementId, 42)
 		local returnValues = {}
 		for i = 1, 14 do
