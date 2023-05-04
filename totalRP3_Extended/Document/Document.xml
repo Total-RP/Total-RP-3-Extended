@@ -99,6 +99,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Script file="document.lua"/>
+	<Include file="document.lua"/>
 
 </Ui>

@@ -150,6 +150,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Script file="inner/inner.lua"/>
+	<Include file="inner/inner.lua"/>
 
 </Ui>

@@ -8,19 +8,19 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Script file="campaign/campaign.lua"/>
+	<Include file="campaign/campaign.lua"/>
 
 	<Include file="campaign/editor/actions.xml"/>
-	<Script file="campaign/editor/actions.lua"/>
+	<Include file="campaign/editor/actions.lua"/>
 
 	<Include file="campaign/editor/normal.xml"/>
-	<Script file="campaign/editor/normal.lua"/>
+	<Include file="campaign/editor/normal.lua"/>
 
 	<Include file="campaign/editor/quest.xml"/>
-	<Script file="campaign/editor/quest.lua"/>
+	<Include file="campaign/editor/quest.lua"/>
 
 	<Include file="campaign/editor/step.xml"/>
-	<Script file="campaign/editor/step.lua"/>
+	<Include file="campaign/editor/step.lua"/>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      Base frame      -->
@@ -234,5 +234,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Script file="campaign/effects.lua"/>
+	<Include file="campaign/effects.lua"/>
 </Ui>

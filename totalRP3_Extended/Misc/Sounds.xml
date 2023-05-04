@@ -83,6 +83,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Script file="sounds.lua"/>
+	<Include file="sounds.lua"/>
 
 </Ui>
