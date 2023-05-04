@@ -45,4 +45,3 @@ jobs:
           HOOK_OS_NAME: ${{ runner.os }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           WORKFLOW_NAME: ${{ github.workflow }}
-
