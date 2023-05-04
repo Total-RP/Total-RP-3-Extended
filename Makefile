@@ -19,7 +19,7 @@ check: .github/scripts/ui.xsd
 	pre-commit run --all-files
 
 dist:
-	@curl -s $(PACKAGER_URL) | bash -s -- -d -S
+	@curl -s $(PACKAGER_URL) | bash -s -- -d
 
 
 .github/scripts/ui.xsd: .FORCE
