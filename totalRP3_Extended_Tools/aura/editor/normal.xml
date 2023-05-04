@@ -1,8 +1,9 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
-
+﻿<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--    General frame     -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -20,7 +21,7 @@
 					<Anchor point="LEFT" x="10" y="0"/>
 					<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="-15"/>
 				</Anchors>
-				
+
 				<Frames>
 					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
 						<Size x="0" y="18"/>
@@ -29,7 +30,7 @@
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
 						</Anchors>
 					</EditBox>
-					
+
 					<EditBox parentKey="overlay" inherits="TRP3_TitledHelpEditBox">
 						<Size x="0" y="18"/>
 						<Anchors>
@@ -57,7 +58,7 @@
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
 						</Anchors>
 					</Frame>
-					
+
 					<Frame parentKey="flavor" inherits="TRP3_TextArea">
 						<Size x="0" y="75"/>
 						<Layers>
@@ -112,7 +113,7 @@
 						</Anchors>
 					</Frame>
 				</Frames>
-				
+
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString parentKey="previewText" inherits="SystemFont_Large" justifyH="LEFT" text="[TEXT_NAME]">
@@ -131,10 +132,10 @@
 						</FontString>
 					</Layer>
 				</Layers>
-				
+
 			</Frame>
-			
-			
+
+
 			<Frame parentKey="gameplay" inherits="TRP3_EditorTitledFrame" name="$parentGameplay">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-5"/>
@@ -142,7 +143,7 @@
 					<Anchor point="LEFT" relativePoint="CENTER" x="0" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
-				
+
 				<Frames>
 
 					<CheckButton parentKey="hasDuration" inherits="TRP3_CheckBox" name="$parentHasDuration">
@@ -150,7 +151,7 @@
 							<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.title"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
 						<Size x="0" y="18"/>
 						<Anchors>
@@ -159,13 +160,13 @@
 							<Anchor point="RIGHT" x="-35" y="-2"/>
 						</Anchors>
 					</EditBox>
-					
+
 					<CheckButton parentKey="alwaysActive" inherits="TRP3_CheckBox" name="$parentAlwaysActive">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.hasDuration"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<CheckButton parentKey="ensureExpiry" inherits="TRP3_CheckBox" name="$parentEnsureExpiry">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="0" relativePoint="TOP" relativeKey="$parent.alwaysActive"/>
@@ -178,13 +179,13 @@
 							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.alwaysActive"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<CheckButton parentKey="hasInterval" inherits="TRP3_CheckBox" name="$parentHasTicks">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.cancellable"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<EditBox parentKey="interval" inherits="TRP3_TitledHelpEditBox">
 						<Size x="0" y="18"/>
 						<Anchors>
@@ -193,7 +194,7 @@
 							<Anchor point="RIGHT" x="-35" y="-2"/>
 						</Anchors>
 					</EditBox>
-					
+
 					<CheckButton parentKey="inspectable" inherits="TRP3_CheckBox" name="$parentInspectable">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-7" relativePoint="BOTTOMLEFT" relativeKey="$parent.hasInterval"/>
@@ -207,7 +208,7 @@
 					</CheckButton>
 
 				</Frames>
-				
+
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString parentKey="text" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
@@ -222,9 +223,9 @@
 						</FontString>
 					</Layer>
 				</Layers>
-				
+
 			</Frame>
-			
+
 			<Frame parentKey="notes" inherits="TRP3_EditorTitledFrame" name="$parentNotes">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="CENTER" x="0" y="-15"/>
@@ -232,7 +233,7 @@
 					<Anchor point="LEFT" x="10" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
-				
+
 				<Frames>
 					<Frame parentKey="frame" inherits="TRP3_TextArea">
 						<Size x="0" y="0"/>
@@ -245,7 +246,7 @@
 					</Frame>
 				</Frames>
 			</Frame>
-			
+
 		</Frames>
 
 	</Frame>
