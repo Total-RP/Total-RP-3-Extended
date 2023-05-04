@@ -18,7 +18,7 @@ function Tests:ItemCount()
 	local operand = getOperand("inv_item_count");
 
 	--region Parent check
-	WoWUnit.Replace(TRP3_API.inventory, 'getItemCount', function(id, source, ...)
+	WoWUnit.Replace(TRP3_API.inventory, 'getItemCount', function(id, source)
 		WoWUnit.AreEqual("36", id)
 		WoWUnit.AreEqual("CONTAINER", source)
 		return 42
