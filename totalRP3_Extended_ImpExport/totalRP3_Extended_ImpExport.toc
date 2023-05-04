@@ -1,11 +1,15 @@
 ## Interface: 100200
 ## Title: Total RP 3: Extended Import/Export
 ## Author: Telkostrasz & Ellypse
-## Notes: Import/Export for Total RP 3 Extended
-## URL: http://extended.totalrp3.info
 ## Version: @project-version@
+## Notes: Import/Export for Total RP 3 Extended
 ## IconTexture: 982414
 ## RequiredDeps: totalRP3, totalRP3_Extended, totalRP3_Extended_Tools
-## DefaultState: Enabled
-## LoadOnDemand: 0
 ## SavedVariables: TRP3_Extended_ImpExport
+
+## X-Category: Roleplay
+## X-License: Apache-2.0
+## X-Website: http://extended.totalrp3.info
+## X-Curse-Project-ID: 100707
+## X-Wago-ID: e56nE0N9
+## X-WoWI-ID: 24465
