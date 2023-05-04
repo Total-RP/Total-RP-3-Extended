@@ -8,21 +8,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Script file="script/script.lua"/>
+	<Include file="script/script.lua"/>
 
 	<Include file="script/effects/effects.xml"/>
-	<Script file="script/effects/effects.lua"/>
+	<Include file="script/effects/effects.lua"/>
 
 	<Include file="script/element/element.xml"/>
-	<Script file="script/element/element.lua"/>
+	<Include file="script/element/element.lua"/>
 
 	<Include file="script/conditions/conditions.xml"/>
-	<Script file="script/conditions/conditions.lua"/>
+	<Include file="script/conditions/conditions.lua"/>
 	<Include file="script/conditions/operands.xml"/>
-	<Script file="script/conditions/operands.lua"/>
+	<Include file="script/conditions/operands.lua"/>
 
 	<Include file="script/normal/normal.xml"/>
-	<Script file="script/normal/normal.lua"/>
+	<Include file="script/normal/normal.lua"/>
 
 
 

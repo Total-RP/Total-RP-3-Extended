@@ -172,5 +172,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Script file="script/SecuredMacroCommandsEnclave.lua" />
+	<Include file="script/SecuredMacroCommandsEnclave.lua" />
 </Ui>

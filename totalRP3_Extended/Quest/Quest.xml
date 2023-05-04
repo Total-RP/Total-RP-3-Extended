@@ -570,15 +570,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Script file="CampaignsChatLinkModule.lua"/>
+	<Include file="CampaignsChatLinkModule.lua"/>
 
-	<Script file="db.lua"/>
-	<Script file="quest_effects.lua"/>
-	<Script file="campaign_npc.lua"/>
-	<Script file="campaign.lua"/>
-	<Script file="quest.lua"/>
-	<Script file="quest_log.lua"/>
-	<Script file="quest_objective.lua"/>
+	<Include file="db.lua"/>
+	<Include file="quest_effects.lua"/>
+	<Include file="campaign_npc.lua"/>
+	<Include file="campaign.lua"/>
+	<Include file="quest.lua"/>
+	<Include file="quest_log.lua"/>
+	<Include file="quest_objective.lua"/>
 
 
 </Ui>

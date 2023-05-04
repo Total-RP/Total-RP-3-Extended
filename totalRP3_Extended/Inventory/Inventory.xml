@@ -7,14 +7,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<GameTooltip name="TRP3_ItemTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
 
 
-	<Script file="ItemsChatLinkModule.lua"/>
+	<Include file="ItemsChatLinkModule.lua"/>
 
-	<Script file="db.lua"/>
-	<Script file="inventory_effects.lua"/>
-	<Script file="inventory_utils.lua"/>
-	<Script file="inventory.lua"/>
-	<Script file="container.lua"/>
-	<Script file="inventory_page.lua"/>
+	<Include file="db.lua"/>
+	<Include file="inventory_effects.lua"/>
+	<Include file="inventory_utils.lua"/>
+	<Include file="inventory.lua"/>
+	<Include file="container.lua"/>
+	<Include file="inventory_page.lua"/>
 
 	<Button name="TRP3_QuestButtonTemplate" virtual="true">
 		<Size x="37" y="37"/>
@@ -603,13 +603,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Script file="inspection.lua"/>
+	<Include file="inspection.lua"/>
 
 	<Include file="inventory_exchange.xml"/>
-	<Script file="inventory_exchange.lua"/>
+	<Include file="inventory_exchange.lua"/>
 
 	<Include file="inventory_drop.xml"/>
-	<Script file="inventory_drop.lua"/>
+	<Include file="inventory_drop.lua"/>
 
 	<Include file="InventoryMapScan\InventoryMapScan.xml"/>
 

@@ -355,6 +355,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Script file="dialogues.lua"/>
+	<Include file="dialogues.lua"/>
 
 </Ui>
