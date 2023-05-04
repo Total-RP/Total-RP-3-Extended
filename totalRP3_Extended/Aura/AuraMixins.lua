@@ -1,3 +1,6 @@
+-- Copyright The Total RP 3 Extended Authors
+-- SPDX-License-Identifier: Apache-2.0
+
 -- aura tooltip
 local TOOLTIP_REFRESH_INTERVAL = 0.2;
 local auraDataSource;
