@@ -438,7 +438,10 @@ local function inv_loot_init()
 	editor.bag.Bottom:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 	editor.bag.Middle:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 	editor.bag.Top:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
-	local onSlotClicked = function(slot, button)
+	local onSlotClicked = function(slot, button, down)
+		if down then
+			return
+		end
 		if button == "LeftButton" then
 			if editor.bag.editor:IsVisible() and editor.bag.editor.current == slot then
 				editor.bag.editor:Hide();
