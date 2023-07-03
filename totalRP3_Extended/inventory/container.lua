@@ -103,7 +103,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 
 	if class.BA.CO then
 		text1_lower = incrementLine(text1_lower);
-		text1_lower = text1_lower .. TRP3_API.Colors.CraftingReagent(PROFESSIONS_USED_IN_COOKING);
+		text1_lower = text1_lower .. TRP3_API.MiscColors.CraftingReagent(PROFESSIONS_USED_IN_COOKING);
 	end
 
 	if class.BA.CR and slotInfo.madeBy then
