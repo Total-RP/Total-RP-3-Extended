@@ -48,7 +48,7 @@
 					<TexCoords bottom="0" left="0.25" top="1" right="1" />
 				</HighlightTexture>
 			</Button>
-			<Button parentKey="Num" inherits="QuestPOINumericTemplate" hidden="false" frameLevel="5">
+			<Button parentKey="Num" inherits="POIButtonTemplate" hidden="false" frameLevel="5">
 				<Anchors>
 					<Anchor point="CENTER" relativePoint="LEFT" x="0" y="0" />
 				</Anchors>
