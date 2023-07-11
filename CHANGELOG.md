@@ -1,3 +1,12 @@
+# Changelog for version 2.0.1
+
+## Fixed
+
+- Fixed an issue preventing parts of the addon from working with patch 10.1.5.
+- Fixed the misalignment of the container close button.
+- Fixed the "Show loot" effect editor popup closing on mouse click up.
+- Fixed the crafting reagent tag breaking tooltips.
+
 # Changelog for version 2.0.0
 
 ## Added
