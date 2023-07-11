@@ -566,7 +566,7 @@ local function onStart()
     dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
-Globals.extended_version = 1038;
+Globals.extended_version = 1039;
 Globals.required_trp3_build = 115;
 
 --@debug@
