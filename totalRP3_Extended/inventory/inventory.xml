@@ -248,7 +248,7 @@
 		<Frames>
 			<Button inherits="UIPanelCloseButton" parentKey="close">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="0" y="-4"/>
+					<Anchor point="TOPRIGHT" x="-5" y="-9"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="IconButton" inherits="TRP3_InvisibleButton"/>
