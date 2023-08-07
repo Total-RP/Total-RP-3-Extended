@@ -722,6 +722,10 @@ function editor.reloadWorkflowlist(workflowIDs)
 	return workflowListStructure;
 end
 
+function editor.getCurrentMenuData()
+	return menuData
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
