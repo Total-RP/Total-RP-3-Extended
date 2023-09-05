@@ -1,5 +1,7 @@
 # Changelog for version 2.0.2
 
+*This version requires Total RP 3 version 2.5.5 or newer.*
+
 ## Fixed
 
 - Fixed the database resize button not working.
