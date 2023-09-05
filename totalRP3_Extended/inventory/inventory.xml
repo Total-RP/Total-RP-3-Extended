@@ -369,7 +369,7 @@
 										_G[name .. "Text"]:SetText("");
 										_G[name .. "High"]:SetText("");
 										_G[name .. "Low"]:SetText("");
-										self:SetMinMaxValues(1, 3000);
+										self:SetMinMaxValues(1, 6000);
 									</OnLoad>
 								</Scripts>
 							</Slider>
