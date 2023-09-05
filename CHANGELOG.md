@@ -3,6 +3,7 @@
 ## Fixed
 
 - Fixed the database resize button not working.
+- Increased the animation frame slider in the inventory page to reach the end of some long animations.
 
 # Changelog for version 2.0.1
 
