@@ -1,3 +1,9 @@
+# Changelog for version 2.0.2
+
+## Fixed
+
+- Fixed the database resize button not working.
+
 # Changelog for version 2.0.1
 
 ## Fixed
