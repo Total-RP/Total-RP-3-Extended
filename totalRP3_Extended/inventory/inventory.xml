@@ -152,7 +152,7 @@
 
 	</Button>
 
-	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true" movable="true">
+	<Frame name="TRP3_Container5x4Template" frameStrata="HIGH" toplevel="true" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true" movable="true">
 		<Size x="200" y="270" />
 		<Layers>
 			<Layer level="BACKGROUND">
