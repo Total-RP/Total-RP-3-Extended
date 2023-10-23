@@ -829,18 +829,22 @@ function TRP3_API.script.parseArgs(text, args)
 	text = tostring(text) or "";
 	text = text:gsub("%$%{(.-)%}", function(capture)
 		local default;
+		-- Retrieving default value ${capture::default}
 		if capture:find("::") then
 			default = capture:sub(capture:find("::") + 2);
 			capture = capture:sub(1, capture:find("::") - 1);
 		end
+		-- Retrieving decimal precision ${capture#decimals}
 		local decimals = 2;
 		if capture:find("#") then
 			decimals = tonumber(capture:sub(capture:find("#") + 1) or 2) or 2;
 			capture = capture:sub(1, capture:find("#") - 1);
 		end
 		if directReplacement[capture] then
+			-- Evaluating unit values
 			return directReplacement[capture](args);
 		elseif capture:match("gender%:%w+%:[^%:]+%:[^%:]+") then
+			-- Gendered value
 			local unitID, male, female = capture:match("gender%:(%w+)%:([^%:]+)%:([^%:]+)");
 			if UnitSex(unitID) == 2 then
 				return male;
@@ -849,16 +853,28 @@ function TRP3_API.script.parseArgs(text, args)
 			end
 			return UNKNOWN;
 		elseif capture:match("event%.%d+") then
+			-- Event argument
 			local index = tonumber(capture:match("event%.(%d+)") or 1) or 1;
 			return TRP3_API.extended.tools.truncateDecimals( (args.event or EMPTY)[index] or capture, decimals);
-		elseif (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture] then
-			return TRP3_API.extended.tools.truncateDecimals( (args.custom or EMPTY)[capture] or ((args.object or EMPTY).vars or EMPTY)[capture], decimals);
-		elseif ((TRP3_API.quest.getActiveCampaignLog() or EMPTY).vars or EMPTY)[capture] then
-			return TRP3_API.extended.tools.truncateDecimals( ((TRP3_API.quest.getActiveCampaignLog() or EMPTY).vars or EMPTY)[capture], decimals);
-		elseif TRP3_API.extended.classExists(capture) then
-			return TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(capture), capture);
+		else
+			-- Evaluating variable in different sources
+			local evaluatedVarValue = (args.custom or EMPTY)[capture]; -- Workflow variable
+			if evaluatedVarValue == nil then
+				evaluatedVarValue = ((args.object or EMPTY).vars or EMPTY)[capture]; -- Object variable
+			end
+			if evaluatedVarValue == nil then
+				evaluatedVarValue = ((TRP3_API.quest.getActiveCampaignLog() or EMPTY).vars or EMPTY)[capture]; -- Campaign variable
+			end
+			if evaluatedVarValue ~= nil then
+				return TRP3_API.extended.tools.truncateDecimals(evaluatedVarValue, decimals);
+			elseif TRP3_API.extended.classExists(capture) then
+				-- Item link
+				return TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(capture), capture);
+			else
+				-- Default value / variable name
+				return default or capture;
+			end
 		end
-		return default or capture;
 	end);
 	return text;
 end
@@ -934,7 +950,7 @@ function TRP3_API.script.varCheck(args, source, varName)
 		end
 		if not storage then return "nil"; end
 
-		return tostring(storage[varName] or "nil");
+		return tostring(storage[varName]);
 	end
 	return "nil";
 end
@@ -969,7 +985,7 @@ end
 
 function TRP3_API.script.eventVarCheck(args, index)
 	if args and args.event and type(index) == "number" then
-		return tostring(args.event[index] or "nil");
+		return tostring(args.event[index]);
 	end
 	return "nil";
 end
