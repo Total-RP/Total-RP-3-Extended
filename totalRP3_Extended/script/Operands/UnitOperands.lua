@@ -57,6 +57,14 @@ function unitNpcIdOperand:CodeReplacement(args)
 	return ([[getUnitNPCID("%s")]]):format(getUnitId(args));
 end
 
+local unitGuidOperand = Operand("unit_guid", {
+	["UnitGUID"] = "UnitGUID",
+});
+
+function unitGuidOperand:CodeReplacement(args)
+	return ([[UnitGUID("%s")]]):format(getUnitId(args));
+end
+
 local unitGuildOperand = Operand("unit_guild", {
 	["GetGuildName"] = "TRP3_API.utils.str.GetGuildName",
 })

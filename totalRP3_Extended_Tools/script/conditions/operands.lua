@@ -149,6 +149,19 @@ local function unit_npc_id_init()
 	});
 end
 
+local function unit_guid_init()
+	registerOperandEditor("unit_guid", {
+		title = loc.OP_OP_UNIT_GUID,
+		description = loc.OP_OP_UNIT_GUID_TT,
+		returnType = "",
+		getText = function(args)
+			local unitID = (args or EMPTY)[1] or "target";
+			return loc.OP_OP_UNIT_GUID .. " (" .. getUnitText(unitID) .. ")";
+		end,
+		editor = unitTypeEditor,
+	});
+end
+
 local function unit_guild_init()
 	registerOperandEditor("unit_guild", {
 		title = loc.OP_OP_UNIT_GUILD,
@@ -852,6 +865,7 @@ function TRP3_ConditionEditor.initOperands()
 	unit_name_init();
 	unit_id_init();
 	unit_npc_id_init();
+	unit_guid_init();
 	unit_guild_init();
 	unit_guild_rank_init();
 	unit_race_init();

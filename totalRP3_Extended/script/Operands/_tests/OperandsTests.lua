@@ -47,6 +47,7 @@ local operandsToTest = {
 	"unit_name",
 	"unit_id",
 	"unit_npc_id",
+	"unit_guid",
 	"unit_guild",
 	"unit_guild_rank",
 	"unit_class",
