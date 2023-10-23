@@ -967,6 +967,8 @@ We should begin with some examples:
 	OP_OP_UNIT_ID_TT = "|cff00ff00The unit id in the form |cff00ff00'player-realm'|r, as returned by UnitFullName. Ensure that there is always a realm part.",
 	OP_OP_UNIT_NPC_ID = "Unit NPC ID",
 	OP_OP_UNIT_NPC_ID_TT = "|cff00ff00The NPC ID, as determined by UnitGUID. Only works with NPC.",
+	OP_OP_UNIT_GUID = "Unit GUID",
+	OP_OP_UNIT_GUID_TT = "|cff00ff00The unit's unique identifier.",
 	OP_OP_UNIT_HEALTH = "Unit health",
 	OP_OP_UNIT_HEALTH_TT = "|cff00ff00The unit's current amount of health (hit points).",
 	OP_OP_UNIT_EXISTS = "Unit exists",
