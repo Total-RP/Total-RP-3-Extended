@@ -632,8 +632,8 @@ local function performAction(actionType)
 
 			-- First check all the available quests
 			for questID, questLog in pairs(campaignLog.QUEST) do
-				-- If the quest is not done (DO)
-				if not questLog.DO then
+				-- If the quest is not on a final step (FI)
+				if not questLog.FI then
 					local questClass = getClass(campaignID, questID);
 
 					-- Quest level
