@@ -696,7 +696,7 @@ local function startStashesRequest()
 		stashEditFrame:Hide();
 		wipe(stashResponse);
 		local cID = TRP3_API.extended.showCastingBar(STASHES_REQUEST_DURATION, 2, nil, nil, loc.DR_STASHES_SCAN);
-		broadcast.broadcast(SEARCH_STASHES_COMMAND, mapID, posY, posX, cID);
+		broadcast.broadcast(SEARCH_STASHES_COMMAND, TRP3_API.BroadcastMethod.World, mapID, posY, posX, cID);
 		C_Timer.After(STASHES_REQUEST_DURATION, function()
 			if TRP3_CastingBarFrame.castID == cID then
 				displayStashesResponse();

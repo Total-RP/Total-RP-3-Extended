@@ -43,7 +43,7 @@ function Utils.music.playLocalSoundID(soundID, channel, distance)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
-		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, channel, distance, instanceID, posY, posX, posZ);
+		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, TRP3_API.BroadcastMethod.World, soundID, channel, distance, instanceID, posY, posX, posZ);
 	end
 end
 
@@ -51,7 +51,7 @@ function Utils.music.playLocalSoundFileID(soundFileID, channel, distance)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
-		Communications.broadcast.broadcast(LOCAL_SOUNDFILE_COMMAND, soundFileID, channel, distance, instanceID, posY, posX, posZ);
+		Communications.broadcast.broadcast(LOCAL_SOUNDFILE_COMMAND, TRP3_API.BroadcastMethod.World, soundFileID, channel, distance, instanceID, posY, posX, posZ);
 	end
 end
 
@@ -59,14 +59,14 @@ function Utils.music.playLocalMusic(soundID, distance)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
 	if instanceID then
-		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, soundID, "Music" , distance, instanceID, posY, posX, posZ);
+		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, TRP3_API.BroadcastMethod.World, soundID, "Music" , distance, instanceID, posY, posX, posZ);
 	end
 end
 
 function Utils.music.stopLocalSoundID(soundID, channel, fadeout)
 	soundID = soundID or 0;
 	fadeout = fadeout or 0;
-	Communications.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, soundID, channel, fadeout);
+	Communications.broadcast.broadcast(LOCAL_STOPSOUND_COMMAND, TRP3_API.BroadcastMethod.World, soundID, channel, fadeout);
 end
 
 function Utils.music.stopLocalMusic(soundID)

@@ -131,7 +131,7 @@ stashOthersMapScanner.dataProviderTemplate = TRP3_StashMapPinMixin.TEMPLATE_NAME
 
 --{{{ Scan behavior
 function stashOthersMapScanner:Scan()
-	broadcast.broadcast(STASHES_SCAN_COMMAND, Map.getDisplayedMapID());
+	broadcast.broadcast(STASHES_SCAN_COMMAND, TRP3_API.BroadcastMethod.World, Map.getDisplayedMapID());
 end
 
 -- Players can scan for stashes everywhere except if they're in an instance and checking their current map.
