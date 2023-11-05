@@ -1296,10 +1296,10 @@ We should begin with some examples:
 	In regards to all of that, we STRONGLY recommand to regularely backup your add-on saved data.
 
 	You can find here a tutorial about finding all saved data:
-	{link*https://totalrp3.info/documentation/how_to/saved_variables*Where are my information stored?}
+	{link*https://github.com/Total-RP/Total-RP-3/wiki/Saved-Variables*Where are my information stored?}
 
 	You can find here a tutorial about syncing your data to a cloud service:
-	{link*https://totalrp3.info/documentation/how_to/backup_and_sync_profiles*How to backup and synchronize your add-ons settings using a cloud service}
+	{link*https://github.com/Total-RP/Total-RP-3/wiki/How-to-backup-and-synchronize-your-add-ons-settings-using-a-cloud-service*How to backup and synchronize your add-ons settings using a cloud service}
 
 	Please understand that we won't reply anymore to comment or ticket relative to a data wipe.
 	It's not because we don't want to help but because we can't do anything to restore wiped data.
