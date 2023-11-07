@@ -1,3 +1,19 @@
+# Changelog for version 2.0.3
+
+*This version requires Total RP 3 version 2.6.0 or newer.*
+
+## Added
+
+- Added the UnitGUID operand.
+- Added Extended actions to the list of mouse actions available on the minimap button and addon compartment entry. They can be bound in Launcher settings.
+
+## Fixed
+
+- Fixed the loot window hiding behind the cutscene window when trying to use the "Show loot" effect during one.
+- Quest actions will now properly be disabled when the quest is on a final step, similar to events.
+- Fixed boolean variables display and usage in conditions.
+- Fixed obsolete links in the initial disclaimer.
+
 # Changelog for version 2.0.2
 
 *This version requires Total RP 3 version 2.5.5 or newer.*
