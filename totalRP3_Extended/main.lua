@@ -497,6 +497,46 @@ local function onInit()
 
 	-- Applying patches to saved variables
 	TRP3_API.extended.flyway.applyPatches();
+
+	-- Init launcher actions
+	TRP3_LauncherUtil.RegisterAction({
+		id = "trp3:extended:container",
+		name = loc.LAUNCHER_ACTION_CONTAINER,
+		Activate = function()
+			-- Toggle the visibility of the main container.
+			TRP3_API.inventory.openMainContainer();
+		end,
+	});
+	TRP3_LauncherUtil.RegisterAction({
+		id = "trp3:extended:inventory",
+		name = loc.LAUNCHER_ACTION_INVENTORY,
+		Activate = function()
+			-- Open the main window and go to the inventory page.
+			TRP3_API.navigation.openMainFrame();
+			TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");
+		end,
+	});
+	TRP3_LauncherUtil.RegisterAction({
+		id = "trp3:extended:database",
+		name = loc.LAUNCHER_ACTION_DATABASE,
+		Activate = function()
+			-- Open the database window.
+			if TRP3_ToolFrame:IsVisible() then
+				TRP3_ToolFrame:Hide();
+			else
+				TRP3_API.extended.tools.showFrame();
+			end
+		end,
+	});
+	TRP3_LauncherUtil.RegisterAction({
+		id = "trp3:extended:questlog",
+		name = loc.LAUNCHER_ACTION_QUESTLOG,
+		Activate = function()
+			-- Open the main window and go to the quest log page.
+			TRP3_API.navigation.openMainFrame();
+			TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
+		end,
+	});
 end
 
 local function onStart()
@@ -542,7 +582,7 @@ local function onStart()
 	-- Config
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, initConfig);
 
-	-- Simplier combat kill event
+	-- Simpler combat kill event
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "COMBAT_LOG_EVENT_UNFILTERED", function()
 		local _, event, _, source, sourceName, _, _, dest, destName = CombatLogGetCurrentEventInfo();	-- No payload for combat log events in 8.0
 		if event == "PARTY_KILL" then

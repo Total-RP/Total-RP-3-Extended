@@ -261,14 +261,18 @@ local function containerFrameUpdate(self)
 	inventoryModel.ValueText:SetText(formatedValue);
 end
 
+function TRP3_API.inventory.openMainContainer()
+	local playerInventory = TRP3_API.inventory.getInventory();
+	local quickSlot = playerInventory.content[QUICK_SLOT_ID];
+	if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
+		TRP3_API.inventory.switchContainerBySlotID(playerInventory, QUICK_SLOT_ID);
+	end
+end
+
 local function onToolbarButtonClicked(buttonType)
 	if buttonType == "LeftButton" then
-		local playerInventory = TRP3_API.inventory.getInventory();
-		local quickSlot = playerInventory.content[QUICK_SLOT_ID];
-		if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
-			TRP3_API.inventory.switchContainerBySlotID(playerInventory, QUICK_SLOT_ID);
-			return;
-		end
+		TRP3_API.inventory.openMainContainer();
+		return;
 	end
 	TRP3_API.navigation.openMainFrame();
 	TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");

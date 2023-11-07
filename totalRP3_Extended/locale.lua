@@ -1842,6 +1842,10 @@ Please make sure to always give the player a way to get rid of an aura.
 	AU_LINKS_ON_TICK_TT = "Triggered when the aura ticks.",
 	DEBUG_CLEAR_AURAS = "Clear all auras on the current profile. Only use in case of emergency.",
 
+	LAUNCHER_ACTION_CONTAINER = "Toggle main container",
+	LAUNCHER_ACTION_DATABASE = "Toggle Extended database",
+	LAUNCHER_ACTION_INVENTORY = "Open inventory",
+	LAUNCHER_ACTION_QUESTLOG = "Open quest log",
 }
 
 Localization:GetDefaultLocale():AddTexts(TRP3_API.loc);
