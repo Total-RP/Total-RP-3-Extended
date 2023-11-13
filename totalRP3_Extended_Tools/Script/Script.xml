@@ -1,0 +1,29 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--     Imports      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Include file="Script.lua"/>
+
+	<Include file="Effects\Effects.xml"/>
+	<Include file="Effects\Effects.lua"/>
+
+	<Include file="Element\Element.xml"/>
+	<Include file="Element\Element.lua"/>
+
+	<Include file="Conditions\Conditions.xml"/>
+	<Include file="Conditions\Conditions.lua"/>
+	<Include file="Conditions\Operands.xml"/>
+	<Include file="Conditions\Operands.lua"/>
+
+	<Include file="Normal\Normal.xml"/>
+	<Include file="Normal\Normal.lua"/>
+
+
+
+</Ui>

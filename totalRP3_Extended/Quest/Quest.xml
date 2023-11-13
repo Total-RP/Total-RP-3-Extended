@@ -1,0 +1,584 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<!-- Made quest log progression text bigger to fit 2-digit percentages (Paul Corlay) -->
+
+	<!-- NPC tooltip -->
+	<GameTooltip name="TRP3_NPCTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="TRP3_TooltipTemplate">
+		<Scripts>
+			<OnHide>
+				self.isFading = nil;
+			</OnHide>
+		</Scripts>
+	</GameTooltip>
+
+	<Button name="TRP3_QuestObjectivesButton" virtual="true">
+		<Size x="30" y="30" />
+		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square"/>
+	</Button>
+
+	<Frame name="TRP3_QuestObjectives" parent="ObjectiveTrackerBlocksFrame" hidden="true">
+		<Size x="0" y="100"/>
+		<Anchors>
+			<Anchor point="BOTTOM"/>
+			<Anchor point="LEFT"/>
+			<Anchor point="RIGHT"/>
+		</Anchors>
+		<Frames>
+			<Frame parentKey="Actions" inherits="TRP3_FieldSetFrame">
+				<Size x="0" y="50"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT"/>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="Talk" inherits="TRP3_QuestObjectivesButton">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="TOP" x="0" y="-10"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="Look" inherits="TRP3_QuestObjectivesButton">
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Talk" x="-10"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="Listen" inherits="TRP3_QuestObjectivesButton">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Talk" x="10"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="Interact" inherits="TRP3_QuestObjectivesButton">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Listen" x="10"/>
+						</Anchors>
+					</Button>
+				</Frames>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture parentKey="QuestTexture" atlas="QuestPortraitIcon-SandboxQuest" alpha="0.5">
+							<Size x="18" y="30" />
+							<Anchors>
+								<Anchor point="LEFT" x="20"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+			<SimpleHTML parentKey="Tracker">
+				<Size x="0" y="100"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Actions" y="-10"/>
+				</Anchors>
+			</SimpleHTML>
+		</Frames>
+	</Frame>
+
+	<Button name="TRP3_QuestToast" parent="UIParent" frameStrata="DIALOG" hidden="true">
+		<Size x="325" y="70"/>
+		<Anchors>
+			<Anchor point="BOTTOM" y="200"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" atlas="Garr_MissionToast" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="quest" inherits="Spellbook-SlotFrame">
+					<Anchors>
+						<Anchor point="LEFT" x="20" y="2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Icon" file="Interface\ICONS\temp">
+					<Size x="35" y="35"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.quest" x="-2" y="-1"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString inherits="GameFontNormalSmall" justifyH="CENTER" parentKey="title" text="[New Quest]">
+					<Anchors>
+						<Anchor point="TOP" x="25" y="-10"/>
+					</Anchors>
+				</FontString>
+				<FontString inherits="GameFontNormal" justifyH="CENTER" parentKey="name" text="[Quest Name Quest Name Quest Name]">
+					<Size x="210" y="10"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-14"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Animations>
+			<AnimationGroup parentKey="fadeOut" setToFinalAlpha="true">
+				<Alpha duration="0.5" fromAlpha="1" toAlpha="0"/>
+				<Scripts>
+					<OnFinished>
+						TRP3_QuestToast:Hide();
+					</OnFinished>
+				</Scripts>
+			</AnimationGroup>
+			<AnimationGroup parentKey="fadeIn" setToFinalAlpha="true">
+				<Alpha duration="0.25" fromAlpha="0" toAlpha="1"/>
+			</AnimationGroup>
+		</Animations>
+		<Scripts>
+			<OnShow>
+				self:SetAlpha(0);
+				self.fadeIn:Play();
+				C_Timer.After(4, function()
+					self.fadeOut:Play();
+				end);
+			</OnShow>
+			<OnEnter>
+				self.Background:SetVertexColor(0.8, 1, 0.8);
+			</OnEnter>
+			<OnLeave>
+				self.Background:SetVertexColor(1, 1, 1);
+			</OnLeave>
+		</Scripts>
+	</Button>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--     CAMPAIGNS TAB    -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Button name="TRP3_CampaignButtonTemplate" virtual="true" inherits="TRP3_AltHoveredFrame">
+		<Size x="0" y="75"/>
+		<Layers>
+			<Layer level="ARTWORK" textureSubLevel="1">
+				<Texture name="$parentIcon" parentKey="Icon">
+					<Size x="35" y="35"/>
+					<Anchors>
+						<Anchor point="LEFT" x="60" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Completed" file="Interface\RAIDFRAME\ReadyCheck-Ready" hidden="true">
+					<Size x="38" y="38"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.Icon" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="banner" file="Interface\QuestionFrame\TitleBanner" alpha="0.85">
+					<Size x="256" y="64"/>
+					<Anchors>
+						<Anchor point="CENTER" x="1" y="-10"/>
+					</Anchors>
+				</Texture>
+				<FontString name="$parentName" inherits="SystemFont_Med1" parentKey="name" text="TEXT">
+					<Size x="150" y="0"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.banner" x="0" y="18"/>
+					</Anchors>
+					<Color r="0.2824" g="0.0157" b="0.0157"/>
+				</FontString>
+
+				<FontString name="$parentRange" inherits="GameFontNormal" justifyH="CENTER" parentKey="range" text="[LVL]">
+					<Size x="120" y="12"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.banner" x="0" y="30"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+
+			<Button parentKey="switchButton">
+				<Size x="25" y="25"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-30" y="0"/>
+				</Anchors>
+				<NormalTexture file="Interface\TIMEMANAGER\PauseButton"/>
+				<HighlightTexture file="Interface\Buttons\CheckButtonGlow"/>
+			</Button>
+
+		</Frames>
+		<Scripts>
+			<OnEnter>
+					TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+					TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_CampaignPageTemplate" virtual="true">
+		<Frames>
+			<Button name="$parentSlot1" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot1">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-11"/>
+					<Anchor point="LEFT" x="18" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot2" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot2">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Slot1" x="0" y="-5"/>
+					<Anchor point="LEFT" x="18" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot3" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot3">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Slot2" x="0" y="-5"/>
+					<Anchor point="LEFT" x="18" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot4" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot4">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Slot3" x="0" y="-5"/>
+					<Anchor point="LEFT" x="18" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot5" inherits="TRP3_CampaignButtonTemplate" parentKey="Slot5">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Slot4" x="0" y="-5"/>
+					<Anchor point="LEFT" x="18" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
+				</Anchors>
+			</Button>
+			<Slider name="$parentSlider" parentKey="slider" inherits="TRP3_Scrollbar">
+				<Anchors>
+					<Anchor point="TOP" y="-20"/>
+					<Anchor point="RIGHT" x="-5"/>
+					<Anchor point="BOTTOM" y="20"/>
+				</Anchors>
+			</Slider>
+		</Frames>
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--      QUESTS TAB      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Button name="TRP3_QuestPageTemplate" virtual="true" inherits="TRP3_SmallerStandardParchmentFrame">
+		<Size x="0" y="158"/>
+		<Layers>
+			<Layer level="ARTWORK" textureSubLevel="2">
+				<Texture parentKey="IconBorder" file="Interface\ExtraButton\GarrZoneAbility-BarracksAlliance">
+					<Size x="175" y="85"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="15"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSubLevel="1">
+				<Texture name="$parentIcon" parentKey="Icon">
+					<Size x="35" y="35"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.IconBorder" x="1" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Completed" file="Interface\RAIDFRAME\ReadyCheck-Ready" hidden="true">
+					<Size x="38" y="38"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.Icon" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="banner" file="Interface\QuestionFrame\TitleBanner" alpha="0.85">
+					<Size x="256" y="64"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.IconBorder" x="1" y="-60"/>
+					</Anchors>
+				</Texture>
+				<FontString name="$parentName" inherits="SystemFont_Med1" parentKey="name" text="TEXT">
+					<Size x="150" y="0"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.banner" x="0" y="18"/>
+					</Anchors>
+					<Color r="0.2824" g="0.0157" b="0.0157"/>
+				</FontString>
+
+				<FontString name="$parentRange" font="SystemFont_Med1" justifyH="LEFT" parentKey="range" text="[LVL]">
+					<Size x="120" y="12"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="30" y="-25"/>
+					</Anchors>
+					<Color r="0.2824" g="0.0157" b="0.0157"/>
+				</FontString>
+
+				<FontString font="SystemFont_Med1" justifyH="LEFT" justifyV="TOP" wordwrap="true" parentKey="Desc">
+					<Size x="0" y="55"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.banner" x="0" y="15"/>
+						<Anchor point="RIGHT" x="-35" y="0"/>
+						<Anchor point="LEFT" x="35" y="0"/>
+					</Anchors>
+					<Color r="0.2824" g="0.0157" b="0.0157"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="switchButton">
+				<Size x="25" y="25"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
+				</Anchors>
+				<NormalTexture file="Interface\TIMEMANAGER\PauseButton"/>
+				<HighlightTexture file="Interface\Buttons\CheckButtonGlow"/>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnEnter>
+					TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+					TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_QuestPage" inherits="TRP3_QuestPageTemplate" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="break" file="Interface\QUESTFRAME\UI-HorizontalBreak">
+					<Size x="256" y="32"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Desc" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<FontString inherits="SystemFont_Large" justifyH="CENTER" justifyV="MIDDLE" parentKey="Empty" text="[Quest Name Quest Name Quest Name]">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.break" x="0" y="0"/>
+						<Anchor point="RIGHT" x="-35" y="0"/>
+						<Anchor point="LEFT" x="35" y="0"/>
+						<Anchor point="BOTTOM" x="0" y="10"/>
+					</Anchors>
+					<Color r="0.2824" g="0.0157" b="0.0157"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="PassButton">
+				<Size x="20" y="20"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.switchButton" x="-5" y="0"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-GroupLoot-Pass-Up"/>
+				<HighlightTexture file="Interface\Buttons\UI-GroupLoot-Pass-Highlight" alphaMode="ADD"/>
+				<PushedTexture file="Interface\Buttons\UI-GroupLoot-Pass-Down"/>
+			</Button>
+
+			<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.break" x="0" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="0" y="-17"/>
+							<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+				<ScrollChild>
+					<Frame name="$parentScrollChild" parentKey="child">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+						</Anchors>
+						<Frames>
+							<Frame parentKey="Content" name="$parentContent">
+								<Size x="10" y="10"/>
+								<Anchors>
+									<Anchor point="TOPLEFT" x="0" y="0"/>
+								</Anchors>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString inherits="SystemFont_Large" justifyH="LEFT" parentKey="Current">
+											<Size x="0" y="50"/>
+											<Anchors>
+												<Anchor point="TOPLEFT" x="30" y="0"/>
+											</Anchors>
+											<Color r="0.2824" g="0.0157" b="0.0157"/>
+										</FontString>
+									</Layer>
+								</Layers>
+							</Frame>
+						</Frames>
+					</Frame>
+				</ScrollChild>
+			</ScrollFrame>
+
+		</Frames>
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--      STEPS TAB       -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_StepPageTemplate" virtual="true" inherits="TRP3_SmallerStandardParchmentFrame">
+		<Frames>
+
+			<Button name="$parentTitle" parentKey="Title" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="-35"/>
+				</Anchors>
+			</Button>
+
+			<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
+				<Anchors>
+					<Anchor point="TOP" x="0" relativePoint="BOTTOM" relativeKey="$parent.Title" y="-25"/>
+					<Anchor point="RIGHT" x="-25" y="0"/>
+					<Anchor point="LEFT" x="30" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="30"/>
+				</Anchors>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="0" y="-17"/>
+							<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+				<ScrollChild>
+					<Frame name="$parentScrollChild" parentKey="child">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+						</Anchors>
+						<Frames>
+							<SimpleHTML name="$parentHTML" parentKey="HTML">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="5" y="-5"/>
+								</Anchors>
+								<FontString inherits="GameFontNormalSmall"/>
+							</SimpleHTML>
+						</Frames>
+					</Frame>
+				</ScrollChild>
+			</ScrollFrame>
+		</Frames>
+	</Frame>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--       QUESTLOG       -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_QuestLogPage" hidden="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
+
+		<Frames>
+
+			<Frame name="$parentNavBar" inherits="NavBarTemplate" parentKey="navBar">
+				<Size x="0" y="34"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="20" y="-10"/>
+					<Anchor point="TOPRIGHT" x="-20" y="-10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BORDER" textureSubLevel="-5">
+						<Texture name="$parentInsetBotLeftCorner" inherits="UI-Frame-InnerBotLeftCorner" parentKey="InsetBorderBottomLeft">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT"  x="-3" y="-3"/>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentInsetBotRightCorner" inherits="UI-Frame-InnerBotRight" parentKey="InsetBorderBottomRight">
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT"  x="3" y="-3"/>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentInsetBottomBorder" inherits="_UI-Frame-InnerBotTile" parentKey="InsetBorderBottom">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativeTo="$parentInsetBotLeftCorner" relativePoint="BOTTOMRIGHT"/>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parentInsetBotRightCorner" relativePoint="BOTTOMLEFT"/>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentInsetLeftBorder" inherits="!UI-Frame-InnerLeftTile" parentKey="InsetBorderLeft">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="-3" y="0"/>
+								<Anchor point="BOTTOMLEFT" relativeTo="$parentInsetBotLeftCorner" relativePoint="TOPLEFT"/>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentInsetRightBorder" inherits="!UI-Frame-InnerRightTile" parentKey="InsetBorderRight">
+							<Anchors>
+								<Anchor point="TOPRIGHT"  x="3" y="0"/>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parentInsetBotRightCorner" relativePoint="TOPRIGHT"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button parentKey="action" name="$parentAction" inherits="TRP3_ActionButton">
+						<Anchors>
+							<Anchor point="RIGHT" x="0" y="0" />
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="Campaign" name="$parentCampaign" inherits="TRP3_CampaignPageTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.navBar" relativePoint="BOTTOM" x="0" y="0"/>
+					<Anchor point="RIGHT" x="0" y="0"/>
+					<Anchor point="LEFT" x="0" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="0"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="Quest" name="$parentQuest" inherits="TRP3_QuestPage">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.navBar" relativePoint="BOTTOM" x="0" y="-5"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+			</Frame>
+
+			<Frame parentKey="Step" name="$parentStep" inherits="TRP3_StepPageTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.navBar" relativePoint="BOTTOM" x="0" y="-5"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+			</Frame>
+
+		</Frames>
+	</Frame>
+
+	<Include file="CampaignsChatLinkModule.lua"/>
+
+	<Include file="DB.lua"/>
+	<Include file="QuestEffects.lua"/>
+	<Include file="CampaignNpc.lua"/>
+	<Include file="Campaign.lua"/>
+	<Include file="Quest.lua"/>
+	<Include file="QuestLog.lua"/>
+	<Include file="QuestObjective.lua"/>
+
+
+</Ui>

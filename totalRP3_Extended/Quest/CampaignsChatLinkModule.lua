@@ -1,0 +1,85 @@
+-- Copyright The Total RP 3 Extended Authors
+-- SPDX-License-Identifier: Apache-2.0
+
+---@type TRP3_API
+local TRP3_API = TRP3_API;
+
+-- Total RP 3 imports
+local iconToString = TRP3_API.utils.str.icon;
+local loc = TRP3_API.loc;
+local parseArgs = TRP3_API.script.parseArgs;
+
+local CAMPAIGN_PROGRESSION_FORMAT = loc.CL_CAMPAIGN_PROGRESSION .. " %s%%";
+
+local CampaignsChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_EXTENDED_CAMPAIGN, "EXTENDED_DB_CAMPAIGN_LINK");
+
+function CampaignsChatLinksModule:GetLinkData(campaignID, canBeImported)
+	local campaignInfo = TRP3_API.extended.getClass(campaignID);
+
+	local tooltipData = {
+		campaignInfo = CopyTable(campaignInfo),
+		campaignID = campaignID,
+		canBeImported = canBeImported,
+	};
+
+	return campaignInfo.BA.NA, tooltipData
+end
+
+function CampaignsChatLinksModule:GetTooltipLines(tooltipData)
+	local campaignInfo = tooltipData.campaignInfo;
+
+	-- Get a new tooltipLines object that we will fill
+	local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+
+	local icon, name, description = TRP3_API.extended.getClassDataSafe(campaignInfo)
+
+	-- Get the quality and quality color of the tiem
+	local itemQuality = campaignInfo.BA.QA or Enum.ItemQuality.Common;
+	---@type Color
+	local itemQualityColor = TRP3_API.inventory.getQualityColor(itemQuality);
+
+	tooltipLines:SetTitle(iconToString(icon, 25) .. " " .. itemQualityColor:WrapTextInColorCode(name));
+
+	-- Description
+	if description and description:len() > 0 then
+		tooltipLines:AddLine("\"" .. parseArgs(description) .. "\"", TRP3_API.Colors.Yellow)
+	end
+
+	tooltipLines:AddLine(" ");
+	local progress = TRP3_API.quest.getCampaignProgression(tooltipData.campaignID);
+	if progress == 100 then
+		tooltipLines:AddLine(loc.CL_CAMPAIGN_PROGRESSION:format(TRP3_API.r.name("player")) .. " " .. loc.QE_CAMPAIGN_FULL, TRP3_API.Colors.Green);
+	else
+		tooltipLines:AddLine(CAMPAIGN_PROGRESSION_FORMAT:format(TRP3_API.r.name("player"), progress))
+	end
+
+	return tooltipLines;
+end
+
+local DatabaseCampaignImportButton = CampaignsChatLinksModule:NewActionButton("EXTENDED_IMPORT_DB_CAMPAIGN", loc.CL_IMPORT, "EXT_DB_C_Q", "EXT_DB_C_A");
+
+function DatabaseCampaignImportButton:IsVisible(data)
+	return data.canBeImported;
+end
+
+function DatabaseCampaignImportButton:OnAnswerCommandReceived(data, sender)
+	local campaignID = data.campaignID;
+	local fromClass = data.campaignInfo;
+	local copiedData = CopyTable(fromClass);
+
+	TRP3_DB.exchange[data.campaignID] = copiedData;
+
+	TRP3_API.security.computeSecurity(campaignID, copiedData);
+	TRP3_API.extended.unregisterObject(campaignID);
+	TRP3_API.extended.registerObject(campaignID, copiedData, 0);
+	TRP3_API.script.clearRootCompilation(campaignID);
+	TRP3_API.security.registerSender(campaignID, sender);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_BAG);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.REFRESH_CAMPAIGN);
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.ON_OBJECT_UPDATED);
+
+	TRP3_API.extended.tools.showFrame();
+	TRP3_API.extended.tools.goToPage(campaignID);
+end
+
+TRP3_API.extended.CampaignsChatLinksModule = CampaignsChatLinksModule;

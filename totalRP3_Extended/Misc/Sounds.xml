@@ -1,0 +1,88 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Frame name="TRP3_SoundsHistoryFrame" parent="UIParent" inherits="TRP3_AltHoveredFrame" toplevel="true" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+		<Size x="600" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad inherit="prepend">
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+		</Scripts>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+						<Anchor point="RIGHT" x="-10" y="0"/>
+						<Anchor point="LEFT" x="10" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+				<FontString parentKey="empty" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="stop" inherits="TRP3_CommonButton">
+				<Size x="150" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="15"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="clear" inherits="TRP3_CommonButton">
+				<Size x="150" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="15"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="15" y="0"/>
+				</Anchors>
+			</Button>
+
+			<ScrollingMessageFrame parentKey="container" enableMouse="true">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.stop" x="0" y="5"/>
+				</Anchors>
+			</ScrollingMessageFrame>
+
+			<Button parentKey="bottom">
+				<Size x="32" y="32"/>
+				<NormalTexture file="Interface\Buttons\UI-Panel-ExpandButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-ExpandButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.container" x="0" y="3"/>
+				</Anchors>
+				<Scripts>
+					<PostClick>
+						TRP3_API.ui.misc.playUISound(808);
+					</PostClick>
+				</Scripts>
+			</Button>
+
+			<!-- CLOSE FRAME -->
+			<Button parentKey="Close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Include file="Sounds.lua"/>
+
+</Ui>

@@ -1,8 +1,8 @@
 max_line_length = false
 
 exclude_files = {
-	"totalRP3_Extended/libs",
-	"totalRP3_Extended/script/Operands/_tests",
+	"totalRP3_Extended/Libs",
+	"totalRP3_Extended/Script/Operands/Tests",
 };
 
 ignore = {

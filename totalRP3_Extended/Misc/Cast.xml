@@ -1,0 +1,23 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<StatusBar name="TRP3_CastingBarFrame" toplevel="true" parent="UIParent" hidden="true" inherits="CastingBarFrameTemplate" frameStrata="HIGH">
+		<Size x="195" y="13" />
+		<Anchors>
+			<Anchor point="BOTTOM" x="0" y="200" />
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self:OnLoad(nil, false, false);
+			</OnLoad>
+			<OnEvent function="" />
+			<OnShow function="" />
+		</Scripts>
+	</StatusBar>
+
+	<Include file="Cast.lua"/>
+
+</Ui>

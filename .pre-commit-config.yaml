@@ -1,0 +1,40 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+exclude: ^totalRP3_Extended/(Libs/.*|Locales/.{4}\.lua)$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: check-yaml
+
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 2.7.1
+    hooks:
+      - id: editorconfig-checker
+        alias: ec
+        exclude: ^totalRP3_Extended/Locales/.*\.lua$
+        types: []
+        types_or: [lua, shell, xml]
+
+  - repo: local
+    hooks:
+      - id: luacheck
+        name: check lua
+        entry: luacheck -q
+        language: system
+        types: [lua]
+        require_serial: true
+
+      - id: xmllint
+        name: check xml
+        entry: xmllint --noout --quiet --schema .github/scripts/ui.xsd
+        language: system
+        types: [xml]
+        exclude: ^(.github/scripts/ui\.xsd|totalRP3_Extended/Bindings\.xml|totalRP3_Extended_Tools/Bindings\.xml)$
+        require_serial: true

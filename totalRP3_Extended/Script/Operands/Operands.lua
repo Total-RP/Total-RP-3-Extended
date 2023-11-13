@@ -1,0 +1,50 @@
+-- Copyright The Total RP 3 Extended Authors
+-- SPDX-License-Identifier: Apache-2.0
+
+--region Operand class declaration
+---@class TotalRP3_Extended_Operand
+local Operand = TRP3_API.Ellyb.Class("TotalRP3_Extended_Operand");
+
+---@param operandId string A unique ID to refer to this operand
+---@param environment table<string, string> An environment table that will be used to map functions that will be made available to the operand code when executed.
+function Operand:initialize(operandId, environment)
+	TRP3_API.Ellyb.Assertions.isType(operandId, "string", "operandId");
+	self.id = operandId
+	self.env = environment or {};
+
+	-- The operand register itself when created
+	TRP3_API.script.registerOperand(self)
+end
+
+--[[ Override ]] function Operand:CodeReplacement(args)	-- luacheck: ignore 212
+	error("Operand:CodeReplacement(args) should be overriden by the operand to execute the desired code replacement.");
+end
+
+---@class TotalRP3_Extended_NumericOperand: TotalRP3_Extended_Operand
+local NumericOperand = TRP3_API.Ellyb.Class("TotalRP3_Extended_NumericOperand", Operand);
+NumericOperand.numeric = true
+
+TRP3_API.script.Operand = Operand;
+TRP3_API.script.NumericOperand = NumericOperand;
+
+--endregion
+
+--region utils
+
+--- Retrieve a specific desired argument from the arguments passed to an operand in a safe way.
+--- The arguments table is checked to be valid and that the desired argument has been provided, otherwise the default
+--- value provided is returned.
+---@generic T
+---@param arguments table|nil The arguments given to the operand
+---@param argumentIndex number|string The index where the desired argument should be stored in the arguments table
+---@param defaultValue T A default value that should be returned if the desired argument could not be retrieved.
+---@return T Either the value passed via the arguments if found or the default value
+function TRP3_API.getSafeValueFromTable(arguments, argumentIndex, defaultValue)
+	if arguments == nil or type(arguments) ~= "table" or arguments[argumentIndex] == nil then
+		return defaultValue
+	else
+		return arguments[argumentIndex]
+	end
+end
+
+--endregion

@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - '*'
+      - '!**-alpha**'
+      - '!**-beta**'
 
 jobs:
   build:
@@ -13,10 +15,8 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Create Retail Package
+      - name: Create Package
         uses: BigWigsMods/packager@master
-        with:
-          args: -p 100707 -w 24465 -a e56nE0N9
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}

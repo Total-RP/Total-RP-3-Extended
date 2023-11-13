@@ -1,0 +1,27 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--     Imports      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Include file="Document.lua"/>
+
+	<Include file="Editor\Normal.xml"/>
+	<Include file="Editor\Normal.lua"/>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--      Base frame      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_Tools_DocumentTemplate" virtual="true">
+		<Frames>
+			<Frame inherits="TRP3_Tools_DocumentEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
+		</Frames>
+	</Frame>
+
+</Ui>

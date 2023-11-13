@@ -16,9 +16,16 @@ jobs:
         uses: nebularg/actions-luacheck@v1
         with:
           args: --no-color -q
+          files: $(git ls-files '*.lua' ':!:totalRP3_Extended/Libs/*' ':!:totalRP3_Extended/Locales/????.lua')
           annotate: warning
 
-      - name: Create Retail Package
+      - name: Run editorconfig-checker
+        uses: wow-rp-addons/actions-editorconfig-check@v1.0.2
+        with:
+          args: -no-color
+          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3_Extended/Libs/*' ':!:totalRP3_Extended/Locales/*.lua')
+
+      - name: Create Package
         uses: BigWigsMods/packager@master
         with:
           args: -d -z
