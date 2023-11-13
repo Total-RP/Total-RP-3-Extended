@@ -24,10 +24,10 @@ dist:
 translations: translations/upload translations/download
 
 translations/download:
-	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) -n download
+	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) download
 
 translations/upload:
-	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) -n upload
+	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) upload
 
 .github/scripts/ui.xsd: .FORCE
 	curl -s $(SCHEMA_URL) -o $@
