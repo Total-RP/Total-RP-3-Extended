@@ -347,12 +347,12 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 
 正因如此，我们强烈建议你备份保存所有数据。
 数据保存位置参见:
-{link*https://totalrp3.info/documentation/how_to/saved_variables*我的信息存在哪里?}
+{link*https://github.com/Total-RP/Total-RP-3/wiki/Saved-Variables*我的信息存在哪里?}
 {h2:c}直接备份“WTF\Account\你的角色名\SavedVariables” 下所有内容就行了{/h2}
 主要是totalRP3.lua 配置存档/totalrp3_data.lua数据存档/totalrp3_storyline.lua
 
 你可以在这里找到关于同步您的数据到云服务教程:
-{link*https://totalrp3.info/documentation/how_to/backup_and_sync_profiles*如何云同步数据？}
+{link*https://github.com/Total-RP/Total-RP-3/wiki/How-to-backup-and-synchronize-your-add-ons-settings-using-a-cloud-service*如何云同步数据？}
 需要一些满足版本迭代的云同步如Google Driver你们上不去我就不管了 O(∩_∩)O~
 
 反正你数据没了我们不能恢复。

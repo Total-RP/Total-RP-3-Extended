@@ -439,10 +439,10 @@ Tous les add-ons de World of Warcraft peuvent stocker des données mais il y a d
 Au regard de tout ceci, nous recommandons FORTEMENT de sauvegarder ailleurs, régulièrement, vos données enregistrées d'add-on.
 
 Vous trouverez ici un tutoriel sur la façon de retrouver toutes les données enregistrées :
-{link*https://totalrp3.info/documentation/how_to/saved_variables*Where are my information stored?}
+{link*https://github.com/Total-RP/Total-RP-3/wiki/Saved-Variables*Where are my information stored?}
 
 Vous trouverez ici un tutoriel sur la façon de synchroniser vos données avec un service de "cloud" :
-{link*https://totalrp3.info/documentation/how_to/backup_and_sync_profiles*How to backup and synchronize your add-ons settings using a cloud service}
+{link*https://github.com/Total-RP/Total-RP-3/wiki/%5BFR%5D-Comment-sauvegarder-et-synchroniser-vos-param%C3%A8tres-d'addons-avec-un-service-de-cloud*How to backup and synchronize your add-ons settings using a cloud service}
 
 Veuillez comprendre que nous ne répondrons plus aux commentaires ni aux requêtes relevant d'une perte de données.
 Ce n'est pas parce que nous ne voulons pas aider, mais parce que nous ne pouvons techniquement rien faire pour restaurer des données perdues.

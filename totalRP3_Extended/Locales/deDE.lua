@@ -401,8 +401,8 @@ Alle Addons in World of Warcraft können Daten speichern, aber es gibt Einschrä
 • Wenn der Spielprozess beendet wird (Alt+F4) oder abstürzt können gespeicherte Daten korrumpiert werden.
 • Selbst wenn das Spiel ordnungsgemäß beendet wird kann es vorkommen, dass das Spiel nicht in der Lage ist alle Daten richtig zu speichern und sie so zu korrumpieren.
 In dieser Hinsicht empfehlen wir DRINGEND regelmäßige Sicherungskopien anzulegen.
-Unter folgendem Link findest du ein Tutorial (englisch), das dir hilft, deine gespeicherten Daten zu finden: {link*https://totalrp3.info/documentation/how_to/saved_variables*Where is my information stored?}
-Hier findest du ein Tutorial (englisch) über die Datensynchronisation mit einem Cloud-Service: {link*https://totalrp3.info/documentation/how_to/backup_and_sync_profiles*How to backup and synchronize your add-ons settings using a cloud service}
+Unter folgendem Link findest du ein Tutorial (englisch), das dir hilft, deine gespeicherten Daten zu finden: {link*https://github.com/Total-RP/Total-RP-3/wiki/Saved-Variables*Where is my information stored?}
+Hier findest du ein Tutorial (englisch) über die Datensynchronisation mit einem Cloud-Service: {link*https://github.com/Total-RP/Total-RP-3/wiki/How-to-backup-and-synchronize-your-add-ons-settings-using-a-cloud-service*How to backup and synchronize your add-ons settings using a cloud service}
 Bitte beachte, dass wir nicht mehr auf Kommentare oder Tickets bezüglich Datenverlust antworten werden. Nicht, weil wir nicht helfen wollen, sondern weil wir nichts unternehmen können um diese Daten wiederherzustellen.
 Vielen Dank und viel Spaß mit Total RP 3 Extended!
 {p:r}Das TRP3 Team{/p}]=],
