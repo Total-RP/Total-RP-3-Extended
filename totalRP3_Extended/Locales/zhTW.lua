@@ -310,14 +310,14 @@ account\YOUR_ACCOUNT\SavedVariables
 正因如此，我們強烈建議你備份保存所有資料！
 
 資料保存位置參見:
-{link*https://totalrp3.info/documentation/how_to/saved_variables*Where is my information stored?}
+{link*https://github.com/Total-RP/Total-RP-3/wiki/Saved-Variables*Where is my information stored?}
 {h2:c}直接備份“WTF\Account\你的角色名\SavedVariables” 下的所有內容就行了。{/h2}
 主要是「/totalRP3.lua」
 配置存檔「/totalrp3_data.lu」
 數據存檔「/totalrp3_storyline.lua」
 
 你可以在以下網址搜尋關於雲端保存的教學：
-{link*https://totalrp3.info/documentation/how_to/backup_and_sync_profiles*How to backup and synchronize your add-ons settings using a cloud service？}
+{link*https://github.com/Total-RP/Total-RP-3/wiki/How-to-backup-and-synchronize-your-add-ons-settings-using-a-cloud-service*How to backup and synchronize your add-ons settings using a cloud service？}
 
 需要一些滿足版本反覆運算的雲端同步例如Google Driver你們上不去我就不管了 O(∩_∩)O~
 
