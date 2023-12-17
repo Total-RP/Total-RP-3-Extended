@@ -144,6 +144,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchor  point="CENTER" relativePoint="TOPLEFT" x="27" y="-27"/>
 					</Anchors>
 				</Texture>
+				<MaskTexture parentKey="IconMask" file="Interface\CharacterFrame\TempPortraitAlphaMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon" x="2" y="-2"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Icon" x="-2" y="2"/>
+					</Anchors>
+					<MaskedTextures>
+						<MaskedTexture childKey="Icon"/>
+					</MaskedTextures>
+				</MaskTexture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="0">
 				<Texture parentKey="Top" file="Interface\ContainerFrame\UI-Bag-Components">

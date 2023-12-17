@@ -663,7 +663,7 @@ end
 
 local function decorateContainer(containerFrame, class)
 	local icon, name = getBaseClassDataSafe(class);
-	Utils.texture.applyRoundTexture(containerFrame.Icon, "Interface\\ICONS\\" .. icon, "Interface\\ICONS\\TEMP");
+	containerFrame.Icon:SetTexture("Interface\\ICONS\\" .. icon);
 	containerFrame.Title:SetText(name);
 end
 TRP3_API.inventory.decorateContainer = decorateContainer;
@@ -875,7 +875,7 @@ local function presentLoot(loot, onLootCallback, forceLoot, checker, onDiscardCa
 		return;
 	end
 	if loot then
-		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.BA.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
+		lootFrame.Icon:SetTexture("Interface\\ICONS\\" .. (loot.BA.IC or "Garrison_silverchest"));
 		lootFrame.Title:SetText((loot.BA.NA or loc.LOOT));
 
 		local slotCounter = 1;

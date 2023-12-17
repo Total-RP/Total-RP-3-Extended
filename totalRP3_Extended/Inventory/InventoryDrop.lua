@@ -229,7 +229,7 @@ end
 
 function showStash(stashInfo, stashIndex, sharedData)
 	if stashInfo then
-		Utils.texture.applyRoundTexture(stashContainer.Icon, "Interface\\ICONS\\" .. (stashInfo.BA.IC or "TEMP"), "Interface\\ICONS\\TEMP");
+		stashContainer.Icon:SetTexture("Interface\\ICONS\\" .. (stashInfo.BA.IC or "TEMP"));
 		stashContainer.Title:SetText((stashInfo.BA.NA or loc.DR_STASHES_NAME));
 
 		if not sharedData or not stashContainer.sync then
