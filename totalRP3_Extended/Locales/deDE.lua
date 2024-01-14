@@ -248,6 +248,8 @@ Größe: %0.1f kB.]=],
 	["DB_EXPORT_TT"] = [=[Serialisiert den Inhalt des Objekts für den Datenaustausch außerhalb des Spiels.
 
 Funktioniert nur für kleine Objekte (kleiner als 20 kB nach Serialisierung). Nutze den Komplettexport für größere Objekte.]=],
+	["DB_EXPORT_TT_2"] = [=[Erstellt eine serialisierte Version des Objektinhalts, die außerhalb des Spiels weitergegeben werden kann.
+|cffff0000Hinweis: Wenn man große Objekte exportiert, kann das Spiel für einige Sekunden einfrieren.|r]=],
 	["DB_FILTERS"] = "Suchfilter",
 	["DB_FILTERS_CLEAR"] = "Zurücksetzen",
 	["DB_FILTERS_NAME"] = "Objektname",
@@ -284,6 +286,7 @@ Version %s]=],
 	["DB_IMPORT_FULL_TT"] = "Importiert die Datei |cff00ff00totalRP3_Extended_ImpExport.lua|r.",
 	["DB_IMPORT_ITEM"] = "Importiere Gegenstand",
 	["DB_IMPORT_TT"] = "Füge hier ein serialisiertes Objekt ein.",
+	["DB_IMPORT_TT_WAGO"] = "Nichts einzufügen? Auf der Website des Addons WeakAuras |cff00ff00[<a href=\"http://wago.io\">wago.io</a>]|r kannst du nun auch Total RP 3: Extended Kreationen finden. <br/>Dort kannst du nach Kreationen anderer Spieler suchen und hier einfügen.",
 	["DB_IMPORT_VERSION"] = [=[Du importierst eine ältere Version eines Objekts, das du bereits hast.
 
 Import-Version: %s
@@ -306,6 +309,7 @@ ID: |cff00ffff"%s"|r
 	["DB_RESULTS"] = "Suchergebnisse",
 	["DB_SECURITY_TT"] = "Zeigt alle Sicherheitsparameter für dieses Objekt an. Von dort aus können bestimmte unerwünschte Effekte zugelassen oder verhindert werden.",
 	["DB_TO_EXPERT"] = "Zum Expertenmodus konvertieren ",
+	["DB_WAGO_INFO"] = "|cffff0000Neu:|r Du kannst jetzt deine schnell exportierten Objekte auf der Website des Addons WeakAuras |cff00ff00[<a href=\"http://wago.io\">wago.io</a>]|r veröffentlichen!<br/>Kopiere und füge diesen Exportstring dort ein, garniere es mit einer Beschreibung und ein paar Screenshots, und dann bekommst du einen handlichen Link, den du mit deinen Freunden teilen kannst!",
 	["DB_WARNING"] = [=[|cffff0000!!! Warnung !!!
 
 |cffff9900Vergiss nicht, Deine Änderungen zu speichern, bevor Du zur Datenbankliste zurückkehrst!]=],
@@ -327,6 +331,7 @@ Wenn du den Hintergrund innerhalb einer Zwischensequenz änderst wird eine Über
 	["DI_CHOICE_STEP_TT"] = [=[Gib die Positionsnummer ein, an die gesprungen werden soll, falls der Spieler diese Auswahl trifft.
 
 |cff00ff00Wenn du die Position leer lässt oder eine nicht vorhandene Position angibst wird die Zwischensequenz bei Auswahl beendet (und das Objektereignis "Bei Beenden" wird ausgelöst).]=],
+	["DI_CHOICE_TEXT"] = "Wähle eine Option",
 	["DI_CHOICE_TT"] = [=[Gib den Text für diese Auswahl ein.
 
 |cff00ff00leerlassen um die Auswahlmöglichkeit zu deaktivieren]=],
@@ -1207,6 +1212,10 @@ Wenn du zum Beispiel links "Rüstung" eingegeben hast, könnte hier "Helm" oder 
 
 |cffff9900Wenn diese Option eingeschaltet ist, können andere Spieler den Gegenstand in deinem Inventar sehen, wenn sie dich betrachten, selbst dann, wenn du die Position nicht festgelegt hast.]=],
 	["ITEM_ID"] = "Gegenstands-Id",
+	["LAUNCHER_ACTION_CONTAINER"] = "Hauptbehälter öffnen",
+	["LAUNCHER_ACTION_DATABASE"] = "Extended-Datenbank öffnen",
+	["LAUNCHER_ACTION_INVENTORY"] = "Inventar öffnen",
+	["LAUNCHER_ACTION_QUESTLOG"] = "Questlog öffnen",
 	["LOOT"] = "Beute",
 	["LOOT_CONTAINER"] = "Lootbehälter",
 	["LOOT_DISTANCE"] = "Du hast dich zu weit vom Beuteort entfernt.",
@@ -1455,6 +1464,8 @@ Gibt bei Spielern immer "normal" zurück.]=],
 |rEine Einheit "existiert" in Bezug auf den Spieler. Z.B. existiert die Einheit "target", wenn der Spieler ein Ziel hat. "npc" existiert, wenn der Spieler gerade mit einem NSC interagiert, usw.]=],
 	["OP_OP_UNIT_FACTION"] = "Fraktion einer Einheit",
 	["OP_OP_UNIT_FACTION_TT"] = "|cff00ff00Die Fraktion einer Einheit IN ENGLISCHEN KLEINBUCHSTABEN.",
+	["OP_OP_UNIT_GUID"] = "Einheiten-GUID",
+	["OP_OP_UNIT_GUID_TT"] = "|cff00ff00Die einzigartige Kennung (global unique identifier) einer Einheit.",
 	["OP_OP_UNIT_GUILD"] = "Gildenname einer Einheit",
 	["OP_OP_UNIT_GUILD_RANK"] = "Gildenrang einer Einheit",
 	["OP_OP_UNIT_GUILD_RANK_TT"] = "|cff00ff00Der Gildenrang der Einheit (wenn die Einheit in einer Gilde ist).",
