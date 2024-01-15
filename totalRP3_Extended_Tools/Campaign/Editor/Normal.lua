@@ -437,7 +437,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	main.vignette:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	main.vignette:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
-			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "TOP", parentPoint = "BOTTOM"}, {onIconSelected});
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "TOP", parentPoint = "BOTTOM"}, {onIconSelected, nil, nil, main.vignette.selectedIcon});
 		else
 			local values = {};
 			tinsert(values, {loc.CA_IMAGE_TT});
@@ -511,7 +511,7 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	npc.editor.fulltitle.title:SetText(loc.CA_NPC_EDITOR_TITLE);
 	npc.editor.description.title:SetText(loc.CA_NPC_EDITOR_DESC);
 	npc.editor.icon:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected});
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected, nil, nil, npc.editor.icon.selectedIcon});
 	end);
 	npc.editor.save:SetScript("OnClick", function(self)
 		onNPCSaved();

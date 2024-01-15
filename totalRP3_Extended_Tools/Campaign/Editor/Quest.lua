@@ -376,7 +376,7 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 	main.preview.Name:SetText(loc.EDITOR_PREVIEW);
 	main.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
 	main.preview:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, main.preview.selectedIcon});
 	end);
 
 	-- Auto reveal

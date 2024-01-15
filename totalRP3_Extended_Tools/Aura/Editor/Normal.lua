@@ -326,7 +326,7 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 		TRP3_AuraTooltip:Attach(display.preview);
 	end);
 	display.preview:SetScript("OnMouseUp", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, display.preview.aura.class.BA.IC});
 	end);
 
 	gameplay.title:SetText(loc.AU_GAMEPLAY_ATT);

@@ -906,7 +906,7 @@ function dropFrame.init()
 	stashEditFrame.icon:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
 			{ parent = stashEditFrame.icon, point = "LEFT", parentPoint = "RIGHT", x = 15 },
-			{ iconHandler });
+			{ iconHandler, nil, nil, stashEditFrame.icon.selectedIcon });
 	end);
 	stashEditFrame.hidden.Text:SetText(loc.DR_STASHES_HIDE);
 	setTooltipForSameFrame(stashEditFrame.hidden, "RIGHT", 0, 5, loc.DR_STASHES_HIDE, loc.DR_STASHES_HIDE_TT);

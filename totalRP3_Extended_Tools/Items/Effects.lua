@@ -411,7 +411,7 @@ local function inv_loot_init()
 	editor.icon:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
 			{parent = editor.icon, point = "LEFT", parentPoint = "RIGHT", x = 15},
-			{iconHandler});
+			{iconHandler, nil, nil, editor.icon.selectedIcon});
 	end);
 
 	-- Loot
