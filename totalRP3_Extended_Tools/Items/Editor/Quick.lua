@@ -2,7 +2,6 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local pairs, tonumber, date, strtrim = pairs, tonumber, date, strtrim;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
