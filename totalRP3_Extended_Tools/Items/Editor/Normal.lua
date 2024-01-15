@@ -413,7 +413,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 		TRP3_ItemTooltip:Hide();
 	end);
 	display.preview:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected});
+		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, display.preview.selectedIcon});
 	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
