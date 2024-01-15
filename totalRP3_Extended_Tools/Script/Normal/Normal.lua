@@ -538,6 +538,104 @@ local function openWorkflow(workflowID)
 	end
 end
 
+local function deleteWorkflow(workflowID)
+	wipe(toolFrame.specificDraft.SC[workflowID]);
+	toolFrame.specificDraft.SC[workflowID] = nil;
+
+	-- Actions
+	if toolFrame.specificDraft.AC then
+		for _, action in pairs(toolFrame.specificDraft.AC) do
+			if action.SC == workflowID then
+				action.SC = nil;
+			end
+		end
+	end
+
+	-- Links
+	if toolFrame.specificDraft.LI then
+		for link, workflow in pairs(toolFrame.specificDraft.LI) do
+			if workflow == workflowID then
+				toolFrame.specificDraft.LI[link] = nil;
+			end
+		end
+	end
+
+	-- Events
+	if toolFrame.specificDraft.HA then
+		for _, event in pairs(toolFrame.specificDraft.HA) do
+			if event.SC == workflowID then
+				event.SC = nil;
+			end
+		end
+	end
+
+	-- Cutscene steps
+	if toolFrame.specificDraft.DS then
+		for _, cutsceneStep in pairs(toolFrame.specificDraft.DS) do
+			if cutsceneStep.WO == workflowID then
+				cutsceneStep.WO = nil;
+			end
+		end
+	end
+end
+
+local function renameWorkflow(workflowID, newID)
+	toolFrame.specificDraft.SC[newID] = toolFrame.specificDraft.SC[workflowID];
+	toolFrame.specificDraft.SC[workflowID] = nil;
+
+	-- Apply rename where old workflowID was used
+
+	-- Effects
+	for _, workflow in pairs(toolFrame.specificDraft.SC) do
+		for _, element in pairs(workflow.ST) do
+			if element.e then
+				for _, effect in pairs(element.e) do
+					-- Run workflow effect
+					if effect.id == "run_workflow" and effect.args[1] == "o" and effect.args[2] == workflowID then
+						effect.args[2] = newID;
+					end
+				end
+			end
+		end
+	end
+
+	-- Actions
+	if toolFrame.specificDraft.AC then
+		for _, action in pairs(toolFrame.specificDraft.AC) do
+			if action.SC == workflowID then
+				action.SC = newID;
+			end
+		end
+	end
+
+	-- Links
+	if toolFrame.specificDraft.LI then
+		for link, workflow in pairs(toolFrame.specificDraft.LI) do
+			if workflow == workflowID then
+				toolFrame.specificDraft.LI[link] = newID;
+			end
+		end
+	end
+
+	-- Events
+	if toolFrame.specificDraft.HA then
+		for _, event in pairs(toolFrame.specificDraft.HA) do
+			if event.SC == workflowID then
+				event.SC = newID;
+			end
+		end
+	end
+
+	-- Cutscene steps
+	if toolFrame.specificDraft.DS then
+		for _, cutsceneStep in pairs(toolFrame.specificDraft.DS) do
+			if cutsceneStep.WO == workflowID then
+				cutsceneStep.WO = newID;
+			end
+		end
+	end
+end
+
 local WORKFLOW_LINE_ACTION_DELETE = 1;
 local WORKFLOW_LINE_ACTION_ID = 2;
 local WORKFLOW_LINE_ACTION_COPY = 3;
@@ -550,8 +648,7 @@ local function onWorkflowLineAction(action, line)
 
 	if action == WORKFLOW_LINE_ACTION_DELETE then
 		TRP3_API.popup.showConfirmPopup(loc.WO_REMOVE_POPUP:format(workflowID), function()
-			wipe(toolFrame.specificDraft.SC[workflowID]);
-			toolFrame.specificDraft.SC[workflowID] = nil;
+			deleteWorkflow(workflowID);
 			editor.refreshWorkflowList();
 		end);
 	elseif action == WORKFLOW_LINE_ACTION_ID then
@@ -559,8 +656,7 @@ local function onWorkflowLineAction(action, line)
 			if toolFrame.specificDraft.SC[newID] then
 				Utils.message.displayMessage(loc.WO_ADD_ID_NO_AVAILABLE, 4);
 			elseif newID and newID:len() > 0 then
-				toolFrame.specificDraft.SC[newID] = toolFrame.specificDraft.SC[workflowID];
-				toolFrame.specificDraft.SC[workflowID] = nil;
+				renameWorkflow(workflowID, newID);
 				editor.refreshWorkflowList();
 			end
 		end, nil, workflowID);
