@@ -2,8 +2,8 @@
 	Copyright The Total RP 3 Extended Authors
 	SPDX-License-Identifier: Apache-2.0
 -->
-<Bindings header="TRP3">
-    <Binding name="TRP3_EXTENDED_TOOLS" category="ADDONS">
+<Bindings>
+    <Binding name="TRP3_EXTENDED_TOOLS" category="BINDING_HEADER_TRP3">
         if TRP3_ToolFrame:IsVisible() then
             TRP3_ToolFrame:Hide();
         else
