@@ -240,6 +240,7 @@ function editor.init(ToolFrame)
 		}
 	}
 	editor:SetScript("OnShow", function()
+		refreshList();
 		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
 	end);
 end

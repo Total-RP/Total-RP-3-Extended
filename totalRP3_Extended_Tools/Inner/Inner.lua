@@ -133,25 +133,31 @@ local LINE_ACTION_DELETE = 1;
 local LINE_ACTION_ID = 2;
 local LINE_ACTION_COPY = 3;
 local LINE_ACTION_PASTE = 4;
-local type, tremove = type, tremove;
 
 ---
 -- Recursivity is bad, people.
 -- Always use a stack when you have to parse large structures. :)
 --
-local function adaptIDs(oldID, newID, object)
-	local stack = {object};
-	while #stack ~= 0 do
-		local current = tremove(stack);
-		if type(current) == "table" then
-			for index, value in pairs(current) do
-				if type(value) == "table" then
-					tinsert(stack, value);
-				elseif type(value) == "string" then
-					current[index] = value:gsub(oldID, newID);
-				end
+function TRP3_API.extended.tools.replaceID(object, oldID, newID)
+	if type(object) ~= "table" then return end
+
+	local stack = {};
+	local count = 0;
+
+	while object ~= nil do
+		for k, v in pairs(object) do
+			local varType = type(v);
+			if varType == "table" then
+				count = count + 1;
+				stack[count] = v;
+			elseif varType == "string" then
+				object[k] = v:gsub(oldID, newID);
 			end
 		end
+
+		object = stack[count];
+		stack[count] = nil;
+		count = count - 1;
 	end
 end
 
@@ -188,7 +194,7 @@ local function onLineAction(action, line)
 			TRP3_API.popup.showConfirmPopup(loc.IN_INNER_PASTE_CONFIRM, function()
 				wipe(innerObject);
 				Utils.table.copy(innerObject, editor.copy);
-				adaptIDs(editor.copy_fullClassID, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id, innerObject);
+				TRP3_API.extended.tools.replaceID(innerObject, editor.copy_fullClassID, toolFrame.fullClassID .. TRP3_API.extended.ID_SEPARATOR .. id);
 				refresh();
 			end);
 		end

@@ -2,7 +2,6 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local pairs, tonumber, date, strtrim = pairs, tonumber, date, strtrim;
 local getClass = TRP3_API.extended.getClass;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
@@ -118,18 +117,6 @@ local function onQuickCreatedFromList(classID, _)
 	TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(TRP3_API.inventory.getItemLink(TRP3_API.extended.getClass(classID))), function(value)
 		TRP3_API.inventory.addItem(nil, classID, {count = value or 1});
 	end, nil, 1);
-end
-
-function TRP3_API.extended.tools.replaceID(dataToUpdate, oldID, newID)
-	if type(dataToUpdate) == "table" then
-		for key, value in pairs(dataToUpdate) do
-			if type(value) == "table" then
-				TRP3_API.extended.tools.replaceID(value, oldID, newID);
-			elseif type(value) == "string" then
-				dataToUpdate[key] = value:gsub(oldID, newID);
-			end
-		end
-	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
