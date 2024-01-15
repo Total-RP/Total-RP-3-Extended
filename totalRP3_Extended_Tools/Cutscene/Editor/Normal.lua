@@ -371,6 +371,7 @@ local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 		main:Show();
 		loadWorkflows();
 		TRP3_ExtendedTutorial.loadStructure(TUTORIAL);
+		TRP3_ScriptEditorNormal.safeLoadList(editor.workflow, editor.workflowIDs, toolFrame.specificDraft.DS[editor.stepID].WO or "");
 	elseif currentTab == TABS.WORKFLOWS then
 		TRP3_ScriptEditorNormal:SetParent(toolFrame.cutscene.normal);
 		TRP3_ScriptEditorNormal:SetAllPoints();
