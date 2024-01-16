@@ -1,3 +1,19 @@
+# Changelog for version 2.1.0
+
+*This version requires Total RP 3 version 2.7.0 or newer.*
+
+## Added
+
+- Links to workflows are now automatically updated after renaming or deleting a workflow in the following:
+  - Actions
+  - Event links
+  - Cutscene steps
+  - Run workflow effect (only when renaming)
+
+## Fixed
+
+- Fixed inconsistent map scans order depending on locale.
+
 # Changelog for version 2.0.3
 
 *This version requires Total RP 3 version 2.6.0 or newer.*
