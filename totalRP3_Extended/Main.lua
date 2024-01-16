@@ -592,7 +592,7 @@ local function onStart()
 end
 
 Globals.extended_version = 1042;
-Globals.required_trp3_build = 121;
+Globals.required_trp3_build = 124;
 
 --@debug@
 Globals.extended_display_version = "v-dev";
