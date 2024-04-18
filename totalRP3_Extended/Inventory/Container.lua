@@ -262,7 +262,7 @@ local function containerSlotUpdate(self, elapsed)
 			self.Quantity:Show();
 			self.Quantity:SetText(self.info.count);
 		end
-		if GetMouseFocus() == self then
+		if self:IsMouseMotionFocus() then
 			showItemTooltip(self, self.info, self.class);
 		end
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
