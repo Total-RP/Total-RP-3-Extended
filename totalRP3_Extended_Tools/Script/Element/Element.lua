@@ -140,7 +140,7 @@ local function decorateBrowserLine(frame, index)
 			local argsStructure = {object = {id = objectID}};
 			text = text .. "\n" .. TRP3_API.Colors.Yellow("\"" .. TRP3_API.script.parseArgs(base.DE .. "\"", argsStructure));
 		end
-		text = text .. "\n" .. TRP3_API.Colors.White(TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. GetCoinTextureString(base.VA or 0));
+		text = text .. "\n" .. TRP3_API.Colors.White(TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. C_CurrencyInfo.GetCoinTextureString(base.VA or 0));
 
 	end
 

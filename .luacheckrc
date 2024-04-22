@@ -33,6 +33,24 @@ globals = {
 };
 
 read_globals = {
+	C_AddOns = {
+		fields = {
+			"IsAddOnLoaded",
+		},
+	},
+
+	C_CurrencyInfo = {
+		fields = {
+			"GetCoinTextureString",
+		},
+	},
+
+	C_Item = {
+		fields = {
+			"GetItemInfo",
+		},
+	},
+
 	C_Map = {
 		fields = {
 			"GetBestMapForUnit",
@@ -115,8 +133,6 @@ read_globals = {
 	"GameTooltip",
 	"GameTooltipHeader",
 	"GetAchievementInfo",
-	"GetCoinTextureString",
-	"GetItemInfo",
 	"GetMacroIndexByName",
 	"GetMouseFocus",
 	"GetNumMacros",
@@ -133,7 +149,6 @@ read_globals = {
 	"HTML_START",
 	"INTERRUPTED",
 	"INVENTORY_TOOLTIP",
-	"IsAddOnLoaded",
 	"IsAltKeyDown",
 	"IsControlKeyDown",
 	"IsModifiedClick",

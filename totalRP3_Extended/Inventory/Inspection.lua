@@ -27,7 +27,7 @@ local function receiveResponse(response, sender)
 	if sender == inspectionFrame.current then
 		-- Weight and value
 		local weight = TRP3_API.extended.formatWeight(response.totalWeight or 0) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
-		local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, GetCoinTextureString(response.totalValue or 0));
+		local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, C_CurrencyInfo.GetCoinTextureString(response.totalValue or 0));
 		inspectionFrame.Main.Model.WeightText:SetText(weight);
 		inspectionFrame.Main.Model.ValueText:SetText(formatedValue);
 		inspectionFrame.Main.Model.WeightText:Show();
