@@ -118,7 +118,7 @@ read_globals = {
 	"GetCoinTextureString",
 	"GetItemInfo",
 	"GetMacroIndexByName",
-	"GetMouseFocus",
+	"GetMouseFoci",
 	"GetNumMacros",
 	"GetPlayerInfoByGUID",
 	"GetSpellBookItemName",
