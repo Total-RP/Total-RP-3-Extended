@@ -66,7 +66,7 @@ end
 
 local function initSharedSound()
 	Communications.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
-		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) and not IsInInstance() then
 			if soundID and channel and distance and instanceID and posY and posX and posZ then
 				distance = tonumber(distance) or 0;
 				posY = tonumber(posY) or 0;
@@ -106,7 +106,7 @@ local function initSharedSound()
 	end);
 
 	Communications.broadcast.registerCommand(LOCAL_SOUNDFILE_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
-		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) and not IsInInstance() then
 			if soundID and channel and distance and instanceID and posY and posX and posZ then
 				distance = tonumber(distance) or 0;
 				posY = tonumber(posY) or 0;
