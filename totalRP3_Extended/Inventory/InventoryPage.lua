@@ -463,7 +463,7 @@ function TRP3_API.inventory.initInventoryPage()
 	mainInventoryFrame.Equip:SetScript("OnHide", function() inventoryModel.Blocker:Show() end);
 	setTooltipForSameFrame(inventoryModel.Blocker.ValueHelp, "RIGHT", 0, 0, loc.INV_PAGE_TOTAL_VALUE, loc.INV_PAGE_TOTAL_VALUE_TT);
 
-	-- Hide unwanted model adaptation
+	-- Hide unwanted model adaptation -- TODO: fix this
 	--inventoryModel.controlFrame:SetPoint("TOP", 0, 25);
 	--inventoryModel.controlFrame:SetWidth(55);
 	--_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:ClearAllPoints();
