@@ -125,7 +125,7 @@ local function onSlotLeave()
 	TRP3_API.inventory.resetWearable(inspectionFrame.Main, inspectionFrame.Main.Model);
 end
 
-local function onToolbarButtonClicked()
+function onToolbarButtonClicked() -- TODO: un-global this when done testing
 	local unitID = Utils.str.getUnitID("target");
 	if unitID and (inspectionFrame.current ~= unitID or not inspectionFrame:IsVisible()) then
 		inspectionFrame.current = unitID
@@ -140,7 +140,7 @@ local function onToolbarButtonClicked()
 			end
 		end
 
-		inspectionFrame.Main.Model:SetUnit("target");
+		inspectionFrame.Main.Model:InspectUnit("target");
 		inspectionFrame.Main.Model.Title:SetText(UnitName("target"));
 		inspectionFrame.Main.Model.WeightText:Hide();
 		inspectionFrame.Main.Model.ValueText:Hide();
@@ -158,8 +158,8 @@ function inspectionFrame.init()
 	loadingTemplate = loc.INV_PAGE_CHARACTER_INSPECTION .. ": %0.2f %%";
 
 	-- Slots
-	Mixin(inspectionFrame.Main.Model, ModelFrameMixin);
-	inspectionFrame.Main.Model:OnLoad(nil, nil, 0);
+	--Mixin(inspectionFrame.Main.Model, ModelFrameMixin);
+	--inspectionFrame.Main.Model:OnLoad(nil, nil, 0);
 	inspectionFrame.Main.slots = {};
 	for i=1, 16 do
 		local button = CreateFrame("Button", "TRP3_InspectionFrameSlot" .. i, inspectionFrame.Main, "TRP3_InventoryPageSlotTemplate");
