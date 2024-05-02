@@ -28,13 +28,13 @@ local function resetEquip(main, model)
 	model.Marker:Hide();
 	model.Line:Hide();
 	model.sequence = nil;
+	model:ResetModel();
 end
 TRP3_API.inventory.resetWearable = resetEquip;
 
 local function setModelPosition(self, rotation)
 	self.rotation = rotation;
 	self:SetRotation(self.rotation);
-	self:RefreshCamera();
 end
 
 local function drawLine(from, quality, model)

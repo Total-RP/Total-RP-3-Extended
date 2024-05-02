@@ -340,11 +340,37 @@ function TRP3_InventorySceneMixin:SetUnit(unitToken, sheatheWeapons, autoDress, 
     return actor;
 end
 
+function TRP3_InventorySceneMixin:FreezeAnimation(animation, variation, animOffsetSeconds)
+    local actor = self:GetFocusedActor();
+    if not actor then
+        return;
+    end
+
+    actor:SetAnimation(animation, variation, 0, animOffsetSeconds);
+    actor:SetPaused(true, false);
+end
+
+function TRP3_InventorySceneMixin:SetRotation(rotation)
+    local actor = self:GetFocusedActor();
+    if not actor then
+        return;
+    end
+
+    -- invert rotation because actors are backwards
+    actor:SetYaw(rotation);
+end
+
+function TRP3_InventorySceneMixin:ResetRotation()
+    self:SetRotation(self.PlayerActorDefaults.Yaw);
+end
+
 function TRP3_InventorySceneMixin:ResetModel(actor)
     actor = actor or self:GetFocusedActor();
     debugassert(actor, "Missing actor");
 
-    actor:SetYaw(self.PlayerActorDefaults.Yaw);
+    if actor:GetYaw() ~= self.PlayerActorDefaults.Yaw then
+        self:ResetRotation();
+    end
     actor:SetScale(self.PlayerActorDefaults.Scale);
     actor:SetAnimation(0, 0);
 
