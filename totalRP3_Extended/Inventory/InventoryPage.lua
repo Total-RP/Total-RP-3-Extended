@@ -22,14 +22,12 @@ local DEFAULT_TIME = 1;
 local function resetEquip(main, model)
 	if not main then main = mainInventoryFrame end;
 	if not model then model = inventoryModel end;
-	model:ResetModel();
 	if main.Equip then
 		main.Equip:Hide();
 	end
 	model.Marker:Hide();
 	model.Line:Hide();
 	model.sequence = nil;
-	model:SetAnimation(0, 0);
 end
 TRP3_API.inventory.resetWearable = resetEquip;
 
@@ -226,7 +224,7 @@ local onInventoryShow;
 function onInventoryShow()
 	local playerInventory = TRP3_API.inventory.getInventory();
 	mainInventoryFrame.info = playerInventory;
-	inventoryModel:SetUnit("player", true);
+	inventoryModel:InspectUnit("player", true);
 	resetEquip();
 
 	TRP3_API.inventory.loadContainerPageSlots(mainInventoryFrame);
@@ -466,13 +464,13 @@ function TRP3_API.inventory.initInventoryPage()
 	setTooltipForSameFrame(inventoryModel.Blocker.ValueHelp, "RIGHT", 0, 0, loc.INV_PAGE_TOTAL_VALUE, loc.INV_PAGE_TOTAL_VALUE_TT);
 
 	-- Hide unwanted model adaptation
-	inventoryModel.controlFrame:SetPoint("TOP", 0, 25);
-	inventoryModel.controlFrame:SetWidth(55);
-	_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:ClearAllPoints();
-	_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:SetPoint("Left", 2, 0);
-	_G[inventoryModel.controlFrame:GetName() .. "ZoomInButton"]:Hide();
-	_G[inventoryModel.controlFrame:GetName() .. "ZoomOutButton"]:Hide();
-	_G[inventoryModel.controlFrame:GetName() .. "PanButton"]:Hide();
+	--inventoryModel.controlFrame:SetPoint("TOP", 0, 25);
+	--inventoryModel.controlFrame:SetWidth(55);
+	--_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:ClearAllPoints();
+	--_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:SetPoint("Left", 2, 0);
+	--_G[inventoryModel.controlFrame:GetName() .. "ZoomInButton"]:Hide();
+	--_G[inventoryModel.controlFrame:GetName() .. "ZoomOutButton"]:Hide();
+	--_G[inventoryModel.controlFrame:GetName() .. "PanButton"]:Hide();
 	local MOVE_SCALE = 1;
 	inventoryModel.Marker:SetScript("OnMouseUp", function(self)
 		local _, _, _, x, y = self:GetPoint(1);
