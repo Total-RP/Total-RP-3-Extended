@@ -125,7 +125,9 @@ local function onSlotLeave()
 	TRP3_API.inventory.resetWearable(inspectionFrame.Main, inspectionFrame.Main.Model);
 end
 
-function onToolbarButtonClicked() -- TODO: un-global this when done testing
+-- TODO: un-global this when done testing
+-- this function is convienient for testing the inspection frame w/ a macro
+function onToolbarButtonClicked() 
 	local unitID = Utils.str.getUnitID("target");
 	if unitID and (inspectionFrame.current ~= unitID or not inspectionFrame:IsVisible()) then
 		inspectionFrame.current = unitID
