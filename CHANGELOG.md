@@ -1,3 +1,9 @@
+# Changelog for version 2.1.1
+
+## Changed
+
+- Local sounds and musics no longer play in instances. We will have silence right meow.
+
 # Changelog for version 2.1.0
 
 *This version requires Total RP 3 version 2.7.0 or newer.*
