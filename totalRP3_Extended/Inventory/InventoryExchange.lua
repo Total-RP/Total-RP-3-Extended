@@ -153,7 +153,7 @@ local function drawUI()
 			exchangeFrame.left.empty:Show();
 		end
 
-		exchangeFrame.left.value:SetText(GetCoinTextureString(totalValue));
+		exchangeFrame.left.value:SetText(C_CurrencyInfo.GetCoinTextureString(totalValue));
 		exchangeFrame.left.weight:SetText(Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. TRP3_API.extended.formatWeight(totalWeight));
 	end
 
@@ -202,7 +202,7 @@ local function drawUI()
 			exchangeFrame.right.empty:Show();
 		end
 
-		exchangeFrame.right.value:SetText(GetCoinTextureString(totalValue));
+		exchangeFrame.right.value:SetText(C_CurrencyInfo.GetCoinTextureString(totalValue));
 		exchangeFrame.right.weight:SetText(Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. TRP3_API.extended.formatWeight(totalWeight));
 
 		exchangeFrame.ok:Enable();

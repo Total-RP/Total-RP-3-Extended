@@ -110,7 +110,7 @@ local function getItemTooltipLines(slotInfo, class, forceAlt)
 			else
 				value = (class.BA.VA or 0) * (slotInfo.count or 1);
 			end
-			value = GetCoinTextureString(value);
+			value = C_CurrencyInfo.GetCoinTextureString(value);
 			extension2 = extension2 .. TRP3_API.Colors.White(value);
 
 		end

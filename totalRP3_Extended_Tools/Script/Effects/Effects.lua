@@ -126,7 +126,7 @@ local function macro_init()
 		return self.spellName
 	end)
 	hookLinkInsert("HandleModifiedItemClick", function(link)
-		return GetItemInfo(link)
+		return C_Item.GetItemInfo(link)
 	end)
 
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "ADDON_LOADED", function(_, name)
@@ -142,7 +142,7 @@ local function macro_init()
 				return GetSpellInfo(self:GetParent().spellID)
 			end)
 			hookLinkInsert("ToySpellButton_OnModifiedClick", function(self)
-				return GetItemInfo(C_ToyBox.GetToyLink(self.itemID))
+				return C_Item.GetItemInfo(C_ToyBox.GetToyLink(self.itemID))
 			end)
 		end
 	end)

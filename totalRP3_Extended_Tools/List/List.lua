@@ -849,7 +849,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	end
 
 	-- Detect import/export module
-	hasImportExportModule = IsAddOnLoaded("totalRP3_Extended_ImpExport");
+	hasImportExportModule = C_AddOns.IsAddOnLoaded("totalRP3_Extended_ImpExport");
 	if hasImportExportModule then
 		if not TRP3_Extended_ImpExport then
 			TRP3_Extended_ImpExport = {};
