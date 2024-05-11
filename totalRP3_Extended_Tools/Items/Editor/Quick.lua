@@ -249,6 +249,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	TRP3_API.ui.frame.setupIconButton(toolFrame.list.bottom.campaign.templates.from, "spell_nature_mirrorimage");
 
 	toolFrame.list.bottom.item:SetScript("OnClick", function(self)
+		ToolFrame.list.bottom.campaign.templates:Hide();
+		ToolFrame.list.container.import:Hide();
 		if TRP3_ItemQuickEditor:IsVisible() then
 			TRP3_ItemQuickEditor:Hide();
 		elseif self.templates:IsVisible() then
@@ -261,6 +263,8 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	end);
 
 	toolFrame.list.bottom.campaign:SetScript("OnClick", function(self)
+		ToolFrame.list.bottom.item.templates:Hide();
+		ToolFrame.list.container.import:Hide();
 		if self.templates:IsVisible() then
 			self.templates:Hide();
 		else
