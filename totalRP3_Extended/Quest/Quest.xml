@@ -20,13 +20,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square"/>
 	</Button>
 
-	<Frame name="TRP3_QuestObjectives" parent="ObjectiveTrackerBlocksFrame" hidden="true">
+	<Frame name="TRP3_QuestObjectives" hidden="true">
 		<Size x="0" y="100"/>
-		<Anchors>
-			<Anchor point="BOTTOM"/>
-			<Anchor point="LEFT"/>
-			<Anchor point="RIGHT"/>
-		</Anchors>
 		<Frames>
 			<Frame parentKey="Actions" inherits="TRP3_FieldSetFrame">
 				<Size x="0" y="50"/>
