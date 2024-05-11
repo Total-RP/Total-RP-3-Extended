@@ -90,7 +90,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
-				<Texture parentKey="quest" inherits="Spellbook-SlotFrame">
+				<Texture parentKey="quest" file="Interface\Spellbook\Spellbook-Parts">
+					<Size x="70" y="65"/>
+					<TexCoords left="0.00390625" right="0.27734375" top="0.44140625" bottom="0.69531250"/>
 					<Anchors>
 						<Anchor point="LEFT" x="20" y="2"/>
 					</Anchors>
