@@ -20,13 +20,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="37" y="37"/>
 
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture parentKey="EmptySlot" inherits="Spellbook-EmptySlot">
-					<Anchors>
-						<Anchor point="CENTER"/>
-					</Anchors>
-				</Texture>
-			</Layer>
 			<Layer level="BORDER">
 				<Texture parentKey="Icon">
 					<Size x="36" y="36"/>
