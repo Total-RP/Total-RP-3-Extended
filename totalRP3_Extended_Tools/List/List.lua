@@ -811,6 +811,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.container.import.title:SetText(loc.DB_IMPORT);
 	ToolFrame.list.container.import.content.title:SetText(loc.DB_IMPORT_TT);
 	ToolFrame.list.bottom.import:SetScript("OnClick", function()
+		ToolFrame.list.bottom.item.templates:Hide();
+		ToolFrame.list.bottom.campaign.templates:Hide();
 		ToolFrame.list.container.import.content.scroll.text:SetText("");
 		ToolFrame.list.container.import:Show();
 	end);
