@@ -134,7 +134,7 @@ read_globals = {
 	"GameTooltipHeader",
 	"GetAchievementInfo",
 	"GetMacroIndexByName",
-	"GetMouseFocus",
+	"GetMouseFoci",
 	"GetNumMacros",
 	"GetPlayerInfoByGUID",
 	"GetSpellBookItemName",

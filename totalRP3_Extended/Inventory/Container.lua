@@ -8,7 +8,7 @@ local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local _G, assert, tostring, tinsert, pairs, time = _G, assert, tostring, tinsert, pairs, time;
-local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown, GetMouseFocus;
+local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local loc = TRP3_API.loc;
 local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inventory.getBaseClassDataSafe, TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.isUsableByClass;
@@ -262,7 +262,7 @@ local function containerSlotUpdate(self, elapsed)
 			self.Quantity:Show();
 			self.Quantity:SetText(self.info.count);
 		end
-		if GetMouseFocus() == self then
+		if self:IsMouseMotionFocus() then
 			showItemTooltip(self, self.info, self.class);
 		end
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
@@ -411,10 +411,39 @@ end
 
 local UnitExists, CheckInteractDistance, UnitIsPlayer = UnitExists, CheckInteractDistance, UnitIsPlayer;
 
+---@enum ContainerDropTargetType
+local ContainerDropTargetType = {
+	World = "World",
+	Exchange = "Exchange",
+	Container = "Container",
+	Stash = "Stash",
+};
+
+---@return ContainerDropTargetType?, Frame?
+local function GetContainerDropTarget()
+	local frames = GetMouseFoci();
+
+	for _, frame in ipairs(frames) do
+		local name = frame:GetName() or "";
+
+		if name == "WorldFrame" then
+			return ContainerDropTargetType.World, frame;
+		elseif string.find(name, "^TRP3_ExchangeFrame") then
+			return ContainerDropTargetType.Exchange, frame;
+		elseif string.find(name, "^TRP3_Container") then
+			return ContainerDropTargetType.Container, frame;
+		elseif string.find(name, "^TRP3_StashContainer") then
+			return ContainerDropTargetType.Stash, frame;
+		end
+	end
+
+	return nil, nil;
+end
+
 local function slotOnDragStop(slotFrom)
 	ResetCursor();
 	if slotFrom.info and not TRP3_API.inventory.isInTransaction(slotFrom.info) then
-		local slotTo = GetMouseFocus();
+		local dropTargetType, slotTo = GetContainerDropTarget();
 		local container1, slot1ID;
 		slot1ID = slotFrom.slotID;
 		container1 = slotFrom:GetParent().info;
@@ -423,7 +452,8 @@ local function slotOnDragStop(slotFrom)
 		if class then
 			TRP3_API.ui.misc.playSoundKit(class.BA.DS or 1203, "SFX");
 		end
-		if slotTo:GetName() == "WorldFrame" then
+
+		if dropTargetType == ContainerDropTargetType.World then
 			if not slotFrom.loot then
 				if UnitExists("mouseover") and UnitIsPlayer("mouseover") and CheckInteractDistance("mouseover", 2) then
 					if class and not class.BA.SB then
@@ -449,11 +479,11 @@ local function slotOnDragStop(slotFrom)
 					Utils.message.displayMessage(loc.IT_INV_ERROR_CANT_DESTROY_LOOT, Utils.message.type.ALERT_MESSAGE);
 				end
 			end
-		elseif slotTo:GetName() and slotTo:GetName():sub(1, ("TRP3_ExchangeFrame"):len()) == "TRP3_ExchangeFrame" then
+		elseif dropTargetType == ContainerDropTargetType.Exchange then
 			if not container1.loot then
 				TRP3_API.inventory.addToExchange(container1, slot1ID);
 			end
-		elseif slotTo:GetName() and slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
+		elseif dropTargetType == ContainerDropTargetType.Container and slotTo.slotID then
 			if TRP3_API.inventory.isInTransaction(slotTo.info or EMPTY) then
 				return;
 			end
@@ -471,7 +501,7 @@ local function slotOnDragStop(slotFrom)
 			elseif not container2.loot then
 				pickUpLoot(slotFrom, container2, slot2ID);
 			end
-		elseif slotTo:GetName() and slotTo:GetName():sub(1, 19) == "TRP3_StashContainer" then
+		elseif dropTargetType == ContainerDropTargetType.Stash then
 			if not container1.loot then
 				TRP3_API.inventory.stashSlot(slotFrom, container1, slot1ID);
 			end
