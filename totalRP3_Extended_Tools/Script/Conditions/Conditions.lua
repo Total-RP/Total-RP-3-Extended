@@ -184,7 +184,7 @@ local function onOperandSelected(operandID, list, loadEditor)
 		end
 	end
 
-	_G[list:GetName() .. "Text"]:SetText(fullText);
+	list:OverrideText(fullText);
 	checkNumeric();
 
 	return hasPreview;
