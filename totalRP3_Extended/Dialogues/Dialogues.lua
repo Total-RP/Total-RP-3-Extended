@@ -525,7 +525,11 @@ function TRP3_API.extended.dialog.onStart()
 		local iconIndex = i - 1;
 		local yOffset = 0.5 + floor(iconIndex / 8) * 0.125;
 		local xOffset = mod(iconIndex, 8) * 0.125;
-		choiceButton.Num.Display:SetTexture(32, 32, "Interface/WorldMap/UI-QuestPoi-NumberIcons", xOffset, xOffset + 0.125, yOffset, yOffset + 0.125);
+
+		choiceButton.Num.Display.Icon:SetTexture("Interface/WorldMap/UI-QuestPoi-NumberIcons");
+		choiceButton.Num.Display.Icon:SetTexCoord(xOffset, xOffset + 0.125, yOffset, yOffset + 0.125);
+		local scale = choiceButton.Num.Display.Icon:GetParent():GetPinScale();
+		choiceButton.Num.Display.Icon:SetSize(scale * 32, scale * 32);
 
 		tinsert(dialogFrame.choices, choiceButton);
 	end
