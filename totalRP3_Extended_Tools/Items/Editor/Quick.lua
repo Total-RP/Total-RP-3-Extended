@@ -149,6 +149,7 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 		{loc.IT_FIELD_QUALITY .. ": " .. getQualityColorText(Enum.ItemQuality.Heirloom) .. ITEM_QUALITY7_DESC, Enum.ItemQuality.Heirloom},
 	};
 	setupListBox(editor.quality, editor.qualityList, nil, nil, 165, true);
+	editor.quality:SetWidth(165);
 
 	-- Left attribute
 	editor.left.title:SetText(loc.IT_TT_LEFT);

@@ -705,6 +705,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_DIALOG), TRP3_DB.types.DIALOG},
 	}
 	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, function(value) filterList(value, nil) end, nil, 155, true);
+	ToolFrame.list.filters.type:SetWidth(155);
 
 	local template = "|T%s:11:16|t";
 	local locales = {
@@ -716,6 +717,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		{TRP3_API.formats.dropDownElements:format(loc.DB_LOCALE, template:format(TRP3_API.extended.tools.getObjectLocaleImage("de"))), "de"},
 	}
 	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.locale, locales, function(value) filterList(nil, value) end, nil, 155, true);
+	ToolFrame.list.filters.locale:SetWidth(155);
 	ToolFrame.list.filters.locale:SetSelectedValue(0);
 	ToolFrame.list.filters.type:SetSelectedValue(0);
 	ToolFrame.list.filters.search:SetText(SEARCH);

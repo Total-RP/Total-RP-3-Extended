@@ -643,11 +643,13 @@ function editor.init()
 		{getComparatorText(">="), ">="},
 	}
 	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, checkNumeric, nil, 175, true);
+	operandEditor.comparator:SetWidth(175);
 
 	TRP3_API.ui.listbox.setupListBox(operandEditor.left, getEvaluatedOperands(leftListStructure), function(operandID, list)
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
+	operandEditor.left:SetWidth(220);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, true, operandEditor.left);
 	operandEditor.left.preview:SetText(loc.OP_PREVIEW);
 	operandEditor.left.edit:SetText(loc.OP_CONFIGURE);
@@ -674,6 +676,7 @@ function editor.init()
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
+	operandEditor.right:SetWidth(220);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, true, operandEditor.right);
 	operandEditor.right.preview:SetText(loc.OP_PREVIEW);
 	operandEditor.right.edit:SetText(loc.OP_CONFIGURE);

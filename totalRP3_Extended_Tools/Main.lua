@@ -475,6 +475,7 @@ local function onStart()
 			toolFrame.rootDraft.MD.LO = value;
 		end
 	end, nil, 40, true);
+	toolFrame.root.select:SetWidth(40);
 
 	-- Tab bar init
 	local homeData = {
