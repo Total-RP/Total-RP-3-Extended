@@ -259,11 +259,13 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 
 	-- Background
 	TRP3_API.ui.listbox.setupListBox(params.background, TRP3_API.ui.frame.getTiledBackgroundList(), nil, nil, 205, true);
+	params.background:SetWidth(205);
 
 	-- Border
 	TRP3_API.ui.listbox.setupListBox(params.border, {
 		{TRP3_API.formats.dropDownElements:format(loc.DO_PAGE_BORDER, loc.DO_PAGE_BORDER_1), TRP3_API.extended.document.BorderType.PARCHMENT},
 	}, nil, nil, 205, true);
+	params.border:SetWidth(205);
 
 	-- Height
 	params.height.title:SetText(loc.DO_PAGE_HEIGHT);
@@ -292,15 +294,19 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 
 	-- H1
 	TRP3_API.ui.listbox.setupListBox(params.h1_font, getFontStructure("H1"), nil, nil, 205, true);
+	params.h1_font:SetWidth(205);
 
 	-- H2
 	TRP3_API.ui.listbox.setupListBox(params.h2_font, getFontStructure("H2"), nil, nil, 205, true);
+	params.h2_font:SetWidth(205);
 
 	-- H3
 	TRP3_API.ui.listbox.setupListBox(params.h3_font, getFontStructure("H3"), nil, nil, 205, true);
+	params.h3_font:SetWidth(205);
 
 	-- P
 	TRP3_API.ui.listbox.setupListBox(params.p_font, getFontStructure("P"), nil, nil, 205, true);
+	params.p_font:SetWidth(205);
 
 	-- Pages
 	pages = toolFrame.document.normal.pages;

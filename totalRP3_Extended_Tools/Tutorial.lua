@@ -64,6 +64,7 @@ local function startTutorial(step)
 		ToolFrame.tutoframe:Show();
 		ToolFrame.tutorialhide:Show();
 		TRP3_API.ui.listbox.setupListBox(ToolFrame.tutoframe.step, currentList, onStep, nil, 200, true);
+		ToolFrame.tutoframe.step:SetWidth(200);
 		ToolFrame.tutoframe.step:SetSelectedValue(step or 1);
 		ToolFrame.tutoframe:SetFrameLevel(ToolFrame:GetFrameLevel() + 100);
 		ToolFrame.tutorialhide:SetFrameLevel(ToolFrame:GetFrameLevel() + 50);

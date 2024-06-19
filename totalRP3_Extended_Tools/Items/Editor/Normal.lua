@@ -378,6 +378,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 
 	-- Quality
 	TRP3_API.ui.listbox.setupListBox(display.quality, TRP3_ItemQuickEditor.qualityList, nil, nil, 200, true);
+	display.quality:SetWidth(200);
 
 	-- Left attribute
 	display.left.title:SetText(loc.IT_TT_LEFT);
@@ -483,6 +484,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
 		end
 	end, nil, 200, true);
+	gameplay.pickSound:SetWidth(200);
 
 	-- Drop sound
 	local dropList = {};
@@ -494,6 +496,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
 		end
 	end, nil, 200, true);
+	gameplay.dropSound:SetWidth(200);
 
 	local onCheckClicked = function()
 		refreshCheck();
@@ -527,6 +530,7 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 		{(loc.IT_CO_SIZE .. ": |cff00ff00%s"):format(loc.IT_CO_SIZE_COLROW:format(1, 4)), "1x4"},
 	};
 	TRP3_API.ui.listbox.setupListBox(container.type, container.containerTypes, onContainerResize, nil, 230, true);
+	container.type:SetWidth(230);
 
 	-- Durability
 	container.durability.title:SetText(loc.IT_CO_DURABILITY);

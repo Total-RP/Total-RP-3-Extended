@@ -67,6 +67,7 @@ local function reloadWorkflowlist()
 	TRP3_API.ui.listbox.setupListBox(editor.editor.workflow,
 		TRP3_ScriptEditorNormal.reloadWorkflowlist(editor.editor.workflowIDs),
 		nil, nil, ACTION_LIST_WIDTH, true);
+	editor.editor.workflow:SetWidth(ACTION_LIST_WIDTH);
 end
 
 local function newAction()
@@ -225,6 +226,7 @@ function editor.init(ToolFrame)
 			{TRP3_API.formats.dropDownElements:format(loc.CA_ACTIONS, TRP3_API.quest.getActionTypeLocale(TRP3_API.quest.ACTION_TYPES.ACTION)), TRP3_API.quest.ACTION_TYPES.ACTION},
 		},
 		nil, nil, ACTION_LIST_WIDTH, true);
+	editor.editor.type:SetWidth(ACTION_LIST_WIDTH);
 
 	editor:SetScript("OnHide", function() editor.editor:Hide() end);
 
