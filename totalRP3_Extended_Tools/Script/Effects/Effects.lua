@@ -375,7 +375,7 @@ local function var_set_operand_init()
 		local data = scriptData.args or Globals.empty;
 		editor.var:SetText(data[1] or "varName");
 		editor.source:SetSelectedValue(data[2] or "w");
-		editor.type.selectedValue = data[3] or "random";
+		editor.type:SetSelectedValue(data[3] or "random");
 		onOperandSelected(editor.type:GetSelectedValue(), editor.type);
 
 		local operand = getOperandEditorInfo(editor.type:GetSelectedValue()) or Globals.empty;
