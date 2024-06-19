@@ -571,15 +571,20 @@ local getEvaluatedOperands = function(structure)
 	wipe(structure);
 	tinsert(structure, {loc.OP_EVAL_VALUE});
 	for _, group in pairs(evaluatedOrder) do
-		local subStructure = {};
-		tinsert(subStructure, {group});
+		if group == "" then
+			-- If divider, don't add a empty substructure to it or it'll fall over and die
+			tinsert(structure, {group});
+		else
+			local subStructure = {};
+			tinsert(subStructure, {group});
 
-		for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
-			local operandInfo = getOperandEditorInfo(operandID);
-			tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
+			for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
+				local operandInfo = getOperandEditorInfo(operandID);
+				tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
+			end
+
+			tinsert(structure, {group, subStructure});
 		end
-
-		tinsert(structure, {group, subStructure});
 	end
 	return structure;
 end
