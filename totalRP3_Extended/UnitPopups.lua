@@ -44,7 +44,7 @@ local function CreateExtendedOpenExchange(menuDescription, contextData)
         end
     end
 
-    local elementDescription = menuDescription:CreateButton(TRP3_API.loc.IT_EX_TRADE_BUTTON);
+    local elementDescription = menuDescription:CreateButton(TRP3_API.loc.UNIT_POPUPS_EXTENDED_OPEN_EXCHANGE);
     elementDescription:SetResponder(OnClick);
     elementDescription:SetData(contextData);
     return elementDescription;
@@ -65,7 +65,7 @@ local function CreateExtendedCharacterInspection(menuDescription, contextData)
         end
     end
 
-    local elementDescription = menuDescription:CreateButton(TRP3_API.loc.INV_PAGE_CHARACTER_INSPECTION);
+    local elementDescription = menuDescription:CreateButton(TRP3_API.loc.UNIT_POPUPS_EXTENDED_CHARACTER_INSPECTION);
     elementDescription:SetResponder(OnClick);
     elementDescription:SetData(contextData);
     return elementDescription;
