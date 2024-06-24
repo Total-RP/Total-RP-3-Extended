@@ -18,6 +18,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Security.xml"/>
 	<Include file="Security.lua"/>
 
+	<!-- Unit popups -->
+	<Include file="UnitPopups.xml"/>
+
 	<Include file="Script\ScriptGeneration.lua"/>
 	<Include file="Script\ScriptOperands.lua"/>
 	<Include file="Script\Operands\Operands.xml"/>

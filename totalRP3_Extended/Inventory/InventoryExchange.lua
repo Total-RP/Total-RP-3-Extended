@@ -3,7 +3,6 @@
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local Communications = AddOn_TotalRP3.Communications;
-local tonumber, assert, strsplit, tostring, wipe, pairs, type = tonumber, assert, strsplit, tostring, wipe, pairs, type;
 local getClass = TRP3_API.extended.getClass;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local loc = TRP3_API.loc;
@@ -14,7 +13,6 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local SECURITY_LEVEL = TRP3_API.security.SECURITY_LEVEL;
 local exchangeFrame = TRP3_ExchangeFrame;
 local sendCurrentState, sendAcceptExchange, sendCancel, sendItemDataRequest;
-local UnitIsPlayer = UnitIsPlayer;
 
 local UPDATE_EXCHANGE_QUERY_PREFIX = "IEUE";
 local CANCEL_EXCHANGE_QUERY_PREFIX = "IECE";
@@ -610,11 +608,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			configText = loc.IT_EX_TRADE_BUTTON,
 			condition = function(_, unitID)
-				if UnitIsPlayer("target") and unitID ~= Globals.player_id and not UnitIsIgnored(unitID) then
-					if UnitIsKnown("target") then
-						local character = GetUnitIDCharacter(Utils.str.getUnitID("target"));
-						return (tonumber(character.extended or 0) or 0) > 0;
-					end
+				if UnitIsPlayer("target") and unitID ~= Globals.player_id and not UnitIsIgnored(unitID) and UnitIsKnown("target") then
+					local character = GetUnitIDCharacter(unitID);
+					return (tonumber(character.extended or 0) or 0) > 0;
 				end
 				return false;
 			end,
