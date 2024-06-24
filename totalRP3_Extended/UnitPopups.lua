@@ -73,7 +73,7 @@ end
 
 
 function TRP3_API.extended.unitpopups.init()
-    if not TRP3_API.UnitPopupsModule then return end
+    if not TRP3_UnitPopupsModule then return end
 
     TRP3_UnitPopupsModule.MenuElementFactories["ExtendedOpenExchange"] = CreateExtendedOpenExchange;
     TRP3_UnitPopupsModule.MenuElementFactories["ExtendedCharacterInspection"] = CreateExtendedCharacterInspection;
