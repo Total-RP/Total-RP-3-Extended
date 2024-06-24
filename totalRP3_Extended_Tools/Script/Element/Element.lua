@@ -67,16 +67,16 @@ function delayEditor.init()
 			delayEditor.sound:Hide();
 			delayEditor.text:Hide();
 		end
-	end, nil, 200, true);
-	delayEditor.type:SetWidth(200);
+	end, nil, 225, true);
+	delayEditor.type:SetWidth(225);
 
 	-- Interruption
 	local interruptTypes = {
 		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_INTERRUPT, loc.WO_DELAY_INTERRUPT_1), 1},
 		{TRP3_API.formats.dropDownElements:format(loc.WO_DELAY_INTERRUPT, loc.WO_DELAY_INTERRUPT_2), 2}
 	}
-	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, interruptTypes, nil, nil, 200, true);
-	delayEditor.interrupt:SetWidth(200);
+	TRP3_API.ui.listbox.setupListBox(delayEditor.interrupt, interruptTypes, nil, nil, 225, true);
+	delayEditor.interrupt:SetWidth(225);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -43,7 +43,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<EditBox parentKey="amount" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.method" x="20" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.method" x="4" y="-20"/>
 				</Anchors>
 			</EditBox>
 
@@ -98,7 +98,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-20" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-4" y="-10"/>
 				</Anchors>
 			</Frame>
 
@@ -132,13 +132,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-20" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-4" y="-10"/>
 				</Anchors>
 			</Frame>
 
 			<CheckButton parentKey="crafted" inherits="TRP3_CheckBox" name="$parentCrafted">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="20" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.source"/>
+					<Anchor point="TOPLEFT" x="-4" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.source"/>
 				</Anchors>
 			</CheckButton>
 
@@ -174,7 +174,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<EditBox parentKey="slot" inherits="TRP3_TitledHelpEditBox">
 				<Size x="260" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="20" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.source" x="4" y="-20"/>
 				</Anchors>
 			</EditBox>
 
@@ -209,7 +209,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-20" y="-20"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-4" y="-20"/>
 				</Anchors>
 			</Frame>
 
@@ -255,7 +255,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="LEFT" relativeKey="$parent.id" x="-20" y="0"/>
+					<Anchor point="LEFT" relativePoint="LEFT" relativeKey="$parent.id" x="-5" y="0"/>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-5"/>
 				</Anchors>
 			</Frame>
@@ -267,8 +267,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-40"/>
-					<Anchor point="LEFT" x="-5" y="0"/>
-					<Anchor point="RIGHT" x="-15" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
 			</Frame>
 		</Frames>

@@ -178,7 +178,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Button>
 					<Frame parentKey="select" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSelect">
 						<Anchors>
-							<Anchor point="BOTTOMRIGHT" x="7" y="4"/>
+							<Anchor point="BOTTOMRIGHT" x="-7" y="4"/>
 						</Anchors>
 					</Frame>
 				</Frames>

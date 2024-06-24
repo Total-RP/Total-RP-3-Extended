@@ -19,8 +19,8 @@ local unitTypeEditor, stringEditor, numericEditor = TRP3_OperandEditorUnitType, 
 local unitType;
 
 local function initEnitTypeEditor()
-	TRP3_API.ui.listbox.setupListBox(unitTypeEditor.type, unitType, nil, nil, 180, true);
-	unitTypeEditor.type:SetWidth(180);
+	TRP3_API.ui.listbox.setupListBox(unitTypeEditor.type, unitType, nil, nil, 200, true);
+	unitTypeEditor.type:SetWidth(200);
 
 	function unitTypeEditor.load(args)
 		unitTypeEditor.type:SetSelectedValue((args or EMPTY)[1] or "target");
@@ -343,8 +343,8 @@ local function unit_distance_point_init()
 		editor = editor,
 	});
 
-	TRP3_API.ui.listbox.setupListBox(editor.type, unitType, nil, nil, 180, true);
-	editor.type:SetWidth(180);
+	TRP3_API.ui.listbox.setupListBox(editor.type, unitType, nil, nil, 200, true);
+	editor.type:SetWidth(200);
 
 	editor.x.title:SetText(loc.OP_OP_DISTANCE_X);
 	editor.y.title:SetText(loc.OP_OP_DISTANCE_Y);
