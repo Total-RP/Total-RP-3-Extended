@@ -4,6 +4,7 @@
 local Utils = TRP3_API.utils;
 local pairs, tinsert, sort = pairs, tinsert, table.sort;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
+local colorQuestYellow;
 
 local frame = TRP3_QuestObjectives;
 
@@ -15,6 +16,10 @@ local ACTION_FRAMES = {
 };
 
 local function display()
+	if not colorQuestYellow then
+		colorQuestYellow = TRP3_API.CreateColorFromBytes(190, 155, 0);
+	end
+
 	local HTML = "";
 	frame.Actions:Hide();
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
@@ -45,7 +50,7 @@ local function display()
 				local completeQuestID = campaignID .. TRP3_API.extended.ID_SEPARATOR .. questID;
 				local questClass = getClass(completeQuestID)
 				local questIcon, questName, _ = getClassDataSafe(questClass);
-				HTML = HTML .. "\n{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t " .. TRP3_API.Colors.Yellow("{link*" .. completeQuestID .. "*" .. questName .. "}") .. "{/h2}";
+				HTML = HTML .. "\n{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t " .. colorQuestYellow("{link*" .. completeQuestID .. "*" .. questName .. "}") .. "{/h2}";
 				if questLog.OB then
 					local objIds = {};
 					for objectiveID, _ in pairs(questLog.OB) do
@@ -57,11 +62,11 @@ local function display()
 						local objectiveClass = questClass.OB[objectiveID];
 						local objText = UNKNOWN;
 						if objectiveClass then
-							local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+							local objectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 							if state == true then
-								objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. obectiveText;
+								objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. objectiveText;
 							else
-								objText = "- " .. obectiveText;
+								objText = "- " .. objectiveText;
 							end
 						end
 						HTML = HTML .. objText .. "\n";
@@ -89,7 +94,7 @@ local function display()
 		end
 
 		if questCount > 0 then
-			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. TRP3_API.Colors.Yellow("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}" .. HTML;
+			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. colorQuestYellow("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}" .. HTML;
 		end
 
 		local hasOneActionActive = false;
@@ -107,10 +112,10 @@ local function display()
 		end
 
 		if hasOneActionActive then
-			frame.Tracker:SetPoint("TOP", frame.Actions, "BOTTOM", 0, -10);
+			frame.Tracker:SetPoint("TOPLEFT", frame.Actions, "BOTTOMLEFT", 0, -10);
 			frame.Actions:Show();
 		else
-			frame.Tracker:SetPoint("TOP", frame.Actions, "BOTTOM", 0, 50);
+			frame.Tracker:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0);
 		end
 	end
 	frame.Tracker.html = Utils.str.toHTML(HTML, true, true);
