@@ -199,7 +199,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 							<Frame parentKey="left" inherits="TRP3_DropDownMenuTemplate" name="$parentLeft" enableMouse="true">
 								<Anchors>
-									<Anchor point="TOPLEFT" x="10" y="-60"/>
+									<Anchor point="TOPLEFT" x="30" y="-60"/>
 								</Anchors>
 								<Frames>
 									<Frame parentKey="args" inherits="TRP3_HoveredFrame" hidden="true" name="$parentArgs" enableMouse="true">
@@ -245,7 +245,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 							<Frame parentKey="right" inherits="TRP3_DropDownMenuTemplate" name="$parentRight">
 								<Anchors>
-									<Anchor point="TOPRIGHT" x="-10" y="-60"/>
+									<Anchor point="TOPRIGHT" x="-30" y="-60"/>
 								</Anchors>
 								<Frames>
 									<Frame parentKey="args" inherits="TRP3_HoveredFrame" hidden="true" name="$parentArgs" enableMouse="true">

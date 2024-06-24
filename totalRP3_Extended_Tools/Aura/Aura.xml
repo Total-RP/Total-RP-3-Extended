@@ -46,7 +46,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Frame parentKey="mergeMode" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parent.id">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="-20" y="-50"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="-4" y="-50"/>
 				</Anchors>
 			</Frame>
 
@@ -99,7 +99,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Frame parentKey="method" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentMethod">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-20" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-4" y="-10"/>
 				</Anchors>
 			</Frame>
 

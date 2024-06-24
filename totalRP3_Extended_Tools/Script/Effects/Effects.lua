@@ -343,12 +343,11 @@ local function var_set_operand_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_SOURCE_OBJECT_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_SOURCE_CAMPAIGN_TT}
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
-	editor.source:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 270, true);
+	editor.source:SetWidth(270);
 
 	local function onOperandSelected(operandID, listbox)
 		local operand = getOperandEditorInfo(operandID) or Globals.empty;
-		_G[listbox:GetName() .. "Text"]:SetText(operand.title or UNKNOWN);
 
 		-- Show the editor, if any
 		if editor.currentEditor then
@@ -358,8 +357,8 @@ local function var_set_operand_init()
 		if operand.editor then
 			operand.editor:SetParent(editor);
 			operand.editor:ClearAllPoints();
-			operand.editor:SetPoint("LEFT", 100, 0);
-			operand.editor:SetPoint("RIGHT", -100, 0);
+			operand.editor:SetPoint("LEFT", 105, 0);
+			operand.editor:SetPoint("RIGHT", -105, 0);
 			operand.editor:SetPoint("BOTTOM", 0, 20);
 			operand.editor:SetPoint("TOP", listbox, "BOTTOM", 0, -10);
 			operand.editor.load();
@@ -372,8 +371,8 @@ local function var_set_operand_init()
 	function editor.load(scriptData)
 		local structure = {};
 		TRP3_API.extended.tools.getEvaluatedOperands(structure);
-		TRP3_API.ui.listbox.setupListBox(editor.type, structure, onOperandSelected, nil, 255, true);
-		editor.type:SetWidth(255);
+		TRP3_API.ui.listbox.setupListBox(editor.type, structure, onOperandSelected, nil, 270, true);
+		editor.type:SetWidth(270);
 
 		local data = scriptData.args or Globals.empty;
 		editor.var:SetText(data[1] or "varName");
@@ -446,8 +445,8 @@ local function var_set_execenv_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_MULTIPLY), "x"},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_DIV), "/"}
 	}
-	TRP3_API.ui.listbox.setupListBox(changeVarEditor.type, types, nil, nil, 250, true);
-	changeVarEditor.type:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(changeVarEditor.type, types, nil, nil, 270, true);
+	changeVarEditor.type:SetWidth(270);
 
 	-- Source
 	local sources = {
@@ -455,8 +454,8 @@ local function var_set_execenv_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_SOURCE_OBJECT_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_SOURCE_CAMPAIGN_TT}
 	}
-	TRP3_API.ui.listbox.setupListBox(changeVarEditor.source, sources, nil, nil, 250, true);
-	changeVarEditor.source:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(changeVarEditor.source, sources, nil, nil, 270, true);
+	changeVarEditor.source:SetWidth(270);
 
 	function changeVarEditor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -542,8 +541,8 @@ local function run_workflow_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_W_OBJECT_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_W_CAMPAIGN_TT}
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
-	editor.source:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 270, true);
+	editor.source:SetWidth(270);
 
 	-- ID
 	editor.id.title:SetText(loc.EFFECT_RUN_WORKFLOW_ID);
@@ -598,8 +597,8 @@ local function var_prompt_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE_V, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_SOURCE_OBJECT_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE_V, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_SOURCE_CAMPAIGN_TT}
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.source, sourcesVar, nil, nil, 250, true);
-	editor.source:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(editor.source, sourcesVar, nil, nil, 270, true);
+	editor.source:SetWidth(270);
 
 	-- Workflow callback
 	editor.workflow.title:SetText(loc.EFFECT_PROMPT_CALLBACK);
@@ -610,8 +609,8 @@ local function var_prompt_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE_W, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_W_OBJECT_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE_W, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_W_CAMPAIGN_TT}
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.w_source, workflowSource, nil, nil, 250, true);
-	editor.w_source:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(editor.w_source, workflowSource, nil, nil, 270, true);
+	editor.w_source:SetWidth(270);
 
 	registerEffectEditor("var_prompt", {
 		title = loc.EFFECT_PROMPT,
@@ -703,8 +702,8 @@ local function speech_npc_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_YELLS), TRP3_API.ui.misc.SPEECH_PREFIX.YELLS},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_WHISPERS), TRP3_API.ui.misc.SPEECH_PREFIX.WHISPERS},
 	}
-	TRP3_API.ui.listbox.setupListBox(speechNPCEditor.type, types, nil, nil, 250, true);
-	speechNPCEditor.type:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(speechNPCEditor.type, types, nil, nil, 270, true);
+	speechNPCEditor.type:SetWidth(270);
 
 	-- Narrative text
 	speechNPCEditor.text.title:SetText(loc.EFFECT_TEXT_TEXT);
@@ -746,8 +745,8 @@ local function speech_player_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_YELLS), TRP3_API.ui.misc.SPEECH_PREFIX.YELLS},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SPEECH_TYPE, loc.NPC_EMOTES), TRP3_API.ui.misc.SPEECH_PREFIX.EMOTES},
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 250, true);
-	editor.type:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 270, true);
+	editor.type:SetWidth(270);
 
 	-- Narrative text
 	editor.text.title:SetText(loc.EFFECT_TEXT_TEXT);
@@ -906,8 +905,8 @@ local function do_emote_init()
 		table.insert(emotesList, splitTables[i]);
 	end
 
-	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotesList, function(value, list) _G[list:GetName().."Text"]:SetText(tostring(getEmoteNameFromToken(value))); end, nil, 250, true);
-	editor.emoteList:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(editor.emoteList, emotesList, function(value, list) list:OverrideText(tostring(getEmoteNameFromToken(value))); end, nil, 270, true);
+	editor.emoteList:SetWidth(270);
 
 	registerEffectEditor("do_emote", {
 		title = loc.EFFECT_DO_EMOTE,
@@ -924,9 +923,9 @@ local function do_emote_init()
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
+		editor.emoteList:OverrideText(tostring(getEmoteNameFromToken(data[1])));
 		if data[1] then
 			editor.emoteList:SetSelectedValue(data[1]);
-			_G[editor.emoteList:GetName().."Text"]:SetText(tostring(getEmoteNameFromToken(data[1])));
 		end
 	end
 
@@ -960,8 +959,8 @@ local function sound_id_self_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX), "SFX", loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE), "Ambience", loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT},
 	}
-	TRP3_API.ui.listbox.setupListBox(SoundIDSelfEditor.channel, outputs, nil, nil, 250, true);
-	SoundIDSelfEditor.channel:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(SoundIDSelfEditor.channel, outputs, nil, nil, 270, true);
+	SoundIDSelfEditor.channel:SetWidth(270);
 
 	-- ID
 	SoundIDSelfEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
@@ -1029,8 +1028,8 @@ local function sound_id_stop_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX), "SFX"},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE), "Ambience"},
 	}
-	TRP3_API.ui.listbox.setupListBox(SoundIDStopEditor.channel, outputs, nil, nil, 250, true);
-	SoundIDStopEditor.channel:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(SoundIDStopEditor.channel, outputs, nil, nil, 270, true);
+	SoundIDStopEditor.channel:SetWidth(270);
 
 	-- ID
 	SoundIDStopEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
@@ -1141,8 +1140,8 @@ local function sound_id_local_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX), "SFX", loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE), "Ambience", loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE_TT},
 	}
-	TRP3_API.ui.listbox.setupListBox(soundLocalEditor.channel, outputs, nil, nil, 250, true);
-	soundLocalEditor.channel:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(soundLocalEditor.channel, outputs, nil, nil, 270, true);
+	soundLocalEditor.channel:SetWidth(270);
 
 	-- ID
 	soundLocalEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);
@@ -1215,8 +1214,8 @@ local function sound_id_local_stop_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_SFX), "SFX"},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOUND_ID_SELF_CHANNEL, loc.EFFECT_SOUND_ID_SELF_CHANNEL_AMBIANCE), "Ambience"},
 	}
-	TRP3_API.ui.listbox.setupListBox(SoundIDLocalStopEditor.channel, outputs, nil, nil, 250, true);
-	SoundIDLocalStopEditor.channel:SetWidth(250);
+	TRP3_API.ui.listbox.setupListBox(SoundIDLocalStopEditor.channel, outputs, nil, nil, 270, true);
+	SoundIDLocalStopEditor.channel:SetWidth(270);
 
 	-- ID
 	SoundIDLocalStopEditor.id.title:SetText(loc.EFFECT_SOUND_ID_SELF_ID);

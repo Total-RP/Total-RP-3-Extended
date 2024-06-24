@@ -501,8 +501,8 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		{loc.CM_LEFT, "LEFT"},
 		{loc.CM_RIGHT, "RIGHT"},
 		{loc.REG_RELATION_NONE, "NONE"}
-	}, nil, nil, 195, true);
-	editor.directionValue:SetWidth(195);
+	}, nil, nil, 210, true);
+	editor.directionValue:SetWidth(210);
 
 	-- Name
 	editor.name.Text:SetText(loc.DI_NAME);

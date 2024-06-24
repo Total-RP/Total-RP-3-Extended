@@ -483,8 +483,8 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 		if not gameplay.mute then
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
 		end
-	end, nil, 200, true);
-	gameplay.pickSound:SetWidth(200);
+	end, nil, 225, true);
+	gameplay.pickSound:SetWidth(225);
 
 	-- Drop sound
 	local dropList = {};
@@ -495,8 +495,8 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 		if not gameplay.mute then
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
 		end
-	end, nil, 200, true);
-	gameplay.dropSound:SetWidth(200);
+	end, nil, 225, true);
+	gameplay.dropSound:SetWidth(225);
 
 	local onCheckClicked = function()
 		refreshCheck();
