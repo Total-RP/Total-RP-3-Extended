@@ -34,7 +34,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="method" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="method" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
@@ -96,7 +96,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
+			<Frame parentKey="source" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-4" y="-10"/>
 				</Anchors>
@@ -130,7 +130,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
+			<Frame parentKey="source" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.count" x="-4" y="-10"/>
 				</Anchors>
@@ -165,7 +165,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="500" y="250"/>
 		<Frames>
 
-			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="source" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-65"/>
 				</Anchors>
@@ -207,7 +207,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
+			<Frame parentKey="source" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.var" x="-4" y="-20"/>
 				</Anchors>
@@ -253,7 +253,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_OperandEditorItemCount" inherits="TRP3_OperandEditorItemTemplate" hidden="true">
 		<Frames>
-			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
+			<Frame parentKey="source" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="LEFT" relativeKey="$parent.id" x="-5" y="0"/>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.browse" x="0" y="-5"/>
@@ -264,7 +264,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_OperandEditorItemWeight">
 		<Frames>
-			<Frame parentKey="source" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSource">
+			<Frame parentKey="source" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentSource">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-40"/>
 					<Anchor point="LEFT" x="10" y="0"/>

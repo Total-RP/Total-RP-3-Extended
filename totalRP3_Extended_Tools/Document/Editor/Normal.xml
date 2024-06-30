@@ -52,7 +52,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 				<Frames>
 
-					<Frame parentKey="background" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentBackground">
+					<Frame parentKey="background" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentBackground">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="10" y="-10"/>
 						</Anchors>
@@ -86,31 +86,31 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</CheckButton>
 
-					<Frame parentKey="border" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentBorder">
+					<Frame parentKey="border" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentBorder">
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.width" x="-4" y="10"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="h1_font" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentH1Font">
+					<Frame parentKey="h1_font" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentH1Font">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.height" x="-4" y="-10"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="h2_font" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentH2Font">
+					<Frame parentKey="h2_font" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentH2Font">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h1_font" x="0" y="-10"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="h3_font" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentH3Font">
+					<Frame parentKey="h3_font" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentH3Font">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h2_font" x="0" y="-10"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="p_font" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentPFont">
+					<Frame parentKey="p_font" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentPFont">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h3_font" x="0" y="-10"/>
 						</Anchors>

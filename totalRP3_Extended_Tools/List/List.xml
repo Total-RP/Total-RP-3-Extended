@@ -106,7 +106,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 				<Frames>
 
-					<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+					<Frame parentKey="type" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="30" y="-18"/>
 						</Anchors>
@@ -133,7 +133,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</EditBox>
 
-					<Frame parentKey="locale" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentLocale">
+					<Frame parentKey="locale" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentLocale">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.owner" x="25" y="7"/>
 						</Anchors>

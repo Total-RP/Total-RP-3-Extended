@@ -191,13 +191,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Anchors>
 							</Button>
 
-							<Frame parentKey="comparator" inherits="TRP3_DropDownMenuTemplate" name="$parentComparator">
+							<Frame parentKey="comparator" inherits="TRP3_DropdownButtonTemplate" name="$parentComparator">
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-60"/>
 								</Anchors>
 							</Frame>
 
-							<Frame parentKey="left" inherits="TRP3_DropDownMenuTemplate" name="$parentLeft" enableMouse="true">
+							<Frame parentKey="left" inherits="TRP3_DropdownButtonTemplate" name="$parentLeft" enableMouse="true">
 								<Anchors>
 									<Anchor point="TOPLEFT" x="30" y="-60"/>
 								</Anchors>
@@ -243,7 +243,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Frames>
 							</Frame>
 
-							<Frame parentKey="right" inherits="TRP3_DropDownMenuTemplate" name="$parentRight">
+							<Frame parentKey="right" inherits="TRP3_DropdownButtonTemplate" name="$parentRight">
 								<Anchors>
 									<Anchor point="TOPRIGHT" x="-30" y="-60"/>
 								</Anchors>

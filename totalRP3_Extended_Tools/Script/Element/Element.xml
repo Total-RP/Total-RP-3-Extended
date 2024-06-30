@@ -6,7 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Button inherits="TRP3_QuestButtonTemplate" name="TRP3_WorkflowLinkButton" virtual="true">
 		<Frames>
-			<Frame parentKey="select" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSelect">
+			<Frame parentKey="select" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentSelect">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Name" x="-4" y="-5"/>
 				</Anchors>
@@ -20,7 +20,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 		<Frames>
 
-			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" x="-5" y="-55"/>
 				</Anchors>
@@ -47,7 +47,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="interrupt" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentInterrupt">
+			<Frame parentKey="interrupt" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentInterrupt">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-4" y="-15"/>
 				</Anchors>
