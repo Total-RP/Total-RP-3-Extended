@@ -138,7 +138,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="quality" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentQuality">
+			<Frame parentKey="quality" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentQuality">
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="25" y="0"/>
 					<Anchor point="RIGHT" x="-30" y="0"/>

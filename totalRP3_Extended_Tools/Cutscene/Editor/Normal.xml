@@ -140,7 +140,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="workflow" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentWorkflow">
+					<Frame parentKey="workflow" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentWorkflow">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.text" x="6" y="-5"/>
 						</Anchors>
@@ -224,7 +224,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="TOPLEFT" x="35" y="-70" relativePoint="BOTTOMLEFT" relativeKey="$parent.workflow"/>
 						</Anchors>
 					</CheckButton>
-					<Frame parentKey="directionValue" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentDirectionValue">
+					<Frame parentKey="directionValue" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentDirectionValue">
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.direction" x="200" y="0"/>
 						</Anchors>

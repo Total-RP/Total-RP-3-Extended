@@ -44,7 +44,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Button>
 
-			<Frame parentKey="mergeMode" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parent.id">
+			<Frame parentKey="mergeMode" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parent.id">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.id" x="-4" y="-50"/>
 				</Anchors>
@@ -97,7 +97,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="method" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentMethod">
+			<Frame parentKey="method" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentMethod">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-4" y="-10"/>
 				</Anchors>
@@ -123,7 +123,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Button>
 
-			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-50"/>
 				</Anchors>

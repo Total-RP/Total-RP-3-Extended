@@ -182,7 +182,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 						<Frames>
 
-							<Frame parentKey="workflow" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentWorkflow">
+							<Frame parentKey="workflow" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentWorkflow">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
 								</Anchors>
