@@ -151,6 +151,7 @@ read_globals = {
 	"INVENTORY_TOOLTIP",
 	"IsAltKeyDown",
 	"IsControlKeyDown",
+	"IsInInstance",
 	"IsModifiedClick",
 	"issecurevariable",
 	"IsShiftKeyDown",
