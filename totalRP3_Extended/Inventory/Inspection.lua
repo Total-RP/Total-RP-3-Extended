@@ -212,7 +212,7 @@ function inspectionFrame.init()
 					onToolbarButtonClicked();
 				end,
 				tooltip = loc.INV_PAGE_CHARACTER_INSPECTION,
-				tooltipSub = loc.INV_PAGE_CHARACTER_INSPECTION_TT,
+				tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.INV_PAGE_CHARACTER_INSPECTION_TT),
 				icon = "inv_helmet_66"
 			});
 		end

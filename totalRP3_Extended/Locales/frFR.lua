@@ -531,9 +531,8 @@ Ce personnage sera affiché comme propriétaire de la cachette lorsque d'autres 
 	["DR_STASHES_SCAN"] = "Afficher toutes les cachettes",
 	["DR_STASHES_SCAN_MY"] = "Afficher mes cachettes",
 	["DR_STASHES_SEARCH"] = "Rechercher des cachettes de |cff00ff00joueurs|r",
-	["DR_STASHES_SEARCH_TT"] = [=[Recherche des cachettes d'autres joueurs dans les 15 mètres alentours.
-
-La recherche durera 3 secondes, patience !]=],
+	["DR_STASHES_SEARCH_TT"] = "La recherche durera 3 secondes, patience !",
+	["DR_STASHES_SEARCH_ACTION"] = "Recherche des cachettes d'autres joueurs dans les 15 mètres alentours.",
 	["DR_STASHES_SYNC"] = "Synchronisation...",
 	["DR_STASHES_TOO_FAR"] = "Vous êtes trop loin de cette cachette.",
 	["DR_STASHES_WITHIN"] = "|cff00ff00Vos|r cachettes dans les 15 mètres",
@@ -999,6 +998,8 @@ Donc si vous souhaitez vérifier le troisième argument de l'événement, entrez
 	["EX_SOUND_HISTORY_STOP"] = "Arrêter",
 	["EX_SOUND_HISTORY_STOP_ALL"] = "Arrêter tous",
 	["EX_SOUND_HISTORY_TT"] = "Voyez quels effets sonores ont été joués, d'où ils proviennent et interrompez les si ils sont toujours en cours.",
+	["EX_SOUND_HISTORY_ACTION_OPEN"] = "",
+	["EX_SOUND_HISTORY_ACTION_STOP"] = "",
 	["IN_INNER"] = "Éléments internes",
 	["IN_INNER_ADD"] = "Créer un élément interne",
 	["IN_INNER_ADD_COPY"] = "Copie d'une création existante",
@@ -1185,8 +1186,6 @@ Vous pouvez aller plus loin et éditer cet objet en mode normal. Ceci vous appor
 	["IT_INV_GOT"] = "Reçu : %s x%d",
 	["IT_INV_SCAN_MY_ITEMS"] = "Afficher mes objets",
 	["IT_INV_SHOW_ALL"] = "Montrer tout l'inventaire",
-	["IT_INV_SHOW_CONTENT"] = [=[|cffffff00Clic :|r Ouvre le contenant principal (s'il existe)
-|cffffff00Clic droit :|r Ouvre l'inventaire]=],
 	["IT_LOOT_ERROR"] = "Impossible d'afficher le butin maintenant, un autre butin est déjà montré.",
 	["IT_NEW_NAME"] = "Nouvel objet",
 	["IT_NEW_NAME_CO"] = "Nouveau contenant",

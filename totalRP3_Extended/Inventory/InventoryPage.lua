@@ -271,7 +271,7 @@ local function initPlayerInventoryButton()
 			id = "hh_player_d_inventory",
 			configText = loc.INV_PAGE_CHARACTER_INV,
 			tooltip = playerInvText,
-			tooltipSub = loc.IT_INV_SHOW_CONTENT,
+			tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.BINDING_NAME_TRP3_MAIN_CONTAINER)  .. "\n"  .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.INV_PAGE_INV_OPEN),
 			icon = "inv_misc_bag_16",
 			onClick = function(_, _, buttonType, _)
 				onToolbarButtonClicked(buttonType);
