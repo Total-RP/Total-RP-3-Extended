@@ -189,7 +189,7 @@ L = {
 -- SETTINGS
 	UNIT_FRIES = "fries",
 	UNIT_POTATOES = "potatoes",
-	CONF_MAIN = "Extended settings",
+	CONF_MAIN = "Extended",
 	CONF_UNIT = "Units",
 	CONF_UNIT_WEIGHT = "Weight unit",
 	CONF_UNIT_WEIGHT_TT = "Defines how weight values are displayed.",
