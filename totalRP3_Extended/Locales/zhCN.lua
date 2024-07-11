@@ -87,7 +87,7 @@ TRP3_API.loc:GetLocale("zhCN"):AddTexts({
 	["COND_PREVIEW_TEST_TT"] = "根据当前情况，在聊天框当中显示这个测试的结果。",
 	["COND_TEST_EDITOR"] = "测试编辑器",
 	["COND_TESTS"] = "条件测试",
-	["CONF_MAIN"] = "扩展设置",
+	["CONF_MAIN"] = "Extended",
 	["CONF_MUSIC_ACTIVE"] = "播放环境音乐",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[环境音乐是其他玩家在一定范围（码）内播放的音乐（例如通过物品。）
 

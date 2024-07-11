@@ -149,7 +149,7 @@ Auren, die sich im Innern von Kampagnen befinden, können an diese gebunden werd
 	["COND_PREVIEW_TEST_TT"] = "Wertet den Test unter momentanen Bedingungen aus und gibt das Ergebnis im Chat aus.",
 	["COND_TEST_EDITOR"] = "Testeditor",
 	["COND_TESTS"] = "Bedingungstests",
-	["CONF_MAIN"] = "Extended Einstellungen",
+	["CONF_MAIN"] = "Extended",
 	["CONF_MUSIC_ACTIVE"] = "Spiele Umgebungssound ab",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[Lokale Musik ist Musik, welche von anderen Spieler (zum Beispiel durch ein Item) in einer bestimmten Reichweite gespielt wird.
 

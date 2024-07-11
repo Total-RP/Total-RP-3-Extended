@@ -67,7 +67,7 @@ TRP3_API.loc:GetLocale("zhTW"):AddTexts({
 	["CL_TOOLTIP"] = "製造聊天室內連結",
 	["COM_NPC_ID"] = "擷取目標NPC之ID",
 	["COND_EDITOR"] = "條件編輯器",
-	["CONF_MAIN"] = "Extended 設置",
+	["CONF_MAIN"] = "Extended",
 	["CONF_MUSIC_ACTIVE"] = "播放本地音樂",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[本地音樂是其他玩家在一定距離（以碼為單位）内播放的音樂（例如通過物品。）如果您不想聽到這些音樂，可以將本功能關閉。
 	

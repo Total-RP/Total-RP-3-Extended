@@ -86,7 +86,7 @@ TRP3_API.loc:GetLocale("ptBR"):AddTexts({
 	["COND_PREVIEW_TEST_TT"] = "Imprime na interface de chat a avaliação desse teste baseada na situação atual.",
 	["COND_TEST_EDITOR"] = "Editor de teste",
 	["COND_TESTS"] = "Condição para testes",
-	["CONF_MAIN"] = "Configurações estendidas",
+	["CONF_MAIN"] = "Extended",
 	["CONF_MUSIC_ACTIVE"] = "Tocar musica local",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[Musicas locais são musicas tocadas por outros jogadores (por exemplo: através de um item) em um certo limite de distância.
 
