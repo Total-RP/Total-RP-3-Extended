@@ -86,7 +86,7 @@ TRP3_API.loc:GetLocale("ptBR"):AddTexts({
 	["COND_PREVIEW_TEST_TT"] = "Imprime na interface de chat a avaliação desse teste baseada na situação atual.",
 	["COND_TEST_EDITOR"] = "Editor de teste",
 	["COND_TESTS"] = "Condição para testes",
-	["CONF_MAIN"] = "Configurações estendidas",
+	["CONF_MAIN"] = "Extended",
 	["CONF_MUSIC_ACTIVE"] = "Tocar musica local",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[Musicas locais são musicas tocadas por outros jogadores (por exemplo: através de um item) em um certo limite de distância.
 
@@ -320,7 +320,8 @@ AVISO: ESTA AÇÃO NÃO PODE SER REVERTIDA!]=],
 	["DR_STASHES_SCAN"] = "Escanear por esconderijos de jogadores",
 	["DR_STASHES_SCAN_MY"] = "Escanear pelos meus esconderijos",
 	["DR_STASHES_SEARCH"] = "Procurar por esconderijos de |cff00ff00jogadores|r.",
-	["DR_STASHES_SEARCH_TT"] = "Procurar por esconderijos de outros jogadores na área de 15 metros. Isto irá começar um scan por 3 seg, Fique parado!!",
+	["DR_STASHES_SEARCH_TT"] = "Isto irá começar um scan por 3 seg, Fique parado!!",
+	["DR_STASHES_SEARCH_ACTION"] = "Procurar por esconderijos de outros jogadores na área de 15 metros.",
 	["DR_STASHES_SYNC"] = "Sincronizando...",
 	["DR_STASHES_TOO_FAR"] = "Você está muito longe deste esconderijo.",
 	["DR_STASHES_WITHIN"] = "|cff00ff00Seu|s esconderijos dentro de 15 metros",

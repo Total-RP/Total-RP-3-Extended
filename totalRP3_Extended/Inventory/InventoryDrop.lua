@@ -759,9 +759,9 @@ local function onToolbarButtonClick(button)
 
 	local dropdownItems = {};
 	tinsert(dropdownItems, { loc.DR_SYSTEM, nil });
-	tinsert(dropdownItems, { loc.DR_SEARCH_BUTTON, getActionValue(ACTION_SEARCH_MY, posX, posY), loc.DR_SEARCH_BUTTON_TT });
-	tinsert(dropdownItems, { loc.DR_STASHES_SEARCH, getActionValue(ACTION_STASH_SEARCH, posX, posY), loc.DR_STASHES_SEARCH_TT });
-	tinsert(dropdownItems, { loc.DR_STASHES_CREATE, getActionValue(ACTION_STASH_CREATE, posX, posY), loc.DR_STASHES_CREATE_TT });
+	tinsert(dropdownItems, { loc.DR_SEARCH_BUTTON, getActionValue(ACTION_SEARCH_MY, posX, posY), TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_SEARCH_BUTTON_TT) });
+	tinsert(dropdownItems, { loc.DR_STASHES_SEARCH, getActionValue(ACTION_STASH_SEARCH, posX, posY), loc.DR_STASHES_SEARCH_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_STASHES_SEARCH_ACTION) });
+	tinsert(dropdownItems, { loc.DR_STASHES_CREATE, getActionValue(ACTION_STASH_CREATE, posX, posY), TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_STASHES_CREATE_TT) });
 	if posX and posY then
 		local searchResults = {};
 		for stashIndex, stash in pairs(stashesData) do
@@ -857,7 +857,7 @@ function dropFrame.init()
 				icon = "icon_treasuremap",
 				configText = loc.DR_SEARCH_BUTTON,
 				tooltip = loc.DR_SYSTEM,
-				tooltipSub = loc.DR_SYSTEM_TT,
+				tooltipSub = loc.DR_SYSTEM_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_SYSTEM_ACTION),
 				onClick = function(Uibutton, _, button)
 					onToolbarButtonClick(Uibutton, button);
 				end,

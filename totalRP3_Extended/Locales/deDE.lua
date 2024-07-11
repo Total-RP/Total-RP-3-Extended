@@ -149,7 +149,7 @@ Auren, die sich im Innern von Kampagnen befinden, können an diese gebunden werd
 	["COND_PREVIEW_TEST_TT"] = "Wertet den Test unter momentanen Bedingungen aus und gibt das Ergebnis im Chat aus.",
 	["COND_TEST_EDITOR"] = "Testeditor",
 	["COND_TESTS"] = "Bedingungstests",
-	["CONF_MAIN"] = "Extended Einstellungen",
+	["CONF_MAIN"] = "Extended",
 	["CONF_MUSIC_ACTIVE"] = "Spiele Umgebungssound ab",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[Lokale Musik ist Musik, welche von anderen Spieler (zum Beispiel durch ein Item) in einer bestimmten Reichweite gespielt wird.
 
@@ -492,9 +492,8 @@ Dieser Charakter wird als Besitzer angezeigt wenn andere Spieler danach suchen.]
 	["DR_STASHES_SCAN"] = "Nach Spielerverstecken suchen",
 	["DR_STASHES_SCAN_MY"] = "Nach meinen Verstecken suchen",
 	["DR_STASHES_SEARCH"] = "Suche nach |cff00ff00Spielerverstecken|r",
-	["DR_STASHES_SEARCH_TT"] = [=[Suche nach Verstecken anderer Spieler im Umkreis von 15 Metern.
-
-Dies wird einen dreisekündigen Scan starten, halte still!]=],
+	["DR_STASHES_SEARCH_TT"] = "Dies wird einen dreisekündigen Scan starten, halte still!",
+	["DR_STASHES_SEARCH_ACTION"] = "Suche nach Verstecken anderer Spieler im Umkreis von 15 Metern.",
 	["DR_STASHES_SYNC"] = "Synchronisiere...",
 	["DR_STASHES_TOO_FAR"] = "Du bist zu weit von diesem Versteck entfernt.",
 	["DR_STASHES_WITHIN"] = "|cff00ff00Deine|r Verstecke innerhalb von 15 Metern",
@@ -949,10 +948,9 @@ Willst du bspw. das dritte Argument eines Ereignisses abfragen, gib "3" ein.]=],
 	["EX_SOUND_HISTORY_REPLAY"] = "Wiederholen",
 	["EX_SOUND_HISTORY_STOP"] = "Stop",
 	["EX_SOUND_HISTORY_STOP_ALL"] = "Alles stoppen",
-	["EX_SOUND_HISTORY_TT"] = [=[Liste der abgespielten Sounds, einschließlich ihrer Quelle und der Möglichkeit sie anzuhalten, wenn sie noch abgespielt werden.
-
-|cffffff00Klicken:|r Soundhistorie öffnen
-|cffffff00Rechtsklicken:|r Alle Geräusche bzw. Musik anhalten]=],
+	["EX_SOUND_HISTORY_TT"] = "Liste der abgespielten Sounds, einschließlich ihrer Quelle und der Möglichkeit sie anzuhalten, wenn sie noch abgespielt werden.",
+	["EX_SOUND_HISTORY_ACTION_OPEN"] = "Soundhistorie öffnen",
+	["EX_SOUND_HISTORY_ACTION_STOP"] = "Alle Geräusche bzw. Musik anhalten",
 	["IN_INNER"] = "Innere Objekte",
 	["IN_INNER_ADD"] = "Inneres Objekt hinzufügen",
 	["IN_INNER_ADD_COPY"] = "Kopie eines bestehenden Objekts hinzufügen",
@@ -1116,8 +1114,6 @@ Du kannst fortschreiten, indem du den Gegenstand im Normalmodus bearbeitest. Das
 	["IT_INV_GOT"] = "Erhalten: %s x%d",
 	["IT_INV_SCAN_MY_ITEMS"] = "Suche nach meinen Gegenständen",
 	["IT_INV_SHOW_ALL"] = "Gesamtes Inventar zeigen",
-	["IT_INV_SHOW_CONTENT"] = [=[|cffffff00Klicken:|r Hauptinventar öffnen (falls vorhanden)
-|cffffff00Rechtsklick:|r Inventar öffnen]=],
 	["IT_LOOT_ERROR"] = "Beutefenster kann nicht angezeigt werden, da bereits ein anderes Beutefenster zu sehen ist.",
 	["IT_NEW_NAME"] = "Neuer Gegenstand",
 	["IT_NEW_NAME_CO"] = "Neuer Behälter",

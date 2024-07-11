@@ -210,7 +210,7 @@ local function initHistory()
 				icon = "trade_archaeology_delicatemusicbox",
 				configText = loc.EX_SOUND_HISTORY,
 				tooltip = loc.EX_SOUND_HISTORY,
-				tooltipSub = loc.EX_SOUND_HISTORY_TT,
+				tooltipSub = loc.EX_SOUND_HISTORY_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.EX_SOUND_HISTORY_ACTION_OPEN)  .. "\n"  .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.EX_SOUND_HISTORY_ACTION_STOP),
 				onClick = function(self, _, button)
 					if button == "LeftButton" then
 						if historyFrame:IsVisible() then

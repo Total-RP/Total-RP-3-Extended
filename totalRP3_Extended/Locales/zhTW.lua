@@ -67,7 +67,7 @@ TRP3_API.loc:GetLocale("zhTW"):AddTexts({
 	["CL_TOOLTIP"] = "製造聊天室內連結",
 	["COM_NPC_ID"] = "擷取目標NPC之ID",
 	["COND_EDITOR"] = "條件編輯器",
-	["CONF_MAIN"] = "Extended 設置",
+	["CONF_MAIN"] = "Extended",
 	["CONF_MUSIC_ACTIVE"] = "播放本地音樂",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[本地音樂是其他玩家在一定距離（以碼為單位）内播放的音樂（例如通過物品。）如果您不想聽到這些音樂，可以將本功能關閉。
 	
@@ -406,7 +406,8 @@ account\YOUR_ACCOUNT\SavedVariables
 	["DR_STASHES_SCAN"] = "搜索其他玩家的藏物處。",
 	["DR_STASHES_SCAN_MY"] = "搜尋我的藏物處。",
 	["DR_STASHES_SEARCH"] = "搜尋 |cff00ff00其他玩家|r 的藏物處",
-	["DR_STASHES_SEARCH_TT"] = "搜尋在此區域十五碼內之藏物處，將會花上你三秒的時間，站穩啦！",
+	["DR_STASHES_SEARCH_TT"] = "將會花上你三秒的時間，站穩啦！",
+	["DR_STASHES_SEARCH_ACTION"] = "搜尋在此區域十五碼內之藏物處。",
 	["DR_STASHES_SYNC"] = "正在同步…",
 	["DR_STASHES_TOO_FAR"] = "你距離這個藏物處太遠了。",
 	["DR_STASHES_WITHIN"] = "|cff00ff00你|r 在十五碼內的藏物處。",

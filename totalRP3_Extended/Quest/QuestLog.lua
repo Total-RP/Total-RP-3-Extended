@@ -544,7 +544,7 @@ local function init()
 				icon = "achievement_quests_completed_06",
 				configText = QUEST_LOG,
 				tooltip = QUEST_LOG,
-				tooltipSub = ("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.QE_BUTTON) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, loc.CM_ACTIONS),
+				tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.QE_BUTTON)  .. "\n"  .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.CM_ACTIONS),
 				onClick = function(self, _, buttonType, _)
 					if buttonType == "LeftButton" then
 						TRP3_API.navigation.openMainFrame();

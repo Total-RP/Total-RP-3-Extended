@@ -622,7 +622,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				startEmptyExchangeWithUnit(Utils.str.getUnitID("target"));
 			end,
 			tooltip = loc.IT_EX_TRADE_BUTTON,
-			tooltipSub = loc.IT_EX_TRADE_BUTTON_TT,
+			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.IT_EX_TRADE_BUTTON_TT),
 			icon = "garrison_building_tradingpost"
 		});
 	end

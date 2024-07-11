@@ -87,7 +87,7 @@ TRP3_API.loc:GetLocale("zhCN"):AddTexts({
 	["COND_PREVIEW_TEST_TT"] = "根据当前情况，在聊天框当中显示这个测试的结果。",
 	["COND_TEST_EDITOR"] = "测试编辑器",
 	["COND_TESTS"] = "条件测试",
-	["CONF_MAIN"] = "扩展设置",
+	["CONF_MAIN"] = "Extended",
 	["CONF_MUSIC_ACTIVE"] = "播放环境音乐",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[环境音乐是其他玩家在一定范围（码）内播放的音乐（例如通过物品。）
 
@@ -440,9 +440,8 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["DR_STASHES_SCAN"] = "搜索玩家的藏匿物",
 	["DR_STASHES_SCAN_MY"] = "搜索我的藏匿物",
 	["DR_STASHES_SEARCH"] = "搜索 |cff00ff00玩家的|r 藏匿物",
-	["DR_STASHES_SEARCH_TT"] = [=[搜索15码内其他玩家的藏匿物。
-
-搜索需要3秒，别动!]=],
+	["DR_STASHES_SEARCH_TT"] = "搜索需要3秒，别动!",
+	["DR_STASHES_SEARCH_ACTION"] = "搜索15码内其他玩家的藏匿物。",
 	["DR_STASHES_SYNC"] = "正在同步...",
 	["DR_STASHES_TOO_FAR"] = "你离藏匿物太远了.",
 	["DR_STASHES_WITHIN"] = "|cff00ff00Your|r 15码内有藏匿物",
@@ -868,10 +867,9 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["EX_SOUND_HISTORY_REPLAY"] = "重播",
 	["EX_SOUND_HISTORY_STOP"] = "停止",
 	["EX_SOUND_HISTORY_STOP_ALL"] = "全部停止",
-	["EX_SOUND_HISTORY_TT"] = [=[浏览播放过的声音，查看他们的来源以及停止仍在播放的声音。
-
-|cffffff00左击：|r 打开声音历史
-|cffffff00右击|r 停止所有声音]=],
+	["EX_SOUND_HISTORY_TT"] = "浏览播放过的声音，查看他们的来源以及停止仍在播放的声音。",
+	["EX_SOUND_HISTORY_ACTION_OPEN"] = "打开声音历史",
+	["EX_SOUND_HISTORY_ACTION_STOP"] = "停止所有声音",
 	["IN_INNER"] = "内部对象",
 	["IN_INNER_ADD"] = "添加内部对象",
 	["IN_INNER_ADD_COPY"] = "添加现有对象的副本",
@@ -1038,8 +1036,6 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["IT_INV_GOT"] = "接收到了 %s ，共 %d 个。",
 	["IT_INV_SCAN_MY_ITEMS"] = "搜索我的物品",
 	["IT_INV_SHOW_ALL"] = "打开所有背包",
-	["IT_INV_SHOW_CONTENT"] = [=[|cffffff00左击:|r 打开主背包 (如果存在)
-|cffffff00右击:|r 打开背包]=],
 	["IT_LOOT_ERROR"] = "现在无法显示可拾取物品，已经有一个可拾取物品在显示了。",
 	["IT_NEW_NAME"] = "新的物品",
 	["IT_NEW_NAME_CO"] = "新的容器",

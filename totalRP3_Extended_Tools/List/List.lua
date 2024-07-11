@@ -647,7 +647,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 				icon = "Inv_gizmo_01",
 				configText = loc.TB_TOOLS,
 				tooltip = loc.TB_TOOLS,
-				tooltipSub = loc.TB_TOOLS_TT,
+				tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_TOOLS_TT),
 				onClick = function()
 					if TRP3_ToolFrame:IsVisible() then
 						TRP3_ToolFrame:Hide();
