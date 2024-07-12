@@ -185,9 +185,11 @@ function refresh()
 	end
 
 	if ToolFrame.list.hasSearch then
-		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc.DB_RESULTS, 200);
+		ToolFrame.list.container:SetTitleText(loc.DB_RESULTS);
+		ToolFrame.list.container:SetTitleWidth(200);
 	else
-		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc.DB_LIST, 200);
+		ToolFrame.list.container:SetTitleText(loc.DB_LIST);
+		ToolFrame.list.container:SetTitleWidth(200);
 	end
 
 	table.sort(idList);
@@ -640,8 +642,10 @@ end
 
 function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame = toolFrame;
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, loc.DB_FILTERS, 150);
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, loc.DB_ACTIONS, 150);
+	ToolFrame.list.filters:SetTitleText(loc.DB_FILTERS);
+	ToolFrame.list.filters:SetTitleWidth(150);
+	ToolFrame.list.bottom:SetTitleText(loc.DB_ACTIONS);
+	ToolFrame.list.bottom:SetTitleWidth(150);
 
 	createTabBar();
 	createTutorialStructure();

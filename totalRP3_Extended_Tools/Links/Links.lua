@@ -510,7 +510,8 @@ function editor.init(ToolFrame)
 		toggleEventBrowser();
 	end);
 
-	TRP3_API.ui.frame.setupFieldPanel(gameLinksEditor.editor.container, loc.WO_EVENT_EX_BROWSER_TITLE, 150);
+	gameLinksEditor.editor.container:SetTitleText(loc.WO_EVENT_EX_BROWSER_TITLE);
+	gameLinksEditor.editor.container:SetTitleWidth(150);
 
 	gameLinksEditor:SetScript("OnHide", function() gameLinksEditor.editor:Hide() end);
 

@@ -182,7 +182,9 @@ local function displayRootInfo(rootClassID, rootClass, classID, specificDraft)
 	objectText = objectText .. "\n\n|cffff9900" .. loc.ROOT_SAVED:format(color .. (rootClass.MD.SB or "?") .. "|r|cffff9900", "|r" .. color .. (rootClass.MD.SD or "?") .. "|r");
 	toolFrame.root.text:SetText(objectText);
 
-	TRP3_API.ui.frame.setupFieldPanel(toolFrame.specific, getTypeLocale(specificDraft.TY), 150);
+	toolFrame.specific:SetTitleText(getTypeLocale(specificDraft.TY));
+	toolFrame.specific:SetTitleWidth(150);
+
 	local specificText = "";
 	if rootClassID == classID then
 		specificText = specificText .. fieldFormat:format(loc.ROOT_GEN_ID, "|cff00ffff" .. classID .. "|r");
@@ -407,8 +409,11 @@ function TRP3_API.extended.tools.showFrame()
 end
 
 local function onStart()
-	TRP3_API.ui.frame.setupFieldPanel(toolFrame.root, loc.ROOT_TITLE, 150);
-	TRP3_API.ui.frame.setupFieldPanel(toolFrame.actions, loc.DB_ACTIONS, 100);
+	toolFrame.root:SetTitleText(loc.ROOT_TITLE);
+	toolFrame.root:SetTitleWidth(150);
+	toolFrame.actions:SetTitleText(loc.DB_ACTIONS);
+	toolFrame.actions:SetTitleWidth(100);
+
 	toolFrame.actions.cancel:SetText(CANCEL)
 	toolFrame.actions.save:SetScript("OnClick", function()
 		onSave(toolFrame.currentEditor);
