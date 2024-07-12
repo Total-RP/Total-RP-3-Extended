@@ -23,8 +23,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_QuestObjectives" hidden="true">
 		<Size x="0" y="100"/>
 		<Frames>
-			<Frame parentKey="Actions" inherits="TRP3_FieldSetFrame">
+			<Frame parentKey="Actions" inherits="TRP3_TooltipBackdropTemplate">
 				<Size x="0" y="50"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT"/>
 					<Anchor point="TOPLEFT"/>
@@ -483,9 +486,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--       QUESTLOG       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_QuestLogPage" hidden="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_QuestLogPage" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 
 		<Frames>
