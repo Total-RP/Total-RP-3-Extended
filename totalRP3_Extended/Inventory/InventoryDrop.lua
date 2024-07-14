@@ -289,7 +289,7 @@ function TRP3_API.inventory.showStashDropdown(frame, stashInfo)
 
 	TRP3_MenuUtil.CreateContextMenu(frame, function(_, description)
 		description:CreateTitle(stashInfo.BA.NA or loc.DR_STASHES_NAME);
-		
+
 		description:CreateButton(loc.DR_STASHES_EDIT, function()
 			openStashEditor(stashIndex);
 			stashContainer:Hide();
@@ -299,7 +299,7 @@ function TRP3_API.inventory.showStashDropdown(frame, stashInfo)
 			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
 				stashInfo.CR = TRP3_API.globals.player_id;
 			end);
-		end); 
+		end);
 
 		description:CreateButton(loc.DR_STASHES_REMOVE, function()
 			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_REMOVE_PP, function()
