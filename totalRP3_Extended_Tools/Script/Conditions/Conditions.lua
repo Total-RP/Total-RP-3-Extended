@@ -370,13 +370,13 @@ local function onTestLineClick(line, button)
 				onTestAction(TEST_ACTION_REMOVE, line);
 			end
 		elseif button == "RightButton" then
-			local context = {};
-			tinsert(context, {loc.COND_TEST_EDITOR});
-			tinsert(context, {loc.CA_NPC_AS, TEST_ACTION_DUPLICATE});
-			if #editor.scriptData > 1 then
-				tinsert(context, {loc.CM_REMOVE, TEST_ACTION_REMOVE});
-			end
-			TRP3_API.ui.listbox.displayDropDown(line, context, onTestAction, 0, true);
+			TRP3_MenuUtil.CreateContextMenu(line, function(_, description)
+				description:CreateTitle(loc.COND_TEST_EDITOR);
+				description:CreateButton(loc.CA_NPC_AS, function() onTestAction(TEST_ACTION_DUPLICATE, line); end);
+				if #editor.scriptData > 1 then
+					description:CreateButton(loc.CM_REMOVE, function() onTestAction(TEST_ACTION_REMOVE, line); end);
+				end
+			end);
 		end
 	end
 end

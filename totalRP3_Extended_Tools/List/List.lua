@@ -535,31 +535,42 @@ function onLineActionSelected(value, button) -- luacheck: ignore 212
 end
 
 function onLineRightClick(lineWidget, data)
-	local values = {};
-	tinsert(values, {data.text, nil});
-	if (TRP3_API.extended.isObjectMine(data.rootID) or TRP3_API.extended.isObjectExchanged(data.rootID)) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-		tinsert(values, {DELETE, ACTION_FLAG_DELETE .. data.fullID, loc.DB_DELETE_TT});
-		tinsert(values, {loc.SEC_LEVEL_DETAILS, ACTION_FLAG_SECURITY .. data.rootID, loc.DB_SECURITY_TT});
-	end
-	if data.type == TRP3_DB.types.ITEM then
-		local class = getClass(data.fullID);
-		if class.BA and not class.BA.PA then
-			tinsert(values, {loc.DB_ADD_ITEM, ACTION_FLAG_ADD .. data.fullID, loc.DB_ADD_ITEM_TT});
-		end
-		if data.mode == TRP3_DB.modes.NORMAL and not TRP3_DB.inner[data.rootID] then
-			tinsert(values, {loc.DB_TO_EXPERT, ACTION_FLAG_EXPERT .. data.fullID, loc.DB_EXPERT_TT});
-		end
-	end
-	tinsert(values, {loc.EDITOR_ID_COPY, ACTION_FLAG_COPY_ID .. data.fullID, loc.DB_COPY_ID_TT});
-	if data.type == TRP3_DB.types.ITEM or data.type == TRP3_DB.types.DOCUMENT or data.type == TRP3_DB.types.DIALOG then
-		tinsert(values, {loc.IN_INNER_COPY_ACTION, ACTION_FLAG_COPY .. data.fullID, loc.DB_COPY_TT});
-	end
-	if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
-		tinsert(values, {loc.DB_EXPORT, ACTION_FLAG_EXPORT .. data.fullID, loc.DB_EXPORT_TT_2});
-		tinsert(values, {loc.DB_FULL_EXPORT, ACTION_FLAG_FULL_EXPORT .. data.fullID, loc.DB_FULL_EXPORT_TT});
-	end
+	TRP3_MenuUtil.CreateContextMenu(lineWidget, function(_, description)
+		description:CreateTitle(data.text);
 
-	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
+		if (TRP3_API.extended.isObjectMine(data.rootID) or TRP3_API.extended.isObjectExchanged(data.rootID)) and not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+			local deleteOption = description:CreateButton(DELETE, function() onLineActionSelected(ACTION_FLAG_DELETE .. data.fullID, lineWidget); end);
+			TRP3_MenuUtil.SetElementTooltip(deleteOption, loc.DB_DELETE_TT);
+			local securityOption = description:CreateButton(loc.SEC_LEVEL_DETAILS, function() onLineActionSelected(ACTION_FLAG_SECURITY .. data.rootID, lineWidget); end);
+			TRP3_MenuUtil.SetElementTooltip(securityOption, loc.DB_SECURITY_TT);
+		end
+
+		if data.type == TRP3_DB.types.ITEM then
+			local class = getClass(data.fullID);
+			if class.BA and not class.BA.PA then
+				local addItemOption = description:CreateButton(loc.DB_ADD_ITEM, function() onLineActionSelected(ACTION_FLAG_ADD .. data.fullID, lineWidget); end);
+				TRP3_MenuUtil.SetElementTooltip(addItemOption, loc.DB_ADD_ITEM_TT);
+			end
+			if data.mode == TRP3_DB.modes.NORMAL and not TRP3_DB.inner[data.rootID] then
+				local expertOption = description:CreateButton(loc.DB_TO_EXPERT, function() onLineActionSelected(ACTION_FLAG_EXPERT .. data.fullID, lineWidget); end);
+				TRP3_MenuUtil.SetElementTooltip(expertOption, loc.DB_EXPERT_TT);
+			end
+		end
+
+		local copyOption = description:CreateButton(loc.EDITOR_ID_COPY, function() onLineActionSelected(ACTION_FLAG_COPY_ID .. data.fullID, lineWidget); end);
+		TRP3_MenuUtil.SetElementTooltip(copyOption, loc.DB_COPY_ID_TT);
+
+		if data.type == TRP3_DB.types.ITEM or data.type == TRP3_DB.types.DOCUMENT or data.type == TRP3_DB.types.DIALOG then
+			local innerCopyOption = description:CreateButton(loc.IN_INNER_COPY_ACTION, function() onLineActionSelected(ACTION_FLAG_COPY .. data.fullID, lineWidget); end);
+			TRP3_MenuUtil.SetElementTooltip(innerCopyOption, loc.DB_COPY_TT);
+		end
+		if not data.fullID:find(TRP3_API.extended.ID_SEPARATOR) then
+			local exportOption = description:CreateButton(loc.DB_EXPORT, function() onLineActionSelected(ACTION_FLAG_EXPORT .. data.fullID, lineWidget); end);
+			TRP3_MenuUtil.SetElementTooltip(exportOption, loc.DB_EXPORT_TT_2);
+			local fullExportOption = description:CreateButton(loc.DB_FULL_EXPORT, function() onLineActionSelected(ACTION_FLAG_FULL_EXPORT .. data.fullID, lineWidget); end);
+			TRP3_MenuUtil.SetElementTooltip(fullExportOption, loc.DB_FULL_EXPORT_TT);
+		end
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

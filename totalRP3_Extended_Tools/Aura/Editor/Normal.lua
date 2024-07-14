@@ -264,7 +264,11 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 
 	display.preset:SetText(loc.AU_PRESET);
 	display.preset:SetScript("OnClick", function(self)
-		TRP3_API.ui.listbox.displayDropDown(self, presetMenu, applyPreset, 0, true);
+		TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+			for _, preset in pairs(presetMenu) do
+				description:CreateButton(preset[1], applyPreset, preset[2]);
+			end
+		end);
 	end);
 
 	display.description.title:SetText(loc.AU_FIELD_DESCRIPTION);

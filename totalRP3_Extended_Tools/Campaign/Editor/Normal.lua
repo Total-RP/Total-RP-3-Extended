@@ -439,12 +439,13 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 		if button == "LeftButton" then
 			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "TOP", parentPoint = "BOTTOM"}, {onIconSelected, nil, nil, main.vignette.selectedIcon});
 		else
-			local values = {};
-			tinsert(values, {loc.CA_IMAGE_TT});
-			for _, portrait in pairs(CAMPAIGN_PORTRAITS) do
-				tinsert(values, {TRP3_API.formats.dropDownElements:format(loc.CA_IMAGE, portrait), portrait, ("|TInterface\\ExtraButton\\%s:96:192|t"):format(portrait)});
-			end
-			TRP3_API.ui.listbox.displayDropDown(self, values, onCampaignPortraitSelected, 0, true);
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateTitle(loc.CA_IMAGE_TT);
+				for _, portrait in pairs(CAMPAIGN_PORTRAITS) do
+					local portraitOption = description:CreateButton(TRP3_API.formats.dropDownElements:format(loc.CA_IMAGE, portrait), onCampaignPortraitSelected, portrait);
+					TRP3_MenuUtil.SetElementTooltip(portraitOption, ("|TInterface\\ExtraButton\\%s:96:192|t"):format(portrait));
+				end
+			end);
 		end
 	end);
 	setTooltipAll(main.vignette, "RIGHT", 0, 5, loc.CA_ICON,
@@ -532,14 +533,15 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 		tinsert(quests.list.widgetTab, line);
 		line.click:SetScript("OnClick", function(self, button)
 			if button == "RightButton" then
-				local context = {};
-				tinsert(context, {self.questID});
-				tinsert(context, {loc.CA_QUEST_DD_COPY, 1});
-				if next(questClipboard) then
-					tinsert(context, {loc.CA_QUEST_DD_PASTE, 2});
-				end
-				tinsert(context, {loc.CA_QUEST_DD_REMOVE, 3});
-				TRP3_API.ui.listbox.displayDropDown(line.click, context, onQuestDropdown, 0, true);
+				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+					description:CreateTitle(self.questID);
+					description:CreateButton(loc.CA_QUEST_DD_COPY, function() onQuestDropdown(1, self); end);
+
+					if next(questClipboard) then
+						description:CreateButton(loc.CA_QUEST_DD_PASTE, function() onQuestDropdown(2, self); end);
+					end
+					description:CreateButton(loc.CA_QUEST_DD_REMOVE, function() onQuestDropdown(3, self); end);
+				end);
 			else
 				if IsControlKeyDown() then
 					renameQuest(self.questID);
