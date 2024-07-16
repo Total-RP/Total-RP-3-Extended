@@ -201,7 +201,7 @@ local function onSlotClick(slot, button)
 				description:CreateTitle(loc.INV_PAGE_CHARACTER_INV);
 
 				description:CreateButton(loc.EFFECT_ITEM_ADD, function() onSlotClickAction(1, slot); end);
-				description:CreateButton(loc.EFFECT_ITEM_ADD, function() onSlotClickAction(2, slot); end);
+				description:CreateButton(loc.DB_CREATE_ITEM, function() onSlotClickAction(2, slot); end);
 			end);
 		elseif button == "LeftButton" and IsAltKeyDown() and slot.info then
 			if TRP3_API.extended.isObjectMine(slot.info.id) then

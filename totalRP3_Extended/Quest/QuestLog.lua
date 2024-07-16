@@ -47,7 +47,7 @@ local function onCampaignButtonClick(button, mouseButton)
 			goToPage(false, TAB_QUESTS, campaignID, campaignName);
 		else
 			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
-				description:CreateTitle(button);
+				description:CreateTitle(campaignName);
 
 				description:CreateButton(loc.QE_CAMPAIGN_RESET, function() onCampaignActionSelected(1, button); end);
 				description:CreateButton(loc.QE_CAMPAIGN_START_BUTTON, function() onCampaignActionSelected(2, button); end);
