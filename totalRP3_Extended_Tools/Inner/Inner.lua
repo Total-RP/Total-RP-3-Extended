@@ -263,7 +263,7 @@ end
 
 local function onAddClicked(self)
 	TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-		description:CreateTitle("Select inner object type");
+		description:CreateTitle(loc.IN_INNER_ADD_SELECT_TYPE);
 		description:CreateButton(loc.TYPE_ITEM, function() addInnerObject(TRP3_DB.types.ITEM, self); end);
 		description:CreateButton(loc.TYPE_DOCUMENT, function() addInnerObject(TRP3_DB.types.DOCUMENT, self); end);
 		description:CreateButton(loc.TYPE_DIALOG, function() addInnerObject(TRP3_DB.types.DIALOG, self); end);

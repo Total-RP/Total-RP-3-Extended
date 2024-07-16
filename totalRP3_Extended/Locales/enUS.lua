@@ -873,6 +873,7 @@ The function is in the form of:
 	IN_INNER_ADD = "Add inner object",
 	IN_INNER_ADD_NEW = "Create new object",
 	IN_INNER_ADD_COPY = "Add copy of existing object",
+	IN_INNER_ADD_SELECT_TYPE = "Select inner object type",
 	IN_INNER_ENTER_ID = "Enter new inner object ID",
 	IN_INNER_ENTER_ID_TT = "Inner object ID must be unique within the parent object.\n\n|cffff9900Please only use lower case characters and underscores. Any other character will be converted to underscores.",
 	IN_INNER_EMPTY = "No inner objects\n\nYou can add one by using the add button below.",
