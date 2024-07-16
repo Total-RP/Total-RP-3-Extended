@@ -116,25 +116,24 @@ local function getContext(context)
 end
 
 local function displayEffectDropdown(self)
-	local values = {};
-	tinsert(values, {loc.WO_COMMON_EFFECT, nil});
-	for _, sectionID in pairs(menuData.order) do
-		if sectionID == "" then
-			tinsert(values, {loc.WO_EXPERT_EFFECT});
-		else
-			local section = menuData[sectionID];
-			local sectionTab = {};
-			for _, effectID in pairs(section) do
-				local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
-				if not effectInfo.context or tContains(effectInfo.context, editor.currentContext) then
-					tinsert(sectionTab, {effectInfo.title or effectID, effectID, getContext(effectInfo.context) .. effectInfo.description});
+	TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+		description:CreateTitle(loc.WO_COMMON_EFFECT);
+		for _, sectionID in pairs(menuData.order) do
+			if sectionID == "" then
+				description:CreateTitle(loc.WO_EXPERT_EFFECT);
+			else
+				local section = menuData[sectionID];
+				local sectionTab = description:CreateButton(sectionID);
+				for _, effectID in pairs(section) do
+					local effectInfo = TRP3_API.extended.tools.getEffectEditorInfo(effectID);
+					if not effectInfo.context or tContains(effectInfo.context, editor.currentContext) then
+						local effectOption = sectionTab:CreateButton(effectInfo.title or effectID, addEffectElement, effectID);
+						TRP3_MenuUtil.SetElementTooltip(effectOption, getContext(effectInfo.context) .. effectInfo.description);
+					end
 				end
 			end
-			tinsert(values, {sectionID, sectionTab});
 		end
-	end
-
-	TRP3_API.ui.listbox.displayDropDown(self, values, addEffectElement, 0, true);
+	end);
 end
 
 local function removeElement(elementID)
@@ -287,18 +286,18 @@ local function onElementClick(self, button)
 			-- Remove condition
 			removeEffectCondition(scriptStep.e[1]);
 		else
-			-- Show menu
-			local values = {};
-			tinsert(values, {self.title:GetText(), nil});
-			tinsert(values, {loc.WO_ELEMENT_COPY, ELEMENT_LINE_ACTION_COPY});
-			if editor.elemCopy and editor.elemCopy.t == scriptStep.t then
-				tinsert(values, {loc.WO_ELEMENT_PASTE, ELEMENT_LINE_ACTION_PASTE});
-			end
-			if scriptStep.t == ELEMENT_TYPE.EFFECT then
-				tinsert(values, {loc.WO_ELEMENT_COND, ELEMENT_LINE_ACTION_COND, loc.WO_ELEMENT_COND_TT});
-				tinsert(values, {loc.WO_ELEMENT_COND_NO, ELEMENT_LINE_ACTION_COND_NO});
-			end
-			TRP3_API.ui.listbox.displayDropDown(self, values, onElementLineAction, 0, true);
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateTitle(self.title:GetText());
+				description:CreateButton(loc.WO_ELEMENT_COPY, function() onElementLineAction(ELEMENT_LINE_ACTION_COPY, self); end);
+				if editor.elemCopy and editor.elemCopy.t == scriptStep.t then
+					description:CreateButton(loc.WO_ELEMENT_PASTE, function() onElementLineAction(ELEMENT_LINE_ACTION_PASTE, self); end);
+				end
+				if scriptStep.t == ELEMENT_TYPE.EFFECT then
+					local condOption = description:CreateButton(loc.WO_ELEMENT_COND, function() onElementLineAction(ELEMENT_LINE_ACTION_COND, self); end);
+					TRP3_MenuUtil.SetElementTooltip(condOption, loc.WO_ELEMENT_COND_TT);
+					description:CreateButton(loc.WO_ELEMENT_COND_NO, function() onElementLineAction(ELEMENT_LINE_ACTION_COND_NO, self); end);
+				end
+			end);
 		end
 	end
 end
@@ -683,15 +682,15 @@ local function onWorkflowLineClick(lineClick, button)
 	if button == "LeftButton" then
 		openWorkflow(line.workflowID);
 	else
-		local values = {};
-		tinsert(values, {line.text:GetText(), nil});
-		tinsert(values, {DELETE, WORKFLOW_LINE_ACTION_DELETE});
-		tinsert(values, {loc.IN_INNER_ID_ACTION, WORKFLOW_LINE_ACTION_ID});
-		tinsert(values, {loc.WO_COPY, WORKFLOW_LINE_ACTION_COPY});
-		if editor.copy then
-			tinsert(values, {loc.WO_PASTE, WORKFLOW_LINE_ACTION_PASTE});
-		end
-		TRP3_API.ui.listbox.displayDropDown(line, values, onWorkflowLineAction, 0, true);
+		TRP3_MenuUtil.CreateContextMenu(line, function(_, description)
+			description:CreateTitle(line.text:GetText());
+			description:CreateButton(DELETE, function() onWorkflowLineAction(WORKFLOW_LINE_ACTION_DELETE, line); end);
+			description:CreateButton(loc.IN_INNER_ID_ACTION, function() onWorkflowLineAction(WORKFLOW_LINE_ACTION_ID, line); end);
+			description:CreateButton(loc.WO_COPY, function() onWorkflowLineAction(WORKFLOW_LINE_ACTION_COPY, line); end);
+			if editor.copy then
+				description:CreateButton(loc.WO_PASTE, function() onWorkflowLineAction(WORKFLOW_LINE_ACTION_PASTE, line); end);
+			end
+		end);
 	end
 end
 

@@ -286,16 +286,22 @@ end
 
 function TRP3_API.inventory.showStashDropdown(frame, stashInfo)
 	local stashIndex = TRP3_API.inventory.getStashIndexForStashID(stashInfo.id)
-	TRP3_API.ui.listbox.displayDropDown(frame, {
-		{ stashInfo.BA.NA or loc.DR_STASHES_NAME },
-		{ loc.DR_STASHES_EDIT, 1 },
-		{ loc.DR_STASHES_OWNERSHIP, 3},
-		{ loc.DR_STASHES_REMOVE, 2 }
-	}, function(value)
-		if value == 1 then
+
+	TRP3_MenuUtil.CreateContextMenu(frame, function(_, description)
+		description:CreateTitle(stashInfo.BA.NA or loc.DR_STASHES_NAME);
+
+		description:CreateButton(loc.DR_STASHES_EDIT, function()
 			openStashEditor(stashIndex);
 			stashContainer:Hide();
-		elseif value == 2 then
+		end);
+
+		description:CreateButton(loc.DR_STASHES_OWNERSHIP, function()
+			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
+				stashInfo.CR = TRP3_API.globals.player_id;
+			end);
+		end);
+
+		description:CreateButton(loc.DR_STASHES_REMOVE, function()
 			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_REMOVE_PP, function()
 				if stashIndex then
 					wipe(stashesData[stashIndex]);
@@ -305,17 +311,14 @@ function TRP3_API.inventory.showStashDropdown(frame, stashInfo)
 					TRP3_API.MapDataProvider:RemoveAllData()
 				end
 			end);
-		elseif value == 3 then
-			TRP3_API.popup.showConfirmPopup(loc.DR_STASHES_OWNERSHIP_PP, function()
-				stashInfo.CR = TRP3_API.globals.player_id;
-			end);
-		end
-	end, 0, true);
+		end);
+	end);
 end
 
 local function initStashContainer()
 	stashContainer = CreateFrame("Frame", "TRP3_StashContainer", UIParent, "TRP3_Container2x4Template");
 	stashContainer.LockIcon:Hide();
+	tinsert(UISpecialFrames, stashContainer:GetName());
 
 	stashContainer.info = { loot = true, stash = true };
 	stashContainer.DurabilityText:SetText(loc.DR_STASHES_NAME);
@@ -757,34 +760,38 @@ local function onToolbarButtonClick(button)
 	local posY, posX = UnitPosition("player");
 	local mapID = C_Map.GetBestMapForUnit("player");
 
-	local dropdownItems = {};
-	tinsert(dropdownItems, { loc.DR_SYSTEM, nil });
-	tinsert(dropdownItems, { loc.DR_SEARCH_BUTTON, getActionValue(ACTION_SEARCH_MY, posX, posY), TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_SEARCH_BUTTON_TT) });
-	tinsert(dropdownItems, { loc.DR_STASHES_SEARCH, getActionValue(ACTION_STASH_SEARCH, posX, posY), loc.DR_STASHES_SEARCH_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_STASHES_SEARCH_ACTION) });
-	tinsert(dropdownItems, { loc.DR_STASHES_CREATE, getActionValue(ACTION_STASH_CREATE, posX, posY), TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_STASHES_CREATE_TT) });
-	if posX and posY then
-		local searchResults = {};
-		for stashIndex, stash in pairs(stashesData) do
-			if stash.uiMapID == mapID then
-				local inRadius = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
-				if inRadius then
-					-- Show loot
-					tinsert(searchResults, stashIndex);
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		description:CreateTitle(loc.DR_SYSTEM);
+		local myItems = description:CreateButton(loc.DR_SEARCH_BUTTON, function() onDropButtonAction(getActionValue(ACTION_SEARCH_MY, posX, posY)); end);
+		TRP3_MenuUtil.SetElementTooltip(myItems, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_SEARCH_BUTTON_TT));
+
+		local searchStashes = description:CreateButton(loc.DR_STASHES_SEARCH, function() onDropButtonAction(getActionValue(ACTION_STASH_SEARCH, posX, posY)); end);
+		TRP3_MenuUtil.SetElementTooltip(searchStashes, loc.DR_STASHES_SEARCH_TT .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_STASHES_SEARCH_ACTION));
+
+		local createStashes = description:CreateButton(loc.DR_STASHES_CREATE, function() onDropButtonAction(getActionValue(ACTION_STASH_CREATE, posX, posY)); end);
+		TRP3_MenuUtil.SetElementTooltip(createStashes, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_STASHES_CREATE_TT));
+
+		if posX and posY then
+			local searchResults = {};
+			for stashIndex, stash in pairs(stashesData) do
+				if stash.uiMapID == mapID then
+					local inRadius = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
+					if inRadius then
+						-- Show loot
+						tinsert(searchResults, stashIndex);
+					end
+				end
+			end
+
+			if #searchResults > 0 then
+				description:CreateDivider();
+				description:CreateTitle(loc.DR_STASHES_WITHIN);
+				for _, stashIndex in pairs(searchResults) do
+					description:CreateButton(getItemLink(stashesData[stashIndex]), onDropButtonAction, stashIndex);
 				end
 			end
 		end
-
-		if #searchResults > 0 then
-			tinsert(dropdownItems, { "" });
-			tinsert(dropdownItems, { loc.DR_STASHES_WITHIN, nil });
-			for _, stashIndex in pairs(searchResults) do
-				tinsert(dropdownItems, { getItemLink(stashesData[stashIndex]), stashIndex });
-			end
-		end
-	end
-	tinsert(dropdownItems, { "" });
-
-	TRP3_API.ui.listbox.displayDropDown(button, dropdownItems, onDropButtonAction, 0, true);
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

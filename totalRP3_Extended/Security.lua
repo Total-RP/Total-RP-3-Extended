@@ -182,11 +182,14 @@ end
 
 local function onLineClick(lineWidgetClick)
 	local lineWidget = lineWidgetClick:GetParent();
-	local values = {};
-	tinsert(values, {lineWidget.text:GetText(), nil});
-	tinsert(values, {loc.SEC_LEVEL_DETAILS_THIS, ACTION_FLAG_THIS .. lineWidget.effectGroup, loc.SEC_LEVEL_DETAILS_THIS_TT});
-	tinsert(values, {loc.SEC_LEVEL_DETAILS_ALL, ACTION_FLAG_ALL .. lineWidget.effectGroup, loc.SEC_LEVEL_DETAILS_ALL_TT});
-	TRP3_API.ui.listbox.displayDropDown(lineWidget, values, onLineActionSelected, 0, true);
+
+	TRP3_MenuUtil.CreateContextMenu(lineWidget, function(_, description)
+		description:CreateTitle(lineWidget.text:GetText());
+		local detailsThis = description:CreateButton(loc.SEC_LEVEL_DETAILS_THIS, onLineActionSelected, ACTION_FLAG_THIS .. lineWidget.effectGroup);
+		TRP3_MenuUtil.SetElementTooltip(detailsThis, loc.SEC_LEVEL_DETAILS_THIS_TT);
+		local detailsAll = description:CreateButton(loc.SEC_LEVEL_DETAILS_ALL, onLineActionSelected, ACTION_FLAG_ALL .. lineWidget.effectGroup);
+		TRP3_MenuUtil.SetElementTooltip(detailsAll, loc.SEC_LEVEL_DETAILS_ALL_TT);
+	end);
 end
 
 local function decorateLine(line, effectGroup)

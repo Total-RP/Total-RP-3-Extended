@@ -197,13 +197,12 @@ end
 local function onSlotClick(slot, button)
 	if TRP3_ToolFrame then
 		if not slot.info and button == "RightButton" then
-			local menu = {
-				{loc.INV_PAGE_CHARACTER_INV},
-				{loc.EFFECT_ITEM_ADD, 1},
-				{loc.DB_CREATE_ITEM, 2},
-				--			{loc.DB_IMPORT_ITEM, 3}
-			};
-			TRP3_API.ui.listbox.displayDropDown(slot, menu, onSlotClickAction, 0, true);
+			TRP3_MenuUtil.CreateContextMenu(slot, function(_, description)
+				description:CreateTitle(loc.INV_PAGE_CHARACTER_INV);
+
+				description:CreateButton(loc.EFFECT_ITEM_ADD, function() onSlotClickAction(1, slot); end);
+				description:CreateButton(loc.DB_CREATE_ITEM, function() onSlotClickAction(2, slot); end);
+			end);
 		elseif button == "LeftButton" and IsAltKeyDown() and slot.info then
 			if TRP3_API.extended.isObjectMine(slot.info.id) then
 				if (TRP3_API.extended.getClass(slot.info.id).MD or EMPTY).MO == TRP3_DB.modes.QUICK then
@@ -534,10 +533,16 @@ function TRP3_API.inventory.initInventoryPage()
 			{"/?", 65},
 		}},
 	};
+
 	mainInventoryFrame.Equip.preset:SetScript("OnClick", function(self)
-		TRP3_API.ui.listbox.displayDropDown(self, presets, function(value)
-			mainInventoryFrame.Equip.sequence:SetText(value or "");
-		end, 0, true);
+		TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+			for _, presetCategory in pairs(presets) do
+				local presetCat = description:CreateButton(presetCategory[1]);
+				for _, preset in pairs(presetCategory[2]) do
+					presetCat:CreateButton(preset[1], function() mainInventoryFrame.Equip.sequence:SetText(preset[2] or ""); end);
+				end
+			end
+		end);
 	end);
 	setTooltipForSameFrame(mainInventoryFrame.Equip.preset, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_PRESET);
 

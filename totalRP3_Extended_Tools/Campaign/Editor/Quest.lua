@@ -482,14 +482,15 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 		tinsert(steps.list.widgetTab, line);
 		line.click:SetScript("OnClick", function(self, button)
 			if button == "RightButton" then
-				local context = {};
-				tinsert(context, {self.stepID});
-				tinsert(context, {loc.QE_STEP_DD_COPY, 1});
-				if next(stepClipboard) then
-					tinsert(context, {loc.QE_STEP_DD_PASTE, 2});
-				end
-				tinsert(context, {loc.QE_STEP_DD_REMOVE, 3});
-				TRP3_API.ui.listbox.displayDropDown(line.click, context, onStepDropdown, 0, true);
+				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+					description:CreateTitle(self.stepID);
+					description:CreateButton(loc.QE_STEP_DD_COPY, function() onStepDropdown(1, self); end);
+
+					if next(stepClipboard) then
+						description:CreateButton(loc.QE_STEP_DD_PASTE, function() onStepDropdown(2, self); end);
+					end
+					description:CreateButton(loc.QE_STEP_DD_REMOVE, function() onStepDropdown(3, self); end);
+				end);
 			else
 				if IsControlKeyDown() then
 					renameQuestStep(self.stepID);

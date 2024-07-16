@@ -208,15 +208,17 @@ local function onLineClicked(line, button)
 	if button == "LeftButton" then
 		TRP3_API.extended.tools.goToPage(getFullID(toolFrame.fullClassID, line.objectID));
 	else
-		local values = {};
-		tinsert(values, {line.text:GetText(), nil});
-		tinsert(values, {DELETE, LINE_ACTION_DELETE, loc.IN_INNER_DELETE_TT});
-		tinsert(values, {loc.IN_INNER_ID_ACTION, LINE_ACTION_ID});
-		tinsert(values, {loc.IN_INNER_COPY_ACTION, LINE_ACTION_COPY});
-		if editor.copy.TY == innerObject.TY then
-			tinsert(values, {loc.IN_INNER_PASTE_ACTION, LINE_ACTION_PASTE});
-		end
-		TRP3_API.ui.listbox.displayDropDown(line, values, onLineAction, 0, true);
+		TRP3_MenuUtil.CreateContextMenu(line, function(_, description)
+			description:CreateTitle(line.text:GetText());
+			local deleteOption = description:CreateButton(DELETE, function() onLineAction(LINE_ACTION_DELETE, line); end);
+			TRP3_MenuUtil.SetElementTooltip(deleteOption, loc.IN_INNER_DELETE_TT);
+
+			description:CreateButton(loc.IN_INNER_ID_ACTION, function() onLineAction(LINE_ACTION_ID, line); end);
+			description:CreateButton(loc.IN_INNER_COPY_ACTION, function() onLineAction(LINE_ACTION_COPY, line); end);
+			if editor.copy.TY == innerObject.TY then
+				description:CreateButton(loc.IN_INNER_PASTE_ACTION, function() onLineAction(LINE_ACTION_PASTE, line); end);
+			end
+		end);
 	end
 end
 
@@ -260,13 +262,13 @@ local function addInnerObject(objectType, self)
 end
 
 local function onAddClicked(self)
-	local values = {};
-	tinsert(values, {"Select inner object type", nil});
-	tinsert(values, {loc.TYPE_ITEM, TRP3_DB.types.ITEM});
-	tinsert(values, {loc.TYPE_DOCUMENT, TRP3_DB.types.DOCUMENT});
-	tinsert(values, {loc.TYPE_DIALOG, TRP3_DB.types.DIALOG});
-	tinsert(values, {loc.TYPE_AURA, TRP3_DB.types.AURA});
-	TRP3_API.ui.listbox.displayDropDown(self, values, addInnerObject, 0, true);
+	TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+		description:CreateTitle(loc.IN_INNER_ADD_SELECT_TYPE);
+		description:CreateButton(loc.TYPE_ITEM, function() addInnerObject(TRP3_DB.types.ITEM, self); end);
+		description:CreateButton(loc.TYPE_DOCUMENT, function() addInnerObject(TRP3_DB.types.DOCUMENT, self); end);
+		description:CreateButton(loc.TYPE_DIALOG, function() addInnerObject(TRP3_DB.types.DIALOG, self); end);
+		description:CreateButton(loc.TYPE_AURA, function() addInnerObject(TRP3_DB.types.AURA, self); end);
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
