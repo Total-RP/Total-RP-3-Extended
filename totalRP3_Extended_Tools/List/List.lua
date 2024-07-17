@@ -655,7 +655,7 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		if TRP3_API.toolbar then
 			local toolbarButton = {
 				id = "bb_extended_tools",
-				icon = "Inv_gizmo_01",
+				icon = "Inv_engineering_90_toolbox_blue",
 				configText = loc.TB_TOOLS,
 				tooltip = loc.TB_TOOLS,
 				tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_TOOLS_TT),

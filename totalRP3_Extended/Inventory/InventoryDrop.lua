@@ -861,7 +861,7 @@ function dropFrame.init()
 		if TRP3_API.toolbar then
 			local toolbarButton = {
 				id = "bb_extended_drop",
-				icon = "icon_treasuremap",
+				icon = "inv_misc_paperpackage01a",
 				configText = loc.DR_SEARCH_BUTTON,
 				tooltip = loc.DR_SYSTEM,
 				tooltipSub = loc.DR_SYSTEM_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.DR_SYSTEM_ACTION),
