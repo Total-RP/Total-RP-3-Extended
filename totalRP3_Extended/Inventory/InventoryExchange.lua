@@ -623,7 +623,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			tooltip = loc.IT_EX_TRADE_BUTTON,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.IT_EX_TRADE_BUTTON_TT),
-			icon = "garrison_building_tradingpost"
+			iconFile = "achievement_bg_overcome500disadvantage"
 		});
 	end
 end);

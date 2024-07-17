@@ -207,7 +207,7 @@ local function initHistory()
 		if TRP3_API.toolbar then
 			local toolbarButton = {
 				id = "bb_extended_sounds",
-				icon = "trade_archaeology_delicatemusicbox",
+				icon = "spell_holy_divinehymn",
 				configText = loc.EX_SOUND_HISTORY,
 				tooltip = loc.EX_SOUND_HISTORY,
 				tooltipSub = loc.EX_SOUND_HISTORY_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.EX_SOUND_HISTORY_ACTION_OPEN)  .. "\n"  .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.EX_SOUND_HISTORY_ACTION_STOP),
