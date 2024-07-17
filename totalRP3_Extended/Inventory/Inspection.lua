@@ -213,7 +213,7 @@ function inspectionFrame.init()
 				end,
 				tooltip = loc.INV_PAGE_CHARACTER_INSPECTION,
 				tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.INV_PAGE_CHARACTER_INSPECTION_TT),
-				iconFile = "inv_armor_bloodsailbuccaneer_b_01_chest"
+				icon = "inv_armor_bloodsailbuccaneer_b_01_chest"
 			});
 		end
 	end);
