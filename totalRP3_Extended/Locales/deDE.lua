@@ -155,9 +155,9 @@ Auren, die sich im Innern von Kampagnen befinden, können an diese gebunden werd
 
 Schalte dies aus, wenn du diese Musik nicht hören möchtest.
 
-Von Spielern die du ignorierst wirst du keine Musik hören.
+|cnWARNING_FONT_COLOR:Von Spielern die du ignorierst wirst du keine Musik hören.|r
 
-Beachte, dass du die Musik über die Sound History in dem TRP3-Shortcut-Balken unterbrechen kannst.]=],
+|cnGREEN_FONT_COLOR:Beachte, dass du die Musik über die Sound History in dem TRP3-Shortcut-Balken unterbrechen kannst.|r]=],
 	["CONF_MUSIC_METHOD"] = "Methode der lokalen Musikwiedergabe",
 	["CONF_MUSIC_METHOD_TT"] = "Lege fest, wie Du lokale Musik hörst, wenn Du Dich in Reichweite befindest.",
 	["CONF_NPC_EMBED_ORIGINAL"] = "Originaltooltip einbetten",
@@ -170,15 +170,15 @@ Beachte, dass du die Musik über die Sound History in dem TRP3-Shortcut-Balken u
 
 Deaktiviere diese Option wenn du gar keine Sounds hören möchtest.
 
-|cff00ff00Du wirst niemals Sounds von ignorierten Spielern hören.
+|cnWARNING_FONT_COLOR:Du wirst niemals Sounds von ignorierten Spielern hören.|r
 
-|cff00ff00Alle Sounds können mit der Soundhistorie in der TRP3 Schnellzugriffleiste unterbrochen werden.]=],
+|cnGREEN_FONT_COLOR:Alle Sounds können mit der Soundhistorie in der TRP3 Schnellzugriffleiste unterbrochen werden.|r]=],
 	["CONF_SOUNDS_MAXRANGE"] = "Maximale Abspielreichweite",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[Setze die maximale Reichweite (in Meter), innerhalb derer du Sounds in der Umgebung hören wirst.
 
-|cff00ff00Nützlich um Leute zu vermeiden, die Sounds über den ganzen Kontinent hinweg abspielen.
+|cnGREEN_FONT_COLOR:Nützlich um Leute zu vermeiden, die Sounds über den ganzen Kontinent hinweg abspielen.|r
 
-|cffff9900Null bedeutet, dass es keine Begrenzung gibt!]=],
+|cnWARNING_FONT_COLOR:Null bedeutet, dass es keine Begrenzung gibt!|r]=],
 	["CONF_SOUNDS_METHOD"] = "Methode zum Abspielen von Umgebungsgeräuschen",
 	["CONF_SOUNDS_METHOD_1"] = "Automatisch abspielen",
 	["CONF_SOUNDS_METHOD_1_TT"] = "Wenn du in Reichweite bist wird die Musik/das Geräusch automatisch ohne deine Zustimmung abgespielt.",
