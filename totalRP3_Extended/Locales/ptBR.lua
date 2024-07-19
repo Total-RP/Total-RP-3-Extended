@@ -92,8 +92,9 @@ TRP3_API.loc:GetLocale("ptBR"):AddTexts({
 
 Desligue isso, se você não quer ouvir aquelas musicas.
 
-|cff00ff00Note que você nunca irá escutar musicas de jogadores ignorados
-|cff00ff00Note que todas as musicas são interruptivos via "Sound History" na barra de tarefa do TRP3]=],
+|cnWARNING_FONT_COLOR:Note que você nunca irá escutar musicas de jogadores ignorados|r
+
+|cnGREEN_FONT_COLOR:Note que todas as musicas são interruptivos via "Sound History" na barra de tarefa do TRP3|r]=],
 	["CONF_MUSIC_METHOD"] = "Método de tocar a musica local",
 	["CONF_MUSIC_METHOD_TT"] = "Determine como você vai escutar a musica local, quando você estiver dentro do alcance.",
 	["CONF_SOUNDS"] = "Sons/musicas locais",
@@ -102,15 +103,15 @@ Desligue isso, se você não quer ouvir aquelas musicas.
 
 Desligue isso se você não quer escutar esse som.
 
-|cff00ff00Note que você não vai escutar sons de jogadores ignorados.
+|cnWARNING_FONT_COLOR:Note que você não vai escutar sons de jogadores ignorados.|r
 
-|cff00ff00Note que todos os sons são interruptíveis via "Sound History" na barra de tarefa do TRP3 ]=],
+|cnGREEN_FONT_COLOR:Note que todos os sons são interruptíveis via "Sound History" na barra de tarefa do TRP3|r]=],
 	["CONF_SOUNDS_MAXRANGE"] = "Alcance máximo do \"playback\"",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[Configura o alcance máximo (em metros), para escutar sons/musicas locais.
 
-|cff00ff00Útil para evitar pessoas tocando sons através de todo o continente.
+|cnGREEN_FONT_COLOR:Útil para evitar pessoas tocando sons através de todo o continente.|r
 
- |cffff9900Zero significa sem limite!]=],
+|cnWARNING_FONT_COLOR:Zero significa sem limite!|r]=],
 	["CONF_SOUNDS_METHOD"] = "Método para tocar sons locais",
 	["CONF_SOUNDS_METHOD_1"] = "Tocar automaticamente",
 	["CONF_SOUNDS_METHOD_1_TT"] = "Se dentro do alcance, irá tocar o som/musica sem perguntar sua permissão.",

@@ -93,9 +93,9 @@ TRP3_API.loc:GetLocale("zhCN"):AddTexts({
 
 	如果你不想听到这些音乐，可以将他们关闭。
 	
-	|cff00ff00你不会听到来自被忽略的玩家的音乐。
+	|cnWARNING_FONT_COLOR:你不会听到来自被忽略的玩家的音乐。|r
 	
-	|cff00ff00所有的音乐都可以通过“声音历史”功能中止。]=],
+	|cnGREEN_FONT_COLOR:所有的音乐都可以通过“声音历史”功能中止。|r]=],
 	["CONF_MUSIC_METHOD"] = "环境音乐回放模式",
 	["CONF_MUSIC_METHOD_TT"] = "决定当在范围内时如何播放环境音乐。",
 	["CONF_NPC_EMBED_ORIGINAL"] = "嵌入原始提示栏",
@@ -108,15 +108,15 @@ TRP3_API.loc:GetLocale("zhCN"):AddTexts({
 
 	如果你不想听到这些声音，可以将他们关闭。
 	
-	|cff00ff00你不会听到来自被忽略的玩家的声音。
+	|cnWARNING_FONT_COLOR:你不会听到来自被忽略的玩家的声音。|r
 	
-	|cff00ff00所有的声音都可以通过“声音历史”功能中止。]=],
+	|cnGREEN_FONT_COLOR:所有的声音都可以通过“声音历史”功能中止。|r]=],
 	["CONF_SOUNDS_MAXRANGE"] = "最大播放距离",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[设定环境声音/音乐播放的最大范围（码）。
 
-	|cff00ff00有效防止人们播放范围巨大的音效。
+	|cnGREEN_FONT_COLOR:有效防止人们播放范围巨大的音效。|r
 	
-	|cffff9900为0代表范围无限！]=],
+	|cnWARNING_FONT_COLOR:为0代表范围无限！|r]=],
 	["CONF_SOUNDS_METHOD"] = "环境声音回放模式",
 	["CONF_SOUNDS_METHOD_1"] = "自动播放",
 	["CONF_SOUNDS_METHOD_1_TT"] = "如果你在范围内，音效将不询问你的许可播放。",

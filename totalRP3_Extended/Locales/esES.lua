@@ -89,9 +89,9 @@ TRP3_API.loc:GetLocale("esES"):AddTexts({
 
 Desactívalo si no quieres escuchar estas músicas.
 
-|cff00ff00Ten en cuenta que no escucharás música de jugadores ignorados.
+|cnWARNING_FONT_COLOR:Ten en cuenta que no escucharás música de jugadores ignorados.|r
 
-|cff00ff00Ten en cuenta que todas las músicas son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.]=],
+|cnGREEN_FONT_COLOR:Ten en cuenta que todas las músicas son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.|r]=],
 	["CONF_MUSIC_METHOD"] = "Método de reproducción local de musica",
 	["CONF_MUSIC_METHOD_TT"] = "Determina cómo escucharás la música local cuando estés en rango.",
 	["CONF_SOUNDS"] = "Música/sonido local",
@@ -100,15 +100,15 @@ Desactívalo si no quieres escuchar estas músicas.
 
 Desactívalo si no quieres escuchar estos sonidos.
 
-|cff00ff00Ten en cuenta que no escucharás sonidos de jugadores ignorados.
+|cnWARNING_FONT_COLOR:Ten en cuenta que no escucharás sonidos de jugadores ignorados.|r
 
-|cff00ff00Ten en cuenta que todos los sonidos son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.]=],
+|cnGREEN_FONT_COLOR:Ten en cuenta que todos los sonidos son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.|r]=],
 	["CONF_SOUNDS_MAXRANGE"] = "Rango máximo de reproducción",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[Establece el rango máximo (en metros) en que escucharás sonido/música local.
 
-|cff00ff00Útil para evitar a gente que use sonidos en todo el continente.
+|cnGREEN_FONT_COLOR:Útil para evitar a gente que use sonidos en todo el continente.|r
 
-|cffff9900¡Cero significa sin límite!]=],
+|cnWARNING_FONT_COLOR:¡Cero significa sin límite!|r]=],
 	["CONF_SOUNDS_METHOD"] = "Método de reproducción local de sonidos",
 	["CONF_SOUNDS_METHOD_1"] = "Reproducir automáticamente",
 	["CONF_SOUNDS_METHOD_1_TT"] = "Si estás en rango, se reproducirá el sonido/música sin pedirte permiso.",

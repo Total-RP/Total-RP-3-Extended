@@ -186,9 +186,9 @@ Cette personnalisation sera visible lorsque le joueur aura votre campagne comme 
 
 Désactivez ceci si vous voulez ne pas entendre ces musiques.
 
-|cff00ff00Notez que vous n'entendrez jamais les musiques des joueurs ignorés.
+|cnWARNING_FONT_COLOR:Notez que vous n'entendrez jamais les musiques des joueurs ignorés.|r
 
-|cff00ff00Notez que toutes les musiques sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.]=],
+|cnGREEN_FONT_COLOR:Notez que toutes les musiques sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.|r]=],
 	["CONF_MUSIC_METHOD"] = "Méthode d'écoute de musique locale",
 	["CONF_MUSIC_METHOD_TT"] = "Détermine de quelle façon vous entendrez une musique locale quand vous êtes à portée.",
 	["CONF_NPC_EMBED_ORIGINAL"] = "Inclure les détails du PNJ original",
@@ -201,15 +201,15 @@ Désactivez ceci si vous voulez ne pas entendre ces musiques.
 
 Désactivez ceci si vous voulez ne pas entendre ces sons.
 
-|cff00ff00Notez que vous n'entendrez jamais les sons des joueurs ignorés.
+|cnWARNING_FONT_COLOR:Notez que vous n'entendrez jamais les sons des joueurs ignorés.|r
 
-|cff00ff00Notez que tous les sons sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.]=],
+|cnGREEN_FONT_COLOR:Notez que tous les sons sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.|r]=],
 	["CONF_SOUNDS_MAXRANGE"] = "Distance maximum d'écoute",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[Règle le rayon maximum (en mètres) dans lequel vous entendrez les musiques/sons locaux.
 
-|cffff9900Utile pour éviter les personnes jouant des sons à l'échelle de tout le continent.
+|cnGREEN_FONT_COLOR:Utile pour éviter les personnes jouant des sons à l'échelle de tout le continent.|r
 
-|cffff9900Zéro correspond à pas de limite !]=],
+|cnWARNING_FONT_COLOR:Zéro correspond à pas de limite !|r]=],
 	["CONF_SOUNDS_METHOD"] = "Méthode d'écoute de son local",
 	["CONF_SOUNDS_METHOD_1"] = "Jouer automatiquement",
 	["CONF_SOUNDS_METHOD_1_TT"] = "Si vous êtes à portée, les musiques/sons seront joués sans demander votre permission.",
