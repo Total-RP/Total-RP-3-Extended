@@ -68,15 +68,25 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_EffectEditorMacro" inherits="TRP3_EditorEffectTemplate" hidden="true">
 		<Size x="500" y="250"/>
 		<Frames>
-			<Frame parentKey="macroText" inherits="TRP3_TextArea">
+			<Frame parentKey="MacroText" inherits="TRP3_TextArea">
 				<Size x="260" y="0"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-45"/>
 					<Anchor point="BOTTOM" x="0" y="40"/>
 				</Anchors>
 			</Frame>
-
 		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="CharactersCounter" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE">
+					<Size x="150" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.macroText"/>
+						<Anchor point="RIGHT" relativeKey="$parent.macroText" x="-10" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
 
 	</Frame>
 

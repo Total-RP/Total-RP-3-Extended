@@ -714,8 +714,9 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 |r]=],
 	["EFFECT_SECURE_MACRO_HELP"] = [=[你可以使用你能在宏命令当中使用的任何指令，同时也包括来自其他插件的指令。
 
-你也可以使用TRP3E变量： (|cffcccccc${my_var_name}|r).
-]=],
+你也可以使用TRP3E变量： (|cnGREEN_FONT_COLOR:${my_var_name}|r).
+
+|cnWARNING_FONT_COLOR:Note that macros can have a maximum of 255 characters.|r]=],
 	["EFFECT_SECURE_MACRO_HELP_TITLE"] = "Macro commands",
 	["EFFECT_SHEATH"] = "切换武器显示",
 	["EFFECT_SHEATH_TT"] = "拿出或收起角色的武器。",

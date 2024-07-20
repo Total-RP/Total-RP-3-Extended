@@ -1651,8 +1651,9 @@ http://wowwiki.wikia.com/wiki/Event_API
 	EFFECT_SECURE_MACRO_HELP_TITLE = "Macro commands",
 	EFFECT_SECURE_MACRO_HELP = [[You can use any commands you would normally use in a macro, including other add-ons' custom /slash commands.
 
-You can also use Total RP 3: Extended variables (|cffcccccc${my_var_name}|r).
-]],
+You can also use Total RP 3: Extended variables (|cnGREEN_FONT_COLOR:${my_var_name}|r).
+
+|cnWARNING_FONT_COLOR:Note that macros can have a maximum of 255 characters.|r]],
 	SEC_REASON_MACRO = [[Execute a macro]],
 	SEC_REASON_MACRO_WHY = [[This object could trigger any macro commands.
 
