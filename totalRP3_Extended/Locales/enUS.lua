@@ -1,4 +1,4 @@
--- Copyright The Total RP 3 Authors
+-- Copyright The Total RP 3 Extended Authors
 -- SPDX-License-Identifier: Apache-2.0
 
 local L;
