@@ -83,15 +83,15 @@ TRP3_API.loc:GetLocale("esES"):AddTexts({
 	["COND_PREVIEW_TEST_TT"] = "Muestra en el chat la evaluación de la prueba basada en la situación actual.",
 	["COND_TEST_EDITOR"] = "Editor de prueba",
 	["COND_TESTS"] = "Pruebas de condición",
-	["CONF_MAIN"] = "Extended",
+	["CONF_MAIN"] = "Ajustes extendidos",
 	["CONF_MUSIC_ACTIVE"] = "Reproducir música local",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[La música local es música reproducida por otros jugadores (por ejemplo, mediante un objeto) a cierto rango en metros.
 
 Desactívalo si no quieres escuchar estas músicas.
 
-|cnWARNING_FONT_COLOR:Ten en cuenta que no escucharás música de jugadores ignorados.|r
+|cff00ff00Ten en cuenta que no escucharás música de jugadores ignorados.
 
-|cnGREEN_FONT_COLOR:Ten en cuenta que todas las músicas son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.|r]=],
+|cff00ff00Ten en cuenta que todas las músicas son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.]=],
 	["CONF_MUSIC_METHOD"] = "Método de reproducción local de musica",
 	["CONF_MUSIC_METHOD_TT"] = "Determina cómo escucharás la música local cuando estés en rango.",
 	["CONF_SOUNDS"] = "Música/sonido local",
@@ -100,15 +100,15 @@ Desactívalo si no quieres escuchar estas músicas.
 
 Desactívalo si no quieres escuchar estos sonidos.
 
-|cnWARNING_FONT_COLOR:Ten en cuenta que no escucharás sonidos de jugadores ignorados.|r
+|cff00ff00Ten en cuenta que no escucharás sonidos de jugadores ignorados.
 
-|cnGREEN_FONT_COLOR:Ten en cuenta que todos los sonidos son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.|r]=],
+|cff00ff00Ten en cuenta que todos los sonidos son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.]=],
 	["CONF_SOUNDS_MAXRANGE"] = "Rango máximo de reproducción",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[Establece el rango máximo (en metros) en que escucharás sonido/música local.
 
-|cnGREEN_FONT_COLOR:Útil para evitar a gente que use sonidos en todo el continente.|r
+|cff00ff00Útil para evitar a gente que use sonidos en todo el continente.
 
-|cnWARNING_FONT_COLOR:¡Cero significa sin límite!|r]=],
+|cffff9900¡Cero significa sin límite!]=],
 	["CONF_SOUNDS_METHOD"] = "Método de reproducción local de sonidos",
 	["CONF_SOUNDS_METHOD_1"] = "Reproducir automáticamente",
 	["CONF_SOUNDS_METHOD_1_TT"] = "Si estás en rango, se reproducirá el sonido/música sin pedirte permiso.",

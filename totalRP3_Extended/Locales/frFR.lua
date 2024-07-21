@@ -186,9 +186,9 @@ Cette personnalisation sera visible lorsque le joueur aura votre campagne comme 
 
 Désactivez ceci si vous voulez ne pas entendre ces musiques.
 
-|cnWARNING_FONT_COLOR:Notez que vous n'entendrez jamais les musiques des joueurs ignorés.|r
+|cff00ff00Notez que vous n'entendrez jamais les musiques des joueurs ignorés.
 
-|cnGREEN_FONT_COLOR:Notez que toutes les musiques sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.|r]=],
+|cff00ff00Notez que toutes les musiques sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.]=],
 	["CONF_MUSIC_METHOD"] = "Méthode d'écoute de musique locale",
 	["CONF_MUSIC_METHOD_TT"] = "Détermine de quelle façon vous entendrez une musique locale quand vous êtes à portée.",
 	["CONF_NPC_EMBED_ORIGINAL"] = "Inclure les détails du PNJ original",
@@ -201,15 +201,15 @@ Désactivez ceci si vous voulez ne pas entendre ces musiques.
 
 Désactivez ceci si vous voulez ne pas entendre ces sons.
 
-|cnWARNING_FONT_COLOR:Notez que vous n'entendrez jamais les sons des joueurs ignorés.|r
+|cff00ff00Notez que vous n'entendrez jamais les sons des joueurs ignorés.
 
-|cnGREEN_FONT_COLOR:Notez que tous les sons sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.|r]=],
+|cff00ff00Notez que tous les sons sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.]=],
 	["CONF_SOUNDS_MAXRANGE"] = "Distance maximum d'écoute",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[Règle le rayon maximum (en mètres) dans lequel vous entendrez les musiques/sons locaux.
 
-|cnGREEN_FONT_COLOR:Utile pour éviter les personnes jouant des sons à l'échelle de tout le continent.|r
+|cffff9900Utile pour éviter les personnes jouant des sons à l'échelle de tout le continent.
 
-|cnWARNING_FONT_COLOR:Zéro correspond à pas de limite !|r]=],
+|cffff9900Zéro correspond à pas de limite !]=],
 	["CONF_SOUNDS_METHOD"] = "Méthode d'écoute de son local",
 	["CONF_SOUNDS_METHOD_1"] = "Jouer automatiquement",
 	["CONF_SOUNDS_METHOD_1_TT"] = "Si vous êtes à portée, les musiques/sons seront joués sans demander votre permission.",
@@ -531,8 +531,9 @@ Ce personnage sera affiché comme propriétaire de la cachette lorsque d'autres 
 	["DR_STASHES_SCAN"] = "Afficher toutes les cachettes",
 	["DR_STASHES_SCAN_MY"] = "Afficher mes cachettes",
 	["DR_STASHES_SEARCH"] = "Rechercher des cachettes de |cff00ff00joueurs|r",
-	["DR_STASHES_SEARCH_TT"] = "La recherche durera 3 secondes, patience !",
-	["DR_STASHES_SEARCH_ACTION"] = "Recherche des cachettes d'autres joueurs dans les 15 mètres alentours.",
+	["DR_STASHES_SEARCH_TT"] = [=[Recherche des cachettes d'autres joueurs dans les 15 mètres alentours.
+
+La recherche durera 3 secondes, patience !]=],
 	["DR_STASHES_SYNC"] = "Synchronisation...",
 	["DR_STASHES_TOO_FAR"] = "Vous êtes trop loin de cette cachette.",
 	["DR_STASHES_WITHIN"] = "|cff00ff00Vos|r cachettes dans les 15 mètres",
@@ -840,9 +841,7 @@ Un script lua personnalisé sera toujours moins efficace qu'un effet de processu
 |r]=],
 	["EFFECT_SECURE_MACRO_HELP"] = [=[Vous pouvez utiliser n'importe quelle commande que vous utiliseriez normalement dans une macro, y compris les /commandes d'autres add-ons.
 
-Vous pouvez également utiliser des variables Total RP 3: Extended (|cnGREEN_FONT_COLOR:${ma_variable}|r).
-
-|cnWARNING_FONT_COLOR:Notez que les macros peuvent avoir un maximum de 255 caractères.|r]=],
+Vous pouvez également utiliser des variables Total RP 3: Extended (|cffcccccc${ma_variable}|r).]=],
 	["EFFECT_SECURE_MACRO_HELP_TITLE"] = "Commandes de macro",
 	["EFFECT_SHEATH"] = "Dégainer/rengainer armes",
 	["EFFECT_SHEATH_TT"] = "Dégaine ou rengaine les armes du personnage.",
@@ -1000,8 +999,6 @@ Donc si vous souhaitez vérifier le troisième argument de l'événement, entrez
 	["EX_SOUND_HISTORY_STOP"] = "Arrêter",
 	["EX_SOUND_HISTORY_STOP_ALL"] = "Arrêter tous",
 	["EX_SOUND_HISTORY_TT"] = "Voyez quels effets sonores ont été joués, d'où ils proviennent et interrompez les si ils sont toujours en cours.",
-	["EX_SOUND_HISTORY_ACTION_OPEN"] = "Ouvrir l'historique sonore",
-	["EX_SOUND_HISTORY_ACTION_STOP"] = "Arrêter tous les sons/musiques",
 	["IN_INNER"] = "Éléments internes",
 	["IN_INNER_ADD"] = "Créer un élément interne",
 	["IN_INNER_ADD_COPY"] = "Copie d'une création existante",
@@ -1188,6 +1185,8 @@ Vous pouvez aller plus loin et éditer cet objet en mode normal. Ceci vous appor
 	["IT_INV_GOT"] = "Reçu : %s x%d",
 	["IT_INV_SCAN_MY_ITEMS"] = "Afficher mes objets",
 	["IT_INV_SHOW_ALL"] = "Montrer tout l'inventaire",
+	["IT_INV_SHOW_CONTENT"] = [=[|cffffff00Clic :|r Ouvre le contenant principal (s'il existe)
+|cffffff00Clic droit :|r Ouvre l'inventaire]=],
 	["IT_LOOT_ERROR"] = "Impossible d'afficher le butin maintenant, un autre butin est déjà montré.",
 	["IT_NEW_NAME"] = "Nouvel objet",
 	["IT_NEW_NAME_CO"] = "Nouveau contenant",

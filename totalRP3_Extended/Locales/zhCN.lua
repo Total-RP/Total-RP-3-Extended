@@ -87,15 +87,15 @@ TRP3_API.loc:GetLocale("zhCN"):AddTexts({
 	["COND_PREVIEW_TEST_TT"] = "根据当前情况，在聊天框当中显示这个测试的结果。",
 	["COND_TEST_EDITOR"] = "测试编辑器",
 	["COND_TESTS"] = "条件测试",
-	["CONF_MAIN"] = "Extended",
+	["CONF_MAIN"] = "扩展设置",
 	["CONF_MUSIC_ACTIVE"] = "播放环境音乐",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[环境音乐是其他玩家在一定范围（码）内播放的音乐（例如通过物品。）
 
 	如果你不想听到这些音乐，可以将他们关闭。
 	
-	|cnWARNING_FONT_COLOR:你不会听到来自被忽略的玩家的音乐。|r
+	|cff00ff00你不会听到来自被忽略的玩家的音乐。
 	
-	|cnGREEN_FONT_COLOR:所有的音乐都可以通过“声音历史”功能中止。|r]=],
+	|cff00ff00所有的音乐都可以通过“声音历史”功能中止。]=],
 	["CONF_MUSIC_METHOD"] = "环境音乐回放模式",
 	["CONF_MUSIC_METHOD_TT"] = "决定当在范围内时如何播放环境音乐。",
 	["CONF_NPC_EMBED_ORIGINAL"] = "嵌入原始提示栏",
@@ -108,15 +108,15 @@ TRP3_API.loc:GetLocale("zhCN"):AddTexts({
 
 	如果你不想听到这些声音，可以将他们关闭。
 	
-	|cnWARNING_FONT_COLOR:你不会听到来自被忽略的玩家的声音。|r
+	|cff00ff00你不会听到来自被忽略的玩家的声音。
 	
-	|cnGREEN_FONT_COLOR:所有的声音都可以通过“声音历史”功能中止。|r]=],
+	|cff00ff00所有的声音都可以通过“声音历史”功能中止。]=],
 	["CONF_SOUNDS_MAXRANGE"] = "最大播放距离",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[设定环境声音/音乐播放的最大范围（码）。
 
-	|cnGREEN_FONT_COLOR:有效防止人们播放范围巨大的音效。|r
+	|cff00ff00有效防止人们播放范围巨大的音效。
 	
-	|cnWARNING_FONT_COLOR:为0代表范围无限！|r]=],
+	|cffff9900为0代表范围无限！]=],
 	["CONF_SOUNDS_METHOD"] = "环境声音回放模式",
 	["CONF_SOUNDS_METHOD_1"] = "自动播放",
 	["CONF_SOUNDS_METHOD_1_TT"] = "如果你在范围内，音效将不询问你的许可播放。",
@@ -440,8 +440,9 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["DR_STASHES_SCAN"] = "搜索玩家的藏匿物",
 	["DR_STASHES_SCAN_MY"] = "搜索我的藏匿物",
 	["DR_STASHES_SEARCH"] = "搜索 |cff00ff00玩家的|r 藏匿物",
-	["DR_STASHES_SEARCH_TT"] = "搜索需要3秒，别动!",
-	["DR_STASHES_SEARCH_ACTION"] = "搜索15码内其他玩家的藏匿物。",
+	["DR_STASHES_SEARCH_TT"] = [=[搜索15码内其他玩家的藏匿物。
+
+搜索需要3秒，别动!]=],
 	["DR_STASHES_SYNC"] = "正在同步...",
 	["DR_STASHES_TOO_FAR"] = "你离藏匿物太远了.",
 	["DR_STASHES_WITHIN"] = "|cff00ff00Your|r 15码内有藏匿物",
@@ -714,9 +715,8 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 |r]=],
 	["EFFECT_SECURE_MACRO_HELP"] = [=[你可以使用你能在宏命令当中使用的任何指令，同时也包括来自其他插件的指令。
 
-你也可以使用TRP3E变量： (|cnGREEN_FONT_COLOR:${my_var_name}|r).
-
-|cnWARNING_FONT_COLOR:Note that macros can have a maximum of 255 characters.|r]=],
+你也可以使用TRP3E变量： (|cffcccccc${my_var_name}|r).
+]=],
 	["EFFECT_SECURE_MACRO_HELP_TITLE"] = "Macro commands",
 	["EFFECT_SHEATH"] = "切换武器显示",
 	["EFFECT_SHEATH_TT"] = "拿出或收起角色的武器。",
@@ -868,9 +868,10 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["EX_SOUND_HISTORY_REPLAY"] = "重播",
 	["EX_SOUND_HISTORY_STOP"] = "停止",
 	["EX_SOUND_HISTORY_STOP_ALL"] = "全部停止",
-	["EX_SOUND_HISTORY_TT"] = "浏览播放过的声音，查看他们的来源以及停止仍在播放的声音。",
-	["EX_SOUND_HISTORY_ACTION_OPEN"] = "打开声音历史",
-	["EX_SOUND_HISTORY_ACTION_STOP"] = "停止所有声音",
+	["EX_SOUND_HISTORY_TT"] = [=[浏览播放过的声音，查看他们的来源以及停止仍在播放的声音。
+
+|cffffff00左击：|r 打开声音历史
+|cffffff00右击|r 停止所有声音]=],
 	["IN_INNER"] = "内部对象",
 	["IN_INNER_ADD"] = "添加内部对象",
 	["IN_INNER_ADD_COPY"] = "添加现有对象的副本",
@@ -1037,6 +1038,8 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["IT_INV_GOT"] = "接收到了 %s ，共 %d 个。",
 	["IT_INV_SCAN_MY_ITEMS"] = "搜索我的物品",
 	["IT_INV_SHOW_ALL"] = "打开所有背包",
+	["IT_INV_SHOW_CONTENT"] = [=[|cffffff00左击:|r 打开主背包 (如果存在)
+|cffffff00右击:|r 打开背包]=],
 	["IT_LOOT_ERROR"] = "现在无法显示可拾取物品，已经有一个可拾取物品在显示了。",
 	["IT_NEW_NAME"] = "新的物品",
 	["IT_NEW_NAME_CO"] = "新的容器",

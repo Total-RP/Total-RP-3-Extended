@@ -86,15 +86,14 @@ TRP3_API.loc:GetLocale("ptBR"):AddTexts({
 	["COND_PREVIEW_TEST_TT"] = "Imprime na interface de chat a avaliação desse teste baseada na situação atual.",
 	["COND_TEST_EDITOR"] = "Editor de teste",
 	["COND_TESTS"] = "Condição para testes",
-	["CONF_MAIN"] = "Extended",
+	["CONF_MAIN"] = "Configurações estendidas",
 	["CONF_MUSIC_ACTIVE"] = "Tocar musica local",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[Musicas locais são musicas tocadas por outros jogadores (por exemplo: através de um item) em um certo limite de distância.
 
 Desligue isso, se você não quer ouvir aquelas musicas.
 
-|cnWARNING_FONT_COLOR:Note que você nunca irá escutar musicas de jogadores ignorados|r
-
-|cnGREEN_FONT_COLOR:Note que todas as musicas são interruptivos via "Sound History" na barra de tarefa do TRP3|r]=],
+|cff00ff00Note que você nunca irá escutar musicas de jogadores ignorados
+|cff00ff00Note que todas as musicas são interruptivos via "Sound History" na barra de tarefa do TRP3]=],
 	["CONF_MUSIC_METHOD"] = "Método de tocar a musica local",
 	["CONF_MUSIC_METHOD_TT"] = "Determine como você vai escutar a musica local, quando você estiver dentro do alcance.",
 	["CONF_SOUNDS"] = "Sons/musicas locais",
@@ -103,15 +102,15 @@ Desligue isso, se você não quer ouvir aquelas musicas.
 
 Desligue isso se você não quer escutar esse som.
 
-|cnWARNING_FONT_COLOR:Note que você não vai escutar sons de jogadores ignorados.|r
+|cff00ff00Note que você não vai escutar sons de jogadores ignorados.
 
-|cnGREEN_FONT_COLOR:Note que todos os sons são interruptíveis via "Sound History" na barra de tarefa do TRP3|r]=],
+|cff00ff00Note que todos os sons são interruptíveis via "Sound History" na barra de tarefa do TRP3 ]=],
 	["CONF_SOUNDS_MAXRANGE"] = "Alcance máximo do \"playback\"",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[Configura o alcance máximo (em metros), para escutar sons/musicas locais.
 
-|cnGREEN_FONT_COLOR:Útil para evitar pessoas tocando sons através de todo o continente.|r
+|cff00ff00Útil para evitar pessoas tocando sons através de todo o continente.
 
-|cnWARNING_FONT_COLOR:Zero significa sem limite!|r]=],
+ |cffff9900Zero significa sem limite!]=],
 	["CONF_SOUNDS_METHOD"] = "Método para tocar sons locais",
 	["CONF_SOUNDS_METHOD_1"] = "Tocar automaticamente",
 	["CONF_SOUNDS_METHOD_1_TT"] = "Se dentro do alcance, irá tocar o som/musica sem perguntar sua permissão.",
@@ -321,8 +320,7 @@ AVISO: ESTA AÇÃO NÃO PODE SER REVERTIDA!]=],
 	["DR_STASHES_SCAN"] = "Escanear por esconderijos de jogadores",
 	["DR_STASHES_SCAN_MY"] = "Escanear pelos meus esconderijos",
 	["DR_STASHES_SEARCH"] = "Procurar por esconderijos de |cff00ff00jogadores|r.",
-	["DR_STASHES_SEARCH_TT"] = "Isto irá começar um scan por 3 seg, Fique parado!!",
-	["DR_STASHES_SEARCH_ACTION"] = "Procurar por esconderijos de outros jogadores na área de 15 metros.",
+	["DR_STASHES_SEARCH_TT"] = "Procurar por esconderijos de outros jogadores na área de 15 metros. Isto irá começar um scan por 3 seg, Fique parado!!",
 	["DR_STASHES_SYNC"] = "Sincronizando...",
 	["DR_STASHES_TOO_FAR"] = "Você está muito longe deste esconderijo.",
 	["DR_STASHES_WITHIN"] = "|cff00ff00Seu|s esconderijos dentro de 15 metros",

@@ -67,28 +67,26 @@ TRP3_API.loc:GetLocale("zhTW"):AddTexts({
 	["CL_TOOLTIP"] = "製造聊天室內連結",
 	["COM_NPC_ID"] = "擷取目標NPC之ID",
 	["COND_EDITOR"] = "條件編輯器",
-	["CONF_MAIN"] = "Extended",
+	["CONF_MAIN"] = "Extended 設置",
 	["CONF_MUSIC_ACTIVE"] = "播放本地音樂",
 	["CONF_MUSIC_ACTIVE_TT"] = [=[本地音樂是其他玩家在一定距離（以碼為單位）内播放的音樂（例如通過物品。）如果您不想聽到這些音樂，可以將本功能關閉。
 	
-|cnWARNING_FONT_COLOR:你無法聽見被忽略之玩家所播放的音樂。|r
-
-|cnGREEN_FONT_COLOR:所有音樂都可以透過TRP3快捷列中的音樂播放器來終止。|r]=],
+|cff00ff00你無法聽見被忽略之玩家所播放的音樂。
+|cff00ff00所有音樂都可以透過TRP3快捷列中的音樂播放器來終止。]=],
 	["CONF_MUSIC_METHOD"] = "本地音樂循環播放",
 	["CONF_MUSIC_METHOD_TT"] = "決定當您在範圍內時如何收聽本地音樂。",
 	["CONF_SOUNDS"] = "本地音效／音樂",
 	["CONF_SOUNDS_ACTIVE"] = "播放本地音效",
 	["CONF_SOUNDS_ACTIVE_TT"] = [=[本地音效是其他玩家在一定距離（以碼為單位）内播放的音效（例如通過物品。）如果您不想聽到這些音效，可以將本功能關閉。
 	
-|cnWARNING_FONT_COLOR:你無法聽見被忽略之玩家所播放的音效。|r
-
-|cnGREEN_FONT_COLOR:所有音樂都可以透過TRP3快捷列中的音樂播放器來終止。|r]=],
+|cff00ff00你無法聽見被忽略之玩家所播放的音效。
+|cff00ff00所有音樂都可以透過TRP3快捷列中的音樂播放器來終止。]=],
 	["CONF_SOUNDS_MAXRANGE"] = "最大播放距離",
 	["CONF_SOUNDS_MAXRANGE_TT"] = [=[設定本地音樂／音效的最大播放距離。
 
-|cnGREEN_FONT_COLOR:能有效避免其他玩家播放範圍巨大的噪音。|r
+|cff00ff00能有效避免其他玩家播放範圍巨大的噪音。
 	
-|cnWARNING_FONT_COLOR:數值設置為0則代表不限制距離。|r]=],
+|cffff9900數值設置為0則代表不限制距離。]=],
 	["CONF_SOUNDS_METHOD"] = "本地音效播放模式",
 	["CONF_SOUNDS_METHOD_1"] = "自動播放",
 	["CONF_SOUNDS_METHOD_1_TT"] = "若您在音樂／音效的設定範圍內，該音樂／音效將不經過您的許可自動播放。",
@@ -408,8 +406,7 @@ account\YOUR_ACCOUNT\SavedVariables
 	["DR_STASHES_SCAN"] = "搜索其他玩家的藏物處。",
 	["DR_STASHES_SCAN_MY"] = "搜尋我的藏物處。",
 	["DR_STASHES_SEARCH"] = "搜尋 |cff00ff00其他玩家|r 的藏物處",
-	["DR_STASHES_SEARCH_TT"] = "將會花上你三秒的時間，站穩啦！",
-	["DR_STASHES_SEARCH_ACTION"] = "搜尋在此區域十五碼內之藏物處。",
+	["DR_STASHES_SEARCH_TT"] = "搜尋在此區域十五碼內之藏物處，將會花上你三秒的時間，站穩啦！",
 	["DR_STASHES_SYNC"] = "正在同步…",
 	["DR_STASHES_TOO_FAR"] = "你距離這個藏物處太遠了。",
 	["DR_STASHES_WITHIN"] = "|cff00ff00你|r 在十五碼內的藏物處。",
