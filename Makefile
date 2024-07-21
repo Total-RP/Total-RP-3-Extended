@@ -8,7 +8,7 @@ SCHEMA_URL := https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xs
 CF_PROJECT_ID := 100707
 
 LOCALES := enUS deDE esES esMX frFR itIT koKR ptBR ruRU zhCN zhTW
-LOCALE_DIR := totalRP3_Extended/Locales
+LOCALES_DIR := totalRP3_Extended/Locales
 LOCALES_SCRIPT := $(PYTHON) .github/scripts/localization.py
 EXPORT_LOCALES := enUS
 IMPORT_LOCALES := $(filter-out $(EXPORT_LOCALES),$(LOCALES))
