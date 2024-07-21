@@ -1,4 +1,4 @@
--- Copyright The Total RP 3 Authors
+-- Copyright The Total RP 3 Extended Authors
 -- SPDX-License-Identifier: Apache-2.0
 
 local L;
@@ -1835,7 +1835,7 @@ Please make sure to always give the player a way to get rid of an aura.
 
 	UNIT_POPUPS_EXTENDED_OPEN_EXCHANGE = "Open Exchange",
 	UNIT_POPUPS_EXTENDED_CHARACTER_INSPECTION = "Inspect Inventory",
-}
+};
 
 -- TODO: Put Extended strings into its own namespace - don't insert into Core.
 --       This change also needs applying to .github/scripts/localization.py.
