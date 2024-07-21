@@ -99,7 +99,7 @@ local function checkCharactersLimit()
 	end
 
 	TRP3_EffectEditorMacro.CharactersCounter:SetTextColor(color:GetRGB())
-	TRP3_EffectEditorMacro.CharactersCounter:SetText(strconcat(MAX_CHARACTERS_IN_MACRO - numberOfCharactersInMacro));
+	TRP3_EffectEditorMacro.CharactersCounter:SetText(MAX_CHARACTERS_IN_MACRO - numberOfCharactersInMacro);
 end
 
 local function macro_init()
