@@ -6,28 +6,42 @@ PACKAGER_URL := https://raw.githubusercontent.com/BigWigsMods/packager/master/re
 SCHEMA_URL := https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd
 
 CF_PROJECT_ID := 100707
-LOCALE_DIR := totalRP3_Extended/Locales
 
-.PHONY: check dist libs translations translations/download translations/upload
+LOCALES := enUS deDE esES esMX frFR itIT koKR ptBR ruRU zhCN zhTW
+LOCALE_DIR := totalRP3_Extended/Locales
+LOCALES_SCRIPT := $(PYTHON) .github/scripts/localization.py
+EXPORT_LOCALES := enUS
+IMPORT_LOCALES := $(filter-out $(EXPORT_LOCALES),$(LOCALES))
+
 .DEFAULT: all
 .DELETE_ON_ERROR:
 .FORCE:
+.PHONY: all check dist schema
 
 all: dist
 
-check: .github/scripts/ui.xsd
+check: schema
 	pre-commit run --all-files
 
 dist:
-	@curl -s $(PACKAGER_URL) | bash -s -- -d
+	curl -s $(PACKAGER_URL) | bash -s -- -dS
 
-translations: translations/upload translations/download
+schema:
+	curl -s $(SCHEMA_URL) -o .github/scripts/ui.xsd
 
-translations/download:
-	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) download
+.PHONY: translations translations-export translations-export-all translations-import translations-import-all
+translations: translations-export translations-import
+translations-export: $(addprefix translations-export-,$(EXPORT_LOCALES))
+translations-export-all: $(addprefix translations-export-,$(LOCALES))
+translations-import: $(addprefix translations-import-,$(IMPORT_LOCALES))
+translations-import-all: $(addprefix translations-import-,$(LOCALES))
 
-translations/upload:
-	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) upload
+translations-export-enUS: EXPORT_OPTIONS := --delete-missing-phrases
 
-.github/scripts/ui.xsd: .FORCE
-	curl -s $(SCHEMA_URL) -o $@
+.PHONY: $(addprefix translations-export-,$(LOCALES))
+$(addprefix translations-export-,$(LOCALES)): translations-export-%:
+	$(LOCALES_SCRIPT) upload --locale $* --project-id $(CF_PROJECT_ID) $(EXPORT_OPTIONS) <$(LOCALES_DIR)/$*.lua
+
+.PHONY: $(addprefix translations-import-,$(LOCALES))
+$(addprefix translations-import-,$(LOCALES)): translations-import-%:
+	$(LOCALES_SCRIPT) download --locale $* --project-id $(CF_PROJECT_ID) $(IMPORT_OPTIONS) >$(LOCALES_DIR)/$*.lua
