@@ -20,16 +20,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square"/>
 	</Button>
 
-	<Frame name="TRP3_QuestObjectives" parent="ObjectiveTrackerBlocksFrame" hidden="true">
+	<Frame name="TRP3_QuestObjectives" hidden="true">
 		<Size x="0" y="100"/>
-		<Anchors>
-			<Anchor point="BOTTOM"/>
-			<Anchor point="LEFT"/>
-			<Anchor point="RIGHT"/>
-		</Anchors>
 		<Frames>
-			<Frame parentKey="Actions" inherits="TRP3_FieldSetFrame">
+			<Frame parentKey="Actions" inherits="TRP3_TooltipBackdropTemplate">
 				<Size x="0" y="50"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT"/>
 					<Anchor point="TOPLEFT"/>
@@ -90,7 +88,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
-				<Texture parentKey="quest" inherits="Spellbook-SlotFrame">
+				<Texture parentKey="quest" file="Interface\Spellbook\Spellbook-Parts">
+					<Size x="70" y="65"/>
+					<TexCoords left="0.00390625" right="0.27734375" top="0.44140625" bottom="0.69531250"/>
 					<Anchors>
 						<Anchor point="LEFT" x="20" y="2"/>
 					</Anchors>
@@ -486,9 +486,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--       QUESTLOG       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Frame name="TRP3_QuestLogPage" hidden="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_QuestLogPage" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 
 		<Frames>

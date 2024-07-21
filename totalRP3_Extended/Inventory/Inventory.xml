@@ -20,13 +20,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="37" y="37"/>
 
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture parentKey="EmptySlot" inherits="Spellbook-EmptySlot">
-					<Anchors>
-						<Anchor point="CENTER"/>
-					</Anchors>
-				</Texture>
-			</Layer>
 			<Layer level="BORDER">
 				<Texture parentKey="Icon">
 					<Size x="36" y="36"/>
@@ -44,7 +37,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<Texture parentKey="ActiveTexture" inherits="Spellbook-SlotFrame">
+				<Texture parentKey="ActiveTexture" file="Interface\Spellbook\Spellbook-Parts">
+					<Size x="70" y="65"/>
+					<TexCoords left="0.00390625" right="0.27734375" top="0.44140625" bottom="0.69531250"/>
 					<Anchors>
 						<Anchor point="CENTER" x="1.5"/>
 					</Anchors>
@@ -513,13 +508,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 		<Frames>
 
-			<Frame parentKey="Main" inherits="BackdropTemplate">
+			<Frame parentKey="Main" inherits="TRP3_TooltipBackdropTemplate">
 				<!--<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
 					<EdgeSize><AbsValue val="24"/></EdgeSize>
 					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 				</Backdrop>-->
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_400_24_5555" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 
 				<Size x="350" y="375" />

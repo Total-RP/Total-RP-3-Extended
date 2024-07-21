@@ -134,14 +134,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.display"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="quality" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentQuality">
+			<Frame parentKey="quality" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentQuality">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="16" y="-2"/>
-					<Anchor point="RIGHT" x="-20" y="-2"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="25" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
 				</Anchors>
 			</Frame>
 
@@ -149,15 +149,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
 				</Anchors>
 			</EditBox>
 
 			<EditBox parentKey="right" inherits="TRP3_TitledHelpEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="38" y="0" relativePoint="RIGHT" relativeKey="$parent.left"/>
-					<Anchor point="RIGHT" x="-35" y="-2"/>
+					<Anchor point="LEFT" x="30" y="0" relativePoint="RIGHT" relativeKey="$parent.left"/>
+					<Anchor point="RIGHT" x="-35" y="0"/>
 				</Anchors>
 			</EditBox>
 
@@ -171,7 +171,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Button parentKey="preview" inherits="TRP3_QuestButtonTemplate">
 				<Anchors>
-					<Anchor point="CENTER" x="0" y="-45"/>
+					<Anchor point="CENTER" x="-75" y="-45"/>
 				</Anchors>
 			</Button>
 
@@ -179,21 +179,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.gameplay"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
 				</Anchors>
 			</EditBox>
 
 			<EditBox parentKey="weight" inherits="TRP3_TitledHelpEditBox" numeric="true">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="38" y="0" relativePoint="RIGHT" relativeKey="$parent.value"/>
-					<Anchor point="RIGHT" x="-35" y="-2"/>
+					<Anchor point="LEFT" x="30" y="0" relativePoint="RIGHT" relativeKey="$parent.value"/>
+					<Anchor point="RIGHT" x="-35" y="0"/>
 				</Anchors>
 			</EditBox>
 
 			<CheckButton parentKey="wearable" inherits="TRP3_CheckBox" name="$parentWearable">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="-5" y="-8" relativePoint="BOTTOMLEFT" relativeKey="$parent.value"/>
+					<Anchor point="TOPLEFT" x="-8" y="-8" relativePoint="BOTTOMLEFT" relativeKey="$parent.value"/>
 				</Anchors>
 			</CheckButton>
 

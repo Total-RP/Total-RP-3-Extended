@@ -64,9 +64,24 @@ local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
 	return distance <= maxDistance and distance <= myMaxDistance;
 end
 
+local function isLocalSoundAllowed(sender)
+	-- No instance: sound can be played
+	if not IsInInstance() then
+		return true;
+	end
+
+	-- Instance: sound can only be played if in a party or raid
+	local senderAmbiguated = Ambiguate(sender, "none");
+	if UnitInParty(senderAmbiguated) or UnitInRaid(senderAmbiguated) then
+		return true;
+	end
+
+	return false;
+end
+
 local function initSharedSound()
 	Communications.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
-		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) and not IsInInstance() then
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) and isLocalSoundAllowed(sender) then
 			if soundID and channel and distance and instanceID and posY and posX and posZ then
 				distance = tonumber(distance) or 0;
 				posY = tonumber(posY) or 0;
@@ -106,7 +121,7 @@ local function initSharedSound()
 	end);
 
 	Communications.broadcast.registerCommand(LOCAL_SOUNDFILE_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
-		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) and not IsInInstance() then
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) and isLocalSoundAllowed(sender) then
 			if soundID and channel and distance and instanceID and posY and posX and posZ then
 				distance = tonumber(distance) or 0;
 				posY = tonumber(posY) or 0;

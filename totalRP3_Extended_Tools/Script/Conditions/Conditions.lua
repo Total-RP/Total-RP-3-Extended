@@ -2,7 +2,6 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local pairs, _G, type, tinsert, wipe, assert, tostring, strtrim = pairs, _G, type, tinsert, wipe, assert, tostring, strtrim;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
@@ -184,7 +183,7 @@ local function onOperandSelected(operandID, list, loadEditor)
 		end
 	end
 
-	_G[list:GetName() .. "Text"]:SetText(fullText);
+	list:OverrideText(fullText);
 	checkNumeric();
 
 	return hasPreview;
@@ -571,15 +570,20 @@ local getEvaluatedOperands = function(structure)
 	wipe(structure);
 	tinsert(structure, {loc.OP_EVAL_VALUE});
 	for _, group in pairs(evaluatedOrder) do
-		local subStructure = {};
-		tinsert(subStructure, {group});
+		if group == "" then
+			-- If divider, don't add a empty substructure to it or it'll fall over and die
+			tinsert(structure, {group});
+		else
+			local subStructure = {};
+			tinsert(subStructure, {group});
 
-		for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
-			local operandInfo = getOperandEditorInfo(operandID);
-			tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
+			for _, operandID in pairs(evaluatedOperands[group] or EMPTY) do
+				local operandInfo = getOperandEditorInfo(operandID);
+				tinsert(subStructure, {operandInfo.title or operandID, operandID, operandInfo.description});
+			end
+
+			tinsert(structure, {group, subStructure});
 		end
-
-		tinsert(structure, {group, subStructure});
 	end
 	return structure;
 end
@@ -638,11 +642,13 @@ function editor.init()
 		{getComparatorText(">="), ">="},
 	}
 	TRP3_API.ui.listbox.setupListBox(operandEditor.comparator, comparatorStructure, checkNumeric, nil, 175, true);
+	operandEditor.comparator:SetWidth(175);
 
 	TRP3_API.ui.listbox.setupListBox(operandEditor.left, getEvaluatedOperands(leftListStructure), function(operandID, list)
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
+	operandEditor.left:SetWidth(220);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.left.args, operandEditor.left, "TOP", 0, 5, true, operandEditor.left);
 	operandEditor.left.preview:SetText(loc.OP_PREVIEW);
 	operandEditor.left.edit:SetText(loc.OP_CONFIGURE);
@@ -669,6 +675,7 @@ function editor.init()
 		list.argsData = nil;
 		onOperandSelected(operandID, list, true);
 	end, nil, 220, true);
+	operandEditor.right:SetWidth(220);
 	TRP3_API.ui.frame.configureHoverFrame(operandEditor.right.args, operandEditor.right, "TOP", 0, 5, true, operandEditor.right);
 	operandEditor.right.preview:SetText(loc.OP_PREVIEW);
 	operandEditor.right.edit:SetText(loc.OP_CONFIGURE);

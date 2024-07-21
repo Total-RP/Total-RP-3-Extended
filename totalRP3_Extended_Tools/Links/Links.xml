@@ -182,7 +182,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 						<Frames>
 
-							<Frame parentKey="workflow" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentWorkflow">
+							<Frame parentKey="workflow" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentWorkflow">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-10"/>
 								</Anchors>
@@ -220,8 +220,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Scripts>
 							</Button>
 
-							<Frame name="TRP3_EventBrowser" parentKey="container" inherits="TRP3_FieldSetFrame" hidden="true">
+							<Frame name="TRP3_EventBrowser" parentKey="container" inherits="TRP3_GroupBoxTemplate" hidden="true">
 								<Size x="400" y="500" />
+								<KeyValues>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+								</KeyValues>
 								<Anchors>
 									<Anchor point="RIGHT" x="-10" y="0" relativeKey="$parent" relativePoint="LEFT"/>
 								</Anchors>

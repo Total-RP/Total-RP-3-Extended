@@ -14,14 +14,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="10" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.title"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="quality" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentQuality">
+			<Frame parentKey="quality" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentQuality">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="16" y="-2"/>
-					<Anchor point="RIGHT" x="-20" y="-2"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.name" x="25" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
 				</Anchors>
 			</Frame>
 
@@ -29,14 +29,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.name"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
 				</Anchors>
 			</EditBox>
 
 			<EditBox parentKey="right" inherits="TRP3_TitledHelpEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="38" y="0" relativePoint="RIGHT" relativeKey="$parent.left"/>
+					<Anchor point="LEFT" x="30" y="0" relativePoint="RIGHT" relativeKey="$parent.left"/>
 					<Anchor point="RIGHT" x="-35" y="-2"/>
 				</Anchors>
 			</EditBox>
@@ -47,15 +47,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Layer level="OVERLAY">
 						<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
 							<Anchors>
-								<Anchor point="TOPLEFT" x="10" y="12"/>
-								<Anchor point="TOPRIGHT" x="0" y="12"/>
+								<Anchor point="TOPLEFT" x="13" y="0"/>
+								<Anchor point="TOPRIGHT" x="0" y="0"/>
 							</Anchors>
 							<Color r="0.95" g="0.75" b="0.1"/>
 						</FontString>
 					</Layer>
 				</Layers>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="-8" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.left"/>
+					<Anchor point="TOPLEFT" x="-8" y="-15" relativePoint="BOTTOMLEFT" relativeKey="$parent.left"/>
 					<Anchor point="RIGHT" relativePoint="CENTER" x="-15" y="0"/>
 				</Anchors>
 			</Frame>
@@ -190,16 +190,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</CheckButton>
 
-			<Frame parentKey="pickSound" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentPickSound">
+			<Frame parentKey="pickSound" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentPickSound">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="-5" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.noAdd"/>
+					<Anchor point="TOPLEFT" x="3" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.noAdd"/>
 				</Anchors>
 			</Frame>
 
-			<Frame parentKey="dropSound" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentDropSound">
+			<Frame parentKey="dropSound" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentDropSound">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="0" relativeKey="$parent.pickSound"/>
-					<Anchor point="LEFT" x="0" y="0" relativePoint="CENTER"/>
+					<Anchor point="LEFT" x="13" y="0" relativePoint="CENTER"/>
 				</Anchors>
 			</Frame>
 
@@ -230,31 +230,29 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ItemEditorFrameContainer" inherits="TRP3_EditorTitledFrame" virtual="true">
 		<Frames>
-			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="0" y="-5"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="5" y="-5"/>
 				</Anchors>
 			</Frame>
 
 			<EditBox parentKey="durability" inherits="TRP3_TitledHelpEditBox" numeric="true">
-				<Size x="0" y="18"/>
+				<Size x="220" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="22" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.type"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
+					<Anchor point="TOPLEFT" x="4" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.type"/>
 				</Anchors>
 			</EditBox>
 
 			<EditBox parentKey="maxweight" inherits="TRP3_TitledHelpEditBox" numeric="true">
-				<Size x="0" y="18"/>
+				<Size x="220" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="-20" relativePoint="BOTTOMLEFT" relativeKey="$parent.durability"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
 				</Anchors>
 			</EditBox>
 
 			<CheckButton parentKey="onlyinner" inherits="TRP3_CheckBox" name="$parentContainer">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-15" relativePoint="BOTTOMLEFT" relativeKey="$parent.maxweight"/>
+					<Anchor point="TOPLEFT" x="-8" y="-15" relativePoint="BOTTOMLEFT" relativeKey="$parent.maxweight"/>
 				</Anchors>
 			</CheckButton>
 

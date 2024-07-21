@@ -52,16 +52,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 				<Frames>
 
-					<Frame parentKey="background" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentBackground">
+					<Frame parentKey="background" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentBackground">
 						<Anchors>
-							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="-10" y="-10"/>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="10" y="-10"/>
 						</Anchors>
 					</Frame>
 
 					<EditBox parentKey="height" inherits="TRP3_TitledHelpEditBox" numeric="true">
 						<Size x="0" y="18"/>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="20" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.background"/>
+							<Anchor point="TOPLEFT" x="4" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.background"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
 						</Anchors>
 					</EditBox>
@@ -76,41 +76,41 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 					<CheckButton parentKey="tile" inherits="TRP3_CheckBox" name="$parentVertile">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="-8" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.width"/>
+							<Anchor point="TOPLEFT" x="-8" y="-12" relativePoint="BOTTOMLEFT" relativeKey="$parent.width"/>
 						</Anchors>
 					</CheckButton>
 
 					<CheckButton parentKey="resizable" inherits="TRP3_CheckBox" name="$parentHoritile">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="-15" relativePoint="BOTTOMLEFT" relativeKey="$parent.tile"/>
+							<Anchor point="TOPLEFT" x="0" y="-17" relativePoint="BOTTOMLEFT" relativeKey="$parent.tile"/>
 						</Anchors>
 					</CheckButton>
 
-					<Frame parentKey="border" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentBorder">
+					<Frame parentKey="border" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentBorder">
 						<Anchors>
-							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.width" x="-20" y="10"/>
+							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.width" x="-4" y="10"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="h1_font" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentH1Font">
+					<Frame parentKey="h1_font" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentH1Font">
 						<Anchors>
-							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.height" x="-20" y="-10"/>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.height" x="-4" y="-10"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="h2_font" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentH2Font">
+					<Frame parentKey="h2_font" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentH2Font">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h1_font" x="0" y="-10"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="h3_font" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentH3Font">
+					<Frame parentKey="h3_font" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentH3Font">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h2_font" x="0" y="-10"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="p_font" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentPFont">
+					<Frame parentKey="p_font" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentPFont">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.h3_font" x="0" y="-10"/>
 						</Anchors>

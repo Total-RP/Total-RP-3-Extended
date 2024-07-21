@@ -4,6 +4,7 @@
 local Utils = TRP3_API.utils;
 local pairs, tinsert, sort = pairs, tinsert, table.sort;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
+local colorQuestYellow = TRP3_API.CreateColorFromBytes(190, 155, 0);
 
 local frame = TRP3_QuestObjectives;
 
@@ -45,7 +46,7 @@ local function display()
 				local completeQuestID = campaignID .. TRP3_API.extended.ID_SEPARATOR .. questID;
 				local questClass = getClass(completeQuestID)
 				local questIcon, questName, _ = getClassDataSafe(questClass);
-				HTML = HTML .. "\n{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t " .. TRP3_API.Colors.Yellow("{link*" .. completeQuestID .. "*" .. questName .. "}") .. "{/h2}";
+				HTML = HTML .. "\n{h2}|TInterface\\ICONS\\" .. questIcon .. ":20:20|t " .. colorQuestYellow("{link*" .. completeQuestID .. "*" .. questName .. "}") .. "{/h2}";
 				if questLog.OB then
 					local objIds = {};
 					for objectiveID, _ in pairs(questLog.OB) do
@@ -57,11 +58,11 @@ local function display()
 						local objectiveClass = questClass.OB[objectiveID];
 						local objText = UNKNOWN;
 						if objectiveClass then
-							local obectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
+							local objectiveText = TRP3_API.script.parseArgs(objectiveClass.TX or "", TRP3_API.quest.getCampaignVarStorage());
 							if state == true then
-								objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. obectiveText;
+								objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. objectiveText;
 							else
-								objText = "- " .. obectiveText;
+								objText = "- " .. objectiveText;
 							end
 						end
 						HTML = HTML .. objText .. "\n";
@@ -89,7 +90,7 @@ local function display()
 		end
 
 		if questCount > 0 then
-			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. TRP3_API.Colors.Yellow("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}" .. HTML;
+			HTML = "{h1}|TInterface\\ICONS\\" .. campaignIcon .. ":20:20|t " .. colorQuestYellow("{link*" .. campaignID .. "*" .. campaignName .. "}") .. "{/h1}" .. HTML;
 		end
 
 		local hasOneActionActive = false;
@@ -107,10 +108,10 @@ local function display()
 		end
 
 		if hasOneActionActive then
-			frame.Tracker:SetPoint("TOP", frame.Actions, "BOTTOM", 0, -10);
+			frame.Tracker:SetPoint("TOPLEFT", frame.Actions, "BOTTOMLEFT", 0, -10);
 			frame.Actions:Show();
 		else
-			frame.Tracker:SetPoint("TOP", frame.Actions, "BOTTOM", 0, 50);
+			frame.Tracker:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0);
 		end
 	end
 	frame.Tracker.html = Utils.str.toHTML(HTML, true, true);
@@ -119,8 +120,6 @@ end
 
 function frame.init()
 	local questLogFrame = TRP3_QuestLogPage;
-
-	frame.Actions.caption:Hide()
 
 	for action, button in pairs(ACTION_FRAMES) do
 		button:SetNormalTexture("Interface\\ICONS\\"..TRP3_API.quest.getActionTypeIcon(action));
@@ -159,15 +158,10 @@ function frame.init()
 
 	C_Timer.NewTicker(0.5, function()
 		frame:Hide();
-		if ObjectiveTrackerBlocksFrame:IsShown() then
-			local top = ObjectiveTrackerBlocksFrame.contentsHeight or 0;
-			if top > 0 then
-				top = top + 10
-			end
-			frame:SetPoint("TOPRIGHT", ObjectiveTrackerBlocksFrame, "TOPRIGHT", 0, -top);
-			frame:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame, "TOPLEFT", 0, -top);
-			frame:SetWidth(ObjectiveTrackerBlocksFrame:GetWidth());
-			frame.Tracker:SetWidth(ObjectiveTrackerBlocksFrame:GetWidth());
+		if ObjectiveTrackerFrame:IsShown() then
+			frame:SetPoint("TOPRIGHT", ObjectiveTrackerFrame.NineSlice, "BOTTOMRIGHT", 0, -10);
+			frame:SetPoint("TOPLEFT", ObjectiveTrackerFrame.NineSlice, "BOTTOMLEFT", 0, -10);
+			frame.Tracker:SetWidth(ObjectiveTrackerFrame.NineSlice:GetWidth());
 			display();
 			frame:Show();
 		end

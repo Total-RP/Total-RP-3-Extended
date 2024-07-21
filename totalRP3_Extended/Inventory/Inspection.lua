@@ -125,8 +125,7 @@ local function onSlotLeave()
 	TRP3_API.inventory.resetWearable(inspectionFrame.Main, inspectionFrame.Main.Model);
 end
 
-local function onToolbarButtonClicked()
-	local unitID = Utils.str.getUnitID("target");
+local function requestCharacterInspection(unitID)
 	if unitID and (inspectionFrame.current ~= unitID or not inspectionFrame:IsVisible()) then
 		inspectionFrame.current = unitID
 
@@ -152,6 +151,7 @@ local function onToolbarButtonClicked()
 		sendRequest();
 	end
 end
+TRP3_API.inventory.requestCharacterInspection = requestCharacterInspection;
 
 function inspectionFrame.init()
 
@@ -200,16 +200,14 @@ function inspectionFrame.init()
 				onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 				configText = loc.INV_PAGE_CHARACTER_INSPECTION,
 				condition = function(_, unitID)
-					if UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) then
-						if TRP3_API.register.isUnitKnown("target") then
-							local character = TRP3_API.register.getUnitIDCharacter(Utils.str.getUnitID("target"));
-							return (tonumber(character.extended or 0) or 0) > 0;
-						end
+					if UnitIsPlayer("target") and unitID ~= Globals.player_id and not TRP3_API.register.isIDIgnored(unitID) and TRP3_API.register.isUnitKnown("target") then
+						local character = TRP3_API.register.getUnitIDCharacter(unitID);
+						return (tonumber(character.extended or 0) or 0) > 0;
 					end
 					return false;
 				end,
 				onClick = function()
-					onToolbarButtonClicked();
+					requestCharacterInspection(Utils.str.getUnitID("target"));
 				end,
 				tooltip = loc.INV_PAGE_CHARACTER_INSPECTION,
 				tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.INV_PAGE_CHARACTER_INSPECTION_TT),

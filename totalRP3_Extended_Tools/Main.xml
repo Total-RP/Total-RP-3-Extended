@@ -105,8 +105,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Frame>
 
-			<Frame name="$parentActions" parentKey="actions" inherits="TRP3_FieldSetFrame">
+			<Frame name="$parentActions" parentKey="actions" inherits="TRP3_GroupBoxTemplate">
 				<Size x="150" y="100"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="24"/>
 					<Anchor point="CENTER" relativePoint="CENTER" x="0" y="0"/>
@@ -129,8 +132,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 			</Frame>
 
-			<Frame name="$parentSpecificObject" parentKey="specific" inherits="TRP3_FieldSetFrame">
+			<Frame name="$parentSpecificObject" parentKey="specific" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="100"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="24"/>
 					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.actions" x="-10" y="0"/>
@@ -154,8 +160,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 			</Frame>
 
-			<Frame name="$parentRootObject" parentKey="root" inherits="TRP3_FieldSetFrame">
+			<Frame name="$parentRootObject" parentKey="root" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="100"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="24"/>
 					<Anchor point="RIGHT" x="-45" y="0"/>
@@ -176,9 +185,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 						</Anchors>
 					</Button>
-					<Frame parentKey="select" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSelect">
+					<Frame parentKey="select" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentSelect">
 						<Anchors>
-							<Anchor point="BOTTOMRIGHT" x="7" y="4"/>
+							<Anchor point="BOTTOMRIGHT" x="-7" y="4"/>
 						</Anchors>
 					</Frame>
 				</Frames>
@@ -323,7 +332,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Frames>
 
-			<Frame parentKey="step" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentStep">
+			<Frame parentKey="step" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentStep">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="0"/>
 				</Anchors>

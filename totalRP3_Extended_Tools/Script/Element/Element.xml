@@ -6,9 +6,9 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Button inherits="TRP3_QuestButtonTemplate" name="TRP3_WorkflowLinkButton" virtual="true">
 		<Frames>
-			<Frame parentKey="select" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentSelect">
+			<Frame parentKey="select" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentSelect">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Name" x="-20" y="-5"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Name" x="-4" y="-5"/>
 				</Anchors>
 			</Frame>
 		</Frames>
@@ -20,37 +20,36 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 		<Frames>
 
-			<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+			<Frame parentKey="type" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
 				<Anchors>
-					<Anchor point="TOP" x="-5" y="-65"/>
+					<Anchor point="TOP" x="-5" y="-55"/>
 				</Anchors>
 			</Frame>
 
 			<EditBox parentKey="sound" inherits="TRP3_TitledHelpEditBox">
-				<Size x="205" y="18"/>
+				<Size x="215" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="20" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="4" y="-10"/>
 				</Anchors>
 			</EditBox>
 
 			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
-				<Size x="205" y="18"/>
+				<Size x="215" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.sound" x="0" y="-20"/>
 				</Anchors>
 			</EditBox>
 
 			<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
-				<Size x="205" y="18"/>
+				<Size x="215" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.text" x="0" y="-20"/>
 				</Anchors>
 			</EditBox>
 
-			<Frame parentKey="interrupt" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentInterrupt">
+			<Frame parentKey="interrupt" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentInterrupt">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-20" y="-15"/>
-					<Anchor point="RIGHT" x="-35" y="0"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-4" y="-15"/>
 				</Anchors>
 			</Frame>
 
@@ -59,9 +58,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Icon browser  -->
-	<Frame name="TRP3_ObjectBrowser" hidden="true" enableMouse="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_ObjectBrowser" hidden="true" enableMouse="true" inherits="TRP3_BrowserDialogBackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_24_5555" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
 		</KeyValues>
 
 		<Size x="550" y="400"/>
@@ -96,11 +95,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Button>
 
-			<Frame parentKey="content" inherits="BackdropTemplate">
+			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
 				<Size x="0" y="295"/>
 
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 
 				<Anchors>
@@ -132,10 +131,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 
 			<!-- Filter section -->
-			<Frame parentKey="filter" inherits="BackdropTemplate">
+			<Frame parentKey="filter" inherits="TRP3_TooltipBackdropTemplate">
 				<Size x="0" y="60"/>
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="10" y="10"/>

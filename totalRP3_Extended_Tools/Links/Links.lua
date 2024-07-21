@@ -27,6 +27,7 @@ local function decorateLinkElement(frame, index)
 	TRP3_API.ui.listbox.setupListBox(frame.select, editor.workflowListStructure, function(value)
 		toolFrame.specificDraft.LI[structureInfo.field] = stEtN(value);
 	end, nil, LINK_LIST_WIDTH, true);
+	frame.select:SetWidth(LINK_LIST_WIDTH);
 	TRP3_ScriptEditorNormal.safeLoadList(frame.select, editor.workflowIDs, toolFrame.specificDraft.LI[structureInfo.field] or "");
 end
 
@@ -308,6 +309,7 @@ local function reloadWorkflowlist()
 	TRP3_API.ui.listbox.setupListBox(gameLinksEditor.editor.workflow,
 		TRP3_ScriptEditorNormal.reloadWorkflowlist(gameLinksEditor.editor.workflowIDs),
 		nil, nil, ACTION_LIST_WIDTH, true);
+	gameLinksEditor.editor.workflow:SetWidth(ACTION_LIST_WIDTH);
 end
 
 local function newEvent()
@@ -508,7 +510,8 @@ function editor.init(ToolFrame)
 		toggleEventBrowser();
 	end);
 
-	TRP3_API.ui.frame.setupFieldPanel(gameLinksEditor.editor.container, loc.WO_EVENT_EX_BROWSER_TITLE, 150);
+	gameLinksEditor.editor.container:SetTitleText(loc.WO_EVENT_EX_BROWSER_TITLE);
+	gameLinksEditor.editor.container:SetTitleWidth(150);
 
 	gameLinksEditor:SetScript("OnHide", function() gameLinksEditor.editor:Hide() end);
 

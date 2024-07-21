@@ -310,6 +310,7 @@ local function loadWorkflows()
 	editor.workflowIDs = {};
 	editor.workflowListStructure = TRP3_ScriptEditorNormal.reloadWorkflowlist(editor.workflowIDs);
 	TRP3_API.ui.listbox.setupListBox(editor.workflow, editor.workflowListStructure, nil, nil, 300, true);
+	editor.workflow:SetWidth(300);
 end
 
 local function load()
@@ -500,7 +501,8 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		{loc.CM_LEFT, "LEFT"},
 		{loc.CM_RIGHT, "RIGHT"},
 		{loc.REG_RELATION_NONE, "NONE"}
-	}, nil, nil, 195, true);
+	}, nil, nil, 210, true);
+	editor.directionValue:SetWidth(210);
 
 	-- Name
 	editor.name.Text:SetText(loc.DI_NAME);

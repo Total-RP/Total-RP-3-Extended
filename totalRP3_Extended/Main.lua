@@ -563,6 +563,7 @@ local function onStart()
 	TRP3_API.quest.onStart();
 	TRP3_API.extended.document.onStart();
 	TRP3_API.extended.dialog.onStart();
+	TRP3_API.extended.unitpopups.init();
 
 	-- Config
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, initConfig);

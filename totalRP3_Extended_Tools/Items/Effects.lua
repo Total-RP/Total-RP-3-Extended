@@ -50,7 +50,8 @@ local function item_bag_durability_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_BAG_DURABILITY_METHOD, loc.EFFECT_ITEM_BAG_DURABILITY_METHOD_HEAL), "HEAL", loc.EFFECT_ITEM_BAG_DURABILITY_METHOD_HEAL_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_ITEM_BAG_DURABILITY_METHOD, loc.EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE), "DAMAGE", loc.EFFECT_ITEM_BAG_DURABILITY_METHOD_DAMAGE_TT},
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.method, outputs, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.method, outputs, nil, nil, 270, true);
+	editor.method:SetWidth(270);
 
 	-- Amount
 	editor.amount.title:SetText(loc.EFFECT_ITEM_BAG_DURABILITY_VALUE);
@@ -174,7 +175,8 @@ local function item_add_init()
 	}
 
 	-- Source
-	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 270, true);
+	editor.source:SetWidth(270);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -235,7 +237,8 @@ local function item_remove_init()
 	}
 
 	-- Source
-	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 270, true);
+	editor.source:SetWidth(270);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -329,7 +332,8 @@ local function item_roll_dice_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_OBJECT), "o", loc.EFFECT_SOURCE_OBJECT_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_CAMPAIGN), "c", loc.EFFECT_SOURCE_CAMPAIGN_TT}
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 270, true);
+	editor.source:SetWidth(270);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -514,7 +518,8 @@ local function run_item_workflow_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_SLOT), "ch", loc.EFFECT_SOURCE_SLOT_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_SOURCE, loc.EFFECT_SOURCE_SLOT_B), "si", loc.EFFECT_SOURCE_SLOT_B_TT}
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.source, sources, nil, nil, 270, true);
+	editor.source:SetWidth(270);
 
 	-- ID
 	editor.id.title:SetText(loc.EFFECT_RUN_WORKFLOW_ID);
@@ -784,7 +789,8 @@ local function inv_item_count_init()
 	}
 
 	-- Source
-	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 185, true);
+	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 210, true);
+	editor.source:SetWidth(210);
 
 	function editor.load(args)
 		local data = args or EMPTY;
@@ -823,6 +829,7 @@ local function inv_item_weight_init()
 
 	-- Source
 	TRP3_API.ui.listbox.setupListBox(editor.source, inventorySources, nil, nil, 185, true);
+	editor.source:SetWidth(185);
 
 	function editor.load(args)
 		local data = args or EMPTY;

@@ -97,8 +97,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<!--    Filters section   -->
 			<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-			<Frame name="$parentFilters" parentKey="filters" inherits="TRP3_FieldSetFrame">
+			<Frame name="$parentFilters" parentKey="filters" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="100"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-20"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
@@ -106,7 +109,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 				<Frames>
 
-					<Frame parentKey="type" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentType">
+					<Frame parentKey="type" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="30" y="-18"/>
 						</Anchors>
@@ -115,7 +118,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
 						<Size x="160" y="18"/>
 						<Anchors>
-							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="23" y="-10"/>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="5" y="-10"/>
 						</Anchors>
 					</EditBox>
 
@@ -133,9 +136,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</EditBox>
 
-					<Frame parentKey="locale" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentLocale">
+					<Frame parentKey="locale" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentLocale">
 						<Anchors>
-							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.owner" x="0" y="5"/>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.owner" x="25" y="7"/>
 						</Anchors>
 					</Frame>
 
@@ -158,8 +161,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<!--    Action section    -->
 			<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-			<Frame name="$parentBottom" parentKey="bottom" inherits="TRP3_FieldSetFrame">
+			<Frame name="$parentBottom" parentKey="bottom" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="160"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
@@ -204,7 +210,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<!--     List section     -->
 			<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-			<Frame name="$parentContainer" parentKey="container" inherits="TRP3_FieldSetFrame">
+			<Frame name="$parentContainer" parentKey="container" inherits="TRP3_GroupBoxTemplate">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-15" relativeKey="$parent.filters" relativePoint="BOTTOM"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>

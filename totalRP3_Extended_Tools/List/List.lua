@@ -185,9 +185,11 @@ function refresh()
 	end
 
 	if ToolFrame.list.hasSearch then
-		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc.DB_RESULTS, 200);
+		ToolFrame.list.container:SetTitleText(loc.DB_RESULTS);
+		ToolFrame.list.container:SetTitleWidth(200);
 	else
-		TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.container, loc.DB_LIST, 200);
+		ToolFrame.list.container:SetTitleText(loc.DB_LIST);
+		ToolFrame.list.container:SetTitleWidth(200);
 	end
 
 	table.sort(idList);
@@ -640,8 +642,10 @@ end
 
 function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame = toolFrame;
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.filters, loc.DB_FILTERS, 150);
-	TRP3_API.ui.frame.setupFieldPanel(ToolFrame.list.bottom, loc.DB_ACTIONS, 150);
+	ToolFrame.list.filters:SetTitleText(loc.DB_FILTERS);
+	ToolFrame.list.filters:SetTitleWidth(150);
+	ToolFrame.list.bottom:SetTitleText(loc.DB_ACTIONS);
+	ToolFrame.list.bottom:SetTitleWidth(150);
 
 	createTabBar();
 	createTutorialStructure();
@@ -704,7 +708,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_DOCUMENT), TRP3_DB.types.DOCUMENT},
 		{TRP3_API.formats.dropDownElements:format(loc.TYPE, loc.TYPE_DIALOG), TRP3_DB.types.DIALOG},
 	}
-	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, function(value) filterList(value, nil) end, nil, 155, true);
+	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.type, types, function(value) filterList(value, nil) end, nil, 170, true);
+	ToolFrame.list.filters.type:SetWidth(170);
 
 	local template = "|T%s:11:16|t";
 	local locales = {
@@ -715,7 +720,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 		{TRP3_API.formats.dropDownElements:format(loc.DB_LOCALE, template:format(TRP3_API.extended.tools.getObjectLocaleImage("es"))), "es"},
 		{TRP3_API.formats.dropDownElements:format(loc.DB_LOCALE, template:format(TRP3_API.extended.tools.getObjectLocaleImage("de"))), "de"},
 	}
-	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.locale, locales, function(value) filterList(nil, value) end, nil, 155, true);
+	TRP3_API.ui.listbox.setupListBox(ToolFrame.list.filters.locale, locales, function(value) filterList(nil, value) end, nil, 170, true);
+	ToolFrame.list.filters.locale:SetWidth(170);
 	ToolFrame.list.filters.locale:SetSelectedValue(0);
 	ToolFrame.list.filters.type:SetSelectedValue(0);
 	ToolFrame.list.filters.search:SetText(SEARCH);
@@ -811,6 +817,8 @@ function TRP3_API.extended.tools.initList(toolFrame)
 	ToolFrame.list.container.import.title:SetText(loc.DB_IMPORT);
 	ToolFrame.list.container.import.content.title:SetText(loc.DB_IMPORT_TT);
 	ToolFrame.list.bottom.import:SetScript("OnClick", function()
+		ToolFrame.list.bottom.item.templates:Hide();
+		ToolFrame.list.bottom.campaign.templates:Hide();
 		ToolFrame.list.container.import.content.scroll.text:SetText("");
 		ToolFrame.list.container.import:Show();
 	end);

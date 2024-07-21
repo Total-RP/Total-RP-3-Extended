@@ -61,7 +61,8 @@ local function aura_apply_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_AURA_APPLY_MERGE_MODE, loc.EFFECT_AURA_APPLY_REFRESH), "=", loc.EFFECT_AURA_APPLY_REFRESH_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_AURA_APPLY_MERGE_MODE, loc.EFFECT_AURA_APPLY_EXTEND), "+", loc.EFFECT_AURA_APPLY_EXTEND_TT},
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.mergeMode, methods, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.mergeMode, methods, nil, nil, 270, true);
+	editor.mergeMode:SetWidth(270);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;
@@ -137,7 +138,8 @@ local function aura_duration_init()
 		{TRP3_API.formats.dropDownElements:format(loc.AU_FIELD_DURATION, loc.EFFECT_AURA_DURATION_ADD), "+", loc.EFFECT_AURA_DURATION_ADD_TT},
 		{TRP3_API.formats.dropDownElements:format(loc.AU_FIELD_DURATION, loc.EFFECT_AURA_DURATION_SUBTRACT), "-", loc.EFFECT_AURA_DURATION_SUBTRACT_TT},
 	}
-	TRP3_API.ui.listbox.setupListBox(editor.method, methods, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.method, methods, nil, nil, 270, true);
+	editor.method:SetWidth(270);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;
@@ -194,7 +196,8 @@ local function aura_var_set_init()
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_MULTIPLY), "x"},
 		{TRP3_API.formats.dropDownElements:format(loc.EFFECT_OPERATION_TYPE, loc.EFFECT_OPERATION_TYPE_DIV), "/"}
 	};
-	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 250, true);
+	TRP3_API.ui.listbox.setupListBox(editor.type, types, nil, nil, 270, true);
+	editor.type:SetWidth(270);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or EMPTY;

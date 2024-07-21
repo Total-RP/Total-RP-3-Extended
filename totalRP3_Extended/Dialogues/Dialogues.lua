@@ -517,12 +517,22 @@ function TRP3_API.extended.dialog.onStart()
 	end;
 
 	-- Choices
-	dialogFrame.Choice1.Num.Display:SetNumber(1);
-	dialogFrame.Choice2.Num.Display:SetNumber(2);
-	dialogFrame.Choice3.Num.Display:SetNumber(3);
-	dialogFrame.Choice4.Num.Display:SetNumber(4);
-	dialogFrame.Choice5.Num.Display:SetNumber(5);
-	dialogFrame.choices = { dialogFrame.Choice1, dialogFrame.Choice2, dialogFrame.Choice3, dialogFrame.Choice4, dialogFrame.Choice5 }
+	dialogFrame.choices = {};
+	for i = 1, 5 do
+		local choiceButton = dialogFrame["Choice" .. i];
+
+		-- Set number texture
+		local iconIndex = i - 1;
+		local yOffset = 0.5 + floor(iconIndex / 8) * 0.125;
+		local xOffset = mod(iconIndex, 8) * 0.125;
+
+		choiceButton.Num.Display.Icon:SetTexture("Interface/WorldMap/UI-QuestPoi-NumberIcons");
+		choiceButton.Num.Display.Icon:SetTexCoord(xOffset, xOffset + 0.125, yOffset, yOffset + 0.125);
+		local scale = choiceButton.Num.Display.Icon:GetParent():GetPinScale();
+		choiceButton.Num.Display.Icon:SetSize(scale * 32, scale * 32);
+
+		tinsert(dialogFrame.choices, choiceButton);
+	end
 
 	-- History
 	local function showHistory()

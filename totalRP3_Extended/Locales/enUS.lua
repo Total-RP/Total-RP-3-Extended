@@ -1832,6 +1832,9 @@ Please make sure to always give the player a way to get rid of an aura.
 	LAUNCHER_ACTION_DATABASE = "Toggle Extended database",
 	LAUNCHER_ACTION_INVENTORY = "Open inventory",
 	LAUNCHER_ACTION_QUESTLOG = "Open quest log",
+
+	UNIT_POPUPS_EXTENDED_OPEN_EXCHANGE = "Open Exchange",
+	UNIT_POPUPS_EXTENDED_CHARACTER_INSPECTION = "Inspect Inventory",
 };
 
 -- TODO: Put Extended strings into its own namespace - don't insert into Core.
