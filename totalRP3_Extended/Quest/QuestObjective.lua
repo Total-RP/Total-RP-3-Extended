@@ -125,8 +125,6 @@ end
 function frame.init()
 	local questLogFrame = TRP3_QuestLogPage;
 
-	frame.Actions.caption:Hide()
-
 	for action, button in pairs(ACTION_FRAMES) do
 		button:SetNormalTexture("Interface\\ICONS\\"..TRP3_API.quest.getActionTypeIcon(action));
 		button:SetScript("OnClick", function() TRP3_API.quest.performAction(action) end);

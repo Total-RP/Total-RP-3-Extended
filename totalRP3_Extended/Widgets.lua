@@ -40,3 +40,13 @@ TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555 = {
     edgeSize = 24,
     insets   = { left = 5, right = 5, top = 5, bottom = 5 },
 };
+
+TRP3_BACKDROP_MIXED_BANK_TOOLTIP_100_16_4222 = {
+    bgFile   = "Interface\\BankFrame\\Bank-Background",
+    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+    tile     = true,
+    tileEdge = true,
+    tileSize = 100,
+    edgeSize = 16,
+    insets   = { left = 4, right = 2, top = 2, bottom = 2 },
+};

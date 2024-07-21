@@ -87,6 +87,13 @@ read_globals = {
 		},
 	},
 
+	string = {
+		fields = {
+			"join",
+		}
+	},
+
+	"Ambiguate",
 	"AnchorUtil.CreateAnchor",
 	"AnchorUtil.CreateGridLayout",
 	"AnchorUtil.GridLayoutFactoryByCount",
@@ -135,6 +142,7 @@ read_globals = {
 	"GetAchievementInfo",
 	"GetMacroIndexByName",
 	"GetMouseFoci",
+	"GetNormalizedRealmName",
 	"GetNumMacros",
 	"GetPlayerInfoByGUID",
 	"GetSpellBookItemName",
@@ -170,6 +178,7 @@ read_globals = {
 	"LibStub",
 	"min",
 	"Mixin",
+	"mod",
 	"ModelFrameMixin",
 	"MouseIsOver",
 	"NavBar_AddButton",
@@ -178,7 +187,7 @@ read_globals = {
 	"NavBar_Initialize",
 	"NavBar_Reset",
 	"nop",
-	"ObjectiveTrackerBlocksFrame",
+	"ObjectiveTrackerFrame",
 	"PickupMacro",
 	"PROFESSIONS_USED_IN_COOKING",
 	"QUEST_LOG",
@@ -229,6 +238,8 @@ read_globals = {
 	"UnitClass",
 	"UnitExists",
 	"UnitFactionGroup",
+	"UnitInParty",
+	"UnitInRaid",
 	"UnitIsPlayer",
 	"UnitIsUnit",
 	"UnitName",
@@ -236,7 +247,7 @@ read_globals = {
 	"UnitRace",
 	"UnitSex",
 	"UNKNOWN",
-	"UNKOWN",
+	"UNKNOWNOBJECT",
 	"USE",
 	"WHITE_FONT_COLOR",
 	"wipe",
