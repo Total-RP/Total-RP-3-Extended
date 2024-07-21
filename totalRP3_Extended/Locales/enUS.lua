@@ -1832,7 +1832,7 @@ Please make sure to always give the player a way to get rid of an aura.
 	LAUNCHER_ACTION_DATABASE = "Toggle Extended database",
 	LAUNCHER_ACTION_INVENTORY = "Open inventory",
 	LAUNCHER_ACTION_QUESTLOG = "Open quest log",
-}
+};
 
 -- TODO: Put Extended strings into its own namespace - don't insert into Core.
 --       This change also needs applying to .github/scripts/localization.py.
