@@ -793,7 +793,9 @@ Ein benutzerdefiniertes Skript läuft weniger effizient, weil es bei jeder Ausf�
 	["EFFECT_SECURE_MACRO_HELP"] = [=[Du kannst alle üblichen Makrobefehle verwenden, auch benutzerdefinierte /kommandos anderer Addons.
 
 Auch Variablen aus Total RP 3: Extended sind möglich
-(|cffcccccc${meine_variable}|r).]=],
+(|cnGREEN_FONT_COLOR:${meine_variable}|r).
+
+|cnWARNING_FONT_COLOR:Beachten Sie, dass Makros maximal 255 Zeichen lang sein dürfen.|r]=],
 	["EFFECT_SECURE_MACRO_HELP_TITLE"] = "Makrobefehle",
 	["EFFECT_SHEATH"] = "Waffe ziehen/wegstecken",
 	["EFFECT_SHEATH_TT"] = "Ziehe/verstecke die Waffen des Charakters.",

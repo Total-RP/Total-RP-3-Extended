@@ -840,7 +840,9 @@ Un script lua personnalisé sera toujours moins efficace qu'un effet de processu
 |r]=],
 	["EFFECT_SECURE_MACRO_HELP"] = [=[Vous pouvez utiliser n'importe quelle commande que vous utiliseriez normalement dans une macro, y compris les /commandes d'autres add-ons.
 
-Vous pouvez également utiliser des variables Total RP 3: Extended (|cffcccccc${ma_variable}|r).]=],
+Vous pouvez également utiliser des variables Total RP 3: Extended (|cnGREEN_FONT_COLOR:${ma_variable}|r).
+
+|cnWARNING_FONT_COLOR:Notez que les macros peuvent avoir un maximum de 255 caractères.|r]=],
 	["EFFECT_SECURE_MACRO_HELP_TITLE"] = "Commandes de macro",
 	["EFFECT_SHEATH"] = "Dégainer/rengainer armes",
 	["EFFECT_SHEATH_TT"] = "Dégaine ou rengaine les armes du personnage.",

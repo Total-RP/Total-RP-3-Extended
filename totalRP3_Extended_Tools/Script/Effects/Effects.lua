@@ -77,11 +77,36 @@ local function text_init()
 	end
 end
 
+local MAX_CHARACTERS_IN_MACRO = 255;
+
+local function checkCharactersLimit()
+	local macro = TRP3_EffectEditorMacro.MacroText.scroll.text:GetText();
+	local numberOfCharactersInMacro = strlen(macro);
+
+
+	-- Always start with confirm enabled, then check for disable.
+	TRP3_EffectEditorMacro.confirm:Enable();
+	local color = WHITE_FONT_COLOR;
+	if numberOfCharactersInMacro > MAX_CHARACTERS_IN_MACRO then
+		color = RED_FONT_COLOR;
+		-- Too many characters, disable confirm.
+		TRP3_EffectEditorMacro.confirm:Disable();
+	end
+
+	-- Always disable confirm if the message text is empty
+	if strlen(macro) == 0 then
+		TRP3_EffectEditorMacro.confirm:Disable();
+	end
+
+	TRP3_EffectEditorMacro.CharactersCounter:SetTextColor(color:GetRGB())
+	TRP3_EffectEditorMacro.CharactersCounter:SetText(MAX_CHARACTERS_IN_MACRO - numberOfCharactersInMacro);
+end
+
 local function macro_init()
 
 	local editor = TRP3_EffectEditorMacro;
 	---@type EditBox
-	local textbox = editor.macroText.scroll.text
+	local textbox = editor.MacroText.scroll.text;
 
 	registerEffectEditor("secure_macro",{
 		title = loc.EFFECT_SECURE_MACRO_ACTION_NAME,
@@ -97,7 +122,11 @@ local function macro_init()
 	})
 
 	-- Text
-	setTooltipAll(editor.macroText.dummy, "RIGHT", 0, 5, loc.EFFECT_SECURE_MACRO_HELP_TITLE, loc.EFFECT_SECURE_MACRO_HELP);
+	setTooltipAll(editor.MacroText.dummy, "RIGHT", 0, 5, loc.EFFECT_SECURE_MACRO_HELP_TITLE, loc.EFFECT_SECURE_MACRO_HELP);
+
+	-- Add hooks to check for the length of the macro.
+	textbox:HookScript("OnTextChanged", checkCharactersLimit);
+	textbox:HookScript("OnEditFocusGained", checkCharactersLimit);
 
 	function editor.load(scriptData)
 		local data = scriptData.args or Globals.empty;
@@ -110,14 +139,14 @@ local function macro_init()
 
 	local function hookLinkInsert(functionName, hook)
 		hooksecurefunc(functionName, function(self)
-			if IsModifiedClick("CHATLINK")and editor.macroText.scroll.text:HasFocus() then
+			if IsModifiedClick("CHATLINK")and textbox:HasFocus() then
 				textbox:Insert(hook(self))
 			end
 		end)
 	end
 
 	EventRegistry:RegisterCallback("SpellMixinButton.OnModifiedClick", function(_, self)
-		if IsModifiedClick("CHATLINK")and editor.macroText.scroll.text:HasFocus() then
+		if IsModifiedClick("CHATLINK")and textbox:HasFocus() then
 			textbox:Insert(GetSpellBookItemName(SpellBook_GetSpellBookSlot(self), SpellBookFrame.bookType));
 		end
 	end)
