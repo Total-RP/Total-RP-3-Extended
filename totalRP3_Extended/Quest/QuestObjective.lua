@@ -4,7 +4,7 @@
 local Utils = TRP3_API.utils;
 local pairs, tinsert, sort = pairs, tinsert, table.sort;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
-local colorQuestYellow;
+local colorQuestYellow = TRP3_API.CreateColorFromBytes(190, 155, 0);
 
 local frame = TRP3_QuestObjectives;
 
@@ -16,10 +16,6 @@ local ACTION_FRAMES = {
 };
 
 local function display()
-	if not colorQuestYellow then
-		colorQuestYellow = TRP3_API.CreateColorFromBytes(190, 155, 0);
-	end
-
 	local HTML = "";
 	frame.Actions:Hide();
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
