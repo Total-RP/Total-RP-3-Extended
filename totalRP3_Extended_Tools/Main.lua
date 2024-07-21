@@ -93,7 +93,7 @@ local function getTypeLocale(type)
 	if PAGE_BY_TYPE[type] and PAGE_BY_TYPE[type].loc then
 		return PAGE_BY_TYPE[type].loc;
 	end
-	return UNKOWN;
+	return UNKNOWN;
 end
 TRP3_API.extended.tools.getTypeLocale = getTypeLocale;
 

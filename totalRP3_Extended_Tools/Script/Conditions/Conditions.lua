@@ -2,7 +2,6 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local pairs, _G, type, tinsert, wipe, assert, tostring, strtrim = pairs, _G, type, tinsert, wipe, assert, tostring, strtrim;
 local tsize, EMPTY = Utils.table.size, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
