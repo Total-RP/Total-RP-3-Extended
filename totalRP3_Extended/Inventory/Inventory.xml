@@ -298,17 +298,22 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Inventory -->
 	<Frame name="TRP3_InventoryPage" hidden="true" inherits="TRP3_StandardParchmentFrame" mixin="TRP3_InventoryPageMixin">
 		<Frames>
-			<ModelScene parentKey="Model" inherits="TRP3_InnerFrame,TRP3_InventorySceneTemplate"/>
+			<ModelScene parentKey="Model" inherits="TRP3_InnerFrame,TRP3_InventorySceneTemplate">
+				<Size x="350" y="350"/>
+				<Anchors>
+					<Anchor point="CENTER"/>
+				</Anchors>
+			</ModelScene>
 			<Frame parentKey="InventoryLeft" inherits="TRP3_InventoryPageSlotColumnTemplate">
 				<Anchors>
-					<Anchor point="TOPRIGHT" relativeKey="$parent.Model" relativePoint="TOPLEFT" x="-5"/>
-					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Model" relativePoint="BOTTOMLEFT" x="-5"/>
+					<Anchor point="TOPRIGHT" relativeKey="$parent.Model" relativePoint="TOPLEFT" x="-8"/>
+					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Model" relativePoint="BOTTOMLEFT" x="-8"/>
 				</Anchors>
 			</Frame>
 			<Frame parentKey="InventoryRight" inherits="TRP3_InventoryPageSlotColumnTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.Model" relativePoint="TOPRIGHT" x="5"/>
-					<Anchor point="BOTTOMLEFT" relativeKey="$parent.Model" relativePoint="BOTTOMRIGHT" x="5"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.Model" relativePoint="TOPRIGHT" x="8"/>
+					<Anchor point="BOTTOMLEFT" relativeKey="$parent.Model" relativePoint="BOTTOMRIGHT" x="8"/>
 				</Anchors>
 			</Frame>
 		</Frames>
