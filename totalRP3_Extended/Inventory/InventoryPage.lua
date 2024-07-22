@@ -437,7 +437,7 @@ function TRP3_InventoryPageMixin:LoadInventorySlots()
 
 	local content = self.CurrentInventory.content or EMPTY;
 	for i, slot in ipairs(self.InventorySlots) do
-		local slotContent = content[i];
+		local slotContent = content[tostring(i)]; -- fatcatdespair
 		if slotContent then
 			slot.info = slotContent;
 			slot.class = TRP3_API.extended.getClass(slotContent.id);
