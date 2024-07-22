@@ -16,35 +16,6 @@ local inventoryModel, mainInventoryFrame;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local QUICK_SLOT_ID = TRP3_API.inventory.QUICK_SLOT_ID;
-local DEFAULT_SEQUENCE = 193;
-local DEFAULT_TIME = 1;
-
-local function resetEquip(main, model)
-	if not main then main = mainInventoryFrame end;
-	if not model then model = inventoryModel end;
-	if main.Equip then
-		main.Equip:Hide();
-	end
-	model.Marker:Hide();
-	model.Line:Hide();
-	model.sequence = nil;
-	model:ResetModel();
-end
-TRP3_API.inventory.resetWearable = resetEquip;
-
-local function setModelPosition(self, rotation)
-	self.rotation = rotation;
-	self:SetRotation(self.rotation);
-end
-
-local function drawLine(from, quality, model)
-	model.Line:Show();
-	model.Line:SetStartPoint("CENTER", from);
-	model.Line:SetEndPoint("CENTER", model.Marker);
-	from:SetFrameLevel(model:GetFrameLevel() + 5);
-	local r, g, b = TRP3_API.inventory.getQualityColorRGB(quality);
-	model.Line:SetVertexColor(r, g, b, 1);
-end
 
 local function moveMarker(self, diffX, diffY, oX, oY, quality, frame)
 	local model = frame or inventoryModel;
@@ -56,46 +27,6 @@ local function moveMarker(self, diffX, diffY, oX, oY, quality, frame)
 	local r, g, b = TRP3_API.inventory.getQualityColorRGB(quality);
 	self.dot:SetVertexColor(r, g, b, 1);
 	self.halo:SetVertexColor(r, g, b, 0.3);
-end
-
-local function setButtonModelPosition(self, force, frame)
-	local main = (frame and frame.Main) or mainInventoryFrame;
-	local model = (frame and frame.Main.Model) or inventoryModel;
-
-	if self.CurrentInventory and self.class then
-		local isWearable = self.class.BA and self.class.BA.WA;
-		local quality = self.class.BA and self.class.BA.QA;
-		local pos = self.CurrentInventory.pos;
-		if isWearable and (pos or force) then
-			pos = pos or EMPTY;
-			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
-			model.sequenceTime = pos.sequenceTime or DEFAULT_TIME;
-			model:setAnimation(model.sequence, model.sequenceTime);
-			setModelPosition(model, pos.rotation or 0);
-			moveMarker(model.Marker, pos.x or 0, pos.y or 0, 0, 0, quality, model);
-			if main.Equip then
-				main.Equip.sequence:SetText(model.sequence);
-				main.Equip.time:SetValue(model.sequenceTime);
-			end
-			model.Marker:Show();
-			drawLine(self, quality, model);
-		else
-			resetEquip(main, model);
-		end
-	end
-end
-TRP3_API.inventory.setWearableConfiguration = setButtonModelPosition;
-
-local function onSlotEnter(self)
-	if not mainInventoryFrame.Equip:IsVisible() then
-		setButtonModelPosition(self);
-	end
-end
-
-local function onSlotLeave()
-	if not mainInventoryFrame.Equip:IsVisible() then
-		resetEquip();
-	end
 end
 
 local function onSlotDrag()
@@ -219,69 +150,10 @@ end
 -- Page management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local onInventoryShow;
-
-function onInventoryShow()
-	local playerInventory = TRP3_API.inventory.getInventory();
-	mainInventoryFrame.info = playerInventory;
-	inventoryModel:InspectUnit("player", true);
-	resetEquip();
-
-	TRP3_API.inventory.loadContainerPageSlots(mainInventoryFrame);
-	TRP3_ContainerInvPageSlot17:SetFrameLevel(inventoryModel.Blocker:GetFrameLevel() + 1);
-
-	-- A bit of a hack, this ensures that we get a TOPLEFT point for the marker during its MouseUp script.
-	TRP3_MainFrame:StartMoving();
-	TRP3_MainFrame:StopMovingOrSizing();
-end
-
-local function containerFrameUpdate(self)
-	-- Weight and value
-	local current = self.CurrentInventory.totalWeight or 0;
-	local weight = TRP3_API.extended.formatWeight(current) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
-	local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, C_CurrencyInfo.GetCoinTextureString(self.CurrentInventory.totalValue or 0));
-	inventoryModel.WeightText:SetText(weight);
-	inventoryModel.ValueText:SetText(formatedValue);
-end
-
-function TRP3_API.inventory.openMainContainer()
-	local playerInventory = TRP3_API.inventory.getInventory();
-	local quickSlot = playerInventory.content[QUICK_SLOT_ID];
-	if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
-		TRP3_API.inventory.switchContainerBySlotID(playerInventory, QUICK_SLOT_ID);
-	end
-end
-
-local function onToolbarButtonClicked(buttonType)
-	if buttonType == "LeftButton" then
-		TRP3_API.inventory.openMainContainer();
-		return;
-	end
-	TRP3_API.navigation.openMainFrame();
-	TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");
-end
-
-local function initPlayerInventoryButton()
-	local playerInvText = loc.INV_PAGE_PLAYER_INV:format(Globals.player);
-	if TRP3_API.toolbar then
-		local toolbarButton = {
-			id = "hh_player_d_inventory",
-			configText = loc.INV_PAGE_CHARACTER_INV,
-			tooltip = playerInvText,
-			tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.BINDING_NAME_TRP3_MAIN_CONTAINER)  .. "\n"  .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.INV_PAGE_INV_OPEN),
-			icon = "inv_misc_bag_16",
-			onClick = function(_, _, buttonType, _)
-				onToolbarButtonClicked(buttonType);
-			end,
-		};
-		TRP3_API.toolbar.toolbarAddButton(toolbarButton);
-	end
-end
-
 -- Tutorial
 local TUTORIAL_STRUCTURE;
 
-local function createTutorialStructure()
+local function CreateTutorialStructure()
 	TUTORIAL_STRUCTURE = {
 		{
 			box = {
@@ -391,8 +263,6 @@ function TRP3_API.inventory.initInventoryPage()
 			button.Locator:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 			button.Locator:SetScript("OnClick", onLocatorClick);
 
-			button.additionalOnEnterHandler = onSlotEnter;
-			button.additionalOnLeaveHandler = onSlotLeave;
 			button.additionalOnDragHandler = onSlotDrag;
 			button.additionalDoubleClickHandler = onSlotDoubleClick;
 			button.additionalOnUpdateHandler = onSlotUpdate;
@@ -469,8 +339,6 @@ function TRP3_API.inventory.initInventoryPage()
 			{"/?", 65},
 		}},
 	};
-
-	createTutorialStructure();
 end
 
 ------------
@@ -480,8 +348,6 @@ local SLOTS_PER_COLUMN = 8;
 TRP3_InventoryPageMixin = {};
 
 function TRP3_InventoryPageMixin:OnLoad()
-	self:CreateInventorySlots();
-
 	TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 		self:AddPlayerInventoryButton();
 	end);
@@ -495,7 +361,9 @@ function TRP3_InventoryPageMixin:OnShow()
 	local playerInventory = TRP3_API.inventory.getInventory();
 	self.CurrentInventory = playerInventory;
 	self.Model:InspectUnit("player", true);
+	self:ResetModel();
 	self:LoadInventorySlots();
+	self:UpdateInventory();
 end
 
 -- called from TRP3_API.inventory.onStart when the module loads
@@ -515,6 +383,17 @@ function TRP3_InventoryPageMixin:Init()
 		onPagePostShow = function() self:OnShow() end;
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
+
+	self:CreateInventorySlots();
+	CreateTutorialStructure(); -- tutorials depend on the inv slots being created
+end
+
+function TRP3_InventoryPageMixin:ResetModel()
+	local model = self.Model;
+	model.Marker:Hide();
+	model.Line:Hide();
+	model.sequence = nil;
+	model:ResetModel();
 end
 
 function TRP3_InventoryPageMixin:CreateInventorySlots()
@@ -540,6 +419,7 @@ function TRP3_InventoryPageMixin:CreateInventorySlots()
 		local slotR = CreateSlot(invRight, 1);
 		slotR.layoutIndex = i;
 		slotR.bottomPadding = 4;
+		TRP3_API.inventory.initContainerSlot(slotR);
 
 		tinsert(self.InventorySlots, i, slotL);
 		tinsert(self.InventorySlots, i + SLOTS_PER_COLUMN, slotR);
@@ -564,6 +444,14 @@ function TRP3_InventoryPageMixin:LoadInventorySlots()
 		end
 		TRP3_API.inventory.containerSlotUpdate(slot);
 	end
+end
+
+function TRP3_InventoryPageMixin:UpdateInventory()
+	local currentWeight = self.CurrentInventory.totalWeight or 0;
+	local weight = TRP3_API.extended.formatWeight(currentWeight) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
+	local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, C_CurrencyInfo.GetCoinTextureString(self.CurrentInventory.totalValue or 0));
+	self.Model.WeightText:SetText(weight);
+	self.Model.ValueText:SetText(formatedValue);
 end
 
 function TRP3_InventoryPageMixin:OnToolbarButtonClicked(buttonName)
@@ -593,4 +481,19 @@ function TRP3_InventoryPageMixin:AddPlayerInventoryButton()
 		end,
 	};
 	TRP3_API.toolbar.toolbarAddButton(toolbarButton);
+end
+
+------------
+-- public api
+
+function TRP3_API.inventory.resetWearable()
+	TRP3_InventoryPage:ResetModel();
+end;
+
+function TRP3_API.inventory.openMainContainer()
+	local playerInventory = TRP3_API.inventory.getInventory();
+	local quickSlot = playerInventory.content[QUICK_SLOT_ID];
+	if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
+		TRP3_API.inventory.switchContainerBySlotID(playerInventory, QUICK_SLOT_ID);
+	end
 end
