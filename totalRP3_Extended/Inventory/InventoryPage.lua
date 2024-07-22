@@ -12,7 +12,7 @@ local EMPTY = TRP3_API.globals.empty;
 local inventoryModel, mainInventoryFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Slot equipement management
+-- Slot equipment management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local QUICK_SLOT_ID = TRP3_API.inventory.QUICK_SLOT_ID;
