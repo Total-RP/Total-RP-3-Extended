@@ -158,8 +158,6 @@ function inspectionFrame.init()
 	loadingTemplate = loc.INV_PAGE_CHARACTER_INSPECTION .. ": %0.2f %%";
 
 	-- Slots
-	--Mixin(inspectionFrame.Main.Model, ModelFrameMixin);
-	--inspectionFrame.Main.Model:OnLoad(nil, nil, 0);
 	inspectionFrame.Main.slots = {};
 	for i=1, 16 do
 		local button = CreateFrame("Button", "TRP3_InspectionFrameSlot" .. i, inspectionFrame.Main, "TRP3_InventoryPageSlotTemplate");
