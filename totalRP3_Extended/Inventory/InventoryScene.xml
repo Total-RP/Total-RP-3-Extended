@@ -12,12 +12,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
     </Actor>
 
 	<ModelScene name="TRP3_InventorySceneTemplate" mixin="TRP3_InventorySceneMixin" virtual="true">
-		<Anchors>
-			<Anchor point="TOP" x="0" y="-5"/>
-			<Anchor point="BOTTOM" x="0" y="5"/>
-			<Anchor point="LEFT" x="5" y="0"/>
-			<Anchor point="RIGHT" x="-5" y="0"/>
-		</Anchors>
 		<Scripts>
 			<OnLoad method="OnLoad" />
             <OnShow method="OnShow"/>
