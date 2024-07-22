@@ -3,7 +3,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.utils;
 local _G, tostring, tinsert, wipe = _G, tostring, tinsert, wipe;
-local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
+local CreateRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local CreateFrame, IsAltKeyDown = CreateFrame, IsAltKeyDown;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -16,6 +16,7 @@ local inventoryModel, mainInventoryFrame;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local QUICK_SLOT_ID = TRP3_API.inventory.QUICK_SLOT_ID;
+local REFRESH_INTERVAL = 0.15;
 
 local function moveMarker(self, diffX, diffY, oX, oY, quality, frame)
 	local model = frame or inventoryModel;
@@ -363,7 +364,6 @@ function TRP3_InventoryPageMixin:OnShow()
 	self.Model:InspectUnit("player", true);
 	self:ResetModel();
 	self:LoadInventorySlots();
-	self:UpdateInventory();
 end
 
 -- called from TRP3_API.inventory.onStart when the module loads
@@ -386,6 +386,8 @@ function TRP3_InventoryPageMixin:Init()
 
 	self:CreateInventorySlots();
 	CreateTutorialStructure(); -- tutorials depend on the inv slots being created
+
+	CreateRefreshOnFrame(self, REFRESH_INTERVAL, function() self:UpdateInventory(); end);
 end
 
 function TRP3_InventoryPageMixin:ResetModel()
