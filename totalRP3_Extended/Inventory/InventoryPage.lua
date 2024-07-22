@@ -345,26 +345,6 @@ function TRP3_API.inventory.initInventoryPage()
 
 	inventoryModel, mainInventoryFrame = TRP3_InventoryPage.Main.Model, TRP3_InventoryPage.Main;
 
-	TRP3_API.navigation.menu.registerMenu({
-		id = "main_13_player_inventory",
-		text = INVENTORY_TOOLTIP,
-		onSelected = function()
-			TRP3_API.navigation.page.setPage("player_inventory");
-		end,
-		isChildOf = "main_10_player",
-	});
-
-	TRP3_API.navigation.page.registerPage({
-		id = "player_inventory",
-		frame = TRP3_InventoryPage,
-		onPagePostShow = onInventoryShow,
-		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
-	});
-
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-		initPlayerInventoryButton();
-	end);
-
 	createRefreshOnFrame(mainInventoryFrame, 0.15, containerFrameUpdate);
 	inventoryModel.setAnimation = function(self, sequence, sequenceTime)
 		if sequence then
@@ -372,88 +352,82 @@ function TRP3_API.inventory.initInventoryPage()
 		end
 	end
 
-	-- Create model slots
-	mainInventoryFrame.lockX = 110;
-	mainInventoryFrame.slots = {};
-	local wearText = loc.INV_PAGE_WEAR_TT
-			.. "\n\n|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION
-			.. "\n|cffffff00" .. loc.CM_R_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION_RESET;
-	for i=1, 17 do
-		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, mainInventoryFrame, "TRP3_InventoryPageSlotTemplate");
-		if i == 1 then
-			button:SetPoint("TOPRIGHT", inventoryModel, "TOPLEFT", -15, 0);
-		elseif i == 9 then
-			button:SetPoint("TOPLEFT", inventoryModel, "TOPRIGHT", 15, 0);
-		elseif i == 17 then
-			button:SetPoint("BOTTOMLEFT", inventoryModel, "BOTTOMLEFT", 5, 10);
-			button.First:SetText(loc.INV_PAGE_QUICK_SLOT);
-			button.Second:SetText(loc.INV_PAGE_QUICK_SLOT_TT);
-			button.Locator:Hide();
-		else
-			button:SetPoint("TOP", _G["TRP3_ContainerInvPageSlot" .. (i - 1)], "BOTTOM", 0, -11);
-		end
-		if i <= 8 then
-			button.Locator:SetPoint("RIGHT", button, "LEFT", -5, 0);
-			setTooltipForSameFrame(button.Locator, "LEFT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
-		else
-			button.Locator:SetPoint("LEFT", button, "RIGHT", 5, 0);
-			setTooltipForSameFrame(button.Locator, "RIGHT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
-		end
+	if 1 == 2 then
+		-- Create model slots
+		mainInventoryFrame.lockX = 110;
+		mainInventoryFrame.slots = {};
+		local wearText = loc.INV_PAGE_WEAR_TT
+				.. "\n\n|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION
+				.. "\n|cffffff00" .. loc.CM_R_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION_RESET;
+		for i=1, 17 do
+			local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, mainInventoryFrame, "TRP3_InventoryPageSlotTemplate");
+			if i == 1 then
+				button:SetPoint("TOPRIGHT", inventoryModel, "TOPLEFT", -15, 0);
+			elseif i == 9 then
+				button:SetPoint("TOPLEFT", inventoryModel, "TOPRIGHT", 15, 0);
+			elseif i == 17 then
+				button:SetPoint("BOTTOMLEFT", inventoryModel, "BOTTOMLEFT", 5, 10);
+				button.First:SetText(loc.INV_PAGE_QUICK_SLOT);
+				button.Second:SetText(loc.INV_PAGE_QUICK_SLOT_TT);
+				button.Locator:Hide();
+			else
+				button:SetPoint("TOP", _G["TRP3_ContainerInvPageSlot" .. (i - 1)], "BOTTOM", 0, -11);
+			end
+			if i <= 8 then
+				button.Locator:SetPoint("RIGHT", button, "LEFT", -5, 0);
+				setTooltipForSameFrame(button.Locator, "LEFT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
+			else
+				button.Locator:SetPoint("LEFT", button, "RIGHT", 5, 0);
+				setTooltipForSameFrame(button.Locator, "RIGHT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
+			end
 
-		tinsert(mainInventoryFrame.slots, button);
-		button.slotNumber = i;
-		button.slotID = tostring(i);
-		TRP3_API.inventory.initContainerSlot(button);
+			tinsert(mainInventoryFrame.slots, button);
+			button.slotNumber = i;
+			button.slotID = tostring(i);
+			TRP3_API.inventory.initContainerSlot(button);
 
-		button.Locator:SetScript("OnEnter", function(self)
-			TRP3_RefreshTooltipForFrame(self);
-			onSlotEnter(self:GetParent());
-		end);
-		button.Locator:SetScript("OnLeave", function(self)
-			TRP3_MainTooltip:Hide();
-			onSlotLeave(self:GetParent());
-		end);
-		button.Locator:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		button.Locator:SetScript("OnClick", onLocatorClick);
+			button.Locator:SetScript("OnEnter", function(self)
+				TRP3_RefreshTooltipForFrame(self);
+				onSlotEnter(self:GetParent());
+			end);
+			button.Locator:SetScript("OnLeave", function(self)
+				TRP3_MainTooltip:Hide();
+				onSlotLeave(self:GetParent());
+			end);
+			button.Locator:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+			button.Locator:SetScript("OnClick", onLocatorClick);
 
-		button.additionalOnEnterHandler = onSlotEnter;
-		button.additionalOnLeaveHandler = onSlotLeave;
-		button.additionalOnDragHandler = onSlotDrag;
-		button.additionalDoubleClickHandler = onSlotDoubleClick;
-		button.additionalOnUpdateHandler = onSlotUpdate;
-		button.additionalClickHandler = onSlotClick;
+			button.additionalOnEnterHandler = onSlotEnter;
+			button.additionalOnLeaveHandler = onSlotLeave;
+			button.additionalOnDragHandler = onSlotDrag;
+			button.additionalDoubleClickHandler = onSlotDoubleClick;
+			button.additionalOnUpdateHandler = onSlotUpdate;
+			button.additionalClickHandler = onSlotClick;
 
-		button.First:ClearAllPoints();
-		if i > 8 then
-			button.tooltipRight = true;
-			button.First:SetPoint("TOPLEFT", button, "TOPRIGHT", 5, -5);
-			button.First:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", 5, 15);
-			button.First:SetPoint("RIGHT", TRP3_InventoryPage, "RIGHT", -15, 0);
-			button.First:SetJustifyH("LEFT");
-			button.Second:SetPoint("TOPLEFT", button, "TOPRIGHT", 5, -10);
-			button.Second:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", 5, -10);
-			button.Second:SetPoint("RIGHT", TRP3_InventoryPage, "RIGHT", -15, 0);
-			button.Second:SetJustifyH("LEFT");
-		else
-			button.First:SetPoint("TOPRIGHT", button, "TOPLEFT", -5, -5);
-			button.First:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", -5, 15);
-			button.First:SetPoint("LEFT", TRP3_InventoryPage, "LEFT", 15, 0);
-			button.First:SetJustifyH("RIGHT");
-			button.Second:SetPoint("TOPRIGHT", button, "TOPLEFT", -5, -10);
-			button.Second:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", -5, -10);
-			button.Second:SetPoint("LEFT", TRP3_InventoryPage, "LEFT", 15, 0);
-			button.Second:SetJustifyH("RIGHT");
-		end
-	end
-	TRP3_API.inventory.initContainerInstance(mainInventoryFrame, 16);
-
-	-- On profile changed
-	local refreshInventory = function()
-		if TRP3_API.navigation.page.getCurrentPageID() == "player_inventory" then
-			onInventoryShow();
+			button.First:ClearAllPoints();
+			if i > 8 then
+				button.tooltipRight = true;
+				button.First:SetPoint("TOPLEFT", button, "TOPRIGHT", 5, -5);
+				button.First:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", 5, 15);
+				button.First:SetPoint("RIGHT", TRP3_InventoryPage, "RIGHT", -15, 0);
+				button.First:SetJustifyH("LEFT");
+				button.Second:SetPoint("TOPLEFT", button, "TOPRIGHT", 5, -10);
+				button.Second:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", 5, -10);
+				button.Second:SetPoint("RIGHT", TRP3_InventoryPage, "RIGHT", -15, 0);
+				button.Second:SetJustifyH("LEFT");
+			else
+				button.First:SetPoint("TOPRIGHT", button, "TOPLEFT", -5, -5);
+				button.First:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", -5, 15);
+				button.First:SetPoint("LEFT", TRP3_InventoryPage, "LEFT", 15, 0);
+				button.First:SetJustifyH("RIGHT");
+				button.Second:SetPoint("TOPRIGHT", button, "TOPLEFT", -5, -10);
+				button.Second:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", -5, -10);
+				button.Second:SetPoint("LEFT", TRP3_InventoryPage, "LEFT", 15, 0);
+				button.Second:SetJustifyH("RIGHT");
+			end
 		end
 	end
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, refreshInventory);
+	TRP3_InventoryPage:LoadInventorySlots();
 
 	-- Equip
 	inventoryModel.defaultRotation = 0;
@@ -545,4 +519,106 @@ function TRP3_API.inventory.initInventoryPage()
 	setTooltipForSameFrame(mainInventoryFrame.Equip.preset, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_PRESET);
 
 	createTutorialStructure();
+end
+
+------------
+
+local SLOTS_PER_COLUMN = 8;
+
+TRP3_InventoryPageMixin = {};
+
+function TRP3_InventoryPageMixin:OnLoad()
+	self:CreateInventorySlots();
+
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
+		self:AddPlayerInventoryButton();
+	end);
+
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, function()
+		self:OnProfileChanged();
+	end);
+end
+
+function TRP3_InventoryPageMixin:OnShow()
+	local playerInventory = TRP3_API.inventory.getInventory();
+	self.CurrentInventory = playerInventory;
+	self.Model:InspectUnit("player", true);
+	self:LoadInventorySlots();
+end
+
+-- called from TRP3_API.inventory.onStart when the module loads
+function TRP3_InventoryPageMixin:Init()
+	TRP3_API.navigation.menu.registerMenu({
+		id = "main_13_player_inventory",
+		text = INVENTORY_TOOLTIP,
+		onSelected = function()
+			TRP3_API.navigation.page.setPage("player_inventory");
+		end,
+		isChildOf = "main_10_player",
+	});
+
+	TRP3_API.navigation.page.registerPage({
+		id = "player_inventory",
+		frame = self,
+		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
+	});
+end
+
+function TRP3_InventoryPageMixin:CreateInventorySlots()
+	local function CreateSlot(parent)
+		return CreateFrame("Button", nil, parent, "TRP3_InventoryPageSlotTemplate");
+	end
+
+	self.InventorySlots = {};
+	local invLeft, invRight = self.InventoryLeft, self.InventoryRight;
+	for i=1, SLOTS_PER_COLUMN do
+		local slotL = CreateSlot(invLeft);
+		slotL.layoutIndex = i;
+
+		local slotR = CreateSlot(invRight);
+		slotR.layoutIndex = i;
+
+		tinsert(self.InventorySlots, i, slotL);
+		tinsert(self.InventorySlots, i + SLOTS_PER_COLUMN, slotR);
+	end
+	invLeft:MarkDirty();
+	invRight:MarkDirty();
+end
+
+function TRP3_InventoryPageMixin:LoadInventorySlots()
+	assert(self.CurrentInventory, "Missing inventory");
+	local content = self.CurrentInventory.content or EMPTY;
+	for i, slot in ipairs(self.InventorySlots) do
+		local slotContent = content[i];
+		slot.ItemInfo = slotContent;
+	end
+end
+
+function TRP3_InventoryPageMixin:OnToolbarButtonClicked(buttonName)
+	if buttonName == "LeftButton" then
+		return TRP3_API.inventory.openMainContainer();
+	end
+	TRP3_API.navigation.openMainFrame();
+	TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");
+end
+
+function TRP3_InventoryPageMixin:OnProfileChanged()
+	if TRP3_API.navigation.page.getCurrentPageID() == "player_inventory" then
+		self:OnShow();
+	end
+end
+
+function TRP3_InventoryPageMixin:AddPlayerInventoryButton()
+	local text = loc.INV_PAGE_PLAYER_INV:format(Globals.player);
+	local toolbarButton = {
+		id = "hh_player_d_inventory",
+		configText = loc.INV_PAGE_CHARACTER_INV,
+		tooltip = text,
+		tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.BINDING_NAME_TRP3_MAIN_CONTAINER)  .. "\n"  .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.INV_PAGE_INV_OPEN),
+		icon = "inv_misc_bag_16",
+		onClick = function(_, _, buttonName, _)
+			self:OnToolbarButtonClicked(buttonName);
+		end,
+	};
+	TRP3_API.toolbar.toolbarAddButton(toolbarButton);
 end
