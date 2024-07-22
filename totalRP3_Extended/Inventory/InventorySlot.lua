@@ -29,6 +29,10 @@ function TRP3_InventoryPageSlotMixin:Init(side)
         TRP3_API.ui.tooltip.setTooltipForSameFrame(self.ItemLocator, "RIGHT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
     end
     TRP3_API.inventory.initContainerSlot(self);
+
+    self.additionalOnEnterHandler = self.OnSlotEnter;
+    self.additionalOnLeaveHandler = self.OnSlotLeave;
+    self.additionalOnUpdateHandler = self.OnSlotUpdate;
 end
 
 function TRP3_InventoryPageSlotMixin:OnSlotEnter()
@@ -37,6 +41,14 @@ end
 
 function TRP3_InventoryPageSlotMixin:OnSlotLeave()
     TRP3_InventoryPage:ResetModel();
+end
+
+function TRP3_InventoryPageSlotMixin:OnSlotUpdate(deltaTime)
+    if self.CurrentInventory and self.class and self.class.BA.WA then
+		self.ItemLocator:Show();
+	else
+		self.ItemLocator:Hide();
+	end
 end
 
 function TRP3_InventoryPageSlotMixin:DrawItemLocationLine(quality)
