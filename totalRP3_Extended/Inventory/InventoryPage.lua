@@ -293,15 +293,6 @@ function TRP3_API.inventory.initInventoryPage()
 		end
 	end
 
-	--local MOVE_SCALE = 1;
-	--inventoryModel.Marker:SetScript("OnMouseUp", function(self)
-	--	local _, _, _, x, y = self:GetPoint(1);
-	--	local diffX = x - self.x;
-	--	local diffY = y - self.y;
-	--	self:StopMovingOrSizing();
-	--	moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY, inventoryModel);
-	--end);
-
 	-- Preset
 	local presets = {
 		{"A - M", {
@@ -487,6 +478,8 @@ end
 
 ------------
 -- public api
+
+-- TODO: TRP3_API.inventory.setWearableConfiguration fell during battle to collateral damage, will investigate revival
 
 function TRP3_API.inventory.resetWearable()
 	TRP3_InventoryPage:ResetModel();

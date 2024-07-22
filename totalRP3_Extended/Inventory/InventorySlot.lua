@@ -87,11 +87,6 @@ function TRP3_InventoryPageSlotMixin:ShowModelItemPosition(force)
 			model:FreezeAnimation(model.sequence, 0, model.sequenceTime);
             model.Marker:Show();
             self:DrawItemLocationLine(quality);
-			--moveMarker(model.Marker, pos.x or 0, pos.y or 0, 0, 0, quality, model);
-			--if main.Equip then
-			--	main.Equip.sequence:SetText(model.sequence);
-			--	main.Equip.time:SetValue(model.sequenceTime);
-			--end
 		else
 			TRP3_InventoryPage:ResetModel();
 		end
