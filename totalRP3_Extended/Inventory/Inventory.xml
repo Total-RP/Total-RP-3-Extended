@@ -301,7 +301,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<ModelScene parentKey="Model" inherits="TRP3_InnerFrame,TRP3_InventorySceneTemplate">
 				<Size x="350" y="350"/>
 				<Anchors>
-					<Anchor point="CENTER"/>
+					<Anchor point="TOPLEFT" x="100" y="-100"/>
+					<Anchor point="BOTTOMRIGHT" x="-100" y="100"/>
 				</Anchors>
 			</ModelScene>
 			<Frame parentKey="InventoryLeft" inherits="TRP3_InventoryPageSlotColumnTemplate">
