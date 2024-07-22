@@ -62,10 +62,10 @@ local function setButtonModelPosition(self, force, frame)
 	local main = (frame and frame.Main) or mainInventoryFrame;
 	local model = (frame and frame.Main.Model) or inventoryModel;
 
-	if self.info and self.class then
+	if self.CurrentInventory and self.class then
 		local isWearable = self.class.BA and self.class.BA.WA;
 		local quality = self.class.BA and self.class.BA.QA;
-		local pos = self.info.pos;
+		local pos = self.CurrentInventory.pos;
 		if isWearable and (pos or force) then
 			pos = pos or EMPTY;
 			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
@@ -107,7 +107,7 @@ local function onSlotDoubleClick()
 end
 
 local function onSlotUpdate(self)
-	if self.info and self.class and self.class.BA.WA then
+	if self.CurrentInventory and self.class and self.class.BA.WA then
 		self.Locator:Show();
 	else
 		self.Locator:Hide();
@@ -237,9 +237,9 @@ end
 
 local function containerFrameUpdate(self)
 	-- Weight and value
-	local current = self.info.totalWeight or 0;
+	local current = self.CurrentInventory.totalWeight or 0;
 	local weight = TRP3_API.extended.formatWeight(current) .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15);
-	local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, C_CurrencyInfo.GetCoinTextureString(self.info.totalValue or 0));
+	local formatedValue = ("%s: %s"):format(loc.INV_PAGE_TOTAL_VALUE, C_CurrencyInfo.GetCoinTextureString(self.CurrentInventory.totalValue or 0));
 	inventoryModel.WeightText:SetText(weight);
 	inventoryModel.ValueText:SetText(formatedValue);
 end
@@ -285,7 +285,7 @@ local function createTutorialStructure()
 	TUTORIAL_STRUCTURE = {
 		{
 			box = {
-				allPoints = mainInventoryFrame.slots[1]
+				allPoints = mainInventoryFrame.InventorySlots[1]
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -296,7 +296,7 @@ local function createTutorialStructure()
 		},
 		{
 			box = {
-				allPoints = mainInventoryFrame.slots[17]
+				allPoints = mainInventoryFrame.InventorySlots[17]
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -318,7 +318,7 @@ local function createTutorialStructure()
 		},
 		{
 			box = {
-				allPoints = mainInventoryFrame.slots[12]
+				allPoints = mainInventoryFrame.InventorySlots[12]
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -329,7 +329,7 @@ local function createTutorialStructure()
 		},
 		{
 			box = {
-				allPoints = mainInventoryFrame.slots[15]
+				allPoints = mainInventoryFrame.InventorySlots[15]
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -343,15 +343,9 @@ end
 
 function TRP3_API.inventory.initInventoryPage()
 
-	inventoryModel, mainInventoryFrame = TRP3_InventoryPage.Main.Model, TRP3_InventoryPage.Main;
+	inventoryModel, mainInventoryFrame = TRP3_InventoryPage.Model, TRP3_InventoryPage;
 
-	createRefreshOnFrame(mainInventoryFrame, 0.15, containerFrameUpdate);
-	inventoryModel.setAnimation = function(self, sequence, sequenceTime)
-		if sequence then
-			self:FreezeAnimation(sequence, 0, sequenceTime or DEFAULT_TIME);
-		end
-	end
-
+	TRP3_InventoryPage:Init();
 	if 1 == 2 then
 		-- Create model slots
 		mainInventoryFrame.lockX = 110;
@@ -427,45 +421,15 @@ function TRP3_API.inventory.initInventoryPage()
 			end
 		end
 	end
-	TRP3_InventoryPage:LoadInventorySlots();
 
-	-- Equip
-	inventoryModel.defaultRotation = 0;
-	mainInventoryFrame.Equip.Title:SetText(loc.INV_PAGE_ITEM_LOCATION);
-	createRefreshOnFrame(mainInventoryFrame.Equip, 0.15, onEquipRefresh);
-	mainInventoryFrame.Equip:SetScript("OnShow", function() inventoryModel.Blocker:Hide() end);
-	mainInventoryFrame.Equip:SetScript("OnHide", function() inventoryModel.Blocker:Show() end);
-	setTooltipForSameFrame(inventoryModel.Blocker.ValueHelp, "RIGHT", 0, 0, loc.INV_PAGE_TOTAL_VALUE, loc.INV_PAGE_TOTAL_VALUE_TT);
-
-	-- Hide unwanted model adaptation -- TODO: fix this
-	--inventoryModel.controlFrame:SetPoint("TOP", 0, 25);
-	--inventoryModel.controlFrame:SetWidth(55);
-	--_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:ClearAllPoints();
-	--_G[inventoryModel.controlFrame:GetName() .. "RotateLeftButton"]:SetPoint("Left", 2, 0);
-	--_G[inventoryModel.controlFrame:GetName() .. "ZoomInButton"]:Hide();
-	--_G[inventoryModel.controlFrame:GetName() .. "ZoomOutButton"]:Hide();
-	--_G[inventoryModel.controlFrame:GetName() .. "PanButton"]:Hide();
-	local MOVE_SCALE = 1;
-	inventoryModel.Marker:SetScript("OnMouseUp", function(self)
-		local _, _, _, x, y = self:GetPoint(1);
-		local diffX = x - self.x;
-		local diffY = y - self.y;
-		self:StopMovingOrSizing();
-		moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY, inventoryModel);
-	end);
-
-	mainInventoryFrame.Equip.time:SetScript("OnValueChanged", function(self)
-		inventoryModel.sequenceTime = self:GetValue();
-		inventoryModel:setAnimation(inventoryModel.sequence, inventoryModel.sequenceTime);
-	end);
-	local onChange = function(self)
-		inventoryModel.sequence = tonumber(self:GetText()) or DEFAULT_SEQUENCE;
-		inventoryModel:setAnimation(inventoryModel.sequence, inventoryModel.sequenceTime);
-	end;
-	mainInventoryFrame.Equip.sequence:SetScript("OnTextChanged", onChange);
-	mainInventoryFrame.Equip.sequence:SetScript("OnEnterPressed", onChange);
-	mainInventoryFrame.Equip.sequence.title:SetText(loc.INV_PAGE_SEQUENCE);
-	setTooltipForSameFrame(mainInventoryFrame.Equip.sequence.help, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_TT);
+	--local MOVE_SCALE = 1;
+	--inventoryModel.Marker:SetScript("OnMouseUp", function(self)
+	--	local _, _, _, x, y = self:GetPoint(1);
+	--	local diffX = x - self.x;
+	--	local diffY = y - self.y;
+	--	self:StopMovingOrSizing();
+	--	moveMarker(self, diffX * MOVE_SCALE, diffY * MOVE_SCALE, self.origX, self.origY, inventoryModel);
+	--end);
 
 	-- Preset
 	local presets = {
@@ -505,18 +469,6 @@ function TRP3_API.inventory.initInventoryPage()
 			{"/?", 65},
 		}},
 	};
-
-	mainInventoryFrame.Equip.preset:SetScript("OnClick", function(self)
-		TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-			for _, presetCategory in pairs(presets) do
-				local presetCat = description:CreateButton(presetCategory[1]);
-				for _, preset in pairs(presetCategory[2]) do
-					presetCat:CreateButton(preset[1], function() mainInventoryFrame.Equip.sequence:SetText(preset[2] or ""); end);
-				end
-			end
-		end);
-	end);
-	setTooltipForSameFrame(mainInventoryFrame.Equip.preset, "RIGHT", 0, 5, loc.INV_PAGE_SEQUENCE, loc.INV_PAGE_SEQUENCE_PRESET);
 
 	createTutorialStructure();
 end
@@ -560,23 +512,34 @@ function TRP3_InventoryPageMixin:Init()
 	TRP3_API.navigation.page.registerPage({
 		id = "player_inventory",
 		frame = self,
+		onPagePostShow = function() self:OnShow() end;
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 end
 
 function TRP3_InventoryPageMixin:CreateInventorySlots()
-	local function CreateSlot(parent)
-		return CreateFrame("Button", nil, parent, "TRP3_InventoryPageSlotTemplate");
+	if self.InventorySlots and #self.InventorySlots > 0 then
+		return; -- already created slots, man
+	end
+
+	local function CreateSlot(parent, side)
+		local slot = CreateFrame("Button", nil, parent, "TRP3_InventoryPageSlotTemplate");
+		slot:Init(side);
+		return slot;
 	end
 
 	self.InventorySlots = {};
 	local invLeft, invRight = self.InventoryLeft, self.InventoryRight;
+	invLeft.spacing, invRight.spacing = 5, 5;
 	for i=1, SLOTS_PER_COLUMN do
-		local slotL = CreateSlot(invLeft);
+		-- passing the 'side' along too so the slot knows how to position it's friends
+		local slotL = CreateSlot(invLeft, 0);
 		slotL.layoutIndex = i;
+		slotL.bottomPadding = 4;
 
-		local slotR = CreateSlot(invRight);
+		local slotR = CreateSlot(invRight, 1);
 		slotR.layoutIndex = i;
+		slotR.bottomPadding = 4;
 
 		tinsert(self.InventorySlots, i, slotL);
 		tinsert(self.InventorySlots, i + SLOTS_PER_COLUMN, slotR);
@@ -586,11 +549,20 @@ function TRP3_InventoryPageMixin:CreateInventorySlots()
 end
 
 function TRP3_InventoryPageMixin:LoadInventorySlots()
-	assert(self.CurrentInventory, "Missing inventory");
+	if not self.CurrentInventory then
+		return;
+	end
+
 	local content = self.CurrentInventory.content or EMPTY;
 	for i, slot in ipairs(self.InventorySlots) do
 		local slotContent = content[i];
-		slot.ItemInfo = slotContent;
+		if slotContent then
+			slot.info = slotContent;
+			slot.class = TRP3_API.extended.getClass(slotContent.id);
+		else
+			slot.info, slot.class = nil, nil;
+		end
+		TRP3_API.inventory.containerSlotUpdate(slot);
 	end
 end
 
