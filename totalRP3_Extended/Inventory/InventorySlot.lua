@@ -44,11 +44,25 @@ function TRP3_InventoryPageSlotMixin:OnSlotLeave()
 end
 
 function TRP3_InventoryPageSlotMixin:OnSlotUpdate(deltaTime)
-    if self.CurrentInventory and self.class and self.class.BA.WA then
+    if self.info and self.class and self.class.BA.WA then
 		self.ItemLocator:Show();
 	else
 		self.ItemLocator:Hide();
 	end
+end
+
+function TRP3_InventoryPageSlotMixin:IsPopulated()
+    return (self.info ~= nil) and (self.class ~= nil);
+end
+
+function TRP3_InventoryPageSlotMixin:ShouldShowItemLocation()
+    if not self:IsPopulated() then
+        return false;
+    end
+
+    local isWearable = self.class.BA and self.class.BA.WA;
+    local pos = self.info.pos;
+    return (isWearable ~= nil) and (pos ~= nil);
 end
 
 function TRP3_InventoryPageSlotMixin:DrawItemLocationLine(quality)
@@ -63,16 +77,14 @@ function TRP3_InventoryPageSlotMixin:DrawItemLocationLine(quality)
 end
 
 function TRP3_InventoryPageSlotMixin:ShowModelItemPosition(force)
-    if self.CurrentInventory and self.class then
+    if self.info and self.class then
         local model = TRP3_InventoryPage.Model;
-		local isWearable = self.class.BA and self.class.BA.WA;
-		local quality = self.class.BA and self.class.BA.QA;
-		local pos = self.CurrentInventory.pos;
-		if isWearable and (pos or force) then
-			pos = pos or EMPTY;
+        local pos = self.info.pos or EMPTY;
+		if self:ShouldShowItemLocation() and (pos or force) then
+            local quality = self.class.BA and self.class.BA.QA;
 			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
 			model.sequenceTime = pos.sequenceTime or DEFAULT_TIME;
-			model:setAnimation(model.sequence, model.sequenceTime);
+			model:FreezeAnimation(model.sequence, 0, model.sequenceTime);
             model.Marker:Show();
             self:DrawItemLocationLine(quality);
 			--moveMarker(model.Marker, pos.x or 0, pos.y or 0, 0, 0, quality, model);
