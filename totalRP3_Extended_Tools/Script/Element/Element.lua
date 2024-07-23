@@ -209,7 +209,7 @@ function objectBrowser.init()
 
 	-- Create lines
 	for line = 0, 8 do
-		local button = CreateFrame("Button", "TRP3_ObjectBrowserButton_" .. line, objectBrowser.content, "TRP3_MusicBrowserLine");
+		local button = CreateFrame("Button", "TRP3_ObjectBrowserButton_" .. line, objectBrowser.content, "TRP3_ObjectBrowserLine");
 		button:SetPoint("TOP", objectBrowser.content, "TOP", 0, -10 + (line * (-31)));
 		button:SetScript("OnClick", onBrowserLineClick);
 		tinsert(objectBrowser.widgetTab, button);
