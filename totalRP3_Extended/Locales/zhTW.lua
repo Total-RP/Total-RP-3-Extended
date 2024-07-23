@@ -543,19 +543,14 @@ account\YOUR_ACCOUNT\SavedVariables
 	["EFFECT_ITEM_REMOVE_PREVIEW"] = "摧毀了 %s 個 %s",
 	["EFFECT_ITEM_REMOVE_QT_TT"] = "摧毁指定數量的物品。",
 	["EFFECT_ITEM_REMOVE_TT"] = "從你的背包中摧毀該物品。",
-	["EFFECT_ITEM_SOURCE"] = "搜尋",
 	["EFFECT_ITEM_SOURCE_1"] = "所有背包",
 	["EFFECT_ITEM_SOURCE_1_ADD_TT"] = "向所有角色的背包添加物品。（從主要背包開始。）",
 	["EFFECT_ITEM_SOURCE_1_SEARCH_TT"] = "從角色身上的所有容器裡搜索物品。",
-	["EFFECT_ITEM_SOURCE_1_TT"] = "從角色身上的所有容器裡搜索物品。",
 	["EFFECT_ITEM_SOURCE_2"] = "母容器",
 	["EFFECT_ITEM_SOURCE_2_ADD_TT"] = [=[僅能在此物件之母容器（與其任何子容器）之中添加物件。
 
  | cffff9900 僅作用於此物件於項目中有屬種關係時。]=],
 	["EFFECT_ITEM_SOURCE_2_SEARCH_TT"] = [=[僅能在此物件之母容器（與其任何子容器）之中搜索物件。
-
- | cffff9900 僅作用於此物件於項目中有屬種關係時。]=],
-	["EFFECT_ITEM_SOURCE_2_TT"] = [=[僅能在此物件之母容器（與其任何子容器）之中搜索物件。
 
  | cffff9900 僅作用於此物件於項目中有屬種關係時。]=],
 	["EFFECT_ITEM_SOURCE_3"] = "此物件",
