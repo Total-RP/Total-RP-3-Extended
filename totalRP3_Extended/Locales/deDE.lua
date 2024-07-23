@@ -655,11 +655,9 @@ Der Spieler kann dann die gewünschten Gegenstände mit der Gegestandssuche plü
 	["EFFECT_ITEM_REMOVE_PREVIEW"] = "Zerstört %sx %s",
 	["EFFECT_ITEM_REMOVE_QT_TT"] = "Die Anzahl der zu löschenden Gegenstände.",
 	["EFFECT_ITEM_REMOVE_TT"] = "Zerstöre Gegenstände aus deinem Inventar.",
-	["EFFECT_ITEM_SOURCE"] = "Suche in",
 	["EFFECT_ITEM_SOURCE_1"] = "Gesamtes Inventar",
 	["EFFECT_ITEM_SOURCE_1_ADD_TT"] = "Fügt den oder die Gegenstände dem Charakterinventar an irgendeinem Platz zu, angefangen mit dem Hauptinventar.",
 	["EFFECT_ITEM_SOURCE_1_SEARCH_TT"] = "Suche den/die Gegenstände im gesamten Charakterinventar.",
-	["EFFECT_ITEM_SOURCE_1_TT"] = "Suche den/die Gegenstände im gesamten Charakterinventar.",
 	["EFFECT_ITEM_SOURCE_2"] = "Übergeordneter Behälter",
 	["EFFECT_ITEM_SOURCE_2_ADD_TT"] = [=[Für den/die Gegenstände nur dessen übergeordnetem Behälter (und darin befindlichen) zu.
 
@@ -667,17 +665,11 @@ Der Spieler kann dann die gewünschten Gegenstände mit der Gegestandssuche plü
 	["EFFECT_ITEM_SOURCE_2_SEARCH_TT"] = [=[Suche den/die Gegenstände nur dessen übergeordnetem Behälter (und darin befindlichen).
 
 |cffff9900Funktioniert nur, wenn sich dieses Skript innerhalb eines Gegenstands befindet.]=],
-	["EFFECT_ITEM_SOURCE_2_TT"] = [=[Suche den/die Gegenstände nur dessen übergeordnetem Behälter (und darin befindlichen).
-
-|cffff9900Funktioniert nur, wenn sich dieses Skript innerhalb eines Gegenstands befindet.]=],
 	["EFFECT_ITEM_SOURCE_3"] = "Dieser Gegenstand",
 	["EFFECT_ITEM_SOURCE_3_ADD_TT"] = [=[Für den/die Gegenstände nur diesem Gegenstand (und darin befindlichen) zu.
 
 |cffff9900Funktioniert nur, wenn sich dieses Skript in einem Gegenstandskontext befindet und wenn dieser Gegenstand ein Behälter ist.]=],
 	["EFFECT_ITEM_SOURCE_3_SEARCH_TT"] = [=[Sucht den/die Gegenstände nur in diesem Gegenstand (und darin befindlichen).
-
-|cffff9900Funktioniert nur, wenn sich dieses Skript in einem Gegenstandskontext befindet und wenn dieser Gegenstand ein Behälter ist.]=],
-	["EFFECT_ITEM_SOURCE_3_TT"] = [=[Sucht den/die Gegenstände nur in diesem Gegenstand (und darin befindlichen).
 
 |cffff9900Funktioniert nur, wenn sich dieses Skript in einem Gegenstandskontext befindet und wenn dieser Gegenstand ein Behälter ist.]=],
 	["EFFECT_ITEM_SOURCE_ADD"] = "Hinzufügen zu",
@@ -906,7 +898,6 @@ Funktioniert nur bei Behältern.]=],
 	["EFFECT_SPEECH_TYPE"] = "Sprechart",
 	["EFFECT_SUMMOUNT"] = "Reittier beschwören",
 	["EFFECT_SUMMOUNT_ACTION_TT"] = "Wähle ein Reittier",
-	["EFFECT_SUMMOUNT_NOMOUNT"] = "Kein Reittier ausgewählt.",
 	["EFFECT_SUMMOUNT_RANDOMMOUNT"] = "Zufälliges Lieblingsreittier",
 	["EFFECT_SUMMOUNT_TT"] = "Beschwört ein bestimmtes Reittier, falls verfügbar.",
 	["EFFECT_TEXT"] = "Text anzeigen",
@@ -1042,10 +1033,6 @@ Wird die maximale Last eines Behälters überstiegen, wird er langsam beschädig
 Du kannst (fast) überall in der Welt Gegenstände fallen lassen. |cff00ff00Diese kannst du später wieder aufheben, indem du die "Gegenstandssuche" in der Werkzeugleiste benutzt.
 Du kannst ebenfalls alle abgelegten Gegenstände auf der Karte sehen, indem du die Schaltfläche "Suche nach meinen Gegenständen" benutzt.
 |cffff9900Beachte, dass Gegenstände manchmal automatisch fallen gelassen werden: wenn du Gegenstände bekommt, dein Inventar aber voll ist, oder wenn eine deiner Tachen beschädigt ist.]=],
-	["INV_TU_5"] = [=[Du kannst Gegenstände (oder Stapel davon) mit anderen Spielern per Drag&Drop austauschen (wie auch im Spiel).
-|cffff9900Wenn dir jemand einen Gegenstand gibt, wird dir das Handelsfenster mitteilen, ob es lästige Effekte haben kann. (niemand möchte seinen Charakter schreckliche Sachen brüllen lassen)
-|rFalls das der Fall sein sollte, wird TRP diese Effekte in eine weniger schädliche Form überführen (z. B. wird ein persönlicher Text angezeigt, anstatt dass der Charakter schreit) bis du dich entscheidest den Effekt freizugeben.
-|cff00ff00Du kannst Effekte sperren/freigeben sowie Effekte und auch Spieler weißlisten, indem du auf den Gegenstand Alt+Rechtsklickst.]=],
 	["INV_TU_5_V2"] = [=[Du kannst Gegenstände (oder Stapel davon) mit anderen Spielern per Drag&Drop austauschen (wie auch im Spiel) oder mit der dafür vorgesehenen Schaltfläche im Zielfenster.
 
 |cffff9900Wenn dir jemand einen Gegenstand gibt, wird dir das Handelsfenster mitteilen, ob es lästige Effekte haben kann. (niemand möchte seinen Charakter schreckliche Sachen brüllen lassen)
@@ -1811,12 +1798,6 @@ Wir haben hier zweierlei Ereignistypen: |cff00ff00Objektereignisse und Spielerei
 	["TU_EL_2_TEXT"] = [=[|cff00ff00Objektereignisse|r sind Ereignisse die mit Total RP 3 zusammenhängen.
 Die Liste der möglichen Ereignisse ist festgelegt und hängt vom Objekttyp ab (Gegenstand, Quest, usw.).
 Mit einem Ereignis kann nur ein Arbeitsablauf verknüpft werden, aber derselbe Arbeitsablauf kann mit mehreren verschiedenen Ereignissen verknüpft sein.]=],
-	["TU_EL_3_TEXT"] = [=[|cff00ff00Spielereignisse|r werden vom Spiel ausgelöst sobald etwas passiert.
-Jede Verknüpfung, die du hinzufügst, verbindet ein Spielereignis mit einem Arbeitsablauf. Jedes Mal, wenn das Ereignis eintritt, wird der Arbeitaablauf ausgeführt.
-|cff00ff00Du kannst eine Bedingung hinzufügen indem du auf die Verknüpfung Strg+klickst.|r Innerhalb der Bedingung kannst du auf die Ereignisparameter zugreifen, wenn du sie prüfen möchtest.
-Bspw. kannst du herausfinden, welcher Zauber gewirkt wird, wenn du das entsprechende Ereignis verfolgst.
-|cffff9900Es gibt eine große Liste von Spielereignissen und es liegt nicht an uns sie alle hier aufzulisten. Wir empfehlen dir, bei Webseiten wie Wowwiki vorbeizuschauen.
-http://wowwiki.wikia.com/wiki/Event_API]=],
 	["TU_EL_3_TEXT_V2"] = [=[|cff00ff00Spielereignisse|r werden vom Spiel ausgelöst sobald etwas passiert.
 
 Jede Verknüpfung, die du hinzufügst, verbindet ein Spielereignis mit einem Arbeitsablauf. Jedes Mal, wenn das Ereignis eintritt, wird der Arbeitaablauf ausgeführt.

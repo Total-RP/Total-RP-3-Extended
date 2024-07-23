@@ -698,11 +698,9 @@ Laisser vierge si vous ne souhaitez pas sauvegarder le résultat.]=],
 	["EFFECT_ITEM_REMOVE_PREVIEW"] = "Détruit %sx %s",
 	["EFFECT_ITEM_REMOVE_QT_TT"] = "Le nombre d'objets à supprimer.",
 	["EFFECT_ITEM_REMOVE_TT"] = "Détruit l'objet depuis votre inventaire.",
-	["EFFECT_ITEM_SOURCE"] = "Rechercher dans",
 	["EFFECT_ITEM_SOURCE_1"] = "Tout l'inventaire",
 	["EFFECT_ITEM_SOURCE_1_ADD_TT"] = "Ajoute l'objet n'importe où dans l'inventaire du personnage, en commençant par le conteneur principal.",
 	["EFFECT_ITEM_SOURCE_1_SEARCH_TT"] = "Recherche l'objet dans tout l'inventaire du personnage.",
-	["EFFECT_ITEM_SOURCE_1_TT"] = "Recherche l'objet dans tout l'inventaire du personnage.",
 	["EFFECT_ITEM_SOURCE_2"] = "Contenant-mère",
 	["EFFECT_ITEM_SOURCE_2_ADD_TT"] = [=[Ajoute l'objet seulement dans cet objet contenant-mère (et dans ses éventuels sous-contenants).
 
@@ -710,17 +708,11 @@ Laisser vierge si vous ne souhaitez pas sauvegarder le résultat.]=],
 	["EFFECT_ITEM_SOURCE_2_SEARCH_TT"] = [=[Recherche l'objet seulement dans cet objet contenant-mère (et dans ses éventuels sous-contenants).
 
 |cffff9900Fonctionne seulement si ce script est dans un contexte d'objet.]=],
-	["EFFECT_ITEM_SOURCE_2_TT"] = [=[Recherche l'objet seulement dans cet objet contenant-mère (et dans ses éventuels sous-contenants).
-
-|cffff9900Fonctionne seulement si ce script est dans un contexte d'objet.]=],
 	["EFFECT_ITEM_SOURCE_3"] = "Cet objet",
 	["EFFECT_ITEM_SOURCE_3_ADD_TT"] = [=[Ajoute l'objet seulement dans cet objet (et dans ses éventuels sous-contenants).
 
 |cffff9900Fonctionne seulement si ce script est dans un contexte d'objet et que cet objet est un contenant.]=],
 	["EFFECT_ITEM_SOURCE_3_SEARCH_TT"] = [=[Recherche l'objet seulement dans cet objet (et dans ses éventuels sous-contenants).
-
-|cffff9900Fonctionne seulement si ce script est dans un contexte d'objet et que cet objet est un contenant.]=],
-	["EFFECT_ITEM_SOURCE_3_TT"] = [=[Recherche l'objet seulement dans cet objet (et dans ses éventuels sous-contenants).
 
 |cffff9900Fonctionne seulement si ce script est dans un contexte d'objet et que cet objet est un contenant.]=],
 	["EFFECT_ITEM_SOURCE_ADD"] = "Ajouter à",
@@ -954,7 +946,6 @@ Fonctionne uniquement si l'objet courant est un conteneur !]=],
 	["EFFECT_SPEECH_TYPE"] = "Type de discours",
 	["EFFECT_SUMMOUNT"] = "Invoquer une monture",
 	["EFFECT_SUMMOUNT_ACTION_TT"] = "Sélectionnez une monture spécifique",
-	["EFFECT_SUMMOUNT_NOMOUNT"] = "Pas de monture sélectionnée.",
 	["EFFECT_SUMMOUNT_RANDOMMOUNT"] = "Monture favorite aléatoire",
 	["EFFECT_SUMMOUNT_TT"] = "Invoque une monture spécifique, si elle est disponible.",
 	["EFFECT_TEXT"] = "Afficher du texte",
@@ -1111,13 +1102,6 @@ Si un contenant a une capacité maximum en poids et que vous le dépassez, il s'
 Vous pouvez déposer des objets (presque) partout dans le monde. |cffff9900Vous pouvez ensuite revenir les ramasser plus tard en utilisant le bouton "Rechercher des objets" dans la barre d'outils de Total RP 3.
 
 |cffff9900NB : Parfois des objets peuvent être déposés automatiquement : si vous récupérez des objets mais que votre inventaire est plein, ou si un de vos sacs est endommagé.]=],
-	["INV_TU_5"] = [=[Vous pouvez échanger un objet (ou une pile d'objets) avec un autre joueur, en glissant la pile sur ce joueur (de la même manière que dans le jeu).
-
-|cffff9900Quand quelqu'un vous donne un objet, la fenêtre d'échange vous informera si cet objet pourrait avoir des effets gênants (personne n'aime que son personnage crie des choses horribles).
-
-|rQuand c'est le cas, TRP convertira ces effets en une forme moins dangereuse (par exemple, le fait de crier sera converti en texte personnel) jusqu'à ce que vous décidiez de les débloquer.
-
-|cff00ff00Vous pouvez bloquer/débloquer ces effets, et valider des effets ou joueurs de confiance, avec Alt + Clic droit sur un objet de votre inventaire.]=],
 	["INV_TU_5_V2"] = [=[Vous pouvez échanger un objet (ou une pile d'objets) avec un autre joueur, en glissant la pile sur ce joueur (de la même manière que dans le jeu) ou en utilisant le bouton dédié sur le cadre de la cible.
 
 |cffff9900Quand quelqu'un vous donne un objet, la fenêtre d'échange vous informera si cet objet pourrait avoir des effets gênants (personne n'aime que son personnage crie des choses horribles).
@@ -1935,14 +1919,6 @@ Nous avons ici deux types d'évènements : |cff00ff00Les évènements de créati
 La liste des évènements possibles est fixée et dépend du type de création (objet, quête, etc).
 
 Vous ne pouvez lier chaque évènement qu'à un seul processus, mais ce processus peut être lié à plusieurs évènements.]=],
-	["TU_EL_3_TEXT"] = [=[|cff00ff00Les évènements du jeu|r sont des évènements lancés par le jeu lorsque quelque chose se produit.
-
-Chaque lien que vous ajoutez liera un évènement du jeu à un processus. A chaque fois que l'évènement se produit, le processus sera exécuté.
-
-|cff00ff00Vous pouvez ajouter une condition au lien en effectuant un Ctrl+clic dessus.|r La condition aura accès aux arguments de l'évènement à tester.
-Par exemple, si vous surveillez l'évènement de lancement d'un sort, vous pourrez tester dans la condition le sort lancé.
-
-|cffff9900Il existe une large liste d'évènements du jeu, il nous est impossible de tous les lister dans l'addon. Nous vous suggérons de consulter des sites tels que Wowwiki. http://wowwiki.wikia.com/wiki/Event_API|r]=],
 	["TU_EL_3_TEXT_V2"] = [=[|cff00ff00Les évènements du jeu|r sont des évènements lancés par le jeu lorsque quelque chose se produit.
 
 Chaque lien que vous ajoutez liera un évènement du jeu à un processus. A chaque fois que l'évènement se produit, le processus sera exécuté.

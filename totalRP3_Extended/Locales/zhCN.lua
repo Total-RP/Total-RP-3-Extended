@@ -577,11 +577,9 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["EFFECT_ITEM_REMOVE_PREVIEW"] = "摧毁 %s 个 %s",
 	["EFFECT_ITEM_REMOVE_QT_TT"] = "摧毁物品的数量",
 	["EFFECT_ITEM_REMOVE_TT"] = "从你的背包当中摧毁物品",
-	["EFFECT_ITEM_SOURCE"] = "搜索",
 	["EFFECT_ITEM_SOURCE_1"] = "所有背包",
 	["EFFECT_ITEM_SOURCE_1_ADD_TT"] = "向所有角色背包添加物品，从主背包开始。",
 	["EFFECT_ITEM_SOURCE_1_SEARCH_TT"] = "在整个角色背包里搜索物品。",
-	["EFFECT_ITEM_SOURCE_1_TT"] = "在整个角色背包里搜索物品。",
 	["EFFECT_ITEM_SOURCE_2"] = "所有容器",
 	["EFFECT_ITEM_SOURCE_2_ADD_TT"] = [=[只向这个容器（及其子容器）添加物品。
 
@@ -589,17 +587,11 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["EFFECT_ITEM_SOURCE_2_SEARCH_TT"] = [=[只在这个容器（及其子容器）当中搜索物品。
 	
 	|cffff9900只在这段代码在物品当中时有效。]=],
-	["EFFECT_ITEM_SOURCE_2_TT"] = [=[只在这个容器（及其子容器）当中搜索物品。
-	
-	|cffff9900只在这段代码在物品当中时有效。]=],
 	["EFFECT_ITEM_SOURCE_3"] = "所有物品",
 	["EFFECT_ITEM_SOURCE_3_ADD_TT"] = [=[只向这个物品（及其子容器）添加物品。
 
 	|cffff9900只在这段代码在物品当中，且该物品是容器时有效。]=],
 	["EFFECT_ITEM_SOURCE_3_SEARCH_TT"] = [=[只在这个物品（及其子容器）当中搜索物品。
-	
-	|cffff9900只在这段代码在物品当中，且该物品是容器时有效。]=],
-	["EFFECT_ITEM_SOURCE_3_TT"] = [=[只在这个物品（及其子容器）当中搜索物品。
 	
 	|cffff9900只在这段代码在物品当中，且该物品是容器时有效。]=],
 	["EFFECT_ITEM_SOURCE_ADD"] = "添加到",
@@ -827,7 +819,6 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 	["EFFECT_SPEECH_TYPE"] = "发言类型",
 	["EFFECT_SUMMOUNT"] = "召唤一个坐骑",
 	["EFFECT_SUMMOUNT_ACTION_TT"] = "选定坐骑",
-	["EFFECT_SUMMOUNT_NOMOUNT"] = "没有选定坐骑",
 	["EFFECT_SUMMOUNT_RANDOMMOUNT"] = "随机偏好",
 	["EFFECT_SUMMOUNT_TT"] = "在可用的情况下随机召唤一个坐骑。",
 	["EFFECT_TEXT"] = "显示文字",
@@ -962,10 +953,6 @@ account\YOUR_ACCOUNT\SavedVariables]=],
 你可以在世界上的绝大多数地方丢下物品。|cff00ff00并可以用“搜索物品”功能拾取他们。
 你还可以打开地图使用“搜索我的物品”功能。
 |cffff9900有时候物品会自己掉在地上：背包已满或是背包损坏的时候。]=],
-	["INV_TU_5"] = [=[你可以使用拖放来跟其他玩家交易物品（和游戏里一样）。
-|cffff9900其他人给你物品时，交易窗口会提示它可能包括一些奇怪的效果。（没人希望他们的角色发出奇怪的喊声）
-|r这时，TRP的安全机制会启动，将喊话转换为仅对你自己可见的文本，你可以选择关闭这个机制。
-|cff00ff00你可以通过Alt+右击物品来这么做。]=],
 	["INV_TU_5_V2"] = [=[你可以使用拖放或目标框架上的按钮来跟其他玩家交易物品（和游戏里一样）。
 
 |cffff9900其他人给你物品时，交易窗口会提示它可能包括一些奇怪的效果。（没人希望他们的角色发出奇怪的喊声）
@@ -1683,12 +1670,6 @@ ID留空即可统计所有物品。]=],
 	["TU_EL_2_TEXT"] = [=[|cff00ff00对象事件 |r 是基于TRP3架构的事件。
 	根据对象类型的不同，可用的事件也是不同的。
 	一个事件只能链接一个工作流，但一个工作流可以被多个事件链接。]=],
-	["TU_EL_3_TEXT"] = [=[|cff00ff00游戏事件|r 是当一些情况发生的时候游戏触发的事件。
-	每个链接都会将一个游戏事件链接到一个工作流。事件发生的似乎很工作流就会被执行。
-	|cff00ff00你可以通过Ctrl+左击给链接附加条件|r 条件将会访问需要的参数。
-	例如你监测释放法术的事件，你就可以将法术释放完成作为条件。
-	|cffff9900游戏内事件非常多，你可以参考wowwiki来获取详细列表。
-	http://wowwiki.wikia.com/wiki/Event_API]=],
 	["TU_EL_3_TEXT_V2"] = [=[|cff00ff00游戏事件|r 是当一些情况发生的时候游戏触发的事件。
 		每个链接都会将一个游戏事件链接到一个工作流。事件发生的似乎很工作流就会被执行。
 		|cff00ff00你可以通过Ctrl+左击给链接附加条件|r 条件将会访问需要的参数。
