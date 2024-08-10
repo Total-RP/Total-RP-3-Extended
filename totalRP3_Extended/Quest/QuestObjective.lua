@@ -159,11 +159,22 @@ function frame.init()
 	C_Timer.NewTicker(0.5, function()
 		frame:Hide();
 		if ObjectiveTrackerFrame:IsShown() then
-			frame:SetPoint("TOPRIGHT", ObjectiveTrackerFrame.NineSlice, "BOTTOMRIGHT", 0, -10);
-			frame:SetPoint("TOPLEFT", ObjectiveTrackerFrame.NineSlice, "BOTTOMLEFT", 0, -10);
-			frame.Tracker:SetWidth(ObjectiveTrackerFrame.NineSlice:GetWidth());
-			display();
-			frame:Show();
+			if ObjectiveTrackerFrame:IsCollapsed() then
+				-- If tracker collapsed, we place ours below the header
+				frame:SetPoint("TOPRIGHT", ObjectiveTrackerFrame.Header.Background, "BOTTOMRIGHT", 0, -10);
+				frame:SetPoint("TOPLEFT", ObjectiveTrackerFrame.Header.Background, "BOTTOMLEFT", 0, -10);
+			else
+				-- If tracker not collapsed, we place ours below the full tracker
+				frame:SetPoint("TOPRIGHT", ObjectiveTrackerFrame.NineSlice, "BOTTOMRIGHT", 0, -10);
+				frame:SetPoint("TOPLEFT", ObjectiveTrackerFrame.NineSlice, "BOTTOMLEFT", 0, -10);
+			end
+		else
+			-- If tracker hidden, we place ours where the tracker would be
+			frame:SetPoint("TOPRIGHT", ObjectiveTrackerFrame.NineSlice);
+			frame:SetPoint("TOPLEFT", ObjectiveTrackerFrame.NineSlice);
 		end
+		frame.Tracker:SetWidth(ObjectiveTrackerFrame.NineSlice:GetWidth());
+		display();
+		frame:Show();
 	end);
 end
