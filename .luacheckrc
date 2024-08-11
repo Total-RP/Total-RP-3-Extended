@@ -189,6 +189,7 @@ read_globals = {
 	"nop",
 	"ObjectiveTrackerFrame",
 	"PickupMacro",
+	"PlayerCastingBarFrame",
 	"PROFESSIONS_USED_IN_COOKING",
 	"QUEST_LOG",
 	"QUEST_OBJECTIVES",
