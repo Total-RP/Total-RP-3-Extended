@@ -97,6 +97,7 @@ end
 
 local function onUpdate(self, elapsed)
 	if ( self.casting ) then
+		frame:UpdateCastTimeText();
 		self.value = self.value + elapsed;
 		if ( self.value >= self.maxValue ) then
 			self:SetValue(self.maxValue);
