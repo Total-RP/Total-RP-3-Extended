@@ -52,16 +52,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 				<Frames>
 
-					<Frame parentKey="background" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentBackground">
+					<Button parentKey="background" inherits="TRP3_CommonButton" enableMouse="true" name="$parentBackground">
+					<Size y="22"/>
 						<Anchors>
-							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="10" y="-10"/>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="10" y="-4"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
 						</Anchors>
-					</Frame>
+					</Button>
 
 					<EditBox parentKey="height" inherits="TRP3_TitledHelpEditBox" numeric="true">
 						<Size x="0" y="18"/>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="4" y="-10" relativePoint="BOTTOMLEFT" relativeKey="$parent.background"/>
+							<Anchor point="TOPLEFT" x="4" y="-16" relativePoint="BOTTOMLEFT" relativeKey="$parent.background"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-20" y="0"/>
 						</Anchors>
 					</EditBox>

@@ -182,7 +182,6 @@ local function load()
 
 	-- Temp
 	params.title:SetText(loc.DO_PARAMS_GLOBAL);
-	params.background:SetSelectedValue(data.BCK or 8);
 	params.border:SetSelectedValue(data.BO or TRP3_API.extended.document.BorderType.PARCHMENT);
 	params.height:SetText(data.HE or "600");
 	params.width:SetText(data.WI or "450");
@@ -206,7 +205,6 @@ local function saveToDraft()
 	assert(toolFrame.specificDraft, "specificDraft is nil");
 
 	local data = toolFrame.specificDraft;
-	data.BCK = params.background:GetSelectedValue() or 8;
 	data.BO = params.border:GetSelectedValue() or TRP3_API.extended.document.BorderType.PARCHMENT;
 	data.HE = tonumber(params.height:GetText()) or 600;
 	data.WI = tonumber(params.width:GetText()) or 450;
@@ -258,8 +256,14 @@ function TRP3_API.extended.tools.initDocumentEditorNormal(ToolFrame)
 	params = toolFrame.document.normal.params;
 
 	-- Background
-	TRP3_API.ui.listbox.setupListBox(params.background, TRP3_API.ui.frame.getTiledBackgroundList(), nil, nil, 220, true);
-	params.background:SetWidth(220);
+	params.background:SetText(loc.UI_BKG_BUTTON);
+	params.background:SetScript("OnClick", function()
+		local function OnBackgroundSelected(imageInfo)
+			toolFrame.specificDraft.BCK = imageInfo and imageInfo.id or 8;
+		end
+
+		TRP3_API.popup.showPopup(TRP3_API.popup.BACKGROUNDS, {parent = toolFrame, point = "CENTER", parentPoint = "CENTER"}, {OnBackgroundSelected, nil, nil, toolFrame.specificDraft.BCK or 8});
+	end);
 
 	-- Border
 	TRP3_API.ui.listbox.setupListBox(params.border, {
