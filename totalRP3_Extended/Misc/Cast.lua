@@ -52,6 +52,8 @@ function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundI
 
 	frame:ClearStages();
 
+	frame:SetAllPoints(PlayerCastingBarFrame);
+
 	frame:ShowSpark();
 
 	frame.castID = Utils.str.id();
