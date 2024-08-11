@@ -28,6 +28,7 @@ end
 function delayEditor.save(scriptStepStructure)
 	scriptStepStructure.d = tonumber(delayEditor.duration:GetText()) or 1;
 	scriptStepStructure.s = tonumber(delayEditor.sound:GetText()) or 0;
+	scriptStepStructure.f = delayEditor.soundFile:GetChecked() or false;
 	scriptStepStructure.c = delayEditor.type:GetSelectedValue() or 1;
 	scriptStepStructure.i = delayEditor.interrupt:GetSelectedValue() or 1;
 	scriptStepStructure.x = stEtN(strtrim(delayEditor.text:GetText() or ""));
@@ -38,6 +39,7 @@ function delayEditor.load(scriptStepStructure)
 	delayEditor.interrupt:SetSelectedValue(scriptStepStructure.i or 1);
 	delayEditor.duration:SetText(scriptStepStructure.d or 0);
 	delayEditor.sound:SetText(scriptStepStructure.s or 0);
+	delayEditor.soundFile:SetChecked(scriptStepStructure.f or false);
 	delayEditor.text:SetText(scriptStepStructure.x or "");
 end
 
@@ -49,6 +51,10 @@ function delayEditor.init()
 	-- Cast sound
 	delayEditor.sound.title:SetText(loc.WO_DELAY_CAST_SOUND);
 	setTooltipForSameFrame(delayEditor.sound.help, "RIGHT", 0, 5, loc.WO_DELAY_CAST_SOUND, loc.WO_DELAY_CAST_SOUND_TT);
+
+	-- Cast sound file
+	delayEditor.soundFile.Text:SetText(loc.EFFECT_SOUND_ID_SELF_SOUNDFILE);
+	setTooltipForSameFrame(delayEditor.soundFile, "RIGHT", 0, 5, loc.EFFECT_SOUND_ID_SELF_SOUNDFILE, loc.EFFECT_SOUND_ID_SELF_SOUNDFILE_TT);
 
 	-- Cast text
 	delayEditor.text.title:SetText(loc.WO_DELAY_CAST_TEXT);
@@ -62,9 +68,11 @@ function delayEditor.init()
 	TRP3_API.ui.listbox.setupListBox(delayEditor.type, delayTypes, function(value)
 		if value == 2 then
 			delayEditor.sound:Show();
+			delayEditor.soundFile:Show();
 			delayEditor.text:Show();
 		else
 			delayEditor.sound:Hide();
+			delayEditor.soundFile:Hide();
 			delayEditor.text:Hide();
 		end
 	end, nil, 225, true);

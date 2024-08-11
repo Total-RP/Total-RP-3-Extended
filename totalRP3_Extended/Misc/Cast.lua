@@ -36,7 +36,7 @@ local function interrupt()
 	end
 end
 
-function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundID, castText)
+function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundID, castText, isSoundFileID)
 	if GetUnitSpeed("player") > 0 and interruptMode == 2 then
 		Utils.message.displayMessage(SPELL_FAILED_MOVING, 4);
 		return;
@@ -83,8 +83,13 @@ function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundI
 
 	removeSound();
 	if soundID and soundID ~= 0 then
-		local _, handlerID = Utils.music.playSoundID(soundID, "SFX", class and class.BA.NA or "Cast");
-		frame.soundHandler = handlerID;
+		if isSoundFileID then
+			local _, handlerID = Utils.music.playSoundFileID(soundID, "SFX", class and class.BA.NA or "Cast");
+			frame.soundHandler = handlerID;
+		else
+			local _, handlerID = Utils.music.playSoundID(soundID, "SFX", class and class.BA.NA or "Cast");
+			frame.soundHandler = handlerID;
+		end
 	end
 
 	return frame.castID;
