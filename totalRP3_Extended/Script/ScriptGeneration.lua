@@ -410,7 +410,7 @@ local function writeDelay(delayStructure)
 
 	if delayStructure.c == 2 then
 		-- Casting bar
-		writeLine(("castID = showCastingBar(%s, %s, args.class, %s, var(\"%s\", args))"):format(delayStructure.d, delayStructure.i or 1, delayStructure.s or 0, delayStructure.x or ""));
+		writeLine(("castID = showCastingBar(%s, %s, args.class, %s, var(\"%s\", args), %s)"):format(delayStructure.d, delayStructure.i or 1, delayStructure.s or 0, delayStructure.x or "", tostring(delayStructure.f or false)));
 		CURRENT_ENVIRONMENT["showCastingBar"] = "TRP3_API.extended.showCastingBar";
 
 		if delayStructure.i == 2 then

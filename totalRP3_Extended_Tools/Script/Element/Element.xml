@@ -66,34 +66,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ScriptEditorDelay" hidden="true" inherits="TRP3_EditorEffectTemplate">
 
-		<Size x="400" y="290"/>
+		<Size x="400" y="330"/>
 
 		<Frames>
-
-			<Frame parentKey="type" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
-				<Anchors>
-					<Anchor point="TOP" x="-5" y="-55"/>
-				</Anchors>
-			</Frame>
-
-			<EditBox parentKey="sound" inherits="TRP3_TitledHelpEditBox">
-				<Size x="215" y="18"/>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="4" y="-10"/>
-				</Anchors>
-			</EditBox>
-
-			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
-				<Size x="215" y="18"/>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.sound" x="0" y="-20"/>
-				</Anchors>
-			</EditBox>
 
 			<EditBox parentKey="duration" inherits="TRP3_TitledHelpEditBox">
 				<Size x="215" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.text" x="0" y="-20"/>
+					<Anchor point="TOP" x="-5" y="-55"/>
 				</Anchors>
 			</EditBox>
 
@@ -102,6 +82,32 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.duration" x="-4" y="-15"/>
 				</Anchors>
 			</Frame>
+
+			<Frame parentKey="type" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" name="$parentType">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.interrupt" x="0" y="-12"/>
+				</Anchors>
+			</Frame>
+
+			<EditBox parentKey="sound" inherits="TRP3_TitledHelpEditBox">
+				<Size x="215" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.type" x="4" y="-15"/>
+				</Anchors>
+			</EditBox>
+
+			<CheckButton parentKey="soundFile" inherits="TRP3_CheckBox">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.sound" x="0" y="-15"/>
+				</Anchors>
+			</CheckButton>
+
+			<EditBox parentKey="text" inherits="TRP3_TitledHelpEditBox">
+				<Size x="215" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.soundFile" x="0" y="-18"/>
+				</Anchors>
+			</EditBox>
 
 		</Frames>
 
