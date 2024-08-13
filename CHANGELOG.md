@@ -1,3 +1,17 @@
+# Changelog for version 2.2.1
+
+## Changed
+
+- Added a checkbox to set if the ID for a casting delay sound is a sound file ID instead of a sound ID.
+  - This is identical to the one already present in the "Play sound" effect.
+- The document editor now uses the background browser to select the document background.
+  - This also fixes the issue where selecting a background in the dropdown would turn the document transparent.
+
+## Fixed
+
+- Fixed campaign tracker scaling and display issues.
+- Fixed the casting delay duration not properly updating, as well as not respecting the position of the player's castbar.
+
 # Changelog for version 2.2.0
 
 *This version supports patch 11.0 and requires Total RP 3 version 3.0.0 or newer.*
