@@ -1,14 +1,10 @@
-local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.loc;
-
-local DEFAULT_SEQUENCE = 193;
-local DEFAULT_TIME = 1;
 
 ---@enum TRP3.InventoryPageSide
 local INVENTORY_PAGE_SIDE = {
     LEFT = 0,
     RIGHT = 1;
-}
+};
 
 TRP3_InventoryPageSlotMixin = {};
 
@@ -37,19 +33,35 @@ function TRP3_InventoryPageSlotMixin:Init(side)
 end
 
 function TRP3_InventoryPageSlotMixin:OnSlotEnter()
-    self:ShowModelItemPosition();
+    if not self:IsPopulated() or TRP3_InventoryPage:IsActiveSlot(self) then
+        return;
+    end
+
+    TRP3_InventoryPage:PreviewSlot(self);
 end
 
 function TRP3_InventoryPageSlotMixin:OnSlotLeave()
-    TRP3_InventoryPage:ResetModel();
+    if not self:IsPopulated() or TRP3_InventoryPage:IsActiveSlot(self) then
+        return;
+    end
+
+    TRP3_InventoryPage:ClearPreview();
 end
 
-function TRP3_InventoryPageSlotMixin:OnSlotUpdate(deltaTime)
+function TRP3_InventoryPageSlotMixin:OnSlotUpdate()
     if self.info and self.class and self.class.BA.WA then
 		self.Locator:Show();
 	else
 		self.Locator:Hide();
 	end
+end
+
+function TRP3_InventoryPageSlotMixin:ResetLocation()
+    local pos = self.info.pos;
+    if pos then
+        pos.x = 0;
+        pos.y = 0;
+    end
 end
 
 function TRP3_InventoryPageSlotMixin:IsPopulated()
@@ -66,46 +78,44 @@ function TRP3_InventoryPageSlotMixin:ShouldShowItemLocation()
     return (isWearable ~= nil) and (pos ~= nil);
 end
 
-function TRP3_InventoryPageSlotMixin:DrawItemLocationLine(quality)
-    local model = TRP3_InventoryPage.Model;
-    local line = model.Line;
-    line:SetStartPoint("CENTER", self);
-    line:SetEndPoint("CENTER", model.Marker);
-    self:SetFrameLevel(model:GetFrameLevel() + 5); -- TODO: investigate
-    local r, g, b = TRP3_API.inventory.getQualityColorRGB(quality);
-    line:SetVertexColor(r, g, b, 1);
-    line:Show();
-end
+------------
 
-function TRP3_InventoryPageSlotMixin:ShowModelItemPosition(force)
-    if self.info and self.class then
-        local model = TRP3_InventoryPage.Model;
-        local pos = self.info.pos or EMPTY;
-		if self:ShouldShowItemLocation() and (pos or force) then
-            local quality = self.class.BA and self.class.BA.QA;
-			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
-			model.sequenceTime = pos.sequenceTime or DEFAULT_TIME;
-			model:FreezeAnimation(model.sequence, 0, model.sequenceTime);
-            model.Marker:Show();
-            self:DrawItemLocationLine(quality);
-		else
-			TRP3_InventoryPage:ResetModel();
-		end
-	end
-end
+TRP3_InventoryPageSlotLocatorMixin = {};
 
-function TRP3_InventoryPageSlotMixin:OnLocatorClick(button)
+function TRP3_InventoryPageSlotLocatorMixin:OnClick(button)
+    print(button);
     if button == "LeftButton" then
-        local position, x, y = "RIGHT", -10, 0;
-		if button.Side == INVENTORY_PAGE_SIDE.RIGHT then
-			position, x, y = "LEFT", 10, 0;
-		end
-		TRP3_API.ui.frame.configureHoverFrame(TRP3_InventoryPage, self.Locator, position, x, y);
-		TRP3_InventoryPage.ActiveSlot = self.Locator;
+        local slot = self:GetParent();
+        if TRP3_InventoryPage:IsActiveSlot(slot) then
+            TRP3_InventoryPage:ClearActiveSlot();
+            return;
+        end
 
-        local force = true;
-		self:ShowModelItemPosition(force);
+
+		TRP3_InventoryPage:SetActiveSlot(slot);
 	else
-        TRP3_InventoryPage:ResetModel();
+        local slot = self:GetParent();
+        slot:ResetLocation();
+        TRP3_InventoryPage:ClearActiveSlot();
 	end
+end
+
+function TRP3_InventoryPageSlotLocatorMixin:OnEnter()
+    local slot = self:GetParent();
+    if TRP3_InventoryPage:IsActiveSlot(slot) then
+        return;
+    end
+
+    TRP3_RefreshTooltipForFrame(self);
+	TRP3_InventoryPage:PreviewSlot(slot);
+end
+
+function TRP3_InventoryPageSlotLocatorMixin:OnLeave()
+    TRP3_MainTooltip:Hide();
+
+    if TRP3_InventoryPage:IsActiveSlot(self:GetParent()) then
+        return;
+    end
+
+    TRP3_InventoryPage:ClearPreview();
 end

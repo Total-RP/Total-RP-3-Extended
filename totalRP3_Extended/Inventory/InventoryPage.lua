@@ -11,6 +11,9 @@ local EMPTY = TRP3_API.globals.empty;
 
 local inventoryModel, mainInventoryFrame;
 
+local DEFAULT_SEQUENCE = 193;
+local DEFAULT_TIME = 1;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Slot equipment management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -354,6 +357,10 @@ function TRP3_InventoryPageMixin:OnShow()
 	self.Model:InspectUnit("player", true);
 	self:ResetModel();
 	self:LoadInventorySlots();
+
+	local alwaysStartFromMouse = true;
+	TRP3_MainFrame:StartMoving(alwaysStartFromMouse);
+	TRP3_MainFrame:StopMovingOrSizing();
 end
 
 -- called from TRP3_API.inventory.onStart when the module loads
@@ -473,6 +480,76 @@ function TRP3_InventoryPageMixin:AddPlayerInventoryButton()
 		end,
 	};
 	TRP3_API.toolbar.toolbarAddButton(toolbarButton);
+end
+
+function TRP3_InventoryPageMixin:DrawItemLocationLine(slot, quality)
+    local model = self.Model;
+    local line = model.Line;
+    line:SetStartPoint("CENTER", slot);
+    line:SetEndPoint("CENTER", model.Marker);
+    slot:SetFrameLevel(model:GetFrameLevel() + 5); -- TODO: investigate
+    local r, g, b = TRP3_API.inventory.getQualityColorRGB(quality);
+    line:SetVertexColor(r, g, b, 1);
+    line:Show();
+end
+
+function TRP3_InventoryPageMixin:ShowItemPosition(slot)
+	if slot.info and slot.class then
+        local model = self.Model;
+        local pos = slot.info.pos or EMPTY;
+		if slot:ShouldShowItemLocation() and pos then
+            local quality = slot.class.BA and slot.class.BA.QA;
+			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
+			model.sequenceTime = pos.sequenceTime or DEFAULT_TIME;
+			model:FreezeAnimation(model.sequence, 0, model.sequenceTime);
+
+            local marker = model.Marker;
+            marker:SetPoint("CENTER", model, "CENTER", pos.x, pos.y);
+            marker:Show();
+
+            self:DrawItemLocationLine(slot, quality);
+		else
+			self:ResetModel();
+		end
+	end
+end
+
+function TRP3_InventoryPageMixin:ResetMarker()
+	local marker = self.Model.Marker;
+	marker:SetPoint("CENTER", self.Model, "CENTER", 0, 0);
+end
+
+function TRP3_InventoryPageMixin:SetActiveSlot(slot)
+	self.ActiveSlot = slot;
+	if not slot then
+		self:ClearActiveSlot();
+		return;
+	end
+
+	self.Model.Blocker:Hide();
+	self:ShowItemPosition(self.ActiveSlot);
+end
+
+function TRP3_InventoryPageMixin:ClearActiveSlot()
+	self.ActiveSlot = nil;
+	self.Model.Blocker:Show();
+	self:ResetModel();
+end
+
+function TRP3_InventoryPageMixin:GetActiveSlot()
+	return self.ActiveSlot;
+end
+
+function TRP3_InventoryPageMixin:IsActiveSlot(slot)
+	return self.ActiveSlot == slot;
+end
+
+function TRP3_InventoryPageMixin:PreviewSlot(slot)
+	self:ShowItemPosition(slot);
+end
+
+function TRP3_InventoryPageMixin:ClearPreview()
+	self:ResetModel();
 end
 
 ------------

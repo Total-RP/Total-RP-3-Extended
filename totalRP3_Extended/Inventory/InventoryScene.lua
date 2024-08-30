@@ -76,6 +76,9 @@ function TRP3_InventorySceneMixin:OnEnter()
 end
 
 function TRP3_InventorySceneMixin:OnLeave()
+    if not self:IsMouseOver() then
+        TRP3_InventoryPage:SetActiveSlot(nil);
+    end
 end
 
 function TRP3_InventorySceneMixin:OnMouseDown(button)
@@ -357,7 +360,6 @@ function TRP3_InventorySceneMixin:SetRotation(rotation)
         return;
     end
 
-    -- invert rotation because actors are backwards
     actor:SetYaw(rotation);
 end
 
@@ -393,4 +395,36 @@ function TRP3_InventorySceneMixin:InspectUnit(unitToken, ...)
         self.Title:Hide();
         self.Loading:Hide();
     end
+end
+
+function TRP3_InventorySceneMixin:OnMarkerMouseDown(button)
+	if button ~= "LeftButton" then
+		return;
+	end
+
+    self.Marker:StartMoving();
+end
+
+function TRP3_InventorySceneMixin:OnMarkerMouseUp(button)
+    if button ~= "LeftButton" then
+		return;
+	end
+
+    local slot = TRP3_InventoryPage:GetActiveSlot();
+
+	self.Marker:StopMovingOrSizing();
+
+    local origin = slot.info.pos;
+    local _, _, _, x, y = self.Marker:GetPoint(1);
+    local diffX, diffY = x - origin.x, y - origin.y;
+    local width, height = self:GetWidth() / 2, self:GetHeight() / 2;
+    local newX = math.max(-width, math.min(x + diffX, width));
+    local newY = math.max(-height, math.min(y + diffY, height));
+    local scale = self:GetEffectiveScale();
+    newX, newY = newX / scale, newY / scale;
+
+    slot.info.pos.x = newX;
+    slot.info.pos.y = newY;
+
+    print("NEW: " .. newX .. ", " .. newY);
 end

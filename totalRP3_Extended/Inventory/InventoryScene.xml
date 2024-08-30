@@ -1,8 +1,8 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Include file="InventoryScene.lua"/>
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+    <Include file="InventoryScene.lua" />
 
-	<Actor name="TRP3_InventoryActorTemplate" mixin="TRP3_InventoryActorMixin"
+    <Actor name="TRP3_InventoryActorTemplate" mixin="TRP3_InventoryActorMixin"
         virtual="true">
         <Scripts>
             <OnModelCleared method="OnModelCleared" />
@@ -11,99 +11,102 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Scripts>
     </Actor>
 
-	<ModelScene name="TRP3_InventorySceneTemplate" mixin="TRP3_InventorySceneMixin" virtual="true">
-		<Scripts>
-			<OnLoad method="OnLoad" />
-            <OnShow method="OnShow"/>
-			<OnEnter method="OnEnter"/>
-			<OnLeave method="OnLeave" />
-			<OnMouseDown method="OnMouseDown" />
-			<OnMouseUp method="OnMouseUp"/>
-            <OnUpdate method="OnUpdate"/>
-		</Scripts>
-		<Layers>
-			<Layer level="OVERLAY">
-                <FontString parentKey="Title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" text="[[x/x]]">
-					<Size x="0" y="20"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="0" y="40"/>
-						<Anchor point="TOPRIGHT" x="0" y="40"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-				<FontString parentKey="WeightText" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="MIDDLE" text="[[x/x]]">
-					<Size x="0" y="20"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="13" y="-10"/>
-						<Anchor point="TOPRIGHT" x="-12" y="-10"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-				<FontString parentKey="ValueText" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
-					<Size x="0" y="20"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="25" y="-10"/>
-						<Anchor point="TOPRIGHT" x="-12" y="-10"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-                <FontString parentKey="Loading" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" text="[[x/x]]">
-                    <Size x="0" y="20"/>
+    <ModelScene name="TRP3_InventorySceneTemplate" mixin="TRP3_InventorySceneMixin" virtual="true">
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnShow method="OnShow" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+            <OnMouseDown method="OnMouseDown" />
+            <OnMouseUp method="OnMouseUp" />
+            <OnUpdate method="OnUpdate" />
+        </Scripts>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="Title" inherits="GameFontNormalLarge" justifyH="CENTER"
+                    justifyV="MIDDLE" text="[[x/x]]">
+                    <Size x="0" y="20" />
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" x="0" y="-30"/>
-                        <Anchor point="BOTTOMRIGHT" x="0" y="-30"/>
+                        <Anchor point="TOPLEFT" x="0" y="40" />
+                        <Anchor point="TOPRIGHT" x="0" y="40" />
                     </Anchors>
-                    <Color r="0.95" g="0.95" b="0.95"/>
+                    <Color r="0.95" g="0.95" b="0.95" />
                 </FontString>
-				<Line parentKey="Line" file="Interface/Artifacts/_Artifacts-DependencyBar-Fill" thickness="12" horizTile="true" />
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button parentKey="Marker" hidden="true" movable="true">
-                <Size x="50" y="50"/>
+                <FontString parentKey="WeightText" inherits="GameFontNormalSmall" justifyH="RIGHT"
+                    justifyV="MIDDLE" text="[[x/x]]">
+                    <Size x="0" y="20" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="13" y="-10" />
+                        <Anchor point="TOPRIGHT" x="-12" y="-10" />
+                    </Anchors>
+                    <Color r="0.95" g="0.95" b="0.95" />
+                </FontString>
+                <FontString parentKey="ValueText" inherits="GameFontNormalSmall" justifyH="LEFT"
+                    justifyV="MIDDLE" text="[[x/x]]">
+                    <Size x="0" y="20" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="25" y="-10" />
+                        <Anchor point="TOPRIGHT" x="-12" y="-10" />
+                    </Anchors>
+                    <Color r="0.95" g="0.95" b="0.95" />
+                </FontString>
+                <FontString parentKey="Loading" inherits="GameFontNormal" justifyH="CENTER"
+                    justifyV="MIDDLE" text="[[x/x]]">
+                    <Size x="0" y="20" />
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" x="0" y="-30" />
+                        <Anchor point="BOTTOMRIGHT" x="0" y="-30" />
+                    </Anchors>
+                    <Color r="0.95" g="0.95" b="0.95" />
+                </FontString>
+                <Line parentKey="Line" file="Interface/Artifacts/_Artifacts-DependencyBar-Fill"
+                    thickness="12" horizTile="true" />
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button parentKey="Marker" hidden="true" movable="true">
+                <Size x="50" y="50" />
                 <Anchors>
-                    <Anchor point="CENTER" x="0" y="0"/>
+                    <Anchor point="CENTER" x="0" y="0" />
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
-                        <Texture parentKey="halo" file="Interface\Cooldown\star4" alpha="0.2" alphaMode="ADD">
-                            <Size x="50" y="50"/>
+                        <Texture parentKey="halo" file="Interface\Cooldown\star4" alpha="0.2"
+                            alphaMode="ADD">
+                            <Size x="50" y="50" />
                             <Anchors>
-                                <Anchor point="CENTER" x="0" y="0"/>
+                                <Anchor point="CENTER" x="0" y="0" />
                             </Anchors>
                         </Texture>
                     </Layer>
                     <Layer level="OVERLAY">
                         <Texture parentKey="dot" file="Interface\MINIMAP\PARTYRAIDBLIPS">
-                            <Size x="16" y="16"/>
+                            <Size x="16" y="16" />
                             <Anchors>
-                                <Anchor point="CENTER" x="0" y="0"/>
+                                <Anchor point="CENTER" x="0" y="0" />
                             </Anchors>
-                            <TexCoords left="0.5" right="0.625" top="0.5" bottom="0.75"/>
+                            <TexCoords left="0.5" right="0.625" top="0.5" bottom="0.75" />
                         </Texture>
                     </Layer>
                 </Layers>
                 <Scripts>
                     <OnMouseDown>
-                        local _, _, _, origX, origY = self:GetPoint(1);
-                        self.origX = origX;
-                        self.origY = origY;
-                        self:StartMoving();
-                        local _, _, _, x, y = self:GetPoint(1);
-                        self.x = x;
-                        self.y = y;
+                        CallMethodOnNearestAncestor(self, "OnMarkerMouseDown", button);
                     </OnMouseDown>
+                    <OnMouseUp>
+                        CallMethodOnNearestAncestor(self, "OnMarkerMouseUp", button);
+                    </OnMouseUp>
                 </Scripts>
             </Button>
-			<Button parentKey="Blocker" inherits="TRP3_InvisibleButton" setAllPoints="true">
-				<Frames>
-					<Button parentKey="ValueHelp" inherits="TRP3_HelpButton">
-						<Anchors>
-							<Anchor point="TOPLEFT" x="6" y="-13"/>
-						</Anchors>
-					</Button>
-				</Frames>
-			</Button>
-		</Frames>
-	</ModelScene>
+            <Button parentKey="Blocker" inherits="TRP3_InvisibleButton" setAllPoints="true">
+                <Frames>
+                    <Button parentKey="ValueHelp" inherits="TRP3_HelpButton">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="6" y="-13" />
+                        </Anchors>
+                    </Button>
+                </Frames>
+            </Button>
+        </Frames>
+    </ModelScene>
 </Ui>

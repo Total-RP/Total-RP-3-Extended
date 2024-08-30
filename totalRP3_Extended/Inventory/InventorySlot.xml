@@ -25,7 +25,8 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="Locator" hidden="true">
+			<Button parentKey="Locator" hidden="true" mixin="TRP3_InventoryPageSlotLocatorMixin"
+				registerForClicks="LeftButtonDown,RightButtonDown">
 				<Size x="20" y="20" />
 				<NormalTexture file="Interface\MINIMAP\PARTYRAIDBLIPS">
 					<Size x="16" y="16" />
@@ -36,9 +37,9 @@
 					<TexCoords left="0.5" right="0.625" top="0.5" bottom="0.75" />
 				</HighlightTexture>
 				<Scripts>
-					<OnClick>
-						CallMethodOnNearestAncestor(self, "OnLocatorClick", button);
-					</OnClick>
+					<OnClick method="OnClick" />
+					<OnEnter method="OnEnter" />
+					<OnLeave method="OnLeave" />
 				</Scripts>
 			</Button>
 		</Frames>
