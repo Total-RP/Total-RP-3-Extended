@@ -346,6 +346,7 @@ function TRP3_InventorySceneMixin:FreezeAnimation(animation, variation, animOffs
         return;
     end
 
+    actor:SetAnimationBlendOperation(Enum.ModelBlendOperation.Anim);
     actor:SetAnimation(animation, variation, 0, animOffsetSeconds);
     actor:SetPaused(true, false);
 end
