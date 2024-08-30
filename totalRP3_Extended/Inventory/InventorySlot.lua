@@ -13,7 +13,6 @@ local INVENTORY_PAGE_SIDE = {
 TRP3_InventoryPageSlotMixin = {};
 
 function TRP3_InventoryPageSlotMixin:OnLoad()
-    self.Locator = self.ItemLocator;
 end
 
 ---@param side TRP3.InventoryPageSide
@@ -22,17 +21,19 @@ function TRP3_InventoryPageSlotMixin:Init(side)
 				.. "\n\n|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION
 				.. "\n|cffffff00" .. loc.CM_R_CLICK .. ":|r " .. loc.INV_PAGE_WEAR_ACTION_RESET;
     if side == INVENTORY_PAGE_SIDE.LEFT then
-        self.ItemLocator:SetPoint("RIGHT", self, "LEFT", -5, 0);
-        TRP3_API.ui.tooltip.setTooltipForSameFrame(self.ItemLocator, "LEFT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
+        self.Locator:SetPoint("RIGHT", self, "LEFT", -5, 0);
+        TRP3_API.ui.tooltip.setTooltipForSameFrame(self.Locator, "LEFT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
     elseif side == INVENTORY_PAGE_SIDE.RIGHT then
-        self.ItemLocator:SetPoint("LEFT", self, "RIGHT", 5, 0);
-        TRP3_API.ui.tooltip.setTooltipForSameFrame(self.ItemLocator, "RIGHT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
+        self.Locator:SetPoint("LEFT", self, "RIGHT", 5, 0);
+        TRP3_API.ui.tooltip.setTooltipForSameFrame(self.Locator, "RIGHT", 0, 0, loc.INV_PAGE_ITEM_LOCATION, wearText);
     end
     TRP3_API.inventory.initContainerSlot(self);
 
     self.additionalOnEnterHandler = self.OnSlotEnter;
     self.additionalOnLeaveHandler = self.OnSlotLeave;
     self.additionalOnUpdateHandler = self.OnSlotUpdate;
+
+    self.Side = side;
 end
 
 function TRP3_InventoryPageSlotMixin:OnSlotEnter()
@@ -45,9 +46,9 @@ end
 
 function TRP3_InventoryPageSlotMixin:OnSlotUpdate(deltaTime)
     if self.info and self.class and self.class.BA.WA then
-		self.ItemLocator:Show();
+		self.Locator:Show();
 	else
-		self.ItemLocator:Hide();
+		self.Locator:Hide();
 	end
 end
 
@@ -90,5 +91,21 @@ function TRP3_InventoryPageSlotMixin:ShowModelItemPosition(force)
 		else
 			TRP3_InventoryPage:ResetModel();
 		end
+	end
+end
+
+function TRP3_InventoryPageSlotMixin:OnLocatorClick(button)
+    if button == "LeftButton" then
+        local position, x, y = "RIGHT", -10, 0;
+		if button.Side == INVENTORY_PAGE_SIDE.RIGHT then
+			position, x, y = "LEFT", 10, 0;
+		end
+		TRP3_API.ui.frame.configureHoverFrame(TRP3_InventoryPage, self.Locator, position, x, y);
+		TRP3_InventoryPage.ActiveSlot = self.Locator;
+
+        local force = true;
+		self:ShowModelItemPosition(force);
+	else
+        TRP3_InventoryPage:ResetModel();
 	end
 end

@@ -78,7 +78,6 @@ local function onLocatorClick(button, mode)
 		resetEquip();
 		setButtonModelPosition(button);
 	end
-
 end
 
 local function onEquipRefresh(self)
