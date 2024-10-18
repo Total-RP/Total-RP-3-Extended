@@ -5,7 +5,7 @@ This is the list of Total RP 3 Extended's authors and significant contributors. 
 ## Original Authors
 
 - Sylvain Cossement \<telkostrasz@telkostrasz.be>
-- [Morgane "Ellypse" Parize](https://twitter.com/EllypseCelwe) \<ellypse@totalrp3.info>
+- Morgane "Ellypse" Parize \<ellypse@totalrp3.info>
 
 ## Project Developers
 
