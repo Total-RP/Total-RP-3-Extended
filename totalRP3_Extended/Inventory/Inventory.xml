@@ -15,6 +15,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Inventory.lua"/>
 	<Include file="Container.lua"/>
 	<Include file="InventoryPage.lua"/>
+	<Include file="InventoryItemConfig.xml"/>
 	<Include file="InventoryScene.xml"/>
 	<Include file="InventorySlot.xml"/>
 
@@ -315,6 +316,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeKey="$parent.Model" relativePoint="TOPRIGHT" x="8"/>
 					<Anchor point="BOTTOMLEFT" relativeKey="$parent.Model" relativePoint="BOTTOMRIGHT" x="8"/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey="ItemConfig" inherits="TRP3_InventoryItemConfigPanelTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" x="13"/>
 				</Anchors>
 			</Frame>
 		</Frames>
