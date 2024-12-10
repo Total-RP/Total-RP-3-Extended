@@ -80,9 +80,6 @@ function TRP3_InventorySceneMixin:OnEnter()
 end
 
 function TRP3_InventorySceneMixin:OnLeave()
-    if not self:IsMouseOver() then
-        TRP3_InventoryPage:SetActiveSlot(nil);
-    end
 end
 
 function TRP3_InventorySceneMixin:OnMouseDown(button)
@@ -90,6 +87,8 @@ function TRP3_InventorySceneMixin:OnMouseDown(button)
     if camera then
         camera:OnMouseDown(button);
     end
+
+    self.IsPanning = true;
 end
 
 function TRP3_InventorySceneMixin:OnMouseUp(button)
@@ -97,12 +96,27 @@ function TRP3_InventorySceneMixin:OnMouseUp(button)
     if camera then
         camera:OnMouseUp(button);
     end
+
+    self.IsPanning = false;
 end
 
 function TRP3_InventorySceneMixin:OnUpdate(deltaTime)
     local camera = self:GetActiveCamera();
     if camera then
         camera:OnUpdate(deltaTime);
+    end
+
+    if self.IsPanning then
+        local actor = self:GetFocusedActor();
+        local actorYaw = actor:GetYaw();
+        local deltaX = GetCursorDelta();
+        deltaX = deltaX * deltaTime;
+        actor:SetYaw(actorYaw + 1 * deltaX);
+
+        local activeSlot = TRP3_InventoryPage:GetActiveSlot();
+        if activeSlot then
+            activeSlot.info.pos.rotation = self:GetRotation();
+        end
     end
 end
 
@@ -367,6 +381,15 @@ function TRP3_InventorySceneMixin:SetRotation(rotation)
     actor:SetYaw(rotation);
 end
 
+function TRP3_InventorySceneMixin:GetRotation()
+    local actor = self:GetFocusedActor();
+    if not actor then
+        return 0;
+    end
+
+    return actor:GetYaw();
+end
+
 function TRP3_InventorySceneMixin:ResetRotation()
     self:SetRotation(self.PlayerActorDefaults.Yaw);
 end
@@ -407,6 +430,7 @@ function TRP3_InventorySceneMixin:OnMarkerMouseDown(button)
 	end
 
     self.Marker:StartMoving();
+    self.Marker.IsMoving = true;
 end
 
 function TRP3_InventorySceneMixin:OnMarkerMouseUp(button)
@@ -417,6 +441,7 @@ function TRP3_InventorySceneMixin:OnMarkerMouseUp(button)
     local slot = TRP3_InventoryPage:GetActiveSlot();
 
 	self.Marker:StopMovingOrSizing();
+    self.Marker.IsMoving = false;
 
     local _, _, _, x, y = self.Marker:GetPoint(1);
     local width, height = self:GetSize();

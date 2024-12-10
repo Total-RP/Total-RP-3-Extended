@@ -403,6 +403,7 @@ function TRP3_InventoryPageMixin:ShowItemPosition(slot)
 		local quality = slot.class.BA and slot.class.BA.QA;
 		if slot:ShouldShowItemLocation() and pos then
             self.Model:ShowItemPosition(slot);
+			self.ItemConfig:Enable();
 			self:DrawItemLocationLine(slot, quality);
 		else
 			self:ResetModel();
@@ -415,7 +416,14 @@ function TRP3_InventoryPageMixin:ResetMarker()
 	marker:SetPoint("CENTER", self.Model, "CENTER", 0, 0);
 end
 
+local added = false;
+
 function TRP3_InventoryPageMixin:SetActiveSlot(slot)
+	if not added then
+		DevTool:AddData(slot, "Slot");
+		added = true;
+	end
+
 	self.ActiveSlot = slot;
 	if not slot then
 		self:ClearActiveSlot();
@@ -429,6 +437,7 @@ end
 function TRP3_InventoryPageMixin:ClearActiveSlot()
 	self.ActiveSlot = nil;
 	self.Model.Blocker:Show();
+	self.ItemConfig:Disable();
 	self:ResetModel();
 end
 

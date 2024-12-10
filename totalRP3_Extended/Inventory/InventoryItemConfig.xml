@@ -3,8 +3,8 @@
     <Include file="InventoryItemConfig.lua" />
 
     <Frame name="TRP3_InventoryItemConfigPanelTemplate" mixin="TRP3_InventoryItemConfigPanelMixin"
-        virtual="true">
-        <Size x="250" y="250" />
+        virtual="true" hidden="true">
+        <Size x="175" y="200" />
         <Frames>
             <Frame parentKey="Backdrop" inherits="TooltipBorderBackdropTemplate" setAllPoints="true"
                 useParentLevel="true">
@@ -63,14 +63,59 @@
                     </Layer>
                 </Layers>
             </Frame>
-            <EditBox parentKey="AnimEditBox" inherits="TRP3_TitledEditBox">
+            <EditBox parentKey="CameraRotationEditBox" inherits="TRP3_TitledEditBox">
                 <Anchors>
                     <Anchor point="TOP" y="-25" />
                 </Anchors>
             </EditBox>
+            <EditBox parentKey="MarkerXEditBox" inherits="TRP3_TitledEditBox">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.CameraRotationEditBox"
+                        relativePoint="BOTTOMLEFT" y="-20" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.CameraRotationEditBox"
+                        relativePoint="BOTTOM" x="-5" y="-20" />
+                </Anchors>
+            </EditBox>
+            <EditBox parentKey="MarkerYEditBox" inherits="TRP3_TitledEditBox">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.CameraRotationEditBox"
+                        relativePoint="BOTTOM" x="5" y="-20" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.CameraRotationEditBox"
+                        relativePoint="BOTTOMRIGHT" y="-20" />
+                </Anchors>
+            </EditBox>
+            <EditBox parentKey="AnimEditBox" inherits="TRP3_TitledEditBox">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.MarkerXEditBox"
+                        relativePoint="BOTTOMLEFT" y="-10" />
+                </Anchors>
+            </EditBox>
+            <Button parentKey="SaveButton" inherits="TRP3_RedButtonTemplate">
+                <Size x="100" y="30" />
+                <Anchors>
+                    <Anchor point="TOP" relativeKey="$parent.AnimEditBox" relativePoint="BOTTOM"
+                        y="-10" />
+                </Anchors>
+            </Button>
         </Frames>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString parentKey="TitleText" inherits="GameFontWhite">
+                    <Anchors>
+                        <Anchor point="TOP" y="-4" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="MarkerSectionHeader" inherits="GameFontNormalSmall">
+                    <Anchors>
+                        <Anchor point="TOP" relativeKey="$parent.CameraRotationEditBox"
+                            relativePoint="BOTTOM" y="-4" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
         <Scripts>
             <OnLoad method="OnLoad" />
+            <OnUpdate method="OnUpdate" />
         </Scripts>
     </Frame>
 </Ui>
