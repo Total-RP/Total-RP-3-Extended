@@ -83,7 +83,6 @@ end
 TRP3_InventoryPageSlotLocatorMixin = {};
 
 function TRP3_InventoryPageSlotLocatorMixin:OnClick(button)
-    print(button);
     if button == "LeftButton" then
         local slot = self:GetParent();
         if TRP3_InventoryPage:IsActiveSlot(slot) then

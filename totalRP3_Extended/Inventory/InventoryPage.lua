@@ -487,7 +487,7 @@ function TRP3_InventoryPageMixin:DrawItemLocationLine(slot, quality)
     local line = model.Line;
     line:SetStartPoint("CENTER", slot);
     line:SetEndPoint("CENTER", model.Marker);
-    slot:SetFrameLevel(model:GetFrameLevel() + 5); -- TODO: investigate
+    slot:SetFrameLevel(model:GetFrameLevel() + 5); -- TODO: investigate?
     local r, g, b = TRP3_API.inventory.getQualityColorRGB(quality);
     line:SetVertexColor(r, g, b, 1);
     line:Show();
@@ -495,19 +495,11 @@ end
 
 function TRP3_InventoryPageMixin:ShowItemPosition(slot)
 	if slot.info and slot.class then
-        local model = self.Model;
         local pos = slot.info.pos or EMPTY;
+		local quality = slot.class.BA and slot.class.BA.QA;
 		if slot:ShouldShowItemLocation() and pos then
-            local quality = slot.class.BA and slot.class.BA.QA;
-			model.sequence = pos.sequence or DEFAULT_SEQUENCE;
-			model.sequenceTime = pos.sequenceTime or DEFAULT_TIME;
-			model:FreezeAnimation(model.sequence, 0, model.sequenceTime);
-
-            local marker = model.Marker;
-            marker:SetPoint("CENTER", model, "CENTER", pos.x, pos.y);
-            marker:Show();
-
-            self:DrawItemLocationLine(slot, quality);
+            self.Model:ShowItemPosition(slot);
+			self:DrawItemLocationLine(slot, quality);
 		else
 			self:ResetModel();
 		end

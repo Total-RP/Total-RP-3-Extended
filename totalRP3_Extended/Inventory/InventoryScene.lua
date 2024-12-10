@@ -1,5 +1,9 @@
 local loc = TRP3_API.loc;
 
+local EMPTY = TRP3_API.globals.empty;
+local DEFAULT_SEQUENCE = 193;
+local DEFAULT_TIME = 1;
+
 -------------
 
 local CAMERA_MIN_ZOOM_DISTANCE = 1;
@@ -414,17 +418,23 @@ function TRP3_InventorySceneMixin:OnMarkerMouseUp(button)
 
 	self.Marker:StopMovingOrSizing();
 
-    local origin = slot.info.pos;
     local _, _, _, x, y = self.Marker:GetPoint(1);
-    local diffX, diffY = x - origin.x, y - origin.y;
-    local width, height = self:GetWidth() / 2, self:GetHeight() / 2;
-    local newX = math.max(-width, math.min(x + diffX, width));
-    local newY = math.max(-height, math.min(y + diffY, height));
-    local scale = self:GetEffectiveScale();
-    newX, newY = newX / scale, newY / scale;
+    local width, height = self:GetSize();
+    width, height = width / 2, height / 2;
+    local newX, newY = Clamp(x, -width, width), Clamp(y, -height, height);
 
     slot.info.pos.x = newX;
     slot.info.pos.y = newY;
+end
 
-    print("NEW: " .. newX .. ", " .. newY);
+function TRP3_InventorySceneMixin:ShowItemPosition(slot)
+    local pos = slot.info.pos or EMPTY;
+	local sequence = pos.sequence or DEFAULT_SEQUENCE;
+	local sequenceTime = pos.sequenceTime or DEFAULT_TIME;
+	self:FreezeAnimation(sequence, 0, sequenceTime);
+
+    local marker = self.Marker;
+	marker:ClearAllPoints();
+    marker:SetPoint("CENTER", pos.x, pos.y);
+    marker:Show();
 end
