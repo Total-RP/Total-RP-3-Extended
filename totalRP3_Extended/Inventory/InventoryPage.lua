@@ -391,7 +391,6 @@ function TRP3_InventoryPageMixin:ResetModel()
 	local model = self.Model;
 	model.Marker:Hide();
 	model.Line:Hide();
-	model.sequence = nil;
 	model:ResetModel();
 end
 
