@@ -2,6 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local Utils = TRP3_API.utils;
+local loc = TRP3_API.loc;
 local pairs, tinsert, sort = pairs, tinsert, table.sort;
 local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 local colorQuestYellow = TRP3_API.CreateColorFromBytes(190, 155, 0);
@@ -155,6 +156,10 @@ function frame.init()
 			questLogFrame.goToPage(false, questLogFrame.TAB_STEPS, campaignID, questID, questName);
 		end
 	end);
+
+	TRP3_API.ui.tooltip.setTooltipForSameFrame(frame.Actions, "BOTTOMLEFT", 0, 0, loc.CA_ACTIONS, loc.CA_ACTIONS_BAR_TT);
+	frame.Actions:SetScript("OnEnter", TRP3_API.ui.tooltip.refresh);
+	frame.Actions:SetScript("OnLeave", function() TRP3_MainTooltip:Hide() end);
 
 	C_Timer.NewTicker(0.5, function()
 		frame:Hide();
