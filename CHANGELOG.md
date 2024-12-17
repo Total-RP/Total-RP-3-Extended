@@ -7,6 +7,7 @@
 ## Fixed
 
 - Fixed the aura frame collapsing/expanding arrow not hiding properly when hiding the interface.
+- Fixed the TRP window jumping around occasionally when opening the inventory page.
 
 # Changelog for version 2.2.1
 
