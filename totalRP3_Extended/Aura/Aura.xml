@@ -86,7 +86,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<CheckButton name="TRP3_AuraFrameCollapseAndExpandButton" mixin="CollapseAndExpandButtonMixin,TRP3_AuraFrameCollapseAndExpandButtonMixin">
+	<CheckButton name="TRP3_AuraFrameCollapseAndExpandButton" parent="UIParent" mixin="CollapseAndExpandButtonMixin,TRP3_AuraFrameCollapseAndExpandButtonMixin">
 		<Size x="15" y="30"/>
 		<Anchors>
 			<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="TRP3_AuraBarFrame"/>

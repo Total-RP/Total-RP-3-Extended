@@ -1177,6 +1177,7 @@ We should begin with some examples:
 	CA_ACTIONS_COND_REMOVE = "Remove condition",
 	CA_ACTIONS_COND_ON = "This action is conditioned.",
 	CA_ACTIONS_COND_OFF = "This action is not conditioned.",
+	CA_ACTIONS_BAR_TT = "Available actions for your active campaign. Pause the campaign to hide this bar.",
 	QE_AUTO_REVEAL = "Auto reveal",
 	QE_AUTO_REVEAL_TT = "Reveal the quest in the quest log when the campaign is started.",
 	QE_OBJ = "Quest objectives",
