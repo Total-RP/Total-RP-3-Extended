@@ -4,6 +4,7 @@
 ## Version: @project-version@
 ## Notes: Advanced features for Total RP 3|n|n|cffffd200Version:|r @project-version@
 ## IconTexture: Interface\AddOns\totalRP3_Extended\resources\extendedicon
+## Group: totalRP3
 ## OptionalDeps: WoWUnit
 ## RequiredDeps: totalRP3
 ## SavedVariables: TRP3_Tools_DB, TRP3_Exchange_DB, TRP3_Security, TRP3_Drop, TRP3_Stashes, TRP3_Extended_Flyway
