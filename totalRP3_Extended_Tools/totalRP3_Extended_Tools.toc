@@ -4,6 +4,7 @@
 ## Version: @project-version@
 ## Notes: Creation tools for Total RP 3 Extended
 ## IconTexture: 982414
+## Group: totalRP3
 ## OptionalDeps: totalRP3_Extended_ImpExport
 ## RequiredDeps: totalRP3, totalRP3_Extended
 ## SavedVariables: TRP3_Tools_Parameters, TRP3_Tools_Flags
