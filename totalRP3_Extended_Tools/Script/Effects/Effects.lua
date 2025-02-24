@@ -146,14 +146,16 @@ local function macro_init()
 		end)
 	end
 
-	EventRegistry:RegisterCallback("SpellMixinButton.OnModifiedClick", function(_, self)
+	EventRegistry:RegisterCallback("SpellBookItemMixin.OnModifiedClick", function(_, self)
 		if IsModifiedClick("CHATLINK")and textbox:HasFocus() then
-			textbox:Insert(GetSpellBookItemName(SpellBook_GetSpellBookSlot(self), SpellBookFrame.bookType));
+			textbox:Insert(self.spellBookItemInfo.name);
 		end
 	end)
 
-	hookLinkInsert("SpellFlyoutButton_OnClick", function(self)
-		return self.spellName
+	EventRegistry:RegisterCallback("SpellFlyoutPopupButtonMixin.OnClick", function(_, self)
+		if IsModifiedClick("CHATLINK")and textbox:HasFocus() then
+			textbox:Insert(self.spellName);
+		end
 	end)
 	hookLinkInsert("HandleModifiedItemClick", function(link)
 		return C_Item.GetItemInfo(link)
