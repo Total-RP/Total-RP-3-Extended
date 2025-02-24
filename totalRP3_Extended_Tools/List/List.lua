@@ -549,7 +549,7 @@ function onLineRightClick(lineWidget, data)
 
 		if data.type == TRP3_DB.types.ITEM then
 			local class = getClass(data.fullID);
-			if class.BA and not class.BA.PA then
+			if class.BA and (not class.BA.PA or TRP3_API.extended.isObjectMine(data.rootID)) then
 				local addItemOption = description:CreateButton(loc.DB_ADD_ITEM, function() onLineActionSelected(ACTION_FLAG_ADD .. data.fullID, lineWidget); end);
 				TRP3_MenuUtil.SetElementTooltip(addItemOption, loc.DB_ADD_ITEM_TT);
 			end
