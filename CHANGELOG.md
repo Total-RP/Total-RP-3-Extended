@@ -1,3 +1,10 @@
+# Changelog for version 2.2.3
+
+## Added
+
+- Added the ability to manually add your own created items even if "Prevent manual adding" is enabled.
+- Added support for the new addon group feature in the addon list.
+
 # Changelog for version 2.2.2
 
 ## Added
