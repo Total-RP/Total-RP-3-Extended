@@ -52,6 +52,9 @@ end
 local function reloadDownloads()
 	local yourData = exchangeFrame.yourData;
 	local myData = exchangeFrame.myData;
+
+	if not myData or not yourData then return end	-- Trade window was likely closed while a transfer was ongoing
+
 	for index, slot in pairs(exchangeFrame.rightSlots) do
 		slot.security:Hide();
 		slot.details:SetText("");
