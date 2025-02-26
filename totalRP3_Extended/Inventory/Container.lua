@@ -422,7 +422,7 @@ local ContainerDropTargetType = {
 ---@return ContainerDropTargetType?, Frame?
 local function GetContainerDropTarget()
 	local frames = GetMouseFoci();
-	
+
 	if #frames == 0 then
 		return ContainerDropTargetType.World, nil;
 	end
