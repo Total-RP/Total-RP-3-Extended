@@ -1,3 +1,9 @@
+# Changelog for version 2.2.4
+
+## Fixed
+
+- Fixed an issue when trying to drag items from the bag to the ground to drop/delete them, or on a player to open a trade.
+
 # Changelog for version 2.2.3
 
 ## Added
