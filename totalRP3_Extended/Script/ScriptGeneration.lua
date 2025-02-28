@@ -855,8 +855,8 @@ function TRP3_API.script.parseArgs(text, args)
 			elseif capture:match(":right:text$") then
 				-- Matches "trp:player:ch:ps:X:right:text"
 				return psData[index].RT or nil;
-			elseif capture:match(":value2$") then
-				-- Matches "trp:player:ch:ps:X:value2"
+			elseif capture:match(":value$") then
+				-- Matches "trp:player:ch:ps:X:value"
 				return psData[index].V2 or nil;
 			end	
 		elseif capture:match("^trp:player:ch:mi:") then
