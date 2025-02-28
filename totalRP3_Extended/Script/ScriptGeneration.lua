@@ -842,20 +842,23 @@ function TRP3_API.script.parseArgs(text, args)
 			return TRP3_API.extended.tools.truncateDecimals( (args.event or EMPTY)[index] or capture, decimals);
 		elseif capture:match("^player:ch:ps:") then
 			-- Player characteristics
+			local psData = TRP3_API.profile.getData("player/characteristics").PS or {}
 			local index = tonumber(capture:match("player:ch:ps:(%d+):")) or 1;
+			if capture:match("^player:ch:ps:max$") then
+				-- Returns the highest index in the array
+				return #psData > 0 and #psData or 0;
+			end
+			if not psData[index] then return nil end
 			if capture:match(":left:text$") then
 				-- Matches "player:ch:ps:X:left:text"
-				return (TRP3_API.profile.getData("player/characteristics").PS or {})[index] and 
-					   (TRP3_API.profile.getData("player/characteristics").PS[index].LT or capture) or capture;
+				return psData[index].LT or nil;
 			elseif capture:match(":right:text$") then
 				-- Matches "player:ch:ps:X:right:text"
-				return (TRP3_API.profile.getData("player/characteristics").PS or {})[index] and 
-					   (TRP3_API.profile.getData("player/characteristics").PS[index].RT or capture) or capture;
+				return psData[index].RT or nil;
 			elseif capture:match(":value2$") then
 				-- Matches "player:ch:ps:X:value2"
-				return (TRP3_API.profile.getData("player/characteristics").PS or {})[index] and 
-					   (TRP3_API.profile.getData("player/characteristics").PS[index].V2 or capture) or capture;
-			end				
+				return psData[index].V2 or nil;
+			end			
 		else
 			-- Evaluating variable in different sources
 			local evaluatedVarValue = (args.custom or EMPTY)[capture]; -- Workflow variable
