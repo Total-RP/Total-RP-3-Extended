@@ -307,7 +307,10 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 			self.setColor(nil, nil, nil);
 		end
 	end);
-	setTooltipForSameFrame(display.borderPicker, "RIGHT", 0, 5, loc.AU_FIELD_COLOR, loc.AU_FIELD_COLOR_TT .. loc.REG_PLAYER_COLOR_TT);
+	setTooltipForSameFrame(display.borderPicker, "RIGHT", 0, 5, loc.AU_FIELD_COLOR, loc.AU_FIELD_COLOR_TT
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 	display.previewText:SetText(loc.EDITOR_PREVIEW);
 	display.previewInfo:SetText(loc.EDITOR_ICON_SELECT);
