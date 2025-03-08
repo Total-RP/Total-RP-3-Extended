@@ -1780,7 +1780,7 @@ Auras created as inner items of a campaign can be bound to it, so that they will
 	AU_FIELD_CATEGORY = "Category",
 	AU_FIELD_CATEGORY_TT = [[Enter a category for your aura, e.g. "Magical" or "Curse".]],
 	AU_FIELD_COLOR = "Color",
-	AU_FIELD_COLOR_TT = "Pick the color of the border.\n\nUsually, only debuffs have a color.\n\n",
+	AU_FIELD_COLOR_TT = "Pick the color of the border.|n|nUsually, only debuffs have a color.",
 	AU_FIELD_DESCRIPTION = "Aura description",
 	AU_FIELD_DESCRIPTION_TT = "Tell the player what your aura does, but try to be concise, since it needs to fit within a tooltip.\n\n|cff00ff00You can use variable tags here.|r",
 	AU_FIELD_FLAVOR = "Secondary description",
