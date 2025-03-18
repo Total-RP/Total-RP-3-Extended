@@ -75,17 +75,17 @@ function TRP3_API.inventory.getItemTextLine(itemClass)
 	return Utils.str.icon(icon, 25) .. " " .. name;
 end
 
+---@return Color
+function TRP3_API.inventory.getQualityColor(quality)
+	return ColorManager.GetColorDataForItemQuality(quality) or ColorManager.GetColorDataForItemQuality(Enum.ItemQuality.Common)
+end
+
 local function getQualityColorTab(quality)
 	---@type Color
-	local color = ColorManager.GetColorDataForItemQuality(quality) or ColorManager.GetColorDataForItemQuality(Enum.ItemQuality.Common);
+	local color = TRP3_API.inventory.getQualityColor(quality);
 	return color:GetRGBATable();
 end
 TRP3_API.inventory.getQualityColorTab = getQualityColorTab;
-
----@return Color
-function TRP3_API.inventory.getQualityColor(quality)
-	return ITEM_COLORS[quality] or NEUTRAL_COLOR
-end
 
 local function getQualityColorText(quality)
 	return TRP3_API.CreateColorFromTable(getQualityColorTab(quality)):GenerateHexColorMarkup();
