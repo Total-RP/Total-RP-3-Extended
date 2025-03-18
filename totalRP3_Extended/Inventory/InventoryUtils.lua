@@ -75,22 +75,9 @@ function TRP3_API.inventory.getItemTextLine(itemClass)
 	return Utils.str.icon(icon, 25) .. " " .. name;
 end
 
-local ITEM_COLORS = {
-	[Enum.ItemQuality.Poor] = TRP3_API.ItemQualityColors.Poor,
-	[Enum.ItemQuality.Common] = TRP3_API.ItemQualityColors.Common,
-	[Enum.ItemQuality.Uncommon] = TRP3_API.ItemQualityColors.Uncommon,
-	[Enum.ItemQuality.Rare] = TRP3_API.ItemQualityColors.Rare,
-	[Enum.ItemQuality.Epic] = TRP3_API.ItemQualityColors.Epic,
-	[Enum.ItemQuality.Legendary] = TRP3_API.ItemQualityColors.Legendary,
-	[Enum.ItemQuality.Artifact] = TRP3_API.ItemQualityColors.Artifact,
-	[Enum.ItemQuality.Heirloom] = TRP3_API.ItemQualityColors.Heirloom,
-	[Enum.ItemQuality.WoWToken] = TRP3_API.ItemQualityColors.WoWToken,
-}
-local NEUTRAL_COLOR = ITEM_COLORS[Enum.ItemQuality.Common];
-
 local function getQualityColorTab(quality)
 	---@type Color
-	local color = ITEM_COLORS[quality] or NEUTRAL_COLOR;
+	local color = ColorManager.GetColorDataForItemQuality(quality) or ColorManager.GetColorDataForItemQuality(Enum.ItemQuality.Common);
 	return color:GetRGBATable();
 end
 TRP3_API.inventory.getQualityColorTab = getQualityColorTab;
