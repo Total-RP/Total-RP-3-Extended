@@ -77,7 +77,8 @@ end
 
 ---@return Color
 function TRP3_API.inventory.getQualityColor(quality)
-	return ColorManager.GetColorDataForItemQuality(quality) or ColorManager.GetColorDataForItemQuality(Enum.ItemQuality.Common);
+	local colorData = ColorManager.GetColorDataForItemQuality(quality) or ColorManager.GetColorDataForItemQuality(Enum.ItemQuality.Common);
+	return colorData and colorData.color or nil;
 end
 
 local function getQualityColorTab(quality)
