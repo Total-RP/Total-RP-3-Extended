@@ -2,7 +2,6 @@ max_line_length = false
 
 exclude_files = {
 	"totalRP3_Extended/Libs",
-	"totalRP3_Extended/Script/Operands/Tests",
 };
 
 ignore = {
@@ -258,7 +257,6 @@ read_globals = {
 	"WHITE_FONT_COLOR",
 	"wipe",
 	"WorldMapFrame",
-	"WoWUnit",
 };
 
 std = "lua51";
