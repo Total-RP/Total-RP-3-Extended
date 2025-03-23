@@ -114,6 +114,7 @@ read_globals = {
 	"ChatFontNormal",
 	"ChatTypeInfo",
 	"CheckInteractDistance",
+	"ColorManager",
 	"CombatLogGetCurrentEventInfo",
 	"CopyTable",
 	"CreateFrame",
