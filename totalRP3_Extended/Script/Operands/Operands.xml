@@ -13,8 +13,4 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
     <Include file="ExpertOperands.lua"/>
     <Include file="MiscellaneousOperands.lua"/>
     <Include file="AuraOperands.lua"/>
-
-    <!--@debug@-->
-    <Include file="Tests\tests.xml" />
-    <!--@end-debug@-->
 </Ui>
