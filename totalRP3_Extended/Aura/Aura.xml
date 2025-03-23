@@ -6,7 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="AuraMixins.lua"/>
 
-	<Frame name="TRP3_AuraBarFrame" parent="UIParent" enableMouse="true" movable="true" clampedToScreen="true" mixin="TRP3_AuraBarMixin">
+	<Frame name="TRP3_AuraBarFrame" parent="UIParent" enableMouse="true" movable="true" hidden="true" clampedToScreen="true" mixin="TRP3_AuraBarMixin">
 		<Size x="200" y="50"/>
 		<Anchors>
 			<Anchor point="BOTTOMRIGHT" x="-50" y="0" relativePoint="BOTTOMLEFT" relativeTo="Minimap" />
@@ -86,7 +86,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<CheckButton name="TRP3_AuraFrameCollapseAndExpandButton" parent="UIParent" mixin="CollapseAndExpandButtonMixin,TRP3_AuraFrameCollapseAndExpandButtonMixin">
+	<CheckButton name="TRP3_AuraFrameCollapseAndExpandButton" parent="UIParent" hidden="true" mixin="CollapseAndExpandButtonMixin,TRP3_AuraFrameCollapseAndExpandButtonMixin">
 		<Size x="15" y="30"/>
 		<Anchors>
 			<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="TRP3_AuraBarFrame"/>
