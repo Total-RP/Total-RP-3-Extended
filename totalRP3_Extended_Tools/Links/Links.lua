@@ -284,7 +284,7 @@ local function refreshList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(gameLinksEditor.list, data.HA, gameLinksEditor.list.slider);
 	gameLinksEditor.list.empty:Hide();
-	if CountTable(data.HA) == 0 then
+	if TableIsEmpty(data.HA) then
 		gameLinksEditor.list.empty:Show();
 	end
 end

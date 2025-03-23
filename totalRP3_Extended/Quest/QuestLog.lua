@@ -262,7 +262,7 @@ local function refreshQuestList(campaignID)
 		if index > 1 then
 			TRP3_QuestLogPage.Quest.Empty:Hide();
 			TRP3_QuestLogPage.Quest.scroll.child.Content.Current:Show();
-		elseif CountTable(getClass(campaignID).QE) == 0 then
+		elseif TableIsEmpty(getClass(campaignID).QE) then
 			TRP3_QuestLogPage.Quest.Empty:SetText(loc.QE_CAMPAIGN_EMPTY);
 		else
 			TRP3_QuestLogPage.Quest.Empty:SetText(loc.QE_CAMPAIGN_NOQUEST);
@@ -328,7 +328,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 		html = html .. ("\n%s\n\n"):format(currentStepText);
 	end
 
-	if objectives and CountTable(objectives) > 0 then
+	if objectives and TableHasAnyEntries(objectives) then
 		local objectivesText = "";
 		local sortedID = {};
 		for objectiveID, _ in pairs(objectives) do
@@ -354,7 +354,7 @@ local function refreshStepContent(campaignID, questID, questInfo)
 		html = html .. ("\n%s"):format(objectivesText);
 	end
 
-	if CountTable(questInfo.PS or EMPTY) > 0 then
+	if TableHasAnyEntries(questInfo.PS or EMPTY) then
 		html = html .. ("\n{img:%s:256:32}\n"):format("Interface\\QUESTFRAME\\UI-HorizontalBreak");
 
 		local previousStepText = "";

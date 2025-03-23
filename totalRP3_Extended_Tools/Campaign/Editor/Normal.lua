@@ -62,7 +62,7 @@ local function refreshNPCList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(npc.list, data.ND, npc.list.slider);
 	npc.list.empty:Hide();
-	if CountTable(data.ND) == 0 then
+	if TableIsEmpty(data.ND) then
 		npc.list.empty:Show();
 	end
 end
@@ -173,7 +173,7 @@ local function refreshQuestsList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(quests.list, data.QE or EMPTY, quests.list.slider);
 	quests.list.empty:Hide();
-	if CountTable(data.QE) == 0 then
+	if TableIsEmpty(data.QE) then
 		quests.list.empty:Show();
 	end
 end

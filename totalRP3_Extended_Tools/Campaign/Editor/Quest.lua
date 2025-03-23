@@ -51,7 +51,7 @@ local function refreshObjectiveList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(objectives.list, data.OB, objectives.list.slider);
 	objectives.list.empty:Hide();
-	if CountTable(data.OB) == 0 then
+	if TableIsEmpty(data.OB) then
 		objectives.list.empty:Show();
 	end
 end
@@ -137,7 +137,7 @@ local function refreshQuestStepList()
 	TRP3_API.ui.list.initList(steps.list, data.ST, steps.list.slider);
 
 	steps.list.empty:Hide();
-	if CountTable(data.ST) == 0 then
+	if TableIsEmpty(data.ST) then
 		steps.list.empty:Show();
 	end
 end

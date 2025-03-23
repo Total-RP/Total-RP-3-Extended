@@ -220,7 +220,7 @@ function showSecurityDetailFrame(classID, frameFrom)
 
 	securityFrame.frameFrom = frameFrom;
 	securityFrame.empty:Hide();
-	if CountTable(securityFrame.securityDetails) == 0 then
+	if TableIsEmpty(securityFrame.securityDetails) then
 		securityFrame.empty:Show();
 		height = height - 50;
 	end

@@ -225,6 +225,8 @@ read_globals = {
 	"strlen",
 	"strsplit",
 	"strtrim",
+	"TableHasAnyEntries",
+	"TableIsEmpty",
 	"TargetFrame",
 	"tContains",
 	"TextEmoteSpeechList",

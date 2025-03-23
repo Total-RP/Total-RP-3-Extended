@@ -34,7 +34,7 @@ local function refreshList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(editor.list, data.AC, editor.list.slider);
 	editor.list.empty:Hide();
-	if CountTable(data.AC) == 0 then
+	if TableIsEmpty(data.AC) then
 		editor.list.empty:Show();
 	end
 end

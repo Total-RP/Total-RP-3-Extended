@@ -720,7 +720,7 @@ local function refreshWorkflowList()
 		editor.list.add:Show();
 		editor.list.sub:Show();
 		editor.list.sub.empty:Show();
-		if CountTable(toolFrame.specificDraft.SC) > 0 then
+		if TableHasAnyEntries(toolFrame.specificDraft.SC) then
 			editor.list.sub.empty:Hide();
 		end
 
@@ -871,7 +871,7 @@ editor.init = function(ToolFrame, effectMenu)
 			box = editor.workflow, title = "WO_EXECUTION", text = "TU_WO_3_TEXT",
 			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
-				if CountTable(toolFrame.specificDraft.SC) == 0 then
+				if TableIsEmpty(toolFrame.specificDraft.SC) then
 					return true, loc.TU_WO_ERROR_1;
 				end
 				openWorkflow(next(toolFrame.specificDraft.SC));
@@ -882,7 +882,7 @@ editor.init = function(ToolFrame, effectMenu)
 			box = editor.element.selector.effect, title = "TU_WO_4", text = "TU_WO_4_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
-				if CountTable(toolFrame.specificDraft.SC) == 0 then
+				if TableIsEmpty(toolFrame.specificDraft.SC) then
 					return true, loc.TU_WO_ERROR_1;
 				end
 				openWorkflow(next(toolFrame.specificDraft.SC));
@@ -894,7 +894,7 @@ editor.init = function(ToolFrame, effectMenu)
 			box = editor.element.selector.condition, title = "TU_WO_5", text = "TU_WO_5_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
-				if CountTable(toolFrame.specificDraft.SC) == 0 then
+				if TableIsEmpty(toolFrame.specificDraft.SC) then
 					return true, loc.TU_WO_ERROR_1;
 				end
 				openWorkflow(next(toolFrame.specificDraft.SC));
@@ -906,7 +906,7 @@ editor.init = function(ToolFrame, effectMenu)
 			box = editor.element.selector.delay, title = "TU_WO_6", text = "TU_WO_6_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
-				if CountTable(toolFrame.specificDraft.SC) == 0 then
+				if TableIsEmpty(toolFrame.specificDraft.SC) then
 					return true, loc.TU_WO_ERROR_1;
 				end
 				openWorkflow(next(toolFrame.specificDraft.SC));

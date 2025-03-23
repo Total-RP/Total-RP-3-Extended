@@ -55,13 +55,13 @@ end
 
 local function objectHasChildren(class)
 	if class then
-		if class.IN and CountTable(class.IN) > 0 then
+		if class.IN and TableHasAnyEntries(class.IN) then
 			return true;
 		end
-		if class.TY == TRP3_DB.types.CAMPAIGN and class.QE and CountTable(class.QE) > 0 then
+		if class.TY == TRP3_DB.types.CAMPAIGN and class.QE and TableHasAnyEntries(class.QE) then
 			return true;
 		end
-		if class.TY == TRP3_DB.types.QUEST and class.ST and CountTable(class.ST) > 0 then
+		if class.TY == TRP3_DB.types.QUEST and class.ST and TableHasAnyEntries(class.ST) then
 			return true;
 		end
 	end

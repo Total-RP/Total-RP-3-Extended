@@ -437,7 +437,7 @@ function TRP3_API.inventory.stashSlot(slotFrom, container, slotID)
 	end
 
 	-- You can't stash non empty containers, to avoid uncalculable data transfer
-	if TRP3_API.inventory.isContainerByClass(itemClass) and CountTable(slotFrom.info.content or EMPTY) > 0 then
+	if TRP3_API.inventory.isContainerByClass(itemClass) and TableHasAnyEntries(slotFrom.info.content or EMPTY) then
 		if not itemClass.CO.OI then
 			Utils.message.displayMessage(loc.IT_CON_ERROR_TRADE, Utils.message.type.ALERT_MESSAGE);
 			return;

@@ -114,7 +114,7 @@ end
 local function refresh()
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
 	editor.browser.container.empty:Hide();
-	if CountTable(toolFrame.specificDraft.IN) == 0 then
+	if TableIsEmpty(toolFrame.specificDraft.IN) then
 		editor.browser.container.empty:Show();
 	end
 	initList(
