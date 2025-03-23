@@ -5,7 +5,6 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.uti
 local pairs, assert, tostring, strsplit, wipe, date = pairs, assert, tostring, strsplit, wipe, date;
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.loc;
-local after  = C_Timer.After;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;

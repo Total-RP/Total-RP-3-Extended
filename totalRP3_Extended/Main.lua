@@ -676,7 +676,7 @@ local function onInit()
 			TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
 		end,
 	});
-	
+
 	registerConfigKey("window_layout_extended", {});
 end
 
