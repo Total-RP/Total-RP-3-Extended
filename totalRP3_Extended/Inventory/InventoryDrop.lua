@@ -437,7 +437,7 @@ function TRP3_API.inventory.stashSlot(slotFrom, container, slotID)
 	end
 
 	-- You can't stash non empty containers, to avoid uncalculable data transfer
-	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slotFrom.info.content or EMPTY) > 0 then
+	if TRP3_API.inventory.isContainerByClass(itemClass) and CountTable(slotFrom.info.content or EMPTY) > 0 then
 		if not itemClass.CO.OI then
 			Utils.message.displayMessage(loc.IT_CON_ERROR_TRADE, Utils.message.type.ALERT_MESSAGE);
 			return;
@@ -708,7 +708,7 @@ local function receivedStashesRequest(sender, mapID, posY, posX, castID)
 			local inRadius = isInRadius(MAX_SEARCH_DISTANCE, posY, posX, stash.posY or 0, stash.posX or 0);
 			if inRadius then
 				-- P2P response
-				local total = Utils.table.size(stash.item);
+				local total = CountTable(stash.item);
 				Communications.broadcast.sendP2PMessage(sender, SEARCH_STASHES_COMMAND, stash.id, stash.BA.NA, stash.BA.IC, total, castID, stash.CR);
 			end
 		end

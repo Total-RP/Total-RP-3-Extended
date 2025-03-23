@@ -6,7 +6,6 @@ local LibDeflate = LibStub:GetLibrary("LibDeflate");
 
 local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
 local stEtN = Utils.str.emptyToNil;
-local tsize = Utils.table.size;
 local getClass = TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.loc;
@@ -56,13 +55,13 @@ end
 
 local function objectHasChildren(class)
 	if class then
-		if class.IN and tsize(class.IN) > 0 then
+		if class.IN and CountTable(class.IN) > 0 then
 			return true;
 		end
-		if class.TY == TRP3_DB.types.CAMPAIGN and class.QE and tsize(class.QE) > 0 then
+		if class.TY == TRP3_DB.types.CAMPAIGN and class.QE and CountTable(class.QE) > 0 then
 			return true;
 		end
-		if class.TY == TRP3_DB.types.QUEST and class.ST and tsize(class.ST) > 0 then
+		if class.TY == TRP3_DB.types.QUEST and class.ST and CountTable(class.ST) > 0 then
 			return true;
 		end
 	end

@@ -3,7 +3,6 @@
 
 local Utils = TRP3_API.utils;
 local tinsert, strtrim, pairs, assert, wipe = tinsert, strtrim, pairs, assert, wipe;
-local tsize = Utils.table.size;
 local getFullID = TRP3_API.extended.getFullID;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
@@ -52,7 +51,7 @@ local function refreshObjectiveList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(objectives.list, data.OB, objectives.list.slider);
 	objectives.list.empty:Hide();
-	if tsize(data.OB) == 0 then
+	if CountTable(data.OB) == 0 then
 		objectives.list.empty:Show();
 	end
 end
@@ -138,7 +137,7 @@ local function refreshQuestStepList()
 	TRP3_API.ui.list.initList(steps.list, data.ST, steps.list.slider);
 
 	steps.list.empty:Hide();
-	if tsize(data.ST) == 0 then
+	if CountTable(data.ST) == 0 then
 		steps.list.empty:Show();
 	end
 end
@@ -180,7 +179,7 @@ local function createQuestStep()
 		else
 			Utils.message.displayMessage(loc.QE_STEP_EXIST:format(value), 4);
 		end
-	end, nil, "step_" .. (Utils.table.size(toolFrame.specificDraft.ST) + 1) .. "_");
+	end, nil, "step_" .. (CountTable(toolFrame.specificDraft.ST) + 1) .. "_");
 end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Script & inner & links tabs

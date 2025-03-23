@@ -35,8 +35,6 @@ end
 -- GAME
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tsize = Utils.table.size;
-
 local EVENTS_TABLE;
 local eventsList = {};
 local linesWidget = {};
@@ -122,7 +120,7 @@ local function loadAPIEventDoc()
 
 	local apiTable = APIDocumentation:GetAPITableByTypeName("system");
 	for systemIndex, system in pairs(apiTable) do
-		if (system["Events"] and issecurevariable(system, "Events") and Utils.table.size(system["Events"]) ~= 0) then
+		if (system["Events"] and issecurevariable(system, "Events") and CountTable(system["Events"]) ~= 0) then
 			EVENTS_TABLE[systemIndex + 1] = {NA = system["Name"], EV = {}, ID = system["Name"]};
 			for eventIndex, event in pairs(system["Events"]) do
 				EVENTS_TABLE[systemIndex + 1].EV[eventIndex] = {NA = event["LiteralName"], ID = system["Name"] .. " " .. event["LiteralName"]};
@@ -286,7 +284,7 @@ local function refreshList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(gameLinksEditor.list, data.HA, gameLinksEditor.list.slider);
 	gameLinksEditor.list.empty:Hide();
-	if tsize(data.HA) == 0 then
+	if CountTable(data.HA) == 0 then
 		gameLinksEditor.list.empty:Show();
 	end
 end

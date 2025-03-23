@@ -4,7 +4,6 @@
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local CreateFrame = CreateFrame;
 local wipe, pairs, assert, tinsert = wipe, pairs, assert, tinsert;
-local tsize = Utils.table.size;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local getTypeLocale = TRP3_API.extended.tools.getTypeLocale;
 local loc = TRP3_API.loc;
@@ -115,7 +114,7 @@ end
 local function refresh()
 	assert(toolFrame.specificDraft.IN, "No toolFrame.specificDraft.IN for refresh.");
 	editor.browser.container.empty:Hide();
-	if tsize(toolFrame.specificDraft.IN) == 0 then
+	if CountTable(toolFrame.specificDraft.IN) == 0 then
 		editor.browser.container.empty:Show();
 	end
 	initList(

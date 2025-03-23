@@ -1,9 +1,8 @@
 -- Copyright The Total RP 3 Extended Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Globals, Utils, EMPTY = TRP3_API.globals, TRP3_API.utils, TRP3_API.globals.empty;
+local Globals, EMPTY = TRP3_API.globals, TRP3_API.globals.empty;
 local assert, pairs, tinsert = assert, pairs, tinsert;
-local tsize = Utils.table.size;
 local iterateObject = TRP3_API.extended.iterateObject;
 local loc = TRP3_API.loc;
 local getClass = TRP3_API.extended.getClass;
@@ -116,7 +115,7 @@ local function computeSecurity(rootObjectID, rootObject, details)
 	rootObject.securityLevel = minSecurity;
 	rootObject.details = details;
 
-	TRP3_API.Log(("Security: found %d security issues in %s (%s)."):format(Utils.table.size(details), rootObjectID, minSecurity));
+	TRP3_API.Log(("Security: found %d security issues in %s (%s)."):format(CountTable(details), rootObjectID, minSecurity));
 
 	return details;
 end
@@ -221,7 +220,7 @@ function showSecurityDetailFrame(classID, frameFrom)
 
 	securityFrame.frameFrom = frameFrom;
 	securityFrame.empty:Hide();
-	if tsize(securityFrame.securityDetails) == 0 then
+	if CountTable(securityFrame.securityDetails) == 0 then
 		securityFrame.empty:Show();
 		height = height - 50;
 	end

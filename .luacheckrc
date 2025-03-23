@@ -116,6 +116,7 @@ read_globals = {
 	"CheckInteractDistance",
 	"CombatLogGetCurrentEventInfo",
 	"CopyTable",
+	"CountTable",
 	"CreateFrame",
 	"CreateFramePool",
 	"CreateFromMixins",
