@@ -33,7 +33,7 @@ function Tests:UnitID()
 end
 
 function Tests:UnitClass()
-	WoWUnit.Replace(TRP3_API.utils.str, "GetClass", function(arg)
+	WoWUnit.Replace(TRP3_UnitOperandFunctions, "GetClass", function(arg)
 		WoWUnit.AreEqual("player", arg)
 		return "PRIEST"
 	end)
@@ -42,7 +42,7 @@ function Tests:UnitClass()
 end
 
 function Tests:UnitRace()
-	WoWUnit.Replace(TRP3_API.utils.str, "GetRace", function(arg)
+	WoWUnit.Replace(TRP3_UnitOperandFunctions, "GetRace", function(arg)
 		WoWUnit.AreEqual("player", arg)
 		return "HIGHELF"
 	end)
@@ -51,7 +51,7 @@ function Tests:UnitRace()
 end
 
 function Tests:UnitGuild()
-	WoWUnit.Replace(TRP3_API.utils.str, "GetGuildName", function(arg)
+	WoWUnit.Replace(TRP3_UnitOperandFunctions, "GetGuildName", function(arg)
 		WoWUnit.AreEqual("player", arg)
 		return "Sons of Anarchy"
 	end)
@@ -60,7 +60,7 @@ function Tests:UnitGuild()
 end
 
 function Tests:UnitGuildRank()
-	WoWUnit.Replace(TRP3_API.utils.str, "GetGuildRank", function(arg)
+	WoWUnit.Replace(TRP3_UnitOperandFunctions, "GetGuildRank", function(arg)
 		WoWUnit.AreEqual("player", arg)
 		return "Traitor"
 	end)
@@ -87,7 +87,7 @@ function Tests:UnitSex()
 end
 
 function Tests:UnitFaction()
-	WoWUnit.Replace(TRP3_API.utils.str, "GetFaction", function(arg)
+	WoWUnit.Replace(TRP3_UnitOperandFunctions, "GetFaction", function(arg)
 		WoWUnit.AreEqual("focus", arg)
 		return "Alliance"
 	end)
