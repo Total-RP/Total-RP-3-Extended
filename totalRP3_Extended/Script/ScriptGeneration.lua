@@ -533,7 +533,7 @@ local function generate(effectStructure, rootClassID)
 end
 
 local function getFunction(structure, rootClassID)
-	local functionFactory, code = generate(structure, rootClassID);
+	local functionFactory = generate(structure, rootClassID);
 
 	if functionFactory then
 		return functionFactory();
