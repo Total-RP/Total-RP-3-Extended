@@ -14,6 +14,33 @@ local function getUnitId(args)
 	return getSafe(args, 1, "target");
 end
 
+TRP3_UnitOperandFunctions = {};
+
+function TRP3_UnitOperandFunctions.GetGuildName(unitID)
+	local guildName = GetGuildInfo(unitID);
+	return guildName;
+end
+
+function TRP3_UnitOperandFunctions.GetGuildRank(unitID)
+	local _, rank = GetGuildInfo(unitID);
+	return rank;
+end
+
+function TRP3_UnitOperandFunctions.GetRace(unitID)
+	local _, race = UnitRace(unitID);
+	return race;
+end
+
+function TRP3_UnitOperandFunctions.GetClass(unitID)
+	local _, class = UnitClass(unitID);
+	return class;
+end
+
+function TRP3_UnitOperandFunctions.GetFaction(unitID)
+	local faction = UnitFactionGroup(unitID);
+	return faction;
+end
+
 --region String operands
 
 local unitNameOperand = Operand("unit_name", {
@@ -25,7 +52,7 @@ function unitNameOperand:CodeReplacement(args)
 end
 
 local unitIdOperand = Operand("unit_id", {
-	["UnitID"] = "TRP3_API.utils.str.getUnitID"
+	["UnitID"] = "TRP3_UnitOperandFunctions.getUnitID"
 })
 
 function unitIdOperand:CodeReplacement(args)
@@ -33,7 +60,7 @@ function unitIdOperand:CodeReplacement(args)
 end
 
 local unitNpcIdOperand = Operand("unit_npc_id", {
-	["getUnitNPCID"] = "TRP3_API.utils.str.getUnitNPCID",
+	["getUnitNPCID"] = "TRP3_UnitOperandFunctions.getUnitNPCID",
 });
 
 function unitNpcIdOperand:CodeReplacement(args)
@@ -49,7 +76,7 @@ function unitGuidOperand:CodeReplacement(args)
 end
 
 local unitGuildOperand = Operand("unit_guild", {
-	["GetGuildName"] = "TRP3_API.utils.str.GetGuildName",
+	["GetGuildName"] = "TRP3_UnitOperandFunctions.GetGuildName",
 })
 
 function unitGuildOperand:CodeReplacement(args)
@@ -57,7 +84,7 @@ function unitGuildOperand:CodeReplacement(args)
 end
 
 local unitGuildRankOperand = Operand("unit_guild_rank", {
-	["GetGuildRank"] = "TRP3_API.utils.str.GetGuildRank"
+	["GetGuildRank"] = "TRP3_UnitOperandFunctions.GetGuildRank"
 });
 
 function unitGuildRankOperand:CodeReplacement(args)
@@ -65,7 +92,7 @@ function unitGuildRankOperand:CodeReplacement(args)
 end
 
 local unitClassOperand = Operand("unit_class", {
-	["GetClass"] = "TRP3_API.utils.str.GetClass"
+	["GetClass"] = "TRP3_UnitOperandFunctions.GetClass"
 });
 
 function unitClassOperand:CodeReplacement(args)
@@ -73,7 +100,7 @@ function unitClassOperand:CodeReplacement(args)
 end
 
 local unitRaceOperand = Operand("unit_race", {
-	["GetRace"] = "TRP3_API.utils.str.GetRace"
+	["GetRace"] = "TRP3_UnitOperandFunctions.GetRace"
 });
 
 function unitRaceOperand:CodeReplacement(args)
@@ -89,7 +116,7 @@ function unitSexOperand:CodeReplacement(args)
 end
 
 local unitFactionOperand = Operand("unit_faction", {
-	["GetFaction"] = "TRP3_API.utils.str.GetFaction"
+	["GetFaction"] = "TRP3_UnitOperandFunctions.GetFaction"
 });
 
 function unitFactionOperand:CodeReplacement(args)

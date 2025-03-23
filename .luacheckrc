@@ -140,6 +140,7 @@ read_globals = {
 	"GameTooltip",
 	"GameTooltipHeader",
 	"GetAchievementInfo",
+	"GetGuildInfo",
 	"GetMacroIndexByName",
 	"GetMouseFoci",
 	"GetNormalizedRealmName",
