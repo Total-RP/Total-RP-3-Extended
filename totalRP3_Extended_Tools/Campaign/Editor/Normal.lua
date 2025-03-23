@@ -3,7 +3,6 @@
 
 local Utils, EMPTY = TRP3_API.utils, TRP3_API.globals.empty;
 local tostring, tonumber, tinsert, strtrim, pairs, assert, wipe = tostring, tonumber, tinsert, strtrim, pairs, assert, wipe;
-local tsize = Utils.table.size;
 local getFullID = TRP3_API.extended.getFullID;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
@@ -63,7 +62,7 @@ local function refreshNPCList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(npc.list, data.ND, npc.list.slider);
 	npc.list.empty:Hide();
-	if tsize(data.ND) == 0 then
+	if TableIsEmpty(data.ND) then
 		npc.list.empty:Show();
 	end
 end
@@ -174,7 +173,7 @@ local function refreshQuestsList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(quests.list, data.QE or EMPTY, quests.list.slider);
 	quests.list.empty:Hide();
-	if tsize(data.QE) == 0 then
+	if TableIsEmpty(data.QE) then
 		quests.list.empty:Show();
 	end
 end
@@ -215,7 +214,7 @@ local function createQuest()
 		else
 			Utils.message.displayMessage(loc.CA_QUEST_EXIST:format(value), 4);
 		end
-	end, nil, "quest_" .. (Utils.table.size(toolFrame.specificDraft.QE) + 1) .. "_");
+	end, nil, "quest_" .. (CountTable(toolFrame.specificDraft.QE) + 1) .. "_");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

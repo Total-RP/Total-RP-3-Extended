@@ -50,7 +50,7 @@ function TRP3_StashMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local total = poiInfo.total;
 	-- If no total, it's a self stash, so we compute the total.
 	if not total then
-		total = Utils.table.size(poiInfo.item);
+		total = CountTable(poiInfo.item);
 	end
 	--}}}
 

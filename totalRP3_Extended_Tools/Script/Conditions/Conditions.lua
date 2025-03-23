@@ -2,7 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local tsize, EMPTY = Utils.table.size, Globals.empty;
+local EMPTY = Globals.empty;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local initList = TRP3_API.ui.list.initList;
@@ -235,7 +235,7 @@ end
 local function openOperandEditor(expressionIndex)
 	local expression = editor.scriptData[expressionIndex];
 	assert(type(expression) == "table", "operand structure is not a table");
-	assert(tsize(expression) == 3, "Table expression must be in 3 parts.");
+	assert(CountTable(expression) == 3, "Table expression must be in 3 parts.");
 
 	local leftOperand = expression[1];
 	local comparator = expression[2];
@@ -381,7 +381,7 @@ local function onTestLineClick(line, button)
 end
 
 local function getExpressionText(expression)
-	assert(tsize(expression) == 3, "Table expression must be in 3 parts.");
+	assert(CountTable(expression) == 3, "Table expression must be in 3 parts.");
 	local leftOperand = expression[1];
 	local comparator = getComparatorText(expression[2]);
 	local rightOperand = expression[3];
@@ -417,7 +417,7 @@ local function decorateConditionLine(line, index)
 end
 
 function editor.getConditionPreview(scriptData)
-	local size = tsize(scriptData);
+	local size = CountTable(scriptData);
 	if size == 1 then
 		return getExpressionText(scriptData[1]);
 	else

@@ -262,7 +262,7 @@ local function addToExchange(container, slotID)
 	local rootClass = getClass(rootClassID);
 
 	-- Can't exchange an non-empty bag for now
-	if TRP3_API.inventory.isContainerByClass(itemClass) and Utils.table.size(slotInfo.content or EMPTY) > 0 then
+	if TRP3_API.inventory.isContainerByClass(itemClass) and TableHasAnyEntries(slotInfo.content or EMPTY) then
 		if not itemClass.CO.OI then
 			Utils.message.displayMessage(loc.IT_CON_ERROR_TRADE, Utils.message.type.ALERT_MESSAGE);
 			return;

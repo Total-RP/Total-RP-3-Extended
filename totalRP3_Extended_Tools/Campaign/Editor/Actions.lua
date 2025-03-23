@@ -4,7 +4,6 @@
 local Utils  = TRP3_API.utils;
 local IsControlKeyDown = IsControlKeyDown;
 local tremove, tinsert, wipe = tremove, tinsert, wipe;
-local tsize = Utils.table.size;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -35,7 +34,7 @@ local function refreshList()
 	local data = toolFrame.specificDraft;
 	TRP3_API.ui.list.initList(editor.list, data.AC, editor.list.slider);
 	editor.list.empty:Hide();
-	if tsize(data.AC) == 0 then
+	if TableIsEmpty(data.AC) then
 		editor.list.empty:Show();
 	end
 end
