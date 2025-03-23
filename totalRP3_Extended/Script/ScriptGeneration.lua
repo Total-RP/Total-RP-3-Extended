@@ -535,11 +535,6 @@ end
 local function getFunction(structure, rootClassID)
 	local functionFactory, code = generate(structure, rootClassID);
 
-	if DEBUG then
-		TRP3_DEBUG_CODE_FRAME:Show();
-		TRP3_DEBUG_CODE_FRAME.scroll.text:SetText(code);
-	end
-
 	if functionFactory then
 		return functionFactory();
 	end
