@@ -84,7 +84,7 @@ end
 local function getQualityColorTab(quality)
 	---@type Color
 	local color = TRP3_API.inventory.getQualityColor(quality);
-	return color:GetRGBATable();
+	return color;
 end
 TRP3_API.inventory.getQualityColorTab = getQualityColorTab;
 
