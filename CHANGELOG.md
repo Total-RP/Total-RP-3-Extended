@@ -1,3 +1,9 @@
+# Changelog for version 2.2.6
+
+## Fixed
+
+- Fixed loading errors.
+
 # Changelog for version 2.2.5
 
 ## Added
