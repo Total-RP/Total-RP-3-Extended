@@ -113,7 +113,7 @@ function TRP3_ExtendedTutorial.init(toolFrame)
 
 	-- Create button
 	buttonWidget = CreateFrame( "Button", nil, ToolFrame.tutoframe, "TRP3_TutorialButton" );
-	buttonWidget.boxHighlight = CreateFrame( "Frame", nil, ToolFrame.tutoframe, "HelpPlateBoxHighlight" );
+	buttonWidget.boxHighlight = CreateFrame( "Frame", nil, ToolFrame.tutoframe, "TRP3_GlowBorderTemplate" );
 	buttonWidget:SetSize(46, 46);
 	buttonWidget:Show();
 	buttonWidget.boxHighlight:Show();

@@ -56,7 +56,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="LEFT" x="15" y="0" />
 				</Anchors>
 			</Frame>
-			<Frame parentKey="highlight" inherits="GlowBorderTemplate" hidden="true">
+			<Frame parentKey="highlight" inherits="TRP3_GlowBorderTemplate" hidden="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="5" y="-2"/>
 					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>

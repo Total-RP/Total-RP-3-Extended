@@ -20,7 +20,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Button parentKey="click" inherits="TRP3_InvisibleButton" setAllPoints="true"/>
 
-			<Frame name="$parentHighlight" parentKey="Highlight" inherits="GlowBorderTemplate" hidden="true">
+			<Frame name="$parentHighlight" parentKey="Highlight" inherits="TRP3_GlowBorderTemplate" hidden="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="5" y="-2"/>
 					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>

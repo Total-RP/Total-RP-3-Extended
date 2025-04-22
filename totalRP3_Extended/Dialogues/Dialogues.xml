@@ -213,7 +213,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</Frame>
 
-					<Frame name="$parentHighLight" parentKey="HighLight" inherits="GlowBorderTemplate" hidden="true" frameLevel="6">
+					<Frame name="$parentHighLight" parentKey="HighLight" inherits="TRP3_GlowBorderTemplate" hidden="true" frameLevel="6">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="5" y="-2"/>
 							<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
