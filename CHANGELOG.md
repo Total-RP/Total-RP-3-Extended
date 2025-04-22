@@ -1,3 +1,20 @@
+# Changelog for version 2.2.5
+
+## Added
+
+- Added compatibility with patch 11.1.5, including support for the new quality color settings.
+- The database frame will now remember its position across sessions.
+
+## Fixed
+
+- Fixed trade and inspection options not showing when right-clicking a player from a community member list.
+- Fixed missing instructions on the aura color picker tooltip.
+- Fixed an issue where the aura frame would appear if Extended was enabled but the module was disabled in the TRP settings.
+
+## Removed
+
+- Removed the maximize button.
+
 # Changelog for version 2.2.4
 
 ## Fixed
