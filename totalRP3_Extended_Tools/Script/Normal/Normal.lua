@@ -4,7 +4,7 @@
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local wipe, pairs, tostring, tinsert, assert, tonumber, sort = wipe, pairs, tostring, tinsert, assert, tonumber, table.sort;
 local tContains, strjoin, unpack = tContains, strjoin, unpack;
-local tsize, EMPTY = Utils.table.size, Globals.empty;
+local EMPTY = Globals.empty;
 local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
@@ -405,7 +405,7 @@ end
 
 function openLastEffect()
 	local data = toolFrame.specificDraft.SC[editor.workflowID].ST;
-	local scriptStepFrame = editor.list.listElement[tsize(data)];
+	local scriptStepFrame = editor.list.listElement[CountTable(data)];
 	if scriptStepFrame then
 		onElementClick(scriptStepFrame, "LeftButton");
 	end
@@ -720,7 +720,7 @@ local function refreshWorkflowList()
 		editor.list.add:Show();
 		editor.list.sub:Show();
 		editor.list.sub.empty:Show();
-		if Utils.table.size(toolFrame.specificDraft.SC) > 0 then
+		if TableHasAnyEntries(toolFrame.specificDraft.SC) then
 			editor.list.sub.empty:Hide();
 		end
 
@@ -743,7 +743,7 @@ function editor.loadList(context)
 end
 
 function editor.linkElements(workflow)
-	local size = tsize(workflow.ST);
+	local size = CountTable(workflow.ST);
 	-- Make connection between elements
 	for i = 1, size, 1 do
 		local data = workflow.ST[tostring(i)];
@@ -768,7 +768,7 @@ local function onAddWorkflow()
 			refreshWorkflowList();
 			openWorkflow(newID);
 		end
-	end, nil, "workflow" .. tsize(toolFrame.specificDraft.SC) + 1);
+	end, nil, "workflow" .. CountTable(toolFrame.specificDraft.SC) + 1);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -871,7 +871,7 @@ editor.init = function(ToolFrame, effectMenu)
 			box = editor.workflow, title = "WO_EXECUTION", text = "TU_WO_3_TEXT",
 			arrow = "DOWN", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
-				if tsize(toolFrame.specificDraft.SC) == 0 then
+				if TableIsEmpty(toolFrame.specificDraft.SC) then
 					return true, loc.TU_WO_ERROR_1;
 				end
 				openWorkflow(next(toolFrame.specificDraft.SC));
@@ -882,7 +882,7 @@ editor.init = function(ToolFrame, effectMenu)
 			box = editor.element.selector.effect, title = "TU_WO_4", text = "TU_WO_4_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
-				if tsize(toolFrame.specificDraft.SC) == 0 then
+				if TableIsEmpty(toolFrame.specificDraft.SC) then
 					return true, loc.TU_WO_ERROR_1;
 				end
 				openWorkflow(next(toolFrame.specificDraft.SC));
@@ -894,7 +894,7 @@ editor.init = function(ToolFrame, effectMenu)
 			box = editor.element.selector.condition, title = "TU_WO_5", text = "TU_WO_5_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
-				if tsize(toolFrame.specificDraft.SC) == 0 then
+				if TableIsEmpty(toolFrame.specificDraft.SC) then
 					return true, loc.TU_WO_ERROR_1;
 				end
 				openWorkflow(next(toolFrame.specificDraft.SC));
@@ -906,7 +906,7 @@ editor.init = function(ToolFrame, effectMenu)
 			box = editor.element.selector.delay, title = "TU_WO_6", text = "TU_WO_6_TEXT",
 			arrow = "RIGHT", x = 0, y = 0, anchor = "CENTER", textWidth = 400,
 			callback = function()
-				if tsize(toolFrame.specificDraft.SC) == 0 then
+				if TableIsEmpty(toolFrame.specificDraft.SC) then
 					return true, loc.TU_WO_ERROR_1;
 				end
 				openWorkflow(next(toolFrame.specificDraft.SC));
