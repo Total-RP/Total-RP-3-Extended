@@ -80,8 +80,9 @@ function TRP3_API.extended.unitpopups.init()
 
     local unitTypesAllowed = {
         "CHAT_ROSTER",
+        "COMMUNITIES_GUILD_MEMBER",
+        "COMMUNITIES_WOW_MEMBER",
         "FRIEND",
-        "GUILD",
         "PARTY",
         "PLAYER",
         "RAID",
