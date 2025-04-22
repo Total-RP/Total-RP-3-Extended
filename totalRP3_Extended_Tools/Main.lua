@@ -5,7 +5,6 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.uti
 local pairs, assert, tostring, strsplit, wipe, date = pairs, assert, tostring, strsplit, wipe, date;
 local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.loc;
-local after  = C_Timer.After;
 local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local refreshTooltipForFrame = TRP3_RefreshTooltipForFrame;
@@ -437,34 +436,6 @@ local function onStart()
 	PAGE_BY_TYPE[TRP3_DB.types.DOCUMENT].loc = loc.TYPE_DOCUMENT;
 	PAGE_BY_TYPE[TRP3_DB.types.DIALOG].loc = loc.TYPE_DIALOG;
 	PAGE_BY_TYPE[TRP3_DB.types.AURA].loc = loc.TYPE_AURA;
-
-	toolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
-
-	toolFrame.Resize.minWidth = 1150;
-	toolFrame.Resize.minHeight = 730;
-	toolFrame:SetSize(toolFrame.Resize.minWidth, toolFrame.Resize.minHeight);
-	toolFrame.Resize.resizableFrame = toolFrame;
-	toolFrame.Resize.onResizeStop = function()
-		toolFrame.Minimize:Hide();
-		toolFrame.Maximize:Show();
-		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
-	end;
-
-	toolFrame.Maximize:SetScript("OnClick", function()
-		toolFrame.Maximize:Hide();
-		toolFrame.Minimize:Show();
-		toolFrame:SetSize(UIParent:GetWidth(), UIParent:GetHeight());
-		after(0.1, function()
-			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.NAVIGATION_EXTENDED_RESIZED, toolFrame:GetWidth(), toolFrame:GetHeight());
-		end);
-	end);
-
-	toolFrame.Minimize:SetScript("OnClick", function()
-		toolFrame:SetSize(toolFrame.Resize.minWidth, toolFrame.Resize.minHeight);
-		after(0.1, function()
-			toolFrame.Resize.onResizeStop();
-		end);
-	end);
 
 	-- Root panel locale selection
 	local template = "|T%s:11:16|t";

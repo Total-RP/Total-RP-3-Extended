@@ -7,6 +7,8 @@ local EMPTY = TRP3_API.globals.empty;
 local loc = TRP3_API.loc;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 
+local LibWindow = LibStub:GetLibrary("LibWindow-1.1");
+
 TRP3_API.extended = {
 	document = {},
 	dialog = {},
@@ -59,6 +61,159 @@ function TRP3_Extended:TriggerEvent(event, ...)
 	assert(self:IsEventValid(event), "attempted to trigger an invalid extended event");
 	self.callbacks:Fire(event, ...);
 end
+
+-- MIXINS
+
+TRP3_ToolFrameSizeConstants = {
+	DefaultWidth = 1150,
+	DefaultHeight = 730,
+	MinimumWidth = 1150,
+	MinimumHeight = 730,
+};
+
+local function ResetWindowPoint(frame)
+	local parent = frame:GetParent() or UIParent;
+	local offsetX = frame:GetLeft();
+	local offsetY = -(parent:GetTop() - frame:GetTop());
+
+	frame:ClearAllPoints();
+	frame:SetPoint("TOPLEFT", offsetX, offsetY);
+end
+
+TRP3_ToolFrameMixin = {};
+
+function TRP3_ToolFrameMixin:OnLoad()
+	tinsert(UISpecialFrames, self:GetName());
+	self.ResizeButton:Init(self);
+end
+
+function TRP3_ToolFrameMixin:OnSizeChanged()
+	self:UpdateClampRectInsets();
+	TRP3_Extended:TriggerEvent(TRP3_Extended.Events.NAVIGATION_EXTENDED_RESIZED, self:GetWidth(), self:GetHeight());
+end
+
+function TRP3_ToolFrameMixin:OnResizeStart()
+	ResetWindowPoint(self);
+end
+
+function TRP3_ToolFrameMixin:OnResizeStop(width, height)
+	self:ResizeWindow(width, height);
+end
+
+function TRP3_ToolFrameMixin:OnResizeToDefault()
+	self:RestoreWindow();
+end
+
+function TRP3_ToolFrameMixin:ResizeWindow(width, height)
+	ResetWindowPoint(self);
+	self:SetSize(width, height);
+end
+
+function TRP3_ToolFrameMixin:RestoreWindow()
+	self:SetSize(TRP3_ToolFrameSizeConstants.DefaultWidth, TRP3_ToolFrameSizeConstants.DefaultHeight);
+end
+
+function TRP3_ToolFrameMixin:UpdateClampRectInsets()
+	local width, height = self:GetSize();
+	local ratio = width / height;
+	local padding = 300;
+
+	local left = width - padding;
+	local right = -left;
+	local bottom = height - (padding / ratio);
+	local top = -bottom;
+
+	self:SetClampRectInsets(left, right, top, bottom);
+end
+
+TRP3_ToolFrameLayoutMixin = CreateFromMixins(TRP3_ToolFrameMixin);
+
+function TRP3_ToolFrameLayoutMixin:OnLoad()
+	TRP3_ToolFrameMixin.OnLoad(self);
+	self.windowLayout = nil;  -- Aliases configuration table; set during addon load.
+	TRP3_Addon.RegisterCallback(self, "WORKFLOW_ON_FINISH", "OnLayoutLoaded");
+end
+
+function TRP3_ToolFrameLayoutMixin:OnLayoutLoaded()
+	self.windowLayout = TRP3_API.configuration.getValue("window_layout_extended");
+	LibWindow.RegisterConfig(self, self.windowLayout);
+	LibWindow.MakeDraggable(self);
+	self:RestoreLayout();
+end
+
+function TRP3_ToolFrameLayoutMixin:OnSizeChanged(...)
+	if self:IsLayoutLoaded() then
+		self:SaveLayout();
+	end
+
+	TRP3_ToolFrameMixin.OnSizeChanged(self, ...);
+end
+
+function TRP3_ToolFrameLayoutMixin:IsLayoutLoaded()
+	return self.windowLayout ~= nil;
+end
+
+function TRP3_ToolFrameLayoutMixin:RestoreLayout()
+	assert(self:IsLayoutLoaded(), "attempted to restore window layout before layout has been loaded");
+
+	local width = math.max(self.windowLayout.w or TRP3_ToolFrameSizeConstants.DefaultWidth, TRP3_ToolFrameSizeConstants.MinimumWidth);
+	local height = math.max(self.windowLayout.h or TRP3_ToolFrameSizeConstants.DefaultHeight, TRP3_ToolFrameSizeConstants.MinimumHeight);
+	self:SetSize(width, height);
+	LibWindow.RestorePosition(self);
+	ResetWindowPoint(self);
+end
+
+function TRP3_ToolFrameLayoutMixin:SaveLayout()
+	assert(self:IsLayoutLoaded(), "attempted to save window layout before layout has been loaded");
+
+	local width, height = self:GetSize();
+	self.windowLayout.w = width;
+	self.windowLayout.h = height;
+	LibWindow.SavePosition(self);
+end
+
+TRP3_ToolFrameResizeButtonMixin = {};
+
+function TRP3_ToolFrameResizeButtonMixin:Init(target)
+	self.target = target;
+	self.onResizeStart = function(mouseButtonName) return self:OnResizeStart(mouseButtonName); end;
+	self.onResizeStop = function(width, height) self:OnResizeStop(width, height); end;
+	TRP3_API.ui.frame.initResize(self);
+end
+
+function TRP3_ToolFrameResizeButtonMixin:OnResizeStart(mouseButtonName)
+	if mouseButtonName == "LeftButton" then
+		self.target:OnResizeStart();
+		self:HideTooltip();
+		return false;
+	end
+
+	-- All other mouse interactions will prevent the user from resizing the
+	-- window via dragging.
+
+	if mouseButtonName == "RightButton" then
+		self.target:OnResizeToDefault();
+	end
+
+	return true;
+end
+
+function TRP3_ToolFrameResizeButtonMixin:OnResizeStop(width, height)
+	self.target:OnResizeStop(width, height);
+end
+
+function TRP3_ToolFrameResizeButtonMixin:OnTooltipShow(description)
+	description:AddTitleLine(loc.CM_RESIZE);
+	description:AddInstructionLine("DRAGDROP", loc.CM_RESIZE_TT);
+	description:AddInstructionLine("RCLICK", loc.CM_RESIZE_RESET_TT);
+end
+
+TRP3_ToolFrameCloseButtonMixin = {};
+
+function TRP3_ToolFrameCloseButtonMixin:OnClick()
+	self:GetParent():Hide();
+end
+
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- GLOBAL DB
@@ -327,7 +482,6 @@ local function initConfig()
 	registerConfigKey(TRP3_API.extended.CONFIG_NPC_HIDE_ORIGINAL, true);
 	registerConfigKey(TRP3_API.extended.CONFIG_NPC_EMBED_ORIGINAL, false);
 
-
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_extended",
@@ -522,6 +676,8 @@ local function onInit()
 			TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
 		end,
 	});
+
+	registerConfigKey("window_layout_extended", {});
 end
 
 local function onStart()
