@@ -52,7 +52,7 @@ function unitNameOperand:CodeReplacement(args)
 end
 
 local unitIdOperand = Operand("unit_id", {
-	["UnitID"] = "TRP3_UnitOperandFunctions.getUnitID"
+	["UnitID"] = "TRP3_API.utils.str.getUnitID"
 })
 
 function unitIdOperand:CodeReplacement(args)
@@ -60,7 +60,7 @@ function unitIdOperand:CodeReplacement(args)
 end
 
 local unitNpcIdOperand = Operand("unit_npc_id", {
-	["getUnitNPCID"] = "TRP3_UnitOperandFunctions.getUnitNPCID",
+	["getUnitNPCID"] = "TRP3_API.utils.str.getUnitNPCID",
 });
 
 function unitNpcIdOperand:CodeReplacement(args)
