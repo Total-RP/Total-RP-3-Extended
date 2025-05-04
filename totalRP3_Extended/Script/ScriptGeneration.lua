@@ -835,6 +835,41 @@ function TRP3_API.script.parseArgs(text, args)
 			-- Event argument
 			local index = tonumber(capture:match("event%.(%d+)") or 1) or 1;
 			return TRP3_API.extended.tools.truncateDecimals( (args.event or EMPTY)[index] or capture, decimals);
+		elseif capture:match("^trp:player:ch:ps:") then
+			-- Player characteristics
+			local psData = TRP3_API.profile.getData("player/characteristics").PS or {}
+			local index = tonumber(capture:match("trp:player:ch:ps:(%d+):")) or 1;
+			if capture:match("^trp:player:ch:ps:max$") then
+				-- Returns the highest index in the array
+				return #psData > 0 and #psData or 0;
+			end
+			if not psData[index] then return nil end
+			if capture:match(":left:text$") then
+				-- Matches "trp:player:ch:ps:X:left:text"
+				return psData[index].LT or nil;
+			elseif capture:match(":right:text$") then
+				-- Matches "trp:player:ch:ps:X:right:text"
+				return psData[index].RT or nil;
+			elseif capture:match(":value$") then
+				-- Matches "trp:player:ch:ps:X:value"
+				return psData[index].V2 or nil;
+			end	
+		elseif capture:match("^trp:player:ch:mi:") then
+			-- Player profile additional information
+			local index = tonumber(capture:match("trp:player:ch:mi:(%d+)")) or 1;
+			local miData = TRP3_API.profile.getData("player/characteristics").MI or {}
+			if capture:match("^trp:player:ch:mi:max$") then
+				-- Returns the highest index in the array
+				return #miData > 0 and #miData or 0;
+			end
+			if not miData[index] then return nil end
+			if capture:match(":name$") then
+				-- Matches "trp:player:ch:mi:X:name"
+				return miData[index].NA or nil;
+			elseif capture:match(":value$") then
+				-- Matches "trp:player:ch:mi:X:value"
+				return miData[index].VA or nil;
+			end		
 		else
 			-- Evaluating variable in different sources
 			local evaluatedVarValue = (args.custom or EMPTY)[capture]; -- Workflow variable
