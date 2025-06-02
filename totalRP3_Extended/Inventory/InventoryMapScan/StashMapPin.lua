@@ -89,3 +89,9 @@ function TRP3_StashMapPinMixin:Decorate(displayData)
 	end
 
 end
+
+function TRP3_StashMapPinMixin:CheckMouseButtonPassthrough()
+	-- Intentional no-op; this is called by Blizzard *after* pin acquisition
+	-- logic and would reset explicit configuration of our button passthrough
+	-- in the OnAcquire handler.
+end
