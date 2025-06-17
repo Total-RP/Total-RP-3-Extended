@@ -1,3 +1,9 @@
+# Changelog for version 2.2.8
+
+## Fixed
+
+- Fixed right-click on stashes map pins not working.
+
 # Changelog for version 2.2.7
 
 ## Fixed
