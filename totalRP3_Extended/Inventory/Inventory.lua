@@ -275,9 +275,10 @@ local function doUseSlot(info, class, container)
 		if class.LI and class.LI.OU then
 			useWorkflow = class.LI.OU;
 		end
+		local itemID = info.id; -- Storing in case the item gets consumed
 		local retCode = TRP3_API.script.executeClassScript(useWorkflow, class.SC,
 			{object = info, container = container, class = class}, info.id);
-		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_ITEM_USED, info.id, retCode);
+		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_ITEM_USED, itemID, retCode);
 		return retCode;
 	end
 end
