@@ -880,9 +880,9 @@ function dropFrame.init()
 		button3 = loc.DR_POPUP,
 		OnShow = function(self)
 			if AddOn_TotalRP3.Map.getPlayerCoordinates() then
-				self.button3:Enable();
+				self:GetButton3():Enable();
 			else
-				self.button3:Disable();
+				self:GetButton3():Disable();
 			end
 		end,
 		OnAccept = function()
