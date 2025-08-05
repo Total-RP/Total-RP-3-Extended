@@ -12,7 +12,7 @@ if not TRP3_Extended_Flyway then
 end
 
 local function applyPatches(fromBuild, toBuild)
-    for i = fromBuild + 1, toBuild do
+    for i = fromBuild, toBuild do
         if type(TRP3_API.extended.flyway.patches[tostring(i)]) == "function" then
             TRP3_API.Logf("Applying patch %s for Extended", i);
             TRP3_API.extended.flyway.patches[tostring(i)]();
@@ -23,7 +23,7 @@ end
 
 function TRP3_API.extended.flyway.applyPatches()
     if not TRP3_Extended_Flyway.currentBuild or TRP3_Extended_Flyway.currentBuild < SCHEMA_VERSION then
-        applyPatches((TRP3_Flyway.currentBuild or 0), SCHEMA_VERSION);
+        applyPatches((TRP3_Flyway.currentBuild or 0) + 1, SCHEMA_VERSION);
     end
     TRP3_Extended_Flyway.currentBuild = SCHEMA_VERSION;
 end
