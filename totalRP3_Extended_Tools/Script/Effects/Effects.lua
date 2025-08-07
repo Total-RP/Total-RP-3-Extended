@@ -11,7 +11,7 @@ local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
-local LAST_EMOTE_ID = 522;
+local LAST_EMOTE_ID = 628;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effect structure
