@@ -178,6 +178,7 @@ read_globals = {
 	"ITEM_SOULBOUND",
 	"ITEM_UNIQUE",
 	"LibStub",
+	"MAXEMOTEINDEX",
 	"min",
 	"Mixin",
 	"mod",
