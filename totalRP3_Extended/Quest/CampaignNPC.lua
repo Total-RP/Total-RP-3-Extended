@@ -127,7 +127,6 @@ local function onMouseOver()
 			if hideOriginal() then
 				GameTooltip:Hide();
 			end
-			tooltip:ClearAllPoints();
 		end
 	end
 end
