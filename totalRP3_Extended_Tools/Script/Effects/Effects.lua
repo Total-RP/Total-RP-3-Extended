@@ -11,8 +11,6 @@ local loc = TRP3_API.loc;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 
-local LAST_EMOTE_ID = 522;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effect structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -866,7 +864,7 @@ local function do_emote_init()
 	spokenEmotes["FORTHEHORDE"] = true;
 	local animatedEmotes = tInvert(EmoteList);
 	local otherEmotes = {}
-	for i = 1, LAST_EMOTE_ID do
+	for i = 1, MAXEMOTEINDEX do
 		local emoteToken = _G["EMOTE" .. i .. "_TOKEN"]
 		if emoteToken then
 			if spokenEmotes[emoteToken] then
