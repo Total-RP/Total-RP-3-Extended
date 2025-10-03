@@ -113,7 +113,7 @@ local EFFECTS = {
 	["speech_env"] = {
 		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local text = cArgs[1] or "";
-			SendChatMessage(TRP3_API.script.parseArgs("|| " .. text, eArgs), 'EMOTE');
+			C_ChatInfo.SendChatMessage(TRP3_API.script.parseArgs("|| " .. text, eArgs), 'EMOTE');
 			eArgs.LAST = 0;
 		end,
 		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
@@ -132,7 +132,7 @@ local EFFECTS = {
 		end,
 		method = function(structure, cArgs, eArgs)
 			local name, speechType, text = structure.getCArgs(cArgs);
-			SendChatMessage(TRP3_API.script.parseArgs("|| " .. getSpeechPrefixText(speechType, name, text), eArgs), 'EMOTE');
+			C_ChatInfo.SendChatMessage(TRP3_API.script.parseArgs("|| " .. getSpeechPrefixText(speechType, name, text), eArgs), 'EMOTE');
 			eArgs.LAST = 0;
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
@@ -157,7 +157,7 @@ local EFFECTS = {
 				end
 			end);
 
-			SendChatMessage(TRP3_API.script.parseArgs(text, eArgs), getSpeechChannel(channel));
+			C_ChatInfo.SendChatMessage(TRP3_API.script.parseArgs(text, eArgs), getSpeechChannel(channel));
 			registration:Unregister();
 
 			eArgs.LAST = 0;
@@ -178,7 +178,7 @@ local EFFECTS = {
 			local emoteToken = structure.getCArgs(cArgs);
 			emoteToken = swapFactionRestrictedEmotesIfNeeded(emoteToken);
 			if stEtN(emoteToken) then
-				DoEmote(emoteToken);
+				C_ChatInfo.PerformEmote(emoteToken);
 			end
 			eArgs.LAST = 0;
 		end,
