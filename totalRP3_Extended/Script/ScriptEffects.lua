@@ -178,7 +178,7 @@ local EFFECTS = {
 			local emoteToken = structure.getCArgs(cArgs);
 			emoteToken = swapFactionRestrictedEmotesIfNeeded(emoteToken);
 			if stEtN(emoteToken) then
-				DoEmote(emoteToken);
+				C_ChatInfo.PerformEmote(emoteToken);
 			end
 			eArgs.LAST = 0;
 		end,
