@@ -38,7 +38,7 @@ local function onCampaignButtonClick(button, mouseButton)
 	assert(button.campaignID, "No campaign ID in button");
 	local campaignID = button.campaignID;
 	local _, campaignName = getClassDataSafe(getClass(campaignID));
-	if ChatEdit_GetActiveWindow() and IsModifiedClick("CHATLINK") then
+	if ChatFrameUtil.GetActiveWindow() and IsModifiedClick("CHATLINK") then
 		TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_CAMPAIGN, function(canBeImported)
 			TRP3_API.extended.CampaignsChatLinksModule:InsertLink(campaignID, canBeImported);
 		end);
