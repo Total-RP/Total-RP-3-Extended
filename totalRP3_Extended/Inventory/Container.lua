@@ -548,7 +548,7 @@ local function initContainerSlot(slot, simpleLeftClick, lootBuilder)
 
 		-- This function is manually called from the macro environment
 		slot.trp3func = function(self, button)
-			if self.info and ChatEdit_GetActiveWindow() and IsModifiedClick("CHATLINK") then
+			if self.info and ChatFrameUtil.GetActiveWindow() and IsModifiedClick("CHATLINK") then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
 					TRP3_API.extended.ItemsChatLinksModule:InsertLink(self.info.id, TRP3_API.extended.getRootClassID(self.info.id), self.info, canBeImported);
 				end);
