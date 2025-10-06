@@ -1,3 +1,13 @@
+# Changelog for version 2.2.10
+
+## Added
+
+- Added 6 emotes to the DoEmote effect (and adjusted the code to automatically handle newly added emotes).
+
+## Fixed
+
+- Fixed the campaign NPC tooltip not displaying properly.
+
 # Changelog for version 2.2.9
 
 ## Fixed
