@@ -124,7 +124,7 @@ function auraCore:Initialize()
 		handler = function()
 			auraCore:SetScriptsEnabled(false);
 			auraCore:RemoveAllAuras();
- 			auraCore:SetScriptsEnabled(true);
+			auraCore:SetScriptsEnabled(true);
 		end
 	});
 
