@@ -4,13 +4,13 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-    <Include file="Operands.lua"/>
-    <Include file="UnitOperands.lua"/>
-    <Include file="TimeOperands.lua"/>
-    <Include file="InventoryOperands.lua"/>
-    <Include file="QuestOperands.lua"/>
-    <Include file="CharacterOperands.lua"/>
-    <Include file="ExpertOperands.lua"/>
-    <Include file="MiscellaneousOperands.lua"/>
-    <Include file="AuraOperands.lua"/>
+	<Include file="Operands.lua"/>
+	<Include file="UnitOperands.lua"/>
+	<Include file="TimeOperands.lua"/>
+	<Include file="InventoryOperands.lua"/>
+	<Include file="QuestOperands.lua"/>
+	<Include file="CharacterOperands.lua"/>
+	<Include file="ExpertOperands.lua"/>
+	<Include file="MiscellaneousOperands.lua"/>
+	<Include file="AuraOperands.lua"/>
 </Ui>

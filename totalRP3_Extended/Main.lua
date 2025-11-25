@@ -742,10 +742,10 @@ local function onStart()
 		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_ROLL, ...);
 	end);
 
-    local dashboard = TRP3_Dashboard;
-    dashboard.extendedlogo = dashboard:CreateTexture("TRP3DashboardLogoExtended", "ARTWORK");
-    dashboard.extendedlogo:SetAllPoints(TRP3_DashboardLogo);
-    dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
+	local dashboard = TRP3_Dashboard;
+	dashboard.extendedlogo = dashboard:CreateTexture("TRP3DashboardLogoExtended", "ARTWORK");
+	dashboard.extendedlogo:SetAllPoints(TRP3_DashboardLogo);
+	dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
 Globals.extended_version = 1054;

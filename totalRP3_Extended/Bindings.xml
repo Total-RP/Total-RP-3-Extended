@@ -3,37 +3,37 @@
 	SPDX-License-Identifier: Apache-2.0
 -->
 <Bindings>
-    <Binding name="TRP3_MAIN_CONTAINER" category="BINDING_HEADER_TRP3">
-        local playerInventory = TRP3_API.inventory.getInventory();
-        local quickSlot = playerInventory.content[TRP3_API.inventory.QUICK_SLOT_ID];
-        if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
-            TRP3_API.inventory.switchContainerBySlotID(playerInventory, TRP3_API.inventory.QUICK_SLOT_ID);
-        end
-    </Binding>
-    <Binding name="TRP3_INVENTORY" category="BINDING_HEADER_TRP3">
-        TRP3_API.navigation.openMainFrame();
-        TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");
-    </Binding>
-    <Binding name="TRP3_SEARCH_FOR_ITEMS" category="BINDING_HEADER_TRP3">
-        TRP3_API.inventory.searchForItems();
-    </Binding>
-    <Binding name="TRP3_QUESTLOG" category="BINDING_HEADER_TRP3">
-        TRP3_API.navigation.openMainFrame();
-        TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
-    </Binding>
-    <Binding name="TRP3_QUEST_LOOK" category="BINDING_HEADER_TRP3">
-        TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.LOOK)
-    </Binding>
-    <Binding name="TRP3_QUEST_LISTEN" category="BINDING_HEADER_TRP3">
-        TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.LISTEN)
-    </Binding>
-    <Binding name="TRP3_QUEST_ACTION" category="BINDING_HEADER_TRP3">
-        TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.ATION)
-    </Binding>
-    <Binding name="TRP3_QUEST_TALK" category="BINDING_HEADER_TRP3">
-        TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.TALK)
-    </Binding>
-    <Binding name="TRP3_STASHES_LOOKUP" category="BINDING_HEADER_TRP3">
-        TRP3_API.inventory.searchForStashesAtPlayerLocation();
-    </Binding>
+	<Binding name="TRP3_MAIN_CONTAINER" category="BINDING_HEADER_TRP3">
+		local playerInventory = TRP3_API.inventory.getInventory();
+		local quickSlot = playerInventory.content[TRP3_API.inventory.QUICK_SLOT_ID];
+		if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
+			TRP3_API.inventory.switchContainerBySlotID(playerInventory, TRP3_API.inventory.QUICK_SLOT_ID);
+		end
+	</Binding>
+	<Binding name="TRP3_INVENTORY" category="BINDING_HEADER_TRP3">
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");
+	</Binding>
+	<Binding name="TRP3_SEARCH_FOR_ITEMS" category="BINDING_HEADER_TRP3">
+		TRP3_API.inventory.searchForItems();
+	</Binding>
+	<Binding name="TRP3_QUESTLOG" category="BINDING_HEADER_TRP3">
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
+	</Binding>
+	<Binding name="TRP3_QUEST_LOOK" category="BINDING_HEADER_TRP3">
+		TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.LOOK)
+	</Binding>
+	<Binding name="TRP3_QUEST_LISTEN" category="BINDING_HEADER_TRP3">
+		TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.LISTEN)
+	</Binding>
+	<Binding name="TRP3_QUEST_ACTION" category="BINDING_HEADER_TRP3">
+		TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.ATION)
+	</Binding>
+	<Binding name="TRP3_QUEST_TALK" category="BINDING_HEADER_TRP3">
+		TRP3_API.quest.performAction(TRP3_API.quest.ACTION_TYPES.TALK)
+	</Binding>
+	<Binding name="TRP3_STASHES_LOOKUP" category="BINDING_HEADER_TRP3">
+		TRP3_API.inventory.searchForStashesAtPlayerLocation();
+	</Binding>
 </Bindings>
