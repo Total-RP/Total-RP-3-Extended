@@ -41,6 +41,7 @@ read_globals = {
 	C_ChatInfo = {
 		fields = {
 			"SendChatMessage",
+			"PerformEmote",
 		},
 	},
 
@@ -89,6 +90,12 @@ read_globals = {
 	C_ToyBox = {
 		fields = {
 			"GetToyLink",
+		},
+	},
+
+	ChatFrameUtil = {
+		fields = {
+			"GetActiveWindow",
 		},
 	},
 
