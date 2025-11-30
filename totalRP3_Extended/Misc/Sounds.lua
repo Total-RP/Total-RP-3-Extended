@@ -34,7 +34,7 @@ local function GetHousingInstanceGUID()
 	elseif instanceType == "interior" then
 		-- If house, we check against neighborhood GUID + plot ID
 		local houseInfo = C_Housing.GetCurrentHouseInfo();
-		if houseInfo then 
+		if houseInfo then
 			local houseGUID = houseInfo.neighborhoodGUID .. "-" .. houseInfo.plotID;
 			return houseGUID;
 		end
