@@ -3,7 +3,6 @@
 
 local Communications = AddOn_TotalRP3.Communications;
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local pairs, strsplit, floor, sqrt, tonumber = pairs, strsplit, math.floor, sqrt, tonumber;
 local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.loc;
 
@@ -19,8 +18,8 @@ local LOCAL_STOPSOUND_COMMAND = "STS";
 
 local function getPosition()
 	local posY, posX, posZ, instanceID = UnitPosition("player");
-	posY = floor(posY + 0.5);
-	posX = floor(posX + 0.5);
+	posY = math.floor(posY + 0.5);
+	posX = math.floor(posX + 0.5);
 	return posY, posX, posZ, instanceID;
 end
 
@@ -85,6 +84,11 @@ local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
 end
 
 local function IsLocalSoundAllowed(sender, instanceGUID)
+	-- Sounds from the player are always allowed regardless
+	if sender == Globals.player_id then
+		return true;
+	end
+
 	local inInstance = IsInInstance();
 
 	-- No instance: sound can be played
@@ -100,7 +104,7 @@ local function IsLocalSoundAllowed(sender, instanceGUID)
 
 	-- Instance: sound can only be played if in a party or raid
 	local senderAmbiguated = Ambiguate(sender, "none");
-	if UnitIsUnit(sender, "player") or UnitInParty(senderAmbiguated) or UnitInRaid(senderAmbiguated) then
+	if UnitInParty(senderAmbiguated) or UnitInRaid(senderAmbiguated) then
 		return true;
 	end
 
@@ -113,17 +117,18 @@ AddOn_TotalRP3.Enums.SOUND_TYPE = {
 	SOUND_FILE = 2,
 }
 
+local SETTING_FOR_SOUND_TYPE = {
+	[AddOn_TotalRP3.Enums.SOUND_TYPE.MUSIC] = TRP3_API.extended.CONFIG_MUSIC_ACTIVE,
+	[AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND] = TRP3_API.extended.CONFIG_SOUNDS_ACTIVE,
+	[AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND_FILE] = TRP3_API.extended.CONFIG_SOUNDS_ACTIVE,
+}
+
 local function PlayLocalSound(soundType, sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID)
-	if (soundType ~= AddOn_TotalRP3.Enums.SOUND_TYPE.MUSIC and not getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) or
-		soundType == AddOn_TotalRP3.Enums.SOUND_TYPE.MUSIC and not getConfigValue(TRP3_API.extended.CONFIG_MUSIC_ACTIVE)) then
-		return;
-	end
-
-	if not IsLocalSoundAllowed(sender, instanceGUID) then
-		return;
-	end
-
 	if not (soundID and channel and distance and instanceID and posY and posX and posZ) then
+		return;
+	end
+
+	if not getConfigValue(SETTING_FOR_SOUND_TYPE[soundType]) or not IsLocalSoundAllowed(sender, instanceGUID) then
 		return;
 	end
 
@@ -138,8 +143,8 @@ local function PlayLocalSound(soundType, sender, soundID, channel, distance, ins
 	else
 		-- Get current position
 		local myPosY, myPosX, _, myInstanceID = UnitPosition("player");
-		myPosY = floor(myPosY + 0.5);
-		myPosX = floor(myPosX + 0.5);
+		myPosY = math.floor(myPosY + 0.5);
+		myPosX = math.floor(myPosX + 0.5);
 
 		if instanceID == myInstanceID and isInRadius(distance, posY, posX, myPosY, myPosX) then
 			shouldPlaySound = true;
