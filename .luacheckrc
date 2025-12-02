@@ -51,6 +51,13 @@ read_globals = {
 		},
 	},
 
+	C_Housing = {
+		fields = {
+			"GetCurrentHouseInfo",
+			"GetCurrentNeighborhoodGUID",
+		},
+	},
+
 	C_Item = {
 		fields = {
 			"GetItemInfo",

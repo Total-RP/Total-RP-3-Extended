@@ -447,12 +447,6 @@ TRP3_API.extended.WEIGHT_UNITS = {
 };
 TRP3_API.extended.CONFIG_SOUNDS_ACTIVE = "extended_sounds_active";
 TRP3_API.extended.CONFIG_MUSIC_ACTIVE = "extended_music_active";
-TRP3_API.extended.CONFIG_SOUNDS_METHOD = "extended_sounds_method";
-TRP3_API.extended.CONFIG_MUSIC_METHOD = "extended_music_method";
-TRP3_API.extended.CONFIG_SOUNDS_METHODS = {
-	PLAY = "p",
-	ASK_FOR_PERMISSION = "a",
-};
 TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE = "extended_sounds_maxrange";
 
 TRP3_API.extended.CONFIG_NPC_HIDE_ORIGINAL = "extended_tooltip_npc_hide_original";
@@ -465,18 +459,11 @@ local function initConfig()
 		{loc.CONF_UNIT_WEIGHT_3, TRP3_API.extended.WEIGHT_UNITS.POTATOES}
 	}
 
-	local SOUND_METHOD_TAB = {
-		{loc.CONF_SOUNDS_METHOD_2, TRP3_API.extended.CONFIG_SOUNDS_METHODS.ASK_FOR_PERMISSION, loc.CONF_SOUNDS_METHOD_2_TT},
-		{loc.CONF_SOUNDS_METHOD_1, TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY, loc.CONF_SOUNDS_METHOD_1_TT},
-	}
-
 	-- Config default value
 	registerConfigKey(TRP3_API.extended.CONFIG_WEIGHT_UNIT, TRP3_API.extended.WEIGHT_UNITS.GRAMS);
 
 	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE, true);
-	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_METHOD, TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY);
 	registerConfigKey(TRP3_API.extended.CONFIG_MUSIC_ACTIVE, true);
-	registerConfigKey(TRP3_API.extended.CONFIG_MUSIC_METHOD, TRP3_API.extended.CONFIG_SOUNDS_METHODS.ASK_FOR_PERMISSION);
 	registerConfigKey(TRP3_API.extended.CONFIG_SOUNDS_MAXRANGE, 100);
 
 	registerConfigKey(TRP3_API.extended.CONFIG_NPC_HIDE_ORIGINAL, true);
@@ -512,28 +499,10 @@ local function initConfig()
 				help = loc.CONF_SOUNDS_ACTIVE_TT,
 			},
 			{
-				inherit = "TRP3_ConfigDropDown",
-				widgetName = "TRP3_ConfigurationExtended_Sounds_Methods",
-				title = loc.CONF_SOUNDS_METHOD,
-				listContent = SOUND_METHOD_TAB,
-				configKey = TRP3_API.extended.CONFIG_SOUNDS_METHOD,
-				listCancel = true,
-				help = loc.CONF_SOUNDS_METHOD_TT
-			},
-			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CONF_MUSIC_ACTIVE,
 				configKey = TRP3_API.extended.CONFIG_MUSIC_ACTIVE,
 				help = loc.CONF_MUSIC_ACTIVE_TT,
-			},
-			{
-				inherit = "TRP3_ConfigDropDown",
-				widgetName = "TRP3_ConfigurationExtended_MUSIC_Methods",
-				title = loc.CONF_MUSIC_METHOD,
-				listContent = SOUND_METHOD_TAB,
-				configKey = TRP3_API.extended.CONFIG_MUSIC_METHOD,
-				listCancel = true,
-				help = loc.CONF_MUSIC_METHOD_TT
 			},
 			{
 				inherit = "TRP3_ConfigSlider",

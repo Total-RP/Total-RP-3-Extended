@@ -3,7 +3,6 @@
 
 local Communications = AddOn_TotalRP3.Communications;
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local pairs, strsplit, floor, sqrt, tonumber = pairs, strsplit, math.floor, sqrt, tonumber;
 local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.loc;
 
@@ -19,32 +18,52 @@ local LOCAL_STOPSOUND_COMMAND = "STS";
 
 local function getPosition()
 	local posY, posX, posZ, instanceID = UnitPosition("player");
-	posY = floor(posY + 0.5);
-	posX = floor(posX + 0.5);
+	posY = math.floor(posY + 0.5);
+	posX = math.floor(posX + 0.5);
 	return posY, posX, posZ, instanceID;
+end
+
+local function GetHousingInstanceGUID()
+	local _, instanceType = IsInInstance();
+
+	if instanceType == "neighborhood" then
+		-- If neighborhood, we check against the neighborhood GUID
+		local neighborhoodGUID = C_Housing.GetCurrentNeighborhoodGUID();
+		return neighborhoodGUID;
+	elseif instanceType == "interior" then
+		-- If house, we check against neighborhood GUID + plot ID
+		local houseInfo = C_Housing.GetCurrentHouseInfo();
+		if houseInfo then
+			local houseGUID = houseInfo.neighborhoodGUID .. "-" .. houseInfo.plotID;
+			return houseGUID;
+		end
+	end
 end
 
 function Utils.music.playLocalSoundID(soundID, channel, distance)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
+	local instanceGUID = GetHousingInstanceGUID();
 	if instanceID then
-		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, TRP3_API.BroadcastMethod.World, soundID, channel, distance, instanceID, posY, posX, posZ);
+		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, TRP3_API.BroadcastMethod.World, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID);
 	end
 end
 
 function Utils.music.playLocalSoundFileID(soundFileID, channel, distance)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
+	local instanceGUID = GetHousingInstanceGUID();
 	if instanceID then
-		Communications.broadcast.broadcast(LOCAL_SOUNDFILE_COMMAND, TRP3_API.BroadcastMethod.World, soundFileID, channel, distance, instanceID, posY, posX, posZ);
+		Communications.broadcast.broadcast(LOCAL_SOUNDFILE_COMMAND, TRP3_API.BroadcastMethod.World, soundFileID, channel, distance, instanceID, posY, posX, posZ, instanceGUID);
 	end
 end
 
 function Utils.music.playLocalMusic(soundID, distance)
 	-- Get current position
 	local posY, posX, posZ, instanceID = getPosition();
+	local instanceGUID = GetHousingInstanceGUID();
 	if instanceID then
-		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, TRP3_API.BroadcastMethod.World, soundID, "Music" , distance, instanceID, posY, posX, posZ);
+		Communications.broadcast.broadcast(LOCAL_SOUND_COMMAND, TRP3_API.BroadcastMethod.World, soundID, "Music" , distance, instanceID, posY, posX, posZ, instanceGUID);
 	end
 end
 
@@ -64,10 +83,23 @@ local function isInRadius(maxDistance, posY, posX, myPosY, myPosX)
 	return distance <= maxDistance and distance <= myMaxDistance;
 end
 
-local function isLocalSoundAllowed(sender)
-	-- No instance: sound can be played
-	if not IsInInstance() then
+local function IsLocalSoundAllowed(sender, instanceGUID)
+	-- Sounds from the player are always allowed regardless
+	if sender == Globals.player_id then
 		return true;
+	end
+
+	local inInstance = IsInInstance();
+
+	-- No instance: sound can be played
+	if not inInstance then
+		return true;
+	end
+
+	-- Housing instance: check that we're in the same zone
+	if instanceGUID then
+		local currentInstanceGUID = GetHousingInstanceGUID();
+		return currentInstanceGUID == instanceGUID;
 	end
 
 	-- Instance: sound can only be played if in a party or raid
@@ -79,73 +111,68 @@ local function isLocalSoundAllowed(sender)
 	return false;
 end
 
-local function initSharedSound()
-	Communications.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
-		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) and isLocalSoundAllowed(sender) then
-			if soundID and channel and distance and instanceID and posY and posX and posZ then
-				distance = tonumber(distance) or 0;
-				posY = tonumber(posY) or 0;
-				posX = tonumber(posX) or 0;
-				instanceID = tonumber(instanceID) or -1;
+AddOn_TotalRP3.Enums.SOUND_TYPE = {
+	MUSIC = 0,
+	SOUND = 1,
+	SOUND_FILE = 2,
+}
 
-				if sender == Globals.player_id then
-					if channel ~= "Music" then
-						Utils.music.playSoundID(soundID, channel, Globals.player_id);
-					else
-						Utils.music.playMusic(soundID, Globals.player_id);
-					end
-				else
-					-- Get current position
-					local myPosY, myPosX, _, myInstanceID = UnitPosition("player");
-					myPosY = floor(myPosY + 0.5);
-					myPosX = floor(myPosX + 0.5);
+local SETTING_FOR_SOUND_TYPE = {
+	[AddOn_TotalRP3.Enums.SOUND_TYPE.MUSIC] = TRP3_API.extended.CONFIG_MUSIC_ACTIVE,
+	[AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND] = TRP3_API.extended.CONFIG_SOUNDS_ACTIVE,
+	[AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND_FILE] = TRP3_API.extended.CONFIG_SOUNDS_ACTIVE,
+}
 
-					if instanceID == myInstanceID and isInRadius(distance, posY, posX, myPosY, myPosX) then
-						if channel ~= "Music" then
-							if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_METHOD) == TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY then
-								Utils.music.playSoundID(soundID, channel, sender);
-							--else
-								-- TODO: ask permission in chat
-							end
-						else
-							if getConfigValue(TRP3_API.extended.CONFIG_MUSIC_METHOD) == TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY then
-								Utils.music.playMusic(soundID, sender);
-							--else
-								-- TODO: ask permission in chat
-							end
-						end
-					end
-				end
-			end
+local function PlayLocalSound(soundType, sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID)
+	if not (soundID and channel and distance and instanceID and posY and posX and posZ) then
+		return;
+	end
+
+	if not getConfigValue(SETTING_FOR_SOUND_TYPE[soundType]) or not IsLocalSoundAllowed(sender, instanceGUID) then
+		return;
+	end
+
+	distance = tonumber(distance) or 0;
+	posY = tonumber(posY) or 0;
+	posX = tonumber(posX) or 0;
+	instanceID = tonumber(instanceID) or -1;
+
+	local shouldPlaySound = false;
+	if sender == Globals.player_id then
+		shouldPlaySound = true;
+	else
+		-- Get current position
+		local myPosY, myPosX, _, myInstanceID = UnitPosition("player");
+		myPosY = math.floor(myPosY + 0.5);
+		myPosX = math.floor(myPosX + 0.5);
+
+		if instanceID == myInstanceID and isInRadius(distance, posY, posX, myPosY, myPosX) then
+			shouldPlaySound = true;
 		end
+	end
+
+	if shouldPlaySound then
+		if soundType == AddOn_TotalRP3.Enums.SOUND_TYPE.MUSIC then
+			Utils.music.playMusic(soundID, sender);
+		elseif soundType == AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND_FILE then
+			Utils.music.playSoundFileID(soundID, channel, sender);
+		else
+			Utils.music.playSoundID(soundID, channel, sender);
+		end
+	end
+end
+
+local function initSharedSound()
+	Communications.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID)
+		local soundType = AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND;
+		if channel == "Music" then
+			soundType = AddOn_TotalRP3.Enums.SOUND_TYPE.MUSIC;
+		end
+		PlayLocalSound(soundType, sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID);
 	end);
 
-	Communications.broadcast.registerCommand(LOCAL_SOUNDFILE_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ)
-		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) and isLocalSoundAllowed(sender) then
-			if soundID and channel and distance and instanceID and posY and posX and posZ then
-				distance = tonumber(distance) or 0;
-				posY = tonumber(posY) or 0;
-				posX = tonumber(posX) or 0;
-				instanceID = tonumber(instanceID) or -1;
-
-				if sender == Globals.player_id then
-					Utils.music.playSoundFileID(soundID, channel, Globals.player_id);
-				else
-					-- Get current position
-					local myPosY, myPosX, _, myInstanceID = UnitPosition("player");
-					myPosY = floor(myPosY + 0.5);
-					myPosX = floor(myPosX + 0.5);
-
-					if instanceID == myInstanceID and isInRadius(distance, posY, posX, myPosY, myPosX) then
-						if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_METHOD) == TRP3_API.extended.CONFIG_SOUNDS_METHODS.PLAY then
-							Utils.music.playSoundFileID(soundID, channel, sender);
-							--else
-							-- TODO: ask permission in chat
-						end
-					end
-				end
-			end
-		end
+	Communications.broadcast.registerCommand(LOCAL_SOUNDFILE_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID)
+		PlayLocalSound(AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND_FILE, sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID);
 	end);
 
 	Communications.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel, fadeout)
@@ -154,7 +181,6 @@ local function initSharedSound()
 			Utils.music.stopSoundID(soundID, channel, sender, fadeout);
 		end
 	end);
-
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
