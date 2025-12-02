@@ -1,10 +1,10 @@
 -- Copyright The Total RP 3 Extended Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local loc            = TRP3_API.loc;
-local getClass       = TRP3_API.extended.getClass;
+local loc = TRP3_API.loc;
+local getClass = TRP3_API.extended.getClass;
 local getRootClassID = TRP3_API.extended.getRootClassID;
-local CUSTOM_EVENTS  = TRP3_API.extended.CUSTOM_EVENTS;
+local CUSTOM_EVENTS = TRP3_API.extended.CUSTOM_EVENTS;
 
 --[[
 	maximum number of iterations within one auraCore:Update() batch
@@ -40,8 +40,8 @@ local AURA_ROW_LENGTH = 8;
 
 				auraCore.activeAuras[i]                        TRP3_API.profile.getPlayerCurrentProfile().auras[j]
 
-						 |                                                              |
-						\|/                                                            \|/
+						|																|
+						v																v
 
 	+-----------------------------------------------+          +------------------------------------------------+
 	| t persistent  pointer to stored part ---------|--------> | s id            full class id                  |
@@ -122,9 +122,9 @@ function auraCore:Initialize()
 		id = "debug_clear_auras",
 		helpLine = " " .. loc.DEBUG_CLEAR_AURAS,
 		handler = function()
-            auraCore:SetScriptsEnabled(false);
+			auraCore:SetScriptsEnabled(false);
 			auraCore:RemoveAllAuras();
-            auraCore:SetScriptsEnabled(true);
+			auraCore:SetScriptsEnabled(true);
 		end
 	});
 
@@ -396,7 +396,7 @@ function auraCore:RemoveAllAuras()
 		aura.persistent.invalid = true;
 		self:UnregisterAuraEvents(aura);
 	end
-    self:Update(true);
+	self:Update(true);
 end
 
 function auraCore:FindAura(auraId)

@@ -401,7 +401,7 @@ function processDialogStep(isNewDialog)
 end
 
 local function startDialog(dialogID, class, args)
-    local dialogClass = dialogID and getClass(dialogID) or class;
+	local dialogClass = dialogID and getClass(dialogID) or class;
 	-- By default, launch the step 1
 	image.previous = nil;
 	dialogFrame.classID = dialogID;

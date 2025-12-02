@@ -842,35 +842,35 @@ local function inv_item_weight_init()
 end
 
 local function inv_container_slot_id_init()
-    local editor = TRP3_OperandContainerSlotID;
+	local editor = TRP3_OperandContainerSlotID;
 
-    registerOperandEditor("inv_container_slot_id", {
-        title = loc.OP_OP_INV_CONTAINER_SLOT_ID,
-        description = loc.OP_OP_INV_CONTAINER_SLOT_ID_TT,
-        returnType = "",
-        getText = function(args)
-            local data = args or EMPTY;
-            local slotID = tostring(data[1]);
-            return loc.OP_OP_INV_CONTAINER_SLOT_ID_PREVIEW:format(slotID or "?");
-        end,
-        editor = editor,
-        getDefaultArgs = function()
-            return { 1 };
-        end,
-    });
+	registerOperandEditor("inv_container_slot_id", {
+		title = loc.OP_OP_INV_CONTAINER_SLOT_ID,
+		description = loc.OP_OP_INV_CONTAINER_SLOT_ID_TT,
+		returnType = "",
+		getText = function(args)
+			local data = args or EMPTY;
+			local slotID = tostring(data[1]);
+			return loc.OP_OP_INV_CONTAINER_SLOT_ID_PREVIEW:format(slotID or "?");
+		end,
+		editor = editor,
+		getDefaultArgs = function()
+			return { 1 };
+		end,
+	});
 
-    -- Slot ID
-    editor.slotID.title:SetText(loc.EFFECT_USE_SLOT);
-    setTooltipForSameFrame(editor.slotID.help, "RIGHT", 0, 5, loc.EFFECT_USE_SLOT, loc.EFFECT_USE_SLOT_TT);
+	-- Slot ID
+	editor.slotID.title:SetText(loc.EFFECT_USE_SLOT);
+	setTooltipForSameFrame(editor.slotID.help, "RIGHT", 0, 5, loc.EFFECT_USE_SLOT, loc.EFFECT_USE_SLOT_TT);
 
-    function editor.load(args)
-        local data = args or EMPTY;
-        editor.slotID:SetText(tostring(data[1] or 1));
-    end
+	function editor.load(args)
+		local data = args or EMPTY;
+		editor.slotID:SetText(tostring(data[1] or 1));
+	end
 
-    function editor.save()
-        return { tonumber(editor.slotID:GetText()) or 1 };
-    end
+	function editor.save()
+		return { tonumber(editor.slotID:GetText()) or 1 };
+	end
 end
 
 function TRP3_API.extended.tools.initItemEffects()

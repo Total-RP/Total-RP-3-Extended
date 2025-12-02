@@ -38,6 +38,13 @@ read_globals = {
 		},
 	},
 
+	C_ChatInfo = {
+		fields = {
+			"SendChatMessage",
+			"PerformEmote",
+		},
+	},
+
 	C_CurrencyInfo = {
 		fields = {
 			"GetCoinTextureString",
@@ -83,6 +90,12 @@ read_globals = {
 	C_ToyBox = {
 		fields = {
 			"GetToyLink",
+		},
+	},
+
+	ChatFrameUtil = {
+		fields = {
+			"GetActiveWindow",
 		},
 	},
 
@@ -208,7 +221,6 @@ read_globals = {
 	"SecondsFormatter.Abbreviation.OneLetter",
 	"SecondsFormatterMixin",
 	"SECURITY_LEVEL",
-	"SendChatMessage",
 	"SetCursor",
 	"SetView",
 	"SPELL_FAILED_BAD_IMPLICIT_TARGETS",

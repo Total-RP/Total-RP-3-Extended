@@ -462,7 +462,7 @@ function TRP3_API.extended.tools.initCutsceneEditorNormal(ToolFrame)
 		end);
 		line.click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		setTooltipForSameFrame(line.click, "RIGHT", 0, 5, loc.DI_STEP,
-							   ("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
+							("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CM_EDIT) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, REMOVE));
 
 		-- Up/down
 		line.movedown:SetFrameLevel(line.click:GetFrameLevel() + 10);

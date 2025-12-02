@@ -113,7 +113,7 @@ local EFFECTS = {
 	["speech_env"] = {
 		method = function(structure, cArgs, eArgs) -- luacheck: ignore 212
 			local text = cArgs[1] or "";
-			SendChatMessage(TRP3_API.script.parseArgs("|| " .. text, eArgs), 'EMOTE');
+			C_ChatInfo.SendChatMessage(TRP3_API.script.parseArgs("|| " .. text, eArgs), 'EMOTE');
 			eArgs.LAST = 0;
 		end,
 		securedMethod = function(structure, cArgs, eArgs) -- luacheck: ignore 212
@@ -132,7 +132,7 @@ local EFFECTS = {
 		end,
 		method = function(structure, cArgs, eArgs)
 			local name, speechType, text = structure.getCArgs(cArgs);
-			SendChatMessage(TRP3_API.script.parseArgs("|| " .. getSpeechPrefixText(speechType, name, text), eArgs), 'EMOTE');
+			C_ChatInfo.SendChatMessage(TRP3_API.script.parseArgs("|| " .. getSpeechPrefixText(speechType, name, text), eArgs), 'EMOTE');
 			eArgs.LAST = 0;
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
@@ -157,7 +157,7 @@ local EFFECTS = {
 				end
 			end);
 
-			SendChatMessage(TRP3_API.script.parseArgs(text, eArgs), getSpeechChannel(channel));
+			C_ChatInfo.SendChatMessage(TRP3_API.script.parseArgs(text, eArgs), getSpeechChannel(channel));
 			registration:Unregister();
 
 			eArgs.LAST = 0;
@@ -178,7 +178,7 @@ local EFFECTS = {
 			local emoteToken = structure.getCArgs(cArgs);
 			emoteToken = swapFactionRestrictedEmotesIfNeeded(emoteToken);
 			if stEtN(emoteToken) then
-				DoEmote(emoteToken);
+				C_ChatInfo.PerformEmote(emoteToken);
 			end
 			eArgs.LAST = 0;
 		end,
@@ -277,16 +277,16 @@ local EFFECTS = {
 			local soundID = tonumber(args[2] or 0);
 			local channel = args[1] or "SFX";
 			local source = "Script"; -- TODO: get source
-            local isSoundFileID = args[3] or false;
+			local isSoundFileID = args[3] or false;
 			return soundID, channel, source, isSoundFileID;
 		end,
 		method = function(structure, cArgs, eArgs)
 			local soundID, channel, source, isSoundFileID = structure.getCArgs(cArgs);
-            if isSoundFileID then
-                eArgs.LAST = TRP3_API.utils.music.playSoundFileID(soundID, channel, source);
-            else
-                eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
-            end
+			if isSoundFileID then
+				eArgs.LAST = TRP3_API.utils.music.playSoundFileID(soundID, channel, source);
+			else
+				eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
+			end
 		end,
 		secured = security.HIGH,
 	},
@@ -328,24 +328,24 @@ local EFFECTS = {
 			local channel = args[1] or "SFX";
 			local distance = tonumber(args[3] or 0);
 			local source = "Script"; -- TODO: get source
-            local isSoundFileID = args[4] or false;
+			local isSoundFileID = args[4] or false;
 			return soundID, channel, distance, source, isSoundFileID;
 		end,
 		method = function(structure, cArgs, eArgs)
 			local soundID, channel, distance, _, isSoundFileID = structure.getCArgs(cArgs);
-            if isSoundFileID then
-                eArgs.LAST = TRP3_API.utils.music.playLocalSoundFileID(soundID, channel, distance);
-            else
-                eArgs.LAST = TRP3_API.utils.music.playLocalSoundID(soundID, channel, distance);
-            end
+			if isSoundFileID then
+				eArgs.LAST = TRP3_API.utils.music.playLocalSoundFileID(soundID, channel, distance);
+			else
+				eArgs.LAST = TRP3_API.utils.music.playLocalSoundID(soundID, channel, distance);
+			end
 		end,
 		securedMethod = function(structure, cArgs, eArgs)
 			local soundID, channel, _, source, isSoundFileID = structure.getCArgs(cArgs);
-            if isSoundFileID then
-                eArgs.LAST = TRP3_API.utils.music.playSoundFileID(soundID, channel, source);
-            else
-                eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
-            end
+			if isSoundFileID then
+				eArgs.LAST = TRP3_API.utils.music.playSoundFileID(soundID, channel, source);
+			else
+				eArgs.LAST = TRP3_API.utils.music.playSoundID(soundID, channel, source);
+			end
 		end,
 		secured = security.MEDIUM,
 	},
