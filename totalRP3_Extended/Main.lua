@@ -682,7 +682,7 @@ local function onStart()
 	-- Start other systems
 	TRP3_API.security.initSecurity();
 	TRP3_CastingBarFrame.init();
-	TRP3_SoundsHistoryFrame.initSound();
+	TRP3_SoundsHistoryFrame.initHistory();
 	TRP3_API.inventory.onStart();
 	TRP3_API.extended.auras.onStart();
 	TRP3_API.quest.onStart();
@@ -691,7 +691,11 @@ local function onStart()
 	TRP3_API.extended.unitpopups.init();
 
 	-- Config
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, initConfig);
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+		initConfig();
+		-- Register local sounds callbacks after config, as we need to check config keys in the callback that aren't registered until now.
+		TRP3_SoundsHistoryFrame.initSharedSound();
+	end);
 
 	-- Simpler combat kill event
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "COMBAT_LOG_EVENT_UNFILTERED", function()
