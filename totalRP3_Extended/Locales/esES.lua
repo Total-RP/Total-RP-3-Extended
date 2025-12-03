@@ -94,8 +94,6 @@ Desactívalo si no quieres escuchar estas músicas.
 |cnWARNING_FONT_COLOR:Ten en cuenta que no escucharás música de jugadores ignorados.|r
 
 |cnGREEN_FONT_COLOR:Ten en cuenta que todas las músicas son interrumpibles mediante la opción Historial de sonido en la barra de atajos de TRP3.|r]=],
-	["CONF_MUSIC_METHOD"] = "Método de reproducción local de musica",
-	["CONF_MUSIC_METHOD_TT"] = "Determina cómo escucharás la música local cuando estés en rango.",
 	["CONF_SOUNDS"] = "Música/sonido local",
 	["CONF_SOUNDS_ACTIVE"] = "Reproducir sonidos locales",
 	["CONF_SOUNDS_ACTIVE_TT"] = [=[Los sonidos locales son sonidos reproducidos por otros jugadores (por ejemplo, mediante un objeto) a cierto rango en metros.
@@ -111,12 +109,6 @@ Desactívalo si no quieres escuchar estos sonidos.
 |cnGREEN_FONT_COLOR:Útil para evitar a gente que use sonidos en todo el continente.|r
 
 |cnWARNING_FONT_COLOR:¡Cero significa sin límite!|r]=],
-	["CONF_SOUNDS_METHOD"] = "Método de reproducción local de sonidos",
-	["CONF_SOUNDS_METHOD_1"] = "Reproducir automáticamente",
-	["CONF_SOUNDS_METHOD_1_TT"] = "Si estás en rango, se reproducirá el sonido/música sin pedirte permiso.",
-	["CONF_SOUNDS_METHOD_2"] = "Pedir permiso",
-	["CONF_SOUNDS_METHOD_2_TT"] = "Si estás en rango, aparecerá un link en el chat pidiéndote confirmación para reproducir el sonido/música.",
-	["CONF_SOUNDS_METHOD_TT"] = "Determina cómo escucharás el sonido local cuando estés en rango.",
 	["CONF_UNIT"] = "Unidades",
 	["CONF_UNIT_WEIGHT"] = "Unidad de peso",
 	["CONF_UNIT_WEIGHT_1"] = "Gramos",

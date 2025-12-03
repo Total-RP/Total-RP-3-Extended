@@ -76,8 +76,6 @@ L = {
 |cnWARNING_FONT_COLOR:你無法聽見被忽略之玩家所播放的音樂。|r
 
 |cnGREEN_FONT_COLOR:所有音樂都可以透過TRP3快捷列中的音樂播放器來終止。|r]=],
-	["CONF_MUSIC_METHOD"] = "本地音樂循環播放",
-	["CONF_MUSIC_METHOD_TT"] = "決定當您在範圍內時如何收聽本地音樂。",
 	["CONF_SOUNDS"] = "本地音效／音樂",
 	["CONF_SOUNDS_ACTIVE"] = "播放本地音效",
 	["CONF_SOUNDS_ACTIVE_TT"] = [=[本地音效是其他玩家在一定距離（以碼為單位）内播放的音效（例如通過物品。）如果您不想聽到這些音效，可以將本功能關閉。
@@ -91,12 +89,6 @@ L = {
 |cnGREEN_FONT_COLOR:能有效避免其他玩家播放範圍巨大的噪音。|r
 	
 |cnWARNING_FONT_COLOR:數值設置為0則代表不限制距離。|r]=],
-	["CONF_SOUNDS_METHOD"] = "本地音效播放模式",
-	["CONF_SOUNDS_METHOD_1"] = "自動播放",
-	["CONF_SOUNDS_METHOD_1_TT"] = "若您在音樂／音效的設定範圍內，該音樂／音效將不經過您的許可自動播放。",
-	["CONF_SOUNDS_METHOD_2"] = "播放前詢問",
-	["CONF_SOUNDS_METHOD_2_TT"] = "若您在音樂／音效所設置的播放範圍內，其將透過聊天室內的許可連結來向您確認是否播放。",
-	["CONF_SOUNDS_METHOD_TT"] = "決定當您在範圍內時如何收聽本地音效。",
 	["CONF_UNIT"] = "單位",
 	["CONF_UNIT_WEIGHT"] = "重量單位",
 	["CONF_UNIT_WEIGHT_1"] = "公克（g）",

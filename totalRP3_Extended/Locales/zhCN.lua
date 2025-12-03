@@ -98,8 +98,6 @@ L = {
 	|cnWARNING_FONT_COLOR:你不会听到来自被忽略的玩家的音乐。|r
 	
 	|cnGREEN_FONT_COLOR:所有的音乐都可以通过“声音历史”功能中止。|r]=],
-	["CONF_MUSIC_METHOD"] = "环境音乐回放模式",
-	["CONF_MUSIC_METHOD_TT"] = "决定当在范围内时如何播放环境音乐。",
 	["CONF_NPC_EMBED_ORIGINAL"] = "嵌入原始提示栏",
 	["CONF_NPC_EMBED_ORIGINAL_TT"] = "在NPC提示栏的底部加入原始提示栏",
 	["CONF_NPC_HIDE_ORIGINAL"] = "隐藏原始提示栏",
@@ -119,12 +117,6 @@ L = {
 	|cnGREEN_FONT_COLOR:有效防止人们播放范围巨大的音效。|r
 	
 	|cnWARNING_FONT_COLOR:为0代表范围无限！|r]=],
-	["CONF_SOUNDS_METHOD"] = "环境声音回放模式",
-	["CONF_SOUNDS_METHOD_1"] = "自动播放",
-	["CONF_SOUNDS_METHOD_1_TT"] = "如果你在范围内，音效将不询问你的许可播放。",
-	["CONF_SOUNDS_METHOD_2"] = "播放前询问",
-	["CONF_SOUNDS_METHOD_2_TT"] = "如果你在范围内，音效将通过聊天框的许可链接确认播放。",
-	["CONF_SOUNDS_METHOD_TT"] = "确定您在范围内将如何听到本地声音。",
 	["CONF_UNIT"] = "单位",
 	["CONF_UNIT_WEIGHT"] = "重量单位",
 	["CONF_UNIT_WEIGHT_1"] = "g/克",
