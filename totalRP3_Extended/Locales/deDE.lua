@@ -160,8 +160,6 @@ Schalte dies aus, wenn du diese Musik nicht hören möchtest.
 |cnWARNING_FONT_COLOR:Von Spielern die du ignorierst wirst du keine Musik hören.|r
 
 |cnGREEN_FONT_COLOR:Beachte, dass du die Musik über die Sound History in dem TRP3-Shortcut-Balken unterbrechen kannst.|r]=],
-	["CONF_MUSIC_METHOD"] = "Methode der lokalen Musikwiedergabe",
-	["CONF_MUSIC_METHOD_TT"] = "Lege fest, wie Du lokale Musik hörst, wenn Du Dich in Reichweite befindest.",
 	["CONF_NPC_EMBED_ORIGINAL"] = "Originaltooltip einbetten",
 	["CONF_NPC_EMBED_ORIGINAL_TT"] = "Fügt den ursprünglichen Tooltiptext ans Ende des NSC-Tooltips an",
 	["CONF_NPC_HIDE_ORIGINAL"] = "Originaltooltip verstecken",
@@ -181,12 +179,6 @@ Deaktiviere diese Option wenn du gar keine Sounds hören möchtest.
 |cnGREEN_FONT_COLOR:Nützlich um Leute zu vermeiden, die Sounds über den ganzen Kontinent hinweg abspielen.|r
 
 |cnWARNING_FONT_COLOR:Null bedeutet, dass es keine Begrenzung gibt!|r]=],
-	["CONF_SOUNDS_METHOD"] = "Methode zum Abspielen von Umgebungsgeräuschen",
-	["CONF_SOUNDS_METHOD_1"] = "Automatisch abspielen",
-	["CONF_SOUNDS_METHOD_1_TT"] = "Wenn du in Reichweite bist wird die Musik/das Geräusch automatisch ohne deine Zustimmung abgespielt.",
-	["CONF_SOUNDS_METHOD_2"] = "Um Erlaubnis fragen",
-	["CONF_SOUNDS_METHOD_2_TT"] = "Wenn du in Reichweite bist erhältst du einen Link in deinem Chat, in dem du bestätigst, dass du diese Musik/dieses Geräusch abspielen willst.",
-	["CONF_SOUNDS_METHOD_TT"] = "Bestimme, wie du in Reichweite Geräusche hören möchtest.",
 	["CONF_UNIT"] = "Einheiten",
 	["CONF_UNIT_WEIGHT"] = "Gewichtseinheiten",
 	["CONF_UNIT_WEIGHT_1"] = "Gramm",
