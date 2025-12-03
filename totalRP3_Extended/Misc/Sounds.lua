@@ -309,6 +309,6 @@ function historyFrame.initHistory()
 	historyFrame.bottom:SetScript("OnClick", function()
 		historyFrame.container:ScrollToBottom();
 	end);
-	
+
 	TRP3_API.ui.frame.setupMove(historyFrame);
 end
