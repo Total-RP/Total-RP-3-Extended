@@ -232,7 +232,7 @@ function TRP3_API.quest.campaignInit()
 		end
 	end);
 
-	hooksecurefunc("DoEmote", function(emote)
+	hooksecurefunc(C_ChatInfo, "PerformEmote", function(emote)
 		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_EMOTE, emote);
 	end);
 

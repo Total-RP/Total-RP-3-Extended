@@ -86,6 +86,12 @@ read_globals = {
 		},
 	},
 
+	C_Secrets = {
+		fields = {
+			"ShouldUnitIdentityBeSecret",
+		},
+	},
+
 	C_Timer = {
 		fields = {
 			"After",
@@ -121,6 +127,7 @@ read_globals = {
 	"BROWSE",
 	"CameraZoomIn",
 	"CameraZoomOut",
+	"canaccessvalue",
 	"CANCEL",
 	"CASTING_BAR_ALPHA_STEP",
 	"CASTING_BAR_FLASH_STEP",
