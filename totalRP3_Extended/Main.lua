@@ -698,18 +698,21 @@ local function onStart()
 	end);
 
 	-- Simpler combat kill event
-	--TRP3_API.RegisterCallback(TRP3_API.GameEvents, "COMBAT_LOG_EVENT_UNFILTERED", function()
-	--	local _, event, _, source, sourceName, _, _, dest, destName = CombatLogGetCurrentEventInfo();	-- No payload for combat log events in 8.0
-	--	if event == "PARTY_KILL" then
-	--		local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(dest);
-	--		if (unitType == "Player") then
-	--			local className, classID, raceName, raceID, gender = GetPlayerInfoByGUID(dest);
-	--			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_KILL, unitType, source, sourceName, dest, destName, classID, className, raceID, raceName, gender);
-	--		else
-	--			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_KILL, unitType, source, sourceName, dest, destName, NPC_ID);
-	--		end
-	--	end
-	--end);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PARTY_KILL", function(_, sourceGUID, targetGUID)
+		if not canaccessvalue(sourceGUID) then
+			-- Lock on the GUID, we can't get any information
+			TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_KILL);
+		else
+			local _, _, _, _, _, sourceName = GetPlayerInfoByGUID(sourceGUID);
+			local unitType, NPC_ID = Utils.str.getUnitDataFromGUIDDirect(targetGUID);
+			if (unitType == "Player") then
+				local className, classID, raceName, raceID, gender, playerName = GetPlayerInfoByGUID(targetGUID);
+				TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_KILL, unitType, sourceGUID, sourceName, targetGUID, playerName, classID, className, raceID, raceName, gender);
+			else
+				TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_KILL, unitType, sourceGUID, sourceName, targetGUID, UNKNOWN, NPC_ID);
+			end
+		end
+	end);
 
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.DICE_ROLL, function(_, ...)
 		TRP3_Extended:TriggerEvent(TRP3_Extended.Events.TRP3_ROLL, ...);
