@@ -162,27 +162,6 @@ local function PlayLocalSound(soundType, sender, soundID, channel, distance, ins
 	end
 end
 
-local function initSharedSound()
-	Communications.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID)
-		local soundType = AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND;
-		if channel == "Music" then
-			soundType = AddOn_TotalRP3.Enums.SOUND_TYPE.MUSIC;
-		end
-		PlayLocalSound(soundType, sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID);
-	end);
-
-	Communications.broadcast.registerCommand(LOCAL_SOUNDFILE_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID)
-		PlayLocalSound(AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND_FILE, sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID);
-	end);
-
-	Communications.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel, fadeout)
-		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
-			fadeout = (fadeout or 0) * 1000
-			Utils.music.stopSoundID(soundID, channel, sender, fadeout);
-		end
-	end);
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Sound history
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -242,7 +221,32 @@ local function stopAll()
 	Utils.music.stopMusic();
 end
 
-local function initHistory()
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Init
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function historyFrame.initSharedSound()
+	Communications.broadcast.registerCommand(LOCAL_SOUND_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID)
+		local soundType = AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND;
+		if channel == "Music" then
+			soundType = AddOn_TotalRP3.Enums.SOUND_TYPE.MUSIC;
+		end
+		PlayLocalSound(soundType, sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID);
+	end);
+
+	Communications.broadcast.registerCommand(LOCAL_SOUNDFILE_COMMAND, function(sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID)
+		PlayLocalSound(AddOn_TotalRP3.Enums.SOUND_TYPE.SOUND_FILE, sender, soundID, channel, distance, instanceID, posY, posX, posZ, instanceGUID);
+	end);
+
+	Communications.broadcast.registerCommand(LOCAL_STOPSOUND_COMMAND, function(sender, soundID, channel, fadeout)
+		if getConfigValue(TRP3_API.extended.CONFIG_SOUNDS_ACTIVE) then
+			fadeout = (fadeout or 0) * 1000
+			Utils.music.stopSoundID(soundID, channel, sender, fadeout);
+		end
+	end);
+end
+
+function historyFrame.initHistory()
 	-- Button on target bar
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		if TRP3_API.toolbar then
@@ -305,15 +309,6 @@ local function initHistory()
 	historyFrame.bottom:SetScript("OnClick", function()
 		historyFrame.container:ScrollToBottom();
 	end);
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Init
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function historyFrame.initSound()
-	initSharedSound();
-	initHistory();
 
 	TRP3_API.ui.frame.setupMove(historyFrame);
 end
