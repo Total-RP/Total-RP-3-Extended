@@ -97,8 +97,6 @@ Desligue isso, se você não quer ouvir aquelas musicas.
 |cnWARNING_FONT_COLOR:Note que você nunca irá escutar musicas de jogadores ignorados|r
 
 |cnGREEN_FONT_COLOR:Note que todas as musicas são interruptivos via "Sound History" na barra de tarefa do TRP3|r]=],
-	["CONF_MUSIC_METHOD"] = "Método de tocar a musica local",
-	["CONF_MUSIC_METHOD_TT"] = "Determine como você vai escutar a musica local, quando você estiver dentro do alcance.",
 	["CONF_SOUNDS"] = "Sons/musicas locais",
 	["CONF_SOUNDS_ACTIVE"] = "Tocar sons locais",
 	["CONF_SOUNDS_ACTIVE_TT"] = [=[Sons locais são tocados por outros jogadores (por exemplo: através um item), quando estiver dentro de um certo alcance.
@@ -114,12 +112,6 @@ Desligue isso se você não quer escutar esse som.
 |cnGREEN_FONT_COLOR:Útil para evitar pessoas tocando sons através de todo o continente.|r
 
 |cnWARNING_FONT_COLOR:Zero significa sem limite!|r]=],
-	["CONF_SOUNDS_METHOD"] = "Método para tocar sons locais",
-	["CONF_SOUNDS_METHOD_1"] = "Tocar automaticamente",
-	["CONF_SOUNDS_METHOD_1_TT"] = "Se dentro do alcance, irá tocar o som/musica sem perguntar sua permissão.",
-	["CONF_SOUNDS_METHOD_2"] = "Perguntar por permissão",
-	["CONF_SOUNDS_METHOD_2_TT"] = "Se você estiver dentro do alcance, um link será colocado na interface do seu chat perguntando sua confirmação para tocar o som/musica.",
-	["CONF_SOUNDS_METHOD_TT"] = "Determina como você vai escutar um som local, quando você estiver dentro do alcance.",
 	["CONF_UNIT"] = "Unidades",
 	["CONF_UNIT_WEIGHT"] = "Peso da unidade",
 	["CONF_UNIT_WEIGHT_1"] = "Gramas",

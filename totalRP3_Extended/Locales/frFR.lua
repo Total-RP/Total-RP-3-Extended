@@ -191,8 +191,6 @@ Désactivez ceci si vous voulez ne pas entendre ces musiques.
 |cnWARNING_FONT_COLOR:Notez que vous n'entendrez jamais les musiques des joueurs ignorés.|r
 
 |cnGREEN_FONT_COLOR:Notez que toutes les musiques sont interruptibles via l'Historique sonore dans la barre de raccourcis TRP3.|r]=],
-	["CONF_MUSIC_METHOD"] = "Méthode d'écoute de musique locale",
-	["CONF_MUSIC_METHOD_TT"] = "Détermine de quelle façon vous entendrez une musique locale quand vous êtes à portée.",
 	["CONF_NPC_EMBED_ORIGINAL"] = "Inclure les détails du PNJ original",
 	["CONF_NPC_EMBED_ORIGINAL_TT"] = "Ajoute le texte de l'infobulle par défaut en bas de l'infobulle PNJ",
 	["CONF_NPC_HIDE_ORIGINAL"] = "Masquer l'infobulle originale",
@@ -212,12 +210,6 @@ Désactivez ceci si vous voulez ne pas entendre ces sons.
 |cnGREEN_FONT_COLOR:Utile pour éviter les personnes jouant des sons à l'échelle de tout le continent.|r
 
 |cnWARNING_FONT_COLOR:Zéro correspond à pas de limite !|r]=],
-	["CONF_SOUNDS_METHOD"] = "Méthode d'écoute de son local",
-	["CONF_SOUNDS_METHOD_1"] = "Jouer automatiquement",
-	["CONF_SOUNDS_METHOD_1_TT"] = "Si vous êtes à portée, les musiques/sons seront joués sans demander votre permission.",
-	["CONF_SOUNDS_METHOD_2"] = "Demander la permission",
-	["CONF_SOUNDS_METHOD_2_TT"] = "Si vous êtes à portée, un lien apparaîtra dans la fenêtre de discussion pour vous demander confirmation avant de jouer la musique ou le son.",
-	["CONF_SOUNDS_METHOD_TT"] = "Détermine de quelle façon vous entendrez un son local quand vous êtes à portée.",
 	["CONF_UNIT"] = "Unités",
 	["CONF_UNIT_WEIGHT"] = "Unité de poids",
 	["CONF_UNIT_WEIGHT_1"] = "Grammes",
