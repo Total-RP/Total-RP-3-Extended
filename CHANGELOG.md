@@ -1,3 +1,10 @@
+# Changelog for version 2.3.0
+
+## Fixed
+
+- Added support for patch 12.0.0.
+- Fixed a rare timing issue with local sounds which could trigger an error on login/reload.
+
 # Changelog for version 2.2.12
 
 ## Fixed
