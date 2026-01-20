@@ -251,7 +251,7 @@ local function init()
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", function() onMouseOver(); end);
 
 	GameTooltip:HookScript("OnShow", function()
-		if not GameTooltip:GetUnit() then
+		if C_Secrets.ShouldUnitIdentityBeSecret("mouseover") or not GameTooltip:GetUnit() then
 			tooltip:Hide();
 		end
 	end);
