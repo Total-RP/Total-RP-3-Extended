@@ -186,7 +186,7 @@ local function onNamePlateDataUpdated(unitToken, displayInfo)
 		displayInfo.name = TRP3_NamePlatesUtil.GenerateCroppedNameText(npcData.NA);
 	end
 
-	if TRP3_NamePlatesSettings.CustomizeFullTitles and npcData.FT then
+	if TRP3_NamePlatesUtil.IsFullTitleEnabled() and npcData.FT then
 		displayInfo.fullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(npcData.FT);
 	end
 
