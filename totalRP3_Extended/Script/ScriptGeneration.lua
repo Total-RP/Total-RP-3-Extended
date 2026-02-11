@@ -540,7 +540,6 @@ local function getFunction(structure, rootClassID)
 	end
 end
 
-local pcall = pcall;
 local function executeFunction(func, args, scriptID)
 --@debug@
 	func(args);
