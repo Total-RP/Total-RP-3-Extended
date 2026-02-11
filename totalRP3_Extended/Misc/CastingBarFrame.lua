@@ -55,7 +55,7 @@ local CastingBarTypeInfo = {
 
 TRP3_CastingBarMixin = {};
 
-function TRP3_CastingBarMixin:OnLoad(unit, showTradeSkills, showShield)
+function TRP3_CastingBarMixin:OnLoad()
 	self.StagePoints = {};
 	self.StagePips = {};
 	self.StageTiers = {};
@@ -63,7 +63,7 @@ function TRP3_CastingBarMixin:OnLoad(unit, showTradeSkills, showShield)
 	self.showCastbar = true;
 	self.showIcon = true;
 
-	local point, relativeTo, relativePoint, offsetX, offsetY = self.Spark:GetPoint(1);
+	local point, _, _, _, offsetY = self.Spark:GetPoint(1);
 	if ( point == "CENTER" ) then
 		self.Spark.offsetY = offsetY;
 	end
@@ -206,7 +206,7 @@ function TRP3_CastingBarMixin:HideSpark()
 		self.Spark:Hide();
 	end
 
-	for barType, barTypeInfo in pairs(CastingBarTypeInfo) do
+	for _, barTypeInfo in pairs(CastingBarTypeInfo) do
 		local sparkFx = barTypeInfo.sparkFx and self[barTypeInfo.sparkFx];
 		if sparkFx then
 			sparkFx:Hide();

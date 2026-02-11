@@ -112,10 +112,16 @@ read_globals = {
 		},
 	},
 
+	table = {
+		fields = {
+			"wipe",
+		},
+	},
+
 	string = {
 		fields = {
 			"join",
-		}
+		},
 	},
 
 	"Ambiguate",
@@ -129,6 +135,7 @@ read_globals = {
 	"CameraZoomOut",
 	"canaccessvalue",
 	"CANCEL",
+	"CAST_BAR_CAST_TIME",
 	"CASTING_BAR_ALPHA_STEP",
 	"CASTING_BAR_FLASH_STEP",
 	"CASTING_BAR_HOLD_TIME",
@@ -168,6 +175,7 @@ read_globals = {
 	"GameTooltip",
 	"GameTooltipHeader",
 	"GetAchievementInfo",
+	"GetCVar",
 	"GetGuildInfo",
 	"GetMacroIndexByName",
 	"GetMouseFoci",
