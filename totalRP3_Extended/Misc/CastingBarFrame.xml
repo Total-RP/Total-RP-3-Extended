@@ -1,0 +1,212 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\Blizzard_SharedXML\UI.xsd">
+	<Include file="CastingBarFrame.lua"/>
+	<StatusBar name="TRP3_CastingBarFrameBaseTemplate" mixin="TRP3_CastingBarMixin" drawLayer="BORDER" virtual="true">
+		<BarTexture atlas="ui-castingbar-filling-standard" useAtlasSize="true"/>
+		<Layers>
+			<Layer level="BACKGROUND" textureSubLevel="0">
+				<Texture parentKey="DropShadow" atlas="castbar_shadow_embedded" hidden="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="3" y="-3"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="TextBorder" atlas="ui-castingbar-textbox">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="-12"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND" textureSubLevel="1">
+				<Texture parentKey="InterruptGlow" alpha="0" alphaMode="ADD" atlas="cast_interrupt_outerglow" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ChargeGlow" hidden="true" atlas="cast_empowered_outerglow" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND" textureSubLevel="2">
+				<Texture parentKey="Background" atlas="ui-castingbar-background">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-1" y="1"/>
+						<Anchor point="BOTTOMRIGHT" x="1" y="-1"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSubLevel="1">
+				<Texture parentKey="EnergyGlow" alpha="0" alphaMode="ADD" atlas="Cast_Standard_GlowLine" useAtlasSize="true" scale="0.51">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="-100"/>
+					</Anchors>
+				</Texture>
+				<MaskTexture parentKey="EnergyMask" alpha="1" alphaMode="BLEND" atlas="Cast_Standard_LineTextureMask" useAtlasSize="true" vWrapMode="CLAMPTOBLACKADDITIVE" hWrapMode="CLAMPTOBLACKADDITIVE" scale="0.5">
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<MaskedTextures>
+						<MaskedTexture childKey="EnergyGlow"/>
+					</MaskedTextures>
+				</MaskTexture>
+			</Layer>
+			<Layer level="ARTWORK" textureSubLevel="4">
+				<Texture parentKey="BorderShield" atlas="ui-castingbar-shield" hidden="true">
+					<Size x="29" y="33"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-27" y="4"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Icon">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="$parent" relativePoint="LEFT" x="-5" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Border" atlas="ui-castingbar-frame">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-2" y="2"/>
+						<Anchor point="BOTTOMRIGHT" x="2" y="-2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSubLevel="5">
+				<Texture parentKey="Flakes01" alphaMode="ADD" atlas="Cast_Standard_Flakes01" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="-25"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Flakes02" alphaMode="ADD" atlas="Cast_Standard_Flakes02" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="-45"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Flakes03" alphaMode="ADD" atlas="Cast_Standard_Flakes03" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="-25"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="BaseGlow" alpha="0" alphaMode="ADD" atlas="Channel_WispGlow2" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="LEFT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="WispGlow" alpha="0" alphaMode="ADD" atlas="Cast_Channel_WispGlow" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="LEFT" x="25" y="0"/>
+					</Anchors>
+				</Texture>
+				<MaskTexture parentKey="WispMask" alpha="1" alphaMode="BLEND" atlas="Cast_Channel_WispMask" useAtlasSize="true" vWrapMode="CLAMPTOBLACKADDITIVE" hWrapMode="CLAMPTOBLACKADDITIVE" scale="0.5">
+					<Anchors>
+						<Anchor point="LEFT" x="-90" y="-2"/>
+					</Anchors>
+					<MaskedTextures>
+						<MaskedTexture childKey="WispGlow"/>
+					</MaskedTextures>
+				</MaskTexture>
+				<Texture parentKey="Sparkles01" alpha="0" alphaMode="BLEND" atlas="Cast_Channel_Sparkles_01" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="LEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Sparkles02" alpha="0" alphaMode="BLEND" atlas="Cast_Channel_Sparkles_02" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="LEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY" textureSubLevel="1">
+				<Texture parentKey="Flash" atlas="ui-castingbar-full-glow-standard" alphaMode="ADD">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-1" y="1"/>
+						<Anchor point="BOTTOMRIGHT" x="1" y="-1"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ChargeFlash" alpha="0" atlas="ui-castingbar-full-glow-standard" alphaMode="ADD" setAllPoints="true"/>
+				<FontString parentKey="Text" inherits="GameFontHighlightSmall">
+					<Size x="185" y="16"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="CastTimeText" inherits="GameFontHighlightLarge">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="0"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY" textureSubLevel="2">
+				<Texture parentKey="Spark" atlas="ui-castingbar-pip">
+					<Size x="8" y="20"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Shine" alpha="0" alphaMode="ADD" atlas="Cast_Crafting_ShineWipe" useAtlasSize="true" scale="0.5">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="-110"/>
+					</Anchors>
+				</Texture>
+				<MaskTexture parentKey="CraftingMask" alpha="1" alphaMode="BLEND" atlas="Cast_Crafting_LineTextureMask" useAtlasSize="true" vWrapMode="CLAMPTOBLACKADDITIVE" hWrapMode="CLAMPTOBLACKADDITIVE" scale="0.5">
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<MaskedTextures>
+						<MaskedTexture childKey="Shine"/>
+					</MaskedTextures>
+				</MaskTexture>
+			</Layer>
+			<Layer level="OVERLAY" textureSubLevel="3">
+				<Texture parentKey="StandardGlow" alpha="1" alphaMode="ADD" atlas="cast_standard_pipglow" hidden="true">
+					<Size x="37" y="12"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Spark" x="2" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="CraftGlow" alpha="1" alphaMode="ADD" atlas="cast_crafting_pipglow" hidden="true">
+					<Size x="37" y="12"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Spark" x="2" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ChannelShadow" alpha="1" alphaMode="BLEND" atlas="cast_channel_pipshadow" hidden="true">
+					<Size x="11" y="11"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Spark" x="1" y="0"/>
+					</Anchors>
+				</Texture>
+				<MaskTexture parentKey="BorderMask" atlas="cast_standard_barmask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+					<Size x="256" y="13"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+					<MaskedTextures>
+						<MaskedTexture childKey="StandardGlow"/>
+						<MaskedTexture childKey="CraftGlow"/>
+						<MaskedTexture childKey="ChannelShadow"/>
+						<MaskedTexture childKey="EnergyGlow"/>
+						<MaskedTexture childKey="Flakes01"/>
+						<MaskedTexture childKey="Flakes02"/>
+						<MaskedTexture childKey="Flakes03"/>
+						<MaskedTexture childKey="Shine"/>
+						<MaskedTexture childKey="BaseGlow"/>
+						<MaskedTexture childKey="WispGlow"/>
+						<MaskedTexture childKey="Sparkles01"/>
+						<MaskedTexture childKey="Sparkles02"/>
+					</MaskedTextures>
+				</MaskTexture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				self:OnLoad(nil, true, false);
+			</OnLoad>
+			<OnUpdate method="OnUpdate" />
+		</Scripts>
+	</StatusBar>
+
+	<StatusBar name="TRP3_CastingBarFrameTemplate" inherits="TRP3_CastingBarFrameBaseTemplate, CastingBarFrameAnimsFXTemplate" virtual="true"/>
+</Ui>
