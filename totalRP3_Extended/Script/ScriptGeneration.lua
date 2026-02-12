@@ -540,9 +540,16 @@ local function getFunction(structure, rootClassID)
 	end
 end
 
-local pcall = pcall;
 local function executeFunction(func, args, scriptID)
+--@debug@
+	func(args);
+	local status = true;
+	local ret = "";
+--@end-debug@
+
+--[===[@non-debug@
 	local status, ret, _ = pcall(func, args);
+--@end-non-debug@]===]
 	if status then
 		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
