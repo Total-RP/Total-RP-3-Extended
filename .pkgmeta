@@ -2,6 +2,7 @@ package-as: totalRP3_Extended
 enable-nolib-creation: no
 
 ignore:
+  - Makefile
   - README.md
   - _tests
 
