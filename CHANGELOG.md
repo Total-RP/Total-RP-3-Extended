@@ -1,3 +1,9 @@
+# Changelog for version 2.3.2
+
+## Fixed
+
+- Fixed cast bar issues from patch 12.0.1.
+
 # Changelog for version 2.3.0
 
 ## Fixed
