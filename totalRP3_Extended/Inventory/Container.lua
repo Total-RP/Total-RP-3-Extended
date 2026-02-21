@@ -437,7 +437,7 @@ local function GetContainerDropTarget()
 		end
 	end
 
-	return ContainerDropTargetType.World, frame;
+	return ContainerDropTargetType.World, nil;
 end
 
 local function slotOnDragStop(slotFrom)
