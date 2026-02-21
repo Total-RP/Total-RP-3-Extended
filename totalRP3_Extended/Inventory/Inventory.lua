@@ -134,7 +134,12 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData, dropIfFul
 			freeSlot = toSlot;
 		else
 			-- Finding an empty slot
-			for i = 1, ((containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)) do
+			local slotCount = (containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)
+			if container == playerInventory then
+				-- Only 17 slots in the player inventory (counting the quick slot)
+				slotCount = 17;
+			end
+			for i = 1, slotCount do
 				local slotID = tostring(i);
 				if not freeSlot and not container.content[slotID] then
 					freeSlot = slotID;
