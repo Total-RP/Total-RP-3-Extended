@@ -428,7 +428,7 @@ local function GetContainerDropTarget()
 	end
 
 	for _, frame in ipairs(frames) do
-		local name = frame:GetName() or "";
+		local name = frame:GetName() or "WorldFrame";
 
 		if name == "WorldFrame" then
 			return ContainerDropTargetType.World, frame;
