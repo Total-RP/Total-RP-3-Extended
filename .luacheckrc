@@ -177,7 +177,6 @@ read_globals = {
 	"GetAchievementInfo",
 	"GetCVar",
 	"GetGuildInfo",
-	"GetLocale",
 	"GetMacroIndexByName",
 	"GetMouseFoci",
 	"GetNormalizedRealmName",
