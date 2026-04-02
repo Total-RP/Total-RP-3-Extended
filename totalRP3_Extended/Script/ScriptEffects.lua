@@ -30,13 +30,15 @@ local SPEECH_CHANNEL = {
 	[SPEECH_PREFIX.EMOTES] = "EMOTE",
 }
 
+local SPEECH_SEPARATOR = GetLocale() == "frFR" and " : " or ": ";
+
 local function getSpeechPrefixText(speechPrefix, npcName, text)
 	if speechPrefix == SPEECH_PREFIX.SAYS then
-		return ("%s %s: %s"):format(npcName, loc.NPC_SAYS, text);
+		return ("%s %s%s%s"):format(npcName, loc.NPC_SAYS, SPEECH_SEPARATOR, text);
 	elseif speechPrefix == SPEECH_PREFIX.YELLS then
-		return ("%s %s: %s"):format(npcName, loc.NPC_YELLS, text);
+		return ("%s %s%s%s"):format(npcName, loc.NPC_YELLS, SPEECH_SEPARATOR, text);
 	elseif speechPrefix == SPEECH_PREFIX.WHISPERS then
-		return ("%s %s: %s"):format(npcName, loc.NPC_WHISPERS, text);
+		return ("%s %s%s%s"):format(npcName, loc.NPC_WHISPERS, SPEECH_SEPARATOR, text);
 	elseif speechPrefix == SPEECH_PREFIX.EMOTES then
 		return ("%s %s"):format(npcName, text);
 	end
