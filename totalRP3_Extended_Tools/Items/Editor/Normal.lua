@@ -476,9 +476,14 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	-- Pick up sound
 	local pickUpList = {};
 	for i = 1183, 1199 do
-		tinsert(pickUpList, {loc.IT_PU_SOUND .. ": |cff00ff00" .. loc["IT_PU_SOUND_" .. i], i});
+		local soundName = loc["IT_PU_SOUND_" .. i];
+		tinsert(pickUpList, {loc.IT_PU_SOUND .. ": |cff00ff00" .. soundName, i, soundName});
 	end
-	tinsert(pickUpList, {loc.IT_PU_SOUND .. ": |cff00ff00" .. loc["IT_PU_SOUND_".. 1221], 1221});
+	local extraPickUpSoundName = loc["IT_PU_SOUND_".. 1221];
+	tinsert(pickUpList, {loc.IT_PU_SOUND .. ": |cff00ff00" .. extraPickUpSoundName, 1221, extraPickUpSoundName});
+	table.sort(pickUpList, function(a, b)
+		return strcmputf8i(Utils.str.convertSpecialChars(a[3] or ""), Utils.str.convertSpecialChars(b[3] or "")) < 0;
+	end)
 	TRP3_API.ui.listbox.setupListBox(gameplay.pickSound, pickUpList, function(value)
 		if not gameplay.mute then
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
@@ -489,8 +494,12 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	-- Drop sound
 	local dropList = {};
 	for i = 1200, 1217 do
-		tinsert(dropList, {loc.IT_DR_SOUND .. ": |cff00ff00" .. loc["IT_DR_SOUND_" .. i], i});
+		local soundName = loc["IT_DR_SOUND_" .. i];
+		tinsert(dropList, {loc.IT_DR_SOUND .. ": |cff00ff00" .. soundName, i, soundName});
 	end
+	table.sort(dropList, function(a, b)
+		return strcmputf8i(Utils.str.convertSpecialChars(a[3] or ""), Utils.str.convertSpecialChars(b[3] or "")) < 0;
+	end)
 	TRP3_API.ui.listbox.setupListBox(gameplay.dropSound, dropList, function(value)
 		if not gameplay.mute then
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
