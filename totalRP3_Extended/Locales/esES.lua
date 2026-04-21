@@ -8,6 +8,91 @@ local L;
 
 L = {
 	["ALL"] = "Todo",
+	["AU_DISPLAY_ATT"] = "Atributos de visualización",
+	["AU_EXPIRY"] = "%1$s restantes",
+	["AU_FIELD_ALWAYS_ACTIVE"] = "Utilizar tiempo real",
+	["AU_FIELD_ALWAYS_ACTIVE_TT"] = [=[Si está marcado, el tiempo que pases desconectado o en otro perfil contará para la duración del aura.
+
+Esto es útil para auras que duran mucho tiempo.
+
+|cffff9900Los intervalos y eventos del aura seguirán omitiéndose mientras estés desconectado o en otro perfil.|r]=],
+	["AU_FIELD_BOUND_TO_CAMPAIGN"] = "Vinculado a la campaña contenedora",
+	["AU_FIELD_BOUND_TO_CAMPAIGN_TT"] = [=[Haz que este aura dependa de su campaña contenedora.
+
+Si la campaña se reinicia, el aura se eliminará.
+
+Si la campaña se pausa, el aura también se pausará.
+
+|cffff9900Solo funciona si el objeto raíz es una campaña.|r]=],
+	["AU_FIELD_CANCELLABLE"] = "Puede ser cancelado por el jugador",
+	["AU_FIELD_CANCELLABLE_TT"] = [=[Permite eliminar el aura con un clic derecho.
+
+Cuando el jugador elimina el aura, se activa el evento |cff00ff00Al cancelar|r. 
+
+Asegúrate de ofrecer siempre al jugador una forma de deshacerse de un aura.]=],
+	["AU_FIELD_CATEGORY"] = "Categoría",
+	["AU_FIELD_CATEGORY_TT"] = "Introduce una categoría para tu aura, por ejemplo \"Magia\" o \"Maldición\".",
+	["AU_FIELD_COLOR"] = "Color",
+	["AU_FIELD_COLOR_TT"] = "Elige el color del borde.|n|nNormalmente, solo los perjuicios tienen color.",
+	["AU_FIELD_DESCRIPTION"] = "Descripción del aura",
+	["AU_FIELD_DESCRIPTION_TT"] = [=[Indica al jugador qué hace tu aura, pero intenta ser breve, ya que debe caber en las herramientas.
+
+|cff00ff00Aqui puedes usar etiquetas de variables.|r]=],
+	["AU_FIELD_DURATION"] = "Duración",
+	["AU_FIELD_DURATION_TT"] = [=[Introduce cuánto dura el aura (en segundos).
+
+60 segundos = 1 minuto, 
+3600 segundos = 1 hora, 
+86400 segundos = 1 día]=],
+	["AU_FIELD_ENSURE_EXPIRY"] = "Asegurar flujo de expiración",
+	["AU_FIELD_ENSURE_EXPIRY_TT"] = [=[Asegúrate de que el evento |cff00ff00Al expirar|r se active incluso si el aura expira mientras el jugador está desconectado o en otro perfil.
+En ese caso, el flujo se ejecutará justo después del siguiente inicio de sesión o cambio de perfil.]=],
+	["AU_FIELD_FLAVOR"] = "Descripción secundaria",
+	["AU_FIELD_FLAVOR_TT"] = [=[Este campo puede usarse para texto adicional, que no es tan importante como la descripción principal. 
+Aparecerá en herramientas debajo de la descripción.]=],
+	["AU_FIELD_HAS_DURATION"] = "Tiempo de expiración",
+	["AU_FIELD_HAS_DURATION_TT"] = [=[Este aura expirará tras una determinada cantidad de tiempo.
+
+Cuando el aura expire, se activará el evento |cff00ff00Al expirar|r.]=],
+	["AU_FIELD_HAS_INTERVAL"] = "Programación de intervalos",
+	["AU_FIELD_HAS_INTERVAL_TT"] = "Si está activado, el aura se activará en intervalos regulares, activando el evento |cff00ff00En cada intervalo|r.",
+	["AU_FIELD_INSPECTABLE"] = "Visible para los demás",
+	["AU_FIELD_INSPECTABLE_TT"] = "Si está marcado, el aura será visible para otros usuarios de Extended cuando inspeccionen al jugador.",
+	["AU_FIELD_INTERVAL"] = "Intervalo de actualización periódica",
+	["AU_FIELD_INTERVAL_TT"] = "Introduce el intervalo (en segundos) entre dos actualizaciones periódicas.",
+	["AU_FIELD_NAME"] = "Nombre del aura",
+	["AU_FIELD_NAME_TT"] = "Es el nombre de tu aura, tal como aparecerá en herramientas.",
+	["AU_FIELD_OVERLAY"] = "Texto en el icono",
+	["AU_FIELD_OVERLAY_TT"] = [=[Texto que aparecerá en el icono del aura, por ejemplo un contador de acumulaciones.
+
+|cffff9900Mantén este texto MUY corto, ya que el espacio en el icono es limitado.|r
+
+|cff00ff00Aquí puedes usar etiquetas de variables.|r]=],
+	["AU_GAMEPLAY_ATT"] = "Comportamiento del aura",
+	["AU_LINKS_ON_APPLY"] = "Al aplicarse",
+	["AU_LINKS_ON_APPLY_TT"] = "Se activa justo después de que el aura haya sido aplicada.",
+	["AU_LINKS_ON_CANCEL"] = "Al cancelar",
+	["AU_LINKS_ON_CANCEL_TT"] = "Se activa cuando el aura es cancelada por el jugador.",
+	["AU_LINKS_ON_EXPIRE"] = "Al expirar",
+	["AU_LINKS_ON_EXPIRE_TT"] = "Se activa cuando el aura está a punto de expirar.",
+	["AU_LINKS_ON_TICK"] = "En cada intervalo",
+	["AU_LINKS_ON_TICK_TT"] = "Se activa cuando el aura se actualiza periódicamente.",
+	["AU_NEW_NAME"] = "Nuevo aura",
+	["AU_PRESET"] = "Plantilla",
+	["AU_PRESET_BUFF"] = "Beneficio",
+	["AU_PRESET_CURSE"] = "Maldición",
+	["AU_PRESET_DISEASE"] = "Enfermedad",
+	["AU_PRESET_MAGIC"] = "Magia",
+	["AU_PRESET_OTHER"] = "Otros perjuicios",
+	["AU_PRESET_POISON"] = "Veneno",
+	["AURA_ID"] = "Identificador del Aura",
+	["AURA_INTRO"] = [=[Las auras (beneficios/perjuicios) son efectos de estado aplicados al personaje.
+
+Un aura de Extended está |cff00ff00vinculada a un perfil de personaje|r. Si el jugador cambia de perfil, las auras del primer perfil se pausarán hasta que ese perfil vuelva a activarse.
+
+Si tu aura dura mucho tiempo (por ejemplo, un huevo que eclosiona tras 3 días de tiempo real), puedes configurarla para “usar tiempo real”. En ese caso, la duración del aura seguirá avanzando aunque el perfil esté inactivo o el jugador esté desconectado.
+
+Las auras creadas como elementos internos de una campaña pueden vincularse a ella, de forma que se pausen cuando la campaña esté en pausa y se eliminen cuando la campaña se reinicie.]=],
 	["BINDING_NAME_TRP3_INVENTORY"] = "Abrir inventario del personaje",
 	["BINDING_NAME_TRP3_MAIN_CONTAINER"] = "Abrir bolsa principal",
 	["BINDING_NAME_TRP3_QUEST_ACTION"] = "Acción de misión: interactuar",
@@ -20,6 +105,7 @@ L = {
 	["CA_ACTION_REMOVE"] = "¿Eliminar esta acción?",
 	["CA_ACTIONS"] = "Acciones",
 	["CA_ACTIONS_ADD"] = "Añadir acción",
+	["CA_ACTIONS_BAR_TT"] = "Acciones disponibles para tu campaña activa. Pausa la campaña para ocultar esta barra.",
 	["CA_ACTIONS_COND"] = "Editar condición",
 	["CA_ACTIONS_COND_OFF"] = "Esta acción no está condicionada.",
 	["CA_ACTIONS_COND_ON"] = "Esta acción está condicionada.",
@@ -47,6 +133,7 @@ L = {
 	["CA_NPC_EDITOR"] = "Editor de PNJ",
 	["CA_NPC_EDITOR_DESC"] = "Descripción de PNJ",
 	["CA_NPC_EDITOR_NAME"] = "Nombre de PNJ",
+	["CA_NPC_EDITOR_TITLE"] = "Título del PNJ",
 	["CA_NPC_ID"] = "ID de PNJ",
 	["CA_NPC_ID_TT"] = [=[Por favor, introduce la ID del PNJ a personalizar.
 
@@ -63,6 +150,9 @@ L = {
 |cffff9900Por favor, ten en cuenta que las misiones serán listadas en orden alfabético de ID en la lista de misiones.
 
 |cff00ff00Es una buena práctica empezar tus ID por quest_#, donde # es el número de la misión en la campaña.]=],
+	["CA_QUEST_DD_COPY"] = "Copiar contenido de la misión",
+	["CA_QUEST_DD_PASTE"] = "Pegar contenido de la misión",
+	["CA_QUEST_DD_REMOVE"] = "Eliminar misión",
 	["CA_QUEST_EXIST"] = "Ya existe una misión con la ID %s.",
 	["CA_QUEST_NO"] = "Sin misiones",
 	["CA_QUEST_REMOVE"] = "¿Eliminar esta misión?",
@@ -133,6 +223,8 @@ Desactívalo si no quieres escuchar estos sonidos.
 	["DB_CREATE_CAMPAIGN_TT"] = "Iniciar la creación de una campaña",
 	["DB_CREATE_ITEM"] = "Crear objeto",
 	["DB_CREATE_ITEM_TEMPLATES"] = "O seleccionar una plantilla",
+	["DB_CREATE_ITEM_TEMPLATES_AURA"] = "Objeto de aura",
+	["DB_CREATE_ITEM_TEMPLATES_AURA_TT"] = "Una plantilla de objeto que te otorga un beneficio.",
 	["DB_CREATE_ITEM_TEMPLATES_BLANK"] = "Objeto en blanco",
 	["DB_CREATE_ITEM_TEMPLATES_BLANK_TT"] = [=[Plantilla en blanco.
 Para aquellos a quienes les gusta empezar de cero.]=],
@@ -169,6 +261,9 @@ Tamaño: %0.1f kB.]=],
 	["DB_EXPORT_TT"] = [=[Serializa el contenido del objeto para ser compartido fuera del juego.
 
 Solo funciona con objetos pequeños (menos de 20 kB una vez serializados). Para objetos de mayor tamaño, usa la opción "exportación completa".]=],
+	["DB_EXPORT_TT_2"] = [=[Serializa el contenido del objeto para que pueda intercambiarse fuera del juego.
+
+|cffff0000Nota: Exportar un objeto grande puede congelar el juego durante unos segundos.|r]=],
 	["DB_FILTERS"] = "Filtros de búsqueda",
 	["DB_FILTERS_CLEAR"] = "Limpiar",
 	["DB_FILTERS_NAME"] = "Nombre de objeto",
@@ -206,6 +301,7 @@ Versión %s]=],
 	["DB_IMPORT_FULL_TT"] = "Importa el fichero |cff00ff00totalRP3_Extended_ImpExport.lua|r.",
 	["DB_IMPORT_ITEM"] = "Importar objeto",
 	["DB_IMPORT_TT"] = "Pega aquí un objeto previamente serializado.",
+	["DB_IMPORT_TT_WAGO"] = "¿No tienes nada para pegar aquí? El sitio web para compartir WeakAuras |cff00ff00[<a href=\"http://wago.io\">wago.io</a>]|r ahora aloja creaciones de Total RP 3: Extended. <br/> Puedes explorar su sitio web para ver creaciones de otras personas y pegarlas aquí.",
 	["DB_IMPORT_VERSION"] = [=[Estás importando una versión anterior de un objeto ya existente.
 
 Versión de importación: %s
@@ -228,9 +324,11 @@ ID: |cff00ffff"%s"|r
 	["DB_RESULTS"] = "Buscar resultados",
 	["DB_SECURITY_TT"] = "Muestra todos los parámetros de seguridad para este objeto. Desde aquí puedes permitir o prevenir ciertos efectos indeseados.",
 	["DB_TO_EXPERT"] = "Convertir a modo experto",
+	["DB_WAGO_INFO"] = "|cffff0000Nuevo:|r ¡Ahora puedes publicar tus exportaciones rápidas en el sitio web de intercambio de WeakAuras |cff00ff00[<a href=\"http://wago.io\">wago.io</a>]|r! <br/>¡Pega esta cadena de exportación en su sitio web, añade una descripción y algunas capturas de pantalla, y obtendrás una dirección de internet para compartir con tus amigos!",
 	["DB_WARNING"] = [=[|cffff0000¡¡¡ Aviso !!!
 
 |cffff9900¡No olvides guardar los cambios antes de volver a la lista de la base de datos!]=],
+	["DEBUG_CLEAR_AURAS"] = "Elimina todas las auras del perfil actual. Usar solo en caso de emergencia.",
 	["DEBUG_QUEST_START"] = "Iniciar misión",
 	["DEBUG_QUEST_START_USAGE"] = "Uso: /trp3 debug_quest_start questID",
 	["DEBUG_QUEST_STEP"] = "Ir al paso de la misión.",
@@ -247,6 +345,7 @@ Si cambias el fondo durante la escena habrá una transición entre los diferente
 	["DI_CHOICE_STEP_TT"] = [=[Introduce el número del paso de la escena que quieres mostrar si el jugador selecciona esta opción.
 
 |cff00ff00Si se deja vacío o con un valor inválido, seleccionar esta opción hará terminar la escena (y activar el evento "Al finalizar").]=],
+	["DI_CHOICE_TEXT"] = "Escoge una opción",
 	["DI_CHOICE_TT"] = [=[Introducir el texto para esta opción.
 
 |cff00ff00Dejar en blanco para deshabilitar esta opción.]=],
@@ -394,6 +493,7 @@ Selecciona qué quieres hacer con el objeto:
 	["DR_STASHES_SCAN_MY"] = "Rastrear mis escondites",
 	["DR_STASHES_SEARCH"] = "Buscar escondites de | cff00ff00players | r ",
 	["DR_STASHES_SYNC"] = "Sincronizando...",
+	["EDITOR_CANCEL_TT"] = "Cancela todos los cambios del objeto completo %s (objeto raíz y todos los objetos internos). |cffff9900¡Se perderán los cambios no guardados!|r",
 	["EDITOR_CONFIRM"] = "Confirmar",
 	["EDITOR_HEIGHT"] = "Altura",
 	["EDITOR_ICON"] = "Seleccionar icono",
@@ -654,6 +754,9 @@ La zona verde indica el lugar del objeto en el personaje.]=],
 	["OP_DIRECT_VALUE"] = "Valor directo",
 	["OP_EVAL_VALUE"] = "Valor evaluado",
 	["OP_NUMERIC"] = "Valor numérico",
+	["OP_OP_AURA_CANCELLABLE"] = "El aura se puede cancelar",
+	["OP_OP_AURA_CANCELLABLE_PREVIEW"] = "El aura |cff00ff00%1$s|r se puede cancelar.",
+	["OP_OP_AURA_CANCELLABLE_TT"] = "Devuelve si un aura puede ser cancelada por el jugador.",
 	["OP_OP_CHAR_ACHIEVEMENT"] = "Logro",
 	["OP_OP_CHAR_ACHIEVEMENT_ACC"] = "Cuenta",
 	["OP_OP_CHAR_ACHIEVEMENT_ACC_TT"] = "Revisa si el personaje de esta cuenta ha completado el logro",
