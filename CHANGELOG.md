@@ -1,3 +1,15 @@
+# Changelog for version 2.3.3
+
+## Changed
+
+- Pickup and drop sound dropdowns are now sorted alphabetically regardless of language.
+
+## Fixed
+
+- Fixed issue with OPie preventing from dropping or deleting items from the bag.
+- Fixed issue with the player inventory having excess slots where items could get accidentally added.
+- Fixed punctuation in NPC speech effects for French locale, to have it appropriately formatted.
+
 # Changelog for version 2.3.2
 
 ## Fixed
