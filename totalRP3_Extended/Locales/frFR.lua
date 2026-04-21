@@ -920,7 +920,7 @@ Fonctionne uniquement si l'objet courant est un conteneur !]=],
 	["EFFECT_SOURCE_WORKFLOW"] = "Processus",
 	["EFFECT_SOURCE_WORKFLOW_TT"] = "Recherche la variable dans l'exécution du processus. La portée de la variable est limitée à l'exécution de ce processus et sera détruite par après.",
 	["EFFECT_SPEECH_NAR"] = "Discours: Narration",
-	["EFFECT_SPEECH_NAR_DEFAULT"] = "L'hivers s'installe doucement dans la nuit ...",
+	["EFFECT_SPEECH_NAR_DEFAULT"] = "L'hiver s'installe doucement dans la nuit ...",
 	["EFFECT_SPEECH_NAR_TEXT_TT"] = "Veuillez ne pas inclure le préfixe ||.",
 	["EFFECT_SPEECH_NAR_TT"] = [=[Joue un effet de narration sous la forme d'une émote.
 
