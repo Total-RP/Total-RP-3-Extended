@@ -76,6 +76,9 @@ function TRP3_Tools_EditorItemMixin:Initialize()
 		tinsert(pickUpList, {loc["IT_PU_SOUND_" .. i], i});
 	end
 	tinsert(pickUpList, {loc["IT_PU_SOUND_".. 1221], 1221});
+	table.sort(pickUpList, function(a, b)
+		return strcmputf8i(TRP3_API.utils.str.convertSpecialChars(a[1] or ""), TRP3_API.utils.str.convertSpecialChars(b[1] or "")) < 0;
+	end);
 	TRP3_API.ui.listbox.setupListBox(gameplay.pickSound, pickUpList, function(value)
 		if not gameplay.mute then
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
@@ -87,6 +90,9 @@ function TRP3_Tools_EditorItemMixin:Initialize()
 	for i = 1200, 1217 do
 		tinsert(dropList, {loc["IT_DR_SOUND_" .. i], i});
 	end
+	table.sort(dropList, function(a, b)
+		return strcmputf8i(TRP3_API.utils.str.convertSpecialChars(a[1] or ""), TRP3_API.utils.str.convertSpecialChars(b[1] or "")) < 0;
+	end);
 	TRP3_API.ui.listbox.setupListBox(gameplay.dropSound, dropList, function(value)
 		if not gameplay.mute then
 			TRP3_API.ui.misc.playSoundKit(value, "SFX");
