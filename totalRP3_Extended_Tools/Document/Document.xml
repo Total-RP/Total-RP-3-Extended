@@ -5,23 +5,257 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--     Imports      -->
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<Script file="Document.lua"/>
+	<Script file="Document_mixins.lua"/>
 
-	<Include file="Document.lua"/>
+	<Button name="TRP3_Tools_DocumentPageListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_DocumentPageListElementMixin">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="label" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="LEFT" x="8"/>
+						<Anchor point="RIGHT" x="-8"/>
+					</Anchors>
+				</FontString>
+				<Texture parentKey="highlightArrow" atlas="orderhalltalents-choice-arrow-large">
+					<Size x="16" y="16"/>
+					<TexCoords left="0.5" right="1"/>
+					<Anchors>
+						<Anchor point="RIGHT" x="-8"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
 
-	<Include file="Editor\Normal.xml"/>
-	<Include file="Editor\Normal.lua"/>
-
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--      Base frame      -->
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-
-	<Frame name="TRP3_Tools_DocumentTemplate" virtual="true">
 		<Frames>
-			<Frame inherits="TRP3_Tools_DocumentEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
+			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" x="-8"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnDelete();
+					</OnClick>
+				</Scripts>
+			</Button>
 		</Frames>
+
+		<Scripts>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_EditorDocumentTemplate" virtual="true" mixin="TRP3_Tools_EditorDocumentMixin">
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
+		</Anchors>
+		<Size y="500"/>
+		
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<TexCoords left="0.0078125" right="0.171875"/>
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="BOTTOM"/>
+						<Anchor point="LEFT" relativePoint="CENTER" x="-4"/>
+						<Anchor point="RIGHT" relativePoint="CENTER" x="4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		
+		<Frames>
+			
+			<Frame parentKey="display" inherits="TRP3_Tools_TitledPanelTemplate">
+				<KeyValues>
+					<KeyValue key="titleText" value="${DO_PARAMS_GLOBAL}" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-4"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="background" text="${UI_BKG_BUTTON}" inherits="TRP3_CommonButton" name="$parentBackground">
+						<Size y="22"/>
+						<Anchors>
+							<Anchor point="TOP" y="-45"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</Button>
+
+					<DropdownButton parentKey="border" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentBorder">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DO_PAGE_BORDER}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-45"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<EditBox parentKey="height" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DO_PAGE_HEIGHT}" type="string"/>
+							<KeyValue key="helpText" value="${DO_PAGE_HEIGHT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-18" relativePoint="BOTTOM" relativeKey="$parent.background"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<EditBox parentKey="width" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DO_PAGE_WIDTH}" type="string"/>
+							<KeyValue key="helpText" value="${DO_PAGE_WIDTH_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.border"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<DropdownButton parentKey="h1_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentH1Font">
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.height"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<CheckButton parentKey="tile" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentVertile">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DO_PAGE_TILING}" type="string"/>
+							<KeyValue key="helpText" value="${DO_PAGE_TILING_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.width"/>
+							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</CheckButton>
+
+					<DropdownButton parentKey="h2_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentH2Font">
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.h1_font"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<CheckButton parentKey="resizable" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentHoritile">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DO_PAGE_RESIZE}" type="string"/>
+							<KeyValue key="helpText" value="${DO_PAGE_RESIZE_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.tile"/>
+							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</CheckButton>
+
+					<DropdownButton parentKey="h3_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentH3Font">
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.h2_font"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<DropdownButton parentKey="p_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentPFont">
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.h3_font"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<Button parentKey="importBook" text="Import book" inherits="TRP3_CommonButton" name="$parentImportBook">
+						<Size y="22"/>
+						<Anchors>
+							<Anchor point="TOP" y="-55" relativePoint="BOTTOM" relativeKey="$parent.resizable"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</Button>
+
+					<Frame name="$parentPageList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+						<KeyValues>
+							<KeyValue key="listElementTemplate" value="TRP3_Tools_DocumentPageListElementTemplate" type="string"/>
+							<KeyValue key="listElementMixin" value="TRP3_Tools_DocumentPageListElementMixin" type="global"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-293"/>
+							<Anchor point="BOTTOM"/>
+							<Anchor point="RIGHT"/>
+							<Anchor point="LEFT"/>
+						</Anchors>
+					</Frame>
+
+				</Frames>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
+							<Color r="1" g="0.8" b="0.8"/>
+							<Anchors>
+								<Anchor point="TOP" y="-285"/>
+								<Anchor point="BOTTOM" relativePoint="TOP" y="-293"/>
+								<Anchor point="LEFT"/>
+								<Anchor point="RIGHT"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+			
+			<Frame parentKey="pages" inherits="TRP3_Tools_TitledPanelTemplate">
+				<KeyValues>
+					<KeyValue key="titleText" value="${DO_PAGE_MANAGER}" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="4"/>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="toolbar" inherits="TRP3_TextToolbar">
+						<Size x="330" y="50"/>
+						<Anchors>
+							<Anchor point="TOP" y="-50"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="editor" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Page text" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.toolbar" relativePoint="BOTTOM"/>
+							<Anchor point="BOTTOM" y="25"/>
+							<Anchor point="LEFT" x="20"/>
+							<Anchor point="RIGHT" x="-20"/>
+						</Anchors>
+					</Frame>
+
+				</Frames>
+			</Frame>
+			
+		</Frames>
+		<Scripts>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
 	</Frame>
 
 </Ui>

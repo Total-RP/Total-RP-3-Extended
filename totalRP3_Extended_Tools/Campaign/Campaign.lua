@@ -1,17 +1,14 @@
 -- Copyright The Total RP 3 Extended Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local error, assert, date = error, assert, date;
 local loc = TRP3_API.loc;
-local toolFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Campaign management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function createCampaign(data, ID)
-	ID = ID or Utils.str.id();
+	ID = ID or TRP3_API.utils.str.id();
 
 	if TRP3_DB.global[ID] then
 		error("This ID already exists. This shoudn't happen: " .. ID);
@@ -67,9 +64,9 @@ function TRP3_API.extended.tools.getCampaignData()
 			MO = TRP3_DB.modes.NORMAL,
 			V = 1,
 			CD = date("%d/%m/%y %H:%M:%S");
-			CB = Globals.player_id,
+			CB = TRP3_API.globals.player_id,
 			SD = date("%d/%m/%y %H:%M:%S");
-			SB = Globals.player_id,
+			SB = TRP3_API.globals.player_id,
 		},
 		BA = {
 			NA = loc.CA_NAME_NEW,
@@ -83,36 +80,4 @@ function TRP3_API.extended.tools.getCampaignData()
 	}
 	data.QE.quest_1_first.BA.IN = true;
 	return data;
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Campaign base frame
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function onLoad()
-	assert(toolFrame.rootClassID, "rootClassID is nil");
-	assert(toolFrame.fullClassID, "fullClassID is nil");
-	assert(toolFrame.rootDraft, "rootDraft is nil");
-	assert(toolFrame.specificDraft, "specificDraft is nil");
-
-	toolFrame.campaign.normal:Show();
-	toolFrame.campaign.normal.load();
-end
-
-local function onSave()
-	assert(toolFrame.specificDraft, "specificDraft is nil");
-	toolFrame.campaign.normal.saveToDraft();
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- INIT
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_API.extended.tools.initCampaign(ToolFrame)
-	toolFrame = ToolFrame;
-	toolFrame.campaign.onLoad = onLoad;
-	toolFrame.campaign.onSave = onSave;
-
-	TRP3_API.extended.tools.initCampaignEditorNormal(toolFrame);
-	TRP3_ActionsEditorFrame.init(toolFrame);
 end

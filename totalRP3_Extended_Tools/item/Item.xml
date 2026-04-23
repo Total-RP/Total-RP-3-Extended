@@ -1,0 +1,383 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--    Display frame     -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Include file="Quick.xml"/>
+	<Script file="Item.lua"/>
+	<Script file="Quick.lua"/>
+	<Script file="Item_mixins.lua"/>
+
+	<Frame name="TRP3_Tools_EditorItemTemplate" virtual="true" mixin="TRP3_Tools_EditorItemMixin">
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
+		</Anchors>
+		<Size y="500"/>
+		
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<TexCoords left="0.0078125" right="0.171875"/>
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="BOTTOM"/>
+						<Anchor point="LEFT" relativePoint="CENTER" x="-4"/>
+						<Anchor point="RIGHT" relativePoint="CENTER" x="4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		
+		<Frames>
+			
+			<Frame parentKey="display" inherits="TRP3_Tools_TitledPanelTemplate">
+				<KeyValues>
+					<KeyValue key="titleText" value="${IT_DISPLAY_ATT}" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-4"/>
+				</Anchors>
+				<Frames>
+					<EditBox parentKey="name" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_FIELD_NAME}" type="string"/>
+							<KeyValue key="helpText" value="${IT_FIELD_NAME_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-45"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<DropdownButton parentKey="quality" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentQuality">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_FIELD_QUALITY}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-45"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<EditBox parentKey="left" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_TT_LEFT}" type="string"/>
+							<KeyValue key="helpText" value="${IT_TT_LEFT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.name"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<EditBox parentKey="right" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_TT_RIGHT}" type="string"/>
+							<KeyValue key="helpText" value="${IT_TT_RIGHT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.quality"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<Button parentKey="icon" inherits="TRP3_IconButton">
+						<Anchors>
+							<Anchor point="TOP" y="-12" relativePoint="BOTTOM" relativeKey="$parent.left"/>
+							<Anchor point="LEFT" x="23" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="label" text="${OP_OP_INV_ICON}" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+									<Anchors>
+										<Anchor point="LEFT" x="35"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Button>
+
+					<Frame name="$parentDescription" parentKey="description" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_TT_DESCRIPTION}" type="string"/>
+							<KeyValue key="helpText" value="${IT_TT_DESCRIPTION_TT}" type="string"/>
+						</KeyValues>
+						<Size x="0" y="105"/>
+						<Anchors>
+							<Anchor point="TOP" y="-55" relativePoint="BOTTOM" relativeKey="$parent.left"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</Frame>
+
+					<CheckButton parentKey="quest" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentQuest">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_QUEST}" type="string"/>
+							<KeyValue key="helpText" value="${IT_QUEST_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.description"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+					
+					<CheckButton parentKey="container" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentContainer">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_CON}" type="string"/>
+							<KeyValue key="helpText" value="${IT_CONTAINER_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.quest"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+					
+					<DropdownButton parentKey="containerType" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentType">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_CO_SIZE}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.container"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<EditBox parentKey="containerDurability" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_CO_DURABILITY}" type="string"/>
+							<KeyValue key="helpText" value="${IT_CO_DURABILITY_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.container"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<EditBox parentKey="containerMaxweight" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_CO_MAX}" type="string"/>
+							<KeyValue key="helpText" value="${IT_CO_MAX_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.containerType"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="containerOnlyinner" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentContainer">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_CO_ONLY_INNER}" type="string"/>
+							<KeyValue key="helpText" value="${IT_CO_ONLY_INNER_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.containerMaxweight"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+				</Frames>
+			</Frame>
+			
+			<Frame parentKey="gameplay" inherits="TRP3_Tools_TitledPanelTemplate">
+				<KeyValues>
+					<KeyValue key="titleText" value="${IT_GAMEPLAY_ATT}" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="4"/>
+				</Anchors>
+				<Frames>
+
+					<EditBox parentKey="value" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_TT_VALUE}" type="string"/>
+							<KeyValue key="helpText" value="${IT_TT_VALUE_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-45"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<EditBox parentKey="weight" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_TT_WEIGHT}" type="string"/>
+							<KeyValue key="helpText" value="${IT_TT_WEIGHT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-45"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="soulbound" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentSoulbound">
+						<KeyValues>
+							<KeyValue key="titleText" value="ITEM_SOULBOUND" type="global"/>
+							<KeyValue key="helpText" value="${IT_SOULBOUND_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.value"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+					
+					<CheckButton parentKey="wearable" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentWearable">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_WEARABLE}" type="string"/>
+							<KeyValue key="helpText" value="${IT_WEARABLE_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.weight"/>
+							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</CheckButton>
+
+					<CheckButton parentKey="unique" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentUnique">
+						<KeyValues>
+							<KeyValue key="titleText" value="ITEM_UNIQUE" type="global"/>
+							<KeyValue key="helpText" value="${IT_UNIQUE_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.soulbound"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<EditBox parentKey="uniquecount" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_UNIQUE_COUNT}" type="string"/>
+							<KeyValue key="helpText" value="${IT_UNIQUE_COUNT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.wearable"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="stack" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentStack">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_STACK}" type="string"/>
+							<KeyValue key="helpText" value="${IT_STACK_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.unique"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<EditBox parentKey="stackcount" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_STACK_COUNT}" type="string"/>
+							<KeyValue key="helpText" value="${IT_STACK_COUNT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.uniquecount"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="use" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentUse">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_USE}" type="string"/>
+							<KeyValue key="helpText" value="${IT_USE_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.stack"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<EditBox parentKey="usetext" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_USE_TEXT}" type="string"/>
+							<KeyValue key="helpText" value="${IT_USE_TEXT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.stackcount"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</EditBox>
+					
+					<CheckButton parentKey="component" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentComponent">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_TT_REAGENT}" type="string"/>
+							<KeyValue key="helpText" value="${IT_TT_REAGENT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.use"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+					
+					<CheckButton parentKey="crafted" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentCrafted">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_CRAFTED}" type="string"/>
+							<KeyValue key="helpText" value="${IT_CRAFTED_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.usetext"/>
+							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</CheckButton>
+
+					<CheckButton parentKey="noAdd" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentNoAdd">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_NO_ADD}" type="string"/>
+							<KeyValue key="helpText" value="${IT_NO_ADD_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.crafted"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+					
+					<DropdownButton parentKey="pickSound" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentPickSound">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_PU_SOUND}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.noAdd"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<DropdownButton parentKey="dropSound" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentDropSound">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_DR_SOUND}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="0" relativeKey="$parent.pickSound"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+				</Frames>
+			</Frame>
+			
+		</Frames>
+	</Frame>
+
+</Ui>

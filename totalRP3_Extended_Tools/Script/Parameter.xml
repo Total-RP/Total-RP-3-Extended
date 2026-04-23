@@ -1,0 +1,345 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	
+	<Script file="Parameter_mixins.lua"/>
+
+	<Frame name="TRP3_Tools_ScriptParameterEditBoxTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterEditBoxMixin">
+		<Size y="25"/>
+		<Frames>
+			<EditBox parentKey="editBox" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="TOPRIGHT"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterObjectiveTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterObjectiveMixin">
+		<Size y="25"/>
+		<Frames>
+			<EditBox parentKey="objectiveId" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="TOPRIGHT"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterDropdownTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterDropdownMixin">
+		<Size y="25"/>
+		<Frames>
+			<DropdownButton parentKey="dropdown" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="TOPRIGHT"/>
+				</Anchors>
+			</DropdownButton>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterVariableTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterVariableMixin">
+		<Size y="25"/>
+		<Frames>
+			<DropdownButton parentKey="scope" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
+				<Anchors>
+					<Anchor point="LEFT"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-5"/>
+				</Anchors>
+			</DropdownButton>
+			<EditBox parentKey="name" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="CENTER" x="5"/>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterCoordinateTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterCoordinateMixin">
+		<Size y="25"/>
+		<Frames>
+			<EditBox parentKey="x" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+			</EditBox>
+			<EditBox parentKey="y" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+			</EditBox>
+			<Button parentKey="here" inherits="TRP3_Tools_TargetButtonTemplate">
+				<Anchors>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Here();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
+	</Frame>
+	
+	<Frame name="TRP3_Tools_ScriptParameterObjectTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterObjectMixin">
+		<Size y="25"/>
+		<Frames>
+			<Button parentKey="browse" inherits="TRP3_Tools_BrowseButtonTemplate">
+				<Anchors>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+			</Button>
+			<EditBox parentKey="id" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.browse" x="-5"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterSoundTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterSoundMixin">
+		<Size y="25"/>
+		<Frames>
+			<EditBox parentKey="id" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+				<Size x="120" y="25"/>
+				<Anchors>
+					<Anchor point="LEFT"/>
+				</Anchors>
+			</EditBox>
+			<CheckButton parentKey="soundFileId" inherits="TRP3_Tools_CheckBoxTemplate">
+				<Anchors>
+					<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeKey="$parent.id"/>
+				</Anchors>
+			</CheckButton>
+			<Button parentKey="play" inherits="TRP3_CommonButton">
+				<Size x="90" y="22"/>
+				<Anchors>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterBooleanTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterBooleanMixin">
+		<Size y="25"/>
+		<Frames>
+			<CheckButton parentKey="value" inherits="TRP3_Tools_CheckBoxTemplate">
+				<Anchors>
+					<Anchor point="LEFT"/>
+				</Anchors>
+			</CheckButton>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterMultilineTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterMultilineMixin">
+		<Size y="65"/>
+		<Frames>
+			<Frame parentKey="text" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate" setAllPoints="true">
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterMusicTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterMusicMixin">
+		<Size y="25"/>
+		<Frames>
+			<Button parentKey="play" inherits="TRP3_CommonButton">
+				<Size x="90" y="22"/>
+				<Anchors>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="browse" inherits="TRP3_Tools_BrowseButtonTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.play" x="-5"/>
+				</Anchors>
+			</Button>
+			<EditBox parentKey="id" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.browse" x="-5"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterEmoteTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterEmoteMixin">
+		<Size y="25"/>
+		<Frames>
+			<Button parentKey="browse" inherits="TRP3_Tools_BrowseButtonTemplate">
+				<Anchors>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+			</Button>
+			<EditBox parentKey="id" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.browse" x="-5"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterIconTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterIconMixin">
+		<Frames>
+			<Button parentKey="icon" inherits="TRP3_IconButton">
+				<Anchors>
+					<Anchor point="LEFT" x="4"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormal" justifyH="LEFT">
+					<Size y="25" />
+					<Anchors>
+						<Anchor point="LEFT" x="15" relativePoint="RIGHT" relativeKey="$parent.icon"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterLootTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterLootMixin">
+		<Frames>
+			<Frame parentKey="bag" scale="0.8" inherits="TRP3_Container2x4Template" name="$parent2x4" frameLevel="50" hidden="false" toplevel="false" movable="false" clampedToScreen="false">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="editor" scale="1.25" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
+						<Size x="200" y="130"/>
+						<Frames>
+							
+							<Button parentKey="browse" inherits="TRP3_Tools_BrowseButtonTemplate">
+								<Anchors>
+									<Anchor point="TOP" y="-15"/>
+									<Anchor point="RIGHT" x="-20"/>
+								</Anchors>
+							</Button>
+							
+							<EditBox parentKey="id" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${EFFECT_ITEM_ADD_ID}" type="string"/>
+									<KeyValue key="helpText" value="${EFFECT_ITEM_ADD_ID_TT}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" y="-15"/>
+									<Anchor point="LEFT" x="20"/>
+									<Anchor point="RIGHT" x="-5" relativePoint="LEFT" relativeKey="$parent.browse"/>
+								</Anchors>
+							</EditBox>
+
+							<EditBox parentKey="count" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${OP_OP_INV_COUNT}" type="string"/>
+									<KeyValue key="helpText" value="${OP_OP_INV_COUNT}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-14" relativePoint="BOTTOM" relativeKey="$parent.id"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+									<Anchor point="RIGHT" x="-20" y="0"/>
+								</Anchors>
+							</EditBox>
+
+							<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="10"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="help" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
+					<Size y="40"/>
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="20" relativeKey="$parent.bag"/>
+						<Anchor point="RIGHT" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterOperandTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterOperandMixin">
+		<Size y="25"/>
+		<Frames>
+			<DropdownButton parentKey="operandId" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="TOPRIGHT"/>
+				</Anchors>
+			</DropdownButton>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterScriptTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterScriptMixin">
+		<Frames>
+			<Button parentKey="effect" inherits="TRP3_CommonButton">
+				<Size x="90" y="22"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="operand" inherits="TRP3_CommonButton">
+				<Size x="90" y="22"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-35"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="other" inherits="TRP3_CommonButton">
+				<Size x="90" y="22"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-70"/>
+				</Anchors>
+			</Button>
+			<Frame parentKey="script" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="10" relativePoint="TOPRIGHT" relativeKey="$parent.effect"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ScriptParameterMacroTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterMacroMixin">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="count" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE">
+					<Size y="25"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="macro" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="TOPRIGHT"/>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.count"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
+
+</Ui>

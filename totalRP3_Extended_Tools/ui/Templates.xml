@@ -1,0 +1,785 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	
+	<Script file="ui_mixins.lua"/>
+	
+	<!--
+		A UI element for scrollable list content.
+		
+		Properties
+		.model  ... the list's model (DataProvider), use this for CRUD-like operations on the list
+		.widget ... the list's UI representation, use this for all visual stuff, e.g. scroll to an element
+		
+		Settings
+		.listElementTemplate  (string)   ... frame template to use for elements
+		.listElementMixin     (global)   ... the mixin for list elements
+			.Initialize       (function) ... initializer function for each list element, set your texts etc. and here
+			.GetElementExtent (function) ... optional element height function
+	-->
+	<Frame name="TRP3_Tools_ListTemplate" virtual="true" mixin="TRP3_Tools_ListMixin">
+		<Frames>
+			<Frame parentKey="widget" inherits="WowScrollBoxList">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="-16" y="0"/>
+				</Anchors>
+			</Frame>
+			<EventFrame parentKey="scrollBar" inherits="MinimalScrollBar">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="-16"/>
+					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+				</Anchors>
+			</EventFrame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="Initialize"/>
+		</Scripts>
+	</Frame>
+	
+	<Frame name="TRP3_Tools_TreeTemplate" virtual="true" mixin="TRP3_Tools_TreeMixin">
+		<Frames>
+			<Frame parentKey="widget" inherits="WowScrollBoxList">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="-16" y="0"/>
+				</Anchors>
+			</Frame>
+			<EventFrame parentKey="scrollBar" inherits="MinimalScrollBar">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="-16"/>
+					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+				</Anchors>
+			</EventFrame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="Initialize"/>
+		</Scripts>
+	</Frame>
+
+	<Button name="TRP3_Tools_ListElementTemplate" virtual="true" registerForClicks="AnyUp" inherits="BackdropTemplate" mixin="TRP3_Tools_ListElementMixin">
+		<Size y="32"/>
+		
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_THIN_LIST_ELEMENT_BORDER_NORMAL" type="global"/>
+		</KeyValues>
+
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="background" atlas="GO-bg-panel" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="3" y="-3"/>
+						<Anchor point="BOTTOMRIGHT" x="-3" y="3"/>
+					</Anchors>
+					<Color r="0.5" g="0.5" b="0.5"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="3" y="-3"/>
+				<Anchor point="BOTTOMRIGHT" x="-3" y="3"/>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
+	
+	<Frame name="TRP3_Tools_TabBarTemplate" virtual="true" mixin="TRP3_Tools_TabBarMixin">
+		
+		<Frames>
+
+			<Button parentKey="scrollLeftButton">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="LEFT" x="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():ScrollLeft();
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<Button parentKey="scrollRightButton">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="RIGHT" x="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():ScrollRight();
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			
+			<ScrollFrame parentKey="scrollFrame">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="32" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="-32" y="0"/>
+				</Anchors>
+				<Scrollchild>
+					<Frame parentKey="scrollChild">
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+						</Anchors>
+					</Frame>
+				</Scrollchild>
+			</ScrollFrame>
+			
+		</Frames>
+		
+		<Scripts>
+			<OnLoad method="Initialize"/>
+		</Scripts>
+
+	</Frame>
+
+	<Button name="TRP3_Tools_TabButtonTemplate" registerForClicks="LeftButtonUp,RightButtonUp" motionScriptsWhileDisabled="true" virtual="true" mixin="TRP3_Tools_TabButtonMixin">
+		<Layers>
+			<Layer level="BACKGROUND">
+				
+				<Texture parentKey="LeftActive" atlas="uiframe-activetab-right" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="RightActive" atlas="uiframe-activetab-left" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="MiddleActive" atlas="_uiframe-activetab-center" horizTile="true" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.LeftActive" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.RightActive" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+
+				<Texture parentKey="Left" atlas="uiframe-tab-right" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Right" atlas="uiframe-tab-left" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Middle" atlas="_uiframe-tab-center" horizTile="true" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Left" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Right" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture parentKey="LeftHighlight" atlas="uiframe-tab-right" alphaMode="ADD" alpha="0.4" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false"/>
+				<Texture parentKey="RightHighlight" atlas="uiframe-tab-left" alphaMode="ADD" alpha="0.4" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false"/>
+				<Texture parentKey="MiddleHighlight" atlas="_uiframe-tab-center" horizTile="true" alphaMode="ADD" alpha="0.4" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.LeftHighlight" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.RightHighlight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="closeButton" inherits="UIPanelCloseButton">
+				<Size x="20" y="20"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-6" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnClose();
+					</OnClick>
+				</Scripts>
+			</Button>			
+		</Frames>
+		<ButtonText parentKey="Text" wordwrap="false">
+			<Anchors>
+				<Anchor point="LEFT" x="6" y="0"/>
+				<Anchor point="RIGHT" x="-6" y="0"/>
+			</Anchors>
+		</ButtonText>
+		<Scripts>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_Tools_TabButtonNormalTemplate" motionScriptsWhileDisabled="true" virtual="true" inherits="TRP3_Tools_TabButtonTemplate">
+		<NormalFont style="GameFontNormal"/>
+		<HighlightFont style="GameFontHighlight"/>
+	</Button>
+
+	<Button name="TRP3_Tools_TabButtonLargeTemplate" motionScriptsWhileDisabled="true" virtual="true" inherits="TRP3_Tools_TabButtonTemplate">
+		<NormalFont style="GameFontNormalLarge"/>
+		<HighlightFont style="GameFontHighlightLarge"/>
+	</Button>
+	
+	<Frame name="TRP3_Tools_SplitPaneTemplate" virtual="true" mixin="TRP3_Tools_SplitPaneMixin">
+		<Scripts>
+			<OnLoad method="Initialize"/>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
+	</Frame>
+	
+	<Frame name="TRP3_Tools_HorizontalDividerTemplate" enableMouse="true" useParentLevel="true" virtual="true" mixin="TRP3_Tools_DividerMixin">
+		<Size x="20"/>
+		<Layers>
+			<Layer level="BACKGROUND" textureSubLevel="-3">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true" setAllPoints="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<TexCoords left="0.0078125" right="0.171875"/>
+				</Texture>
+				<FontString parentKey="label" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+					<Anchors>
+						<Anchor point="CENTER" x="-8"/> <!-- I don't know either -->
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+		
+		<Frames>
+			
+			<Button parentKey="collapseFirst">
+				<Size x="11" y="17"/>
+				<Anchors>
+					<Anchor point="TOP" y="-4"/>
+				</Anchors>
+				<NormalTexture file="interface\buttons\minimalscrollbarproportional" setAllPoints="true">
+					<TexCoords>
+						<Rect ULx="0.8203125" ULy="0.015625" LLx="0.6875" LLy="0.015625" URx="0.8203125" URy="0.1875" LRx="0.6875" LRy="0.1875"/>
+					</TexCoords>
+				</NormalTexture>
+				<PushedTexture file="interface\buttons\minimalscrollbarproportional" setAllPoints="true">
+					<TexCoords>
+						<Rect ULx="0.96875" ULy="0.015625" LLx="0.8359375" LLy="0.015625" URx="0.96875" URy="0.1875" LRx="0.8359375" LRy="0.1875"/>
+					</TexCoords>
+				</PushedTexture>
+				<HighlightTexture file="interface\buttons\minimalscrollbarproportional" setAllPoints="true">
+					<TexCoords>
+						<Rect ULx="0.5234375" ULy="0.21875" LLx="0.390625" LLy="0.21875" URx="0.5234375" URy="0.390625" LRx="0.390625" LRy="0.390625"/>
+					</TexCoords>
+				</HighlightTexture>
+				<Scripts>
+					<OnClick>
+						self:GetParent():CollapseFirst();
+					</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button parentKey="collapseSecond">
+				<Size x="11" y="17"/>
+				<Anchors>
+					<Anchor point="TOP" y="-4" relativeKey="$parent.collapseFirst" relativePoint="BOTTOM"/>
+				</Anchors>
+				<NormalTexture file="interface\buttons\minimalscrollbarproportional" setAllPoints="true">
+					<TexCoords>
+						<Rect ULx="0.375" ULy="0.8125" LLx="0.2421875" LLy="0.8125" URx="0.375" URy="0.984375" LRx="0.2421875" LRy="0.984375"/>
+					</TexCoords>
+				</NormalTexture>
+				<PushedTexture file="interface\buttons\minimalscrollbarproportional" setAllPoints="true">
+					<TexCoords>
+						<Rect ULx="0.5234375" ULy="0.015625" LLx="0.390625" LLy="0.015625" URx="0.5234375" URy="0.1875" LRx="0.390625" LRy="0.1875"/>
+					</TexCoords>
+				</PushedTexture>
+				<HighlightTexture file="interface\buttons\minimalscrollbarproportional" setAllPoints="true">
+					<TexCoords>
+						<Rect ULx="0.671875" ULy="0.015625" LLx="0.5390625" LLy="0.015625" URx="0.671875" URy="0.1875" LRx="0.5390625" LRy="0.1875"/>
+					</TexCoords>
+				</HighlightTexture>
+				<Scripts>
+					<OnClick>
+						self:GetParent():CollapseSecond();
+					</OnClick>
+				</Scripts>
+			</Button>
+		
+		
+			<Frame parentKey="shadowFrame" resizable="true" hidden="true" frameStrata="TOOLTIP" frameLevel="10">
+				<Layers>
+					<Layer level="OVERLAY" textureSubLevel="7">
+						<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true" alpha="0.6">
+							<Size x="20"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT"/>
+								<Anchor point="BOTTOMRIGHT"/>
+							</Anchors>
+							<TexCoords left="0.0078125" right="0.171875"/>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnMouseDown method="OnMouseDown"/>
+			<OnMouseUp method="OnMouseUp"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
+		
+	</Frame>
+	
+	<Frame name="TRP3_Tools_VerticalDividerTemplate" enableMouse="true" useParentLevel="true" virtual="true" mixin="TRP3_Tools_DividerMixin">
+		<Size y="20"/>
+		<Layers>
+			<Layer level="BACKGROUND" textureSubLevel="-3">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true" setAllPoints="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<TexCoords top="0.484375" bottom="0.828125"/>
+				</Texture>
+				<FontString parentKey="label" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+		
+		<Frames>
+			
+			<Button parentKey="collapseFirst">
+				<Size x="17" y="11"/>
+				<Anchors>
+					<Anchor point="LEFT" x="4"/>
+				</Anchors>
+				<NormalTexture atlas="minimal-scrollbar-arrow-top" setAllPoints="true"/>
+				<PushedTexture atlas="minimal-scrollbar-arrow-top-down" setAllPoints="true"/>
+				<HighlightTexture atlas="minimal-scrollbar-arrow-top-over" setAllPoints="true"/>
+				<Scripts>
+					<OnClick>
+						self:GetParent():CollapseFirst();
+					</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button parentKey="collapseSecond">
+				<Size x="17" y="11"/>
+				<Anchors>
+					<Anchor point="LEFT" x="4" relativeKey="$parent.collapseFirst" relativePoint="RIGHT"/>
+				</Anchors>
+				<NormalTexture atlas="minimal-scrollbar-arrow-bottom" setAllPoints="true"/>
+				<PushedTexture atlas="minimal-scrollbar-arrow-bottom-down" setAllPoints="true"/>
+				<HighlightTexture atlas="minimal-scrollbar-arrow-bottom-over" setAllPoints="true"/>
+				<Scripts>
+					<OnClick>
+						self:GetParent():CollapseSecond();
+					</OnClick>
+				</Scripts>
+			</Button>
+		
+			<Frame parentKey="shadowFrame" resizable="true" hidden="true" frameStrata="TOOLTIP" frameLevel="10">
+				<Layers>
+					<Layer level="OVERLAY" textureSubLevel="7">
+						<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true" alpha="0.6">
+							<Size y="20"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT"/>
+								<Anchor point="BOTTOMRIGHT"/>
+							</Anchors>
+							<TexCoords top="0.484375" bottom="0.828125"/>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+		
+		<Scripts>
+			<OnMouseDown method="OnMouseDown"/>
+			<OnMouseUp method="OnMouseUp"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_Tools_SplitPaneTabBarTemplate" inherits="TRP3_Tools_TabBarTemplate" virtual="true" mixin="TRP3_Tools_SplitPaneTabBarMixin">
+		<Size x="800" y="36"/>
+		<KeyValues>
+			<KeyValue key="minTabWidth" value="300" type="number"/>
+			<KeyValue key="maxTabWidth" value="300" type="number"/>
+			<KeyValue key="tabTemplate" value="TRP3_Tools_TabButtonLargeTemplate" type="string"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<TexCoords top="0.484375" bottom="0.775"/>
+				</Texture>
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
+					<Size x="0" y="8"/>
+					<Color r="1" g="0.8" b="0.8"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM"/>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+	<Frame name="TRP3_Tools_QuestButtonTemplate" inherits="TRP3_QuestButtonTemplate" virtual="true" mixin="TRP3_Tools_QuestButtonMixin">
+		<Scripts>
+			<OnLoad method="Initialize"/>
+		</Scripts>
+	</Frame>
+	
+	<!-- taken from TRP3_TitledEditBox/TRP3_TitledHelpEditBox, but with a bit more height -->
+	<EditBox name="TRP3_Tools_TitledEditBoxTemplate" letters="0" historyLines="10" autoFocus="false" virtual="true" mixin="TRP3_Tools_TitledEditBoxMixin">
+		<Size y="25"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Left" atlas="common-search-border-left" useAtlasSize="false">
+					<Size x="10" y="25"/>
+					<Anchors>
+						<Anchor point="LEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Right" atlas="common-search-border-right">
+					<Size x="10" y="25"/>
+					<Anchors>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Middle" atlas="common-search-border-middle">
+					<Size x="10" y="25"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Left" relativePoint="RIGHT"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Right" relativePoint="LEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="$parentText" parentKey="title" text="" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="5" y="5"/>
+						<Anchor point="TOPRIGHT" x="0" y="5"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.1"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<FontString inherits="GameFontWhite"/>
+		<TextInsets left="8" top="1" right="8"/>
+		<Scripts>
+			<OnEscapePressed>
+				self:ClearFocus()
+			</OnEscapePressed>
+			<OnEditFocusGained>
+				if self.disabled then
+					self:ClearFocus();
+				else
+					self:HighlightText();
+				end
+			</OnEditFocusGained>
+			<OnEditFocusLost>
+				self:HighlightText(0,0);
+			</OnEditFocusLost>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</EditBox>
+	
+	<EditBox name="TRP3_Tools_TitledHelpEditBoxTemplate" inherits="TRP3_Tools_TitledEditBoxTemplate" virtual="true" mixin="TRP3_Tools_TitledHelpEditBoxMixin">
+		<Frames>
+			<Button name="$parentHelp" parentKey="help" inherits="TRP3_HelpButton" hidden="true">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-2"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<TextInsets left="8" top="1" right="20"/>
+		<Scripts>
+			<OnEditFocusGained>
+				if self.disabled then
+					self:ClearFocus();
+				else
+					self:HighlightText();
+				end
+				if self.help.titleText then
+					self.help:Show();
+				end
+			</OnEditFocusGained>
+			<OnEditFocusLost>
+				self:HighlightText(0,0);
+				self.help:Hide();
+			</OnEditFocusLost>
+		</Scripts>
+	</EditBox>
+
+	<EditBox name="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate" inherits="TRP3_Tools_TitledEditBoxTemplate" virtual="true" mixin="TRP3_Tools_TitledSuggestiveHelpEditBoxMixin">
+		<Frames>
+			<Button name="$parentSuggestion" parentKey="suggestion" text="...">
+				<Size x="27" y="27"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="0"/>
+				</Anchors>
+				<NormalFont style="GameFontNormal"/>
+				<HighlightFont style="GameFontNormal"/>
+				<DisabledFont style="GameFontNormal"/>
+				<NormalTexture atlas="common-dropdown-c-button"/>
+				<PushedTexture atlas="common-dropdown-c-button-pressed-2"/>
+				<DisabledTexture atlas="common-dropdown-c-button-disabled"/>
+				<HighlightTexture atlas="common-dropdown-c-button-hover-2" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OpenSuggestions();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentHelp" parentKey="help" inherits="TRP3_HelpButton" hidden="true">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-2" relativePoint="LEFT" relativeKey="$parent.suggestion"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<TextInsets left="8" top="1" right="43"/>
+		<Scripts>
+			<OnEditFocusGained>
+				if self.disabled then
+					self:ClearFocus();
+				else
+					self:HighlightText();
+				end
+				if self.help.titleText then
+					self.help:Show();
+				end
+			</OnEditFocusGained>
+			<OnEditFocusLost>
+				self:HighlightText(0,0);
+				self.help:Hide();
+			</OnEditFocusLost>
+		</Scripts>
+	</EditBox>
+	
+	<CheckButton name="TRP3_Tools_CheckBoxTemplate" inherits="TRP3_CheckBox" virtual="true" mixin="TRP3_Tools_CheckBoxMixin">
+		<Size x="25" y="25"/>
+	</CheckButton>
+	
+	<DropdownButton name="TRP3_Tools_TitledDropdownButtonTemplate" mixin="WowStyle1DropdownMixin,TRP3_Tools_TitledDropdownButtonMixin" virtual="true">
+		<Size y="25"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Left" atlas="common-search-border-left" useAtlasSize="false">
+					<Size x="10" y="25"/>
+					<Anchors>
+						<Anchor point="LEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Right" atlas="common-search-border-right">
+					<Size x="10" y="25"/>
+					<Anchors>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Background" atlas="common-search-border-middle">
+					<Size x="10" y="25"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Left" relativePoint="RIGHT"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Right" relativePoint="LEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Arrow" atlas="common-dropdown-a-button" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="RIGHT" x="1" y="-3"/>
+					</Anchors>
+				</Texture>
+				<FontString parentKey="Text" inherits="GameFontHighlight" wordwrap="false" justifyH="LEFT">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.Arrow" relativePoint="LEFT"/>
+						<Anchor point="TOPLEFT" x="8" y="-8"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="5" y="5"/>
+						<Anchor point="TOPRIGHT" x="0" y="5"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.1"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnMouseDown method="OnMouseDown"/>
+			<OnMouseUp method="OnMouseUp"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnEnable method="OnEnable"/>
+			<OnDisable method="OnDisable"/>
+		</Scripts>
+	</DropdownButton>
+	
+	<Frame name="TRP3_Tools_TitledPanelTemplate" virtual="true" mixin="TRP3_Tools_TitledPanelMixin">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture atlas="Professions-Specializations-Background-Dial" useAtlasSize="false">
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-5"/>
+						<Anchor point="RIGHT" x="-20" y="0"/>
+						<Anchor point="LEFT" x="20" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+	<Frame name="TRP3_Tools_TitledTextAreaTemplate" inherits="TRP3_TextArea" virtual="true" mixin="TRP3_Tools_TitledTextAreaMixin">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="5" y="5"/>
+						<Anchor point="TOPRIGHT" x="0" y="5"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.1"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+	<Frame name="TRP3_Tools_TitledHelpTextAreaTemplate" inherits="TRP3_Tools_TitledTextAreaTemplate" virtual="true" mixin="TRP3_Tools_TitledHelpTextAreaMixin">
+	</Frame>
+
+	<Frame name="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate" inherits="TRP3_Tools_TitledTextAreaTemplate" virtual="true" mixin="TRP3_Tools_TitledSuggestiveHelpTextAreaMixin">
+		<KeyValues>
+			<KeyValue key="expandable" value="true" type="boolean"/>
+		</KeyValues>
+		<Frames>
+			<Button name="$parentSuggestion" parentKey="suggestion" frameLevel="100" text="...">
+				<Size x="27" y="27"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT"/>
+				</Anchors>
+				<NormalFont style="GameFontNormal"/>
+				<HighlightFont style="GameFontNormal"/>
+				<DisabledFont style="GameFontNormal"/>
+				<NormalTexture atlas="common-dropdown-c-button"/>
+				<PushedTexture atlas="common-dropdown-c-button-pressed-2"/>
+				<DisabledTexture atlas="common-dropdown-c-button-disabled"/>
+				<HighlightTexture atlas="common-dropdown-c-button-hover-2" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OpenSuggestions();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentExpand" parentKey="expand" frameLevel="100" text="+">
+				<Size x="27" y="27"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+				<NormalFont style="GameFontNormal"/>
+				<HighlightFont style="GameFontNormal"/>
+				<DisabledFont style="GameFontNormal"/>
+				<NormalTexture atlas="common-dropdown-c-button"/>
+				<PushedTexture atlas="common-dropdown-c-button-pressed-2"/>
+				<DisabledTexture atlas="common-dropdown-c-button-disabled"/>
+				<HighlightTexture atlas="common-dropdown-c-button-hover-2" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Expand();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad method="Update" inherits="append"/>
+			<OnSizeChanged method="Update" inherits="append"/>
+		</Scripts>
+	</Frame>
+	
+	<Frame name="TRP3_Tools_TitledPopupTemplate" inherits="TRP3_AltHoveredFrame" virtual="true" mixin="TRP3_Tools_TitledPopupMixin" frameStrata="DIALOG">
+		<Size x="500" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+						<Anchor point="RIGHT" x="-20" y="0"/>
+						<Anchor point="LEFT" x="20" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<!--Button parentKey="confirm" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="15"/>
+				</Anchors>
+			</Button-->
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Close();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Button name="TRP3_Tools_BrowseButtonTemplate" text="|A:common-search-magnifyingglass:12:12:0:-1:255:209:0|a" inherits="TRP3_CommonButton" virtual="true" mixin="TRP3_Tools_BrowseButtonMixin">
+		<Size x="25" y="25"/>
+		<Scripts>
+			<OnLoad method="Initialize"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_Tools_TargetButtonTemplate" text="|A:TargetCrosshairs:36:36:9:-10|a" inherits="TRP3_CommonButton" virtual="true" mixin="TRP3_Tools_TargetButtonMixin">
+		<Size x="25" y="25"/>
+		<Scripts>
+			<OnLoad method="Initialize"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_Tools_DeleteButtonTemplate" inherits="TRP3_CommonButton" virtual="true" mixin="TRP3_Tools_DeleteButtonMixin">
+		<Size x="22" y="22"/>
+		<NormalTexture atlas="128-RedButton-Delete" setAllPoints="true" useAtlasSize="false"/>
+		<PushedTexture atlas="128-RedButton-Delete-Pressed" setAllPoints="true" useAtlasSize="false"/>
+		<HighlightTexture atlas="128-RedButton-Delete-Highlight" setAllPoints="true" useAtlasSize="false" alphaMode="ADD"/>
+		<Scripts>
+			<OnLoad method="Initialize"/>
+		</Scripts>
+	</Button>
+	
+</Ui>

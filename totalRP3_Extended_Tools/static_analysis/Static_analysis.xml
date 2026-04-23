@@ -1,0 +1,132 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Script file="Static_analysis_mixins.lua"/>
+
+	<Button name="TRP3_Tools_StaticAnalysisListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_StaticAnalysisListElementMixin">
+		<Size x="0" y="80" />
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="LEFT" maxLines="1">
+					<Anchors>
+						<Anchor point="LEFT" x="10" />
+						<Anchor point="TOP" y="-10" />
+						<Anchor point="RIGHT" x="-5" relativePoint="CENTER"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+				<FontString parentKey="location" inherits="GameFontNormal" justifyH="RIGHT" maxLines="1">
+					<Anchors>
+						<Anchor point="LEFT" x="5" relativePoint="CENTER"/>
+						<Anchor point="TOP" y="-10" />
+						<Anchor point="RIGHT" x="-10"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+				<FontString parentKey="description" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOP" y="-26" />
+						<Anchor point="LEFT" x="10" />
+						<Anchor point="RIGHT" x="-10" />
+						<Anchor point="BOTTOM" y="10" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Scripts>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_StaticAnalysis" hidden="true" enableMouse="true" inherits="TRP3_BrowserDialogBackdropTemplate" mixin="TRP3_Tools_StaticAnalysisMixin">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
+
+		<Size x="600" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" text="Creation Check" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Close();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
+				<Size x="0" y="295"/>
+
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-35"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+
+				<Frames>
+					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+						<KeyValues>
+							<KeyValue key="listElementTemplate" value="TRP3_Tools_StaticAnalysisListElementTemplate" type="string"/>
+							<KeyValue key="listElementMixin" value="TRP3_Tools_StaticAnalysisListElementMixin" type="global"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="5" y="-5"/>
+							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="emptyText" text="No problems found.|n|nIf your creation isn't working, check out at the TRP Extended Discord TODO" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="CENTER">
+							<Anchors>
+								<Anchor point="CENTER"/>
+								<Anchor point="LEFT" x="10" />
+								<Anchor point="RIGHT" x="-10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+
+		</Frames>
+	</Frame>	
+
+	<Script file="Static_analysis.lua"/>
+
+</Ui>

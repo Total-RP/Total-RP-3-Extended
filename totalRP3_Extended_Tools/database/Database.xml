@@ -1,0 +1,548 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	
+	<Include file="Database_mixins.lua"/>
+	
+	<Button name="TRP3_Tools_CreationsListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_CreationsListElementMixin">
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="typeIcon">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" x="8"/>
+					</Anchors>
+				</Texture>
+				<FontString parentKey="link" text="" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+					<Size x="10000" y="24"/> <!-- textures are not properly centered if the string is too long to fit... unless you trick the system into thinking the line is obscenely long :-) -->
+					<Anchors>
+						<Anchor point="LEFT" x="2" relativePoint="RIGHT" relativeKey="$parent.typeIcon"/>
+						<Anchor point="RIGHT" x="-120"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="creator" text="" maxLines="1" inherits="GameFontNormal" justifyH="RIGHT" justifyV="CENTER">
+					<Size x="10000" y="24"/>
+					<Anchors>
+						<Anchor point="LEFT" x="-120" relativePoint="RIGHT"/>
+						<Anchor point="RIGHT" x="-8" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--      Main frame      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
+	<Frame name="TRP3_Tools_DatabaseTemplate" virtual="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_24_5555" type="global"/>
+		</KeyValues>
+
+		<Frames>
+
+			<Frame parentKey="split" inherits="TRP3_Tools_SplitPaneTemplate">
+				<KeyValues>
+					<KeyValue key="orientation" value="TRP3_Tools_SplitPaneMixin.Direction.HORIZONTAL" type="global"/>
+					<KeyValue key="resizeable" value="false" type="boolean"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-8"/>
+					<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="creations">
+						<Frames>
+							<Frame name="$parentFilterTabs" parentKey="filterTabs" inherits="TRP3_Tools_TabBarTemplate" mixin="TRP3_Tools_FilterTabsMixin">
+								<KeyValues>
+									<KeyValue key="minTabWidth" value="60" type="number"/>
+									<KeyValue key="maxTabWidth" value="240" type="number"/>
+									<KeyValue key="tabTemplate" value="TRP3_Tools_TabButtonNormalTemplate" type="string"/>
+								</KeyValues>
+								<Size x="0" y="30"/>
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="TOPRIGHT"/>
+								</Anchors>
+							</Frame>
+
+							<EditBox name="$parentSearchBox" parentKey="searchBox" inherits="SearchBoxTemplate" autoFocus="false" historyLines="32" bytes="256" >
+								<KeyValues>
+									<KeyValue key="instructionsFontObject" value="UserScaledFontGameDisableSmall" type="global"/>
+								</KeyValues>
+								<Size x="0" y="24"/>
+								<Anchors>
+									<Anchor point="TOPLEFT" x="7" y="-40"/>
+									<Anchor point="RIGHT" relativePoint="CENTER"/>
+								</Anchors>
+								<Layers>
+									<Layer level="BACKGROUND">
+										<Texture parentKey="Backdrop" atlas="glues-characterSelect-searchbar" useAtlasSize="false">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="-5"/>
+												<Anchor point="BOTTOMRIGHT"/>
+											</Anchors>
+										</Texture>
+									</Layer>
+								</Layers>
+								<FontString inherits="UserScaledFontGameHighlight" justifyH="LEFT"/>
+							</EditBox>
+
+							<Frame name="$parentCreationsList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+								<KeyValues>
+									<KeyValue key="listElementTemplate" value="TRP3_Tools_CreationsListElementTemplate" type="string"/>
+									<KeyValue key="listElementMixin" value="TRP3_Tools_CreationsListElementMixin" type="global"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" y="-65"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="filterText" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.searchBox"/>
+										<Anchor point="RIGHT"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+							</Layer>
+							<Layer level="ARTWORK">
+								<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
+									<Color r="1" g="0.8" b="0.8"/>
+									<TexCoords top="0.484375" bottom="0.8125"/>
+									<Anchors>
+										<Anchor point="TOP" y="-30"/>
+										<Anchor point="BOTTOM" y="-38" relativePoint="TOP"/>
+										<Anchor point="LEFT"/>
+										<Anchor point="RIGHT"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame parentKey="actions" mixin="TRP3_Tools_CreationsActionsMixin">
+						<Frames>
+							<Button parentKey="blankItem" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="${DB_CREATE_ITEM_TEMPLATES_BLANK}" type="string"/>
+									<KeyValue key="infoText" value="${DB_CREATE_ITEM_TEMPLATES_BLANK_TT}" type="string"/>
+									<KeyValue key="icon" value="inv_misc_generic_craftingreagent04" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" x="32" y="-32"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="containerItem" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="${DB_CREATE_ITEM_TEMPLATES_CONTAINER}" type="string"/>
+									<KeyValue key="infoText" value="${DB_CREATE_ITEM_TEMPLATES_CONTAINER_TT}" type="string"/>
+									<KeyValue key="icon" value="inv_misc_bag_36" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.blankItem" x="0" y="-24"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="documentItem" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="${DB_CREATE_ITEM_TEMPLATES_DOCUMENT}" type="string"/>
+									<KeyValue key="infoText" value="${DB_CREATE_ITEM_TEMPLATES_DOCUMENT_TT}" type="string"/>
+									<KeyValue key="icon" value="inv_misc_book_16" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.containerItem" x="0" y="-24"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="auraItem" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="${DB_CREATE_ITEM_TEMPLATES_AURA}" type="string"/>
+									<KeyValue key="infoText" value="${DB_CREATE_ITEM_TEMPLATES_AURA_TT}" type="string"/>
+									<KeyValue key="icon" value="ability_priest_spiritoftheredeemer" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.documentItem" x="0" y="-24"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="blankCampaign" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="${DB_CREATE_CAMPAIGN_TEMPLATES_BLANK}" type="string"/>
+									<KeyValue key="infoText" value="${DB_CREATE_CAMPAIGN_TEMPLATES_BLANK_TT}" type="string"/>
+									<KeyValue key="icon" value="achievement_quests_completed_06" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.auraItem" x="0" y="-24"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="import" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="${DB_IMPORT}" type="string"/>
+									<KeyValue key="infoText" value="${DB_IMPORT_TT}" type="string"/>
+									<KeyValue key="icon" value="INV_Inscription_ScrollOfWisdom_02" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.blankCampaign" x="0" y="-24"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="importFull" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="${DB_IMPORT_FULL}" type="string"/>
+									<KeyValue key="infoText" value="${DB_IMPORT_FULL_TT}" type="string"/>
+									<KeyValue key="icon" value="INV_Inscription_ScrollOfWisdom_01" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.import" x="0" y="-24"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="hardsave" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="${DB_HARD_SAVE}" type="string"/>
+									<KeyValue key="infoText" value="${DB_HARD_SAVE_TT}" type="string"/>
+									<KeyValue key="icon" value="inv_legioncircle_cache_valajar" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.importFull" x="0" y="-24"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="credits" inherits="TRP3_Tools_QuestButtonTemplate">
+								<KeyValues>
+									<KeyValue key="name" value="Credits" type="string"/>
+									<KeyValue key="infoText" value="Show all those people who worked hard on the addon. Or supported it. Or both." type="string"/>
+									<KeyValue key="icon" value="delves-scenario-heart-icon" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.hardsave" x="0" y="-24"/>
+								</Anchors>
+							</Button>
+							
+							
+						</Frames>
+						
+						<Scripts>
+							<OnLoad method="Initialize"/>
+						</Scripts>
+					</Frame>
+				</Frames>
+			</Frame>
+			
+			<Frame parentKey="export" name="$parentExport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+				<Size x="500" y="300"/>
+
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="0"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+							<Size x="0" y="30"/>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-10"/>
+								<Anchor point="RIGHT" x="-10" y="0"/>
+								<Anchor point="LEFT" x="10" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<Frames>
+					<Button parentKey="Close" inherits="UIPanelCloseButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="0" y="0"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								self:GetParent():Hide();
+							</OnClick>
+						</Scripts>
+					</Button>
+
+					<SimpleHTML parentKey="wagoInfo">
+						<Size y="30" x="450"/>
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.title" relativePoint="BOTTOM" y="-10"/>
+						</Anchors>
+						<FontString inherits="GameFontNormalSmall" justifyH="LEFT"/>
+					</SimpleHTML>
+
+					<Frame parentKey="content" inherits="TRP3_TextArea">
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="10" y="12"/>
+										<Anchor point="TOPRIGHT" x="0" y="12"/>
+									</Anchors>
+									<Color r="0.95" g="0.75" b="0.1"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-70"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="30"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="import" name="$parentImport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+				<Size x="500" y="300"/>
+
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="0"/>
+				</Anchors>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+							<Size x="0" y="30"/>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-10"/>
+								<Anchor point="RIGHT" x="-10" y="0"/>
+								<Anchor point="LEFT" x="10" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<Frames>
+					<Button parentKey="Close" inherits="UIPanelCloseButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="0" y="0"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								self:GetParent():Hide();
+							</OnClick>
+						</Scripts>
+					</Button>
+
+					<Button parentKey="save" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="20"/>
+						</Anchors>
+					</Button>
+
+					<SimpleHTML parentKey="wagoInfo">
+						<Size y="30" x="450"/>
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.title" relativePoint="BOTTOM" y="-10"/>
+						</Anchors>
+						<FontString inherits="GameFontNormalSmall" justifyH="LEFT"/>
+					</SimpleHTML>
+
+					<Frame parentKey="content" inherits="TRP3_TextArea">
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="10" y="12"/>
+										<Anchor point="TOPRIGHT" x="0" y="12"/>
+									</Anchors>
+									<Color r="0.95" g="0.75" b="0.1"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-61"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.save" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Frame>
+
+		</Frames>
+	</Frame>
+
+	<Button name="TRP3_Tools_FilterBuilderListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_FilterBuilderListElementMixin">
+		<Size x="1" y="40"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="open" text="(" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="CENTER">
+					<Size x="10" y="22"/>
+					<Anchors>
+						<Anchor point="TOP" y="-8"/>
+						<Anchor point="LEFT" x="65"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+				<FontString parentKey="close" text=")" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="CENTER">
+					<Size x="10" y="22"/>
+					<Anchors>
+						<Anchor point="TOP" y="-8"/>
+						<Anchor point="TOPRIGHT" x="-35" y="-8"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="logicalOperatorButton" inherits="TRP3_CommonButton">
+				<Size x="50" y="22"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-8"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():ToggleLogicalOperator();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<DropdownButton parentKey="predicate" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
+				<Size x="150" y="25"/>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="0" relativeKey="$parent.open"/>
+				</Anchors>
+			</DropdownButton>
+			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnDelete();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Button>
+
+	<Frame name="TRP3_Tools_FilterBuilder" hidden="true" enableMouse="true" inherits="TRP3_BrowserDialogBackdropTemplate" mixin="TRP3_Tools_FilterBuilderMixin">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
+
+		<Size x="650" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" text="Edit Filter" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Cancel();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<EditBox parentKey="name" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+				<KeyValues>
+					<KeyValue key="titleText" value="Filter name" type="string"/>
+					<KeyValue key="helpText" value="This name appears on the filter's tab" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOP" y="-35"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+				</Anchors>
+			</EditBox>
+
+			<CheckButton parentKey="persistent" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentPersistent">
+				<KeyValues>
+					<KeyValue key="titleText" value="Save filter" type="string"/>
+					<KeyValue key="helpText" value="Keep this filter across sessions" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOP" y="-35"/>
+					<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+				</Anchors>
+			</CheckButton>
+
+			<Button parentKey="applyButton" text="OK" inherits="TRP3_CommonButton">
+				<Size x="100" y="22"/>
+				<Anchors>
+					<Anchor point="BOTTOM" y="10"/>
+					<Anchor point="RIGHT" x="-5" relativePoint="CENTER"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Apply();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<Button parentKey="cancelButton" text="CANCEL" inherits="TRP3_CommonButton">
+				<Size x="100" y="22"/>
+				<Anchors>
+					<Anchor point="BOTTOM" y="10"/>
+					<Anchor point="LEFT" x="5" relativePoint="CENTER"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Cancel();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
+				
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-70"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="35"/>
+				</Anchors>
+
+				<Frames>
+					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+						<KeyValues>
+							<KeyValue key="listElementTemplate" value="TRP3_Tools_FilterBuilderListElementTemplate" type="string"/>
+							<KeyValue key="listElementMixin" value="TRP3_Tools_FilterBuilderListElementMixin" type="global"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="5" y="-5"/>
+							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnHide method="OnHide"/>
+		</Scripts>
+	</Frame>
+
+	<Include file="Database.lua"/>
+	<Include file="Filters.lua"/>
+	
+</Ui>

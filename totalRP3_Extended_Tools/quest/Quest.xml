@@ -1,0 +1,222 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	
+	<Script file="Quest_mixins.lua"/>
+	
+	<Button name="TRP3_Tools_QuestObjectiveListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_QuestObjectiveListElementMixin">
+		<Size y="60"/>
+		<Frames>
+			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnDelete();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="id" inherits="GameFontNormalLarge" justifyH="LEFT">
+					<Size x="0" y="20" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="8" y="-8" />
+						<Anchor point="RIGHT" relativeKey="$parent.delete" relativePoint="LEFT" x="-4" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+				<FontString parentKey="text" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="8" y="-40" />
+						<Anchor point="RIGHT" x="-8" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10" />
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_EditorQuestTemplate" virtual="true" mixin="TRP3_Tools_EditorQuestMixin">
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
+		</Anchors>
+		<Size y="500"/>
+		
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<TexCoords left="0.0078125" right="0.171875"/>
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="BOTTOM"/>
+						<Anchor point="LEFT" relativePoint="CENTER" x="-4"/>
+						<Anchor point="RIGHT" relativePoint="CENTER" x="4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		
+		<Frames>
+			
+			<Frame parentKey="main" inherits="TRP3_Tools_TitledPanelTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-4"/>
+				</Anchors>
+				
+				<Frames>
+
+					<EditBox parentKey="name" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${QE_NAME}" type="string"/>
+							<KeyValue key="helpText" value="${QE_NAME_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-20"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<Frame parentKey="description" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${QE_DESCRIPTION}" type="string"/>
+							<KeyValue key="helpText" value="${QE_DESCRIPTION_TT}" type="string"/>
+						</KeyValues>
+						<Size x="0" y="145"/>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.name"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</Frame>
+
+					<CheckButton parentKey="auto" inherits="TRP3_Tools_CheckBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${QE_AUTO_REVEAL}" type="string"/>
+							<KeyValue key="helpText" value="${QE_AUTO_REVEAL_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.description"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<CheckButton parentKey="progress" inherits="TRP3_Tools_CheckBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${QE_PROGRESS}" type="string"/>
+							<KeyValue key="helpText" value="${QE_PROGRESS_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.auto"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<Button parentKey="icon" inherits="TRP3_IconButton">
+						<Anchors>
+							<Anchor point="TOP" y="-33" relativePoint="BOTTOM" relativeKey="$parent.description"/>
+							<Anchor point="LEFT" x="10" relativePoint="CENTER"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="label" text="${EDITOR_ICON_SELECT}" maxLines="2" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+									<Size x="120" y="26"/>
+									<Anchors>
+										<Anchor point="LEFT" x="35"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Button>
+
+				</Frames>
+
+			</Frame>
+			
+			<Frame parentKey="objective" inherits="TRP3_Tools_TitledPanelTemplate">
+				<KeyValues>
+					<KeyValue key="titleText" value="${QE_OBJ}" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="4"/>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+				<Frames>
+					<Frame name="$parentObjectiveList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+						<KeyValues>
+							<KeyValue key="listElementTemplate" value="TRP3_Tools_QuestObjectiveListElementTemplate" type="string"/>
+							<KeyValue key="listElementMixin" value="TRP3_Tools_QuestObjectiveListElementMixin" type="global"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-45"/>
+							<Anchor point="BOTTOM"/>
+							<Anchor point="LEFT"/>
+							<Anchor point="RIGHT"/>
+						</Anchors>
+					</Frame>
+
+					<Frame name="$parentObjectiveEditor" parentKey="sharedObjectiveEditor" enableMouse="true" hidden="true">
+						<Frames>
+							<EditBox parentKey="id" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${QE_OBJ_ID}" type="string"/>
+									<KeyValue key="helpText" value="${QE_OBJ_ID_TT}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" y="-20"/>
+									<Anchor point="LEFT" x="20"/>
+									<Anchor point="RIGHT" x="-10" relativePoint="CENTER"/>
+								</Anchors>
+							</EditBox>
+
+							<EditBox parentKey="text" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${QE_OBJ_TEXT}" type="string"/>
+									<KeyValue key="helpText" value="${QE_OBJ_TEXT}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" y="-14" relativePoint="BOTTOM" relativeKey="$parent.id"/>
+									<Anchor point="LEFT" x="20"/>
+									<Anchor point="RIGHT" x="-20"/>
+								</Anchors>
+							</EditBox>
+
+							<CheckButton parentKey="auto" inherits="TRP3_Tools_CheckBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${QE_OBJ_AUTO}" type="string"/>
+									<KeyValue key="helpText" value="${QE_OBJ_AUTO_TT}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" y="-14" relativePoint="BOTTOM" relativeKey="$parent.text"/>
+									<Anchor point="LEFT" x="20" y="0"/>
+								</Anchors>
+							</CheckButton>
+
+						</Frames>
+					</Frame>
+
+				</Frames>
+			</Frame>
+			
+		</Frames>
+	</Frame>
+
+</Ui>

@@ -1,0 +1,110 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	
+	<Script file="Quest_step_mixins.lua"/>
+
+	<Frame name="TRP3_Tools_EditorQuestStepTemplate" virtual="true" mixin="TRP3_Tools_EditorQuestStepMixin">
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
+		</Anchors>
+		<Size y="500"/>
+		
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<TexCoords left="0.0078125" right="0.171875"/>
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="BOTTOM"/>
+						<Anchor point="LEFT" relativePoint="CENTER" x="-4"/>
+						<Anchor point="RIGHT" relativePoint="CENTER" x="4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		
+		<Frames>
+			
+			<Frame parentKey="main" inherits="TRP3_Tools_TitledPanelTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-4"/>
+				</Anchors>
+				
+				<Frames>
+
+					<Frame parentKey="pre" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${QE_ST_PRE}" type="string"/>
+							<KeyValue key="helpText" value="${QE_ST_PRE}" type="string"/>
+						</KeyValues>
+						<Size x="0" y="145"/>
+						<Anchors>
+							<Anchor point="TOP" y="-20" />
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="post" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${QE_ST_POST}" type="string"/>
+							<KeyValue key="helpText" value="${QE_ST_POST}" type="string"/>
+						</KeyValues>
+						<Size x="0" y="145"/>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.pre"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</Frame>
+
+					<CheckButton parentKey="auto" inherits="TRP3_Tools_CheckBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${QE_ST_AUTO_REVEAL}" type="string"/>
+							<KeyValue key="helpText" value="${QE_ST_AUTO_REVEAL_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.post"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<CheckButton parentKey="final" inherits="TRP3_Tools_CheckBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${QE_ST_END}" type="string"/>
+							<KeyValue key="helpText" value="${QE_ST_END_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.auto"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+				</Frames>
+
+			</Frame>
+			
+			<Frame parentKey="objective" inherits="TRP3_Tools_TitledPanelTemplate">
+				<Anchors>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="4"/>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+				<Frames>
+
+				</Frames>
+			</Frame>
+			
+		</Frames>
+	</Frame>
+
+</Ui>

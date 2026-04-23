@@ -1,0 +1,294 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	
+	<Script file="Trigger_mixins.lua"/>
+
+	<Button name="TRP3_Tools_ScriptObjectEventListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptObjectEventListElementMixin">
+		<Size x="0" y="40" />
+		<Frames>
+			<Frame parentKey="icon" inherits="TRP3_SimpleIcon">
+				<Size x="24" y="24" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-8"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="whenText" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.icon" x="4" y="0" />
+						<Anchor point="RIGHT" x="-8" />
+						<Anchor point="BOTTOM" relativeKey="$parent.icon" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Scripts>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_Tools_ScriptGameEventTreeNodeTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptGameEventTreeNodeMixin">
+		<Size x="0" y="40" />
+		<Frames>
+			<Frame parentKey="icon" inherits="TRP3_SimpleIcon">
+				<Size x="24" y="24" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-8"/>
+				</Anchors>
+			</Frame>
+			<EventButton parentKey="toggleChildren" hidden="true">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-8"/>
+				</Anchors>
+				<NormalTexture parentKey="normalTexture" file="Interface\Buttons\UI-MinusButton-UP"/>
+				<PushedTexture parentKey="pushedTexture" file="Interface\Buttons\UI-MinusButton-DOWN"/>
+				<HighlightTexture file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnToggleChildren();
+					</OnClick>
+				</Scripts>
+			</EventButton>
+		</Frames>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="whenText" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.icon" x="4" y="0" />
+						<Anchor point="RIGHT" x="-8" />
+						<Anchor point="BOTTOM" relativeKey="$parent.icon" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Scripts>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_EditorTrigger" inherits="TRP3_Tools_TitledPopupTemplate" hidden="true" mixin="TRP3_Tools_EditorTriggerMixin">
+		<Size x="800" y="500"/>
+
+		<Frames>
+			<Button parentKey="trigger" inherits="BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
+
+				<Anchors>
+					<Anchor point="TOP" y="-40"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+
+				<Size y="65" />
+				<Frames>
+					<Frame parentKey="icon" inherits="TRP3_SimpleIcon">
+						<Size x="40" y="40" />
+						<Anchors>
+							<Anchor point="TOPLEFT" x="12" y="-12"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="whenText" inherits="GameFontNormalLarge" justifyH="LEFT">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.icon" x="5" y="0" />
+								<Anchor point="RIGHT" x="-5" />
+								<Anchor point="BOTTOM" relativeKey="$parent.icon" relativePoint="CENTER"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+
+						<FontString text="Click here to change trigger" parentKey="hintText" inherits="GameFontNormal" justifyH="LEFT">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="RIGHT" relativeKey="$parent.icon" x="5" y="0" />
+								<Anchor point="RIGHT" x="-5" />
+								<Anchor point="BOTTOM" relativeKey="$parent.icon"/>
+							</Anchors>
+							<Color r="0.7" g="0.7" b="0.7" />
+						</FontString>
+					</Layer>
+
+				</Layers>
+				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="6" y="-6" />
+						<Anchor point="BOTTOMRIGHT" x="-6" y="6" />
+					</Anchors>
+					<TexCoords bottom="0" left="0.25" top="1" right="1" />
+				</HighlightTexture>
+
+				<Scripts>
+					<OnClick>
+						self:GetParent():ShowTriggerMenu();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<Frame parentKey="script" inherits="BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
+				<Size y="65"/>
+				<Anchors>
+					<Anchor point="TOP" y="-10" relativeKey="$parent.trigger" relativePoint="BOTTOM"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+
+				<Frames>
+					<DropdownButton parentKey="list" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentScriptList">
+						<KeyValues>
+							<KeyValue key="titleText" value="Link to workflow" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="CENTER" x="-210"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10"/>
+						</Anchors>
+					</DropdownButton>
+
+					<EditBox parentKey="name" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="new workflow name" type="string"/>
+							<KeyValue key="helpText" value="enter the name of the workflow to be created here" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="210"/>
+						</Anchors>
+					</EditBox>
+
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="constraint" inherits="BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
+				<Size y="260"/>
+				<Anchors>
+					<Anchor point="TOP" y="-10" relativeKey="$parent.script" relativePoint="BOTTOM"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+
+				<Frames>
+					<Frame name="$parentConstraintList" parentKey="list" inherits="TRP3_Tools_ScriptConstraintEditorTemplate">
+						<Anchors>
+							<Anchor point="TOP" y="-10"/>
+							<Anchor point="LEFT" x="30"/>
+							<Anchor point="BOTTOM" y="10"/>
+							<Anchor point="RIGHT" x="-10"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="title" inherits="GameFontNormal" text="${WO_CONDITION}" justifyH="CENTER" justifyV="MIDDLE">
+							<Size x="100" y="20"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="LEFT" x="10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+
+			<Button parentKey="triggerCancelButton" text="CANCEL" inherits="TRP3_CommonButton">
+				<Size x="100" y="22"/>
+				<Anchors>
+					<Anchor point="BOTTOM" y="20"/>
+					<Anchor point="RIGHT" x="-5" relativePoint="CENTER"/>
+				</Anchors>
+			</Button>
+
+			<Frame name="$parentObjectEventList" parentKey="objectEventList" inherits="TRP3_Tools_ListTemplate">
+				<KeyValues>
+					<KeyValue key="listElementTemplate" value="TRP3_Tools_ScriptObjectEventListElementTemplate" type="string"/>
+					<KeyValue key="listElementMixin" value="TRP3_Tools_ScriptObjectEventListElementMixin" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOP" y="-40"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="BOTTOM" y="20"/>
+					<Anchor point="RIGHT" x="-10" relativePoint="CENTER"/>
+				</Anchors>
+			</Frame>
+
+			<Button parentKey="gameEventButton" text="OK" inherits="TRP3_CommonButton" name="$parentAddTriggerButton">
+				<Size x="100" y="22"/>
+				<Anchors>
+					<Anchor point="BOTTOM" y="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+			</Button>
+
+			<EditBox parentKey="gameEventName" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+				<KeyValues>
+					<KeyValue key="titleText" value="enter game event directly" type="string"/>
+					<KeyValue key="helpText" value="if you can't find the event in the list you may enter it here directly" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOM" y="20"/>
+					<Anchor point="LEFT" x="10" relativePoint="CENTER"/>
+					<Anchor point="RIGHT" x="-10" relativePoint="LEFT" relativeKey="$parent.gameEventButton"/>
+				</Anchors>
+			</EditBox>
+
+			<Frame name="$parentGameEventTree" parentKey="gameEventTree" inherits="TRP3_Tools_TreeTemplate">
+				<KeyValues>
+					<KeyValue key="treeNodeTemplate" value="TRP3_Tools_ScriptGameEventTreeNodeTemplate" type="string"/>
+					<KeyValue key="treeNodeMixin" value="TRP3_Tools_ScriptGameEventTreeNodeMixin" type="global"/>
+					<KeyValue key="indent" value="20" type="number"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOP" y="-40"/>
+					<Anchor point="BOTTOM" y="20" relativePoint="TOP" relativeKey="$parent.gameEventName"/>
+					<Anchor point="LEFT" x="10" relativePoint="CENTER"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+			</Frame>
+
+			<Button parentKey="applyButton" text="OK" inherits="TRP3_CommonButton">
+				<Size x="100" y="22"/>
+				<Anchors>
+					<Anchor point="BOTTOM" y="20"/>
+					<Anchor point="RIGHT" x="-5" relativePoint="CENTER"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="cancelButton" text="CANCEL" inherits="TRP3_CommonButton">
+				<Size x="100" y="22"/>
+				<Anchors>
+					<Anchor point="BOTTOM" y="20"/>
+					<Anchor point="LEFT" x="5" relativePoint="CENTER"/>
+				</Anchors>
+			</Button>
+
+		</Frames>
+		<Scripts>
+			<OnLoad method="Initialize" inherit="append"/>
+		</Scripts>
+	</Frame>
+	
+</Ui>
