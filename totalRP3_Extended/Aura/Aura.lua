@@ -72,6 +72,17 @@ local function EnumerateValidAuras(auras)
 	return NextValidAura, auras, 0;
 end
 
+local function nilToInf(value)
+	return value or math.huge;
+end
+
+local function infToNil(value)
+	if value == math.huge then
+		return nil;
+	end
+	return value;
+end
+
 local auraCore = {
 	activeAuras = {},
 	timer       = nil,
@@ -239,18 +250,17 @@ function auraCore:LoadProfile()
 	self.currentCampaignClassId = TRP3_API.quest.getQuestLog().currentCampaign; -- might be nil
 
 	for _, persistent in ipairs(self.currentProfile.auras) do
-		persistent.expiry = persistent.expiry or math.huge; -- Inf is stored as nil
 		local class = getClass(persistent.id);
 		if class.missing or persistent.invalid then
 			persistent.invalid = true;
-		elseif class.BA.AA and persistent.expiry < now and not class.BA.EE then
+		elseif class.BA.AA and nilToInf(persistent.expiry) < now and not class.BA.EE then
 			persistent.invalid = true;
 		elseif not class.BA.BC or self.currentCampaignClassId == getRootClassID(persistent.id) then
 			local dormancyDuration = 0;
 			if not class.BA.AA then
 				dormancyDuration = now - persistent.dormantSince;
 			end
-			persistent.expiry = persistent.expiry + dormancyDuration;
+			persistent.expiry = infToNil(nilToInf(persistent.expiry) + dormancyDuration);
 
 			if class.BA.IV and class.BA.IV < math.huge then
 				local elapsedTime = now - persistent.lastTick - dormancyDuration;
@@ -280,7 +290,7 @@ function auraCore:AnalyzeAuraClass(aura)
 end
 
 function auraCore:ModifyAuraDuration(aura, duration, method)
-	local currentExpiry = aura.persistent.expiry;
+	local currentExpiry = nilToInf(aura.persistent.expiry);
 	local newExpiry = currentExpiry;
 	local now = self:Now();
 	if method == "+" then
@@ -293,7 +303,7 @@ function auraCore:ModifyAuraDuration(aura, duration, method)
 		newExpiry = now + duration;
 	end
 	if newExpiry ~= currentExpiry then
-		aura.persistent.expiry = newExpiry;
+		aura.persistent.expiry = infToNil(newExpiry);
 		self:Update();
 	end
 end
@@ -347,7 +357,7 @@ function auraCore:InsertNewAura(auraId, class)
 	local now = self:Now();
 	local newAuraPersistent = {
 		id = auraId,
-		expiry = now + math.abs(class.BA.DU or math.huge),
+		expiry = infToNil(now + math.abs(class.BA.DU or math.huge)),
 		lastTick = now,
 		dormantSince = now
 	};
@@ -455,11 +465,11 @@ function auraCore:Update(doHardRefresh)
 					end
 				end
 			end
-			if aura.persistent.expiry <= now then
+			if nilToInf(aura.persistent.expiry) <= now then
 				if aura.class.LI and aura.class.LI.OE then
 					self:RunAuraScript(aura.class.LI.OE, aura.class.SC or {}, { object = aura.persistent }, aura.persistent.id);
 				end
-				if aura.persistent.expiry <= now then -- the script might have delayed the expiry
+				if nilToInf(aura.persistent.expiry) <= now then -- the script might have delayed the expiry
 					aura.persistent.invalid = true;
 					self:UnregisterAuraEvents(aura);
 					self.doHardRefresh = true;
@@ -486,7 +496,7 @@ function auraCore:Update(doHardRefresh)
 			aura.overlay = nil;
 		end
 
-		if aura.persistent.expiry < math.huge then
+		if aura.persistent.expiry then
 			aura.duration = self.timeFormatterCompact:Format(aura.persistent.expiry - now);
 		else
 			aura.duration = nil;
@@ -501,7 +511,7 @@ function auraCore:Update(doHardRefresh)
 			nextTimestamp = math.min(nextTimestamp, now + DYN_AURA_UPDATE_INTERVAL);
 		end
 
-		if aura.persistent.expiry < math.huge then
+		if aura.persistent.expiry then
 			nextTimestamp = math.min(nextTimestamp, aura.persistent.expiry);
 			local timeTillExpiry = aura.persistent.expiry - now;
 			if timeTillExpiry < 60 then
@@ -657,7 +667,7 @@ function auraCore:GetAuraTooltipLines(aura)
 		flavor = aura.class.BA.FL;
 	end
 
-	if aura.persistent.expiry < math.huge then
+	if aura.persistent.expiry then
 		expiry = loc.AU_EXPIRY:format(self.timeFormatterNormal:Format(aura.persistent.expiry - self:Now()));
 	end
 
@@ -686,7 +696,7 @@ function auraCore:GetAurasForInspection()
 					}
 				},
 				persistent = {
-					expiry = aura.persistent.expiry or math.huge
+					expiry = aura.persistent.expiry
 				}
 			});
 		end
@@ -726,7 +736,6 @@ function auraCore:UpdateInspectionFrame(auras)
 		else
 			tinsert(self.inspectDebuffs, aura);
 		end
-		aura.persistent.expiry = aura.persistent.expiry or math.huge;
 		aura.color = self:GetAuraColorFromClass(aura.class);
 	end
 
@@ -773,7 +782,7 @@ end
 TRP3_API.extended.auras.getDuration = function(auraId)
 	local aura = auraCore:FindAura(auraId);
 	if aura then
-		return aura.persistent.expiry - auraCore:Now();
+		return nilToInf(aura.persistent.expiry) - auraCore:Now();
 	else
 		return 0;
 	end
