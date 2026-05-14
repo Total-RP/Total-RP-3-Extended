@@ -22,7 +22,11 @@ function TRP3_Tools_EditorAuraMixin:UpdatePreview(doFullUpdate)
 	end
 
 	if doFullUpdate then
-		self.preview.persistent.expiry = time() + (self.gameplay.hasDuration:GetChecked() and tonumber(self.gameplay.duration:GetText()) or math.huge);
+		if self.gameplay.hasDuration:GetChecked() then
+			self.preview.persistent.expiry = time() + tonumber(self.gameplay.duration:GetText()) or 0;
+		else
+			self.preview.persistent.expiry = nil;
+		end
 		self.preview.class.BA.DE = TRP3_API.script.parseArgs(TRP3_API.utils.str.emptyToNil(strtrim(self.display.description.scroll.text:GetText())), TRP3_API.globals.empty);
 		self.preview.class.BA.NA = TRP3_API.utils.str.emptyToNil(strtrim(self.display.name:GetText()));
 		self.preview.class.BA.CA = TRP3_API.utils.str.emptyToNil(strtrim(self.display.category:GetText()));
@@ -113,7 +117,6 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 
 	self.preview = {
 		persistent = {
-			expiry = math.huge,
 		},
 		class = {
 			BA = {
@@ -124,7 +127,7 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 	gameplay.hasDuration:SetScript("OnClick", function()
 		if gameplay.hasDuration:GetChecked() then
 			local currDuration = tonumber(gameplay.duration:GetText());
-			if not currDuration or currDuration >= math.huge or currDuration <= 0 then
+			if not currDuration or currDuration <= 0 then
 				gameplay.duration:SetText("300");
 			end
 			gameplay.duration:Show();
@@ -140,7 +143,7 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 	gameplay.hasInterval:SetScript("OnClick", function()
 		if gameplay.hasInterval:GetChecked() then
 			local currInterval = tonumber(gameplay.interval:GetText());
-			if not currInterval or currInterval >= math.huge or currInterval <= 0 then
+			if not currInterval or currInterval <= 0 then
 				gameplay.interval:SetText("10");
 			end
 			gameplay.interval:Show();
@@ -174,7 +177,7 @@ function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, curso
 	self.display.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or "TEMP"));
 	self.display.icon.selectedIcon = BA.IC;
 
-	local hasDuration = (BA.DU or math.huge) < math.huge;
+	local hasDuration = BA.DU ~= nil;
 	self.gameplay.hasDuration:SetChecked(hasDuration);
 	self.gameplay.duration:SetShown(hasDuration);
 	self.gameplay.duration:SetText(("%0.1f"):format(BA.DU or 300):gsub("%.0+", "")); --  getting rid of ugly floating point artifacts
@@ -188,7 +191,7 @@ function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, curso
 
 	self.gameplay.cancellable:SetChecked(BA.CC or false);
 
-	local hasInterval = (BA.IV or math.huge) < math.huge;
+	local hasInterval = BA.IV ~= nil;
 	self.gameplay.hasInterval:SetChecked(hasInterval);
 	self.gameplay.interval:SetShown(hasInterval);
 	self.gameplay.interval:SetText(("%0.1f"):format(BA.IV or 10):gsub("%.0+", ""));
