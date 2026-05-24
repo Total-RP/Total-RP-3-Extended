@@ -128,6 +128,53 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
+	<Button name="TRP3_Tools_ScriptScriptListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptScriptListElementMixin">
+		<Size y="40"/>
+		<Frames>
+			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnDelete();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="LEFT">
+					<Size x="2000"/>
+					<Anchors>
+						<Anchor point="TOP" y="-4"/>
+						<Anchor point="LEFT" x="16"/>
+						<Anchor point="RIGHT" x="-2" relativePoint="LEFT" relativeKey="$parent.delete"/>
+						<Anchor point="BOTTOM" y="4" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="-1">
+				<Texture parentKey="securityIndicator">
+					<Color r="1" g="0.8" b="0.8"/>
+					<Anchors>
+						<Anchor point="TOP" y="-2"/>
+						<Anchor point="BOTTOM" y="2"/>
+						<Anchor point="LEFT" x="3"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="8"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
 	<Frame name="TRP3_Tools_ScriptConditionTermPreviewTemplate" virtual="true">
 		<Size y="20"/>
 		<Layers>
@@ -196,53 +243,37 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Frame>
 
+			<Frame name="$parentScriptList" parentKey="scriptList" inherits="TRP3_Tools_ListTemplate">
+				<KeyValues>
+					<KeyValue key="listElementTemplate" value="TRP3_Tools_ScriptScriptListElementTemplate" type="string"/>
+					<KeyValue key="listElementMixin" value="TRP3_Tools_ScriptScriptListElementMixin" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="LEFT" x="4" relativePoint="CENTER"/>
+				</Anchors>
+			</Frame>
+
+			<Button name="$parentScriptHeader" parentKey="scriptHeader" inherits="TRP3_Tools_ScriptScriptListElementTemplate" mixin="TRP3_Tools_ScriptScriptHeaderMixin">
+				<Anchors>
+					<Anchor point="TOPRIGHT"/>
+					<Anchor point="LEFT" x="4" relativePoint="CENTER"/>
+				</Anchors>
+			</Button>
+
 			<Frame name="$parentEffectList" parentKey="effectList" inherits="TRP3_Tools_ListTemplate">
 				<KeyValues>
 					<KeyValue key="listElementTemplate" value="TRP3_Tools_ScriptEffectListElementTemplate" type="string"/>
 					<KeyValue key="listElementMixin" value="TRP3_Tools_ScriptEffectListElementMixin" type="global"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPRIGHT" y="-25"/>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" y="-4" relativeKey="$parent.scriptHeader"/>
 					<Anchor point="BOTTOM"/>
 					<Anchor point="LEFT" x="4" relativePoint="CENTER"/>
 				</Anchors>
 			</Frame>
 
-			<DropdownButton parentKey="scriptList" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentScriptList">
-				<KeyValues>
-					<KeyValue key="titleText" value="Workflow" type="string"/>
-				</KeyValues>
-				<Anchors>
-					<Anchor point="TOP"/>
-					<Anchor point="RIGHT" relativePoint="CENTER" relativeKey="$parent.effectList"/>
-					<Anchor point="LEFT" relativePoint="CENTER" x="4"/>
-				</Anchors>
-			</DropdownButton>
-
-			<Frame parentKey="scriptControls">
-				<Anchors>
-					<Anchor point="TOP"/>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.scriptList"/>
-					<Anchor point="RIGHT"/>
-					<Anchor point="BOTTOM" relativeKey="$parent.scriptList"/>
-				</Anchors>
-				<Frames>
-					<Button parentKey="rename" text="Rename" inherits="TRP3_CommonButton">
-						<Size x="100" y="22"/>
-						<Anchors>
-							<Anchor point="LEFT"/>
-							<Anchor point="RIGHT" relativePoint="CENTER"/>
-						</Anchors>
-					</Button>
-					<Button parentKey="delete" text="DELETE" inherits="TRP3_CommonButton">
-						<Size x="100" y="22"/>
-						<Anchors>
-							<Anchor point="LEFT" relativePoint="CENTER"/>
-							<Anchor point="RIGHT"/>
-						</Anchors>
-					</Button>
-				</Frames>
-			</Frame>
 		</Frames>
 	</Frame>
 	

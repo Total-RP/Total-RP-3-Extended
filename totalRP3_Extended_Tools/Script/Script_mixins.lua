@@ -48,43 +48,37 @@ function TRP3_Tools_EditorScriptMixin:Initialize()
 	addon.script:Initialize();
 	self.triggers = {};
 	self.scripts = {};
-	self.scriptControls.rename:SetScript("OnClick", function()
-		self:RenameSelectedScript();
-	end);
-	self.scriptControls.delete:SetScript("OnClick", function()
-		self:DeleteSelectedScript();
-	end);
 	addon.utils.prepareForMultiSelectionMode(self.effectList);
+	addon.utils.prepareForMultiSelectionMode(self.scriptList);
 end
 
-function TRP3_Tools_EditorScriptMixin:RenameSelectedScript()
-	local oldScriptId = self.scriptList:GetSelectedValue();
-	if oldScriptId and self.scripts[oldScriptId] then
-		TRP3_API.popup.showTextInputPopup(loc.WO_ADD_ID, function(newScriptId)
-			newScriptId = strtrim(newScriptId or "");
-			if oldScriptId == newScriptId then
-				-- nothing to do
-			elseif newScriptId:len() == 0 or self.scripts[newScriptId] then
-				TRP3_API.popup.showAlertPopup(loc.WO_ADD_ID_NO_AVAILABLE);
-			else
-				self.scripts[newScriptId] = self.scripts[oldScriptId];
-				self.scripts[oldScriptId] = nil;
-				for _, trigger in ipairs(self.triggers) do
-					if trigger.script == oldScriptId then
-						trigger.script = newScriptId;
-					end
+function TRP3_Tools_EditorScriptMixin:RenameScript(oldScriptId)
+	TRP3_API.popup.showTextInputPopup(loc.WO_ADD_ID, function(newScriptId)
+		newScriptId = strtrim(newScriptId or "");
+		if oldScriptId == newScriptId then
+			-- nothing to do
+		elseif newScriptId:len() == 0 or self.scripts[newScriptId] then
+			TRP3_API.popup.showAlertPopup(loc.WO_ADD_ID_NO_AVAILABLE);
+		else
+			self.scripts[newScriptId] = self.scripts[oldScriptId];
+			self.scripts[oldScriptId] = nil;
+			for _, trigger in ipairs(self.triggers) do
+				if trigger.script == oldScriptId then
+					trigger.script = newScriptId;
 				end
-				self:OnScriptsChanged(nil, nil, {[oldScriptId] = newScriptId});
-				self:UpdateTriggerList();
-				self.scriptList:SetSelectedValue(newScriptId);
 			end
-		end, nil, oldScriptId);
-	end
+			self:OnScriptsChanged(nil, nil, {[oldScriptId] = newScriptId});
+			self:UpdateTriggerList();
+			if oldScriptId == self.selectedScriptId then
+				self.selectedScriptId = newScriptId;
+			end
+			self:OnScriptSelected(self.selectedScriptId);
+		end
+	end, nil, oldScriptId);
 end
 
 function TRP3_Tools_EditorScriptMixin:ConvertSelectedScriptEffects(filterFunc)
-	local scriptId = self.scriptList:GetSelectedValue();
-	local script = self.scripts[scriptId];
+	local script = self.scripts[self.selectedScriptId];
 
 	local prevIndex;
 	local targetIndex;
@@ -166,21 +160,17 @@ function TRP3_Tools_EditorScriptMixin:CountScriptReferences(scriptId)
 	return count;
 end
 
-function TRP3_Tools_EditorScriptMixin:DeleteSelectedScript()
-	local scriptId = self.scriptList:GetSelectedValue();
-	if scriptId and self.scripts[scriptId] then
-		if self:CountScriptReferences(scriptId) <= 0 then
+function TRP3_Tools_EditorScriptMixin:DeleteScript(scriptId)
+	if self:CountScriptReferences(scriptId) <= 0 then
+		self:DeleteScripts(scriptId);
+	else
+		TRP3_API.popup.showConfirmPopup("This workflow might still be used.|n|nAre you sure you want to delete it?", function()
 			self:DeleteScripts(scriptId);
-		else
-			TRP3_API.popup.showConfirmPopup("This workflow might still be used.|n|nAre you sure you want to delete it?", function()
-				self:DeleteScripts(scriptId);
-			end);
-		end
+		end);
 	end
 end
 
 function TRP3_Tools_EditorScriptMixin:DeleteScripts(...)
-	local selectedScript = self.scriptList:GetSelectedValue();
 	local deletions = {};
 	for _, scriptId in ipairs({...}) do
 		if self.scripts[scriptId] then
@@ -195,10 +185,10 @@ function TRP3_Tools_EditorScriptMixin:DeleteScripts(...)
 	end
 	self:OnScriptsChanged(deletions, nil, nil);
 	self:UpdateTriggerList();
-	if deletions[selectedScript or ""] then
-		self.scriptList:SetSelectedValue(nil);
+	if self.selectedScript and deletions[self.selectedScript] then
+		self:OnScriptSelected(nil);
 	else
-		self.scriptList:SetSelectedValue(selectedScript);
+		self:OnScriptSelected(self.selectedScript);
 	end
 end
 
@@ -244,7 +234,7 @@ function TRP3_Tools_EditorScriptMixin:OnTriggerChanged(originalTrigger, newTrigg
 		self:OnScriptsChanged(nil, {[newTrigger.script] = newTrigger.script}, nil);
 	end
 	self:UpdateTriggerList();
-	self.scriptList:SetSelectedValue(newTrigger.script);
+	self:OnScriptSelected(newTrigger.script);
 end
 
 function TRP3_Tools_EditorScriptMixin:OnEffectApplied(effectData)
@@ -271,52 +261,58 @@ function TRP3_Tools_EditorScriptMixin:DeleteTrigger(trigger)
 		end
 	end
 	self:UpdateTriggerList();
-	if trigger.script == self.scriptList:GetSelectedValue() then
-		self.scriptList:SetSelectedValue(nil);
+end
+
+function TRP3_Tools_EditorScriptMixin:GetScriptSecurity(scriptId)
+	local security = TRP3_API.security.SECURITY_LEVEL.HIGH;
+	for index, effect in ipairs(self.scripts[scriptId]) do
+		security = math.min(security, addon.script.getEffectSecurity(effect));
 	end
+	return security;
+end
+
+function TRP3_Tools_EditorScriptMixin:AddScript()
+	TRP3_API.popup.showTextInputPopup(loc.WO_ADD_ID, function(newScriptId)
+		newScriptId = strtrim(newScriptId or "");
+		if newScriptId:len() == 0 or self.scripts[newScriptId] then
+			TRP3_API.popup.showAlertPopup(loc.WO_ADD_ID_NO_AVAILABLE);
+		else
+			self.scripts[newScriptId] = {};
+			self:OnScriptsChanged(nil, {[newScriptId] = newScriptId}, nil);
+			self:OnScriptSelected(newScriptId);
+		end
+	end, nil, "");
 end
 
 function TRP3_Tools_EditorScriptMixin:OnScriptSelected(scriptId)
-	if scriptId == "" then
-		self.scriptList:SetSelectedValue(nil);
-		TRP3_API.popup.showTextInputPopup(loc.WO_ADD_ID, function(newScriptId)
-			newScriptId = strtrim(newScriptId or "");
-			if newScriptId:len() == 0 or self.scripts[newScriptId] then
-				TRP3_API.popup.showAlertPopup(loc.WO_ADD_ID_NO_AVAILABLE);
-			else
-				self.scripts[newScriptId] = {};
-				self:OnScriptsChanged(nil, {[newScriptId] = newScriptId}, nil);
-				self.scriptList:SetSelectedValue(newScriptId);
-			end
-		end, nil, "");
-	else
+	self.selectedScriptId = scriptId;
+	if scriptId then
 		local effects = {};
-		self.currentScriptSecurity = TRP3_API.security.SECURITY_LEVEL.HIGH;
-		if scriptId and self.scripts[scriptId] then
-			for index, effect in ipairs(self.scripts[scriptId]) do
-				local effectSecurity = addon.script.getEffectSecurity(effect);
-				table.insert(effects, {
-					title   = addon.script.getEffectTitle(effect),
-					preview = addon.script.getEffectPreview(effect),
-					icon    = "Interface\\Icons\\" .. addon.script.getEffectIcon(effect),
-					constraint = self:ConstraintToPreview(effect.constraint, "IF"),
-					security = effectSecurity
-				});
-				self.currentScriptSecurity = math.min(self.currentScriptSecurity, effectSecurity);
-			end
-			table.insert(effects, {isAddButton = true}); -- add button
-			self.scriptControls:Show();
-		else
-			self.scriptControls:Hide();
+		for index, effect in ipairs(self.scripts[scriptId]) do
+			table.insert(effects, {
+				title   = addon.script.getEffectTitle(effect),
+				preview = addon.script.getEffectPreview(effect),
+				icon    = "Interface\\Icons\\" .. addon.script.getEffectIcon(effect),
+				constraint = self:ConstraintToPreview(effect.constraint, "IF"),
+				security = addon.script.getEffectSecurity(effect)
+			});
 		end
+		table.insert(effects, {isAddButton = true});
+	
 		self.effectList.model:Flush();
 		self.effectList.model:InsertTable(effects);
-
-		for index, trigger in self.triggerList.model:EnumerateEntireRange() do
-			trigger.active = trigger.index and self.triggers[trigger.index].script == scriptId;
-		end
-		self.triggerList:Refresh();
+		self.scriptHeader:Initialize({scriptId = scriptId});
+	else
+		self.scriptList:Refresh();
 	end
+	for index, trigger in self.triggerList.model:EnumerateEntireRange() do
+		trigger.active = trigger.index and self.triggers[trigger.index].script == scriptId;
+	end
+	self.triggerList:Refresh();
+
+	self.scriptList:SetShown(scriptId == nil);
+	self.effectList:SetShown(scriptId ~= nil);
+	self.scriptHeader:SetShown(scriptId ~= nil);
 end
 
 function TRP3_Tools_EditorScriptMixin:ConstraintToPreview(constraint, qualifier)
@@ -365,7 +361,7 @@ function TRP3_Tools_EditorScriptMixin:TriggerToPreview(class, trigger, index)
 		triggerPreview.thenText = ("then start workflow %s"):format(addon.script.formatters.unknown(""));
 	end
 	triggerPreview.constraint = self:ConstraintToPreview(trigger.constraint, "WHILE"); -- TODO
-	triggerPreview.active = trigger.script and trigger.script == self.scriptList:GetSelectedValue();
+	triggerPreview.active = trigger.script and trigger.script == self.selectedScriptId;
 	return triggerPreview;
 end
 
@@ -385,20 +381,25 @@ function TRP3_Tools_EditorScriptMixin:ClassToInterface(class, creationClass, cur
 
 	self:UpdateTriggerList();
 
-	self.scriptList:SetSelectedValue(cursor and cursor.scriptId);
-
+	if cursor and cursor.scriptId and self.scripts[cursor.scriptId] then
+		self:OnScriptSelected(cursor.scriptId);
+	else
+		self:OnScriptSelected(nil);
+	end
 end
 
 function TRP3_Tools_EditorScriptMixin:UpdateScriptList()
 	local scriptList = {};
 	for scriptId, _ in pairs(self.scripts) do
-		table.insert(scriptList, {scriptId, scriptId});
+		table.insert(scriptList, {scriptId = scriptId});
 	end
 	table.sort(scriptList, function(a, b) 
-		return a[1] < b[1];
+		return a.scriptId < b.scriptId;
 	end);
-	table.insert(scriptList, {"|TInterface\\PaperDollInfoFrame\\Character-Plus:16:16|t " .. loc.WO_ADD, ""});
-	TRP3_API.ui.listbox.setupListBox(self.scriptList, scriptList, function(scriptId) self:OnScriptSelected(scriptId); end, "(no workflow selected)");
+	table.insert(scriptList, {isAddButton = true});
+
+	self.scriptList.model:Flush();
+	self.scriptList.model:InsertTable(scriptList);
 end
 
 function TRP3_Tools_EditorScriptMixin:UpdateTriggerList()
@@ -466,7 +467,7 @@ function TRP3_Tools_EditorScriptMixin:InterfaceToClass(targetClass, targetCursor
 	end
 
 	if targetCursor then
-		targetCursor.scriptId = self.scriptList:GetSelectedValue();
+		targetCursor.scriptId = self.selectedScriptId;
 	end
 
 end
@@ -624,18 +625,18 @@ function TRP3_Tools_ScriptTriggerListElementMixin:OnClick(button)
 			if self.data.active or not trigger.script then
 				addon.modal:ShowModal(TRP3_API.popup.TRIGGER, {trigger});
 			end
-			addon.editor.script.scriptList:SetSelectedValue(trigger.script);
+			addon.editor.script:OnScriptSelected(trigger.script);
 		elseif button == "RightButton" then
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, contextMenu)
 				local editOption = contextMenu:CreateButton("Edit trigger...", function()
 					addon.modal:ShowModal(TRP3_API.popup.TRIGGER, {trigger});
-					addon.editor.script.scriptList:SetSelectedValue(trigger.script);
+					addon.editor.script:OnScriptSelected(trigger.script);
 				end);
 				TRP3_MenuUtil.SetElementTooltip(editOption, "Edit trigger...");
 
 				if trigger.script then
 					local openOption = contextMenu:CreateButton("Edit workflow...", function()
-						addon.editor.script.scriptList:SetSelectedValue(trigger.script);
+						addon.editor.script:OnScriptSelected(trigger.script);
 					end);
 					TRP3_MenuUtil.SetElementTooltip(openOption, "Edit workflow...");
 				end
@@ -700,7 +701,6 @@ function TRP3_Tools_ScriptEffectListElementMixin:Refresh()
 
 		tooltipText = 
 			"Effect security: " .. TRP3_API.security.getSecurityText(self.data.security or TRP3_API.security.SECURITY_LEVEL.LOW)  .. "|n" ..
-			"Workflow security: " .. TRP3_API.security.getSecurityText(addon.editor.script.currentScriptSecurity or TRP3_API.security.SECURITY_LEVEL.LOW)  .. "|n|n" ..
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit effect") .. "|n" ..
 			TRP3_API.FormatShortcutWithInstruction("RCLICK", "more options") .. "|n" ..
 			TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", "select range") .. "|n" ..
@@ -741,7 +741,7 @@ function TRP3_Tools_ScriptEffectListElementMixin:OnLeave()
 end
 
 function TRP3_Tools_ScriptEffectListElementMixin:OnClick(button)
-	local scriptId = addon.editor.script.scriptList:GetSelectedValue();
+	local scriptId = addon.editor.script.selectedScriptId;
 	if not scriptId or not addon.editor.script.scripts[scriptId] then 
 		return;
 	end
@@ -974,7 +974,225 @@ function TRP3_Tools_ScriptEffectListElementMixin:OnClick(button)
 end
 
 function TRP3_Tools_ScriptEffectListElementMixin:OnDelete()
-	local scriptId = addon.editor.script.scriptList:GetSelectedValue();
+	local scriptId = addon.editor.script.selectedScriptId;
 	local effectIndex = addon.editor.script.effectList.model:FindIndex(self.data);
 	addon.editor.script:DeleteEffect(scriptId, effectIndex);
+end
+
+TRP3_Tools_ScriptScriptListElementMixin = {};
+
+function TRP3_Tools_ScriptScriptListElementMixin:Initialize(data)
+	self.data = data;
+	self:Refresh();
+end
+
+function TRP3_Tools_ScriptScriptListElementMixin:Refresh()
+	local tooltipTitle;
+	local tooltipText;
+	if not self.data.isAddButton then
+		self.title:SetText(self.data.scriptId);
+		local scriptSecurity = addon.editor.script:GetScriptSecurity(self.data.scriptId);
+		applySecurityColorToTexture(scriptSecurity, self.securityIndicator);
+		tooltipTitle = self.data.scriptId;
+		tooltipText = 
+			"Workflow security: " .. TRP3_API.security.getSecurityText(scriptSecurity)  .. "|n" ..
+			TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit workflow") .. "|n" ..
+			TRP3_API.FormatShortcutWithInstruction("RCLICK", "more options") .. "|n" ..
+			TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", "select range") .. "|n" ..
+			TRP3_API.FormatShortcutWithInstruction("CTRL-CLICK", "select this workflow")
+		;
+	else
+		self.title:SetText("|TInterface\\PaperDollInfoFrame\\Character-Plus:16:16|t " .. loc.WO_ADD);
+		applySecurityColorToTexture(0, self.securityIndicator);
+		tooltipTitle = loc.WO_ADD;
+		tooltipText = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.WO_ADD);
+	end
+	self.delete:SetShown(not self.data.isAddButton);
+	self:SetSelected(self.data.selected);
+
+	TRP3_API.ui.tooltip.setTooltipForSameFrame(self, "BOTTOMRIGHT", 0, 0, tooltipTitle, tooltipText);
+end
+
+function TRP3_Tools_ScriptScriptListElementMixin:OnEnter()
+	TRP3_RefreshTooltipForFrame(self);
+end
+
+function TRP3_Tools_ScriptScriptListElementMixin:OnLeave()
+	TRP3_MainTooltip:Hide();
+end
+
+function TRP3_Tools_ScriptScriptListElementMixin:OnClick(button)
+
+	if self.data.isAddButton then
+		if button == "LeftButton" then
+			addon.editor.script:AddScript();
+		elseif button == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, contextMenu)
+				local addOption = contextMenu:CreateButton(loc.WO_ADD, function()
+					addon.editor.script:AddScript();
+				end);
+				TRP3_MenuUtil.SetElementTooltip(addOption, loc.WO_ADD);
+			end);
+		end
+	else
+		if button == "LeftButton" then
+			if IsControlKeyDown() then
+				addon.editor.script.scriptList:ToggleSingleSelect(self.data);
+			elseif IsShiftKeyDown() then
+				addon.editor.script.scriptList:ToggleRangeSelect(self.data);
+			else
+				addon.editor.script:OnScriptSelected(self.data.scriptId);
+			end
+		elseif button == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, contextMenu)
+				local editOption = contextMenu:CreateButton("Edit workflow...", function()
+					addon.editor.script:OnScriptSelected(self.data.scriptId);
+				end);
+				TRP3_MenuUtil.SetElementTooltip(editOption, "Edit workflow...");
+
+				local renameOption = contextMenu:CreateButton("Rename workflow...", function()
+					addon.editor.script:RenameScript(self.data.scriptId);
+				end);
+				TRP3_MenuUtil.SetElementTooltip(renameOption, "Rename workflow...");
+
+				-- contextMenu:CreateDivider();
+
+				-- local copyOption = contextMenu:CreateButton("Copy", function()
+				-- 	addon.clipboard.clear();
+				-- 	addon.clipboard.append(effect, addon.clipboard.types.EFFECT);
+				-- end);
+				-- TRP3_MenuUtil.SetElementTooltip(copyOption, "Copy this effect");
+
+				-- if self.data.selected then
+				-- 	local copySelectionOption = contextMenu:CreateButton("Copy selected effects", function()
+				-- 		addon.clipboard.clear();
+				-- 		for index, element in addon.editor.script.effectList.model:EnumerateEntireRange() do
+				-- 			if element.selected then
+				-- 				addon.clipboard.append(addon.editor.script.scripts[scriptId][index], addon.clipboard.types.EFFECT);
+				-- 			end
+				-- 		end
+				-- 		addon.editor.script.effectList:SetAllSelected(false);
+				-- 	end);
+				-- 	TRP3_MenuUtil.SetElementTooltip(copySelectionOption, "Copy all selected effects");
+				-- end
+
+				-- local copyAllOption = contextMenu:CreateButton("Copy all effects", function()
+				-- 	addon.clipboard.clear();
+				-- 	for index, element in addon.editor.script.effectList.model:EnumerateEntireRange() do
+				-- 		if not element.isAddButton then
+				-- 			addon.clipboard.append(addon.editor.script.scripts[scriptId][index], addon.clipboard.types.EFFECT);
+				-- 		end
+				-- 	end
+				-- end);
+				-- TRP3_MenuUtil.SetElementTooltip(copyAllOption, "Copy all effects");
+				
+
+				-- if addon.clipboard.isPasteCompatible(addon.clipboard.types.EFFECT) then
+				-- 	local count = addon.clipboard.count();
+				-- 	local script = addon.editor.script.scripts[scriptId];
+
+				-- 	local beforeText, afterText;
+				-- 	if count == 1 then
+				-- 		beforeText = "Paste effect before";
+				-- 		afterText = "Paste effect after";
+				-- 	else
+				-- 		beforeText = "Paste " .. count .. " effects before";
+				-- 		afterText = "Paste " .. count .. " effects after";
+				-- 	end
+
+				-- 	local pasteBeforeOption = contextMenu:CreateButton(beforeText, function()
+				-- 		for index = 1, count do
+				-- 			table.insert(script, effectIndex + index - 1, addon.clipboard.retrieve(index));
+				-- 		end
+				-- 		addon.editor.script:OnScriptSelected(scriptId);
+				-- 	end);
+				-- 	TRP3_MenuUtil.SetElementTooltip(pasteBeforeOption, beforeText);
+
+				-- 	local pasteAfterOption = contextMenu:CreateButton(afterText, function()
+				-- 		for index = 1, count do
+				-- 			table.insert(script, effectIndex + index, addon.clipboard.retrieve(index));
+				-- 		end
+				-- 		addon.editor.script:OnScriptSelected(scriptId);
+				-- 	end);
+				-- 	TRP3_MenuUtil.SetElementTooltip(pasteAfterOption, afterText);
+				-- end
+
+				contextMenu:CreateDivider();
+				
+				local deleteOption = contextMenu:CreateButton(DELETE, function()
+					self:OnDelete();
+				end);
+				TRP3_MenuUtil.SetElementTooltip(deleteOption, DELETE);
+
+				-- if self.data.selected then
+				-- 	local deleteSelectionOption = contextMenu:CreateButton("Delete selected effects", function()
+				-- 		local newScript = {};
+				-- 		for index, element in addon.editor.script.effectList.model:EnumerateEntireRange() do
+				-- 			if not element.isAddButton and not element.selected then
+				-- 				table.insert(newScript, addon.editor.script.scripts[scriptId][index]);
+				-- 			end
+				-- 		end
+				-- 		wipe(addon.editor.script.scripts[scriptId]);
+				-- 		addon.editor.script.scripts[scriptId] = newScript;
+				-- 		addon.editor.script:OnScriptSelected(scriptId);
+				-- 	end);
+				-- 	TRP3_MenuUtil.SetElementTooltip(deleteSelectionOption, "Delete selected effects");
+				-- end
+
+			end);
+		end
+	end	
+
+end
+
+function TRP3_Tools_ScriptScriptListElementMixin:OnDelete()
+	addon.editor.script:DeleteScript(self.data.scriptId);
+end
+
+TRP3_Tools_ScriptScriptHeaderMixin = CreateFromMixins(TRP3_Tools_ScriptScriptListElementMixin);
+
+function TRP3_Tools_ScriptScriptHeaderMixin:Refresh()
+	local tooltipTitle;
+	local tooltipText;
+
+	self.title:SetText("|A:common-icon-exit:20:20|a" .. self.data.scriptId);
+	local scriptSecurity = addon.editor.script:GetScriptSecurity(self.data.scriptId);
+	applySecurityColorToTexture(scriptSecurity, self.securityIndicator);
+	tooltipTitle = self.data.scriptId;
+	tooltipText = 
+		"Workflow security: " .. TRP3_API.security.getSecurityText(scriptSecurity)  .. "|n" ..
+		TRP3_API.FormatShortcutWithInstruction("LCLICK", "back to workflows") .. "|n" ..
+		TRP3_API.FormatShortcutWithInstruction("RCLICK", "more options")
+	;
+
+	self.delete:SetShown(true);
+	self:SetSelected(false);
+
+	TRP3_API.ui.tooltip.setTooltipForSameFrame(self, "BOTTOMRIGHT", 0, 0, tooltipTitle, tooltipText);
+end
+
+function TRP3_Tools_ScriptScriptHeaderMixin:OnClick(button)
+	if button == "LeftButton" then
+		addon.editor.script:OnScriptSelected(nil);
+	elseif button == "RightButton" then
+		TRP3_MenuUtil.CreateContextMenu(self, function(_, contextMenu)
+			local backOption = contextMenu:CreateButton("Back to workflows", function()
+				addon.editor.script:OnScriptSelected(nil);
+			end);
+			TRP3_MenuUtil.SetElementTooltip(backOption, "Back to workflows");
+
+			local renameOption = contextMenu:CreateButton("Rename workflow...", function()
+				addon.editor.script:RenameScript(self.data.scriptId);
+			end);
+			TRP3_MenuUtil.SetElementTooltip(renameOption, "Rename workflow...");
+
+			contextMenu:CreateDivider();
+			
+			local deleteOption = contextMenu:CreateButton(DELETE, function()
+				self:OnDelete();
+			end);
+			TRP3_MenuUtil.SetElementTooltip(deleteOption, DELETE);
+
+		end);
+	end
 end
