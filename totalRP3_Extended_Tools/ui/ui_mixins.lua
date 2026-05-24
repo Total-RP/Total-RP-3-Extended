@@ -65,7 +65,8 @@ end
 TRP3_Tools_ListElementMixin = {};
 function TRP3_Tools_ListElementMixin:SetSelected(selected)
 	if selected then
-		self.background:SetVertexColor(0.8, 0.4, 0.1);
+		--self.background:SetVertexColor(0.8, 0.4, 0.1);
+		self.background:SetVertexColor(0.2, 0.5, 1.0);
 	else
 		self.background:SetVertexColor(0.5, 0.5, 0.5);
 	end

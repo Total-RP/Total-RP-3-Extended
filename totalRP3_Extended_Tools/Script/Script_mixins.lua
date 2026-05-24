@@ -170,6 +170,26 @@ function TRP3_Tools_EditorScriptMixin:DeleteScript(scriptId)
 	end
 end
 
+function TRP3_Tools_EditorScriptMixin:PasteScriptsFromClipboard()
+	if not addon.clipboard.isPasteCompatible(addon.clipboard.types.SCRIPT) then
+		return;
+	end
+	for index = 1, addon.clipboard.count() do
+		local scriptId = addon.clipboard.retrieveSubId(index);
+		if self.scripts[scriptId] then
+			TRP3_API.utils.message.displayMessage("A workflow named \"".. scriptId .."\" already exists.", 4);
+			return;
+		end
+	end
+	local insertions = {};
+	for index = 1, addon.clipboard.count() do
+		local scriptId = addon.clipboard.retrieveSubId(index);
+		self.scripts[scriptId] = addon.clipboard.retrieve(index);
+		insertions[scriptId] = scriptId;
+	end
+	self:OnScriptsChanged(nil, insertions, nil);
+end
+
 function TRP3_Tools_EditorScriptMixin:DeleteScripts(...)
 	local deletions = {};
 	for _, scriptId in ipairs({...}) do
@@ -769,7 +789,7 @@ function TRP3_Tools_ScriptEffectListElementMixin:OnClick(button)
 
 				local script = addon.editor.script.scripts[scriptId];
 				if TableIsEmpty(script) and addon.clipboard.isPasteCompatible(addon.clipboard.types.EFFECT) then
-					local count = addon.clipboard.count();	
+					local count = addon.clipboard.count();
 					local optionText;
 					if count == 1 then
 						optionText = "Paste effect";
@@ -1032,6 +1052,20 @@ function TRP3_Tools_ScriptScriptListElementMixin:OnClick(button)
 					addon.editor.script:AddScript();
 				end);
 				TRP3_MenuUtil.SetElementTooltip(addOption, loc.WO_ADD);
+
+				if addon.clipboard.isPasteCompatible(addon.clipboard.types.SCRIPT) then
+					local count = addon.clipboard.count();
+					local pasteText;
+					if count == 1 then
+						pasteText = "Paste workflow";
+					else
+						pasteText = "Paste " .. count .. " workflows";
+					end
+					local pasteOption = contextMenu:CreateButton(pasteText, function()
+						addon.editor.script:PasteScriptsFromClipboard();
+					end);
+					TRP3_MenuUtil.SetElementTooltip(pasteOption, pasteText);
+				end
 			end);
 		end
 	else
@@ -1055,67 +1089,40 @@ function TRP3_Tools_ScriptScriptListElementMixin:OnClick(button)
 				end);
 				TRP3_MenuUtil.SetElementTooltip(renameOption, "Rename workflow...");
 
-				-- contextMenu:CreateDivider();
+				contextMenu:CreateDivider();
 
-				-- local copyOption = contextMenu:CreateButton("Copy", function()
-				-- 	addon.clipboard.clear();
-				-- 	addon.clipboard.append(effect, addon.clipboard.types.EFFECT);
-				-- end);
-				-- TRP3_MenuUtil.SetElementTooltip(copyOption, "Copy this effect");
+				local copyOption = contextMenu:CreateButton("Copy", function()
+					addon.clipboard.clear();
+					addon.clipboard.append(addon.editor.script.scripts[self.data.scriptId], addon.clipboard.types.SCRIPT, nil, nil, self.data.scriptId);
+				end);
+				TRP3_MenuUtil.SetElementTooltip(copyOption, "Copy this workflow");
 
-				-- if self.data.selected then
-				-- 	local copySelectionOption = contextMenu:CreateButton("Copy selected effects", function()
-				-- 		addon.clipboard.clear();
-				-- 		for index, element in addon.editor.script.effectList.model:EnumerateEntireRange() do
-				-- 			if element.selected then
-				-- 				addon.clipboard.append(addon.editor.script.scripts[scriptId][index], addon.clipboard.types.EFFECT);
-				-- 			end
-				-- 		end
-				-- 		addon.editor.script.effectList:SetAllSelected(false);
-				-- 	end);
-				-- 	TRP3_MenuUtil.SetElementTooltip(copySelectionOption, "Copy all selected effects");
-				-- end
+				if self.data.selected then
+					local copySelectionOption = contextMenu:CreateButton("Copy selected workflows", function()
+						addon.clipboard.clear();
+						for index, element in addon.editor.script.scriptList.model:EnumerateEntireRange() do
+							if element.selected then
+								addon.clipboard.append(addon.editor.script.scripts[element.scriptId], addon.clipboard.types.SCRIPT, nil, nil, element.scriptId);
+							end
+						end
+						addon.editor.script.scriptList:SetAllSelected(false);
+					end);
+					TRP3_MenuUtil.SetElementTooltip(copySelectionOption, "Copy all selected workflows");
+				end
 
-				-- local copyAllOption = contextMenu:CreateButton("Copy all effects", function()
-				-- 	addon.clipboard.clear();
-				-- 	for index, element in addon.editor.script.effectList.model:EnumerateEntireRange() do
-				-- 		if not element.isAddButton then
-				-- 			addon.clipboard.append(addon.editor.script.scripts[scriptId][index], addon.clipboard.types.EFFECT);
-				-- 		end
-				-- 	end
-				-- end);
-				-- TRP3_MenuUtil.SetElementTooltip(copyAllOption, "Copy all effects");
-				
-
-				-- if addon.clipboard.isPasteCompatible(addon.clipboard.types.EFFECT) then
-				-- 	local count = addon.clipboard.count();
-				-- 	local script = addon.editor.script.scripts[scriptId];
-
-				-- 	local beforeText, afterText;
-				-- 	if count == 1 then
-				-- 		beforeText = "Paste effect before";
-				-- 		afterText = "Paste effect after";
-				-- 	else
-				-- 		beforeText = "Paste " .. count .. " effects before";
-				-- 		afterText = "Paste " .. count .. " effects after";
-				-- 	end
-
-				-- 	local pasteBeforeOption = contextMenu:CreateButton(beforeText, function()
-				-- 		for index = 1, count do
-				-- 			table.insert(script, effectIndex + index - 1, addon.clipboard.retrieve(index));
-				-- 		end
-				-- 		addon.editor.script:OnScriptSelected(scriptId);
-				-- 	end);
-				-- 	TRP3_MenuUtil.SetElementTooltip(pasteBeforeOption, beforeText);
-
-				-- 	local pasteAfterOption = contextMenu:CreateButton(afterText, function()
-				-- 		for index = 1, count do
-				-- 			table.insert(script, effectIndex + index, addon.clipboard.retrieve(index));
-				-- 		end
-				-- 		addon.editor.script:OnScriptSelected(scriptId);
-				-- 	end);
-				-- 	TRP3_MenuUtil.SetElementTooltip(pasteAfterOption, afterText);
-				-- end
+				if addon.clipboard.isPasteCompatible(addon.clipboard.types.SCRIPT) then
+					local count = addon.clipboard.count();
+					local pasteText;
+					if count == 1 then
+						pasteText = "Paste workflow";
+					else
+						pasteText = "Paste " .. count .. " workflows";
+					end
+					local pasteOption = contextMenu:CreateButton(pasteText, function()
+						addon.editor.script:PasteScriptsFromClipboard();
+					end);
+					TRP3_MenuUtil.SetElementTooltip(pasteOption, pasteText);
+				end
 
 				contextMenu:CreateDivider();
 				
@@ -1123,21 +1130,6 @@ function TRP3_Tools_ScriptScriptListElementMixin:OnClick(button)
 					self:OnDelete();
 				end);
 				TRP3_MenuUtil.SetElementTooltip(deleteOption, DELETE);
-
-				-- if self.data.selected then
-				-- 	local deleteSelectionOption = contextMenu:CreateButton("Delete selected effects", function()
-				-- 		local newScript = {};
-				-- 		for index, element in addon.editor.script.effectList.model:EnumerateEntireRange() do
-				-- 			if not element.isAddButton and not element.selected then
-				-- 				table.insert(newScript, addon.editor.script.scripts[scriptId][index]);
-				-- 			end
-				-- 		end
-				-- 		wipe(addon.editor.script.scripts[scriptId]);
-				-- 		addon.editor.script.scripts[scriptId] = newScript;
-				-- 		addon.editor.script:OnScriptSelected(scriptId);
-				-- 	end);
-				-- 	TRP3_MenuUtil.SetElementTooltip(deleteSelectionOption, "Delete selected effects");
-				-- end
 
 			end);
 		end

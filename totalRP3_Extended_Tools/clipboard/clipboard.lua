@@ -16,7 +16,8 @@ addon.clipboard.types = {
 	DOCUMENT_PAGE   = "DO_PA",
 	CAMPAIGN_NPC    = "CA_NPC",
 	EFFECT          = "SC_ST", -- "script step"
-	CONDITION_TEST  = "CO_EQ"
+	CONDITION_TEST  = "CO_EQ",
+	SCRIPT          = "SC"
 };
 
 local TYPES_WITH_MD = {
@@ -103,4 +104,8 @@ end
 
 function addon.clipboard.retrieveId(index)
 	return clipboardData[index or 1].absoluteId;
+end
+
+function addon.clipboard.retrieveSubId(index)
+	return clipboardData[index or 1].subId;
 end
