@@ -1,5 +1,4 @@
 local _, addon = ...
-local loc = TRP3_API.loc;
 
 addon.script.operand = {};
 
@@ -21,9 +20,9 @@ function addon.script.operand.acquireOperandEditor(operandData, widgetList, scri
 	local _, groups = addon.script.parameter.acquireWidgets(operandSpec.parameters, widgetList, scriptContextFunction);
 	addon.script.parameter.setValues(widgetList, operandSpec.parameters, operandData.parameters, groups);
 	local widgetSkipList = {};
-	for groupId, group in pairs(groups) do
+	for _groupId, group in pairs(groups) do
 		local first = math.min(unpack(group));
-		for index, mIndex in ipairs(group) do
+		for _index, mIndex in ipairs(group) do
 			if mIndex > first then
 				widgetSkipList[mIndex] = true;
 			end
@@ -35,7 +34,7 @@ end
 function addon.script.operand.getDefaultOperandEditorValues(operandData)
 	local operandSpec = addon.script.getOperandById(operandData.id);
 	wipe(operandData.parameters);
-	for index, parameter in ipairs(operandSpec.parameters) do
+	for _, parameter in ipairs(operandSpec.parameters) do
 		table.insert(operandData.parameters, parameter.default);
 	end
 end

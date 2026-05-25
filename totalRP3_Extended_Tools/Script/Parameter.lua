@@ -1,5 +1,4 @@
 local _, addon = ...
-local loc = TRP3_API.loc;
 
 local paramaterPoolCollection = CreateFramePoolCollection();
 
@@ -44,8 +43,8 @@ local function getGroupsFromParameterList(parameters)
 			table.insert(groups[parameter.groupId], index);
 		end
 	end
-	for groupId, members in pairs(groups) do
-		table.sort(members, function(m1, m2) 
+	for _groupId, members in pairs(groups) do
+		table.sort(members, function(m1, m2)
 			return parameters[m1].memberIndex < parameters[m2].memberIndex;
 		end);
 	end
@@ -77,7 +76,7 @@ function addon.script.parameter.acquireWidgets(parameters, widgetList, scriptCon
 		elseif parameter.values then
 			widget = getWidget("TRP3_Tools_ScriptParameterDropdownTemplate");
 			widget:Setup(widgetList, parameter);
-		elseif addon.script.parameter.objectMap[parameter.type] then 
+		elseif addon.script.parameter.objectMap[parameter.type] then
 			widget = getWidget("TRP3_Tools_ScriptParameterObjectTemplate");
 			widget:Setup(widgetList, parameter);
 		elseif templateMap[parameter.type] then

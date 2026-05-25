@@ -11,18 +11,17 @@ function TRP3_Tools_EditorQuestMixin:Initialize()
 
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.main.icon, "RIGHT", 0, 5, "Quest icon", loc.EDITOR_ICON_SELECT);
 	self.main.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon) 
+		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon)
 				self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
 				self.main.icon.selectedIcon = icon;
-			end, 
-			nil, 
-			nil, 
+			end,
+			nil,
+			nil,
 			self.main.icon.selectedIcon});
 	end);
-	
 end
 
-function TRP3_Tools_EditorQuestMixin:ClassToInterface(class, creationClass, cursor)
+function TRP3_Tools_EditorQuestMixin:ClassToInterface(class, _creationClass, _cursor)
 	local BA = class.BA or TRP3_API.globals.empty;
 
 	self.main.name:SetText(BA.NA or "");
@@ -44,13 +43,13 @@ function TRP3_Tools_EditorQuestMixin:ClassToInterface(class, creationClass, curs
 	table.insert(objectives, {
 		isAddButton = true
 	});
-	
+
 	self.objective.list.model:Flush();
 	self.objective.list.model:InsertTable(objectives);
 	self.objective.sharedObjectiveEditor:Hide();
 end
 
-function TRP3_Tools_EditorQuestMixin:InterfaceToClass(targetClass, targetCursor)
+function TRP3_Tools_EditorQuestMixin:InterfaceToClass(targetClass, _targetCursor)
 	self:SaveActiveObjectiveIndex();
 
 	targetClass.BA = targetClass.BA or {};
@@ -59,7 +58,7 @@ function TRP3_Tools_EditorQuestMixin:InterfaceToClass(targetClass, targetCursor)
 	targetClass.BA.IC = self.main.icon.selectedIcon;
 	targetClass.BA.IN = self.main.auto:GetChecked();
 	targetClass.BA.PR = self.main.progress:GetChecked();
-	
+
 	targetClass.OB = targetClass.OB or {};
 	wipe(targetClass.OB);
 	for _, objectiveData in self.objective.list.model:EnumerateEntireRange() do
@@ -70,8 +69,6 @@ function TRP3_Tools_EditorQuestMixin:InterfaceToClass(targetClass, targetCursor)
 			};
 		end
 	end
-
-	
 end
 
 function TRP3_Tools_EditorQuestMixin:ListObjectives()
@@ -162,7 +159,7 @@ function TRP3_Tools_QuestObjectiveListElementMixin:Refresh()
 		self.editor.id:SetText(self.data.ID or "");
 		self.editor.text:SetText(self.data.TX or "");
 		self.editor.auto:SetChecked(self.data.AA == true);
-		
+
 		self.editor:Show();
 	else
 		self.id:Show();
@@ -186,8 +183,8 @@ function TRP3_Tools_QuestObjectiveListElementMixin:Refresh()
 		else
 			tooltipText = "|cFFFF0000This objective won't be saved unless an id is specified.|r|n|n";
 		end
-		tooltipText = 
-			tooltipText .. 
+		tooltipText =
+			tooltipText ..
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit objective") .. "|n" ..
 			TRP3_API.FormatShortcutWithInstruction("RCLICK", "more options")
 		;
@@ -227,18 +224,17 @@ function TRP3_Tools_QuestObjectiveListElementMixin:OnClick(button)
 	elseif button == "RightButton" and not self.data.active then
 		TRP3_MenuUtil.CreateContextMenu(self, function(_, contextMenu)
 			contextMenu:CreateTitle(loc.QE_OBJ_SINGULAR);
-			
+
 			local editOption = contextMenu:CreateButton("Edit", function()
 				questEditor:SetActiveObjectiveIndex(objectiveIndex);
 			end);
 			TRP3_MenuUtil.SetElementTooltip(editOption, "Edit objective");
 
 			contextMenu:CreateDivider();
-			local deleteOption = contextMenu:CreateButton(DELETE, function()
+			contextMenu:CreateButton(DELETE, function()
 				questEditor:DeleteObjectiveAtIndex(objectiveIndex);
 			end);
 		end);
-
 	end
 end
 

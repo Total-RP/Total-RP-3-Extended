@@ -6,7 +6,7 @@ TRP3_Tools_EditorAuraMixin = CreateFromMixins(TRP3_Tools_EditorObjectMixin);
 function TRP3_Tools_EditorAuraMixin:UpdatePreview(doFullUpdate)
 	self.preview.class.BA.IC = self.display.icon.selectedIcon;
 	self.preview.class.BA.OV = TRP3_API.utils.str.emptyToNil(strtrim(self.display.overlay:GetText()));
-	
+
 	local r, g, b = self.display.borderPicker.red, self.display.borderPicker.green, self.display.borderPicker.blue;
 	if r and g and b then
 		self.preview.class.BA.CO = TRP3_API.CreateColorFromBytes(r, g, b):GenerateHexColorOpaque();
@@ -38,7 +38,6 @@ function TRP3_Tools_EditorAuraMixin:UpdatePreview(doFullUpdate)
 end
 
 function TRP3_Tools_EditorAuraMixin:Initialize()
-	local s = self;
 
 	local display = self.display;
 	local gameplay = self.gameplay;
@@ -68,7 +67,7 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 			display.borderPicker.setColor(nil);
 		end
 	end
-	
+
 	display.overlay:SetScript("OnTextChanged", function()
 		self:UpdatePreview();
 	end);
@@ -76,43 +75,45 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 
 	display.description:SetupSuggestions("Tag", addon.editor.populateObjectTagMenu);
 
-	display.preset:SetScript("OnClick", function(self)
-		TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+	display.preset:SetScript("OnClick", function(presetButton)
+		TRP3_MenuUtil.CreateContextMenu(presetButton, function(_, description)
 			for _, preset in pairs(presetMenu) do
 				description:CreateButton(preset[1], applyPreset, preset[2]);
 			end
 		end);
 	end);
 
-	display.borderPicker.onSelection = function(red, green, blue)
+	display.borderPicker.onSelection = function(_red, _green, _blue)
 		self:UpdatePreview();
 	end
-	display.borderPicker:SetScript("OnClick", function(self, button)
+	display.borderPicker:SetScript("OnClick", function(borderPicker, button)
 		if button == "LeftButton" then
 			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
-				TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+				TRP3_API.popup.showDefaultColorPicker({borderPicker.setColor, borderPicker.red, borderPicker.green, borderPicker.blue});
 			else
-				addon.modal:ShowModal(TRP3_API.popup.COLORS, {self.setColor, self.red, self.green, self.blue});
+				addon.modal:ShowModal(TRP3_API.popup.COLORS, {borderPicker.setColor, borderPicker.red, borderPicker.green, borderPicker.blue});
 			end
 		elseif button == "RightButton" then
-			self.setColor(nil, nil, nil);
+			borderPicker.setColor(nil, nil, nil);
 		end
 	end);
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(display.borderPicker, "RIGHT", 0, 5, loc.AU_FIELD_COLOR, loc.AU_FIELD_COLOR_TT
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+		.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+		.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+		.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(display.icon, "RIGHT", 0, 5, "Aura icon", "select an aura icon");
 	display.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon) 
+		addon.modal:ShowModal(TRP3_API.popup.ICONS, {
+			function(icon)
 				display.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
 				display.icon.selectedIcon = icon;
 				self:UpdatePreview();
-			end, 
-			nil, 
-			nil, 
-			display.icon.selectedIcon});
+			end,
+			nil,
+			nil,
+			display.icon.selectedIcon
+		});
 	end);
 
 	self.preview = {
@@ -155,10 +156,9 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 	-- text might be longer in some localizations, let's ensure it doesn't clip out of frame
 	gameplay.ensureExpiry.Text:SetPoint("RIGHT", gameplay, "RIGHT", -20, 0);
 	gameplay.ensureExpiry.Text:SetJustifyH("LEFT");
-
 end
 
-function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, cursor)
+function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, _cursor)
 	local BA = class.BA or TRP3_API.globals.empty;
 
 	self.display.name:SetText(BA.NA or "");
@@ -200,9 +200,9 @@ function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, curso
 	self:UpdatePreview();
 end
 
-function TRP3_Tools_EditorAuraMixin:InterfaceToClass(targetClass, targetCursor)
+function TRP3_Tools_EditorAuraMixin:InterfaceToClass(targetClass, _targetCursor)
 	targetClass.BA = targetClass.BA or {};
-	
+
 	targetClass.BA.NA = TRP3_API.utils.str.emptyToNil(strtrim(self.display.name:GetText()));
 	targetClass.BA.CA = TRP3_API.utils.str.emptyToNil(strtrim(self.display.category:GetText()));
 	local r, g, b = self.display.borderPicker.red, self.display.borderPicker.green, self.display.borderPicker.blue;
@@ -237,5 +237,4 @@ function TRP3_Tools_EditorAuraMixin:InterfaceToClass(targetClass, targetCursor)
 	else
 		targetClass.BA.IV = nil;
 	end
-
 end

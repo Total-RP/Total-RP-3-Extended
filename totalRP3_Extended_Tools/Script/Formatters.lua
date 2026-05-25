@@ -5,7 +5,7 @@ addon.script.formatters = {};
 
 local SPECIAL_FORMATTERS = {};
 function addon.script.formatters:Initialize()
-	SPECIAL_FORMATTERS.achievement = function(parameter, value)
+	SPECIAL_FORMATTERS.achievement = function(_parameter, value)
 		local achievementId = tonumber(value or "") or 0;
 		local _, achievementName = GetAchievementInfo(achievementId);
 		if achievementName then
@@ -14,10 +14,10 @@ function addon.script.formatters:Initialize()
 			return addon.script.formatters.unknown(tostring(value or "")), true;
 		end
 	end;
-	SPECIAL_FORMATTERS.boolean = function(parameter, value)
+	SPECIAL_FORMATTERS.boolean = function(_parameter, value)
 		return value and loc.OP_BOOL_TRUE or loc.OP_BOOL_FALSE, false;
 	end;
-	SPECIAL_FORMATTERS.sound = function(parameter, value, ...)
+	SPECIAL_FORMATTERS.sound = function(_parameter, value, ...)
 		value = tonumber(value or "0") or 0;
 		if value <= 0 then
 			return "no sound", false;
@@ -28,11 +28,11 @@ function addon.script.formatters:Initialize()
 			return ("sound id %d"):format(value), false;
 		end
 	end;
-	SPECIAL_FORMATTERS.music = function(parameter, musicPath)
+	SPECIAL_FORMATTERS.music = function(_parameter, musicPath)
 		local musicId = tonumber(musicPath) or TRP3_API.utils.music.convertPathToID(musicPath) or musicPath;
 		return tostring(musicId), false;
 	end;
-	SPECIAL_FORMATTERS.mount = function(parameter, mountId)
+	SPECIAL_FORMATTERS.mount = function(_parameter, mountId)
 		local sanitizedMountId = tonumber(mountId or "0") or 0;
 		if sanitizedMountId == 0 then
 			return loc.EFFECT_SUMMOUNT_RANDOMMOUNT, false;

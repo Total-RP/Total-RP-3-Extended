@@ -50,23 +50,25 @@ function TRP3_Tools_EditorCampaignMixin:Initialize()
 			("|TInterface\\ExtraButton\\%s:96:192|t"):format(value)
 		});
 	end
-	TRP3_API.ui.listbox.setupListBox(self.main.vignette, vignetteMenu, function(value) self:UpdatePreview(); end);
+	TRP3_API.ui.listbox.setupListBox(self.main.vignette, vignetteMenu, function(_value) self:UpdatePreview(); end);
 
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.main.icon, "RIGHT", 0, 5, loc.CA_ICON, loc.CA_ICON_TT);
 	self.main.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon) 
+		addon.modal:ShowModal(TRP3_API.popup.ICONS, {
+			function(icon)
 				self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
 				self.main.icon.selectedIcon = icon;
 				self:UpdatePreview();
-			end, 
-			nil, 
-			nil, 
-			self.main.icon.selectedIcon});
+			end,
+			nil,
+			nil,
+			self.main.icon.selectedIcon
+		});
 	end);
 
 	local sharedNPCEditor = self.npc.sharedNPCEditor;
 	sharedNPCEditor.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon) 
+		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon)
 				TRP3_API.ui.frame.setupIconButton(sharedNPCEditor.icon, icon);
 				sharedNPCEditor.icon.selectedIcon = icon;
 			end, nil, nil, sharedNPCEditor.icon.selectedIcon});
@@ -83,10 +85,9 @@ function TRP3_Tools_EditorCampaignMixin:Initialize()
 			end
 		end
 	end);
-	
 end
 
-function TRP3_Tools_EditorCampaignMixin:ClassToInterface(class, creationClass, cursor)
+function TRP3_Tools_EditorCampaignMixin:ClassToInterface(class, creationClass, _cursor)
 	local BA = class.BA or TRP3_API.globals.empty;
 	self.main.name:SetText(BA.NA or "");
 	self.main.description:SetText(BA.DE or "");
@@ -109,7 +110,7 @@ function TRP3_Tools_EditorCampaignMixin:ClassToInterface(class, creationClass, c
 	table.insert(npcs, {
 		isAddButton = true
 	});
-	
+
 	self.npc.list.model:Flush();
 	self.npc.list.model:InsertTable(npcs);
 	self.npc.sharedNPCEditor:Hide();
@@ -118,12 +119,12 @@ end
 function TRP3_Tools_EditorCampaignMixin:InterfaceToClass(targetClass, targetCursor)
 	self:SaveActiveNPCIndex();
 	targetClass.BA = targetClass.BA or {};
-	
+
 	targetClass.BA.NA = TRP3_API.utils.str.emptyToNil(strtrim(self.main.name:GetText()));
 	targetClass.BA.DE = TRP3_API.utils.str.emptyToNil(strtrim(self.main.description:GetText()));
 	targetClass.BA.IC = self.main.icon.selectedIcon;
 	targetClass.BA.IM = self.main.vignette:GetSelectedValue();
-	
+
 	targetClass.ND = targetClass.ND or {}; -- TODO maybe set nil if empty?
 	wipe(targetClass.ND);
 	for _, npcData in self.npc.list.model:EnumerateEntireRange() do
@@ -245,8 +246,8 @@ function TRP3_Tools_CampaignNPCListElementMixin:Refresh()
 		else
 			tooltipText = "|cFFFF0000This NPC won't be saved unless an NPC id is specified.|r|n|n";
 		end
-		tooltipText = 
-			tooltipText .. 
+		tooltipText =
+			tooltipText ..
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit npc") .. "|n" ..
 			TRP3_API.FormatShortcutWithInstruction("RCLICK", "more options")
 		;
@@ -282,7 +283,7 @@ function TRP3_Tools_CampaignNPCListElementMixin:OnClick(button)
 	elseif button == "RightButton" and not self.data.active then
 		TRP3_MenuUtil.CreateContextMenu(self, function(_, contextMenu)
 			contextMenu:CreateTitle("Campaign NPC");
-			
+
 			local editOption = contextMenu:CreateButton("Edit", function()
 				campaignEditor:SetActiveNPCIndex(npcIndex);
 			end);
@@ -292,6 +293,7 @@ function TRP3_Tools_CampaignNPCListElementMixin:OnClick(button)
 			local deleteOption = contextMenu:CreateButton(DELETE, function()
 				campaignEditor:DeleteNPCAtIndex(npcIndex);
 			end);
+			TRP3_MenuUtil.SetElementTooltip(deleteOption, DELETE);
 		end);
 
 	end

@@ -85,7 +85,7 @@ function TRP3_Tools_ListElementMixin:SetHighlightEnabled(enabled)
 		self:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar", "ADD");
 	else
 		self:ClearHighlightTexture();
-	end	
+	end
 end
 
 TRP3_Tools_TabButtonMixin = {};
@@ -108,7 +108,7 @@ function TRP3_Tools_TabButtonMixin:Initialize(tabBar)
 	scale(self.Right, scalingFactor);
 	scale(self.LeftActive, scalingFactor);
 	scale(self.RightActive, scalingFactor);
-	
+
 	-- space to the left and right
 	self.offsetH = 10*scalingFactor;
 
@@ -116,7 +116,7 @@ function TRP3_Tools_TabButtonMixin:Initialize(tabBar)
 	-- the visual tab is only ~75% of its atlas height
 	self.activeOffsetV = (activeHeight * scalingFactor * 0.75 - availableHeight) / 2;
 	self.normalOffsetV = (normalHeight * scalingFactor * 0.75 - availableHeight) / 2;
-	
+
 	self:SetTooltip();
 	self:SetActive(false);
 	self:SetCloseable(false);
@@ -148,7 +148,7 @@ function TRP3_Tools_TabButtonMixin:SetActive(active)
 	self.LeftHighlight:SetPoint("BOTTOMRIGHT" , self.active and self.LeftActive  or self.Left);
 	self.RightHighlight:SetPoint("TOPLEFT"    , self.active and self.RightActive or self.Right);
 	self.RightHighlight:SetPoint("BOTTOMRIGHT", self.active and self.RightActive or self.Right);
-	
+
 	self.closeButton:SetPoint("RIGHT", -self.offsetH, self.offsetV);
 	self.Text:SetPoint("LEFT", self.offsetH, self.offsetV);
 	self.Text:SetPoint("RIGHT", -self.offsetH - (self.closeButton:IsShown() and self.closeButton:GetWidth() or 0), self.offsetV);
@@ -198,10 +198,10 @@ function TRP3_Tools_TabBarMixin:Initialize()
 	self:Refresh();
 end
 
--- tabProperties 
+-- tabProperties
 --     .label         - tab label
 --     .closeable     - whether or not the tab should have a close button
---     .tooltipHeader - 
+--     .tooltipHeader -
 --     .tooltipBody   -
 function TRP3_Tools_TabBarMixin:AddTab(tabProperties, tabData)
 	local tabButton = self.tabPool:Acquire();
@@ -229,7 +229,7 @@ function TRP3_Tools_TabBarMixin:Refresh(ensureActiveTabVisibility)
 	local totalWidthRequired = 0;
 	local activeTabOffsetLeft = 0;
 	local activeTabOffsetRight = 0;
-	for index, tabButton in ipairs(self.tabs) do
+	for _, tabButton in ipairs(self.tabs) do
 		local tabWidth = math.min(math.max(self.minTabWidth, tabButton:GetRequiredWidth()), self.maxTabWidth);
 		tabButton:SetWidth(tabWidth);
 		tabButton:SetPoint("BOTTOMLEFT", totalWidthRequired, 0);
@@ -239,7 +239,7 @@ function TRP3_Tools_TabBarMixin:Refresh(ensureActiveTabVisibility)
 			activeTabOffsetRight = totalWidthRequired;
 		end
 	end
-	
+
 	self.scrollFrame.scrollChild:SetWidth(totalWidthRequired);
 	if totalWidthRequired > self.scrollFrame:GetWidth() and self.scrollFrame:GetWidth() > 0 then
 		self.scrollFrame.scrollChild.offset = math.min(self.scrollFrame.scrollChild:GetWidth() - self.scrollFrame:GetWidth(), self.scrollFrame.scrollChild.offset);
@@ -284,7 +284,7 @@ function TRP3_Tools_TabBarMixin:UpdateScrollButtons()
 end
 
 -- can be overwritten by a mixin
-function TRP3_Tools_TabBarMixin:CloseRequest(tabButton, data)
+function TRP3_Tools_TabBarMixin:CloseRequest(tabButton, _data)
 	self:Close(tabButton);
 end
 
@@ -393,44 +393,44 @@ local function gatherConstraints(frame)
 end
 
 function TRP3_Tools_SplitPaneMixin:Initialize()
-	
+
 	self.orientation = self.orientation or TRP3_Tools_SplitPaneMixin.Direction.HORIZONTAL;
-	
+
 	self.ratio = self.ratio or 0.5;
 	self.prevRatio = self.prevRatio or 0.5;
-	
+
 	self.first  = select(1, self:GetChildren());
 	self.second = select(2, self:GetChildren());
-	
+
 	self.first.minExtent = self.first.minExtent or 0;
 	self.first.maxExtent = self.first.maxExtent or math.huge;
-	
+
 	self.second.minExtent = self.second.minExtent or 0;
 	self.second.maxExtent = self.second.maxExtent or math.huge;
-	
+
 	local l1, t1, r1, b1 = gatherConstraints(self.first);
 	local l2, t2, r2, b2 = gatherConstraints(self.second);
-		
+
 	self.first:ClearAllPoints();
 	self.second:ClearAllPoints();
-	
+
 	if self.orientation == TRP3_Tools_SplitPaneMixin.Direction.HORIZONTAL then
 		self.divider = CreateFrame("Frame", nil, self, "TRP3_Tools_HorizontalDividerTemplate");
 		self.divider:SetPoint("TOPLEFT");
 		self.divider:SetPoint("BOTTOM");
-		
+
 		self.divider.label:SetRotation(math.pi/2);
-		
+
 		self.first:SetPoint("TOPLEFT", l1, t1);
 		self.first:SetPoint("BOTTOMRIGHT", self.divider, "BOTTOMLEFT", r1, b1);
-		
+
 		self.second:SetPoint("TOPLEFT", self.divider, "TOPRIGHT", l2, t2);
 		self.second:SetPoint("BOTTOMRIGHT", r2, b2);
 	else
 		self.divider = CreateFrame("Frame", nil, self, "TRP3_Tools_VerticalDividerTemplate");
 		self.divider:SetPoint("TOPLEFT");
 		self.divider:SetPoint("RIGHT");
-		
+
 		if self.useAdaptiveTabBar then
 			self.tabBar = CreateFrame("Frame", nil, self, "TRP3_Tools_SplitPaneTabBarTemplate");
 			self.tabBar:SetPoint("TOPLEFT");
@@ -452,13 +452,13 @@ function TRP3_Tools_SplitPaneMixin:Initialize()
 		else
 			self.first:SetPoint("TOPLEFT", l1, t1);
 		end
-		
+
 		self.first:SetPoint("BOTTOMRIGHT", self.divider, "TOPRIGHT", r1, b1);
-		
+
 		self.second:SetPoint("TOPLEFT", self.divider, "BOTTOMLEFT", l2, t2);
 		self.second:SetPoint("BOTTOMRIGHT", r2, b2);
 	end
-	
+
 	self:SetRatio();
 end
 
@@ -469,11 +469,11 @@ function TRP3_Tools_SplitPaneMixin:SetRatio(newRatio)
 	else
 		availableExtent = self:GetHeight() - self.divider:GetHeight();
 	end
-	
+
 	if availableExtent <= 0 then
 		return
 	end
-	
+
 	local useAdaptiveTabBar = false;
 
 	if availableExtent < self.first.minExtent + self.second.minExtent then
@@ -516,9 +516,9 @@ function TRP3_Tools_SplitPaneMixin:SetRatio(newRatio)
 		else
 			self.ratio = newRatio;
 		end
-		
+
 	end
-	
+
 	if self.ratio <= 0 then
 		self.first:Hide();
 		self.second:Show();
@@ -538,7 +538,7 @@ function TRP3_Tools_SplitPaneMixin:SetRatio(newRatio)
 		self.divider.collapseSecond:SetShown(self.second.collapsible);
 		self.divider.label:SetText();
 	end
-	
+
 	if self.divider.collapseFirst:IsShown() then
 		if self.orientation == TRP3_Tools_SplitPaneMixin.Direction.HORIZONTAL then
 			self.divider.collapseSecond:SetPoint("TOP", self.divider.collapseFirst, "BOTTOM", 0, -4);
@@ -552,7 +552,7 @@ function TRP3_Tools_SplitPaneMixin:SetRatio(newRatio)
 			self.divider.collapseSecond:SetPoint("LEFT", 4, 0);
 		end
 	end
-	
+
 	if useAdaptiveTabBar then
 		self.divider:Hide();
 		if self.ratio == 0 then
@@ -588,13 +588,13 @@ end
 TRP3_Tools_DividerMixin = {};
 
 function TRP3_Tools_DividerMixin:OnMouseDown()
-	
+
 	self.cx, self.cy = GetCursorPosition();
-	
+
 	if self:GetParent().resizeable == false then
 		return
 	end
-	
+
 	local wCurr, wMin, wMax, hCurr, hMin, hMax;
 	if self:GetParent().orientation == TRP3_Tools_SplitPaneMixin.Direction.HORIZONTAL then
 		wCurr = self:GetWidth() + select(4, self:GetPointByName("TOPLEFT"));
@@ -619,11 +619,11 @@ function TRP3_Tools_DividerMixin:OnMouseDown()
 			hMax = math.min(self:GetParent():GetHeight(), self:GetParent().first.maxExtent + self:GetHeight(), self:GetParent():GetHeight() - self:GetParent().second.minExtent);
 		end
 	end
-	
+
 	if hMin >= hMax and wMin >= wMax then
 		return
 	end
-	
+
 	self.shadowFrame:ClearAllPoints();
 	self.shadowFrame:SetPoint("TOPLEFT", self:GetParent(), "TOPLEFT");
 	self.shadowFrame:SetSize(wCurr, hCurr);
@@ -635,7 +635,7 @@ end
 function TRP3_Tools_DividerMixin:OnMouseUp()
 	self.shadowFrame:StopMovingOrSizing();
 	self.shadowFrame:Hide();
-	
+
 	local cx, cy = GetCursorPosition();
 	local isCollapseUnique = not self.collapseFirst:IsShown() or not self.collapseSecond:IsShown();
 	if (self.cx - cx) * (self.cx - cx) + (self.cy - cy) * (self.cy - cy) <= 1 and (self:GetParent().ratio <= 0 or self:GetParent().ratio >= 1 or isCollapseUnique) then
@@ -680,7 +680,7 @@ end
 
 TRP3_Tools_SplitPaneTabBarMixin = {};
 
-function TRP3_Tools_SplitPaneTabBarMixin:OnActivate(tab, data)
+function TRP3_Tools_SplitPaneTabBarMixin:OnActivate(_tab, data)
 	if data.splitPane.ratio ~= data.ratio then
 		data.splitPane:SetRatio(data.ratio);
 	end
@@ -750,7 +750,7 @@ end
 
 function TRP3_Tools_TitledSuggestiveHelpEditBoxMixin:OpenSuggestions()
 	if self.suggestionDataProvider then
-		local onAccept = function(value) 
+		local onAccept = function(value)
 			self:AcceptSuggestion(value);
 		end;
 		TRP3_MenuUtil.CreateContextMenu(self.suggestion, function(_, menu)
@@ -839,7 +839,7 @@ end
 
 function TRP3_Tools_TitledSuggestiveHelpTextAreaMixin:OpenSuggestions()
 	if self.suggestionDataProvider then
-		local onAccept = function(value) 
+		local onAccept = function(value)
 			self:AcceptSuggestion(value);
 		end;
 		TRP3_MenuUtil.CreateContextMenu(self.suggestion, function(_, menu)
@@ -891,8 +891,8 @@ function TRP3_Tools_TitledSuggestiveHelpTextAreaMixin:Expand()
 	if self.suggestionDataProvider then
 		table.insert(textControls, {
 			title = self.suggestionTitle,
-			callback = function(button, widget) 
-				local onAccept = function(value) 
+			callback = function(_button, widget)
+				local onAccept = function(value)
 					if self.suggestionReplaceAllText then
 						widget:SetText(value);
 					else

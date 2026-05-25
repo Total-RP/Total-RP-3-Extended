@@ -9,13 +9,6 @@ function TRP3_Tools_EditorItemMixin:UpdatePreview()
 end
 
 function TRP3_Tools_EditorItemMixin:Initialize()
-	local s = self;
-	
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- DISPLAY
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	-- Display
 	local display = self.display;
 
 	display.left:SetupSuggestions("Tag", addon.editor.populateObjectTagMenu);
@@ -46,25 +39,21 @@ function TRP3_Tools_EditorItemMixin:Initialize()
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(display.icon, "RIGHT", 0, 5, loc.OP_OP_INV_ICON, "select an item icon");
 	display.icon:SetScript("OnClick", function()
 		addon.modal:ShowModal(TRP3_API.popup.ICONS, {
-			function(icon) 
+			function(icon)
 				display.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
 				display.icon.selectedIcon = icon;
 				self:UpdatePreview();
-			end, 
-			nil, 
-			nil, 
+			end,
+			nil,
+			nil,
 			display.icon.selectedIcon});
 	end);
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Gameplay
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
 	local gameplay = self.gameplay;
-	
+
 	-- Value edit box title != tooltip title
 	gameplay.value.title:SetText(loc.IT_TT_VALUE_FORMAT:format(TRP3_API.utils.str.texture("Interface\\MONEYFRAME\\UI-CopperIcon", 15)));
-	
+
 	-- Weight edit box title != tooltip title
 	gameplay.weight.title:SetText(loc.IT_TT_WEIGHT_FORMAT);
 
@@ -106,17 +95,16 @@ function TRP3_Tools_EditorItemMixin:Initialize()
 	gameplay.stack:SetScript("OnClick", onCheckClicked);
 	gameplay.use:SetScript("OnClick", onCheckClicked);
 	display.container:SetScript("OnClick", onCheckClicked);
-	
+
 	display.quest:SetScript("OnClick", function() self:UpdatePreview(); end);
 
 	self.preview = {};
-
 end
 
-function TRP3_Tools_EditorItemMixin:ClassToInterface(class, _, cursor)
+function TRP3_Tools_EditorItemMixin:ClassToInterface(class, _, _cursor)
 	local BA = class.BA or TRP3_API.globals.empty;
 	local US = class.US or TRP3_API.globals.empty;
-	
+
 	self.display.name:SetText(BA.NA or "");
 	self.display.description:SetText(BA.DE or "");
 	self.display.quality:SetSelectedValue(BA.QA or Enum.ItemQuality.Common);
@@ -125,7 +113,7 @@ function TRP3_Tools_EditorItemMixin:ClassToInterface(class, _, cursor)
 	self.gameplay.component:SetChecked(BA.CO or false);
 	self.gameplay.crafted:SetChecked(BA.CR or false);
 	self.display.quest:SetChecked(BA.QE or false);
-	
+
 	self.gameplay.value:SetText(BA.VA or "0");
 	self.gameplay.weight:SetText(BA.WE or "0");
 	self.gameplay.soulbound:SetChecked(BA.SB or false);
@@ -142,25 +130,24 @@ function TRP3_Tools_EditorItemMixin:ClassToInterface(class, _, cursor)
 	self.gameplay.pickSound:SetSelectedValue(BA.PS or 1186);
 	self.gameplay.dropSound:SetSelectedValue(BA.DS or 1203);
 	self.gameplay.mute = nil;
-	
+
 	local containerData = BA.CT and BA.CO or TRP3_API.globals.empty;
 	self.display.containerType:SetSelectedValue(containerData.SI or "5x4");
 	self.display.containerDurability:SetText(containerData.DU or "0");
 	self.display.containerMaxweight:SetText(containerData.MW or "0");
 	self.display.containerOnlyinner:SetChecked(containerData.OI or false);
-	
+
 	self.display.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or "TEMP"));
 	self.display.icon.selectedIcon = BA.IC;
 
 	self:UpdatePreview();
 	self:UpdateElementVisibility();
-	
 end
 
-function TRP3_Tools_EditorItemMixin:InterfaceToClass(targetClass, targetCursor)
+function TRP3_Tools_EditorItemMixin:InterfaceToClass(targetClass, _targetCursor)
 	targetClass.BA = targetClass.BA or {};
 	targetClass.US = targetClass.US or {};
-	
+
 	targetClass.BA.NA = TRP3_API.utils.str.emptyToNil(strtrim(self.display.name:GetText()));
 	targetClass.BA.DE = TRP3_API.utils.str.emptyToNil(strtrim(self.display.description:GetText()));
 	targetClass.BA.LE = TRP3_API.utils.str.emptyToNil(strtrim(self.display.left:GetText()));
@@ -188,7 +175,7 @@ function TRP3_Tools_EditorItemMixin:InterfaceToClass(targetClass, targetCursor)
 	end
 	targetClass.BA.PS = self.gameplay.pickSound:GetSelectedValue() or 1186;
 	targetClass.BA.DS = self.gameplay.dropSound:GetSelectedValue() or 1203;
-	
+
 	if targetClass.BA.CT then
 		targetClass.CO = targetClass.CO or {};
 		targetClass.CO.SI = self.display.containerType:GetSelectedValue() or "5x4";
@@ -202,14 +189,13 @@ function TRP3_Tools_EditorItemMixin:InterfaceToClass(targetClass, targetCursor)
 		wipe(targetClass.CO);
 		targetClass.CO = nil;
 	end
-	
 end
 
 function TRP3_Tools_EditorItemMixin:UpdateElementVisibility()
 	self.gameplay.uniquecount:SetShown(self.gameplay.unique:GetChecked());
 	self.gameplay.stackcount:SetShown(self.gameplay.stack:GetChecked());
 	self.gameplay.usetext:SetShown(self.gameplay.use:GetChecked());
-	
+
 	local isContainer = self.display.container:GetChecked();
 	self.display.containerType:SetShown(isContainer);
 	self.display.containerDurability:SetShown(isContainer);
@@ -217,7 +203,7 @@ function TRP3_Tools_EditorItemMixin:UpdateElementVisibility()
 	self.display.containerOnlyinner:SetShown(isContainer);
 end
 
-function TRP3_Tools_EditorItemMixin:OnScriptsChanged(changes)
+function TRP3_Tools_EditorItemMixin:OnScriptsChanged(_changes)
 	-- TODO presence of an "onUse" workflow and Usable should be equivalent, so both things should be linked
 	-- on the other hand, the UI should probably not auto-sync those settings.
 	-- temporary solution: activate Usable when the user creates an onUse, but don't deactivate if onUse is deleted

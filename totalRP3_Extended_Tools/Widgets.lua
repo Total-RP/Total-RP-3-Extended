@@ -1,5 +1,5 @@
 TRP3_THIN_LIST_ELEMENT_BORDER_NORMAL = {
-	edgeFile = "Interface\\\FriendsFrame\\UI-Toast-Border",
+	edgeFile = "Interface\\FriendsFrame\\UI-Toast-Border",
 	tileEdge = true,
 	edgeSize = 8,
 };

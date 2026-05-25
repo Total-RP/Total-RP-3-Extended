@@ -1,5 +1,5 @@
 local _, addon = ...
-local loc = TRP3_API.loc;
+--local loc = TRP3_API.loc;
 
 local SURROGATE_SCRIPT_ID_NONE = 0;
 local SURROGATE_SCRIPT_ID_NEW  = 1;
@@ -7,20 +7,20 @@ local SURROGATE_SCRIPT_ID_NEW  = 1;
 TRP3_Tools_EditorTriggerMixin = {};
 
 function TRP3_Tools_EditorTriggerMixin:Initialize()
-	self.gameEventButton:SetScript("OnClick", function() 
+	self.gameEventButton:SetScript("OnClick", function()
 		local eventId = strtrim(self.gameEventName:GetText());
 		if strlen(eventId) > 0 then
 			self:SetTrigger(eventId, addon.script.triggerType.EVENT);
 			self:ShowTriggerMain();
 		end
 	end);
-	self.triggerCancelButton:SetScript("OnClick", function() 
+	self.triggerCancelButton:SetScript("OnClick", function()
 		self:ShowTriggerMain();
 	end);
-	self.cancelButton:SetScript("OnClick", function() 
+	self.cancelButton:SetScript("OnClick", function()
 		self:Hide();
 	end);
-	self.applyButton:SetScript("OnClick", function() 
+	self.applyButton:SetScript("OnClick", function()
 		local script = self.script.list:GetSelectedValue();
 		if script == SURROGATE_SCRIPT_ID_NEW then
 			script = strtrim(self.script.name:GetText());
@@ -40,7 +40,7 @@ function TRP3_Tools_EditorTriggerMixin:Initialize()
 		addon.editor.script:OnTriggerChanged(self.originalTriggerData, self.triggerData);
 		self:Hide();
 	end);
-	self.constraint.list:SetScriptContext(function() 
+	self.constraint.list:SetScriptContext(function()
 		if self.triggerData.type == addon.script.triggerType.EVENT and self.triggerData.id then
 			return nil, {[self.triggerData.id] = true};
 		else
@@ -103,7 +103,7 @@ function TRP3_Tools_EditorTriggerMixin:ShowTriggerMenu(noCancel)
 		self.gameEventTree:Hide();
 	end
 	local showConstraintWarning = TableHasAnyEntries(self.triggerData.constraint)
-	for index, element in self.objectEventList.model:EnumerateEntireRange() do
+	for _, element in self.objectEventList.model:EnumerateEntireRange() do
 		element.showConstraintWarning = showConstraintWarning and element.type == addon.script.triggerType.OBJECT;
 	end
 	self.objectEventList:Refresh();
@@ -153,7 +153,7 @@ function TRP3_Tools_EditorTriggerMixin:OpenForTrigger(triggerData)
 		table.insert(scriptList, {scriptId, scriptId});
 		self.usedScriptNames[scriptId] = true;
 	end
-	table.sort(scriptList, function(a, b) 
+	table.sort(scriptList, function(a, b)
 		return a[1] < b[1];
 	end);
 	if TableHasAnyEntries(scriptList) then
@@ -163,7 +163,7 @@ function TRP3_Tools_EditorTriggerMixin:OpenForTrigger(triggerData)
 	table.insert(scriptList, {"(create new workflow)", SURROGATE_SCRIPT_ID_NEW});
 
 	TRP3_API.ui.listbox.setupListBox(self.script.list, scriptList, function(scriptId) s:OnScriptSelected(scriptId); end, "(no workflow)");
-	
+
 	if triggerData then
 		self:SetTrigger(self.triggerData.id, self.triggerData.type);
 		self.script.list:SetSelectedValue(self.triggerData.script or SURROGATE_SCRIPT_ID_NONE);
@@ -177,7 +177,7 @@ function TRP3_Tools_EditorTriggerMixin:OpenForTrigger(triggerData)
 	self.constraint.list:LinkWithConstraint(self.triggerData.constraint);
 
 	local objectEventList = {};
-	
+
 	if addon.script.supportsTriggerType(self.objectType, addon.script.triggerType.OBJECT) then
 		for _, trigger in ipairs(addon.script.objectTriggers[self.objectType] or TRP3_API.globals.empty) do
 			if not self.usedObjectTriggers[trigger.id] then
@@ -215,7 +215,7 @@ function TRP3_Tools_EditorTriggerMixin:LoadGameEvents()
 		return
 	end
 	self.gameEventTree.isInitialized = true;
-	
+
 	local model = CreateTreeDataProvider();
 	for _, system in pairs(addon.utils.getGameEvents()) do
 		local systemNode = model:Insert({
@@ -237,13 +237,11 @@ function TRP3_Tools_EditorTriggerMixin:LoadGameEvents()
 				payload = event.PA,
 				tooltip = tooltip
 			});
-			
 		end
 	end
 	model:CollapseAll();
 	self.gameEventTree.model = model;
 	self.gameEventTree.widget:SetDataProvider(model);
-
 end
 
 TRP3_Tools_ScriptObjectEventListElementMixin = {};
@@ -275,7 +273,6 @@ function TRP3_Tools_ScriptGameEventTreeNodeMixin:Initialize(node)
 end
 
 function TRP3_Tools_ScriptGameEventTreeNodeMixin:Refresh()
-	
 	self.whenText:SetText(self.node.data.whenText or self.node.data.title);
 
 	local tooltip;
@@ -299,7 +296,6 @@ function TRP3_Tools_ScriptGameEventTreeNodeMixin:Refresh()
 	end
 
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self, "BOTTOMRIGHT", 0, 0, self.node.data.id or self.node.data.title, tooltip);
-
 end
 
 function TRP3_Tools_ScriptGameEventTreeNodeMixin:OnClick()

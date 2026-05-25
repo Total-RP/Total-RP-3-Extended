@@ -33,7 +33,7 @@ local function updateTabBar()
 					else
 						local icon, link = addon.utils.getObjectIconAndLink(currentDraft.index[absoluteId].class);
 						last = ("|T%s:16:16|t %s"):format(icon, link);
-						local indent = ("|n|TInterface\\COMMON\\spacer:16:%d|t|TInterface\\\MONEYFRAME\\Arrow-Right-Down:16:16|t"):format(level*16);
+						local indent = ("|n|TInterface\\COMMON\\spacer:16:%d|t|TInterface\\MONEYFRAME\\Arrow-Right-Down:16:16|t"):format(level*16);
 						body = (body or "") .. indent .. last;
 					end
 					level = level + 1;
@@ -196,7 +196,7 @@ function addon.editor.pasteClipboardAsInnerObjects(absoluteId)
 				return false, "At least one object cannot be pasted here, because its id already exists."; -- TODO
 			end
 		end
-		
+
 		for index = 1, addon.clipboard.count() do
 			local oldInnerAbsoluteId = addon.clipboard.retrieveId(index);
 			local newRelativeId = newRelativeIds[index];
@@ -248,12 +248,12 @@ function addon.editor.appendInnerObject(absoluteId, relativeId, type)
 		object.class[field] = object.class[field] or {};
 		object.class[field][relativeId] = innerClass;
 		local innerAbsoluteId = absoluteId .. TRP3_API.extended.ID_SEPARATOR .. relativeId;
-		
+
 		currentEditor.cursor.objects[absoluteId] = currentEditor.cursor.objects[absoluteId] or {};
 		currentEditor.cursor.objects[absoluteId].collapsed = false;
 		currentEditor.cursor.objects[innerAbsoluteId] = currentEditor.cursor.objects[innerAbsoluteId] or {};
 		currentEditor.cursor.objects[innerAbsoluteId].collapsed = false;
-		
+
 		rebuildTreeAndShow(innerAbsoluteId);
 		return true;
 	else
@@ -366,12 +366,11 @@ function addon.editor.changeRelativeId(absoluteId, newRelativeId)
 	end
 end
 
--- 
 function addon.editor.updateCurrentObjectDraft()
 	if not currentObject then
 		return
 	end
-	
+
 	currentEditor.cursor.objects[currentEditor.cursor.objectId] = currentEditor.cursor.objects[currentEditor.cursor.objectId] or {};
 	local objectCursor = currentEditor.cursor.objects[currentEditor.cursor.objectId];
 
@@ -385,7 +384,7 @@ function addon.editor.updateCurrentObjectDraft()
 
 	currentObject.class.MD = currentObject.class.MD or {MO = TRP3_DB.modes.EXPERT}; -- TODO backwards compatibility
 	-- MD serves no purpose in non-root objects, but it will crash older versions if not present
-	
+
 	objectRibbon:InterfaceToClass(currentObject.class);
 	addon.editor.script:InterfaceToClass(currentObject.class, objectCursor);
 end
@@ -415,18 +414,18 @@ function addon.editor.displayObject(objectId)
 	if not currentEditor then
 		return
 	end
-	
+
 	if currentObject then
 		currentObject.node.data.active = false;
 	end
-	
+
 	currentEditor.cursor.objectId = objectId;
 	currentObject = currentDraft.index[currentEditor.cursor.objectId];
-	
+
 	currentObject.node.data.active = true;
-	
+
 	updateTabBar();
-	
+
 	for type, editor in pairs(PROPERTY_EDITORS) do
 		editor:SetShown(type == currentObject.class.TY);
 	end
@@ -441,9 +440,8 @@ function addon.editor.displayObject(objectId)
 		PROPERTY_EDITORS[currentObject.class.TY]:ClassToInterface(currentObject.class, currentDraft.class, objectCursor);
 		addon.main.setTypeBackground(currentObject.class.TY);
 	end
-	
-	addon.editor.script:ClassToInterface(currentObject.class, currentDraft.class, objectCursor);
 
+	addon.editor.script:ClassToInterface(currentObject.class, currentDraft.class, objectCursor);
 end
 
 function addon.editor.getCurrentPropertiesEditor()
@@ -508,14 +506,14 @@ function addon.editor.gatherVariables(scriptContext, restrictScope)
 			end
 		end
 	end
-	
+
 	-- 2. object variables in this object
 	if acceptScopeO then
 		for variable, _ in pairs(addon.editor.script:GetVariablesByScope("o")) do
 			result[variable] = true;
 		end
 	end
-	
+
 	-- 3. campaign variables in this object (most recent edits to script might not have yet been saved to draft)
 	if acceptScopeC then
 		for variable, _ in pairs(addon.editor.script:GetVariablesByScope("c")) do
@@ -631,7 +629,6 @@ function addon.editor.populateObjectTagMenu(menu, onAccept, scriptContext, event
 			end
 		end
 	end
-	
 end
 
 function addon.editor.createDraft(creationId)
@@ -650,29 +647,26 @@ local function displayRootInfo()
 	assert(currentDraft.class.MD, "No metadata MD in root class.");
 	statusBar.id:SetText(currentEditor.creationId);
 	statusBar.version:SetText(currentDraft.class.MD.V or 0);
-	
 	local color = "|cffffff00";
 	statusBar.creationTime:SetText("|cffff9900" .. loc.ROOT_CREATED:format(color .. (currentDraft.class.MD.CB or "?") .. "|r|cffff9900", "|r" .. color .. (currentDraft.class.MD.CD or "?") .. "|r"));
 	statusBar.changeTime:SetText("|cffff9900" .. loc.ROOT_SAVED:format(color .. (currentDraft.class.MD.SB or "?") .. "|r|cffff9900", "|r" .. color .. (currentDraft.class.MD.SD or "?") .. "|r"));
-
 	statusBar.language:SetSelectedValue(addon.main.getObjectLocale(currentDraft.class));
-	
 	statusBar.save:SetEnabled(TRP3_Tools_DB[currentEditor.creationId] ~= nil);
 end
 
 function addon.editor.show(editor)
 	currentEditor = editor;
 	currentDraft  = addon.main.getDraft(currentEditor.creationId);
-	
+
 	displayRootInfo();
-	
+
 	local numObjects = 0;
 	for absoluteId, object in pairs(currentDraft.index) do
 		object.node.data.selected = false;
 		object.node.data.active = absoluteId == currentEditor.cursor.objectId;
 		numObjects = numObjects + 1;
 	end
-	
+
 	if not currentEditor.cursor.treeRatio then
 		if numObjects > 1 then
 			currentEditor.cursor.treeRatio = 1; -- show tree if there are any inner objects
@@ -681,7 +675,7 @@ function addon.editor.show(editor)
 		end
 	end
 	editorFrame.split:SetRatio(currentEditor.cursor.treeRatio);
-	
+
 	objectTree.widget:SetDataProvider(DUMMY_TREE_MODEL);
 	if currentEditor.cursor.objects then
 		currentDraft.model:CollapseAll();
@@ -705,7 +699,7 @@ function addon.editor.show(editor)
 	objectTree.model = currentDraft.model;
 	objectTree.widget:SetDataProvider(currentDraft.model);
 	objectTree.widget:SetScrollPercentage(currentEditor.cursor.treeScroll or 0);
-	
+
 	addon.editor.displayObject(currentEditor.cursor.objectId);
 end
 
@@ -715,14 +709,13 @@ end
 
 local function onSave()
 	addon.editor.updateCurrentObjectDraft();
-	
+
 	if not TRP3_Tools_DB[currentEditor.creationId] then
 		return
 	end
-	
+
 	-- TODO should we run static analysis by default when saving?
 	-- The system previously in place was the "validator"
-	
 	addon.main.saveDraft(currentEditor.creationId);
 	displayRootInfo();
 end
@@ -737,7 +730,7 @@ function addon.editor.initialize(frame)
 
 	addon.editor.object  = objectRibbon;
 	addon.editor.script  = objectEditor.split.script;
-	
+
 	PROPERTY_EDITORS[TRP3_DB.types.CAMPAIGN]   = objectEditor.split.properties.campaign;
 	PROPERTY_EDITORS[TRP3_DB.types.QUEST]      = objectEditor.split.properties.quest;
 	PROPERTY_EDITORS[TRP3_DB.types.QUEST_STEP] = objectEditor.split.properties.questStep;
@@ -745,14 +738,14 @@ function addon.editor.initialize(frame)
 	PROPERTY_EDITORS[TRP3_DB.types.DOCUMENT]   = objectEditor.split.properties.document;
 	PROPERTY_EDITORS[TRP3_DB.types.DIALOG]     = objectEditor.split.properties.cutscene;
 	PROPERTY_EDITORS[TRP3_DB.types.AURA]       = objectEditor.split.properties.aura;
-	
+
 	objectRibbon:Initialize();
 	for _, editor in pairs(PROPERTY_EDITORS) do
 		editor:Initialize();
 	end
-	
+
 	addon.editor.script:Initialize();
-	
+
 	local template = "|T%s:11:16|t";
 	local types = {
 		{template:format(addon.main.getObjectLocaleImage("en")), "en"},
@@ -765,7 +758,7 @@ function addon.editor.initialize(frame)
 			currentDraft.class.MD.LO = value;
 		end
 	end);
-	
+
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(statusBar.static_analysis, "TOP", 0, 0, "Check creation", "Analyzes the creation for potential problems or unexpected behavior.");
 	statusBar.static_analysis:SetScript("OnEnter", function(self)
 		TRP3_RefreshTooltipForFrame(self);
@@ -777,8 +770,6 @@ function addon.editor.initialize(frame)
 		addon.editor.updateCurrentObjectDraft();
 		addon.static_analysis.run();
 	end);
-
 	statusBar.save:SetScript("OnClick", onSave);
-	
 end
 TRP3_API.extended.tools.initEditor = addon.editor.initialize; -- TODO this shouldn't be in the API

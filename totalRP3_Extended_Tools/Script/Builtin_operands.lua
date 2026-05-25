@@ -10,7 +10,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "literal_string",
 		title       = loc.OP_DIRECT_VALUE .. " " .. loc.OP_STRING,
 		description = loc.OP_DIRECT_VALUE .. " " .. loc.OP_STRING,
-		GetPreview  = function(self, operand, value) return fmt(self.parameters[1], value); end,
+		GetPreview  = function(self, _operand, value) return fmt(self.parameters[1], value); end,
 		returnType  = "string",
 		literal     = true,
 		parameters  = {
@@ -27,7 +27,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "literal_number",
 		title       = loc.OP_DIRECT_VALUE .. " " .. loc.OP_NUMERIC,
 		description = loc.OP_DIRECT_VALUE .. " " .. loc.OP_NUMERIC,
-		GetPreview  = function(self, operand, value) return fmt(self.parameters[1], value); end,
+		GetPreview  = function(self, _operand, value) return fmt(self.parameters[1], value); end,
 		returnType  = "number",
 		literal     = true,
 		parameters  = {
@@ -44,7 +44,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "literal_boolean",
 		title       = loc.OP_DIRECT_VALUE .. " " .. loc.OP_BOOL,
 		description = loc.OP_DIRECT_VALUE .. " " .. loc.OP_BOOL,
-		GetPreview  = function(self, operand, value) return fmt(self.parameters[1], value); end,
+		GetPreview  = function(self, _operand, value) return fmt(self.parameters[1], value); end,
 		returnType  = "boolean",
 		literal     = true,
 		parameters  = {
@@ -89,12 +89,12 @@ function addon.script.registerBuiltinOperands()
 		{"unit_distance_inspect", loc.OP_OP_UNIT_DISTANCE_INSPECT, loc.OP_OP_UNIT_DISTANCE_INSPECT_TT, "boolean", loc.OP_UNIT_TEST},
 	};
 
-	for index, template in ipairs(unaryUnitOperands) do
+	for _, template in ipairs(unaryUnitOperands) do
 		addon.script.registerOperand({
 			id          = template[1],
 			title       = template[2],
 			description = template[3],
-			GetPreview  = function(self, operand, unitId) return (template[2] .. " (%s)"):format(fmt(self.parameters[1], unitId)); end,
+			GetPreview  = function(self, _operand, unitId) return (template[2] .. " (%s)"):format(fmt(self.parameters[1], unitId)); end,
 			returnType  = template[4],
 			category    = template[5],
 			parameters  = {
@@ -117,12 +117,12 @@ function addon.script.registerBuiltinOperands()
 		id          = "unit_distance_point",
 		title       = loc.OP_OP_DISTANCE_POINT,
 		description = loc.OP_OP_DISTANCE_POINT_TT,
-		GetPreview  = function(self, operand, unitId, y, x)
+		GetPreview  = function(self, _operand, unitId, y, x)
 			return loc.OP_OP_DISTANCE_POINT_PREVIEW:format(
 				fmt(self.parameters[1], unitId),
 				fmt(self.parameters[3], x), -- sic, X and Y are flipped
 				fmt(self.parameters[2], y)
-			); 
+			);
 		end,
 		returnType  = "number",
 		category    = loc.OP_UNIT_VALUE,
@@ -172,8 +172,8 @@ function addon.script.registerBuiltinOperands()
 		{"char_minimap"      , loc.OP_OP_CHAR_MINIMAP      , loc.OP_OP_CHAR_MINIMAP_TT     , "string"},
 		{"char_cam_distance" , loc.OP_OP_CHAR_CAM_DISTANCE , loc.OP_OP_CHAR_CAM_DISTANCE_TT, "number"},
 	};
-	
-	for index, template in ipairs(nullaryCharacterOperands) do
+
+	for _, template in ipairs(nullaryCharacterOperands) do
 		addon.script.registerOperand({
 			id          = template[1],
 			title       = template[2],
@@ -188,11 +188,11 @@ function addon.script.registerBuiltinOperands()
 		id          = "char_achievement",
 		title       = loc.OP_OP_CHAR_ACHIEVEMENT,
 		description = loc.OP_OP_CHAR_ACHIEVEMENT_TT,
-		GetPreview  = function(self, operand, typeId, achievementId) 
+		GetPreview  = function(self, _operand, typeId, achievementId) 
 			return loc.OP_OP_CHAR_ACHIEVEMENT_PREVIEW:format(
 				fmt(self.parameters[2], achievementId),
 				fmt(self.parameters[1], typeId)
-			); 
+			);
 		end,
 		returnType  = "boolean",
 		category    = CHARACTER,
@@ -221,7 +221,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "inv_item_name",
 		title       = loc.OP_OP_INV_NAME,
 		description = loc.OP_OP_INV_NAME_TT,
-		GetPreview  = function(self, operand, itemId) return loc.OP_OP_INV_NAME_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
+		GetPreview  = function(self, _operand, itemId) return loc.OP_OP_INV_NAME_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
 		returnType  = "string",
 		category    = loc.INV_PAGE_CHARACTER_INV,
 		parameters  = {
@@ -239,7 +239,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "inv_item_icon",
 		title       = loc.OP_OP_INV_ICON,
 		description = loc.OP_OP_INV_ICON_TT,
-		GetPreview  = function(self, operand, itemId) return loc.OP_OP_INV_ICON_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
+		GetPreview  = function(self, _operand, itemId) return loc.OP_OP_INV_ICON_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
 		returnType  = "string",
 		category    = loc.INV_PAGE_CHARACTER_INV,
 		parameters  = {
@@ -257,7 +257,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "inv_item_quality",
 		title       = loc.OP_OP_INV_QUALITY,
 		description = loc.OP_OP_INV_QUALITY_TT,
-		GetPreview  = function(self, operand, itemId) return loc.OP_OP_INV_QUALITY_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
+		GetPreview  = function(self, _operand, itemId) return loc.OP_OP_INV_QUALITY_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
 		returnType  = "string",
 		category    = loc.INV_PAGE_CHARACTER_INV,
 		parameters  = {
@@ -275,7 +275,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "inv_item_id_weight",
 		title       = loc.OP_OP_INV_ITEM_WEIGHT,
 		description = loc.OP_OP_INV_ITEM_WEIGHT_TT,
-		GetPreview  = function(self, operand, itemId) return loc.OP_OP_INV_ITEM_WEIGHT_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
+		GetPreview  = function(self, _operand, itemId) return loc.OP_OP_INV_ITEM_WEIGHT_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
 		returnType  = "string",
 		category    = loc.INV_PAGE_CHARACTER_INV,
 		parameters  = {
@@ -293,7 +293,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "inv_item_value",
 		title       = loc.OP_OP_INV_VALUE,
 		description = loc.OP_OP_INV_VALUE_TT,
-		GetPreview  = function(self, operand, itemId) return loc.OP_OP_INV_VALUE_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
+		GetPreview  = function(self, _operand, itemId) return loc.OP_OP_INV_VALUE_PREVIEW:format(fmt(self.parameters[1], itemId)); end,
 		returnType  = "string",
 		category    = loc.INV_PAGE_CHARACTER_INV,
 		parameters  = {
@@ -311,7 +311,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "inv_item_count",
 		title       = loc.OP_OP_INV_COUNT,
 		description = loc.OP_OP_INV_COUNT_TT,
-		GetPreview  = function(self, operand, itemId, container) 
+		GetPreview  = function(self, _operand, itemId, container)
 			if itemId == "" or itemId == nil then
 				return loc.OP_OP_INV_COUNT_PREVIEW:format(
 					"",
@@ -351,11 +351,11 @@ function addon.script.registerBuiltinOperands()
 		id          = "inv_item_weight",
 		title       = loc.OP_OP_INV_WEIGHT,
 		description = loc.OP_OP_INV_WEIGHT_TT,
-		GetPreview  = function(self, operand, itemId, container) 
+		GetPreview  = function(self, _operand, itemId, container)
 			return loc.OP_OP_INV_WEIGHT_PREVIEW:format(
 				fmt(self.parameters[1], itemId),
 				fmt(self.parameters[2], container)
-			); 
+			);
 		end,
 		returnType  = "number",
 		category    = loc.INV_PAGE_CHARACTER_INV,
@@ -384,7 +384,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "inv_container_slot_id",
 		title       = loc.OP_OP_INV_CONTAINER_SLOT_ID,
 		description = loc.OP_OP_INV_CONTAINER_SLOT_ID_TT,
-		GetPreview  = function(self, operand, slot) return loc.OP_OP_INV_CONTAINER_SLOT_ID_PREVIEW:format(fmt(self.parameters[1], slot)); end,
+		GetPreview  = function(self, _operand, slot) return loc.OP_OP_INV_CONTAINER_SLOT_ID_PREVIEW:format(fmt(self.parameters[1], slot)); end,
 		returnType  = "string",
 		category    = loc.INV_PAGE_CHARACTER_INV,
 		parameters  = {
@@ -402,7 +402,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "quest_active_campaign",
 		title       = loc.OP_OP_QUEST_ACTIVE_CAMPAIGN,
 		description = loc.OP_OP_QUEST_ACTIVE_CAMPAIGN_TT,
-		GetPreview  = function(self, operand) return loc.OP_OP_QUEST_ACTIVE_CAMPAIGN; end,
+		GetPreview  = function(self, _operand) return loc.OP_OP_QUEST_ACTIVE_CAMPAIGN; end,
 		returnType  = "string",
 		category    = loc.EFFECT_CAT_CAMPAIGN,
 	});
@@ -411,7 +411,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "quest_is_step",
 		title       = loc.OP_OP_QUEST_STEP,
 		description = loc.OP_OP_QUEST_STEP_TT,
-		GetPreview  = function(self, operand, questId) return loc.OP_OP_QUEST_STEP_PREVIEW:format(fmt(self.parameters[1], questId)); end,
+		GetPreview  = function(self, _operand, questId) return loc.OP_OP_QUEST_STEP_PREVIEW:format(fmt(self.parameters[1], questId)); end,
 		returnType  = "string",
 		category    = loc.EFFECT_CAT_CAMPAIGN,
 		parameters  = {
@@ -428,7 +428,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "quest_obj",
 		title       = loc.OP_OP_QUEST_OBJ,
 		description = loc.OP_OP_QUEST_OBJ_TT,
-		GetPreview  = function(self, operand, questId, objectiveId) 
+		GetPreview  = function(self, _operand, questId, objectiveId)
 			return loc.OP_OP_QUEST_OBJ_PREVIEW:format(
 				fmt(self.parameters[2], objectiveId),
 				fmt(self.parameters[1], questId)
@@ -459,7 +459,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "quest_obj_current",
 		title       = loc.OP_OP_QUEST_OBJ_CURRENT,
 		description = loc.OP_OP_QUEST_OBJ_CURRENT_TT,
-		GetPreview  = function(self, operand, questId) return loc.OP_OP_QUEST_OBJ_CURRENT_PREVIEW:format(fmt(self.parameters[1], questId)); end,
+		GetPreview  = function(self, _operand, questId) return loc.OP_OP_QUEST_OBJ_CURRENT_PREVIEW:format(fmt(self.parameters[1], questId)); end,
 		returnType  = "string", -- TODO why tf is this string???
 		category    = loc.EFFECT_CAT_CAMPAIGN,
 		parameters  = {
@@ -476,7 +476,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "quest_obj_all",
 		title       = loc.OP_OP_QUEST_OBJ_ALL,
 		description = loc.OP_OP_QUEST_OBJ_ALL_TT,
-		GetPreview  = function(self, operand, questId) return loc.OP_OP_QUEST_OBJ_ALL_PREVIEW:format(fmt(self.parameters[1], questId)); end,
+		GetPreview  = function(self, _operand, questId) return loc.OP_OP_QUEST_OBJ_ALL_PREVIEW:format(fmt(self.parameters[1], questId)); end,
 		returnType  = "string", -- TODO why tf is this string???
 		category    = loc.EFFECT_CAT_CAMPAIGN,
 		parameters  = {
@@ -493,7 +493,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "quest_is_npc",
 		title       = loc.OP_OP_QUEST_NPC,
 		description = loc.OP_OP_QUEST_NPC_TT,
-		GetPreview  = function(self, operand, unitId) return (loc.OP_OP_QUEST_NPC .. " (%s)"):format(fmt(self.parameters[1], unitId)); end,
+		GetPreview  = function(self, _operand, unitId) return (loc.OP_OP_QUEST_NPC .. " (%s)"):format(fmt(self.parameters[1], unitId)); end,
 		returnType  = "boolean",
 		category    = loc.EFFECT_CAT_CAMPAIGN,
 		parameters  = {
@@ -522,12 +522,12 @@ function addon.script.registerBuiltinOperands()
 		{"aura_icon"        , loc.OP_OP_AURA_ICON       , loc.OP_OP_AURA_ICON_TT       , loc.OP_OP_AURA_ICON_PREVIEW       , "string"},
 		{"aura_color"       , loc.OP_OP_AURA_COLOR      , loc.OP_OP_AURA_COLOR_TT      , loc.OP_OP_AURA_COLOR_PREVIEW      , "string"},
 	};
-	for index, template in ipairs(unaryAuraOperands) do
+	for _, template in ipairs(unaryAuraOperands) do
 		addon.script.registerOperand({
 			id          = template[1],
 			title       = template[2],
 			description = template[3],
-			GetPreview  = function(self, operand, auraId) return (template[4]):format(fmt(self.parameters[1], auraId)); end,
+			GetPreview  = function(self, _operand, auraId) return (template[4]):format(fmt(self.parameters[1], auraId)); end,
 			returnType  = template[5],
 			category    = loc.TYPE_AURA,
 			parameters  = {
@@ -547,7 +547,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "aura_count",
 		title       = loc.OP_OP_AURA_COUNT,
 		description = loc.OP_OP_AURA_COUNT_TT,
-		GetPreview  = function(self, operand) return loc.OP_OP_AURA_COUNT; end,
+		GetPreview  = function(self, _operand) return loc.OP_OP_AURA_COUNT; end,
 		returnType  = "number",
 		category    = loc.TYPE_AURA,
 	});
@@ -556,7 +556,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "aura_id",
 		title       = loc.OP_OP_AURA_ID,
 		description = loc.OP_OP_AURA_ID_TT,
-		GetPreview  = function(self, operand, index) return loc.OP_OP_AURA_ID_PREVIEW:format(fmt(self.parameters[1], index)); end,
+		GetPreview  = function(self, _operand, index) return loc.OP_OP_AURA_ID_PREVIEW:format(fmt(self.parameters[1], index)); end,
 		returnType  = "string",
 		category    = loc.TYPE_AURA,
 		parameters  = {
@@ -574,11 +574,11 @@ function addon.script.registerBuiltinOperands()
 		id          = "aura_var_check",
 		title       = loc.OP_OP_AURA_CHECK_VAR,
 		description = loc.OP_OP_AURA_CHECK_VAR_TT,
-		GetPreview  = function(self, operand, auraId, varName) 
+		GetPreview  = function(self, _operand, auraId, varName) 
 			return loc.OP_OP_AURA_CHECK_VAR_PREVIEW:format(
 				fmt(self.parameters[1], auraId),
 				fmt(self.parameters[2], varName)
-			); 
+			);
 		end,
 		returnType  = "string",
 		category    = loc.TYPE_AURA,
@@ -607,11 +607,11 @@ function addon.script.registerBuiltinOperands()
 		id          = "aura_var_check_n",
 		title       = loc.OP_OP_AURA_CHECK_VAR_N,
 		description = loc.OP_OP_AURA_CHECK_VAR_N_TT,
-		GetPreview  = function(self, operand, auraId, varName) 
+		GetPreview  = function(self, _operand, auraId, varName)
 			return loc.OP_OP_AURA_CHECK_VAR_N_PREVIEW:format(
 				fmt(self.parameters[1], auraId),
 				fmt(self.parameters[2], varName)
-			); 
+			);
 		end,
 		returnType  = "number",
 		category    = loc.TYPE_AURA,
@@ -637,16 +637,11 @@ function addon.script.registerBuiltinOperands()
 	});
 
 	-- "EXPERT"
-	local sourcesText = {
-		w = loc.EFFECT_SOURCE_WORKFLOW,
-		o = loc.EFFECT_SOURCE_OBJECT,
-		c = loc.EFFECT_SOURCE_CAMPAIGN
-	};
 	addon.script.registerOperand({
 		id          = "var_check",
 		title       = loc.OP_OP_CHECK_VAR,
 		description = loc.OP_OP_CHECK_VAR_TT,
-		GetPreview  = function(self, operand, scope, varName) 
+		GetPreview  = function(self, _operand, scope, varName)
 			return loc.OP_OP_CHECK_VAR_PREVIEW:format(
 				fmt(self.parameters[1], scope),
 				fmt(self.parameters[2], varName)
@@ -687,7 +682,7 @@ function addon.script.registerBuiltinOperands()
 			return loc.OP_OP_CHECK_VAR_N_PREVIEW:format(
 				fmt(self.parameters[1], scope),
 				fmt(self.parameters[2], varName)
-			); 
+			);
 		end,
 		returnType  = "number",
 		category    = "Variables", -- TODO
@@ -720,7 +715,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "check_event_var",
 		title       = loc.OP_OP_CHECK_EVENT_VAR,
 		description = loc.OP_OP_CHECK_EVENT_VAR_TT,
-		GetPreview  = function(self, operand, index) return loc.OP_OP_CHECK_EVENT_VAR_PREVIEW:format(fmt(self.parameters[1], index)); end,
+		GetPreview  = function(self, _operand, index) return loc.OP_OP_CHECK_EVENT_VAR_PREVIEW:format(fmt(self.parameters[1], index)); end,
 		returnType  = "string",
 		category    = "Variables", -- TODO
 		parameters  = {
@@ -737,7 +732,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "check_event_var_n",
 		title       = loc.OP_OP_CHECK_EVENT_VAR_N,
 		description = loc.OP_OP_CHECK_EVENT_VAR_N_TT,
-		GetPreview  = function(self, operand, index) return loc.OP_OP_CHECK_EVENT_VAR_N_PREVIEW:format(fmt(self.parameters[1], index)); end,
+		GetPreview  = function(self, _operand, index) return loc.OP_OP_CHECK_EVENT_VAR_N_PREVIEW:format(fmt(self.parameters[1], index)); end,
 		returnType  = "string",
 		category    = "Variables", -- TODO
 		parameters  = {
@@ -755,11 +750,11 @@ function addon.script.registerBuiltinOperands()
 		id          = "random",
 		title       = loc.OP_OP_RANDOM,
 		description = loc.OP_OP_RANDOM_TT,
-		GetPreview  = function(self, operand, from, to) 
+		GetPreview  = function(self, _operand, from, to)
 			return loc.OP_OP_RANDOM_PREVIEW:format(
 				fmt(self.parameters[1], from),
 				fmt(self.parameters[2], to)
-			); 
+			);
 		end,
 		returnType  = "number",
 		parameters  = {
@@ -789,15 +784,14 @@ function addon.script.registerBuiltinOperands()
 		{"date_day_of_week", loc.OP_OP_DATE_DAY_OF_WEEK, loc.OP_OP_DATE_DAY_OF_WEEK_TT},
 	};
 
-	for index, template in ipairs(nullaryDateTimeOperands) do
+	for _, template in ipairs(nullaryDateTimeOperands) do
 		addon.script.registerOperand({
 			id          = template[1],
 			title       = template[2],
 			description = template[3],
-			GetPreview  = function(self, operand) return template[2] end,
+			GetPreview  = function(self, _operand) return template[2] end,
 			returnType  = "number",
 			category    = "Date and time", -- TODO
 		});
 	end
-
 end

@@ -41,7 +41,7 @@ local UNKNOWN_ACTION_TRIGGER = {
 	icon  = TRP3_InterfaceIcons.Default,
 	unknown = true,
 	defaultName = "onAction",
-	GetFormattedText = function(self, id) 
+	GetFormattedText = function(self, id)
 		return addon.script.formatters.unknown(id or "");
 	end
 };
@@ -79,8 +79,8 @@ function addon.script:Initialize()
 			text = TRP3_API.quest.getActionTypeLocale(actionId),
 			icon = TRP3_API.quest.getActionTypeIcon(actionId),
 			defaultName = "on" .. actionId:lower():gsub("^%l", string.upper),
-			GetFormattedText = function(self) 
-				return addon.script.formatters.constant(self.text);
+			GetFormattedText = function(action)
+				return addon.script.formatters.constant(action.text);
 			end
 		};
 		table.insert(self.actionTriggersSorted, self.actionTriggers[actionId]);
@@ -297,7 +297,7 @@ function addon.script.supportsTriggerType(objectType, triggerType)
 	elseif triggerType == addon.script.triggerType.ACTION then
 		return objectType == TRP3_DB.types.CAMPAIGN or objectType == TRP3_DB.types.QUEST or objectType == TRP3_DB.types.QUEST_STEP;
 	elseif triggerType == addon.script.triggerType.EVENT then
-		return objectType == TRP3_DB.types.CAMPAIGN or objectType == TRP3_DB.types.QUEST or objectType == TRP3_DB.types.QUEST_STEP or objectType == TRP3_DB.types.AURA;	
+		return objectType == TRP3_DB.types.CAMPAIGN or objectType == TRP3_DB.types.QUEST or objectType == TRP3_DB.types.QUEST_STEP or objectType == TRP3_DB.types.AURA;
 	end
 	return false;
 end
@@ -321,7 +321,7 @@ function addon.script.registerEffect(effect)
 	assert(not effects[effect.id], "effect with id " .. effect.id .. " already present");
 	effect.type = effect.type or TRP3_DB.elementTypes.EFFECT;
 	effect.parameters = effect.parameters or {};
-	for index, parameter in ipairs(effect.parameters) do
+	for _, parameter in ipairs(effect.parameters) do
 		if parameter.values then
 			parameter.dropdownValues = {};
 			for _, value in ipairs(parameter.values) do
@@ -359,7 +359,7 @@ TRP3_API.extended.tools.registerOperand = addon.script.registerOperand;
 local function buildOperandMenu(includeLiterals)
 	local menu = {};
 	local catIndex = {};
-	for id, operand in pairs(operands) do
+	for _, operand in pairs(operands) do
 		if includeLiterals or not operand.literal then
 			if operand.category then
 				if not catIndex[operand.category] then
@@ -372,15 +372,15 @@ local function buildOperandMenu(includeLiterals)
 			end
 		end
 	end
-	table.sort(menu, function(a, b) 
+	table.sort(menu, function(a, b)
 		if type(a[2]) ~= type(b[2]) then
 			return type(a[2]) == "string";
 		end
 		return a[1] < b[1];
 	end);
-	for index, item in ipairs(menu) do
+	for _, item in ipairs(menu) do
 		if type(item[2]) == "table" then
-			table.sort(item[2], function(a, b) 
+			table.sort(item[2], function(a, b)
 				return a[1] < b[1];
 			end);
 		end
@@ -410,7 +410,7 @@ local function buildEffectMenu(restricted)
 
 	local menu = {};
 	local catIndex = {};
-	for id, effect in pairs(effects) do
+	for _, effect in pairs(effects) do
 		if not restricted or effect.type == TRP3_DB.elementTypes.EFFECT then
 			local category = effect.category or loc.WO_EFFECT_CAT_COMMON;
 			if not catIndex[category] then
@@ -420,15 +420,15 @@ local function buildEffectMenu(restricted)
 			table.insert(menu[catIndex[category]][2], {effect.title, effect.id, effect.description, effect.icon});
 		end
 	end
-	table.sort(menu, function(a, b) 
+	table.sort(menu, function(a, b)
 		if type(a[2]) ~= type(b[2]) then
 			return type(a[2]) == "string";
 		end
 		return (EFFECT_ORDER_INDEX[a[1]] or 0) < (EFFECT_ORDER_INDEX[b[1]] or 0);
 	end);
-	for index, item in ipairs(menu) do
+	for _, item in ipairs(menu) do
 		if type(item[2]) == "table" then
-			table.sort(item[2], function(a, b) 
+			table.sort(item[2], function(a, b)
 				return a[1] < b[1];
 			end);
 		end
@@ -473,7 +473,7 @@ function addon.script.getVariableManipulationEffects()
 end
 
 function addon.script.getComparatorText(comparator)
-	for index, comp in ipairs(addon.script.comparators) do
+	for _, comp in ipairs(addon.script.comparators) do
 		if comp[2] == comparator then
 			return addon.script.formatters.comparator(comp[1]);
 		end
@@ -632,7 +632,7 @@ function addon.script.getNormalizedConstraintData(constraintData)
 	local constraint = {};
 	if type(constraintData) == "table" then
 		local operation = addon.script.logicalOperation.OR;
-		for index, constraintLine in ipairs(constraintData) do
+		for _, constraintLine in ipairs(constraintData) do
 			if constraintLine == addon.script.logicalOperation.OR then
 				operation = constraintLine;
 			elseif constraintLine == addon.script.logicalOperation.AND then

@@ -1,5 +1,4 @@
 local _, addon = ...
-local loc = TRP3_API.loc;
 
 addon.static_analysis = {};
 
@@ -10,7 +9,7 @@ end
 function addon.static_analysis.run()
 
 	local results = {};
-	
+
 	local function push(absoluteId, relativeId, class, title, description)
 		local icon, link = addon.utils.getObjectIconAndLink(class, relativeId);
 		table.insert(results, {
@@ -33,10 +32,10 @@ function addon.static_analysis.run()
 		end
 
 		if class.TY == TRP3_DB.types.ITEM then
-			local useScript = 
+			local useScript =
 				(class.US and class.US.SC and class.SC and class.SC[class.US.SC]) or
 				(class.LI and class.LI.OU and class.SC[class.LI.OU])
-			; 
+			;
 			if not useScript and class.BA and class.BA.US then
 				push(absoluteId, relativeId, class, "Missing \"use\" workflow", "The item is marked as usable but has no corresponding \"use\" workflow.|nConsider adding a \"when used\" trigger.");
 			end
@@ -87,7 +86,7 @@ function addon.static_analysis.run()
 
 		if class.TY == TRP3_DB.types.QUEST then
 			local hasFinalStep = false;
-			for stepId, stepClass in pairs(class.ST) do
+			for _, stepClass in pairs(class.ST) do
 				if stepClass.BA and stepClass.BA.FI then
 					hasFinalStep = true;
 					break;
@@ -130,17 +129,17 @@ function addon.static_analysis.run()
 				nastyAuras[absoluteId] = relativeId;
 			end
 		end
-		
+
 		if class.TY == TRP3_DB.types.DOCUMENT then
 			inaccessibleDocuments[absoluteId] = relativeId;
 		end
-		
+
 		if class.TY == TRP3_DB.types.DIALOG then
 			inaccessibleCutscenes[absoluteId] = relativeId;
 		end
 	end);
 
-	addon.editor.forEachObjectInCurrentDraft(function(absoluteId, relativeId, class)
+	addon.editor.forEachObjectInCurrentDraft(function(_absoluteId, _relativeId, class)
 		for _, script in pairs(class.SC or TRP3_API.globals.empty) do
 			for _, STData in pairs(script.ST) do
 				if STData.t == TRP3_DB.elementTypes.EFFECT and STData.e and STData.e[1] and STData.e[1].args then
@@ -230,9 +229,9 @@ function addon.static_analysis.run()
 	local referencedCampaignWorkflows = {};
 	local referencedAuraWorkflows = {};
 	local referencedItemWorkflows = {};
-	addon.editor.forEachObjectInCurrentDraft(function(absoluteId, relativeId, class)
-		for scriptId, script in pairs(class.SC or TRP3_API.globals.empty) do
-			for stepId, STData in pairs(script.ST) do
+	addon.editor.forEachObjectInCurrentDraft(function(_absoluteId, _relativeId, class)
+		for _, script in pairs(class.SC or TRP3_API.globals.empty) do
+			for _, STData in pairs(script.ST) do
 				if STData.t == TRP3_DB.elementTypes.EFFECT and STData.e and STData.e[1] then
 					local effect = STData.e[1];
 					if effect.id == "run_workflow" and effect.args and effect.args[1] == "c" and effect.args[2] then
@@ -258,8 +257,8 @@ function addon.static_analysis.run()
 		for scriptId, _ in pairs(class.SC or TRP3_API.globals.empty) do
 			unusedScripts[scriptId] = true;
 		end
-		for scriptId, script in pairs(class.SC or TRP3_API.globals.empty) do
-			for stepId, STData in pairs(script.ST) do
+		for _, script in pairs(class.SC or TRP3_API.globals.empty) do
+			for _, STData in pairs(script.ST) do
 				if STData.t == TRP3_DB.elementTypes.EFFECT and STData.e and STData.e[1] then
 					if STData.e[1].id == "run_workflow" and STData.e[1].args and STData.e[1].args[1] == "o" and STData.e[1].args[2] then
 						unusedScripts[STData.e[1].args[2]] = nil;

@@ -9,7 +9,7 @@ function addon.script.registerBuiltinEffects()
 		id          = TRP3_DB.elementTypes.DELAY,
 		title       = loc.WO_DELAY,
 		description = loc.WO_DELAY_TT,
-		GetPreview  = function(self, effect, duration, interrupt, type, soundId, isSoundFileId, castText) 
+		GetPreview  = function(self, _effect, duration, interrupt, type, soundId, isSoundFileId, castText)
 			if type == 1 then
 				return ("Delay %s s, %s"):format(
 					fmt(self.parameters[1], duration),
@@ -50,8 +50,8 @@ function addon.script.registerBuiltinEffects()
 				type        = "number",
 				default     = 1,
 				values      = {
-					{1, loc.WO_DELAY_TYPE_1, WO_DELAY_TYPE_1_TT},
-					{2, loc.WO_DELAY_TYPE_2, WO_DELAY_TYPE_2_TT}
+					{1, loc.WO_DELAY_TYPE_1, loc.WO_DELAY_TYPE_1_TT},
+					{2, loc.WO_DELAY_TYPE_2, loc.WO_DELAY_TYPE_2_TT}
 				},
 				onChange    = function(widget, widgets)
 					local isCast = widget:GetValue() == 2;
@@ -92,7 +92,7 @@ function addon.script.registerBuiltinEffects()
 		id          = TRP3_DB.elementTypes.CONDITION,
 		title       = "Condition",
 		description = "Continue if the condition is met",
-		GetPreview  = function(self, effect, failMessage, failWorkflow)
+		GetPreview  = function(self, _effect, failMessage, failWorkflow)
 			if failMessage and failWorkflow then
 				return ("Continue if the condition is met, otherwise show message %s and run workflow %s."):format(
 					fmt(self.parameters[1], failMessage),
@@ -136,7 +136,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "text",
 		title       = loc.EFFECT_TEXT,
 		description = loc.EFFECT_TEXT_TT,
-		GetPreview  = function(self, effect, text, type)
+		GetPreview  = function(self, _effect, text, type)
 			return ("Show the text %s in %s."):format(
 				fmt(self.parameters[1], text),
 				fmt(self.parameters[2], type)
@@ -173,7 +173,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "sound_id_self",
 		title       = loc.EFFECT_SOUND_ID_SELF,
 		description = loc.EFFECT_SOUND_ID_SELF_TT,
-		GetPreview  = function(self, effect, channel, soundId, isSoundFileId)
+		GetPreview  = function(self, _effect, channel, soundId, isSoundFileId)
 			return loc.EFFECT_SOUND_ID_SELF_PREVIEW:format(
 				fmt(self.parameters[2], soundId, isSoundFileId),
 				fmt(self.parameters[1], channel)
@@ -218,7 +218,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "sound_id_stop",
 		title       = loc.EFFECT_SOUND_ID_STOP,
 		description = loc.EFFECT_SOUND_ID_STOP_TT,
-		GetPreview  = function(self, effect, channel, soundId, fadeout)
+		GetPreview  = function(self, _effect, channel, soundId, fadeout)
 			return loc.EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW:format( -- TODO if no fadeout, probably remove the fadeout part
 				fmt(self.parameters[2], soundId),
 				fmt(self.parameters[1], channel),
@@ -262,7 +262,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "sound_music_self",
 		title       = loc.EFFECT_SOUND_MUSIC_SELF,
 		description = loc.EFFECT_SOUND_MUSIC_SELF_TT,
-		GetPreview  = function(self, effect, musicId)
+		GetPreview  = function(self, _effect, musicId)
 			return loc.EFFECT_SOUND_MUSIC_SELF_PREVIEW:format(fmt(self.parameters[1], musicId));
 		end,
 		icon        = "inv_misc_drum_07",
@@ -282,7 +282,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "sound_music_stop",
 		title       = loc.EFFECT_SOUND_MUSIC_STOP,
 		description = loc.EFFECT_SOUND_MUSIC_STOP_TT,
-		GetPreview  = function(self, effect)
+		GetPreview  = function(self, _effect)
 			return loc.EFFECT_SOUND_MUSIC_STOP;
 		end,
 		icon        = "spell_holy_silence",
@@ -293,7 +293,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "sound_id_local",
 		title       = loc.EFFECT_SOUND_ID_LOCAL,
 		description = loc.EFFECT_SOUND_ID_LOCAL_TT,
-		GetPreview  = function(self, effect, channel, soundId, distance, isSoundFileId)
+		GetPreview  = function(self, _effect, channel, soundId, distance, isSoundFileId)
 			return loc.EFFECT_SOUND_ID_LOCAL_PREVIEW:format(
 				fmt(self.parameters[2], soundId, isSoundFileId),
 				fmt(self.parameters[1], channel),
@@ -340,12 +340,12 @@ function addon.script.registerBuiltinEffects()
 		},
 		category = loc.EFFECT_CAT_SOUND
 	});
-	
+
 	addon.script.registerEffect({
 		id          = "sound_id_local_stop",
 		title       = loc.EFFECT_SOUND_ID_LOCAL_STOP,
 		description = loc.EFFECT_SOUND_ID_LOCAL_STOP_TT,
-		GetPreview  = function(self, effect, channel, soundId, fadeout)
+		GetPreview  = function(self, _effect, channel, soundId, fadeout)
 			return loc.EFFECT_SOUND_ID_STOP_PREVIEW:format( -- TODO if no fadeout, probably remove the fadeout part
 				fmt(self.parameters[2], soundId), -- TODO EFFECT_SOUND_ID_STOP_FADEOUT_PREVIEW EFFECT_SOUND_ID_STOP_PREVIEW
 				fmt(self.parameters[1], channel),
@@ -389,7 +389,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "sound_music_local",
 		title       = loc.EFFECT_SOUND_MUSIC_LOCAL,
 		description = loc.EFFECT_SOUND_MUSIC_LOCAL_TT,
-		GetPreview  = function(self, effect, musicId, distance)
+		GetPreview  = function(self, _effect, musicId, distance)
 			return loc.EFFECT_SOUND_MUSIC_LOCAL_PREVIEW:format(fmt(self.parameters[1], musicId), fmt(self.parameters[1], distance));
 		end,
 		icon        = "inv_misc_drum_04",
@@ -415,7 +415,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "sound_music_local_stop",
 		title       = loc.EFFECT_SOUND_MUSIC_LOCAL_STOP,
 		description = loc.EFFECT_SOUND_MUSIC_LOCAL_STOP_TT,
-		GetPreview  = function(self, effect)
+		GetPreview  = function(self, _effect)
 			return loc.EFFECT_SOUND_MUSIC_LOCAL_STOP;
 		end,
 		icon        = "ability_priest_silence",
@@ -427,7 +427,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "speech_env",
 		title       = loc.EFFECT_SPEECH_NAR,
 		description = loc.EFFECT_SPEECH_NAR_TT,
-		GetPreview  = function(self, effect, text)
+		GetPreview  = function(self, _effect, text)
 			return ("%s"):format(fmt(self.parameters[1], text));
 		end,
 		icon        = "inv_misc_book_07",
@@ -448,7 +448,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "speech_npc",
 		title       = loc.EFFECT_SPEECH_NPC,
 		description = loc.EFFECT_SPEECH_NPC_TT,
-		GetPreview  = function(self, effect, name, type, text) 
+		GetPreview  = function(self, _effect, name, type, text)
 			return TRP3_API.ui.misc.getSpeechPrefixText(
 				type,
 				fmt(self.parameters[1], name),
@@ -492,7 +492,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "speech_player",
 		title       = loc.EFFECT_SPEECH_PLAYER,
 		description = loc.EFFECT_SPEECH_PLAYER_TT,
-		GetPreview  = function(self, effect, type, text) 
+		GetPreview  = function(self, _effect, type, text)
 			return TRP3_API.ui.misc.getSpeech(
 				fmt(self.parameters[2], text),
 				type
@@ -527,7 +527,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "do_emote",
 		title       = loc.EFFECT_DO_EMOTE,
 		description = loc.EFFECT_DO_EMOTE_TT,
-		GetPreview  = function(self, effect, token) 
+		GetPreview  = function(self, _effect, token)
 			return ("%s"):format(
 				fmt(self.parameters[1], token)
 			);
@@ -549,7 +549,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "companion_dismiss_mount",
 		title       = loc.EFFECT_DISMOUNT,
 		description = loc.EFFECT_DISMOUNT_TT,
-		GetPreview  = function(self, effect) 
+		GetPreview  = function(self, _effect)
 			return loc.EFFECT_DISMOUNT;
 		end,
 		icon        = "ability_skyreach_dismount",
@@ -560,7 +560,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "companion_dismiss_critter",
 		title       = loc.EFFECT_DISPET,
 		description = loc.EFFECT_DISPET_TT,
-		GetPreview  = function(self, effect) 
+		GetPreview  = function(self, _effect)
 			return loc.EFFECT_DISPET;
 		end,
 		icon        = "inv_pet_pettrap01",
@@ -571,7 +571,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "companion_random_critter",
 		title       = loc.EFFECT_RANDSUM,
 		description = loc.EFFECT_RANDSUM_TT,
-		GetPreview  = function(self, effect, favs_only) 
+		GetPreview  = function(self, _effect, favs_only)
 			if favs_only then
 				return loc.EFFECT_RANDSUM_PREVIEW_FAV;
 			else
@@ -594,7 +594,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "companion_summon_mount",
 		title       = loc.EFFECT_SUMMOUNT,
 		description = loc.EFFECT_SUMMOUNT_TT,
-		GetPreview  = function(self, effect, mountId)
+		GetPreview  = function(self, _effect, mountId)
 			return (loc.EFFECT_SUMMOUNT .. ": %s"):format(fmt(self.parameters[1], mountId));
 		end,
 		icon        = "ability_hunter_beastcall",
@@ -614,7 +614,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_add",
 		title       = loc.EFFECT_ITEM_ADD,
 		description = loc.EFFECT_ITEM_ADD_TT,
-		GetPreview  = function(self, effect, itemId, quantity, isCrafted, source)
+		GetPreview  = function(self, _effect, itemId, quantity, isCrafted, source)
 			if isCrafted then
 				return ("Adds %s x %s to %s and mark them as crafted"):format(fmt(self.parameters[2], quantity), fmt(self.parameters[1], itemId), fmt(self.parameters[4], source));
 			else
@@ -662,7 +662,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_remove",
 		title       = loc.EFFECT_ITEM_REMOVE,
 		description = loc.EFFECT_ITEM_REMOVE_TT,
-		GetPreview  = function(self, effect, itemId, quantity, source)
+		GetPreview  = function(self, _effect, itemId, quantity, source)
 			return ("Removes %s x %s from %s"):format(fmt(self.parameters[2], quantity), fmt(self.parameters[1], itemId), fmt(self.parameters[3], source));
 		end,
 		icon        = "spell_sandexplosion",
@@ -700,7 +700,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_sheath",
 		title       = loc.EFFECT_SHEATH,
 		description = loc.EFFECT_SHEATH_TT,
-		GetPreview  = function(self, effect) return loc.EFFECT_SHEATH; end,
+		GetPreview  = function(self, _effect) return loc.EFFECT_SHEATH; end,
 		icon        = "garrison_blueweapon",
 		category = loc.INV_PAGE_CHARACTER_INV
 	});
@@ -709,7 +709,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_bag_durability",
 		title       = loc.EFFECT_ITEM_BAG_DURABILITY,
 		description = loc.EFFECT_ITEM_BAG_DURABILITY_TT,
-		GetPreview  = function(self, effect, method, amount)
+		GetPreview  = function(self, _effect, method, amount)
 			if method == "HEAL" then
 				return loc.EFFECT_ITEM_BAG_DURABILITY_PREVIEW_1:format(fmt(self.parameters[2], amount));
 			else
@@ -743,7 +743,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_consume",
 		title       = loc.EFFECT_ITEM_CONSUME,
 		description = loc.EFFECT_ITEM_CONSUME_TT,
-		GetPreview  = function(self, effect) return loc.EFFECT_ITEM_CONSUME_TT; end,
+		GetPreview  = function(self, _effect) return loc.EFFECT_ITEM_CONSUME_TT; end,
 		icon        = "inv_misc_potionseta",
 		context = {TRP3_DB.types.ITEM},  -- TODO!!!
 		category = loc.INV_PAGE_CHARACTER_INV
@@ -753,7 +753,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_cooldown",
 		title       = loc.EFFECT_ITEM_COOLDOWN,
 		description = loc.EFFECT_ITEM_COOLDOWN_TT,
-		GetPreview  = function(self, effect, duration)
+		GetPreview  = function(self, _effect, duration)
 			return loc.EFFECT_ITEM_COOLDOWN_PREVIEW:format(fmt(self.parameters[1], duration));
 		end,
 		icon        = "ability_mage_timewarp",
@@ -773,7 +773,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_use",
 		title       = loc.EFFECT_ITEM_USE,
 		description = loc.EFFECT_ITEM_USE_TT,
-		GetPreview  = function(self, effect, slotId)
+		GetPreview  = function(self, _effect, slotId)
 			return loc.EFFECT_ITEM_USE_PREVIEW:format(fmt(self.parameters[1], slotId));
 		end,
 		icon        = "ability_paladin_handoflight",
@@ -793,7 +793,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_loot",
 		title       = loc.EFFECT_ITEM_LOOT,
 		description = loc.EFFECT_ITEM_LOOT_TT,
-		GetPreview  = function(self, effect, title, icon, content, isDrop)
+		GetPreview  = function(self, _effect, title, _icon, _content, isDrop)
 			if isDrop then
 				return loc.EFFECT_ITEM_LOOT_PREVIEW_1:format(fmt(self.parameters[1], title)); -- TODO !!!
 			else
@@ -846,7 +846,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "item_roll_dice",
 		title       = loc.EFFECT_ITEM_DICE,
 		description = loc.EFFECT_ITEM_DICE_TT,
-		GetPreview  = function(self, effect, roll, var, source)
+		GetPreview  = function(self, _effect, roll, var, source)
 			if var ~= "" then
 				return loc.EFFECT_ITEM_DICE_PREVIEW_STORED:format(
 					fmt(self.parameters[1], roll),
@@ -894,7 +894,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "document_show",
 		title       = loc.EFFECT_DOC_DISPLAY,
 		description = loc.EFFECT_DOC_DISPLAY_TT,
-		GetPreview  = function(self, effect, objectId)
+		GetPreview  = function(self, _effect, objectId)
 			return (loc.EFFECT_DOC_ID .. ": %s"):format(fmt(self.parameters[1], objectId));
 		end,
 		icon        = "inv_icon_mission_complete_order",
@@ -914,7 +914,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "document_close",
 		title       = loc.EFFECT_DOC_CLOSE,
 		description = loc.EFFECT_DOC_CLOSE_TT,
-		GetPreview  = function(self, effect)
+		GetPreview  = function(self, _effect)
 			return loc.EFFECT_DOC_CLOSE;
 		end,
 		icon        = "trade_archaeology_silverscrollcase",
@@ -926,7 +926,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "aura_apply",
 		title       = loc.EFFECT_AURA_APPLY,
 		description = loc.EFFECT_AURA_APPLY_TT,
-		GetPreview  = function(self, effect, auraId, mergeMode)
+		GetPreview  = function(self, _effect, auraId, mergeMode)
 			return loc.EFFECT_AURA_APPLY_PREVIEW:format(
 				fmt(self.parameters[1], auraId),
 				loc.EFFECT_AURA_APPLY_MERGE_MODE,
@@ -962,7 +962,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "aura_duration",
 		title       = loc.EFFECT_AURA_DURATION,
 		description = loc.EFFECT_AURA_DURATION_TT,
-		GetPreview  = function(self, effect, auraId, duration, mode)
+		GetPreview  = function(self, _effect, auraId, duration, mode)
 			return loc.EFFECT_AURA_DURATION_PREVIEW:format(
 				fmt(self.parameters[1], auraId),
 				fmt(self.parameters[2], duration),
@@ -1006,7 +1006,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "aura_remove",
 		title       = loc.EFFECT_AURA_REMOVE,
 		description = loc.EFFECT_AURA_REMOVE,
-		GetPreview  = function(self, effect, auraId)
+		GetPreview  = function(self, _effect, auraId)
 			return loc.EFFECT_AURA_REMOVE_PREVIEW:format(fmt(self.parameters[1], auraId));
 		end,
 		icon        = "ability_titankeeper_cleansingorb",
@@ -1027,7 +1027,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "aura_var_set",
 		title       = loc.EFFECT_VAR_AURA_CHANGE,
 		description = loc.EFFECT_VAR_AURA_CHANGE_TT,
-		GetPreview  = function(self, effect, auraId, op, var, value)
+		GetPreview  = function(self, _effect, auraId, op, var, value)
 			return loc.EFFECT_VAR_AURA_CHANGE_PREVIEW:format(
 				fmt(self.parameters[1], auraId),
 				op, --fmt(self.parameters[2], op),
@@ -1082,7 +1082,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "aura_run_workflow",
 		title       = loc.EFFECT_AURA_RUN_WORKFLOW,
 		description = loc.EFFECT_AURA_RUN_WORKFLOW_TT,
-		GetPreview  = function(self, effect, auraId, scriptId)
+		GetPreview  = function(self, _effect, auraId, scriptId)
 			return loc.EFFECT_AURA_RUN_WORKFLOW_PREVIEW:format(
 				fmt(self.parameters[1], auraId),
 				fmt(self.parameters[2], scriptId)
@@ -1113,7 +1113,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "quest_start",
 		title       = loc.EFFECT_QUEST_START,
 		description = loc.EFFECT_QUEST_START_TT,
-		GetPreview  = function(self, effect, questId)
+		GetPreview  = function(self, _effect, questId)
 			return loc.EFFECT_QUEST_START_PREVIEW:format(
 				fmt(self.parameters[1], questId)
 			);
@@ -1135,7 +1135,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "quest_goToStep",
 		title       = loc.EFFECT_QUEST_GOTOSTEP,
 		description = loc.EFFECT_QUEST_GOTOSTEP_TT,
-		GetPreview  = function(self, effect, stepId)
+		GetPreview  = function(self, _effect, stepId)
 			return loc.EFFECT_QUEST_GOTOSTEP_PREVIEW:format(
 				fmt(self.parameters[1], stepId)
 			);
@@ -1157,7 +1157,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "quest_revealObjective",
 		title       = loc.EFFECT_QUEST_REVEAL_OBJ,
 		description = loc.EFFECT_QUEST_REVEAL_OBJ_TT,
-		GetPreview  = function(self, effect, questId, objectiveId)
+		GetPreview  = function(self, _effect, questId, objectiveId)
 			return loc.EFFECT_QUEST_REVEAL_OBJ_PREVIEW:format(
 				fmt(self.parameters[2], objectiveId),
 				fmt(self.parameters[1], questId)
@@ -1190,7 +1190,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "quest_markObjDone",
 		title       = loc.EFFECT_QUEST_REVEAL_OBJ_DONE,
 		description = loc.EFFECT_QUEST_REVEAL_OBJ_DONE_TT,
-		GetPreview  = function(self, effect, questId, objectiveId)
+		GetPreview  = function(self, _effect, questId, objectiveId)
 			return loc.EFFECT_QUEST_REVEAL_OBJ_DONE_PREVIEW:format(
 				fmt(self.parameters[2], objectiveId),
 				fmt(self.parameters[1], questId)
@@ -1224,7 +1224,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "dialog_start",
 		title       = loc.EFFECT_DIALOG_START,
 		description = loc.EFFECT_DIALOG_START_TT,
-		GetPreview  = function(self, effect, dialogId)
+		GetPreview  = function(self, _effect, dialogId)
 			return loc.EFFECT_DIALOG_START_PREVIEW:format(
 				fmt(self.parameters[1], dialogId)
 			);
@@ -1246,7 +1246,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "dialog_quick",
 		title       = loc.EFFECT_DIALOG_QUICK,
 		description = loc.EFFECT_DIALOG_QUICK_TT,
-		GetPreview  = function(self, effect, text)
+		GetPreview  = function(self, _effect, text)
 			return loc.EFFECT_TEXT_PREVIEW:format(
 				fmt(self.parameters[1], text) -- TODO
 			);
@@ -1269,7 +1269,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "cam_zoom_in",
 		title       = loc.EFFECT_CAT_CAMERA_ZOOM_IN,
 		description = loc.EFFECT_CAT_CAMERA_ZOOM_IN_TT,
-		GetPreview  = function(self, effect, increment)
+		GetPreview  = function(self, _effect, increment)
 			return loc.EFFECT_CAT_CAMERA_ZOOM_IN:format(
 				fmt(self.parameters[1], increment) -- TODO
 			);
@@ -1291,7 +1291,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "cam_zoom_out",
 		title       = loc.EFFECT_CAT_CAMERA_ZOOM_OUT,
 		description = loc.EFFECT_CAT_CAMERA_ZOOM_OUT_TT,
-		GetPreview  = function(self, effect, increment)
+		GetPreview  = function(self, _effect, increment)
 			return loc.EFFECT_CAT_CAMERA_ZOOM_OUT:format(
 				fmt(self.parameters[1], increment) -- TODO
 			);
@@ -1313,7 +1313,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "cam_save",
 		title       = loc.EFFECT_CAT_CAMERA_SAVE,
 		description = loc.EFFECT_CAT_CAMERA_SAVE_TT,
-		GetPreview  = function(self, effect, slot)
+		GetPreview  = function(self, _effect, slot)
 			return loc.EFFECT_CAT_CAMERA_SAVE:format(
 				fmt(self.parameters[1], slot) -- TODO
 			);
@@ -1340,7 +1340,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "cam_load",
 		title       = loc.EFFECT_CAT_CAMERA_LOAD,
 		description = loc.EFFECT_CAT_CAMERA_LOAD_TT,
-		GetPreview  = function(self, effect, slot)
+		GetPreview  = function(self, _effect, slot)
 			return loc.EFFECT_CAT_CAMERA_LOAD:format(
 				fmt(self.parameters[1], slot) -- TODO
 			);
@@ -1369,15 +1369,10 @@ function addon.script.registerBuiltinEffects()
 		id          = "var_object",
 		title       = loc.EFFECT_VAR_OBJECT_CHANGE,
 		description = loc.EFFECT_VAR_OBJECT_CHANGE_TT,
-		GetPreview     = function(source, op, var, value)
-			local source = sourcesText[source] or "?";
-			local varName = tostring(var);
-			return "|cffffff00" .. loc.EFFECT_OPERATION .. ": |cff00ff00(" .. source .. ")|r " .. varName .. " |cff00ff00=|r " .. varName .. " |cff00ff00" .. tostring(op) .. "|r " .. tostring(value);
-		end,
-		GetPreview  = function(self, effect, source, operation, var, value)
+		GetPreview  = function(self, _effect, source, operation, var, value)
 			if operation == "=" or operation == "[=]" then
 				return ("%s: (%s) %s %s %s"):format(
-					fmt(self.parameters[2], operation), 
+					fmt(self.parameters[2], operation),
 					fmt(self.parameters[1], source),
 					fmt(self.parameters[3], var),
 					tostring(operation),
@@ -1386,7 +1381,7 @@ function addon.script.registerBuiltinEffects()
 			else
 				local v = fmt(self.parameters[3], var);
 				return ("%s: (%s) %s = %s %s %s"):format(
-					fmt(self.parameters[2], operation), 
+					fmt(self.parameters[2], operation),
 					fmt(self.parameters[1], source),
 					v,
 					v,
@@ -1447,9 +1442,9 @@ function addon.script.registerBuiltinEffects()
 		id          = "var_operand",
 		title       = loc.EFFECT_VAR_OPERAND,
 		description = loc.EFFECT_VAR_OPERAND_TT,
-		GetPreview  = function(self, effect, var, source, operandId, operandArgs)
+		GetPreview  = function(self, _effect, var, source, operandId, operandArgs)
 			return ("(%s) %s = %s"):format(
-				fmt(self.parameters[2], source), 
+				fmt(self.parameters[2], source),
 				fmt(self.parameters[1], var),
 				addon.script.getOperandPreview({
 					id = tostring(operandId),
@@ -1506,16 +1501,16 @@ function addon.script.registerBuiltinEffects()
 		id          = "var_prompt",
 		title       = loc.EFFECT_PROMPT,
 		description = loc.EFFECT_PROMPT_TT,
-		GetPreview  = function(self, effect, prompt, var, source, callback, callbackSource)
+		GetPreview  = function(self, _effect, prompt, var, source, callback, callbackSource)
 			if callback == "" then
 				return ("Ask the player to input (%s) %s: %s"):format(
-					fmt(self.parameters[3], source), 
+					fmt(self.parameters[3], source),
 					fmt(self.parameters[2], var),
 					fmt(self.parameters[1], prompt)
 				);
 			else
 				return ("Ask the player to input (%s) %s: %s, then run workflow %s in %s"):format(
-					fmt(self.parameters[3], source), 
+					fmt(self.parameters[3], source),
 					fmt(self.parameters[2], var),
 					fmt(self.parameters[1], prompt),
 					fmt(self.parameters[4], callback),
@@ -1575,9 +1570,9 @@ function addon.script.registerBuiltinEffects()
 		id          = "signal_send",
 		title       = loc.EFFECT_SIGNAL,
 		description = loc.EFFECT_SIGNAL_TT,
-		GetPreview  = function(self, effect, id, value)
+		GetPreview  = function(self, _effect, id, value)
 			return loc.EFFECT_SIGNAL_PREVIEW:format(
-				fmt(self.parameters[1], id), 
+				fmt(self.parameters[1], id),
 				fmt(self.parameters[2], value)
 			);
 		end,
@@ -1606,9 +1601,9 @@ function addon.script.registerBuiltinEffects()
 		id          = "run_workflow",
 		title       = loc.EFFECT_RUN_WORKFLOW,
 		description = loc.EFFECT_RUN_WORKFLOW_TT,
-		GetPreview  = function(self, effect, source, scriptId)
+		GetPreview  = function(self, _effect, source, scriptId)
 			return loc.EFFECT_RUN_WORKFLOW_PREVIEW:format(
-				fmt(self.parameters[2], scriptId), 
+				fmt(self.parameters[2], scriptId),
 				fmt(self.parameters[1], source)
 			);
 		end,
@@ -1638,7 +1633,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "run_item_workflow",
 		title       = loc.EFFECT_ITEM_WORKFLOW,
 		description = loc.EFFECT_ITEM_WORKFLOW_TT,
-		GetPreview  = function(self, effect, source, scriptId, slotId)
+		GetPreview  = function(self, _effect, source, scriptId, slotId)
 			if source == "ch" then
 				return loc.EFFECT_ITEM_WORKFLOW_PREVIEW_C:format(fmt(self.parameters[2], scriptId), fmt(self.parameters[3], slotId));
 			else
@@ -1678,7 +1673,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "secure_macro",
 		title       = loc.EFFECT_SECURE_MACRO_ACTION_NAME,
 		description = loc.EFFECT_SECURE_MACRO_DESCRIPTION,
-		GetPreview  = function(self, effect, macro)
+		GetPreview  = function(self, _effect, macro)
 			return loc.EFFECT_SECURE_MACRO_ACTION_NAME:format(fmt(self.parameters[1], macro));
 		end,
 		icon        = "inv_eng_gizmo3",
@@ -1699,7 +1694,7 @@ function addon.script.registerBuiltinEffects()
 		id          = "script",
 		title       = loc.EFFECT_SCRIPT,
 		description = loc.EFFECT_SCRIPT_TT,
-		GetPreview  = function(self, effect, script)
+		GetPreview  = function(self, _effect, script)
 			return ("Run Lua script %s"):format(fmt(self.parameters[1], script));
 		end,
 		icon        = "inv_inscription_scroll_fortitude",
@@ -1707,12 +1702,11 @@ function addon.script.registerBuiltinEffects()
 			{
 				title       = loc.EFFECT_SCRIPT_SCRIPT,
 				description = loc.EFFECT_SCRIPT_SCRIPT_TT,
-				type        = "script", 
+				type        = "script",
 				default     = "-- Your script here",
 				nillable    = true
 			},
 		},
 		category = loc.MODE_EXPERT
 	});
-
 end

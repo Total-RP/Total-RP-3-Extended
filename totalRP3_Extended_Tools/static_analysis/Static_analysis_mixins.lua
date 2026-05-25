@@ -1,5 +1,4 @@
 local _, addon = ...
-local loc = TRP3_API.loc;
 
 TRP3_Tools_StaticAnalysisMixin = {};
 
@@ -30,7 +29,7 @@ function TRP3_Tools_StaticAnalysisListElementMixin:Initialize(data)
 	self.title:SetText(data.title);
 	self.description:SetText(data.description);
 	self.location:SetText(("|T%s:16:16|t %s"):format(data.icon, data.link));
-	local tooltiptext = 
+	local tooltiptext =
 		data.description .. "|n|n" ..
 		"Object: " .. ("|T%s:16:16|t %s"):format(data.icon, data.link) .. "|n|n" ..
 		TRP3_API.FormatShortcutWithInstruction("LCLICK", "Go to object");

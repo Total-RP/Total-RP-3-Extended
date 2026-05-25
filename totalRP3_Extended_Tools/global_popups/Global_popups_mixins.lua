@@ -131,7 +131,7 @@ local function generateObjectsBrowserLineData(absoluteId, classSource, classExis
 				title = link;
 				rootClass = classSource(partialId);
 			else
-				title = title .. " |TInterface\\\MONEYFRAME\\Arrow-Right-Down:16:16|t" .. link;
+				title = title .. " |TInterface\\MONEYFRAME\\Arrow-Right-Down:16:16|t" .. link;
 			end
 		end
 		partialId = partialId .. TRP3_API.extended.ID_SEPARATOR;
@@ -337,7 +337,7 @@ function TRP3_Tools_VariableInspectorListElementMixin:Initialize(data)
 		self.delete:Hide();
 
 		tooltipTitle = "Current position";
-		tooltipText = 
+		tooltipText =
 			data.keyText .. "|n|n" ..
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "go one level up")
 		;
@@ -348,7 +348,7 @@ function TRP3_Tools_VariableInspectorListElementMixin:Initialize(data)
 		self.delete:Hide();
 
 		tooltipTitle = "Add variable";
-		tooltipText = 
+		tooltipText =
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "add a new variable")
 		;
 	else
@@ -358,7 +358,7 @@ function TRP3_Tools_VariableInspectorListElementMixin:Initialize(data)
 		self.delete:Show();
 
 		tooltipTitle = "Variable";
-		tooltipText = 
+		tooltipText =
 			"Identifier: " .. data.keyText .. " (" .. data.keyType .. ")|n" ..
 			"Value: " .. data.valueText .. " (" .. data.valueType .. ")|n|n" ..
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit value")
@@ -584,12 +584,10 @@ function TRP3_Tools_VariableInspectorMixin:ShowObject(absoluteId, objectType)
 		end
 		self.instanceSelection:Hide();
 		self.content:Hide();
-	end	
-
+	end
 end
 
 function TRP3_Tools_VariableInspectorMixin:SelectInstance(instanceIndex)
-	
 	wipe(self.stack);
 
 	if instanceIndex and self.instances[instanceIndex] then
@@ -601,7 +599,6 @@ function TRP3_Tools_VariableInspectorMixin:SelectInstance(instanceIndex)
 	end
 
 	self:StackPeek();
-
 end
 
 function TRP3_Tools_VariableInspectorMixin:StackPeek()

@@ -26,7 +26,7 @@ function TRP3_Tools_ScriptConstraintEditorMixin:PostInitialize()
 	self.sharedApplyLeftToRightButton = CreateFrame("Button", nil, nil, "TRP3_CommonButton");
 	self.sharedApplyLeftToRightButton:Hide();
 	self.sharedApplyLeftToRightButton:SetSize(25, 25);
-	self.sharedApplyLeftToRightButton:SetText("|TInterface\\\MONEYFRAME\\Arrow-Right-Down:16:16|t");
+	self.sharedApplyLeftToRightButton:SetText("|TInterface\\MONEYFRAME\\Arrow-Right-Down:16:16|t");
 	addon.utils.prepareForMultiSelectionMode(self);
 end
 

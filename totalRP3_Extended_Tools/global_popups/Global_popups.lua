@@ -1,5 +1,4 @@
 local _, addon = ...
-local loc = TRP3_API.loc;
 
 addon.global_popups = {};
 

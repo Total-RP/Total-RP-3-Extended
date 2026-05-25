@@ -28,7 +28,7 @@ function TRP3_Tools_CreationTreeNodeMixin:Refresh()
 	self:SetActive(self.node.data.active);
 	self:SetSelected(self.node.data.selected);
 
-	local tooltipText = 
+	local tooltipText =
 		"Inner id: " .. self.node.data.relativeId .. "|n" ..
 		"Type: " .. addon.main.getTypeLocale((addon.editor.getCurrentDraftClass(self.node.data.absoluteId) or TRP3_API.globals.empty).TY or "") .. "|n|n" ..
 		TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit object") .. "|n" ..
@@ -151,34 +151,34 @@ function TRP3_Tools_CreationTreeNodeMixin:OnClick(button)
 				else
 					addItemOption:SetEnabled(true);
 					TRP3_MenuUtil.SetElementTooltip(addItemOption, loc.DB_ADD_ITEM_TT);
-				end		
+				end
 			end
 
 			local createInnerOption = contextMenu:CreateButton(loc.IN_INNER_ADD);
 
 			if class.TY == TRP3_DB.types.CAMPAIGN then
-				local createInnerOptionQuest = createInnerOption:CreateButton(loc.TYPE_QUEST, function() 
+				createInnerOption:CreateButton(loc.TYPE_QUEST, function()
 					addon.editor.requestInnerObject(self.node.data.absoluteId, TRP3_DB.types.QUEST);
 				end);
 			end
 			if class.TY == TRP3_DB.types.QUEST then
-				local createInnerOptionQuestStep = createInnerOption:CreateButton(loc.TYPE_QUEST_STEP, function() 
+				createInnerOption:CreateButton(loc.TYPE_QUEST_STEP, function()
 					addon.editor.requestInnerObject(self.node.data.absoluteId, TRP3_DB.types.QUEST_STEP);
 				end);
 			end
-			local createInnerOptionItem = createInnerOption:CreateButton(loc.TYPE_ITEM, function() 
+			createInnerOption:CreateButton(loc.TYPE_ITEM, function()
 				addon.editor.requestInnerObject(self.node.data.absoluteId, TRP3_DB.types.ITEM);
 			end);
-			local createInnerOptionAura = createInnerOption:CreateButton(loc.TYPE_AURA, function() 
+			createInnerOption:CreateButton(loc.TYPE_AURA, function()
 				addon.editor.requestInnerObject(self.node.data.absoluteId, TRP3_DB.types.AURA);
 			end);
-			local createInnerOptionDocument = createInnerOption:CreateButton(loc.TYPE_DOCUMENT, function() 
+			createInnerOption:CreateButton(loc.TYPE_DOCUMENT, function()
 				addon.editor.requestInnerObject(self.node.data.absoluteId, TRP3_DB.types.DOCUMENT);
 			end);
-			local createInnerOptionDialog = createInnerOption:CreateButton(loc.TYPE_DIALOG, function() 
+			createInnerOption:CreateButton(loc.TYPE_DIALOG, function()
 				addon.editor.requestInnerObject(self.node.data.absoluteId, TRP3_DB.types.DIALOG);
 			end);
-			
+
 			contextMenu:CreateDivider();
 
 			if self.node:GetDepth() > 1 then
@@ -200,27 +200,27 @@ function TRP3_Tools_CreationTreeNodeMixin:OnClick(button)
 				TRP3_MenuUtil.SetElementTooltip(renameOption, loc.IN_INNER_ID_ACTION); -- TODO add a real description
 			end
 
-			local copyIdOption = contextMenu:CreateButton(loc.EDITOR_ID_COPY, function() 
+			local copyIdOption = contextMenu:CreateButton(loc.EDITOR_ID_COPY, function()
 				TRP3_API.popup.showTextInputPopup(loc.EDITOR_ID_COPY_POPUP, nil, nil, self.node.data.absoluteId);
 			end);
 			TRP3_MenuUtil.SetElementTooltip(copyIdOption, loc.DB_COPY_ID_TT);
 
-			local copyOption = contextMenu:CreateButton("Copy", function() 
+			local copyOption = contextMenu:CreateButton("Copy", function()
 				addon.editor.updateCurrentObjectDraft();
 				addon.clipboard.clear();
 				addon.clipboard.append(class, class.TY, self.node.data.absoluteId, self.node.data.relativeId);
 			end);
 			TRP3_MenuUtil.SetElementTooltip(copyOption, "Create a copy to insert somewhere else. TODO reword this.");
-			
+
 			if self.node.data.selected then
-				local copySelectionOption = contextMenu:CreateButton("Copy selected", function() 
+				contextMenu:CreateButton("Copy selected", function()
 					addon.clipboard.clear();
 					addon.editor.copySelectedTreeObjects();
 				end);
 			end
-			
+
 			if addon.clipboard.isReplaceCompatible(class.TY) then
-				local pasteOption = contextMenu:CreateButton("Paste here", function() 
+				local pasteOption = contextMenu:CreateButton("Paste here", function()
 					TRP3_API.popup.showConfirmPopup(loc.IN_INNER_PASTE_CONFIRM, function()
 						addon.editor.replaceCurrentDraftClass(self.node.data.absoluteId, addon.clipboard.retrieveShallow(), addon.clipboard.retrieveId());
 					end);
@@ -229,7 +229,7 @@ function TRP3_Tools_CreationTreeNodeMixin:OnClick(button)
 			end
 
 			if addon.clipboard.isInnerCompatible(class.TY) then
-				local pasteInnerOption = contextMenu:CreateButton("Paste as inner objects", function() 
+				local pasteInnerOption = contextMenu:CreateButton("Paste as inner objects", function()
 					local success, message = addon.editor.pasteClipboardAsInnerObjects(self.node.data.absoluteId);
 					if not success then
 						TRP3_API.utils.message.displayMessage(message, 4);
@@ -246,7 +246,7 @@ function TRP3_Tools_CreationTreeNodeMixin:OnClick(button)
 				TRP3_MenuUtil.SetElementTooltip(deleteOption, loc.DB_DELETE_TT);
 
 				if self.node.data.selected then
-					local deleteSelectionOption = contextMenu:CreateButton("Delete selected", function() 
+					contextMenu:CreateButton("Delete selected", function()
 						addon.editor.deleteSelectedTreeObjects();
 					end);
 				end

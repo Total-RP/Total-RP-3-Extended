@@ -66,7 +66,7 @@ function addon.database.filters.getPredicateMenu()
 		return PREDICATES_MENU;
 	end
 	PREDICATES_MENU = {};
-	for id, predicate in pairs(PREDICATES) do
+	for _, predicate in pairs(PREDICATES) do
 		table.insert(PREDICATES_MENU, {predicate.title, predicate.id});
 	end
 	return PREDICATES_MENU;
@@ -118,8 +118,8 @@ function addon.database.filters.compileFilter(filter)
 		local orStack = {};
 		local andStack = {};
 		for index, predicate in ipairs(filter) do
-			formalPredicate = addon.database.filters.getPredicateById(predicate[2]);
-			compiledPredicate = formalPredicate.compile(unpack(predicate, 3, 2 + #(formalPredicate.parameters)));
+			local formalPredicate = addon.database.filters.getPredicateById(predicate[2]);
+			local compiledPredicate = formalPredicate.compile(unpack(predicate, 3, 2 + #(formalPredicate.parameters)));
 			if index > 1 and predicate[1] == FILTER_AND then
 				table.insert(andStack, compileOr(orStack));
 				orStack = {};
@@ -200,7 +200,7 @@ function addon.database.filters.initialize()
 		},
 		default = true
 	};
-	
+
 	local equalUnequal = {
 		type = "boolean",
 		values = {
@@ -244,7 +244,7 @@ function addon.database.filters.initialize()
 		},
 		Format = booleanPredicateFormatter,
 		compile = function(isCreation)
-			return function(creationId, absoluteId, class)
+			return function(creationId, absoluteId, _class)
 				return (creationId == absoluteId) == isCreation;
 			end;
 		end
@@ -258,7 +258,7 @@ function addon.database.filters.initialize()
 		},
 		Format = booleanPredicateFormatter,
 		compile = function(isMine)
-			return function(creationId, absoluteId, class)
+			return function(creationId, _absoluteId, _class)
 				return (TRP3_API.extended.isObjectMine(creationId)) == isMine;
 			end;
 		end
@@ -272,7 +272,7 @@ function addon.database.filters.initialize()
 		},
 		Format = booleanPredicateFormatter,
 		compile = function(isBackers)
-			return function(creationId, absoluteId, class)
+			return function(creationId, _absoluteId, _class)
 				return (TRP3_API.extended.isObjectBackers(creationId)) == isBackers;
 			end;
 		end
@@ -298,7 +298,7 @@ function addon.database.filters.initialize()
 			}
 		},
 		compile = function(isEqual, type)
-			return function(creationId, absoluteId, class)
+			return function(_creationId, _absoluteId, class)
 				return (class.TY == type) == isEqual;
 			end;
 		end
@@ -321,7 +321,7 @@ function addon.database.filters.initialize()
 			}
 		},
 		compile = function(isEqual, locale)
-			return function(creationId, absoluteId, class)
+			return function(creationId, _absoluteId, _class)
 				local creationClass = TRP3_API.extended.getClass(creationId);
 				return ((creationClass and creationClass.MD and creationClass.MD.LO or "en") == locale) == isEqual;
 			end;
@@ -340,7 +340,7 @@ function addon.database.filters.initialize()
 		},
 		compile = function(comparator, value)
 			local cmp = stringCompareFunctions[comparator or "==="] or stringCompareFunctions["==="];
-			return function(creationId, absoluteId, class)
+			return function(_creationId, absoluteId, _class)
 				return cmp(absoluteId, value);
 			end;
 		end
@@ -372,35 +372,35 @@ function addon.database.filters.initialize()
 		compile = function(comparator, name)
 			local fullName = strtrim((name or ""):lower());
 			local simpleName = strtrim(fullName:gsub("-.*", ""));
-			if comparator == "~=" then 
+			if comparator == "~=" then
 				if fullName == simpleName then
-					return function(creationId, absoluteId, class)
+					return function(creationId, _absoluteId, _class)
 						local creationClass = TRP3_API.extended.getClass(creationId);
 						local creator = (creationClass.MD and creationClass.MD.CB or ""):lower();
 						return creator:gsub("-.*", "") ~= simpleName;
 					end;
 				else
-					return function(creationId, absoluteId, class)
+					return function(creationId, _absoluteId, _class)
 						local creationClass = TRP3_API.extended.getClass(creationId);
 						local creator = (creationClass.MD and creationClass.MD.CB or ""):lower();
 						return creator ~= fullName;
 					end;
 				end
-			elseif comparator == "===" then 
-				return function(creationId, absoluteId, class)
+			elseif comparator == "===" then
+				return function(creationId, _absoluteId, _class)
 					local creationClass = TRP3_API.extended.getClass(creationId);
 					local creator = creationClass.MD and creationClass.MD.CB or "";
 					return creator == name;
 				end;
 			else -- comparator == "=="
 				if fullName == simpleName then
-					return function(creationId, absoluteId, class)
+					return function(creationId, _absoluteId, _class)
 						local creationClass = TRP3_API.extended.getClass(creationId);
 						local creator = (creationClass.MD and creationClass.MD.CB or ""):lower();
 						return creator:gsub("-.*", "") == simpleName;
 					end;
 				else
-					return function(creationId, absoluteId, class)
+					return function(creationId, _absoluteId, _class)
 						local creationClass = TRP3_API.extended.getClass(creationId);
 						local creator = (creationClass.MD and creationClass.MD.CB or ""):lower();
 						return creator == fullName;
@@ -423,7 +423,7 @@ function addon.database.filters.initialize()
 		compile = function(comparator, value)
 			local cmp = stringCompareFunctions[comparator or "==="] or stringCompareFunctions["==="];
 			local val = strtrim((value or ""):lower());
-			return function(creationId, absoluteId, class)
+			return function(_creationId, _absoluteId, class)
 				return cmp((class.BA and class.BA.NA or ""):lower(), val);
 			end;
 		end
@@ -442,7 +442,7 @@ function addon.database.filters.initialize()
 		compile = function(comparator, value)
 			local cmp = stringCompareFunctions[comparator or "==="] or stringCompareFunctions["==="];
 			local val = strtrim((value or ""):lower());
-			return function(creationId, absoluteId, class)
+			return function(_creationId, _absoluteId, class)
 				return cmp((class.NT or ""):lower(), val);
 			end;
 		end
@@ -461,7 +461,7 @@ function addon.database.filters.initialize()
 		compile = function(comparator, value)
 			local cmp = stringCompareFunctions[comparator or "==="] or stringCompareFunctions["==="];
 			local val = strtrim((value or ""):lower());
-			return function(creationId, absoluteId, class)
+			return function(_creationId, _absoluteId, class)
 				-- defining what the "text" is, per object type
 				if class.TY == TRP3_DB.types.ITEM then
 					return cmp((class.BA and class.BA.DE or ""):lower(), val);
@@ -493,5 +493,4 @@ function addon.database.filters.initialize()
 			end;
 		end
 	});
-
 end

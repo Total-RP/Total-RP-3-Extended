@@ -33,7 +33,7 @@ end
 
 function TRP3_Tools_EditorObjectRibbonMixin:Initialize()
 	self.noteButton:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.NOTE_EDITOR, {self.NT, function(note) 
+		addon.modal:ShowModal(TRP3_API.popup.NOTE_EDITOR, {self.NT, function(note)
 			self:SetNote(note);
 		end});
 	end);
@@ -55,22 +55,22 @@ function TRP3_Tools_EditorObjectRibbonMixin:Initialize()
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.innerObjectsPanel.AU, "BOTTOMRIGHT", 0, 0, loc.IN_INNER_ADD .. ": " .. addon.main.getTypeLocale(TRP3_DB.types.AURA), loc.IN_INNER_HELP);
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.innerObjectsPanel.DO, "BOTTOMRIGHT", 0, 0, loc.IN_INNER_ADD .. ": " .. addon.main.getTypeLocale(TRP3_DB.types.DOCUMENT), loc.IN_INNER_HELP);
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.innerObjectsPanel.DI, "BOTTOMRIGHT", 0, 0, loc.IN_INNER_ADD .. ": " .. addon.main.getTypeLocale(TRP3_DB.types.DIALOG), loc.IN_INNER_HELP);
-	self.innerObjectsPanel.QU:SetScript("OnClick", function() 
+	self.innerObjectsPanel.QU:SetScript("OnClick", function()
 		addon.editor.requestInnerObject(addon.editor.getCurrentObjectAbsoluteId(), TRP3_DB.types.QUEST);
 	end);
-	self.innerObjectsPanel.ST:SetScript("OnClick", function() 
+	self.innerObjectsPanel.ST:SetScript("OnClick", function()
 		addon.editor.requestInnerObject(addon.editor.getCurrentObjectAbsoluteId(), TRP3_DB.types.QUEST_STEP);
 	end);
-	self.innerObjectsPanel.IT:SetScript("OnClick", function() 
+	self.innerObjectsPanel.IT:SetScript("OnClick", function()
 		addon.editor.requestInnerObject(addon.editor.getCurrentObjectAbsoluteId(), TRP3_DB.types.ITEM);
 	end);
-	self.innerObjectsPanel.AU:SetScript("OnClick", function() 
+	self.innerObjectsPanel.AU:SetScript("OnClick", function()
 		addon.editor.requestInnerObject(addon.editor.getCurrentObjectAbsoluteId(), TRP3_DB.types.AURA);
 	end);
-	self.innerObjectsPanel.DO:SetScript("OnClick", function() 
+	self.innerObjectsPanel.DO:SetScript("OnClick", function()
 		addon.editor.requestInnerObject(addon.editor.getCurrentObjectAbsoluteId(), TRP3_DB.types.DOCUMENT);
 	end);
-	self.innerObjectsPanel.DI:SetScript("OnClick", function() 
+	self.innerObjectsPanel.DI:SetScript("OnClick", function()
 		addon.editor.requestInnerObject(addon.editor.getCurrentObjectAbsoluteId(), TRP3_DB.types.DIALOG);
 	end);
 
@@ -86,7 +86,7 @@ function TRP3_Tools_EditorObjectRibbonMixin:Initialize()
 		addon.editor.getCurrentPropertiesEditor():InterfaceToClass(dialogData);
 		TRP3_API.extended.dialog.startDialog(nil, dialogData);
 	end);
-	
+
 	self.auraPreview:SetScript("OnEnter", function()
 		addon.editor.getCurrentPropertiesEditor():UpdatePreview(true);
 		TRP3_AuraTooltip:Attach(self.auraPreview.aura);
@@ -96,38 +96,38 @@ function TRP3_Tools_EditorObjectRibbonMixin:Initialize()
 		TRP3_AuraTooltip:Detach(self.auraPreview.aura);
 	end);
 
-	self.itemPreview:SetScript("OnEnter", function(self)
+	self.itemPreview:SetScript("OnEnter", function(itemPreview)
 		addon.editor.getCurrentPropertiesEditor():UpdatePreview();
-		self.item:LockHighlight();
-		TRP3_API.inventory.showItemTooltip(self, {madeBy = TRP3_API.globals.player_id}, self.item.class, true);
-		
+		itemPreview.item:LockHighlight();
+		TRP3_API.inventory.showItemTooltip(itemPreview, {madeBy = TRP3_API.globals.player_id}, itemPreview.item.class, true);
+
 		local containerSize;
-		if self.item.class.BA.CT then
-			containerSize = self.item.class.CO.SI;
+		if itemPreview.item.class.BA.CT then
+			containerSize = itemPreview.item.class.CO.SI;
 			local durability = "";
-			if self.item.class.CO.DU and self.item.class.CO.DU > 0 then
-				durability = (TRP3_API.utils.str.texture("Interface\\GROUPFRAME\\UI-GROUP-MAINTANKICON", 15) .. "%s/%s"):format(self.item.class.CO.DU, self.item.class.CO.DU);
+			if itemPreview.item.class.CO.DU and itemPreview.item.class.CO.DU > 0 then
+				durability = (TRP3_API.utils.str.texture("Interface\\GROUPFRAME\\UI-GROUP-MAINTANKICON", 15) .. "%s/%s"):format(itemPreview.item.class.CO.DU, itemPreview.item.class.CO.DU);
 			end
-			
+
 			for _, bagPreview in pairs({"bag5x4", "bag2x4", "bag1x4"}) do
-				TRP3_API.inventory.decorateContainer(self[bagPreview], self.item.class);
-				self[bagPreview].DurabilityText:SetText(durability);
-				self[bagPreview].WeightText:SetText(TRP3_API.extended.formatWeight(0) .. TRP3_API.utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15));
+				TRP3_API.inventory.decorateContainer(itemPreview[bagPreview], itemPreview.item.class);
+				itemPreview[bagPreview].DurabilityText:SetText(durability);
+				itemPreview[bagPreview].WeightText:SetText(TRP3_API.extended.formatWeight(0) .. TRP3_API.utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15));
 			end
 		end
-		self.bag5x4:SetShown(containerSize == "5x4");
-		self.bag2x4:SetShown(containerSize == "2x4");
-		self.bag1x4:SetShown(containerSize == "1x4");
+		itemPreview.bag5x4:SetShown(containerSize == "5x4");
+		itemPreview.bag2x4:SetShown(containerSize == "2x4");
+		itemPreview.bag1x4:SetShown(containerSize == "1x4");
 	end);
 
-	self.itemPreview:SetScript("OnLeave", function(self)
-		self.item:UnlockHighlight();
+	self.itemPreview:SetScript("OnLeave", function(itemPreview)
+		itemPreview.item:UnlockHighlight();
 		TRP3_ItemTooltip:Hide();
-		self.bag5x4:Hide();
-		self.bag2x4:Hide();
-		self.bag1x4:Hide();
+		itemPreview.bag5x4:Hide();
+		itemPreview.bag2x4:Hide();
+		itemPreview.bag1x4:Hide();
 	end);
-	
+
 	self.itemPreview.item:SetMouseMotionEnabled(false);
 	self.itemPreview.item:SetMouseClickEnabled(false);
 
@@ -146,7 +146,7 @@ function TRP3_Tools_EditorObjectRibbonMixin:Initialize()
 	self.actionsPanel.unrevealQuest:SetScale(0.9375);
 	self.actionsPanel.goToStep:SetScale(0.9375);
 	self.actionsPanel.applyAura:SetScale(0.9375);
-	
+
 	self.actionsPanel.addItem.Icon:SetTexture("Interface\\ICONS\\garrison_weaponupgrade");
 	self.actionsPanel.showVariables.Icon:SetAtlas("GarrMission_MissionIcon-Patrol");
 	self.actionsPanel.startQuest.Icon:SetAtlas("common-icon-forwardarrow");
@@ -167,7 +167,7 @@ function TRP3_Tools_EditorObjectRibbonMixin:Initialize()
 			local _ , link = addon.utils.getObjectIconAndLink(addon.editor.getCurrentDraftClass());
 			TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(link), function(inputValue)
 				TRP3_API.inventory.addItem(nil, addon.editor.getCurrentObjectAbsoluteId(), {count = inputValue or 1, madeBy = creationClass.BA and creationClass.BA.CR});
-			end, nil, 1);		
+			end, nil, 1);	
 		else
 			TRP3_API.utils.message.displayMessage("The item cannot be added because it hasn't been saved.", 4);
 		end
@@ -219,7 +219,6 @@ function TRP3_Tools_EditorObjectRibbonMixin:Initialize()
 			TRP3_API.utils.message.displayMessage("The aura cannot be activated because it hasn't been saved.", 4);
 		end
 	end);
-
 end
 
 function TRP3_Tools_EditorObjectRibbonMixin:ClassToInterface(class)
@@ -251,7 +250,6 @@ function TRP3_Tools_EditorObjectRibbonMixin:ClassToInterface(class)
 	recalculateLayout(self.innerObjectsPanel, 8, 6, -2);
 	recalculateLayout(self.actionsPanel, 8, 6, 4);
 	recalculateLayout(self, 160, 2, 2, true);
-	
 end
 
 function TRP3_Tools_EditorObjectRibbonMixin:InterfaceToClass(class)
@@ -265,7 +263,7 @@ function TRP3_Tools_EditorObjectRibbonMixin:SetNote(note)
 	else
 		self.noteButton.text:SetText(TRP3_API.Colors.Yellow(loc.EDITOR_NOTES .. ": ") .. TRP3_API.Colors.Grey("(click to add notes)"));
 	end
-	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.noteButton, "BOTTOMRIGHT", 0, 0, loc.EDITOR_NOTES, 
+	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.noteButton, "BOTTOMRIGHT", 0, 0, loc.EDITOR_NOTES,
 		(self.NT or "") .. "\n\n" ..
 		TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit free notes")
 	);

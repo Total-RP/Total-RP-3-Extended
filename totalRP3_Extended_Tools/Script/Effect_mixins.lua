@@ -1,5 +1,4 @@
 local _, addon = ...
-local loc = TRP3_API.loc;
 
 local effectEditors = {};
 
@@ -9,7 +8,7 @@ local function buildEffectEditor(effect, scriptContextFunction)
 	editor.widgets = {};
 	editor.effect = effect;
 	editor.widgets, editor.groups = addon.script.parameter.acquireWidgets(effect.parameters, editor.widgets, scriptContextFunction);
-	
+
 	local leftOffset = 0;
 	local rightOffset = 0;
 	for index, parameter in ipairs(effect.parameters) do
@@ -87,14 +86,14 @@ end
 TRP3_Tools_EditorEffectMixin = {};
 
 function TRP3_Tools_EditorEffectMixin:Initialize()
-	self.effectCancelButton:SetScript("OnClick", function() 
+	self.effectCancelButton:SetScript("OnClick", function()
 		self:ShowEffectMain();
 	end);
 
-	self.cancelButton:SetScript("OnClick", function() 
+	self.cancelButton:SetScript("OnClick", function()
 		self:Hide();
 	end);
-	self.applyButton:SetScript("OnClick", function() 
+	self.applyButton:SetScript("OnClick", function()
 		self.constraint.list:Update();
 		getEffectEditorParameters(self.effectEditor, self.effectData.parameters);
 		local effectClass = addon.script.getEffectById(self.effectData.id);
@@ -120,7 +119,7 @@ function TRP3_Tools_EditorEffectMixin:PushRecentEffect(effectId)
 	for idx, id in ipairs(self.recentEffects) do
 		if id == effectId then
 			table.remove(self.recentEffects, idx);
-			break; 
+			break;
 		end
 	end
 	table.insert(self.recentEffects, 1, effectId);
@@ -136,23 +135,23 @@ function TRP3_Tools_EditorEffectMixin:SetEffect(effectId)
 	if self.effectData.id ~= effectId then
 		self.effectData.id = effectId;
 		wipe(self.effectData.parameters);
-		for index, parameter in ipairs(effectClass.parameters) do
+		for _, parameter in ipairs(effectClass.parameters) do
 			table.insert(self.effectData.parameters, parameter.default);
 		end
 	end
-	
+
 	if self.effectEditor then
 		self.effectEditor:Hide();
 		self.effectEditor:SetParent(nil);
 	end
 
-	self.effectEditor = getEffectEditor(self.effectData.id, function() 
+	self.effectEditor = getEffectEditor(self.effectData.id, function()
 		return self:GetScriptContext();
 	end);
 	if self.effectEditor then
 		self.effectEditor:SetParent(self);
 		self.effectEditor:ClearAllPoints();
-		
+
 		self.effectEditor:SetPoint("TOP", self.effect, "BOTTOM", 0, -10);
 		self.effectEditor:SetPoint("LEFT", 20, 0);
 		self.effectEditor:SetPoint("RIGHT", -20, 0);
@@ -167,7 +166,6 @@ function TRP3_Tools_EditorEffectMixin:SetEffect(effectId)
 
 	self.effect.titleText:SetText(addon.script.getEffectTitle(self.effectData));
 	self.effect.icon.Icon:SetTexture("Interface\\Icons\\" .. addon.script.getEffectIcon(self.effectData));
-	
 end
 
 function TRP3_Tools_EditorEffectMixin:ShowEffectMenu(noCancel)
@@ -231,7 +229,6 @@ function TRP3_Tools_EditorEffectMixin:ShowEffectMain()
 	if self.effectEditor then
 		self.effectEditor:Show();
 	end
-
 end
 
 function TRP3_Tools_EditorEffectMixin:GetScriptContext()
@@ -251,7 +248,7 @@ function TRP3_Tools_EditorEffectMixin:OpenForEffect(effectData, scriptId)
 	self.effectData.parameters = self.effectData.parameters or {};
 
 	self.constraint.list:LinkWithConstraint(self.effectData.constraint);
-	self.constraint.list:SetScriptContext(function() 
+	self.constraint.list:SetScriptContext(function()
 		return self:GetScriptContext();
 	end);
 
@@ -274,7 +271,6 @@ function TRP3_Tools_ScriptEffectTreeNodeMixin:Initialize(node)
 end
 
 function TRP3_Tools_ScriptEffectTreeNodeMixin:Refresh()
-	
 	self.title:SetText(self.node.data.title);
 
 	local tooltip;
@@ -298,7 +294,6 @@ function TRP3_Tools_ScriptEffectTreeNodeMixin:Refresh()
 	end
 
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self, "BOTTOMRIGHT", 0, 0, self.node.data.title, tooltip);
-
 end
 
 function TRP3_Tools_ScriptEffectTreeNodeMixin:OnClick()

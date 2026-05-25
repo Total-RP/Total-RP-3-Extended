@@ -83,10 +83,10 @@ function TRP3_Tools_CreationsListElementMixin:Initialize(data)
 			self.typeIcon:SetTexture();
 		end
 	else
-		self.link:SetText(data.link .. " |TInterface\\\MONEYFRAME\\Arrow-Left-Down:20:20|t " .. data.creationLink);
+		self.link:SetText(data.link .. " |TInterface\\MONEYFRAME\\Arrow-Left-Down:20:20|t " .. data.creationLink);
 		self.typeIcon:SetTexture();
 	end
-		
+
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self, "BOTTOMRIGHT", 0, 0, data.link, data.tooltip);
 end
 
@@ -201,7 +201,6 @@ function TRP3_Tools_CreationsListElementMixin:OnClick(button)
 					TRP3_MenuUtil.SetElementTooltip(deleteOption, loc.DB_DELETE_TT);
 				end
 			end
-			
 		end);
 	end
 end
@@ -209,7 +208,7 @@ end
 TRP3_Tools_CreationsActionsMixin = {};
 
 function TRP3_Tools_CreationsActionsMixin:Initialize()
-	
+
 	self.blankItem:SetScript("OnClick", function()
 		local itemID, _ = TRP3_API.extended.tools.createItem(TRP3_API.extended.tools.getBlankItemData(TRP3_DB.modes.EXPERT));
 		addon.main.openDraft(itemID);
@@ -274,7 +273,6 @@ function TRP3_Tools_CreationsActionsMixin:Initialize()
 	self.credits:SetScript("OnClick", function()
 		addon.main.openCredits();
 	end);
-	
 end
 
 local paramaterPoolCollection = CreateFramePoolCollection();

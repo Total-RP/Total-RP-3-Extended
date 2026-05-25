@@ -3,7 +3,7 @@ local loc = TRP3_API.loc;
 
 TRP3_Tools_ScriptParameterMixin = {};
 
-function TRP3_Tools_ScriptParameterMixin:Setup(widgetContext, parameter)
+function TRP3_Tools_ScriptParameterMixin:Setup(_widgetContext, _parameter)
 	-- NOP
 end
 
@@ -33,7 +33,7 @@ function TRP3_Tools_ScriptParameterEditBoxMixin:Setup(widgetContext, parameter)
 		self.editBox:SetScript("OnTextChanged", nil);
 	end
 	if parameter.taggable then
-		self.editBox:SetupSuggestions("Tag", function(menu, onAccept) 
+		self.editBox:SetupSuggestions("Tag", function(menu, onAccept)
 			addon.editor.populateObjectTagMenu(menu, onAccept, self.GetScriptContext());
 		end);
 	else
@@ -71,7 +71,7 @@ function TRP3_Tools_ScriptParameterObjectiveMixin:SetQuestContext(questId)
 		self.questId = nil;
 	end
 	if self.questId then
-		self.objectiveId:SetupSuggestions("Objective", function(menu, onAccept) 
+		self.objectiveId:SetupSuggestions("Objective", function(menu, onAccept)
 			local OB;
 			if addon.editor.getCurrentObjectAbsoluteId() == self.questId then
 				OB = addon.editor.getCurrentPropertiesEditor():ListObjectives();
@@ -144,12 +144,12 @@ function TRP3_Tools_ScriptParameterVariableMixin:Setup(widgetContext, nameParame
 	self.name.titleText = nameParameter.title;
 	self.name.helpText = nameParameter.description;
 	addon.main.localize(self.name);
-	self.name:SetupSuggestions("Variable", function(menu, onAccept) 
+	self.name:SetupSuggestions("Variable", function(menu, onAccept)
 		local variables = addon.editor.gatherVariables(select(1, self:GetScriptContext()), nameParameter.scope or self.scope:GetSelectedValue());
 		if variables and TableHasAnyEntries(variables) then
 			menu:SetScrollMode(400);
 			local varsSorted = {};
-			for name, objective in pairs(variables) do
+			for name, _objective in pairs(variables) do
 				table.insert(varsSorted, name);
 			end
 			table.sort(varsSorted)
@@ -192,7 +192,7 @@ end
 
 TRP3_Tools_ScriptParameterCoordinateMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterCoordinateMixin:Setup(widgetContext, parameterX, parameterY)
+function TRP3_Tools_ScriptParameterCoordinateMixin:Setup(_widgetContext, parameterX, parameterY)
 	self.x.titleText = parameterX.title;
 	self.x.helpText = parameterX.description;
 	addon.main.localize(self.x);
@@ -245,7 +245,7 @@ function TRP3_Tools_ScriptParameterObjectMixin:Setup(widgetContext, parameter)
 		self.id:SetScript("OnTextChanged", nil);
 	end
 	if parameter.taggable then
-		self.id:SetupSuggestions("Tag", function(menu, onAccept) 
+		self.id:SetupSuggestions("Tag", function(menu, onAccept)
 			addon.editor.populateObjectTagMenu(menu, onAccept, self.GetScriptContext());
 		end);
 	else
@@ -263,7 +263,7 @@ end
 
 TRP3_Tools_ScriptParameterSoundMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterSoundMixin:Setup(widgetContext, soundParameter, soundFileParameter)
+function TRP3_Tools_ScriptParameterSoundMixin:Setup(_widgetContext, soundParameter, soundFileParameter)
 	self.id.titleText = soundParameter.title;
 	self.id.helpText = soundParameter.description;
 	addon.main.localize(self.id);
@@ -299,7 +299,7 @@ end
 
 TRP3_Tools_ScriptParameterBooleanMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterBooleanMixin:Setup(widgetContext, parameter)
+function TRP3_Tools_ScriptParameterBooleanMixin:Setup(_widgetContext, parameter)
 	self.value.titleText = parameter.title;
 	self.value.helpText = parameter.description;
 	addon.main.localize(self.value);
@@ -315,12 +315,12 @@ end
 
 TRP3_Tools_ScriptParameterMultilineMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterMultilineMixin:Setup(widgetContext, parameter)
+function TRP3_Tools_ScriptParameterMultilineMixin:Setup(_widgetContext, parameter)
 	self.text.titleText = parameter.title;
 	self.text.helpText = parameter.description;
 	addon.main.localize(self.text);
 	if parameter.taggable then
-		self.text:SetupSuggestions("Tag", function(menu, onAccept) 
+		self.text:SetupSuggestions("Tag", function(menu, onAccept)
 			addon.editor.populateObjectTagMenu(menu, onAccept, self.GetScriptContext());
 		end);
 	else
@@ -342,7 +342,7 @@ end
 
 TRP3_Tools_ScriptParameterMusicMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterMusicMixin:Setup(widgetContext, parameter)
+function TRP3_Tools_ScriptParameterMusicMixin:Setup(_widgetContext, parameter)
 	self.id.titleText = parameter.title;
 	self.id.helpText = parameter.description;
 	addon.main.localize(self.id);
@@ -365,7 +365,7 @@ end
 
 TRP3_Tools_ScriptParameterEmoteMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterEmoteMixin:Setup(widgetContext, parameter)
+function TRP3_Tools_ScriptParameterEmoteMixin:Setup(_widgetContext, parameter)
 	self.id.titleText = parameter.title;
 	self.id.helpText = parameter.description;
 	addon.main.localize(self.id);
@@ -392,7 +392,7 @@ function TRP3_Tools_ScriptParameterIconMixin:Setup(widgetContext, parameter)
 			parameter.onChange(self, widgetContext);
 		end
 	else
-		self.onChangeCallback = function() end;	
+		self.onChangeCallback = function() end;
 	end
 	self.icon:SetScript("OnClick", function()
 		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon) self:SetValue(icon); end, nil, nil, self.icon.selectedIcon});
@@ -415,7 +415,7 @@ end
 
 TRP3_Tools_ScriptParameterLootMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterLootMixin:Setup(widgetContext, parameter)
+function TRP3_Tools_ScriptParameterLootMixin:Setup(_widgetContext, parameter)
 	self.bag.close:Disable();
 	self.bag.LockIcon:Hide();
 	self.bag.DurabilityText:Hide();
@@ -519,7 +519,7 @@ end
 
 TRP3_Tools_ScriptParameterOperandMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterOperandMixin:Setup(widgetContext, operandParameter, argumentsParameter)
+function TRP3_Tools_ScriptParameterOperandMixin:Setup(widgetContext, operandParameter, _argumentsParameter)
 	self.operandId.titleText = operandParameter.title;
 	self.operandId.helpText = operandParameter.description;
 	addon.main.localize(self.operandId);
@@ -627,40 +627,40 @@ local function populateCodeContextMenu(parent, callback)
 	end);
 end
 
-function TRP3_Tools_ScriptParameterScriptMixin:Setup(widgetContext, parameter)
+function TRP3_Tools_ScriptParameterScriptMixin:Setup(_widgetContext, parameter)
 	self.script.titleText = parameter.title;
 	self.script.helpText = parameter.description;
 	addon.main.localize(self.script);
 	self.effect:SetText(loc.EFFECT_SCRIPT_I_EFFECT);
-	self.effect:SetScript("OnClick", function() 
+	self.effect:SetScript("OnClick", function()
 		populateEffectContextMenu(self.effect, function(effectId) 
 			self:InsertEffectById(effectId);
 		end);
 	end);
 	self.operand:SetText("Insert operand");
-	self.operand:SetScript("OnClick", function() 
+	self.operand:SetScript("OnClick", function()
 		populateOperandContextMenu(self.operand, function(operandId)
 			self:InsertOperandById(operandId);
 		end)
 	end);
 	self.other:SetText("Insert term");
-	self.other:SetScript("OnClick", function() 
+	self.other:SetScript("OnClick", function()
 		populateCodeContextMenu(self.other, function(code)
 			self:InsertCode(code);
 		end)
 	end);
-	self.script:AddTextControl(loc.EFFECT_SCRIPT_I_EFFECT, function(button, widget) 
-		populateEffectContextMenu(button, function(effectId) 
+	self.script:AddTextControl(loc.EFFECT_SCRIPT_I_EFFECT, function(button, widget)
+		populateEffectContextMenu(button, function(effectId)
 			widget:Insert(addon.script.getEffectLua(effectId) .. ";");
 		end);
 	end);
-	self.script:AddTextControl("Insert operand", function(button, widget) 
-		populateOperandContextMenu(button, function(operandId) 
+	self.script:AddTextControl("Insert operand", function(button, widget)
+		populateOperandContextMenu(button, function(operandId)
 			widget:Insert(addon.script.getOperandLua(operandId));
 		end);
 	end);
-	self.script:AddTextControl("Insert term", function(button, widget) 
-		populateCodeContextMenu(button, function(code) 
+	self.script:AddTextControl("Insert term", function(button, widget)
+		populateCodeContextMenu(button, function(code)
 			widget:Insert(code);
 		end);
 	end);
@@ -692,12 +692,12 @@ end
 
 TRP3_Tools_ScriptParameterMacroMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterMacroMixin:Setup(widgetContext, parameter)
+function TRP3_Tools_ScriptParameterMacroMixin:Setup(_widgetContext, parameter)
 	self.macro.titleText = parameter.title;
 	self.macro.helpText = parameter.description;
 	addon.main.localize(self.macro);
 	if parameter.taggable then
-		self.macro:SetupSuggestions("Tag", function(menu, onAccept) 
+		self.macro:SetupSuggestions("Tag", function(menu, onAccept)
 			addon.editor.populateObjectTagMenu(menu, onAccept, self.GetScriptContext());
 		end);
 	else
@@ -722,46 +722,46 @@ function TRP3_Tools_ScriptParameterMacroMixin:Setup(widgetContext, parameter)
 	textbox:HookScript("OnEditFocusGained", checkCharactersLimit);
 
 	local function hookLinkInsert(functionName, hook)
-		hooksecurefunc(functionName, function(self)
+		hooksecurefunc(functionName, function(object)
 			if IsModifiedClick("CHATLINK") and textbox:HasFocus() then
-				textbox:Insert(hook(self));
+				textbox:Insert(hook(object));
 			end
-		end)
+		end);
 	end
 
-	EventRegistry:RegisterCallback("SpellBookItemMixin.OnModifiedClick", function(_, self)
+	EventRegistry:RegisterCallback("SpellBookItemMixin.OnModifiedClick", function(_, item)
 		if IsModifiedClick("CHATLINK") and textbox:HasFocus() then
-			textbox:Insert(self.spellBookItemInfo.name);
+			textbox:Insert(item.spellBookItemInfo.name);
 		end
-	end)
+	end);
 
-	EventRegistry:RegisterCallback("SpellFlyoutPopupButtonMixin.OnClick", function(_, self)
+	EventRegistry:RegisterCallback("SpellFlyoutPopupButtonMixin.OnClick", function(_, spell)
 		if IsModifiedClick("CHATLINK") and textbox:HasFocus() then
-			textbox:Insert(self.spellName);
+			textbox:Insert(spell.spellName);
 		end
-	end)
+	end);
 	hookLinkInsert("HandleModifiedItemClick", function(link)
-		return C_Item.GetItemInfo(link)
-	end)
+		return C_Item.GetItemInfo(link);
+	end);
 
 	local deferRegisterCallback = false;
 	if C_AddOns.IsAddOnLoaded("Blizzard_TalentUI") then -- TODO check if this is still relevant "Blizzard_TalentUI" appears to be related to Cata talents only
-		hookLinkInsert("HandleGeneralTalentFrameChatLink", function(self)
-			return self.name:GetText();
+		hookLinkInsert("HandleGeneralTalentFrameChatLink", function(talent)
+			return talent.name:GetText();
 		end);
 	else
 		deferRegisterCallback = true;
 	end
 
 	if C_AddOns.IsAddOnLoaded("Blizzard_Collections") then
-		hookLinkInsert("MountListDragButton_OnClick", function(self)
-			return GetSpellInfo(self:GetParent().spellID)
+		hookLinkInsert("MountListDragButton_OnClick", function(mount)
+			return GetSpellInfo(mount:GetParent().spellID);
 		end);
-		hookLinkInsert("MountListItem_OnClick", function(self)
-			return GetSpellInfo(self:GetParent().spellID)
+		hookLinkInsert("MountListItem_OnClick", function(mount)
+			return GetSpellInfo(mount:GetParent().spellID);
 		end);
-		hookLinkInsert("ToySpellButton_OnModifiedClick", function(self)
-			return C_Item.GetItemInfo(C_ToyBox.GetToyLink(self.itemID))
+		hookLinkInsert("ToySpellButton_OnModifiedClick", function(toy)
+			return C_Item.GetItemInfo(C_ToyBox.GetToyLink(toy.itemID));
 		end);
 	else
 		deferRegisterCallback = true;
@@ -770,19 +770,19 @@ function TRP3_Tools_ScriptParameterMacroMixin:Setup(widgetContext, parameter)
 	if deferRegisterCallback then
 		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "ADDON_LOADED", function(_, name)
 			if name == "Blizzard_TalentUI" then
-				hookLinkInsert("HandleGeneralTalentFrameChatLink", function(self)
-					return self.name:GetText();
-				end)
+				hookLinkInsert("HandleGeneralTalentFrameChatLink", function(talent)
+					return talent.name:GetText();
+				end);
 			elseif name == "Blizzard_Collections" then
-				hookLinkInsert("MountListDragButton_OnClick", function(self)
-					return GetSpellInfo(self:GetParent().spellID)
-				end)
-				hookLinkInsert("MountListItem_OnClick", function(self)
-					return GetSpellInfo(self:GetParent().spellID)
-				end)
-				hookLinkInsert("ToySpellButton_OnModifiedClick", function(self)
-					return C_Item.GetItemInfo(C_ToyBox.GetToyLink(self.itemID))
-				end)
+				hookLinkInsert("MountListDragButton_OnClick", function(mount)
+					return GetSpellInfo(mount:GetParent().spellID);
+				end);
+				hookLinkInsert("MountListItem_OnClick", function(mount)
+					return GetSpellInfo(mount:GetParent().spellID);
+				end);
+				hookLinkInsert("ToySpellButton_OnModifiedClick", function(toy)
+					return C_Item.GetItemInfo(C_ToyBox.GetToyLink(toy.itemID))
+				end);
 			end
 		end);
 	end

@@ -181,8 +181,8 @@ function TRP3_ToolFrameTabsMixin:CloseRequest(tabButton, data)
 	end
 end
 
-function TRP3_ToolFrameTabsMixin:OnActivate(tabButton, data)
-	
+function TRP3_ToolFrameTabsMixin:OnActivate(_tabButton, data)
+
 	addon.editor.save();
 	addon.editor.reset();
 
@@ -200,7 +200,7 @@ function TRP3_ToolFrameTabsMixin:OnActivate(tabButton, data)
 	elseif data.type == TAB_TYPE.CREDITS then
 		addon.main.setBackground(1);
 		toolFrame.backers.scroll.child.HTML:SetText(TRP3_API.utils.str.toHTML(TRP3_KS_BACKERS:format(addon.database.formatVersion())));
-		toolFrame.backers.scroll.child.HTML:SetScript("OnHyperlinkClick", function(self, url, text, button) -- luacheck: ignore 212
+		toolFrame.backers.scroll.child.HTML:SetScript("OnHyperlinkClick", function(_html, url, _text, _button)
 			TRP3_API.Ellyb.Popups:OpenURL(url);
 		end)
 		toolFrame.backers:Show();
@@ -234,7 +234,7 @@ function TRP3_ToolFrameTabsMixin:OnActivate(tabButton, data)
 	{p:r}Seleves{/p}]])); -- TODO remove
 		toolFrame.disclaimer.html.ok:SetScript("OnClick", function()
 			TRP3_Tools_Flags.has_seen_disclaimer = true;
-			tabBar:Close(tabBar:FindTab(function(data) return data.type == TAB_TYPE.DISCLAIMER; end));
+			tabBar:Close(tabBar:FindTab(function(tabData) return tabData.type == TAB_TYPE.DISCLAIMER; end));
 			addon.main.openDatabase();
 		end);
 		toolFrame.disclaimer.html:SetScript("OnHyperlinkClick", function(_, link)
@@ -253,12 +253,12 @@ function addon.main.openDraft(creationId, forceNewEditor, cursor)
 		local class = TRP3_API.extended.getClass(creationId);
 		local link = TRP3_API.inventory.getItemLink(class, creationId);
 		tabBar:AddTabAndActivate({
-			label      = link, 
+			label      = link,
 			tooltipHeader = link,
 			closeable  = true
 		},{
 			type       = TAB_TYPE.CREATION,
-			creationId = creationId, 
+			creationId = creationId,
 			cursor     = cursor or {
 				objectId = creationId
 			}
@@ -289,11 +289,11 @@ function addon.main.saveDraft(creationId)
 	draftClass.MD.SB = TRP3_API.globals.player_id;
 	draftClass.MD.tV = TRP3_API.globals.extended_version;
 	draftClass.MD.dV = TRP3_API.utils.str.sanitizeVersion(TRP3_API.globals.extended_display_version);
-	
+
 	local object = TRP3_API.extended.getClass(creationId);
 	wipe(object);
 	TRP3_API.utils.table.copy(object, draftClass);
-	
+
 	TRP3_API.security.computeSecurity(creationId, object);
 
 	-- TODO security level is computed on the database object, not the draft.
@@ -329,7 +329,7 @@ function addon.main.openDatabase()
 	local databaseTab = tabBar:FindTab(function(data) return data.type == TAB_TYPE.DATABASE; end);
 	if not databaseTab then
 		tabBar:AddTabAndActivate({
-			label      = loc.DB, 
+			label      = loc.DB,
 			closeable  = false
 		},{
 			type       = TAB_TYPE.DATABASE,
@@ -343,7 +343,7 @@ function addon.main.openDisclaimer()
 	local disclaimerTab = tabBar:FindTab(function(data) return data.type == TAB_TYPE.DISCLAIMER; end);
 	if not disclaimerTab then
 		tabBar:AddTabAndActivate({
-			label      = "Before you start...", 
+			label      = "Before you start...",
 			closeable  = false
 		}, {
 			type       = TAB_TYPE.DISCLAIMER
@@ -357,10 +357,10 @@ function addon.main.openCredits()
 	local creditsTab = tabBar:FindTab(function(data) return data.type == TAB_TYPE.CREDITS; end);
 	if not creditsTab then
 		tabBar:AddTabAndActivate({
-			label      = "Credits", 
+			label      = "Credits",
 			closeable  = true
 		}, {
-			type       = TAB_TYPE.CREDITS, 
+			type       = TAB_TYPE.CREDITS,
 		});
 	else
 		tabBar:Activate(creditsTab);
@@ -390,10 +390,10 @@ TRP3_API.extended.tools.toList = addon.main.openDatabase;
 -- interface for object editors
 TRP3_Tools_EditorObjectMixin = {
 	Initialize            = function(self) end,
-	ClassToInterface      = function(self, class, creationClass, cursor) end,
-	InterfaceToClass      = function(self, targetClass, targetCursor) end,
-	OnScriptsChanged      = function(self, scripts) end,
-	CountScriptReferences = function(self, scriptId) return 0; end,
+	ClassToInterface      = function(self, _class, _creationClass, _cursor) end,
+	InterfaceToClass      = function(self, _targetClass, _targetCursor) end,
+	OnScriptsChanged      = function(self, _scripts) end,
+	CountScriptReferences = function(self, _scriptId) return 0; end,
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -436,7 +436,7 @@ end
 local localize;
 localize = function(frame)
 	local frameType = frame.GetFrameType and frame:GetFrameType();
-	
+
 	if frame.Localize then
 		frame:Localize(localizeTransformer);
 	elseif (frameType == "Button") and frame.GetText and frame.SetText then
@@ -447,7 +447,7 @@ localize = function(frame)
 			region:SetText(localizeTransformer(region:GetText()));
 		end
 	end
-	
+
 	for _, child in pairs({frame:GetChildren()}) do
 		localize(child);
 	end
@@ -510,7 +510,6 @@ local function onStart()
 		else
 			addon.main.openDisclaimer();
 		end
-		
 	end);
 
 	TRP3_API.ui.frame.setupMove(toolFrame);
@@ -518,7 +517,6 @@ end
 
 local function onInit()
 	toolFrame = TRP3_ToolFrame;
-	
 	tabBar = TRP3_ToolFrameTabs;
 
 	if not TRP3_Tools_Parameters then

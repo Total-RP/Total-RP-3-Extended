@@ -12,8 +12,8 @@ function addon.utils.deepCompare(object1, object2)
 	local stack1 = {object1};
 	local stack2 = {object2};
 	while TableHasAnyEntries(stack1) do
-		top1 = table.remove(stack1);
-		top2 = table.remove(stack2);
+		local top1 = table.remove(stack1);
+		local top2 = table.remove(stack2);
 		for field, value in pairs(top1) do
 			if value ~= top2[field] then
 				if type(value) == "table" and top2[field] and type(top2[field]) == "table" then
@@ -147,7 +147,7 @@ end
 
 function addon.utils.isInnerId(ancestorId, descendantId)
 	return
-		ancestorId 
+		ancestorId
 	and (descendantId:sub(1, ancestorId:len()) == ancestorId)
 	and (descendantId:sub(ancestorId:len() + 1, ancestorId:len() + 1) == TRP3_API.extended.ID_SEPARATOR);
 end
@@ -190,7 +190,7 @@ function addon.utils.splitId(absoluteId)
 				parentId = allTokens;
 				relativeId = nil;
 			end
-		end		
+		end
 	end
 	if parentId and relativeId then
 		return parentId, relativeId;
@@ -233,28 +233,28 @@ function addon.utils.prepareForMultiSelectionMode(list, selectedAttributeName, s
 		if max < min then
 			targetElement[selectedAttributeName] = true;
 		elseif targetElementIndex < min then
-			for index, element in self.model:Enumerate(targetElementIndex, max) do
+			for _, element in self.model:Enumerate(targetElementIndex, max) do
 				element[selectedAttributeName] = true;
 			end
 		elseif targetElementIndex > max then
-			for index, element in self.model:Enumerate(min, targetElementIndex) do
+			for _, element in self.model:Enumerate(min, targetElementIndex) do
 				element[selectedAttributeName] = true;
 			end
 		elseif targetElement[selectedAttributeName] then
-			for index, element in self.model:Enumerate(min, max) do
+			for _, element in self.model:Enumerate(min, max) do
 				element[selectedAttributeName] = false;
 			end
 		else
-			for index, element in self.model:Enumerate(min, max) do
+			for _, element in self.model:Enumerate(min, max) do
 				element[selectedAttributeName] = true;
 			end
 		end
-		
+
 		self:Refresh();
 	end
 
 	list[globalSelectMethodName] = function(self, selected)
-		for index, element in self.model:EnumerateEntireRange() do
+		for _, element in self.model:EnumerateEntireRange() do
 			element[selectedAttributeName] = selected;
 		end
 		self:Refresh();
@@ -337,7 +337,7 @@ function addon.utils.editDistance(str1, str2, insDelCost)
 	local matrix = {};
 	local cost = 0;
 	insDelCost = insDelCost or 1;
-	
+
 	if (len1 == 0) then
 		return len2 > 0 and 1 or 0;
 	elseif (len2 == 0) then
@@ -345,7 +345,7 @@ function addon.utils.editDistance(str1, str2, insDelCost)
 	elseif (str1 == str2) then
 		return 0;
 	end
-	
+
 	for i = 0, len1, 1 do
 		matrix[i] = {};
 		matrix[i][0] = i*insDelCost;
@@ -353,7 +353,7 @@ function addon.utils.editDistance(str1, str2, insDelCost)
 	for j = 0, len2, 1 do
 		matrix[0][j] = j*insDelCost;
 	end
-	
+
 	for i = 1, len1, 1 do
 		for j = 1, len2, 1 do
 			if (str1:byte(i) == str2:byte(j)) then
@@ -364,7 +364,7 @@ function addon.utils.editDistance(str1, str2, insDelCost)
 			matrix[i][j] = math.min(matrix[i-1][j] + insDelCost, matrix[i][j-1] + insDelCost, matrix[i-1][j-1] + cost);
 		end
 	end
-	
+
 	return matrix[len1][len2]/math.max(len1, len2);
 end
 
@@ -421,7 +421,6 @@ function addon.utils.getGameEvents()
 						{ NA = "victimPlayerRaceName", TY = "string" }, -- [9]
 						{ NA = "victimPlayerGender", TY = "number" } -- [10]
 					}
-	
 				},
 				{
 					NA = "TRP3_SIGNAL",
@@ -431,7 +430,6 @@ function addon.utils.getGameEvents()
 						{ NA = "signalValue", TY = "string" }, -- [2]
 						{ NA = "senderName", TY = "string" } -- [3]
 					}
-	
 				},
 				{
 					NA = "TRP3_EMOTE",
@@ -447,7 +445,7 @@ function addon.utils.getGameEvents()
 						{ NA = "diceRolled", TY = "string" }, -- [1]
 						{ NA = "result", TY = "number" } -- [2]
 					}
-	
+
 				},
 				{
 					NA = "TRP3_ITEM_USED",
@@ -479,8 +477,8 @@ function addon.utils.getGameEvents()
 			table.insert(CACHED_GAME_EVENTS, system);
 		end
 	end
-	table.sort(CACHED_GAME_EVENTS, function(a, b) 
-		if a.PR ~= b.PR then 
+	table.sort(CACHED_GAME_EVENTS, function(a, b)
+		if a.PR ~= b.PR then
 			return a.PR or false;
 		end
 		return a.NA < b.NA;

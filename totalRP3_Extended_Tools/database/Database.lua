@@ -99,8 +99,8 @@ function addon.database.initialize(frame)
 	TRP3_API.RegisterCallback(TRP3_Extended, TRP3_Extended.Events.ON_OBJECT_UPDATED, function(_, objectID, objectType) -- luacheck: ignore 212
 		addon.database.refreshView();
 	end);
-	
-	creationsList.model:SetSortComparator(function(a, b) 
+
+	creationsList.model:SetSortComparator(function(a, b)
 		return a.name < b.name;
 	end, true);
 
@@ -160,13 +160,13 @@ function addon.database.initialize(frame)
 			TRP3_API.utils.message.displayMessage(loc.DB_EXPORT_DONE, 2);
 		end
 	end
-	
+
 end
 TRP3_API.extended.tools.initList = addon.database.initialize; -- TODO consider removing this from the API
 
 local function addNewFilterTab()
 	filterTabs:AddTab({
-		label         = "|TInterface\\PaperDollInfoFrame\\Character-Plus:16:16|t", 
+		label         = "|TInterface\\PaperDollInfoFrame\\Character-Plus:16:16|t",
 		tooltipHeader = "Add filter",
 		tooltipBody   = TRP3_API.FormatShortcutWithInstruction("LCLICK", "add a new filter"),
 		closeable     = false,
@@ -179,7 +179,7 @@ end
 
 function addon.database.setupFilters()
 	assert(TableIsEmpty(filterTabs.tabs), "database filters already set up");
-	
+
 	local FILTER_ALL_CREATIONS = {
 		{nil, "IS_CREATION", true}
 	};
@@ -193,7 +193,7 @@ function addon.database.setupFilters()
 	};
 
 	filterTabs:AddTabAndActivate({
-		label         = "All creations", 
+		label         = "All creations",
 		tooltipHeader = "All creations",
 		tooltipBody   = addon.database.filters.formatFilter(FILTER_ALL_CREATIONS) .. "|n|n" ..
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "apply filter"),
@@ -205,7 +205,7 @@ function addon.database.setupFilters()
 		editable      = false
 	});
 	filterTabs:AddTab({
-		label         = "My creations", 
+		label         = "My creations",
 		tooltipHeader = "My creations",
 		tooltipBody   = addon.database.filters.formatFilter(FILTER_MY_CREATIONS) .. "|n|n" ..
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "apply filter"),
@@ -217,7 +217,7 @@ function addon.database.setupFilters()
 		editable      = false
 	});
 	filterTabs:AddTab({
-		label         = "Backer's creations", 
+		label         = "Backer's creations",
 		tooltipHeader = "Backer's creations",
 		tooltipBody   = addon.database.filters.formatFilter(FILTER_INNER_CREATIONS) .. "|n|n" ..
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "apply filter"),
@@ -232,7 +232,7 @@ function addon.database.setupFilters()
 	for _, filter in ipairs(TRP3_Tools_Parameters.filters or TRP3_API.globals.empty) do
 		if type(filter.name) == "string" and type(filter.conditions) == "table" then
 			filterTabs:AddTab({
-				label            = filter.name, 
+				label            = filter.name,
 				tooltipHeader    = filter.name,
 				tooltipBody      =
 					addon.database.filters.formatFilter(filter.conditions) .. "|n|n" ..
@@ -342,7 +342,7 @@ function addon.database.addFilter(filterName, filterConditions, persistent)
 	local newTab = filterTabs:FindTab(function(tabData) return tabData.newFilterDummy == true; end);
 	newTab:SetText(filterName);
 	newTab:SetCloseable(true);
-	local tooltip = 
+	local tooltip =
 		addon.database.filters.formatFilter(filterConditions) .. "|n|n" ..
 		TRP3_API.FormatShortcutWithInstruction("LCLICK", "apply filter") .. "|n" ..
 		TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.DB_ACTIONS)
@@ -365,14 +365,14 @@ function addon.database.addFilter(filterName, filterConditions, persistent)
 	end
 	filterTabs:Activate(newTab); -- should be already active, but let's make sure
 	addon.database.setFilter(newTab.data.filter, filterName);
-	
+
 	addNewFilterTab();
 	filterTabs:Refresh();
 end
 
 function addon.database.updateFilter(tab, filterName, filterConditions, persistent)
 	tab:SetText(filterName);
-	local tooltip = 
+	local tooltip =
 		addon.database.filters.formatFilter(filterConditions) .. "|n|n" ..
 		TRP3_API.FormatShortcutWithInstruction("LCLICK", "apply filter") .. "|n" ..
 		TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.DB_ACTIONS)

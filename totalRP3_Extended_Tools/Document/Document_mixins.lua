@@ -26,10 +26,10 @@ function TRP3_Tools_EditorDocumentMixin:OnSizeChanged()
 end
 
 function TRP3_Tools_EditorDocumentMixin:Initialize()
-	
+
 	local display = self.display;
 	local pages = self.pages;
-	
+
 	-- Background
 	display.background:SetScript("OnClick", function()
 		addon.modal:ShowModal(TRP3_API.popup.BACKGROUNDS, {function(imageInfo) self.BCK = imageInfo and imageInfo.id or 8; end, nil, nil, self.BCK or 8});
@@ -45,7 +45,7 @@ function TRP3_Tools_EditorDocumentMixin:Initialize()
 	display.h3_font.title:SetText(loc.DO_PAGE_FONT:format("H3"));
 	display.p_font.title:SetText(loc.DO_PAGE_FONT:format("P"));
 
-	local getFontStructure = function(h)
+	local getFontStructure = function(_h)
 		return {
 			{"DestinyFontHuge", "DestinyFontHuge"},
 			{"QuestFont_Huge", "QuestFont_Huge"},
@@ -58,9 +58,9 @@ function TRP3_Tools_EditorDocumentMixin:Initialize()
 	TRP3_API.ui.listbox.setupListBox(display.h2_font, getFontStructure("H2"));
 	TRP3_API.ui.listbox.setupListBox(display.h3_font, getFontStructure("H3"));
 	TRP3_API.ui.listbox.setupListBox(display.p_font, getFontStructure("P"));
-	
+
 	TRP3_API.ui.text.setupToolbar(pages.toolbar, pages.editor.scroll.text, TRP3_ToolFrame, "CENTER", "CENTER");
-	
+
 	display.importBook:SetScript("OnClick", function()
 		self:ImportItemTextFrame();
 	end);
@@ -97,39 +97,39 @@ function TRP3_Tools_EditorDocumentMixin:Initialize()
 	pages.editor:AddTextControl("P", function(button, widget)
 		textElementCallback(button, widget, "P");
 	end);
-	pages.editor:AddTextControl(loc.CM_IMAGE, function(button, widget)
+	pages.editor:AddTextControl(loc.CM_IMAGE, function(_button, widget)
 		addon.modal:ShowModal(TRP3_API.popup.IMAGES, {function(image)
 			local tag = ("{img:%s:%s:%s}"):format(image.url, math.min(image.width, 512), math.min(image.height, 512));
 			widget:Insert(tag);
 			widget:SetFocus();
 		end});
 	end);
-	pages.editor:AddTextControl(loc.CM_ICON, function(button, widget)
+	pages.editor:AddTextControl(loc.CM_ICON, function(_button, widget)
 		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon)
 			local tag = ("{icon:%s:25}"):format(icon);
 			widget:Insert(tag);
 			widget:SetFocus();
 		end});
 	end);
-	pages.editor:AddTextControl(loc.CM_COLOR, function(button, widget)
+	pages.editor:AddTextControl(loc.CM_COLOR, function(_button, widget)
 		addon.modal:ShowModal(TRP3_API.popup.COLORS, {function(red, green, blue)
 			local tag = ("{col:%s}{/col}"):format(TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque());
 			widget:Insert(tag);
 			widget:SetFocus();
 		end});
 	end);
-	
-	pages.editor:AddTextControl(loc.CM_LINK, function(button, widget)
+
+	pages.editor:AddTextControl(loc.CM_LINK, function(_button, widget)
 		local tag = ("{link*%s*%s}"):format(loc.UI_LINK_URL, loc.UI_LINK_TEXT);
 		widget:Insert(tag);
 		widget:SetFocus();
 	end);
-	
+
 	addon.utils.prepareForMultiSelectionMode(self.display.list);
 
 end
 
-function TRP3_Tools_EditorDocumentMixin:ClassToInterface(class, creationClass, cursor)
+function TRP3_Tools_EditorDocumentMixin:ClassToInterface(class, _creationClass, cursor)
 	self.display.border:SetSelectedValue(class.BO or TRP3_API.extended.document.BorderType.PARCHMENT);
 	self.display.height:SetText(class.HE or "600");
 	self.display.width:SetText(class.WI or "450");
@@ -195,13 +195,13 @@ function TRP3_Tools_EditorDocumentMixin:ClassToPages(class)
 	list.model:Flush();
 	list.model:InsertTable(pages);
 	--list.widget:SetScrollPercentage(0);
-	
+
 end
 
 function TRP3_Tools_EditorDocumentMixin:PagesToClass(targetClass)
 	targetClass.PA = targetClass.PA or {};
 	wipe(targetClass.PA);
-	for index, element in self.display.list.model:EnumerateEntireRange() do
+	for _, element in self.display.list.model:EnumerateEntireRange() do
 		if element.page then
 			table.insert(targetClass.PA, {
 				TX = element.page.TX
@@ -211,7 +211,7 @@ function TRP3_Tools_EditorDocumentMixin:PagesToClass(targetClass)
 end
 
 function TRP3_Tools_EditorDocumentMixin:SaveCurrentPage()
-	local index, element = self.display.list.model:FindByPredicate(function(e) return e.active; end);
+	local _, element = self.display.list.model:FindByPredicate(function(e) return e.active; end);
 	if element and element.page then
 		element.page.TX = self.pages.editor.scroll.text:GetText();
 	end
@@ -250,7 +250,7 @@ function TRP3_Tools_EditorDocumentMixin:DeletePage(pageElement)
 	local pageIndex = list.model:FindIndex(pageElement);
 	if pageIndex then
 		list.model:RemoveIndex(pageIndex);
-		
+
 		if list.model:GetSize() <= 1 then
 			list.model:InsertAtIndex({page = {TX = ""}}, 1);
 		end
@@ -266,7 +266,7 @@ function TRP3_Tools_EditorDocumentMixin:DeleteSelectedPages()
 	local list = self.display.list;
 	local pages = {};
 	local pageIndex;
-	for index, element in list.model:EnumerateEntireRange() do
+	for _, element in list.model:EnumerateEntireRange() do
 		if element.page then
 			if not element.selected then
 				table.insert(pages, element);
@@ -300,7 +300,7 @@ function TRP3_Tools_EditorDocumentMixin:ImportItemTextFrame()
 		end
 		local insertIndex = list.model:GetSize();
 		local currPage = ItemTextGetPage();
-		for i = 1,currPage-1 do
+		for _i = 1,currPage-1 do
 			ItemTextPrevPage();
 		end
 		if ItemTextGetItem() ~= nil and ItemTextGetItem() ~= "" then
@@ -349,7 +349,7 @@ function TRP3_Tools_DocumentPageListElementMixin:Refresh()
 		self:SetSelected(self.element.selected);
 		self.delete:Show();
 		tooltipTitle = "Page " .. self:GetElementDataIndex();
-		tooltipText = 
+		tooltipText =
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit page") .. "|n" ..
 			TRP3_API.FormatShortcutWithInstruction("RCLICK", "more options") .. "|n" ..
 			TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", "select range") .. "|n" ..
@@ -376,11 +376,11 @@ end
 function TRP3_Tools_DocumentPageListElementMixin:OnClick(button)
 	local documentEditor = addon.editor.getCurrentPropertiesEditor();
 	local pageIndex = self:GetElementDataIndex();
-	
+
 	if self.element.isAddButton then
 		if button == "LeftButton" and not IsModifierKeyDown() then
 			documentEditor:SaveCurrentPage();
-			documentEditor:AddPage(stepIndex);
+			documentEditor:AddPage();
 		end
 	elseif button == "LeftButton" then
 		if IsControlKeyDown() then
@@ -394,7 +394,7 @@ function TRP3_Tools_DocumentPageListElementMixin:OnClick(button)
 	elseif button == "RightButton" then
 		TRP3_MenuUtil.CreateContextMenu(self, function(_, contextMenu)
 			contextMenu:CreateTitle("Page " .. pageIndex);
-			
+
 			local addBeforeOption = contextMenu:CreateButton("Insert page before", function()
 				documentEditor:SaveCurrentPage();
 				documentEditor:AddPage(pageIndex);
@@ -416,7 +416,7 @@ function TRP3_Tools_DocumentPageListElementMixin:OnClick(button)
 			if self.element.selected then
 				local copySelectionOption = contextMenu:CreateButton("Copy selected pages", function()
 					addon.clipboard.clear();
-					for index, element in documentEditor.display.list.model:EnumerateEntireRange() do
+					for _, element in documentEditor.display.list.model:EnumerateEntireRange() do
 						if element.selected then
 							addon.clipboard.append(element.page, addon.clipboard.types.DOCUMENT_PAGE);
 						end
@@ -447,14 +447,14 @@ function TRP3_Tools_DocumentPageListElementMixin:OnClick(button)
 				end);
 				TRP3_MenuUtil.SetElementTooltip(pasteBeforeOption, beforeText);
 
-				local pasteBeforeOption = contextMenu:CreateButton(afterText, function()
+				local pasteAfterOption = contextMenu:CreateButton(afterText, function()
 					documentEditor:SaveCurrentPage();
 					for index = 1, count do
 						documentEditor:AddPage(pageIndex + index, addon.clipboard.retrieve(index), true);
 					end
 					documentEditor:ShowPage(pageIndex + count);
 				end);
-				TRP3_MenuUtil.SetElementTooltip(pasteBeforeOption, afterText);
+				TRP3_MenuUtil.SetElementTooltip(pasteAfterOption, afterText);
 			end
 
 			contextMenu:CreateDivider();
@@ -470,7 +470,6 @@ function TRP3_Tools_DocumentPageListElementMixin:OnClick(button)
 				end);
 				TRP3_MenuUtil.SetElementTooltip(deleteSelectionOption, "Delete all selected pages");
 			end
-			
 		end);
 	end
 end

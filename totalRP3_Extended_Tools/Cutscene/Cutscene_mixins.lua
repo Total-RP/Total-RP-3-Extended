@@ -53,12 +53,12 @@ function TRP3_Tools_EditorCutsceneMixin:Initialize()
 		self.step.nameValue:SetShown(self.step.name:GetChecked());
 	end);
 	self.step.nameValue:SetupSuggestions("Tag", addon.editor.populateObjectTagMenu);
-	
+
 	self.step.background:SetScript("OnClick", function()
 		self.step.backgroundBrowse:SetShown(self.step.background:GetChecked());
 		self.step.backgroundValue:SetShown(self.step.background:GetChecked());
 	end);
-	
+
 	self.step.image:SetScript("OnClick", function()
 		self.step.imageBrowse:SetShown(self.step.image:GetChecked());
 		self.step.imageValue:SetShown(self.step.image:GetChecked());
@@ -69,7 +69,7 @@ function TRP3_Tools_EditorCutsceneMixin:Initialize()
 		self.step.leftUnitTarget:SetShown(self.step.leftUnit:GetChecked());
 		self.step.leftUnitValue:SetShown(self.step.leftUnit:GetChecked());
 	end);
-	
+
 	self.step.rightUnit:SetScript("OnClick", function()
 		self.step.rightUnitTarget:SetShown(self.step.rightUnit:GetChecked());
 		self.step.rightUnitValue:SetShown(self.step.rightUnit:GetChecked());
@@ -86,7 +86,7 @@ function TRP3_Tools_EditorCutsceneMixin:Initialize()
 	end);
 
 	addon.utils.prepareForMultiSelectionMode(self.main.list);
-	
+
 	TRP3_API.ui.listbox.setupListBox(self.step.workflow, {{"(no workflow)", ""}});
 
 	TRP3_Tools_EditorCutsceneChoicePopup:Initialize();
@@ -100,7 +100,6 @@ function TRP3_Tools_EditorCutsceneMixin:Initialize()
 			end});
 		end
 	end);
-
 end
 
 function TRP3_Tools_EditorCutsceneMixin:ClassToInterface(class, creationClass, cursor)
@@ -484,7 +483,7 @@ function TRP3_Tools_CutsceneStepListElementMixin:OnClick(button)
 	elseif button == "RightButton" then
 		TRP3_MenuUtil.CreateContextMenu(self, function(_, contextMenu)
 			contextMenu:CreateTitle(loc.DI_STEP);
-			
+
 			local addBeforeOption = contextMenu:CreateButton("Insert step before", function()
 				cutsceneEditor:SaveCurrentStep();
 				cutsceneEditor:AddStep(stepIndex);
@@ -558,7 +557,6 @@ function TRP3_Tools_CutsceneStepListElementMixin:OnClick(button)
 				end);
 				TRP3_MenuUtil.SetElementTooltip(deleteSelectionOption, "Delete all selected steps");
 			end
-			
 		end);
 	end
 end
@@ -580,7 +578,7 @@ function TRP3_Tools_EditorCutsceneChoiceMixin:Initialize()
 		return nil, nil;
 	end);
 	self.optionEditor.title:SetRotation(math.pi/2); -- not possible to do in XML
-	
+
 	self.applyButton:SetScript("OnClick", function() 
 		self:OpenOption(0); -- will update whatever option is opened
 		local choices = {};
@@ -652,11 +650,11 @@ function TRP3_Tools_EditorCutsceneChoiceMixin:OpenOption(optionIndex)
 					optionFrame.button.text:SetText(option.text);
 				end
 				if not option.next then
-					optionFrame.button.next:SetText("|TInterface\\\MONEYFRAME\\Arrow-Right-Down:16:16|t end");
+					optionFrame.button.next:SetText("|TInterface\\MONEYFRAME\\Arrow-Right-Down:16:16|t end");
 				elseif addon.editor.getCurrentPropertiesEditor():StepExists(option.next) then
-					optionFrame.button.next:SetText("|TInterface\\\MONEYFRAME\\Arrow-Right-Down:16:16|t Step " .. (option.next));
+					optionFrame.button.next:SetText("|TInterface\\MONEYFRAME\\Arrow-Right-Down:16:16|t Step " .. (option.next));
 				else
-					optionFrame.button.next:SetText("|TInterface\\\MONEYFRAME\\Arrow-Right-Down:16:16|t Step " .. addon.script.formatters.unknown(option.next));
+					optionFrame.button.next:SetText("|TInterface\\MONEYFRAME\\Arrow-Right-Down:16:16|t Step " .. addon.script.formatters.unknown(option.next));
 				end
 			else
 				optionFrame.button.text:SetText("|cFF808080(click to add an option)|r");
@@ -666,5 +664,4 @@ function TRP3_Tools_EditorCutsceneChoiceMixin:OpenOption(optionIndex)
 			optionFrame.button:Show();
 		end
 	end
-	
 end
