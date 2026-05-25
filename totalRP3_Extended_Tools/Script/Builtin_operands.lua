@@ -188,7 +188,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "char_achievement",
 		title       = loc.OP_OP_CHAR_ACHIEVEMENT,
 		description = loc.OP_OP_CHAR_ACHIEVEMENT_TT,
-		GetPreview  = function(self, _operand, typeId, achievementId) 
+		GetPreview  = function(self, _operand, typeId, achievementId)
 			return loc.OP_OP_CHAR_ACHIEVEMENT_PREVIEW:format(
 				fmt(self.parameters[2], achievementId),
 				fmt(self.parameters[1], typeId)
@@ -574,7 +574,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "aura_var_check",
 		title       = loc.OP_OP_AURA_CHECK_VAR,
 		description = loc.OP_OP_AURA_CHECK_VAR_TT,
-		GetPreview  = function(self, _operand, auraId, varName) 
+		GetPreview  = function(self, _operand, auraId, varName)
 			return loc.OP_OP_AURA_CHECK_VAR_PREVIEW:format(
 				fmt(self.parameters[1], auraId),
 				fmt(self.parameters[2], varName)
@@ -645,7 +645,7 @@ function addon.script.registerBuiltinOperands()
 			return loc.OP_OP_CHECK_VAR_PREVIEW:format(
 				fmt(self.parameters[1], scope),
 				fmt(self.parameters[2], varName)
-			); 
+			);
 		end,
 		returnType  = "string",
 		category    = "Variables", -- TODO
@@ -678,7 +678,7 @@ function addon.script.registerBuiltinOperands()
 		id          = "var_check_n",
 		title       = loc.OP_OP_CHECK_VAR_N,
 		description = loc.OP_OP_CHECK_VAR_N_TT,
-		GetPreview  = function(self, operand, scope, varName) 
+		GetPreview  = function(self, _operand, scope, varName)
 			return loc.OP_OP_CHECK_VAR_N_PREVIEW:format(
 				fmt(self.parameters[1], scope),
 				fmt(self.parameters[2], varName)

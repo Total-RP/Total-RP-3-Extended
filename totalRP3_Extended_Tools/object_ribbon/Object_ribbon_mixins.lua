@@ -167,7 +167,7 @@ function TRP3_Tools_EditorObjectRibbonMixin:Initialize()
 			local _ , link = addon.utils.getObjectIconAndLink(addon.editor.getCurrentDraftClass());
 			TRP3_API.popup.showNumberInputPopup(loc.DB_ADD_COUNT:format(link), function(inputValue)
 				TRP3_API.inventory.addItem(nil, addon.editor.getCurrentObjectAbsoluteId(), {count = inputValue or 1, madeBy = creationClass.BA and creationClass.BA.CR});
-			end, nil, 1);	
+			end, nil, 1);
 		else
 			TRP3_API.utils.message.displayMessage("The item cannot be added because it hasn't been saved.", 4);
 		end

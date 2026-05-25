@@ -55,24 +55,24 @@ end
 function TRP3_Tools_EditorScriptMixin:RenameScript(oldScriptId)
 	TRP3_API.popup.showTextInputPopup(loc.WO_ADD_ID, function(newScriptId)
 		newScriptId = strtrim(newScriptId or "");
-		if oldScriptId == newScriptId then
-			-- NOP
-		elseif newScriptId:len() == 0 or self.scripts[newScriptId] then
-			TRP3_API.popup.showAlertPopup(loc.WO_ADD_ID_NO_AVAILABLE);
-		else
-			self.scripts[newScriptId] = self.scripts[oldScriptId];
-			self.scripts[oldScriptId] = nil;
-			for _, trigger in ipairs(self.triggers) do
-				if trigger.script == oldScriptId then
-					trigger.script = newScriptId;
+		if oldScriptId ~= newScriptId then		
+			if newScriptId:len() == 0 or self.scripts[newScriptId] then
+				TRP3_API.popup.showAlertPopup(loc.WO_ADD_ID_NO_AVAILABLE);
+			else
+				self.scripts[newScriptId] = self.scripts[oldScriptId];
+				self.scripts[oldScriptId] = nil;
+				for _, trigger in ipairs(self.triggers) do
+					if trigger.script == oldScriptId then
+						trigger.script = newScriptId;
+					end
 				end
+				self:OnScriptsChanged(nil, nil, {[oldScriptId] = newScriptId});
+				self:UpdateTriggerList();
+				if oldScriptId == self.selectedScriptId then
+					self.selectedScriptId = newScriptId;
+				end
+				self:OnScriptSelected(self.selectedScriptId);
 			end
-			self:OnScriptsChanged(nil, nil, {[oldScriptId] = newScriptId});
-			self:UpdateTriggerList();
-			if oldScriptId == self.selectedScriptId then
-				self.selectedScriptId = newScriptId;
-			end
-			self:OnScriptSelected(self.selectedScriptId);
 		end
 	end, nil, oldScriptId);
 end

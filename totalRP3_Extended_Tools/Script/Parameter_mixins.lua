@@ -149,7 +149,7 @@ function TRP3_Tools_ScriptParameterVariableMixin:Setup(widgetContext, nameParame
 		if variables and TableHasAnyEntries(variables) then
 			menu:SetScrollMode(400);
 			local varsSorted = {};
-			for name, _objective in pairs(variables) do
+			for name, _ in pairs(variables) do
 				table.insert(varsSorted, name);
 			end
 			table.sort(varsSorted)
@@ -415,7 +415,7 @@ end
 
 TRP3_Tools_ScriptParameterLootMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
-function TRP3_Tools_ScriptParameterLootMixin:Setup(_widgetContext, parameter)
+function TRP3_Tools_ScriptParameterLootMixin:Setup(_widgetContext, _parameter)
 	self.bag.close:Disable();
 	self.bag.LockIcon:Hide();
 	self.bag.DurabilityText:Hide();
@@ -633,7 +633,7 @@ function TRP3_Tools_ScriptParameterScriptMixin:Setup(_widgetContext, parameter)
 	addon.main.localize(self.script);
 	self.effect:SetText(loc.EFFECT_SCRIPT_I_EFFECT);
 	self.effect:SetScript("OnClick", function()
-		populateEffectContextMenu(self.effect, function(effectId) 
+		populateEffectContextMenu(self.effect, function(effectId)
 			self:InsertEffectById(effectId);
 		end);
 	end);

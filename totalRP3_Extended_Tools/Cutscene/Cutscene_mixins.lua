@@ -102,7 +102,7 @@ function TRP3_Tools_EditorCutsceneMixin:Initialize()
 	end);
 end
 
-function TRP3_Tools_EditorCutsceneMixin:ClassToInterface(class, creationClass, cursor)
+function TRP3_Tools_EditorCutsceneMixin:ClassToInterface(class, _creationClass, cursor)
 	local BA = class.BA or TRP3_API.globals.empty;
 	self.main.distance:SetText(BA.DI or "0");
 
@@ -191,7 +191,7 @@ function TRP3_Tools_EditorCutsceneMixin:CountScriptReferences(scriptId)
 end
 
 function TRP3_Tools_EditorCutsceneMixin:SaveCurrentStep()
-	local index, element = self.main.list.model:FindByPredicate(function(e) return e.active; end);
+	local _, element = self.main.list.model:FindByPredicate(function(e) return e.active; end);
 	if element and element.step then
 		self.step.imageEditor:Hide();
 		element.step.TX = TRP3_API.utils.str.emptyToNil(strtrim(self.step.text:GetText()));
@@ -438,7 +438,7 @@ function TRP3_Tools_CutsceneStepListElementMixin:Refresh()
 		self:SetSelected(self.element.selected);
 		self.delete:Show();
 
-		tooltipText = 
+		tooltipText =
 			TRP3_API.FormatShortcutWithInstruction("LCLICK", "edit step") .. "|n" ..
 			TRP3_API.FormatShortcutWithInstruction("RCLICK", "more options") .. "|n" ..
 			TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", "select range") .. "|n" ..
@@ -465,7 +465,7 @@ end
 function TRP3_Tools_CutsceneStepListElementMixin:OnClick(button)
 	local cutsceneEditor = addon.editor.getCurrentPropertiesEditor();
 	local stepIndex = self:GetElementDataIndex();
-	
+
 	if self.element.isAddButton then
 		if button == "LeftButton" and not IsModifierKeyDown() then
 			cutsceneEditor:SaveCurrentStep();
@@ -505,7 +505,7 @@ function TRP3_Tools_CutsceneStepListElementMixin:OnClick(button)
 			if self.element.selected then
 				local copySelectionOption = contextMenu:CreateButton("Copy selected steps", function()
 					addon.clipboard.clear();
-					for index, element in cutsceneEditor.main.list.model:EnumerateEntireRange() do
+					for _, element in cutsceneEditor.main.list.model:EnumerateEntireRange() do
 						if element.selected then
 							addon.clipboard.append(element.step, addon.clipboard.types.DIALOG_STEP);
 						end
@@ -570,19 +570,19 @@ TRP3_Tools_EditorCutsceneChoiceMixin = {};
 
 function TRP3_Tools_EditorCutsceneChoiceMixin:Initialize()
 	self.choiceData = {};
-	for index = 1, 5 do
+	for _ = 1, 5 do
 		table.insert(self.choiceData, {constraint = {}});
 	end
 	self.optionEditor.text:SetupSuggestions("Tag", addon.editor.populateObjectTagMenu);
-	self.optionEditor.constraint:SetScriptContext(function() 
+	self.optionEditor.constraint:SetScriptContext(function()
 		return nil, nil;
 	end);
 	self.optionEditor.title:SetRotation(math.pi/2); -- not possible to do in XML
 
-	self.applyButton:SetScript("OnClick", function() 
+	self.applyButton:SetScript("OnClick", function()
 		self:OpenOption(0); -- will update whatever option is opened
 		local choices = {};
-		for index, option in ipairs(self.choiceData) do
+		for _, option in ipairs(self.choiceData) do
 			if option.text then
 				table.insert(choices, {
 					TX = option.text,

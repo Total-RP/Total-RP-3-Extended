@@ -300,7 +300,7 @@ function TRP3_Tools_EditorDocumentMixin:ImportItemTextFrame()
 		end
 		local insertIndex = list.model:GetSize();
 		local currPage = ItemTextGetPage();
-		for _i = 1,currPage-1 do
+		for _ = 1,currPage-1 do
 			ItemTextPrevPage();
 		end
 		if ItemTextGetItem() ~= nil and ItemTextGetItem() ~= "" then

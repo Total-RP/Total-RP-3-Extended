@@ -233,6 +233,7 @@ read_globals = {
 	"ItemTextGetPage",
 	"ItemTextGetText",
 	"ItemTextHasNextPage",
+	"ItemTextPrevPage",
 	"LibStub",
 	"MAXEMOTEINDEX",
 	"min",

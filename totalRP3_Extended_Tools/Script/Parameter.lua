@@ -43,7 +43,7 @@ local function getGroupsFromParameterList(parameters)
 			table.insert(groups[parameter.groupId], index);
 		end
 	end
-	for _groupId, members in pairs(groups) do
+	for _, members in pairs(groups) do
 		table.sort(members, function(m1, m2)
 			return parameters[m1].memberIndex < parameters[m2].memberIndex;
 		end);

@@ -18,7 +18,7 @@ local currentObject;
 local DUMMY_TREE_MODEL = CreateTreeDataProvider();
 
 local function updateTabBar()
-	addon.main.forEachTab(function(tab, editor) 
+	addon.main.forEachTab(function(tab, editor)
 		if editor.creationId == currentEditor.creationId then
 			local body;
 			local absoluteId = "";
@@ -48,7 +48,7 @@ local function updateTabBar()
 end
 
 local function isRelativeIdAvailable(class, relativeId)
-	return 
+	return
 		(not class.QE or not class.QE[relativeId])
 	and (not class.ST or not class.ST[relativeId])
 	and (not class.IN or not class.IN[relativeId])
@@ -116,11 +116,11 @@ local function rebuildTreeAndShow(absoluteId)
 	local treeScroll = objectTree.widget:GetScrollPercentage();
 
 	objectTree.widget:SetDataProvider(DUMMY_TREE_MODEL);
-	for absoluteId, objectCursor in pairs(currentEditor.cursor.objects) do
-		if currentDraft.index[absoluteId] then
-			currentDraft.index[absoluteId].node:SetCollapsed(objectCursor.collapsed);
+	for objectAbsoluteId, objectCursor in pairs(currentEditor.cursor.objects) do
+		if currentDraft.index[objectAbsoluteId] then
+			currentDraft.index[objectAbsoluteId].node:SetCollapsed(objectCursor.collapsed);
 		else
-			currentEditor.cursor.objects[absoluteId] = nil;
+			currentEditor.cursor.objects[objectAbsoluteId] = nil;
 		end
 	end
 
@@ -162,7 +162,7 @@ end
 
 -- callback(absoluteId, relativeId, class)
 function addon.editor.forEachObjectInCurrentDraft(callback)
-	if not currentDraft then 
+	if not currentDraft then
 		return;
 	end
 	for absoluteId, object in pairs(currentDraft.index or TRP3_API.globals.empty) do
@@ -311,7 +311,7 @@ function addon.editor.deleteInnerObjectsById(...)
 		ancestors[absoluteId] = ancestor.data.absoluteId;
 	end
 
-	addon.main.forEachTab(function(_, editor) 
+	addon.main.forEachTab(function(_, editor)
 		if editor.creationId == currentEditor.creationId then
 			for absoluteId, ancestorId in pairs(ancestors) do
 				if addon.utils.isInnerIdOrEqual(absoluteId, editor.cursor.objectId) then
@@ -345,7 +345,7 @@ function addon.editor.changeRelativeId(absoluteId, newRelativeId)
 		end
 		addon.utils.replaceId(currentDraft.class, absoluteId, newAbsoluteId);
 		local currentObjectId = currentEditor.cursor.objectId;
-		if absoluteId == currentObjectId then 
+		if absoluteId == currentObjectId then
 			currentObjectId = newAbsoluteId;
 		elseif addon.utils.isInnerId(absoluteId, currentObjectId) then
 			currentObjectId = newAbsoluteId .. currentObjectId:sub(absoluteId:len() + 1);
@@ -353,7 +353,7 @@ function addon.editor.changeRelativeId(absoluteId, newRelativeId)
 
 		currentEditor.cursor.objects[newAbsoluteId] = currentEditor.cursor.objects[absoluteId] or {};
 
-		addon.main.forEachTab(function(_, editor) 
+		addon.main.forEachTab(function(_, editor)
 			if editor.creationId == currentEditor.creationId and addon.utils.isInnerIdOrEqual(absoluteId, editor.cursor.objectId) then
 				editor.cursor.objectId = editor.cursor.objectId:gsub(absoluteId, newAbsoluteId);
 			end
@@ -495,7 +495,7 @@ function addon.editor.gatherVariables(scriptContext, restrictScope)
 						end
 					end
 					if isCutsceneOrDocument
-					and (stepData.e[1].id == "document_show" or stepData.e[1].id == "dialog_start") 
+					and (stepData.e[1].id == "document_show" or stepData.e[1].id == "dialog_start")
 					and stepData.e[1].args
 					and stepData.e[1].args[1] == currentEditor.cursor.objectId
 					then
@@ -523,7 +523,7 @@ function addon.editor.gatherVariables(scriptContext, restrictScope)
 
 	-- 4. aura variables set anywhere in the creation
 	if acceptScopeO and currentObject.class.TY == TRP3_DB.types.AURA then
-		for absoluteId, object in pairs(currentDraft.index) do
+		for _, object in pairs(currentDraft.index) do
 			for _, scriptData in pairs(object.class.SC or TRP3_API.globals.empty) do
 				for _, stepData in pairs(scriptData.ST or TRP3_API.globals.empty) do
 					if stepData.t == TRP3_DB.elementTypes.EFFECT and stepData.e and stepData.e[1] and stepData.e[1].id then
@@ -603,16 +603,16 @@ function addon.editor.populateObjectTagMenu(menu, onAccept, scriptContext, event
 	end
 	-- TODO all object types are taggable but I think it makes only sense for those that can have a distinct name
 	local objectsMenu = menu:CreateButton("Object tags");
-	objectsMenu:CreateButton(loc.TYPE_ITEM, function() 
+	objectsMenu:CreateButton(loc.TYPE_ITEM, function()
 		addon.modal:ShowModal(TRP3_API.popup.OBJECTS, {function(id) onAccept("${" .. id .. "}"); end, TRP3_DB.types.ITEM});
 	end);
-	objectsMenu:CreateButton(loc.TYPE_AURA, function() 
+	objectsMenu:CreateButton(loc.TYPE_AURA, function()
 		addon.modal:ShowModal(TRP3_API.popup.OBJECTS, {function(id) onAccept("${" .. id .. "}"); end, TRP3_DB.types.AURA});
 	end);
-	objectsMenu:CreateButton(loc.TYPE_CAMPAIGN, function() 
+	objectsMenu:CreateButton(loc.TYPE_CAMPAIGN, function()
 		addon.modal:ShowModal(TRP3_API.popup.OBJECTS, {function(id) onAccept("${" .. id .. "}"); end, TRP3_DB.types.CAMPAIGN});
 	end);
-	objectsMenu:CreateButton(loc.TYPE_QUEST, function() 
+	objectsMenu:CreateButton(loc.TYPE_QUEST, function()
 		addon.modal:ShowModal(TRP3_API.popup.OBJECTS, {function(id) onAccept("${" .. id .. "}"); end, TRP3_DB.types.QUEST});
 	end);
 
@@ -623,7 +623,7 @@ function addon.editor.populateObjectTagMenu(menu, onAccept, scriptContext, event
 					local eventMenu = menu:CreateButton("Event argument");
 					TRP3_MenuUtil.SetElementTooltip(eventMenu, event.NA);
 					for index, argument in ipairs(event.PA) do
-						local argumentMenu = eventMenu:CreateButton(addon.script.formatters.taggable(("${event.%d}"):format(index)) .. ": " .. argument.NA .. " - " .. argument.TY, onAccept, ("${event.%d}"):format(index));
+						eventMenu:CreateButton(addon.script.formatters.taggable(("${event.%d}"):format(index)) .. ": " .. argument.NA .. " - " .. argument.TY, onAccept, ("${event.%d}"):format(index));
 					end
 				end
 			end

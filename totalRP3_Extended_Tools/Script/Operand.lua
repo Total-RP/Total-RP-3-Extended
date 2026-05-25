@@ -20,9 +20,9 @@ function addon.script.operand.acquireOperandEditor(operandData, widgetList, scri
 	local _, groups = addon.script.parameter.acquireWidgets(operandSpec.parameters, widgetList, scriptContextFunction);
 	addon.script.parameter.setValues(widgetList, operandSpec.parameters, operandData.parameters, groups);
 	local widgetSkipList = {};
-	for _groupId, group in pairs(groups) do
+	for _, group in pairs(groups) do
 		local first = math.min(unpack(group));
-		for _index, mIndex in ipairs(group) do
+		for _, mIndex in ipairs(group) do
 			if mIndex > first then
 				widgetSkipList[mIndex] = true;
 			end

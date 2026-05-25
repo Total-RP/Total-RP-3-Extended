@@ -8,8 +8,8 @@ function TRP3_Tools_FilterTabsMixin:OnActivate(tab, data)
 		addon.database.setFilter(data.filter, tab.Text:GetText());
 	elseif data.newFilterDummy then
 		addon.modal:ShowModal(
-			TRP3_API.popup.DB_FILTER, 
-			{addon.database.suggestFilterName(), {}, false, function(accepted, filterName, filterConditions, persistent) 
+			TRP3_API.popup.DB_FILTER,
+			{addon.database.suggestFilterName(), {}, false, function(accepted, filterName, filterConditions, persistent)
 				if accepted then
 					addon.database.addFilter(filterName, filterConditions, persistent);
 				else
@@ -32,8 +32,8 @@ function TRP3_Tools_FilterTabsMixin:OnRightClick(tab, data)
 
 			local editOption = contextMenu:CreateButton("Edit", function()
 				addon.modal:ShowModal(
-					TRP3_API.popup.DB_FILTER, 
-					{data.name, data.filterConditions, data.persistent, function(accepted, filterName, filterConditions, persistent) 
+					TRP3_API.popup.DB_FILTER,
+					{data.name, data.filterConditions, data.persistent, function(accepted, filterName, filterConditions, persistent)
 						if accepted then
 							addon.database.updateFilter(tab, filterName, filterConditions, persistent);
 						end
@@ -46,8 +46,8 @@ function TRP3_Tools_FilterTabsMixin:OnRightClick(tab, data)
 			local deleteOption = contextMenu:CreateButton("Delete", function()
 				tab.tabBar:CloseRequest(tab);
 			end);
-			TRP3_MenuUtil.SetElementTooltip(deleteOption, "Delete this filter");			
-			
+			TRP3_MenuUtil.SetElementTooltip(deleteOption, "Delete this filter");
+
 		end);
 	end
 end
@@ -66,13 +66,13 @@ TRP3_Tools_CreationsListElementMixin = {};
 
 function TRP3_Tools_CreationsListElementMixin:Initialize(data)
 	self.data = data;
-	
+
 	if data.isMine then
 		self.creator:SetText(TRP3_API.Colors.White("You"));
 	else
 		self.creator:SetText(data.creator:gsub("-.*", "")); -- character name without realm
 	end
-	
+
 	if data.creationId == data.absoluteId then
 		self.link:SetText(data.link);
 		if data.type == TRP3_DB.types.ITEM then
@@ -144,9 +144,9 @@ function TRP3_Tools_CreationsListElementMixin:OnClick(button)
 					TRP3_MenuUtil.SetElementTooltip(addItemOption, loc.DB_ADD_ITEM_TT .. "|n|nThe creator of this item doesn't want you to add this item manually to your bag.");
 				end
 			end
-			
+
 			if ChatEdit_GetActiveWindow() and (self.data.type == TRP3_DB.types.ITEM or self.data.type == TRP3_DB.types.CAMPAIGN) then
-				local linkOption = contextMenu:CreateButton("Create chat link", function() 
+				local linkOption = contextMenu:CreateButton("Create chat link", function()
 					if self.data.type == TRP3_DB.types.ITEM then
 						TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_ITEM, function(canBeImported)
 							TRP3_API.extended.ItemsChatLinksModule:InsertLink(self.data.absoluteId, self.data.creationId, {}, canBeImported);
@@ -155,15 +155,15 @@ function TRP3_Tools_CreationsListElementMixin:OnClick(button)
 						TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_EXTENDED_CAMPAIGN, function(canBeImported)
 							TRP3_API.extended.CampaignsChatLinksModule:InsertLink(self.data.absoluteId, self.data.creationId, canBeImported);
 						end);
-					end				
+					end
 				end);
 				TRP3_MenuUtil.SetElementTooltip(linkOption, "inserts link to this item into your current chat"); -- TODO
 			end
 
-			local copyOption = contextMenu:CreateButton(loc.EDITOR_ID_COPY, function() 
+			local copyIdOption = contextMenu:CreateButton(loc.EDITOR_ID_COPY, function()
 				TRP3_API.popup.showTextInputPopup(loc.EDITOR_ID_COPY_POPUP, nil, nil, self.data.absoluteId);
 			end);
-			TRP3_MenuUtil.SetElementTooltip(copyOption, loc.DB_COPY_ID_TT);
+			TRP3_MenuUtil.SetElementTooltip(copyIdOption, loc.DB_COPY_ID_TT);
 
 			if self.data.type == TRP3_DB.types.ITEM then
 				local innerCopyOption = contextMenu:CreateButton(loc.IN_INNER_COPY_ACTION, function()
@@ -173,23 +173,23 @@ function TRP3_Tools_CreationsListElementMixin:OnClick(button)
 				end);
 				TRP3_MenuUtil.SetElementTooltip(innerCopyOption, loc.DB_COPY_TT);
 			end
-			
+
 			if self.data.creationId == self.data.absoluteId then
 				local copyOption = contextMenu:CreateButton("Create a copy", function()
 					addon.database.copyCreation(self.data.creationId);
 				end);
 				TRP3_MenuUtil.SetElementTooltip(copyOption, "Inserts a copy of the object into the database");
-				
+
 				local exportOption = contextMenu:CreateButton(loc.DB_EXPORT, function()
 					addon.database.serializeCreation(self.data.creationId);
 				end);
 				TRP3_MenuUtil.SetElementTooltip(exportOption, loc.DB_EXPORT_TT_2);
-				
-				local fullExportOption = contextMenu:CreateButton(loc.DB_FULL_EXPORT, function() 
+
+				local fullExportOption = contextMenu:CreateButton(loc.DB_FULL_EXPORT, function()
 					addon.database.exportCreation(self.data.creationId);
 				end);
 				TRP3_MenuUtil.SetElementTooltip(fullExportOption, loc.DB_FULL_EXPORT_TT);
-				
+
 				if TRP3_API.extended.isObjectMine(self.data.creationId) or TRP3_API.extended.isObjectExchanged(self.data.creationId) then
 					contextMenu:CreateDivider()
 					local deleteOption = contextMenu:CreateButton(DELETE, function()
@@ -297,8 +297,8 @@ function TRP3_Tools_FilterBuilderListElementMixin:Initialize(data)
 	end
 	self.widgets = self.widgets or {};
 	TRP3_API.ui.listbox.setupListBox(
-		self.predicate, 
-		addon.database.filters.getPredicateMenu(), 
+		self.predicate,
+		addon.database.filters.getPredicateMenu(),
 		function(predicateId)
 			if predicateId then
 				local formalPredicate = addon.database.filters.getPredicateById(predicateId);
@@ -314,7 +314,7 @@ function TRP3_Tools_FilterBuilderListElementMixin:Initialize(data)
 				if self.data.spawnNewPredicate then
 					self.data.list:AddPredicate();
 				else
-					for index, widget in ipairs(self.widgets) do
+					for _, widget in ipairs(self.widgets) do
 						paramaterPoolCollection:Release(widget);
 					end
 					wipe(self.widgets);
@@ -338,7 +338,7 @@ function TRP3_Tools_FilterBuilderListElementMixin:Initialize(data)
 					end
 				end
 			end
-		end, 
+		end,
 		"(select condition)"
 	);
 	self.predicate:SetSelectedValue(data.predicate[2]);

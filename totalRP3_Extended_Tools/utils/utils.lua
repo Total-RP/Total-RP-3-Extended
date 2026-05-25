@@ -335,7 +335,7 @@ function addon.utils.editDistance(str1, str2, insDelCost)
 	local len1 = string.len(str1);
 	local len2 = string.len(str2);
 	local matrix = {};
-	local cost = 0;
+	local cost;
 	insDelCost = insDelCost or 1;
 
 	if (len1 == 0) then

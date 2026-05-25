@@ -66,7 +66,7 @@ function TRP3_Tools_ScriptConstraintEditorMixin:Update()
 	if self.constraint then
 		table.insert(model, {});
 	end
-	
+
 	local scrollPct = self.widget:GetScrollPercentage();
 	self.sharedLeftTermDropdown:Hide();
 	self.sharedComparatorDropdown:Hide();
@@ -182,7 +182,7 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:Initialize(data)
 		end);
 		left:SetSelectedValue(self.data.equation.leftTerm.id);
 		left:Show();
-		
+
 		comp:SetParent(self);
 		comp:ClearAllPoints();
 		comp:SetPoint("TOP", 25, -35);
@@ -202,7 +202,7 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:Initialize(data)
 		carry:SetParent(self);
 		carry:ClearAllPoints();
 		carry:SetPoint("LEFT", comp, "RIGHT", 5, 0);
-		carry:SetScript("OnClick", function() 
+		carry:SetScript("OnClick", function()
 			addon.script.operand.getOperandEditorValues(self.data.equation.leftTerm, self.leftOperandEditor);
 			local leftValue = evaluateOperand(self.data.equation.leftTerm);
 			if type(leftValue) == "nil" or type(leftValue) == "string" then
@@ -223,7 +223,7 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:Initialize(data)
 		right:SetPoint("LEFT", self, "CENTER", 135, 0);
 		right:SetPoint("RIGHT", -10, 0);
 		TRP3_API.ui.listbox.setupListBox(right, addon.script.getOperandMenu(true), function(operandId)
-			if operandId ~= s.data.equation.rightTerm.id then 
+			if operandId ~= s.data.equation.rightTerm.id then
 				s.data.equation.rightTerm.id = operandId;
 				addon.script.operand.getDefaultOperandEditorValues(s.data.equation.rightTerm);
 				addon.script.operand.getOperandEditorValues(s.data.equation.leftTerm, s.leftOperandEditor);
@@ -283,7 +283,7 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:OnDelete()
 end
 
 function TRP3_Tools_ScriptConstraintEditorListElementMixin:Refresh()
-	if not self.data.index then 
+	if not self.data.index then
 		self.logicalOperatorButton:SetText("|TInterface\\PaperDollInfoFrame\\Character-Plus:12:12|t");
 		self.logicalOperatorButton:Show();
 		self.open:Hide();
@@ -307,7 +307,7 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:Refresh()
 end
 
 function TRP3_Tools_ScriptConstraintEditorListElementMixin:GetElementExtent(data)
-	if data.active then 
+	if data.active then
 		return 38 + 35 + 35*math.max(addon.script.operand.getOperandEditorExtent(data.equation.leftTerm.id), addon.script.operand.getOperandEditorExtent(data.equation.rightTerm.id));
 	else
 		return 38;
@@ -361,7 +361,7 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:OnClick(button)
 				end);
 				TRP3_MenuUtil.SetElementTooltip(editOption, "Edit this condition");
 			end
-			
+
 			if self.data.index then
 				contextMenu:CreateDivider();
 				local addBeforeOption = contextMenu:CreateButton("Insert condition before", function()
@@ -388,7 +388,7 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:OnClick(button)
 						local copySelectionOption = contextMenu:CreateButton("Copy selected conditions", function()
 							addon.clipboard.clear();
 							self:GetList():Update();
-							for index, element in self:GetList().model:EnumerateEntireRange() do
+							for _, element in self:GetList().model:EnumerateEntireRange() do
 								if element.selected then
 									addon.clipboard.append(element.equation, addon.clipboard.types.CONDITION_TEST);
 								end
@@ -400,7 +400,7 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:OnClick(button)
 					local copyAllOption = contextMenu:CreateButton("Copy all conditions", function()
 						addon.clipboard.clear();
 						self:GetList():Update();
-						for index, element in self:GetList().model:EnumerateEntireRange() do
+						for _, element in self:GetList().model:EnumerateEntireRange() do
 							if element.index then
 								addon.clipboard.append(element.equation, addon.clipboard.types.CONDITION_TEST);
 							end
@@ -478,12 +478,12 @@ function TRP3_Tools_ScriptConstraintEditorListElementMixin:OnEnter()
 			addon.script.operand.getOperandEditorValues(self.data.equation.rightTerm, self.rightOperandEditor);
 		end
 
-		local evaluatedPreview = 
+		local evaluatedPreview =
 			addon.script.formatters.formatType(evaluateOperand(self.data.equation.leftTerm)) .. " " ..
 			addon.script.getComparatorText(self.data.equation.comparator) .. " " ..
 			addon.script.formatters.formatType(evaluateOperand(self.data.equation.rightTerm));
 
-		local tooltipText = 
+		local tooltipText =
 			"Test:" .. "|n" ..
 			self.expression:GetText() .. "|r|n|n" ..
 			"Test preview:|n" ..

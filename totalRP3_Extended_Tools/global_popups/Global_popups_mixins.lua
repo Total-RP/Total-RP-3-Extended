@@ -100,10 +100,10 @@ function TRP3_Tools_ObjectsBrowserMixin:Initialize()
 			self:Filter();
 		end,
 	};
-	self.filter.box:SetScript("OnTextChanged", function() 
+	self.filter.box:SetScript("OnTextChanged", function()
 		self:Filter();
 	end);
-	self.filter.restrictToCreation:SetScript("OnClick", function() 
+	self.filter.restrictToCreation:SetScript("OnClick", function()
 		self:Filter();
 	end);
 	addon.main.localize(self.filter.restrictToCreation);
@@ -117,7 +117,7 @@ function TRP3_Tools_ObjectsBrowserMixin:Select(token)
 end
 
 local function generateObjectsBrowserLineData(absoluteId, classSource, classExists)
-	
+
 	local rootClass;
 	local class = classSource(absoluteId);
 
@@ -157,12 +157,12 @@ local function generateObjectsBrowserLineData(absoluteId, classSource, classExis
 			end
 		end
 		if base.DE then
-			local argsStructure = {object = {id = objectID}};
-			tooltip = tooltip .. "|n" .. TRP3_API.Colors.Yellow("\"" .. TRP3_API.script.parseArgs(base.DE .. "\"", argsStructure));
+			local argsStructure = {object = {id = absoluteId}};
+			tooltip = tooltip .. "|n" .. TRP3_API.Colors.Yellow("\"" .. TRP3_API.script.parseArgs(base.DE, argsStructure) .. "\"");
 		end
 		tooltip = tooltip .. "|n" .. TRP3_API.Colors.White(TRP3_API.extended.formatWeight(base.WE or 0) .. " - " .. C_CurrencyInfo.GetCoinTextureString(base.VA or 0));
 	end
-	tooltip = tooltip .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", "Select object");	
+	tooltip = tooltip .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", "Select object");
 
 	return {
 		absoluteId = absoluteId,
@@ -175,7 +175,7 @@ function TRP3_Tools_ObjectsBrowserMixin:Filter()
 	local filterText = strtrim(self.filter.box:GetText():lower());
 	local filter;
 	if filterText == "" then
-		filter = function(value)
+		filter = function()
 			return true;
 		end
 	else
@@ -192,9 +192,9 @@ function TRP3_Tools_ObjectsBrowserMixin:Filter()
 	if self.inventoryMode or not self.filter.restrictToCreation:GetChecked() then
 		for absoluteId, class in pairs(TRP3_DB.global) do
 			if not class.hideFromList and class.TY == self.objectType and not addon.utils.isInnerIdOrEqual(currentCreationId, absoluteId) then
-				if 
-					not self.inventoryMode 
-					or class.TY ~= TRP3_DB.types.ITEM 
+				if
+					not self.inventoryMode
+					or class.TY ~= TRP3_DB.types.ITEM
 					or TRP3_API.extended.isObjectMine(absoluteId)
 					or not class.BA or not class.BA.PA
 				then
@@ -210,7 +210,7 @@ function TRP3_Tools_ObjectsBrowserMixin:Filter()
 	end
 
 	if currentCreationId then
-		addon.editor.forEachObjectInCurrentDraft(function(absoluteId, relativeId, class)
+		addon.editor.forEachObjectInCurrentDraft(function(absoluteId, _relativeId, class)
 			if class.TY == self.objectType then
 				local _, name = addon.main.getClassDataSafeByType(class);
 				if filter(absoluteId) or filter(name) then
@@ -224,7 +224,7 @@ function TRP3_Tools_ObjectsBrowserMixin:Filter()
 
 	self.filter.total:SetText(count .. " / " .. total);
 
-	table.sort(model, function(a, b) 
+	table.sort(model, function(a, b)
 		return a.absoluteId < b.absoluteId;
 	end);
 
@@ -276,7 +276,7 @@ function TRP3_Tools_EmotesBrowserMixin:Initialize()
 			self:Filter();
 		end,
 	};
-	self.filter.box:SetScript("OnTextChanged", function() 
+	self.filter.box:SetScript("OnTextChanged", function()
 		self:Filter();
 	end);
 end
@@ -294,20 +294,20 @@ function TRP3_Tools_EmotesBrowserMixin:Filter()
 	local distance = {};
 	local filterStr = strtrim(self.filter.box:GetText()):lower();
 	if strlen(filterStr) > 0 then
-		for index, emote in ipairs(emoteList) do
+		for _, emote in ipairs(emoteList) do
 			local d = addon.utils.editDistance(emote.token:lower(), filterStr, 0.5);
-			for cIndex, command in ipairs(emote.slashCommands) do
+			for _, command in ipairs(emote.slashCommands) do
 				d = math.min(d, addon.utils.editDistance(command:lower(), filterStr, 0.5));
 			end
 			distance[emote.token] = d;
 		end
 	end
-	for index, emote in ipairs(emoteList) do
+	for _, emote in ipairs(emoteList) do
 		if (distance[emote.token] or 0) < 0.5 then
 			table.insert(model, emote);
 		end
 	end
-	table.sort(model, function(emote1, emote2) 
+	table.sort(model, function(emote1, emote2)
 		local delta = (distance[emote1.token] or 0) - (distance[emote2.token] or 0);
 		if delta ~= 0 then
 			return delta < 0;
@@ -398,7 +398,7 @@ TRP3_Tools_VariableInspectorMixin = {};
 -- will sort numbers before numeric strings before non-numeric strings before rest
 -- if you use functions or tables as keys, it's your own fault :-)
 local function mixedTypeSort(tableToSort, sortKey)
-	table.sort(tableToSort, function(a, b) 
+	table.sort(tableToSort, function(a, b)
 		local va = sortKey and a[sortKey] or a;
 		local vb = sortKey and b[sortKey] or b;
 		local ta = type(va);
@@ -432,7 +432,7 @@ function TRP3_Tools_VariableInspectorMixin:Initialize()
 		{"Boolean", "boolean"},
 		{"Table"  , "table"}
 	};
-	TRP3_API.ui.listbox.setupListBox(self.editor.valueType, valueTypes, function(valueType) 
+	TRP3_API.ui.listbox.setupListBox(self.editor.valueType, valueTypes, function(valueType)
 		self.editor.numberValue:SetShown(valueType == "number");
 		self.editor.stringValue:SetShown(valueType == "string");
 		self.editor.booleanValue:SetShown(valueType == "boolean");
@@ -441,7 +441,7 @@ function TRP3_Tools_VariableInspectorMixin:Initialize()
 		{loc.OP_BOOL_TRUE,  true},
 		{loc.OP_BOOL_FALSE, false}
 	});
-	self.editor.accept:SetScript("OnClick", function() 
+	self.editor.accept:SetScript("OnClick", function()
 
 		local top = self.stack[#self.stack];
 		local key;
@@ -495,7 +495,7 @@ function TRP3_Tools_VariableInspectorMixin:Initialize()
 		self.content:Show();
 		self:StackPeek();
 	end);
-	self.editor.cancel:SetScript("OnClick", function() 
+	self.editor.cancel:SetScript("OnClick", function()
 		self.editor:Hide();
 		self.content:Show();
 	end);
@@ -550,7 +550,7 @@ function TRP3_Tools_VariableInspectorMixin:ShowObject(absoluteId, objectType)
 	elseif objectType == TRP3_DB.types.AURA then
 		if TRP3_API.profile.getPlayerCurrentProfile() and TRP3_API.profile.getPlayerCurrentProfile().auras then
 			local class = TRP3_API.extended.getClass(absoluteId);
-			local link = TRP3_API.inventory.getItemLink(class, absoluteId);		
+			local link = TRP3_API.inventory.getItemLink(class, absoluteId);
 			for _, aura in pairs(TRP3_API.profile.getPlayerCurrentProfile().auras) do
 				if aura.id == absoluteId then
 					table.insert(self.instances, aura);
@@ -560,7 +560,7 @@ function TRP3_Tools_VariableInspectorMixin:ShowObject(absoluteId, objectType)
 		end
 	end
 
-	TRP3_API.ui.listbox.setupListBox(self.instanceSelection, locators, function(instanceIndex) 
+	TRP3_API.ui.listbox.setupListBox(self.instanceSelection, locators, function(instanceIndex)
 		self:SelectInstance(instanceIndex);
 	end);
 
@@ -732,7 +732,7 @@ function TRP3_Tools_TextEditorMixin:Initialize()
 				for index, textControl in ipairs(textControls) do
 					local button = textControlsPool:Acquire();
 					button:SetText(textControl.title);
-					button:SetScript("OnClick", function() 
+					button:SetScript("OnClick", function()
 						textControl.callback(button, self.content.text);
 					end);
 					button:SetSize(95, 25);
