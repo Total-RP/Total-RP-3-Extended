@@ -53,7 +53,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Anchor point="BOTTOMRIGHT"/>
 		</Anchors>
 		<Size y="500"/>
-		
+
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
@@ -68,9 +68,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 		</Layers>
-		
+
 		<Frames>
-			
+
 			<Frame parentKey="display" inherits="TRP3_Tools_TitledPanelTemplate">
 				<KeyValues>
 					<KeyValue key="titleText" value="${DO_PARAMS_GLOBAL}" type="string"/>
@@ -216,7 +216,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Layer>
 				</Layers>
 			</Frame>
-			
+
 			<Frame parentKey="pages" inherits="TRP3_Tools_TitledPanelTemplate">
 				<KeyValues>
 					<KeyValue key="titleText" value="${DO_PAGE_MANAGER}" type="string"/>
@@ -251,7 +251,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 				</Frames>
 			</Frame>
-			
+
 		</Frames>
 		<Scripts>
 			<OnSizeChanged method="OnSizeChanged"/>

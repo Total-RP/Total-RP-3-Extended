@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Script file="Quest_step_mixins.lua"/>
 
 	<Frame name="TRP3_Tools_EditorQuestStepTemplate" virtual="true" mixin="TRP3_Tools_EditorQuestStepMixin">
@@ -13,7 +13,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Anchor point="BOTTOMRIGHT"/>
 		</Anchors>
 		<Size y="500"/>
-		
+
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
@@ -28,16 +28,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 		</Layers>
-		
+
 		<Frames>
-			
+
 			<Frame parentKey="main" inherits="TRP3_Tools_TitledPanelTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="0"/>
 					<Anchor point="BOTTOM"/>
 					<Anchor point="RIGHT" relativePoint="CENTER" x="-4"/>
 				</Anchors>
-				
+
 				<Frames>
 
 					<Frame parentKey="pre" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
@@ -91,7 +91,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 
 			</Frame>
-			
+
 			<Frame parentKey="objective" inherits="TRP3_Tools_TitledPanelTemplate">
 				<Anchors>
 					<Anchor point="TOP"/>
@@ -103,7 +103,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 				</Frames>
 			</Frame>
-			
+
 		</Frames>
 	</Frame>
 

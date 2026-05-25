@@ -125,7 +125,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 
 		</Frames>
-	</Frame>	
+	</Frame>
 
 	<Script file="Static_analysis.lua"/>
 

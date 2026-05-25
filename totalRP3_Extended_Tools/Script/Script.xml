@@ -230,7 +230,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			
+
 			<Frame name="$parentTriggerList" parentKey="triggerList" inherits="TRP3_Tools_ListTemplate">
 				<KeyValues>
 					<KeyValue key="listElementTemplate" value="TRP3_Tools_ScriptTriggerListElementTemplate" type="string"/>
@@ -276,7 +276,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 		</Frames>
 	</Frame>
-	
+
 
 
 </Ui>

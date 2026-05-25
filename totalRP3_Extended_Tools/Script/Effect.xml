@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Script file="Effect_mixins.lua"/>
 
 	<Button name="TRP3_Tools_ScriptEffectTreeNodeTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptEffectTreeNodeMixin">
@@ -137,7 +137,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</Frame>
 				</Frames>
-				
+
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString parentKey="title" inherits="GameFontNormal" text="${WO_CONDITION}" justifyH="CENTER" justifyV="MIDDLE">
@@ -194,5 +194,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnLoad method="Initialize" inherit="append"/>
 		</Scripts>
 	</Frame>
-	
+
 </Ui>

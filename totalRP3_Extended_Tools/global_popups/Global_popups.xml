@@ -448,7 +448,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</DropdownButton>
 
 			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
-				
+
 				<KeyValues>
 					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
@@ -475,7 +475,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 
 			<Frame parentKey="editor" inherits="TRP3_TooltipBackdropTemplate">
-				
+
 				<KeyValues>
 					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>

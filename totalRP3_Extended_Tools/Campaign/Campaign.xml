@@ -4,10 +4,10 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Script file="Campaign.lua"/>
 	<Script file="Campaign_mixins.lua"/>
-	
+
 	<Button name="TRP3_Tools_CampaignNPCListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_CampaignNPCListElementMixin">
 		<Size y="60"/>
 		<Frames>
@@ -29,7 +29,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Button>
 		</Frames>
 		<Layers>
-			
+
 			<Layer level="OVERLAY">
 				<FontString parentKey="name" inherits="GameFontNormalLarge" justifyH="LEFT">
 					<Size y="20" />
@@ -74,7 +74,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 
 		<Size y="500"/>
-		
+
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
@@ -89,18 +89,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 		</Layers>
-		
+
 		<Frames>
-			
+
 			<Frame parentKey="main" inherits="TRP3_Tools_TitledPanelTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="0"/>
 					<Anchor point="BOTTOM"/>
 					<Anchor point="RIGHT" relativePoint="CENTER" x="-4"/>
 				</Anchors>
-				
+
 				<Frames>
-					
+
 					<EditBox parentKey="name" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${CA_NAME}" type="string"/>
@@ -112,7 +112,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
 					</EditBox>
-					
+
 					<DropdownButton parentKey="vignette" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentVignette">
 						<KeyValues>
 							<KeyValue key="titleText" value="${CA_IMAGE}" type="string"/>
@@ -208,7 +208,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 
 			</Frame>
-			
+
 			<Frame parentKey="npc" inherits="TRP3_Tools_TitledPanelTemplate">
 				<KeyValues>
 					<KeyValue key="titleText" value="${CA_NPC}" type="string"/>
@@ -306,7 +306,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 				</Frames>
 			</Frame>
-			
+
 		</Frames>
 	</Frame>
 

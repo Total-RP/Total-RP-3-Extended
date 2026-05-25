@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Anchor point="BOTTOMRIGHT"/>
 		</Anchors>
 		<Size y="500"/>
-		
+
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
@@ -34,9 +34,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 		</Layers>
-		
+
 		<Frames>
-			
+
 			<Frame parentKey="display" inherits="TRP3_Tools_TitledPanelTemplate">
 				<KeyValues>
 					<KeyValue key="titleText" value="${IT_DISPLAY_ATT}" type="string"/>
@@ -133,7 +133,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<CheckButton parentKey="container" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentContainer">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_CON}" type="string"/>
@@ -144,7 +144,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<DropdownButton parentKey="containerType" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentType">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_CO_SIZE}" type="string"/>
@@ -192,7 +192,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</CheckButton>
 				</Frames>
 			</Frame>
-			
+
 			<Frame parentKey="gameplay" inherits="TRP3_Tools_TitledPanelTemplate">
 				<KeyValues>
 					<KeyValue key="titleText" value="${IT_GAMEPLAY_ATT}" type="string"/>
@@ -238,7 +238,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<CheckButton parentKey="wearable" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentWearable">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_WEARABLE}" type="string"/>
@@ -318,7 +318,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
 						</Anchors>
 					</EditBox>
-					
+
 					<CheckButton parentKey="component" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentComponent">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_TT_REAGENT}" type="string"/>
@@ -329,7 +329,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<CheckButton parentKey="crafted" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentCrafted">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_CRAFTED}" type="string"/>
@@ -351,7 +351,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
 					</CheckButton>
-					
+
 					<DropdownButton parentKey="pickSound" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentPickSound">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_PU_SOUND}" type="string"/>
@@ -376,7 +376,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 				</Frames>
 			</Frame>
-			
+
 		</Frames>
 	</Frame>
 

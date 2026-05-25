@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Script file="Trigger_mixins.lua"/>
 
 	<Button name="TRP3_Tools_ScriptObjectEventListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptObjectEventListElementMixin">
@@ -290,5 +290,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnLoad method="Initialize" inherit="append"/>
 		</Scripts>
 	</Frame>
-	
+
 </Ui>

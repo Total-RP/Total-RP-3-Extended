@@ -4,9 +4,9 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Script file="Object_ribbon_mixins.lua"/>
-	
+
 	<Frame name="TRP3_Tools_IconButtonPlus" inherits="TRP3_IconButton" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY" textureSubLevel="1">
@@ -261,7 +261,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Button parentKey="showVariables" inherits="TRP3_IconButton"/>
 				</Frames>
 			</Frame>
-			
+
 			<Frame parentKey="innerObjectsPanel" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_THIN_LIST_ELEMENT_BORDER_NORMAL" type="global"/>
@@ -323,8 +323,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnLeave>
 				</Scripts>
 			</Button>
-			
+
 		</Frames>
 	</Frame>
-	
+
 </Ui>

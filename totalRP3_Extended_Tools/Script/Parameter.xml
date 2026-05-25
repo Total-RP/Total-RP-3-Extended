@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Script file="Parameter_mixins.lua"/>
 
 	<Frame name="TRP3_Tools_ScriptParameterEditBoxTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterEditBoxMixin">
@@ -89,7 +89,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnSizeChanged method="OnSizeChanged"/>
 		</Scripts>
 	</Frame>
-	
+
 	<Frame name="TRP3_Tools_ScriptParameterObjectTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterObjectMixin">
 		<Size y="25"/>
 		<Frames>
@@ -221,14 +221,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Frame parentKey="editor" scale="1.25" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
 						<Size x="200" y="130"/>
 						<Frames>
-							
+
 							<Button parentKey="browse" inherits="TRP3_Tools_BrowseButtonTemplate">
 								<Anchors>
 									<Anchor point="TOP" y="-15"/>
 									<Anchor point="RIGHT" x="-20"/>
 								</Anchors>
 							</Button>
-							
+
 							<EditBox parentKey="id" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
 								<KeyValues>
 									<KeyValue key="titleText" value="${EFFECT_ITEM_ADD_ID}" type="string"/>

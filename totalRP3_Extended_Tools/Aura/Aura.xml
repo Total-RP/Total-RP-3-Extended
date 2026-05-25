@@ -147,7 +147,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 
 			</Frame>
-			
+
 			<Frame parentKey="gameplay" inherits="TRP3_Tools_TitledPanelTemplate">
 				<KeyValues>
 					<KeyValue key="titleText" value="${AU_GAMEPLAY_ATT}" type="string"/>

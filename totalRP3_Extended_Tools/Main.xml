@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Include file="Widgets.lua"/>
 	<Include file="Main.lua"/>
 
@@ -18,7 +18,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Script\Constraint.xml"/>
 	<Include file="Script\Trigger.xml"/>
 	<Include file="Script\Effect.xml"/>
-	
+
 	<Include file="Document\Document.xml"/>
 	<Include file="Campaign\Campaign.xml"/>
 	<Include file="quest\Quest.xml"/>
@@ -26,7 +26,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Cutscene\Cutscene.xml"/>
 	<Include file="Aura\Aura.xml"/>
 	<Include file="item\Item.xml"/>
-	
+
 	<Include file="database\Database.xml"/>
 	<Include file="object_ribbon\Object_ribbon.xml"/>
 	<Include file="editor\Editor.xml"/>
@@ -130,7 +130,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOMRIGHT" x="-24" y="24"/>
 				</Anchors>
 			</Frame>
-			
+
 			<Frame name="$parentEditor" inherits="TRP3_Tools_EditorTemplate" hidden="true" parentKey="editor">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentTabs" relativePoint="BOTTOMLEFT" x="-6" y="2"/>
@@ -146,7 +146,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPLEFT" relativeTo="$parentTabs" relativePoint="BOTTOMLEFT" x="-6" y="2"/>
 					<Anchor point="BOTTOMRIGHT" x="-24" y="24"/>
 				</Anchors>
-		
+
 				<Frames>
 					<ScrollFrame name="$parentBackers" parentKey="scroll" inherits="ScrollFrameTemplate">
 						<Anchors>
@@ -233,7 +233,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 
 			</Frame>
-			
+
 			<Frame parentKey="disclaimer" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentTabs" relativePoint="BOTTOMLEFT" x="-6" y="4"/>

@@ -1,15 +1,15 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Script file="ui_mixins.lua"/>
-	
+
 	<!--
 		A UI element for scrollable list content.
-		
+
 		Properties
 		.model  ... the list's model (DataProvider), use this for CRUD-like operations on the list
 		.widget ... the list's UI representation, use this for all visual stuff, e.g. scroll to an element
-		
+
 		Settings
 		.listElementTemplate  (string)   ... frame template to use for elements
 		.listElementMixin     (global)   ... the mixin for list elements
@@ -35,7 +35,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnLoad method="Initialize"/>
 		</Scripts>
 	</Frame>
-	
+
 	<Frame name="TRP3_Tools_TreeTemplate" virtual="true" mixin="TRP3_Tools_TreeMixin">
 		<Frames>
 			<Frame parentKey="widget" inherits="WowScrollBoxList">
@@ -58,7 +58,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Button name="TRP3_Tools_ListElementTemplate" virtual="true" registerForClicks="AnyUp" inherits="BackdropTemplate" mixin="TRP3_Tools_ListElementMixin">
 		<Size y="32"/>
-		
+
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_THIN_LIST_ELEMENT_BORDER_NORMAL" type="global"/>
 		</KeyValues>
@@ -81,9 +81,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Anchors>
 		</HighlightTexture>
 	</Button>
-	
+
 	<Frame name="TRP3_Tools_TabBarTemplate" virtual="true" mixin="TRP3_Tools_TabBarMixin">
-		
+
 		<Frames>
 
 			<Button parentKey="scrollLeftButton">
@@ -116,7 +116,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
 				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
 			</Button>
-			
+
 			<ScrollFrame parentKey="scrollFrame">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="32" y="0"/>
@@ -130,9 +130,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 				</Scrollchild>
 			</ScrollFrame>
-			
+
 		</Frames>
-		
+
 		<Scripts>
 			<OnLoad method="Initialize"/>
 		</Scripts>
@@ -142,7 +142,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Button name="TRP3_Tools_TabButtonTemplate" registerForClicks="LeftButtonUp,RightButtonUp" motionScriptsWhileDisabled="true" virtual="true" mixin="TRP3_Tools_TabButtonMixin">
 		<Layers>
 			<Layer level="BACKGROUND">
-				
+
 				<Texture parentKey="LeftActive" atlas="uiframe-activetab-right" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT"/>
@@ -199,7 +199,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						self:GetParent():OnClose();
 					</OnClick>
 				</Scripts>
-			</Button>			
+			</Button>
 		</Frames>
 		<ButtonText parentKey="Text" wordwrap="false">
 			<Anchors>
@@ -223,14 +223,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<NormalFont style="GameFontNormalLarge"/>
 		<HighlightFont style="GameFontHighlightLarge"/>
 	</Button>
-	
+
 	<Frame name="TRP3_Tools_SplitPaneTemplate" virtual="true" mixin="TRP3_Tools_SplitPaneMixin">
 		<Scripts>
 			<OnLoad method="Initialize"/>
 			<OnSizeChanged method="OnSizeChanged"/>
 		</Scripts>
 	</Frame>
-	
+
 	<Frame name="TRP3_Tools_HorizontalDividerTemplate" enableMouse="true" useParentLevel="true" virtual="true" mixin="TRP3_Tools_DividerMixin">
 		<Size x="20"/>
 		<Layers>
@@ -247,9 +247,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</FontString>
 			</Layer>
 		</Layers>
-		
+
 		<Frames>
-			
+
 			<Button parentKey="collapseFirst">
 				<Size x="11" y="17"/>
 				<Anchors>
@@ -276,7 +276,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnClick>
 				</Scripts>
 			</Button>
-			
+
 			<Button parentKey="collapseSecond">
 				<Size x="11" y="17"/>
 				<Anchors>
@@ -303,8 +303,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnClick>
 				</Scripts>
 			</Button>
-		
-		
+
+
 			<Frame parentKey="shadowFrame" resizable="true" hidden="true" frameStrata="TOOLTIP" frameLevel="10">
 				<Layers>
 					<Layer level="OVERLAY" textureSubLevel="7">
@@ -325,9 +325,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnMouseUp method="OnMouseUp"/>
 			<OnHide method="OnHide"/>
 		</Scripts>
-		
+
 	</Frame>
-	
+
 	<Frame name="TRP3_Tools_VerticalDividerTemplate" enableMouse="true" useParentLevel="true" virtual="true" mixin="TRP3_Tools_DividerMixin">
 		<Size y="20"/>
 		<Layers>
@@ -344,9 +344,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</FontString>
 			</Layer>
 		</Layers>
-		
+
 		<Frames>
-			
+
 			<Button parentKey="collapseFirst">
 				<Size x="17" y="11"/>
 				<Anchors>
@@ -361,7 +361,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnClick>
 				</Scripts>
 			</Button>
-			
+
 			<Button parentKey="collapseSecond">
 				<Size x="17" y="11"/>
 				<Anchors>
@@ -376,7 +376,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnClick>
 				</Scripts>
 			</Button>
-		
+
 			<Frame parentKey="shadowFrame" resizable="true" hidden="true" frameStrata="TOOLTIP" frameLevel="10">
 				<Layers>
 					<Layer level="OVERLAY" textureSubLevel="7">
@@ -392,7 +392,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 			</Frame>
 		</Frames>
-		
+
 		<Scripts>
 			<OnMouseDown method="OnMouseDown"/>
 			<OnMouseUp method="OnMouseUp"/>
@@ -429,13 +429,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
 	<Frame name="TRP3_Tools_QuestButtonTemplate" inherits="TRP3_QuestButtonTemplate" virtual="true" mixin="TRP3_Tools_QuestButtonMixin">
 		<Scripts>
 			<OnLoad method="Initialize"/>
 		</Scripts>
 	</Frame>
-	
+
 	<!-- taken from TRP3_TitledEditBox/TRP3_TitledHelpEditBox, but with a bit more height -->
 	<EditBox name="TRP3_Tools_TitledEditBoxTemplate" letters="0" historyLines="10" autoFocus="false" virtual="true" mixin="TRP3_Tools_TitledEditBoxMixin">
 		<Size y="25"/>
@@ -495,7 +495,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</OnLeave>
 		</Scripts>
 	</EditBox>
-	
+
 	<EditBox name="TRP3_Tools_TitledHelpEditBoxTemplate" inherits="TRP3_Tools_TitledEditBoxTemplate" virtual="true" mixin="TRP3_Tools_TitledHelpEditBoxMixin">
 		<Frames>
 			<Button name="$parentHelp" parentKey="help" inherits="TRP3_HelpButton" hidden="true">
@@ -569,11 +569,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</OnEditFocusLost>
 		</Scripts>
 	</EditBox>
-	
+
 	<CheckButton name="TRP3_Tools_CheckBoxTemplate" inherits="TRP3_CheckBox" virtual="true" mixin="TRP3_Tools_CheckBoxMixin">
 		<Size x="25" y="25"/>
 	</CheckButton>
-	
+
 	<DropdownButton name="TRP3_Tools_TitledDropdownButtonTemplate" mixin="WowStyle1DropdownMixin,TRP3_Tools_TitledDropdownButtonMixin" virtual="true">
 		<Size y="25"/>
 		<Layers>
@@ -631,7 +631,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnDisable method="OnDisable"/>
 		</Scripts>
 	</DropdownButton>
-	
+
 	<Frame name="TRP3_Tools_TitledPanelTemplate" virtual="true" mixin="TRP3_Tools_TitledPanelMixin">
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -655,7 +655,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
 	<Frame name="TRP3_Tools_TitledTextAreaTemplate" inherits="TRP3_TextArea" virtual="true" mixin="TRP3_Tools_TitledTextAreaMixin">
 		<Layers>
 			<Layer level="OVERLAY">
@@ -669,7 +669,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
 	<Frame name="TRP3_Tools_TitledHelpTextAreaTemplate" inherits="TRP3_Tools_TitledTextAreaTemplate" virtual="true" mixin="TRP3_Tools_TitledHelpTextAreaMixin">
 	</Frame>
 
@@ -720,7 +720,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnSizeChanged method="Update" inherits="append"/>
 		</Scripts>
 	</Frame>
-	
+
 	<Frame name="TRP3_Tools_TitledPopupTemplate" inherits="TRP3_AltHoveredFrame" virtual="true" mixin="TRP3_Tools_TitledPopupMixin" frameStrata="DIALOG">
 		<Size x="500" y="400"/>
 		<Anchors>
@@ -781,5 +781,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnLoad method="Initialize"/>
 		</Scripts>
 	</Button>
-	
+
 </Ui>

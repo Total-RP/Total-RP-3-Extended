@@ -7,9 +7,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Script file="Cutscene.lua"/>
 	<Script file="Cutscene_mixins.lua"/>
-	
+
 	<Button name="TRP3_Tools_CutsceneStepListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_CutsceneStepListElementMixin">
-		
+
 		<Frames>
 			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
 				<Anchors>
@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Scripts>
 			</Button>
 		</Frames>
-		
+
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture parentKey="icon">
@@ -171,7 +171,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 
 			</Frame>
-			
+
 			<Frame parentKey="option2">
 				<Size y="40"/>
 				<Anchors>
@@ -203,7 +203,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Button>
 				</Frames>
 			</Frame>
-			
+
 			<Frame parentKey="option4">
 				<Size y="40"/>
 				<Anchors>
@@ -219,7 +219,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Button>
 				</Frames>
 			</Frame>
-			
+
 			<Frame parentKey="option5">
 				<Size y="40"/>
 				<Anchors>
@@ -235,16 +235,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Button>
 				</Frames>
 			</Frame>
-			
+
 			<Button parentKey="applyButton" text="OK" inherits="TRP3_CommonButton">
 				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="20"/>
 				</Anchors>
 			</Button>
-			
+
 		</Frames>
 
-		
+
 	</Frame>
 
 	<Frame name="TRP3_Tools_EditorCutsceneTemplate" virtual="true" mixin="TRP3_Tools_EditorCutsceneMixin">
@@ -253,7 +253,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Anchor point="BOTTOMRIGHT"/>
 		</Anchors>
 		<Size y="500"/>
-		
+
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
@@ -268,9 +268,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 		</Layers>
-		
+
 		<Frames>
-			
+
 			<Frame parentKey="main" inherits="TRP3_Tools_TitledPanelTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="0"/>
@@ -332,7 +332,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 
 			</Frame>
-			
+
 			<Frame parentKey="step" inherits="TRP3_Tools_TitledPanelTemplate">
 				<Anchors>
 					<Anchor point="TOP"/>
@@ -408,7 +408,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 					</EditBox>
-					
+
 					<CheckButton parentKey="direction" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentDirection">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_NAME_DIRECTION}" type="string"/>
@@ -664,7 +664,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 				</Frames>
 			</Frame>
-			
+
 		</Frames>
 	</Frame>
 

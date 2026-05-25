@@ -4,9 +4,9 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	
+
 	<Include file="Database_mixins.lua"/>
-	
+
 	<Button name="TRP3_Tools_CreationsListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_CreationsListElementMixin">
 		<Layers>
 			<Layer level="OVERLAY">
@@ -226,17 +226,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.hardsave" x="0" y="-24"/>
 								</Anchors>
 							</Button>
-							
-							
+
+
 						</Frames>
-						
+
 						<Scripts>
 							<OnLoad method="Initialize"/>
 						</Scripts>
 					</Frame>
 				</Frames>
 			</Frame>
-			
+
 			<Frame parentKey="export" name="$parentExport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
 				<Size x="500" y="300"/>
 
@@ -511,7 +511,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Button>
 
 			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
-				
+
 				<KeyValues>
 					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
@@ -544,5 +544,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="Database.lua"/>
 	<Include file="Filters.lua"/>
-	
+
 </Ui>
