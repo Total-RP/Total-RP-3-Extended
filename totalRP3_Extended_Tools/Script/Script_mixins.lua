@@ -55,7 +55,7 @@ end
 function TRP3_Tools_EditorScriptMixin:RenameScript(oldScriptId)
 	TRP3_API.popup.showTextInputPopup(loc.WO_ADD_ID, function(newScriptId)
 		newScriptId = strtrim(newScriptId or "");
-		if oldScriptId ~= newScriptId then		
+		if oldScriptId ~= newScriptId then
 			if newScriptId:len() == 0 or self.scripts[newScriptId] then
 				TRP3_API.popup.showAlertPopup(loc.WO_ADD_ID_NO_AVAILABLE);
 			else
