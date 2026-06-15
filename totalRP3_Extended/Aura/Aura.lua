@@ -686,7 +686,7 @@ function auraCore:GetAurasForInspection()
 					}
 				},
 				persistent = {
-					expiry = aura.persistent.expiry or math.huge
+					expiry = aura.persistent.expiry
 				}
 			});
 		end
