@@ -672,6 +672,12 @@ function auraCore:GetAurasForInspection()
 	local auras = {};
 	for _, aura in EnumerateValidAuras(self.activeAuras) do
 		if aura.class.BA.WE then
+			-- inf isn't supported as a serialized value, it will stay nil for inspection
+			local auraExpiryForTransfer;
+			if aura.persistent.expiry ~= math.huge then
+				auraExpiryForTransfer = aura.persistent.expiry;
+			end
+
 			tinsert(auras, {
 				class = {
 					BA = {
@@ -686,7 +692,7 @@ function auraCore:GetAurasForInspection()
 					}
 				},
 				persistent = {
-					expiry = aura.persistent.expiry or math.huge
+					expiry = auraExpiryForTransfer
 				}
 			});
 		end
