@@ -1,3 +1,9 @@
+# Changelog for version 2.3.4
+
+## Fixed
+
+- Fixed permanent auras causing errors during Extended inspection.
+
 # Changelog for version 2.3.3
 
 ## Changed
