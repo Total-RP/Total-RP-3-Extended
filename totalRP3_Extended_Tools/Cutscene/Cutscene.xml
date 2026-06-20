@@ -4,71 +4,668 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--     Imports      -->
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Include file="Cutscene.lua"/>
+	<Script file="Cutscene.lua"/>
+	<Script file="Cutscene_mixins.lua"/>
 
-	<Include file="Editor\Normal.xml"/>
-	<Include file="Editor\Normal.lua"/>
+	<Button name="TRP3_Tools_CutsceneStepListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_CutsceneStepListElementMixin">
 
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--      Base frame      -->
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-
-	<Frame name="TRP3_Tools_CutsceneTemplate" virtual="true">
 		<Frames>
-			<Frame inherits="TRP3_Tools_CutsceneEditorNormalTemplate" parentKey="normal" setAllPoints="true"/>
-		</Frames>
-	</Frame>
-
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--     EFFECTS AND OPERANDS     -->
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-
-	<Frame name="TRP3_EffectEditorDialogSelection" hidden="true" inherits="TRP3_EditorEffectTemplate">
-		<Size x="500" y="275"/>
-		<Frames>
-
-			<EditBox parentKey="id" inherits="TRP3_TitledHelpEditBox">
-				<Size x="260" y="18"/>
+			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-65"/>
+					<Anchor point="RIGHT" x="-8"/>
 				</Anchors>
-			</EditBox>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnDelete();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
 
-			<Button parentKey="browse" inherits="TRP3_CommonButton">
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="icon">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" x="8"/>
+					</Anchors>
+				</Texture>
+				<FontString parentKey="label" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="LEFT" x="30"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.delete" x="-2"/>
+					</Anchors>
+				</FontString>
+				<Texture parentKey="highlightArrow" atlas="orderhalltalents-choice-arrow-large">
+					<Size x="16" y="16"/>
+					<TexCoords left="0.5" right="1"/>
+					<Anchors>
+						<Anchor point="RIGHT" x="-8"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+
+		<Scripts>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_Tools_EditorCutsceneChoiceButtonTemplate" virtual="true" inherits="BackdropTemplate" setAllPoints="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+		</KeyValues>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" maxLines="1" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="TOP" y="-5" />
+						<Anchor point="LEFT" x="10" />
+						<Anchor point="RIGHT" x="-120"/>
+						<Anchor point="BOTTOM" y="5"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+				<FontString parentKey="next" inherits="GameFontNormal" justifyH="RIGHT" maxLines="1" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="TOP" y="-5" />
+						<Anchor point="LEFT" x="-110" relativePoint="RIGHT"/>
+						<Anchor point="RIGHT" x="-10"/>
+						<Anchor point="BOTTOM" y="5"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+
+		</Layers>
+		<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="6" y="-6" />
+				<Anchor point="BOTTOMRIGHT" x="-6" y="6" />
+			</Anchors>
+			<TexCoords bottom="0" left="0.25" top="1" right="1" />
+		</HighlightTexture>
+
+		<Scripts>
+			<OnClick>
+				self:GetParent():GetParent():OpenOption(self.optionIndex);
+			</OnClick>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_EditorCutsceneChoicePopup" inherits="TRP3_Tools_TitledPopupTemplate" hidden="true" mixin="TRP3_Tools_EditorCutsceneChoiceMixin">
+		<Size x="800" y="500"/>
+		<KeyValues>
+			<KeyValue key="titleText" value="${DI_CHOICES}" type="string"/>
+		</KeyValues>
+		<Frames>
+
+			<Frame name="TRP3_Tools_EditorCutsceneChoicePopupOptionEditor" parentKey="optionEditor" inherits="BackdropTemplate" hidden="true">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
+				</KeyValues>
+				<Frames>
+					<EditBox parentKey="next" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_CHOICE_STEP}" type="string"/>
+							<KeyValue key="helpText" value="${DI_CHOICE_STEP_TT}" type="string"/>
+						</KeyValues>
+						<Size x="120" y="25"/>
+						<Anchors>
+							<Anchor point="TOP" y="-10"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
+						</Anchors>
+					</EditBox>
+					<EditBox parentKey="text" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_CHOICE}" type="string"/>
+							<KeyValue key="helpText" value="${DI_CHOICE_TT}" type="string"/>
+						</KeyValues>
+						<Size y="25"/>
+						<Anchors>
+							<Anchor point="TOP" y="-10"/>
+							<Anchor point="LEFT" x="10"/>
+							<Anchor point="RIGHT" x="-10" relativePoint="LEFT" relativeKey="$parent.next"/>
+						</Anchors>
+					</EditBox>
+					<Frame parentKey="constraint" inherits="TRP3_Tools_ScriptConstraintEditorTemplate">
+						<Anchors>
+							<Anchor point="TOP" y="-10" relativePoint="BOTTOM" relativeKey="$parent.text"/>
+							<Anchor point="LEFT" x="30"/>
+							<Anchor point="BOTTOM" y="10"/>
+							<Anchor point="RIGHT" x="-10"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="title" inherits="GameFontNormal" text="${WO_CONDITION}" justifyH="CENTER" justifyV="MIDDLE">
+							<Size x="100" y="20"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="LEFT" x="10" y="-10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+
+			<Frame parentKey="option1">
+				<Size y="40"/>
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.id" x="0" y="-10"/>
+					<Anchor point="TOP" y="-50"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="button" inherits="TRP3_Tools_EditorCutsceneChoiceButtonTemplate">
+						<KeyValues>
+							<KeyValue key="optionIndex" value="1" type="number"/>
+						</KeyValues>
+					</Button>
+				</Frames>
+
+			</Frame>
+
+			<Frame parentKey="option2">
+				<Size y="40"/>
+				<Anchors>
+					<Anchor point="TOP" y="-10" relativePoint="BOTTOM" relativeKey="$parent.option1"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="button" inherits="TRP3_Tools_EditorCutsceneChoiceButtonTemplate">
+						<KeyValues>
+							<KeyValue key="optionIndex" value="2" type="number"/>
+						</KeyValues>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="option3">
+				<Size y="40"/>
+				<Anchors>
+					<Anchor point="TOP" y="-10" relativePoint="BOTTOM" relativeKey="$parent.option2"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="button" inherits="TRP3_Tools_EditorCutsceneChoiceButtonTemplate">
+						<KeyValues>
+							<KeyValue key="optionIndex" value="3" type="number"/>
+						</KeyValues>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="option4">
+				<Size y="40"/>
+				<Anchors>
+					<Anchor point="TOP" y="-10" relativePoint="BOTTOM" relativeKey="$parent.option3"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="button" inherits="TRP3_Tools_EditorCutsceneChoiceButtonTemplate">
+						<KeyValues>
+							<KeyValue key="optionIndex" value="4" type="number"/>
+						</KeyValues>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="option5">
+				<Size y="40"/>
+				<Anchors>
+					<Anchor point="TOP" y="-10" relativePoint="BOTTOM" relativeKey="$parent.option4"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" x="-20"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="button" inherits="TRP3_Tools_EditorCutsceneChoiceButtonTemplate">
+						<KeyValues>
+							<KeyValue key="optionIndex" value="5" type="number"/>
+						</KeyValues>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<Button parentKey="applyButton" text="OK" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="20"/>
 				</Anchors>
 			</Button>
 
 		</Frames>
 
+
 	</Frame>
 
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
-	<!--    Quick dialog      -->
-	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<Frame name="TRP3_Tools_EditorCutsceneTemplate" virtual="true" mixin="TRP3_Tools_EditorCutsceneMixin">
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
+		</Anchors>
+		<Size y="500"/>
 
-	<Frame name="TRP3_EffectEditorDialogSimple" inherits="TRP3_EditorEffectTemplate" hidden="true">
-		<Size x="500" y="250"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<TexCoords left="0.0078125" right="0.171875"/>
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="BOTTOM"/>
+						<Anchor point="LEFT" relativePoint="CENTER" x="-4"/>
+						<Anchor point="RIGHT" relativePoint="CENTER" x="4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+
 		<Frames>
 
-			<Frame parentKey="text" inherits="TRP3_TextArea">
-				<Size x="260" y="0"/>
+			<Frame parentKey="main" inherits="TRP3_Tools_TitledPanelTemplate">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-45"/>
-					<Anchor point="BOTTOM" x="0" y="40"/>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" x="-4"/>
 				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
+							<Color r="1" g="0.8" b="0.8"/>
+							<TexCoords top="0.484375" bottom="0.8125"/>
+							<Anchors>
+								<Anchor point="TOP" y="-100"/>
+								<Anchor point="BOTTOM" y="-108" relativePoint="TOP"/>
+								<Anchor point="LEFT"/>
+								<Anchor point="RIGHT"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Frames>
+
+					<EditBox parentKey="distance" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_DISTANCE}" type="string"/>
+							<KeyValue key="helpText" value="${DI_DISTANCE_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-20"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="alternate" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentAlternate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Switch dialog direction automatically" type="string"/>
+							<KeyValue key="helpText" value="Automatically switch direction and speaker when a new step is added. Useful when you're creating a conversation style dialog between two actors." type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.distance"/>
+							<Anchor point="LEFT" x="20"/>
+						</Anchors>
+					</CheckButton>
+
+					<Frame name="$parentStepList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+						<KeyValues>
+							<KeyValue key="listElementTemplate" value="TRP3_Tools_CutsceneStepListElementTemplate" type="string"/>
+							<KeyValue key="listElementMixin" value="TRP3_Tools_CutsceneStepListElementMixin" type="global"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-108"/>
+							<Anchor point="BOTTOM" y="0"/>
+							<Anchor point="LEFT" x="0"/>
+							<Anchor point="RIGHT" x="0"/>
+						</Anchors>
+					</Frame>
+
+				</Frames>
+
+			</Frame>
+
+			<Frame parentKey="step" inherits="TRP3_Tools_TitledPanelTemplate">
+				<Anchors>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="LEFT" relativePoint="CENTER" x="4"/>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+				<Frames>
+
+					<Frame parentKey="text" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_STEP_TEXT}" type="string"/>
+							<KeyValue key="helpText" value="${DI_STEP_TEXT}" type="string"/>
+						</KeyValues>
+						<Size x="0" y="105"/>
+						<Anchors>
+							<Anchor point="TOP" y="-20"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</Frame>
+
+					<DropdownButton parentKey="workflow" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentWorkflow">
+						<KeyValues>
+							<KeyValue key="titleText" value="Workflow" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.text"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<CheckButton parentKey="loot" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentLoot">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_LOOT}" type="string"/>
+							<KeyValue key="helpText" value="${DI_LOOT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.text"/>
+							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</CheckButton>
+
+					<Button parentKey="choices" name="$parentChoices" text="${DI_CHOICES}" inherits="TRP3_CommonButton">
+						<Size y="22"/>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.workflow"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</Button>
+
+					<CheckButton parentKey="endpoint" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentLoot">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_END}" type="string"/>
+							<KeyValue key="helpText" value="${DI_END_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.loot"/>
+							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+						</Anchors>
+					</CheckButton>
+
+					<EditBox parentKey="next" inherits="TRP3_Tools_TitledHelpEditBoxTemplate" numeric="true">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_NEXT}" type="string"/>
+							<KeyValue key="helpText" value="${DI_NEXT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.endpoint"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="direction" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentDirection">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_NAME_DIRECTION}" type="string"/>
+							<KeyValue key="helpText" value="${DI_NAME_DIRECTION}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-58" relativePoint="BOTTOM" relativeKey="$parent.choices"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<DropdownButton parentKey="directionValue" hidden="true" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentDirectionValue">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_NAME_DIRECTION}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.next"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</DropdownButton>
+
+					<CheckButton parentKey="name" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentName">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_NAME}" type="string"/>
+							<KeyValue key="helpText" value="${DI_NAME_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.direction"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<EditBox parentKey="nameValue" hidden="true" inherits="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Name" type="string"/>
+							<KeyValue key="helpText" value="Set the new name [TODO]" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.directionValue"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="background" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentBackground">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_BKG}" type="string"/>
+							<KeyValue key="helpText" value="${DI_BKG}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.name"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<Button parentKey="backgroundBrowse" hidden="true" inherits="TRP3_Tools_BrowseButtonTemplate">
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.nameValue"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</Button>
+
+					<EditBox parentKey="backgroundValue" hidden="true" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Background" type="string"/>
+							<KeyValue key="helpText" value="Background image [TODO]" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.nameValue"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-5" y="0" relativePoint="LEFT" relativeKey="$parent.backgroundBrowse"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="image" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentImage">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_IMAGE}" type="string"/>
+							<KeyValue key="helpText" value="${DI_IMAGE}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.background"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<Button parentKey="imageMore" hidden="true" text="|TInterface\CURSOR\Crosshair\UI-Cursor-Move:14:14|t" inherits="TRP3_CommonButton">
+						<Size x="25" y="25"/>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.backgroundBrowse"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="imageBrowse" hidden="true" inherits="TRP3_Tools_BrowseButtonTemplate">
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.backgroundBrowse"/>
+							<Anchor point="RIGHT" x="-5" y="0" relativePoint="LEFT" relativeKey="$parent.imageMore"/>
+						</Anchors>
+					</Button>
+
+					<EditBox parentKey="imageValue" hidden="true" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Image" type="string"/>
+							<KeyValue key="helpText" value="Image [TODO]" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.backgroundValue"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-5" y="0" relativePoint="LEFT" relativeKey="$parent.imageBrowse"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="leftUnit" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentLeftUnit">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_LEFT_UNIT}" type="string"/>
+							<KeyValue key="helpText" value="${DI_UNIT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.image"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<Button parentKey="leftUnitTarget" hidden="true" inherits="TRP3_Tools_TargetButtonTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_GET_ID}" type="string"/>
+							<KeyValue key="helpText" value="${DI_GET_ID_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.imageBrowse"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</Button>
+
+					<EditBox parentKey="leftUnitValue" hidden="true" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_LEFT_UNIT}" type="string"/>
+							<KeyValue key="helpText" value="${DI_UNIT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.imageValue"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-5" y="0" relativePoint="LEFT" relativeKey="$parent.leftUnitTarget"/>
+						</Anchors>
+					</EditBox>
+
+					<CheckButton parentKey="rightUnit" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentRightUnit">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_RIGHT_UNIT}" type="string"/>
+							<KeyValue key="helpText" value="${DI_UNIT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.leftUnit"/>
+							<Anchor point="LEFT" x="20" y="0"/>
+						</Anchors>
+					</CheckButton>
+
+					<Button parentKey="rightUnitTarget" hidden="true" inherits="TRP3_Tools_TargetButtonTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_GET_ID}" type="string"/>
+							<KeyValue key="helpText" value="${DI_GET_ID_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.leftUnitTarget"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+						</Anchors>
+					</Button>
+
+					<EditBox parentKey="rightUnitValue" hidden="true" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${DI_RIGHT_UNIT}" type="string"/>
+							<KeyValue key="helpText" value="${DI_UNIT_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.leftUnitValue"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-5" y="0" relativePoint="LEFT" relativeKey="$parent.rightUnitTarget"/>
+						</Anchors>
+					</EditBox>
+
+					<Frame parentKey="imageEditor" inherits="TRP3_HoveredFrame" enableMouse="true" hidden="true">
+						<Size x="125" y="220"/>
+						<Frames>
+							<EditBox parentKey="width" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${EDITOR_WIDTH}" type="string"/>
+									<KeyValue key="helpText" value="${EDITOR_WIDTH}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" y="-10"/>
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="RIGHT" x="-10"/>
+								</Anchors>
+							</EditBox>
+							<EditBox parentKey="height" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${EDITOR_HEIGHT}" type="string"/>
+									<KeyValue key="helpText" value="${EDITOR_HEIGHT}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.width" y="-10"/>
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="RIGHT" x="-10"/>
+								</Anchors>
+							</EditBox>
+							<EditBox parentKey="left" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${CM_LEFT}" type="string"/>
+									<KeyValue key="helpText" value="${CM_LEFT}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.height" y="-10"/>
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="RIGHT" x="-10"/>
+								</Anchors>
+							</EditBox>
+							<EditBox parentKey="right" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${CM_RIGHT}" type="string"/>
+									<KeyValue key="helpText" value="${CM_RIGHT}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.left" y="-10"/>
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="RIGHT" x="-10"/>
+								</Anchors>
+							</EditBox>
+							<EditBox parentKey="top" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${EDITOR_TOP}" type="string"/>
+									<KeyValue key="helpText" value="${EDITOR_TOP}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.right" y="-10"/>
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="RIGHT" x="-10"/>
+								</Anchors>
+							</EditBox>
+							<EditBox parentKey="bottom" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+								<KeyValues>
+									<KeyValue key="titleText" value="${EDITOR_BOTTOM}" type="string"/>
+									<KeyValue key="helpText" value="${EDITOR_BOTTOM}" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.top" y="-10"/>
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="RIGHT" x="-10"/>
+								</Anchors>
+							</EditBox>
+						</Frames>
+					</Frame>
+
+				</Frames>
 			</Frame>
 
 		</Frames>
-
 	</Frame>
 
-
-
-	<Include file="Effects.lua"/>
 </Ui>

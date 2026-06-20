@@ -8,21 +8,274 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Include file="Script.lua"/>
+	<Script file="Script.lua"/>
+	<Script file="Operand.lua"/>
+	<Script file="Formatters.lua"/>
+	<Script file="Builtin_effects.lua"/>
+	<Script file="Builtin_operands.lua"/>
 
-	<Include file="Effects\Effects.xml"/>
-	<Include file="Effects\Effects.lua"/>
+	<Script file="Script_mixins.lua"/>
 
-	<Include file="Element\Element.xml"/>
-	<Include file="Element\Element.lua"/>
+	<Button name="TRP3_Tools_ScriptTriggerListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptTriggerListElementMixin">
 
-	<Include file="Conditions\Conditions.xml"/>
-	<Include file="Conditions\Conditions.lua"/>
-	<Include file="Conditions\Operands.xml"/>
-	<Include file="Conditions\Operands.lua"/>
+		<Size x="0" y="65" />
+		<Frames>
+			<Frame parentKey="icon" inherits="TRP3_SimpleIcon">
+				<Size x="24" y="24" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-8"/>
+				</Anchors>
+			</Frame>
+		</Frames>
 
-	<Include file="Normal\Normal.xml"/>
-	<Include file="Normal\Normal.lua"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="whenText" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.icon" x="4" y="0" />
+						<Anchor point="RIGHT" x="-8" />
+						<Anchor point="BOTTOM" relativeKey="$parent.icon" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+				<Texture parentKey="highlightArrow" atlas="orderhalltalents-choice-arrow-large">
+					<Size x="16" y="16"/>
+					<TexCoords left="0.5" right="1"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-8" y="-12"/>
+					</Anchors>
+				</Texture>
+
+				<FontString parentKey="thenText" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" y="28" />
+						<Anchor point="LEFT" x="8" />
+						<Anchor point="RIGHT" x="-8" />
+						<Anchor point="BOTTOM" y="8" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Scripts>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_Tools_ScriptEffectListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptEffectListElementMixin">
+		<Size x="0" y="65" />
+		<Frames>
+			<Frame parentKey="icon" inherits="TRP3_SimpleIcon">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="12" y="-8"/>
+				</Anchors>
+			</Frame>
+			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnDelete();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.icon" x="4" y="0" />
+						<Anchor point="RIGHT" x="-2" relativePoint="LEFT" relativeKey="$parent.delete"/>
+						<Anchor point="BOTTOM" relativeKey="$parent.icon" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+				<FontString parentKey="preview" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" y="36" />
+						<Anchor point="LEFT" x="12" />
+						<Anchor point="RIGHT" x="-8" />
+						<Anchor point="BOTTOM" y="8" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="-1">
+				<Texture parentKey="securityIndicator">
+					<Color r="1" g="0.8" b="0.8"/>
+					<Anchors>
+						<Anchor point="TOP" y="-2"/>
+						<Anchor point="BOTTOM" y="2"/>
+						<Anchor point="LEFT" x="3"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="8"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_Tools_ScriptScriptListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptScriptListElementMixin">
+		<Size y="40"/>
+		<Frames>
+			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnDelete();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="LEFT">
+					<Size x="2000"/>
+					<Anchors>
+						<Anchor point="TOP" y="-4"/>
+						<Anchor point="LEFT" x="16"/>
+						<Anchor point="RIGHT" x="-2" relativePoint="LEFT" relativeKey="$parent.delete"/>
+						<Anchor point="BOTTOM" y="4" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="-1">
+				<Texture parentKey="securityIndicator">
+					<Color r="1" g="0.8" b="0.8"/>
+					<Anchors>
+						<Anchor point="TOP" y="-2"/>
+						<Anchor point="BOTTOM" y="2"/>
+						<Anchor point="LEFT" x="3"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="8"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_ScriptConditionTermPreviewTemplate" virtual="true">
+		<Size y="20"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="open" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="10"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="70" />
+						<Anchor point="BOTTOM"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+				<FontString parentKey="expression" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="LEFT" x="70" />
+						<Anchor point="RIGHT" x="-20" />
+						<Anchor point="BOTTOM" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+
+				<FontString parentKey="close" inherits="GameFontNormal" justifyH="RIGHT">
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="-20"/>
+						<Anchor point="BOTTOMRIGHT" x="-10"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_Tools_EditorScriptTemplate" virtual="true" mixin="TRP3_Tools_EditorScriptMixin">
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+					<Color r="1" g="0.8" b="0.8"/>
+					<TexCoords left="0.0078125" right="0.171875"/>
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="BOTTOM"/>
+						<Anchor point="LEFT" relativePoint="CENTER" x="-4"/>
+						<Anchor point="RIGHT" relativePoint="CENTER" x="4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+
+			<Frame name="$parentTriggerList" parentKey="triggerList" inherits="TRP3_Tools_ListTemplate">
+				<KeyValues>
+					<KeyValue key="listElementTemplate" value="TRP3_Tools_ScriptTriggerListElementTemplate" type="string"/>
+					<KeyValue key="listElementMixin" value="TRP3_Tools_ScriptTriggerListElementMixin" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="RIGHT" x="-4" relativePoint="CENTER"/>
+				</Anchors>
+			</Frame>
+
+			<Frame name="$parentScriptList" parentKey="scriptList" inherits="TRP3_Tools_ListTemplate">
+				<KeyValues>
+					<KeyValue key="listElementTemplate" value="TRP3_Tools_ScriptScriptListElementTemplate" type="string"/>
+					<KeyValue key="listElementMixin" value="TRP3_Tools_ScriptScriptListElementMixin" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="LEFT" x="4" relativePoint="CENTER"/>
+				</Anchors>
+			</Frame>
+
+			<Button name="$parentScriptHeader" parentKey="scriptHeader" inherits="TRP3_Tools_ScriptScriptListElementTemplate" mixin="TRP3_Tools_ScriptScriptHeaderMixin">
+				<Anchors>
+					<Anchor point="TOPRIGHT"/>
+					<Anchor point="LEFT" x="4" relativePoint="CENTER"/>
+				</Anchors>
+			</Button>
+
+			<Frame name="$parentEffectList" parentKey="effectList" inherits="TRP3_Tools_ListTemplate">
+				<KeyValues>
+					<KeyValue key="listElementTemplate" value="TRP3_Tools_ScriptEffectListElementTemplate" type="string"/>
+					<KeyValue key="listElementMixin" value="TRP3_Tools_ScriptEffectListElementMixin" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" y="-4" relativeKey="$parent.scriptHeader"/>
+					<Anchor point="BOTTOM"/>
+					<Anchor point="LEFT" x="4" relativePoint="CENTER"/>
+				</Anchors>
+			</Frame>
+
+		</Frames>
+	</Frame>
 
 
 

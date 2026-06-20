@@ -1,0 +1,241 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Script file="Editor_mixins.lua"/>
+
+	<Button name="TRP3_Tools_CreationTreeNodeTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_CreationTreeNodeMixin">
+		<Frames>
+			<EventButton parentKey="toggleChildren" hidden="true">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="LEFT" x="8"/>
+				</Anchors>
+				<NormalTexture parentKey="normalTexture" file="Interface\Buttons\UI-MinusButton-UP"/>
+				<PushedTexture parentKey="pushedTexture" file="Interface\Buttons\UI-MinusButton-DOWN"/>
+				<HighlightTexture file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnToggleChildren();
+					</OnClick>
+				</Scripts>
+			</EventButton>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="icon">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" x="32"/>
+					</Anchors>
+				</Texture>
+				<FontString parentKey="link" text="" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="TOP"/>
+						<Anchor point="BOTTOM"/>
+						<Anchor point="LEFT" x="2" relativePoint="RIGHT" relativeKey="$parent.icon"/>
+						<Anchor point="RIGHT" x="-8"/>
+					</Anchors>
+				</FontString>
+				<Texture parentKey="highlightArrow" atlas="orderhalltalents-choice-arrow-large">
+					<Size x="16" y="16"/>
+					<TexCoords left="0.5" right="1"/>
+					<Anchors>
+						<Anchor point="RIGHT" x="-8"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_EditorTemplate" virtual="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_24_5555" type="global"/>
+		</KeyValues>
+
+		<Frames>
+
+			<Frame parentKey="statusBar">
+				<Size y="36"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+					<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true" setAllPoints="true">
+							<Color r="1" g="0.8" b="0.8"/>
+							<TexCoords top="0.484375" bottom="0.8125"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString parentKey="labelId" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE" text="Creation Id">
+							<Size x="100" y="16"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-2"/>
+							</Anchors>
+							<Color r="1" g="0.6" b="0"/>
+						</FontString>
+						<FontString parentKey="id" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
+							<Size x="150" y="16"/>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.labelId" x="8"/>
+							</Anchors>
+							<Color r="1" g="1" b="0"/>
+						</FontString>
+
+						<FontString parentKey="labelVersion" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE" text="Version">
+							<Size x="100" y="16"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" x="0" y="0"/>
+							</Anchors>
+							<Color r="1" g="0.6" b="0"/>
+						</FontString>
+						<FontString parentKey="version" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
+							<Size x="150" y="16"/>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.labelVersion" x="8"/>
+							</Anchors>
+							<Color r="1" g="1" b="0"/>
+						</FontString>
+
+						<FontString parentKey="creationTime" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE">
+							<Size x="450" y="16"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="0" y="-2"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="changeTime" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE">
+							<Size x="450" y="16"/>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+							</Anchors>
+						</FontString>
+
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button parentKey="save" inherits="TRP3_CommonButton" text="SAVE">
+						<Size x="150" y="24"/>
+						<Anchors>
+							<Anchor point="CENTER"/>
+						</Anchors>
+					</Button>
+					<DropdownButton parentKey="language" inherits="TRP3_Tools_TitledDropdownButtonTemplate" enableMouse="true">
+						<Size x="150" y="25"/>
+						<KeyValues>
+							<KeyValue key="titleText" value="${DB_LOCALE}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="RIGHT" x="-32" relativePoint="LEFT" relativeKey="$parent.save"/>
+						</Anchors>
+					</DropdownButton>
+					<Button parentKey="static_analysis" inherits="TRP3_IconButton">
+						<Anchors>
+							<Anchor point="LEFT" x="32" relativePoint="RIGHT" relativeKey="$parent.save"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								self:SetScale(0.875);
+								self.Icon:SetTexture("Interface\\ICONS\\ability_racial_combatanalysis");
+							</OnLoad>
+						</Scripts>
+					</Button>
+				</Frames>
+
+			</Frame>
+
+			<Frame parentKey="split" inherits="TRP3_Tools_SplitPaneTemplate">
+				<KeyValues>
+					<KeyValue key="orientation" value="TRP3_Tools_SplitPaneMixin.Direction.HORIZONTAL" type="global"/>
+					<KeyValue key="ratio" value="0.1" type="number"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-8"/>
+					<Anchor point="BOTTOMRIGHT" x="0" y="0" relativeKey="$parent.statusBar" relativePoint="TOPRIGHT"/>
+				</Anchors>
+				<Frames>
+					<Frame name="$parentTree" parentKey="tree" inherits="TRP3_Tools_TreeTemplate">
+						<KeyValues>
+							<KeyValue key="collapsible" value="true" type="boolean"/>
+							<KeyValue key="collapsedLabel" value="Inner Objects" type="string"/>
+							<KeyValue key="minExtent" value="200" type="number"/>
+
+							<KeyValue key="treeNodeTemplate" value="TRP3_Tools_CreationTreeNodeTemplate" type="string"/>
+							<KeyValue key="treeNodeMixin" value="TRP3_Tools_CreationTreeNodeMixin" type="global"/>
+							<KeyValue key="indent" value="20" type="number"/>
+						</KeyValues>
+					</Frame>
+
+					<Frame parentKey="object">
+						<KeyValues>
+							<KeyValue key="ratio" value="0.9" type="number"/>
+							<KeyValue key="minExtent" value="800" type="number"/>
+						</KeyValues>
+						<Frames>
+							<Frame parentKey="objectRibbon" inherits="TRP3_Tools_EditorObjectRibbonTemplate">
+								<Anchors>
+									<Anchor point="TOP" y="0"/>
+									<Anchor point="LEFT" x="0"/>
+									<Anchor point="RIGHT" x="0"/>
+								</Anchors>
+							</Frame>
+
+							<Frame parentKey="split" inherits="TRP3_Tools_SplitPaneTemplate">
+								<Anchors>
+									<Anchor point="TOP" y="0" relativePoint="BOTTOM" relativeKey="$parent.objectRibbon"/>
+									<Anchor point="LEFT" x="0"/>
+									<Anchor point="RIGHT" x="0"/>
+									<Anchor point="BOTTOM" y="0"/>
+								</Anchors>
+								<KeyValues>
+									<KeyValue key="orientation" value="TRP3_Tools_SplitPaneMixin.Direction.VERTICAL" type="global"/>
+									<KeyValue key="ratio" value="1.0" type="number"/>
+									<KeyValue key="useAdaptiveTabBar" value="true" type="boolean"/>
+								</KeyValues>
+								<Frames>
+									<Frame parentKey="properties">
+										<KeyValues>
+											<KeyValue key="collapsible" value="true" type="boolean"/>
+											<KeyValue key="collapsedLabel" value="Object Properties" type="string"/>
+											<KeyValue key="minExtent" value="500" type="number"/>
+											<KeyValue key="maxExtent" value="500" type="number"/>
+										</KeyValues>
+										<Frames>
+											<Frame parentKey="item" inherits="TRP3_Tools_EditorItemTemplate"/>
+											<Frame parentKey="aura" inherits="TRP3_Tools_EditorAuraTemplate"/>
+											<Frame parentKey="document" inherits="TRP3_Tools_EditorDocumentTemplate"/>
+											<Frame parentKey="cutscene" inherits="TRP3_Tools_EditorCutsceneTemplate"/>
+											<Frame parentKey="campaign" inherits="TRP3_Tools_EditorCampaignTemplate"/>
+											<Frame parentKey="quest" inherits="TRP3_Tools_EditorQuestTemplate"/>
+											<Frame parentKey="questStep" inherits="TRP3_Tools_EditorQuestStepTemplate"/>
+										</Frames>
+									</Frame>
+									<Frame parentKey="script" inherits="TRP3_Tools_EditorScriptTemplate">
+										<KeyValues>
+											<KeyValue key="collapsedLabel" value="Triggers and Workflows" type="string"/>
+											<KeyValue key="minExtent" value="150" type="number"/>
+										</KeyValues>
+									</Frame>
+								</Frames>
+							</Frame>
+						</Frames>
+					</Frame>
+
+				</Frames>
+			</Frame>
+
+		</Frames>
+	</Frame>
+
+	<Include file="editor.lua"/>
+
+</Ui>

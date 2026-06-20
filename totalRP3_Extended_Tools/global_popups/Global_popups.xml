@@ -1,0 +1,585 @@
+<!--
+	Copyright The Total RP 3 Extended Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Script file="Global_popups_mixins.lua"/>
+
+	<Frame name="TRP3_Tools_ModalLayer" frameStrata="DIALOG" virtual="true" enableMouse="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture setAllPoints="true">
+					<Color r="0" g="0" b="0" a="0.75"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_Tools_ModalOverlay" frameStrata="DIALOG" virtual="true" mixin="TRP3_Tools_ModalOverlayMixin">
+		<Scripts>
+			<OnLoad method="Initialize"/>
+		</Scripts>
+	</Frame>
+
+	<!-- Object browser -->
+
+	<Button name="TRP3_Tools_ObjectsBrowserListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_ObjectsBrowserListElementMixin">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="LEFT" x="8"/>
+						<Anchor point="RIGHT" x="-8"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_ObjectsBrowser" hidden="true" enableMouse="true" inherits="TRP3_BrowserDialogBackdropTemplate" mixin="TRP3_Tools_ObjectsBrowserMixin">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
+
+		<Size x="550" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" text="Objects" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Close();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
+				<Size x="0" y="295"/>
+
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-35"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+
+				<Frames>
+					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+						<KeyValues>
+							<KeyValue key="listElementTemplate" value="TRP3_Tools_ObjectsBrowserListElementTemplate" type="string"/>
+							<KeyValue key="listElementMixin" value="TRP3_Tools_ObjectsBrowserListElementMixin" type="global"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="5" y="-5"/>
+							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="filter" inherits="TRP3_TooltipBackdropTemplate">
+				<Size x="0" y="60"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="total" inherits="GameFontNormal">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-12"/>
+								<Anchor point="TOPRIGHT" x="0" y="-12"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<EditBox parentKey="box" inherits="TRP3_Tools_TitledEditBoxTemplate">
+						<Size x="100" y="25"/>
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</EditBox>
+					<CheckButton parentKey="restrictToCreation" inherits="TRP3_Tools_CheckBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="This creation only" type="string"/>
+							<KeyValue key="helpText" value="Show only objects within this creation" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="LEFT" x="10" relativePoint="RIGHT" relativeKey="$parent.box"/>
+						</Anchors>
+					</CheckButton>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<!-- Emote browser -->
+
+	<Button name="TRP3_Tools_EmotesBrowserListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_EmotesBrowserListElementMixin">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="token" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+					<Size x="125"/>
+					<Anchors>
+						<Anchor point="LEFT" x="8"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+				<FontString parentKey="command" inherits="GameFontNormal" maxLines="1" justifyH="RIGHT" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="LEFT" x="4" relativePoint="RIGHT" relativeKey="$parent.token"/>
+						<Anchor point="RIGHT" x="-8"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_EmotesBrowser" hidden="true" enableMouse="true" inherits="TRP3_BrowserDialogBackdropTemplate" mixin="TRP3_Tools_EmotesBrowserMixin">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
+
+		<Size x="550" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" text="Emotes" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Close();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
+				<Size x="0" y="295"/>
+
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-35"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+
+				<Frames>
+					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+						<KeyValues>
+							<KeyValue key="listElementTemplate" value="TRP3_Tools_EmotesBrowserListElementTemplate" type="string"/>
+							<KeyValue key="listElementMixin" value="TRP3_Tools_EmotesBrowserListElementMixin" type="global"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="5" y="-5"/>
+							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="filter" inherits="TRP3_TooltipBackdropTemplate">
+				<Size x="0" y="60"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="total" inherits="GameFontNormal">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-12"/>
+								<Anchor point="TOPRIGHT" x="0" y="-12"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<EditBox parentKey="box" inherits="TRP3_Tools_TitledEditBoxTemplate">
+						<Size x="100" y="25"/>
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</EditBox>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<!-- Large text area -->
+
+	<Frame name="TRP3_Tools_TextEditor" hidden="true" enableMouse="true" inherits="TRP3_BrowserDialogBackdropTemplate" mixin="TRP3_Tools_TextEditorMixin">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
+
+		<Size x="550" y="400"/>
+
+		<Anchors>
+			<Anchor point="TOPLEFT" x="25" y="-25"/>
+			<Anchor point="BOTTOMRIGHT" x="-25" y="25"/>
+		</Anchors>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Close();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
+				<Size x="0" y="295"/>
+
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-35"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+
+				<Frames>
+					<Frame parentKey="text" inherits="TRP3_Tools_TitledTextAreaTemplate">
+						<Anchors>
+							<Anchor point="TOP" y="-5"/>
+							<Anchor point="LEFT" x="5"/>
+							<Anchor point="RIGHT" x="-5"/>
+							<Anchor point="BOTTOM" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Tools_NoteEditor" inherits="TRP3_Tools_TitledPopupTemplate" hidden="true" mixin="TRP3_Tools_NoteEditorMixin">
+		<KeyValues>
+			<KeyValue key="titleText" value="${EDITOR_NOTES}" type="string"/>
+		</KeyValues>
+		<Frames>
+			<Frame parentKey="note" inherits="TRP3_TextArea">
+				<Anchors>
+					<Anchor point="TOP" y="-40"/>
+					<Anchor point="LEFT" x="30"/>
+					<Anchor point="RIGHT" x="-30"/>
+					<Anchor point="BOTTOM" y="30"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<!-- Variable inspector -->
+
+	<Button name="TRP3_Tools_VariableInspectorListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_VariableInspectorListElementMixin">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="key" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="CENTER">
+					<Size x="200"/>
+					<Anchors>
+						<Anchor point="LEFT" x="8"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+				<FontString parentKey="value" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="LEFT" x="4" relativePoint="RIGHT" relativeKey="$parent.key"/>
+						<Anchor point="RIGHT" x="-32"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="delete" inherits="TRP3_Tools_DeleteButtonTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" x="-8"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():OnDelete();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_Tools_VariableInspector" hidden="true" enableMouse="true" inherits="TRP3_BrowserDialogBackdropTemplate" mixin="TRP3_Tools_VariableInspectorMixin">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
+
+		<Size x="550" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" text="Variable Inspector" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+				<FontString parentKey="errorText" inherits="GameFontNormal" justifyH="CENTER" justifyV="CENTER">
+					<Size x="400" y="50"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<Color b="0" r="0.95" g="0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Button parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Close();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<DropdownButton parentKey="instanceSelection" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentInstanceSelection">
+				<Anchors>
+					<Anchor point="TOP" y="-35"/>
+					<Anchor point="LEFT" x="10"/>
+					<Anchor point="RIGHT" x="-10"/>
+				</Anchors>
+			</DropdownButton>
+
+			<Frame parentKey="content" inherits="TRP3_TooltipBackdropTemplate">
+
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+
+				<Anchors>
+					<Anchor point="TOP" y="-5" relativeKey="$parent.instanceSelection" relativePoint="BOTTOM"/>
+					<Anchor point="LEFT" x="10"/>
+					<Anchor point="RIGHT" x="-10"/>
+					<Anchor point="BOTTOM" y="10"/>
+				</Anchors>
+
+				<Frames>
+					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+						<KeyValues>
+							<KeyValue key="listElementTemplate" value="TRP3_Tools_VariableInspectorListElementTemplate" type="string"/>
+							<KeyValue key="listElementMixin" value="TRP3_Tools_VariableInspectorListElementMixin" type="global"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="5" y="-5"/>
+							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Frame>
+
+			<Frame parentKey="editor" inherits="TRP3_TooltipBackdropTemplate">
+
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+
+				<Anchors>
+					<Anchor point="TOP" y="-5" relativeKey="$parent.instanceSelection" relativePoint="BOTTOM"/>
+					<Anchor point="LEFT" x="10"/>
+					<Anchor point="RIGHT" x="-10"/>
+					<Anchor point="BOTTOM" y="10"/>
+				</Anchors>
+
+				<Frames>
+					<DropdownButton parentKey="keyType" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Name type" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15"/>
+							<Anchor point="LEFT" x="10"/>
+							<Anchor point="RIGHT" x="-10"/>
+						</Anchors>
+					</DropdownButton>
+
+					<EditBox parentKey="key" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Variable name" type="string"/>
+							<KeyValue key="helpText" value="Variable name" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativeKey="$parent.keyType" relativePoint="BOTTOM"/>
+							<Anchor point="LEFT" x="10"/>
+							<Anchor point="RIGHT" x="-10"/>
+						</Anchors>
+					</EditBox>
+
+					<DropdownButton parentKey="valueType" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Value type" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativeKey="$parent.key" relativePoint="BOTTOM"/>
+							<Anchor point="LEFT" x="10"/>
+							<Anchor point="RIGHT" x="-10"/>
+						</Anchors>
+					</DropdownButton>
+
+					<EditBox parentKey="numberValue" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Value" type="string"/>
+							<KeyValue key="helpText" value="Value" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativeKey="$parent.valueType" relativePoint="BOTTOM"/>
+							<Anchor point="LEFT" x="10"/>
+							<Anchor point="RIGHT" x="-10"/>
+						</Anchors>
+					</EditBox>
+
+					<Frame parentKey="stringValue" inherits="TRP3_Tools_TitledHelpTextAreaTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Value" type="string"/>
+							<KeyValue key="helpText" value="Value" type="string"/>
+						</KeyValues>
+						<Size x="0" y="74"/>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.valueType"/>
+							<Anchor point="LEFT" x="10"/>
+							<Anchor point="RIGHT" x="-10"/>
+							<Anchor point="BOTTOM" y="40"/>
+						</Anchors>
+					</Frame>
+
+					<DropdownButton parentKey="booleanValue" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="Value" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativeKey="$parent.valueType" relativePoint="BOTTOM"/>
+							<Anchor point="LEFT" x="10"/>
+							<Anchor point="RIGHT" x="-10"/>
+						</Anchors>
+					</DropdownButton>
+
+					<Button parentKey="accept" text="OK" inherits="TRP3_CommonButton">
+						<Size x="120" y="22"/>
+						<Anchors>
+							<Anchor point="RIGHT" x="-5" relativePoint="CENTER"/>
+							<Anchor point="BOTTOM" y="10"/>
+						</Anchors>
+					</Button>
+
+					<Button parentKey="cancel" text="CANCEL" inherits="TRP3_CommonButton">
+						<Size x="120" y="22"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="CENTER" x="5"/>
+							<Anchor point="BOTTOM" y="10"/>
+						</Anchors>
+					</Button>
+
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Script file="Global_popups.lua"/>
+
+</Ui>
