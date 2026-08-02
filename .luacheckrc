@@ -112,6 +112,12 @@ read_globals = {
 		},
 	},
 
+	InputUtil = {
+		fields = {
+			"IsMouseOver",
+		}
+	},
+
 	table = {
 		fields = {
 			"wipe",
@@ -218,7 +224,6 @@ read_globals = {
 	"Mixin",
 	"mod",
 	"ModelFrameMixin",
-	"MouseIsOver",
 	"NavBar_AddButton",
 	"NavBar_ButtonOnEnter",
 	"NavBar_ButtonOnLeave",

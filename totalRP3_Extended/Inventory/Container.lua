@@ -8,7 +8,7 @@ local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local _G, assert, tostring, tinsert, pairs, time = _G, assert, tostring, tinsert, pairs, time;
-local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
+local CreateFrame, ToggleFrame, IsAltKeyDown = CreateFrame, ToggleFrame, IsAltKeyDown;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local loc = TRP3_API.loc;
 local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inventory.getBaseClassDataSafe, TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.isUsableByClass;
@@ -750,7 +750,7 @@ local function containerOnDragStop(self)
 	end
 	-- Check for anchor
 	for _, containerFrame in pairs(containerInstances) do
-		if containerFrame ~= self and MouseIsOver(containerFrame) then
+		if containerFrame ~= self and InputUtil.IsMouseOver(containerFrame) then
 			lockOnContainer(self, containerFrame);
 			self.info.point = nil;
 			self.info.relativePoint = nil;
@@ -1016,7 +1016,7 @@ function TRP3_API.inventory.initLootFrame()
 
 	-- Tooltip
 	createRefreshOnFrame(TRP3_ItemTooltip, CONTAINER_UPDATE_FREQUENCY, function(self)
-		if not self.ref or not MouseIsOver(self.ref) then
+		if not self.ref or not InputUtil.IsMouseOver(self.ref) then
 			self:Hide();
 		end
 	end);
