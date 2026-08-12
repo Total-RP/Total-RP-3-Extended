@@ -551,6 +551,7 @@ local getEvaluatedOperands = function(structure)
 			"date_month",
 			"date_year",
 			"date_day_of_week",
+			"date_timestamp",
 		},
 	}
 
