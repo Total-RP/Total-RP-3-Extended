@@ -9,7 +9,7 @@ local function ShouldShowExtendedOpenExchange(contextData)
 	local server = contextData.server;
 	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
 
-	if UnitIsPlayer(unit) and fullName ~= TRP3_API.globals.player_id and not TRP3_API.register.isIDIgnored(fullName) and TRP3_API.register.isUnitKnown(unit) then
+	if UnitIsPlayer(unit) and canaccessvalue(fullName) and fullName ~= TRP3_API.globals.player_id and not TRP3_API.register.isIDIgnored(fullName) and TRP3_API.register.isUnitKnown(unit) then
 		local character = TRP3_API.register.getUnitIDCharacter(fullName);
 		return (tonumber(character.extended or 0) or 0) > 0;
 	end
@@ -22,7 +22,7 @@ local function ShouldShowExtendedCharacterInspection(contextData)
 	local server = contextData.server;
 	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
 
-	if UnitIsPlayer(unit) and fullName ~= TRP3_API.globals.player_id and not TRP3_API.register.isIDIgnored(fullName) and TRP3_API.register.isUnitKnown(unit) then
+	if UnitIsPlayer(unit) and canaccessvalue(fullName) and fullName ~= TRP3_API.globals.player_id and not TRP3_API.register.isIDIgnored(fullName) and TRP3_API.register.isUnitKnown(unit) then
 		local character = TRP3_API.register.getUnitIDCharacter(fullName);
 		return (tonumber(character.extended or 0) or 0) > 0;
 	end
