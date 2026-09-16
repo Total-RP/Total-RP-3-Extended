@@ -5,7 +5,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<Script file="Static_analysis_mixins.lua"/>
+	<Include file="Static_analysis_mixins.lua"/>
 
 	<Button name="TRP3_Tools_StaticAnalysisListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_StaticAnalysisListElementMixin">
 		<Size x="0" y="80" />
@@ -127,6 +127,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Script file="Static_analysis.lua"/>
+	<Include file="Static_analysis.lua"/>
 
 </Ui>

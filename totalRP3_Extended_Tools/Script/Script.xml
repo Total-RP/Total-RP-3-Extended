@@ -8,13 +8,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!--     Imports      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Script file="Script.lua"/>
-	<Script file="Operand.lua"/>
-	<Script file="Formatters.lua"/>
-	<Script file="Builtin_effects.lua"/>
-	<Script file="Builtin_operands.lua"/>
+	<Include file="Script.lua"/>
+	<Include file="Operand.lua"/>
+	<Include file="Formatters.lua"/>
+	<Include file="Builtin_effects.lua"/>
+	<Include file="Builtin_operands.lua"/>
 
-	<Script file="Script_mixins.lua"/>
+	<Include file="Script_mixins.lua"/>
 
 	<Button name="TRP3_Tools_ScriptTriggerListElementTemplate" virtual="true" inherits="TRP3_Tools_ListElementTemplate" mixin="TRP3_Tools_ScriptTriggerListElementMixin">
 

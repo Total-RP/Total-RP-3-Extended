@@ -9,9 +9,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Include file="Quick.xml"/>
-	<Script file="Item.lua"/>
-	<Script file="Quick.lua"/>
-	<Script file="Item_mixins.lua"/>
+	<Include file="Item.lua"/>
+	<Include file="Quick.lua"/>
+	<Include file="Item_mixins.lua"/>
 
 	<Frame name="TRP3_Tools_EditorItemTemplate" virtual="true" mixin="TRP3_Tools_EditorItemMixin">
 		<Anchors>
