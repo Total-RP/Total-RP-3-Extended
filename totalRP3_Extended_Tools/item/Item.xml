@@ -14,10 +14,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Item_mixins.lua"/>
 
 	<Frame name="TRP3_Tools_EditorItemTemplate" virtual="true" mixin="TRP3_Tools_EditorItemMixin">
-		<Anchors>
-			<Anchor point="TOPLEFT"/>
-			<Anchor point="BOTTOMRIGHT"/>
-		</Anchors>
 		<Size y="500"/>
 
 		<Layers>

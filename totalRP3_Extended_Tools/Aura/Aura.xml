@@ -9,10 +9,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Aura_mixins.lua"/>
 
 	<Frame name="TRP3_Tools_EditorAuraTemplate" virtual="true" mixin="TRP3_Tools_EditorAuraMixin">
-		<Anchors>
-			<Anchor point="TOPLEFT"/>
-			<Anchor point="BOTTOMRIGHT"/>
-		</Anchors>
 		<Size y="500"/>
 		<Layers>
 			<Layer level="BACKGROUND">

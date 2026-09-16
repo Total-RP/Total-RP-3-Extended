@@ -48,10 +48,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<Frame name="TRP3_Tools_EditorDocumentTemplate" virtual="true" mixin="TRP3_Tools_EditorDocumentMixin">
-		<Anchors>
-			<Anchor point="TOPLEFT"/>
-			<Anchor point="BOTTOMRIGHT"/>
-		</Anchors>
 		<Size y="500"/>
 
 		<Layers>

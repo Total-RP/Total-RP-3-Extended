@@ -210,13 +210,48 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 											<KeyValue key="maxExtent" value="500" type="number"/>
 										</KeyValues>
 										<Frames>
-											<Frame parentKey="item" inherits="TRP3_Tools_EditorItemTemplate"/>
-											<Frame parentKey="aura" inherits="TRP3_Tools_EditorAuraTemplate"/>
-											<Frame parentKey="document" inherits="TRP3_Tools_EditorDocumentTemplate"/>
-											<Frame parentKey="cutscene" inherits="TRP3_Tools_EditorCutsceneTemplate"/>
-											<Frame parentKey="campaign" inherits="TRP3_Tools_EditorCampaignTemplate"/>
-											<Frame parentKey="quest" inherits="TRP3_Tools_EditorQuestTemplate"/>
-											<Frame parentKey="questStep" inherits="TRP3_Tools_EditorQuestStepTemplate"/>
+											<Frame parentKey="item" inherits="TRP3_Tools_EditorItemTemplate">
+												<Anchors>
+													<Anchor point="TOPLEFT"/>
+													<Anchor point="BOTTOMRIGHT"/>
+												</Anchors>
+											</Frame>
+											<Frame parentKey="aura" inherits="TRP3_Tools_EditorAuraTemplate">
+												<Anchors>
+													<Anchor point="TOPLEFT"/>
+													<Anchor point="BOTTOMRIGHT"/>
+												</Anchors>
+											</Frame>
+											<Frame parentKey="document" inherits="TRP3_Tools_EditorDocumentTemplate">
+												<Anchors>
+													<Anchor point="TOPLEFT"/>
+													<Anchor point="BOTTOMRIGHT"/>
+												</Anchors>
+											</Frame>
+											<Frame parentKey="cutscene" inherits="TRP3_Tools_EditorCutsceneTemplate">
+												<Anchors>
+													<Anchor point="TOPLEFT"/>
+													<Anchor point="BOTTOMRIGHT"/>
+												</Anchors>
+											</Frame>
+											<Frame parentKey="campaign" inherits="TRP3_Tools_EditorCampaignTemplate">
+												<Anchors>
+													<Anchor point="TOPLEFT"/>
+													<Anchor point="BOTTOMRIGHT"/>
+												</Anchors>
+											</Frame>
+											<Frame parentKey="quest" inherits="TRP3_Tools_EditorQuestTemplate">
+												<Anchors>
+													<Anchor point="TOPLEFT"/>
+													<Anchor point="BOTTOMRIGHT"/>
+												</Anchors>
+											</Frame>
+											<Frame parentKey="questStep" inherits="TRP3_Tools_EditorQuestStepTemplate">
+												<Anchors>
+													<Anchor point="TOPLEFT"/>
+													<Anchor point="BOTTOMRIGHT"/>
+												</Anchors>
+											</Frame>
 										</Frames>
 									</Frame>
 									<Frame parentKey="script" inherits="TRP3_Tools_EditorScriptTemplate">
@@ -224,6 +259,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 											<KeyValue key="collapsedLabel" value="Triggers and Workflows" type="string"/>
 											<KeyValue key="minExtent" value="150" type="number"/>
 										</KeyValues>
+										<Anchors>
+											<Anchor point="TOPLEFT"/>
+											<Anchor point="BOTTOMRIGHT"/>
+										</Anchors>
 									</Frame>
 								</Frames>
 							</Frame>

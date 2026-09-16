@@ -211,10 +211,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<Frame name="TRP3_Tools_EditorScriptTemplate" virtual="true" mixin="TRP3_Tools_EditorScriptMixin">
-		<Anchors>
-			<Anchor point="TOPLEFT"/>
-			<Anchor point="BOTTOMRIGHT"/>
-		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">

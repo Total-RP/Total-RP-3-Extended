@@ -248,10 +248,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<Frame name="TRP3_Tools_EditorCutsceneTemplate" virtual="true" mixin="TRP3_Tools_EditorCutsceneMixin">
-		<Anchors>
-			<Anchor point="TOPLEFT"/>
-			<Anchor point="BOTTOMRIGHT"/>
-		</Anchors>
 		<Size y="500"/>
 
 		<Layers>
