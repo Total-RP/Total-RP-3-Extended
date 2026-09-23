@@ -121,9 +121,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</FontString>
 							</Layer>
 							<Layer level="ARTWORK">
-								<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
-									<Color r="1" g="0.8" b="0.8"/>
-									<TexCoords top="0.484375" bottom="0.8125"/>
+								<Texture inherits="TRP3_Tools_HorizontalSplitTemplate">
 									<Anchors>
 										<Anchor point="TOP" y="-30"/>
 										<Anchor point="BOTTOM" y="-38" relativePoint="TOP"/>

@@ -73,9 +73,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
-					<Color r="1" g="0.8" b="0.8"/>
-					<TexCoords left="0.0078125" right="0.171875"/>
+				<Texture inherits="TRP3_Tools_VerticalSplitTemplate">
 					<Anchors>
 						<Anchor point="TOP"/>
 						<Anchor point="BOTTOM"/>
@@ -168,12 +166,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								<Anchor point="CENTER" relativeKey="$parent.previewIconBorder" x="1" y="0"/>
 							</Anchors>
 						</Texture>
-						<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
-							<Color r="1" g="0.8" b="0.8"/>
-							<TexCoords top="0.484375" bottom="0.8125"/>
+						<Texture inherits="TRP3_Tools_HorizontalSplitTemplate">
 							<Anchors>
-								<Anchor point="TOP" y="-195"/>
-								<Anchor point="BOTTOM" y="-187" relativePoint="TOP"/>
+								<Anchor point="TOP" y="-207"/>
+								<Anchor point="BOTTOM" y="-215" relativePoint="TOP"/>
 								<Anchor point="LEFT"/>
 								<Anchor point="RIGHT"/>
 							</Anchors>
@@ -183,7 +179,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<FontString parentKey="previewText" text="${EDITOR_PREVIEW}" maxLines="1" inherits="GameFontNormal" justifyH="CENTER" justifyV="CENTER">
 							<Size x="100" y="20"/>
 							<Anchors>
-								<Anchor point="TOP" x="0" y="-215"/>
+								<Anchor point="TOP" x="0" y="-225"/>
 							</Anchors>
 							<Color r="0.95" g="0.95" b="0.95" />
 						</FontString>

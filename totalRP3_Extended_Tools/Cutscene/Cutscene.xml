@@ -252,9 +252,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
-					<Color r="1" g="0.8" b="0.8"/>
-					<TexCoords left="0.0078125" right="0.171875"/>
+				<Texture inherits="TRP3_Tools_VerticalSplitTemplate">
 					<Anchors>
 						<Anchor point="TOP"/>
 						<Anchor point="BOTTOM"/>
@@ -275,9 +273,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 				<Layers>
 					<Layer level="ARTWORK">
-						<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
-							<Color r="1" g="0.8" b="0.8"/>
-							<TexCoords top="0.484375" bottom="0.8125"/>
+						<Texture inherits="TRP3_Tools_HorizontalSplitTemplate">
 							<Anchors>
 								<Anchor point="TOP" y="-100"/>
 								<Anchor point="BOTTOM" y="-108" relativePoint="TOP"/>

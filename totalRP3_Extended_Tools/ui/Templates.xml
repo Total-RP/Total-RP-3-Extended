@@ -3,6 +3,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="ui_mixins.lua"/>
 
+	<!-- TODO consider placing this in the main addon -->
+	<Texture name="TRP3_Tools_VerticalSplitTemplate" file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" virtual="true" vertTile="true">
+		<Color r="1" g="0.8" b="0.8"/>
+		<TexCoords left="0.0078125" right="0.171875"/>
+	</Texture>
+
+	<!-- TODO consider placing this in the main addon -->
+	<Texture name="TRP3_Tools_HorizontalSplitTemplate" file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" virtual="true" horizTile="true">
+		<Color r="1" g="0.8" b="0.8"/>
+		<TexCoords top="0.484375" bottom="0.8125"/>
+	</Texture>
+
 	<!--
 		A UI element for scrollable list content.
 
@@ -235,10 +247,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="20"/>
 		<Layers>
 			<Layer level="BACKGROUND" textureSubLevel="-3">
-				<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true" setAllPoints="true">
-					<Color r="1" g="0.8" b="0.8"/>
-					<TexCoords left="0.0078125" right="0.171875"/>
-				</Texture>
+				<Texture inherits="TRP3_Tools_VerticalSplitTemplate" setAllPoints="true"/>
 				<FontString parentKey="label" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="CENTER" x="-8"/> <!-- I don't know either -->
@@ -308,13 +317,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame parentKey="shadowFrame" resizable="true" hidden="true" frameStrata="TOOLTIP" frameLevel="10">
 				<Layers>
 					<Layer level="OVERLAY" textureSubLevel="7">
-						<Texture file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true" alpha="0.6">
+						<Texture inherits="TRP3_Tools_VerticalSplitTemplate" alpha="0.6">
 							<Size x="20"/>
 							<Anchors>
 								<Anchor point="TOPRIGHT"/>
 								<Anchor point="BOTTOMRIGHT"/>
 							</Anchors>
-							<TexCoords left="0.0078125" right="0.171875"/>
 						</Texture>
 					</Layer>
 				</Layers>
@@ -332,10 +340,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size y="20"/>
 		<Layers>
 			<Layer level="BACKGROUND" textureSubLevel="-3">
-				<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true" setAllPoints="true">
-					<Color r="1" g="0.8" b="0.8"/>
-					<TexCoords top="0.484375" bottom="0.828125"/>
-				</Texture>
+				<Texture inherits="TRP3_Tools_HorizontalSplitTemplate" setAllPoints="true"/>
 				<FontString parentKey="label" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -380,13 +385,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame parentKey="shadowFrame" resizable="true" hidden="true" frameStrata="TOOLTIP" frameLevel="10">
 				<Layers>
 					<Layer level="OVERLAY" textureSubLevel="7">
-						<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true" alpha="0.6">
+						<Texture inherits="TRP3_Tools_HorizontalSplitTemplate" alpha="0.6">
 							<Size y="20"/>
 							<Anchors>
 								<Anchor point="BOTTOMLEFT"/>
 								<Anchor point="BOTTOMRIGHT"/>
 							</Anchors>
-							<TexCoords top="0.484375" bottom="0.828125"/>
 						</Texture>
 					</Layer>
 				</Layers>
@@ -409,17 +413,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</KeyValues>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
-					<Color r="1" g="0.8" b="0.8"/>
+				<Texture inherits="TRP3_Tools_HorizontalSplitTemplate">
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="BOTTOMRIGHT"/>
 					</Anchors>
-					<TexCoords top="0.484375" bottom="0.775"/>
 				</Texture>
-				<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
+				<Texture inherits="TRP3_Tools_HorizontalSplitTemplate">
 					<Size x="0" y="8"/>
-					<Color r="1" g="0.8" b="0.8"/>
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM"/>
 						<Anchor point="LEFT"/>

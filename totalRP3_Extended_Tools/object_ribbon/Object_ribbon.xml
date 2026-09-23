@@ -24,10 +24,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size y="40"/>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true" setAllPoints="true">
-					<Color r="1" g="0.8" b="0.8"/>
-					<TexCoords top="0.484375" bottom="0.8125"/>
-				</Texture>
+				<Texture inherits="TRP3_Tools_HorizontalSplitTemplate" setAllPoints="true"/>
 			</Layer>
 
 			<Layer level="OVERLAY">
