@@ -2,38 +2,54 @@
 name: Pull Request
 on: pull_request
 
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v2
-      - uses: actions/setup-ruby@v1
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Run Luacheck
+        id: luacheck
         uses: nebularg/actions-luacheck@v1
+        continue-on-error: true
         with:
           args: --no-color -q
           files: $(git ls-files '*.lua' ':!:totalRP3_Extended/Libs/*' ':!:totalRP3_Extended/Locales/????.lua')
           annotate: warning
 
       - name: Run editorconfig-checker
+        id: editorconfig
         uses: wow-rp-addons/actions-editorconfig-check@v1.0.2
+        continue-on-error: true
         with:
           args: -no-color
           files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3_Extended/Libs/*' ':!:totalRP3_Extended/Locales/*.lua')
 
-      - name: Create Package
-        uses: BigWigsMods/packager@master
-        with:
-          args: -d -z
+      - name: Check lint results
+        if: steps.luacheck.outcome == 'failure' || steps.editorconfig.outcome == 'failure'
+        run: |
+          echo "Luacheck: ${{ steps.luacheck.outcome }}"
+          echo "editorconfig-checker: ${{ steps.editorconfig.outcome }}"
+          exit 1
 
-      - uses: actions/upload-artifact@v4
+      - name: Create Package
+        uses: BigWigsMods/packager@v2
+        with:
+          args: -dz
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
         with:
           name: totalRP3_Extended-PR-${{ github.event.number }}
           path: .release/
+          archive: true
           include-hidden-files: true
 
       - name: Send Webhook Notification

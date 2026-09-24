@@ -22,7 +22,7 @@ jobs:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: Import External Translations
           branch: actions/import-external-translations

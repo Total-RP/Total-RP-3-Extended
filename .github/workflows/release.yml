@@ -9,14 +9,15 @@ on:
 
 jobs:
   build:
+    if: github.repository_owner == 'Total-RP'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Create Package
-        uses: BigWigsMods/packager@master
+        uses: BigWigsMods/packager@v2
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
