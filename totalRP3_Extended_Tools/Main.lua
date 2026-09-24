@@ -129,10 +129,10 @@ end
 TRP3_API.extended.tools.getObjectLocale = getObjectLocale;
 
 local LOCALE_FLAGS = {
-	en = "Interface\\AddOns\\totalRP3_Extended\\libs\\en.tga",
-	es = "Interface\\AddOns\\totalRP3_Extended\\libs\\es.tga",
-	de = "Interface\\AddOns\\totalRP3_Extended\\libs\\de.tga",
-	fr = "Interface\\AddOns\\totalRP3_Extended\\libs\\fr.tga",
+	en = "Interface\\AddOns\\totalRP3_Extended\\Libs\\en.tga",
+	es = "Interface\\AddOns\\totalRP3_Extended\\Libs\\es.tga",
+	de = "Interface\\AddOns\\totalRP3_Extended\\Libs\\de.tga",
+	fr = "Interface\\AddOns\\totalRP3_Extended\\Libs\\fr.tga",
 }
 
 local function getObjectLocaleImage(locale)
