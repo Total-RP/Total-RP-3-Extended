@@ -1,7 +1,7 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
-exclude: ^totalRP3_Extended/(Libs/.*|Locales/.{4}\.lua)$
+exclude: ^totalRP3_Extended/Locales/(deDE|esES|esMX|frFR|itIT|koKR|ptBR|ruRU|zhCN|zhTW)\.lua$
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
