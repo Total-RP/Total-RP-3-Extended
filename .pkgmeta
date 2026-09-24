@@ -5,6 +5,8 @@ ignore:
   - justfile
   - README.md
   - _tests
+  - Types
+  - '*.xsd'
 
 manual-changelog:
   filename: CHANGELOG.md
