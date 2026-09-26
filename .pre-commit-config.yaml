@@ -1,11 +1,11 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
-exclude: ^totalRP3_Extended/(Libs/.*|Locales/.{4}\.lua)$
+exclude: ^totalRP3_Extended/Locales/(deDE|esES|esMX|frFR|itIT|koKR|ptBR|ruRU|zhCN|zhTW)\.lua$
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
@@ -14,7 +14,7 @@ repos:
       - id: check-yaml
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.7.1
+    rev: 3.11.1
     hooks:
       - id: editorconfig-checker
         alias: ec
@@ -31,10 +31,12 @@ repos:
         types: [lua]
         require_serial: true
 
-      - id: xmllint
+      - id: xml
         name: check xml
-        entry: xmllint --noout --quiet --schema .github/scripts/ui.xsd
-        language: system
+        entry: python .github/scripts/validate_xml.py
+        language: python
+        additional_dependencies:
+          - lxml~=6.1
         types: [xml]
-        exclude: ^(.github/scripts/ui\.xsd|totalRP3_Extended/Bindings\.xml|totalRP3_Extended_Tools/Bindings\.xml)$
+        exclude: ^(totalRP3_Extended/Bindings\.xml|totalRP3_Extended_Tools/Bindings\.xml|.*.xsd)$
         require_serial: true
