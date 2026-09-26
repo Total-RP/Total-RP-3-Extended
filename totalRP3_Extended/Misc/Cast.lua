@@ -52,7 +52,22 @@ function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundI
 
 	frame:ClearStages();
 
-	frame:SetAllPoints(PlayerCastingBarFrame);
+	-- Can't retrieve the castbar coordinates if it's not visible WOOOOO
+	local hideCastbar = false;
+	if not PlayerCastingBarFrame:IsShown() then
+		PlayerCastingBarFrame:Show();
+		hideCastbar = true;
+	end
+	-- We also need to place the frame manually
+	frame:ClearAllPoints();
+	local scale = PlayerCastingBarFrame:GetScale();
+	frame:SetScale(scale);
+	local left, bottom = PlayerCastingBarFrame:GetCenter();
+	frame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", left, bottom);
+	-- Hide castbar again once we're done (if no current cast)
+	if hideCastbar then
+		PlayerCastingBarFrame:Hide();
+	end
 
 	frame:ShowSpark();
 
