@@ -2,9 +2,11 @@ package-as: totalRP3_Extended
 enable-nolib-creation: no
 
 ignore:
-  - Makefile
+  - justfile
   - README.md
   - _tests
+  - Types
+  - '*.xsd'
 
 manual-changelog:
   filename: CHANGELOG.md
