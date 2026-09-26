@@ -37,15 +37,18 @@ local function interrupt()
 end
 
 function TRP3_API.extended.showCastingBar(duration, interruptMode, class, soundID, castText, isSoundFileID)
-	local playerSpeed = GetUnitSpeed("player");
-	if not canaccessvalue(playerSpeed) then
-		Utils.message.displayMessage(SPELL_FAILED_AFFECTING_COMBAT, 4);
-		return;
-	end
+	if interruptMode == 2 then
+		local playerSpeed = GetUnitSpeed("player");
+		if not canaccessvalue(playerSpeed) then
+			-- Cannot check for player speed in combat, so don't allow the cast
+			Utils.message.displayMessage(SPELL_FAILED_AFFECTING_COMBAT, 4);
+			return;
+		end
 
-	if playerSpeed > 0 and interruptMode == 2 then
-		Utils.message.displayMessage(SPELL_FAILED_MOVING, 4);
-		return;
+		if playerSpeed > 0  then
+			Utils.message.displayMessage(SPELL_FAILED_MOVING, 4);
+			return;
+		end
 	end
 
 	if frame.casting then
