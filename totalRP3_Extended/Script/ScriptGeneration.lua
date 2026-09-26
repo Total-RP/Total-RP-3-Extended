@@ -50,10 +50,8 @@ TRP3_API.script.delayed = function(delay, func)
 	end
 end
 TRP3_API.script.cast = function(delay, func)
-	if GetUnitSpeed("player") == 0 then
-		if func and delay then
-			after(delay, func);
-		end
+	if func and delay then
+		after(delay, func);
 	end
 end
 
