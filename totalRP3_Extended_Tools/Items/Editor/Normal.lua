@@ -407,14 +407,13 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	-- Preview
 	display.preview.Name:SetText(loc.EDITOR_PREVIEW);
 	display.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
+	setTooltipForSameFrame(display.preview, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	display.preview:SetScript("OnEnter", function(self)
+		TRP3_RefreshTooltipForFrame(self);
 		TRP3_API.inventory.showItemTooltip(self, {madeBy = Globals.player_id}, storeDataMain(), true);
-		TRP3_ItemTooltip:AddLine(" ");
-		TRP3_ItemTooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER));
-		TRP3_ItemTooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-		TRP3_ItemTooltip:Show();
 	end);
 	display.preview:SetScript("OnLeave", function(self)
+		TRP3_MainTooltip:Hide();
 		TRP3_ItemTooltip:Hide();
 	end);
 	display.preview:RegisterForClicks("LeftButtonUp", "RightButtonUp");

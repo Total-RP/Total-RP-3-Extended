@@ -178,14 +178,13 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	-- Preview
 	editor.preview.Name:SetText(loc.EDITOR_PREVIEW);
 	editor.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
+	setTooltipForSameFrame(editor.preview, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	editor.preview:SetScript("OnEnter", function(self)
+		TRP3_RefreshTooltipForFrame(self);
 		TRP3_API.inventory.showItemTooltip(self, Globals.empty, injectUIData({BA={}}), true);
-		TRP3_ItemTooltip:AddLine(" ");
-		TRP3_ItemTooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER));
-		TRP3_ItemTooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-		TRP3_ItemTooltip:Show();
 	end);
 	editor.preview:SetScript("OnLeave", function(self)
+		TRP3_MainTooltip:Hide();
 		TRP3_ItemTooltip:Hide();
 	end);
 	editor.preview:RegisterForClicks("LeftButtonUp", "RightButtonUp");
