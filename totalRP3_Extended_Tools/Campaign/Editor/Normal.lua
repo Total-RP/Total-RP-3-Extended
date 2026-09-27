@@ -472,13 +472,11 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	main.portrait:SetupMenu(function(_, description)
 		description:SetMinimumWidth(220);
 
-		-- Make the dropdown list have a scrollbar on mainline.
-		if description.SetScrollMode then
-			local optionHeight = 20; -- 20 is the default height.
-			local maxLines = 20;
-			local maxScrollExtent = optionHeight * maxLines;
-			description:SetScrollMode(maxScrollExtent);
-		end
+		-- Make the dropdown list have a scrollbar over 20 options.
+		local optionHeight = 20; -- 20 is the default height.
+		local maxLines = 20;
+		local maxScrollExtent = optionHeight * maxLines;
+		description:SetScrollMode(maxScrollExtent);
 
 		for _, portrait in ipairs(CAMPAIGN_PORTRAITS) do
 			-- Skip portraits whose texture doesn't exist on this client.
