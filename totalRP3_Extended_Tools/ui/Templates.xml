@@ -716,8 +716,8 @@
 			</Button>
 		</Frames>
 		<Scripts>
-			<OnLoad method="Update" inherits="append"/>
-			<OnSizeChanged method="Update" inherits="append"/>
+			<OnLoad method="Update" inherit="append"/>
+			<OnSizeChanged method="Update" inherit="append"/>
 		</Scripts>
 	</Frame>
 
