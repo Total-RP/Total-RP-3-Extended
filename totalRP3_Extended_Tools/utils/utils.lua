@@ -503,3 +503,18 @@ function addon.utils.getGameEvents()
 
 	return CACHED_GAME_EVENTS;
 end
+
+-- bandaid for the %g format: remove trailing zeros
+function addon.utils.formatDecimal(number, fractionalDigits)
+	return ("%0." .. fractionalDigits .. "f"):format(number):gsub("%.?(0+)$", "");
+end
+
+-- truncates a string to maxCharacters and removes newlines
+-- intended for one-line preview of larger text bodies
+function addon.utils.getTextPreview(text, maxCharacters)
+	if text:len() > maxCharacters then
+		return text:gsub("\n", " "):sub(1, maxCharacters or 100) .. "...";
+	else
+		return text:gsub("\n", " ");
+	end
+end

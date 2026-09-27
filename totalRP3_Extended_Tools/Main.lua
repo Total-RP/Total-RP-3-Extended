@@ -93,16 +93,16 @@ function addon.main.getClassDataSafeByType(class)
 	end
 	if class.TY == TRP3_DB.types.DOCUMENT then
 		if class.PA and class.PA[1] and class.PA[1].TX then
-			return "inv_scroll_12", class.PA[1].TX:gsub("\n", ""):sub(1, 70) .. "...";
+			return "inv_scroll_12", addon.utils.getTextPreview(class.PA[1].TX);
 		else
 			return "inv_scroll_12", loc.DO_EMPTY;
 		end
 	end
 	if class.TY == TRP3_DB.types.QUEST_STEP then
-		return "inv_inscription_scroll", (class.BA.TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
+		return "inv_inscription_scroll", addon.utils.getTextPreview(class.BA.TX or "");
 	end
 	if class.TY == TRP3_DB.types.DIALOG then
-		return "ability_warrior_rallyingcry", (class.DS[1].TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
+		return "ability_warrior_rallyingcry", addon.utils.getTextPreview(class.DS[1].TX or "");
 	end
 end
 TRP3_API.extended.tools.getClassDataSafeByType = addon.main.getClassDataSafeByType;

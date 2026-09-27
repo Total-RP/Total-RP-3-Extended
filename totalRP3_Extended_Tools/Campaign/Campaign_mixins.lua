@@ -91,7 +91,7 @@ function TRP3_Tools_EditorCampaignMixin:ClassToInterface(class, _creationClass, 
 	local BA = class.BA or TRP3_API.globals.empty;
 	self.main.name:SetText(BA.NA or "");
 	self.main.description:SetText(BA.DE or "");
-	self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or "TEMP"));
+	self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or addon.constants.OBJECT_ICON_DEFAULT));
 	self.main.icon.selectedIcon = BA.IC;
 	self.main.vignette:SetSelectedValue(BA.IM or "GarrZoneAbility-Stables");
 	self:UpdatePreview();
@@ -140,7 +140,7 @@ function TRP3_Tools_EditorCampaignMixin:InterfaceToClass(targetClass, _targetCur
 end
 
 function TRP3_Tools_EditorCampaignMixin:UpdatePreview()
-	self.main.previewIcon:SetTexture("Interface\\ICONS\\" .. (self.main.icon.selectedIcon or "TEMP"));
+	self.main.previewIcon:SetTexture("Interface\\ICONS\\" .. (self.main.icon.selectedIcon or addon.constants.OBJECT_ICON_DEFAULT));
 	self.main.previewIconBorder:SetTexture("Interface\\ExtraButton\\" .. self.main.vignette:GetSelectedValue());
 	self.main.previewName:SetText(self.main.name:GetText());
 end

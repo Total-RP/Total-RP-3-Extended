@@ -28,7 +28,7 @@ function TRP3_Tools_EditorQuestMixin:ClassToInterface(class, _creationClass, _cu
 	self.main.description:SetText(BA.DE or "");
 	self.main.auto:SetChecked(BA.IN or false);
 	self.main.progress:SetChecked(BA.PR or false);
-	self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or "TEMP"));
+	self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or addon.constants.OBJECT_ICON_DEFAULT));
 	self.main.icon.selectedIcon = BA.IC;
 
 	local objectives = {};

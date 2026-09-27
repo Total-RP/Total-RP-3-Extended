@@ -596,7 +596,7 @@ function addon.editor.populateObjectTagMenu(menu, onAccept, scriptContext, event
 	table.sort(campaignVarsSorted);
 	if TableHasAnyEntries(campaignVarsSorted) then
 		local varsMenu = menu:CreateButton("Variable tags");
-		varsMenu:SetScrollMode(400);
+		varsMenu:SetScrollMode(addon.constants.UI_POPUP_MENU_MAX_HEIGHT);
 		for _, variable in ipairs(campaignVarsSorted) do
 			varsMenu:CreateButton(variable, onAccept, "${" .. variable .. "}");
 		end
@@ -688,7 +688,7 @@ function addon.editor.show(editor)
 		end
 	else
 		currentEditor.cursor.objects = {};
-		if numObjects <= 20 then
+		if numObjects <= addon.constants.UI_EDITOR_AUTO_EXPAND_ALL_LIMIT then
 			currentDraft.model:UncollapseAll();
 		else
 			currentDraft.model:CollapseAll();

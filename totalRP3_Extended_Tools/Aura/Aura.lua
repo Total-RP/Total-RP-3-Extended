@@ -35,7 +35,7 @@ function TRP3_API.extended.tools.getAuraItemData(id)
 			BA = {
 				NA = loc.AU_NEW_NAME,
 				IC = "ability_priest_spiritoftheredeemer",
-				DU = 300,
+				DU = addon.constants.AURA_DURATION_DEFAULT,
 				HE = true,
 				CC = true,
 				WE = true,

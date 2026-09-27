@@ -146,7 +146,7 @@ local function generateObjectsBrowserLineData(absoluteId, classSource, classExis
 		local base = class.BA or TRP3_API.globals.empty;
 		local _, link = addon.utils.getObjectIconAndLink(classSource(absoluteId));
 		tooltip = tooltip .. "|n";
-		tooltip = tooltip .. "|n" .. TRP3_API.utils.str.icon(base.IC or "temp", 25) .. " " .. link;
+		tooltip = tooltip .. "|n" .. TRP3_API.utils.str.icon(base.IC or addon.constants.OBJECT_ICON_DEFAULT, 25) .. " " .. link;
 		if base.LE or base.RI then
 			if base.LE and not base.RI then
 				tooltip = tooltip .. "|n" .. TRP3_API.Colors.White(base.LE);

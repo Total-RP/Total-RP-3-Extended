@@ -22,9 +22,6 @@ local currentView = {
 
 local hasImportExportModule = false;
 
-local SUPPOSED_SERIAL_SIZE_LIMIT = 500000; -- We suppose the text field can only handle 500k pastes
-local AUTO_SEARCH_RESULT_SIZE    = 1000; -- The search function will run as the users type their search term if there are not too many (filtered) objects
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List management: util methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -89,7 +86,7 @@ function addon.database.initialize(frame)
 	end);
 	searchBox:SetScript("OnTextChanged", function(self, isUserInput)
 		self.Instructions:SetShown(self:GetText() == "");
-		if (isUserInput and #currentView.filterResult <= AUTO_SEARCH_RESULT_SIZE) or self:GetText() == "" then
+		if (isUserInput and #currentView.filterResult <= addon.constants.DATABASE_AUTO_SEARCH_MAX_COUNT) or self:GetText() == "" then
 			currentView.searchTerm = TRP3_API.utils.str.emptyToNil(strtrim(self:GetText()));
 			addon.database.runSearch(true);
 		end
@@ -432,7 +429,7 @@ function addon.database.serializeCreation(creationId)
 	serial = serial:gsub("|", "||");
 	serial = AddOn_TotalRP3.Compression.compress(serial, false);
 	serial = "!" .. LibDeflate:EncodeForPrint(serial);
-	if serial:len() < SUPPOSED_SERIAL_SIZE_LIMIT then
+	if serial:len() < addon.constants.SUPPOSED_SERIAL_SIZE_LIMIT then
 		databaseFrame.export.content.scroll.text:SetText(serial);
 		databaseFrame.export.content.title:SetText(loc.DB_EXPORT_HELP:format(TRP3_API.inventory.getItemLink(class), serial:len() / 1024));
 		databaseFrame.export:Show();

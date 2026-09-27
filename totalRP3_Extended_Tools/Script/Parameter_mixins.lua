@@ -87,7 +87,7 @@ function TRP3_Tools_ScriptParameterObjectiveMixin:SetQuestContext(questId)
 				end
 			end
 			if OB and TableHasAnyEntries(OB) then
-				menu:SetScrollMode(400);
+				menu:SetScrollMode(addon.constants.UI_POPUP_MENU_MAX_HEIGHT);
 				local objectives = {};
 				for id, objective in pairs(OB) do
 					table.insert(objectives, {ID = id, TX = objective.TX});
@@ -147,7 +147,7 @@ function TRP3_Tools_ScriptParameterVariableMixin:Setup(widgetContext, nameParame
 	self.name:SetupSuggestions("Variable", function(menu, onAccept)
 		local variables = addon.editor.gatherVariables(select(1, self:GetScriptContext()), nameParameter.scope or self.scope:GetSelectedValue());
 		if variables and TableHasAnyEntries(variables) then
-			menu:SetScrollMode(400);
+			menu:SetScrollMode(addon.constants.UI_POPUP_MENU_MAX_HEIGHT);
 			local varsSorted = {};
 			for name, _ in pairs(variables) do
 				table.insert(varsSorted, name);
@@ -616,7 +616,7 @@ local function populateCodeContextMenu(parent, callback)
 			local g = _G[globalVarName];
 			if type(g) == "table" then
 				local category = menu:CreateButton(globalVarName);
-				category:SetScrollMode(400);
+				category:SetScrollMode(addon.constants.UI_POPUP_MENU_MAX_HEIGHT);
 				for key, _ in pairs(g) do
 					category:CreateButton(globalVarName .. "." .. key, callback, globalVarName .. "." .. key);
 				end
@@ -704,16 +704,15 @@ function TRP3_Tools_ScriptParameterMacroMixin:Setup(_widgetContext, parameter)
 		self.macro:SetupSuggestions(nil);
 	end
 
-	local MAX_CHARACTERS_IN_MACRO = 255;
 	local function checkCharactersLimit()
 		local macro = self.macro:GetText();
 		local numberOfCharactersInMacro = strlen(macro);
 		local color = WHITE_FONT_COLOR;
-		if numberOfCharactersInMacro > MAX_CHARACTERS_IN_MACRO then
+		if numberOfCharactersInMacro > addon.constants.MAX_CHARACTERS_IN_MACRO then
 			color = RED_FONT_COLOR;
 		end
 		self.count:SetTextColor(color:GetRGB())
-		self.count:SetText(("%d/%d characters used"):format(numberOfCharactersInMacro, MAX_CHARACTERS_IN_MACRO));
+		self.count:SetText(("%d/%d characters used"):format(numberOfCharactersInMacro, addon.constants.MAX_CHARACTERS_IN_MACRO));
 	end
 
 	local textbox = self.macro.scroll.text;

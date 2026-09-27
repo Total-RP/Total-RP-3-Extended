@@ -70,7 +70,7 @@ function TRP3_API.extended.tools.getCampaignData()
 		},
 		BA = {
 			NA = loc.CA_NAME_NEW,
-			RA = "1 - 100",
+			RA = "1 - 100", -- TODO: level range appears to be a dead feature
 			DE = loc.CA_DESCRIPTION_TT,
 			IC = "achievement_quests_completed_06"
 		},

@@ -32,7 +32,12 @@ function TRP3_Tools_EditorDocumentMixin:Initialize()
 
 	-- Background
 	display.background:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.BACKGROUNDS, {function(imageInfo) self.BCK = imageInfo and imageInfo.id or 8; end, nil, nil, self.BCK or 8});
+		addon.modal:ShowModal(TRP3_API.popup.BACKGROUNDS, {
+			function(imageInfo) self.BCK = imageInfo and imageInfo.id or addon.constants.DOCUMENT_PAGE_BG_DEFAULT; end,
+			nil,
+			nil,
+			self.BCK or addon.constants.DOCUMENT_PAGE_BG_DEFAULT
+		});
 	end);
 
 	-- Border
@@ -131,16 +136,16 @@ end
 
 function TRP3_Tools_EditorDocumentMixin:ClassToInterface(class, _creationClass, cursor)
 	self.display.border:SetSelectedValue(class.BO or TRP3_API.extended.document.BorderType.PARCHMENT);
-	self.display.height:SetText(class.HE or "600");
-	self.display.width:SetText(class.WI or "450");
-	self.display.h1_font:SetSelectedValue(class.H1_F or "DestinyFontHuge");
-	self.display.h2_font:SetSelectedValue(class.H2_F or "QuestFont_Huge");
-	self.display.h3_font:SetSelectedValue(class.H3_F or "GameFontNormalLarge");
-	self.display.p_font:SetSelectedValue(class.P_F or "GameTooltipHeader");
+	self.display.height:SetText(class.HE or addon.constants.DOCUMENT_HEIGHT_DEFAULT);
+	self.display.width:SetText(class.WI or addon.constants.DOCUMENT_WIDTH_DEFAULT);
+	self.display.h1_font:SetSelectedValue(class.H1_F or addon.constants.DOCUMENT_FONT_H1_DEFAULT);
+	self.display.h2_font:SetSelectedValue(class.H2_F or addon.constants.DOCUMENT_FONT_H2_DEFAULT);
+	self.display.h3_font:SetSelectedValue(class.H3_F or addon.constants.DOCUMENT_FONT_H3_DEFAULT);
+	self.display.p_font:SetSelectedValue(class.P_F or addon.constants.DOCUMENT_FONT_P_DEFAULT);
 	self.display.tile:SetChecked(class.BT or false);
 	self.display.resizable:SetChecked(class.FR or false);
 
-	self.BCK = class.BCK or 8;
+	self.BCK = class.BCK or addon.constants.DOCUMENT_PAGE_BG_DEFAULT;
 	self:ClassToPages(class);
 	if cursor and cursor.page and self.display.list.model:Find(cursor.page) then
 		self:ShowPage(cursor.page);
@@ -154,16 +159,16 @@ function TRP3_Tools_EditorDocumentMixin:InterfaceToClass(targetClass, targetCurs
 	self:SaveCurrentPage();
 
 	targetClass.BO = self.display.border:GetSelectedValue() or TRP3_API.extended.document.BorderType.PARCHMENT;
-	targetClass.HE = tonumber(self.display.height:GetText()) or 600;
-	targetClass.WI = tonumber(self.display.width:GetText()) or 450;
-	targetClass.H1_F = self.display.h1_font:GetSelectedValue() or "DestinyFontHuge";
-	targetClass.H2_F = self.display.h2_font:GetSelectedValue() or "QuestFont_Huge";
-	targetClass.H3_F = self.display.h3_font:GetSelectedValue() or "GameFontNormalLarge";
-	targetClass.P_F = self.display.p_font:GetSelectedValue() or "GameTooltipHeader";
+	targetClass.HE = tonumber(self.display.height:GetText()) or addon.constants.DOCUMENT_HEIGHT_DEFAULT;
+	targetClass.WI = tonumber(self.display.width:GetText()) or addon.constants.DOCUMENT_WIDTH_DEFAULT;
+	targetClass.H1_F = self.display.h1_font:GetSelectedValue() or addon.constants.DOCUMENT_FONT_H1_DEFAULT;
+	targetClass.H2_F = self.display.h2_font:GetSelectedValue() or addon.constants.DOCUMENT_FONT_H2_DEFAULT;
+	targetClass.H3_F = self.display.h3_font:GetSelectedValue() or addon.constants.DOCUMENT_FONT_H3_DEFAULT;
+	targetClass.P_F = self.display.p_font:GetSelectedValue() or addon.constants.DOCUMENT_FONT_P_DEFAULT;
 	targetClass.BT = self.display.tile:GetChecked();
 	targetClass.FR = self.display.resizable:GetChecked();
 
-	targetClass.BCK = self.BCK or 8;
+	targetClass.BCK = self.BCK or addon.constants.DOCUMENT_PAGE_BG_DEFAULT;
 	self:PagesToClass(targetClass);
 	if targetCursor then
 		targetCursor.page = self.display.list.model:FindByPredicate(function(e) return e.active; end);

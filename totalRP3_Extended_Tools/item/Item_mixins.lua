@@ -118,26 +118,26 @@ function TRP3_Tools_EditorItemMixin:ClassToInterface(class, _, _cursor)
 	self.gameplay.weight:SetText(BA.WE or "0");
 	self.gameplay.soulbound:SetChecked(BA.SB or false);
 	self.gameplay.unique:SetChecked((BA.UN or 0) > 0);
-	self.gameplay.uniquecount:SetText(BA.UN or "1");
+	self.gameplay.uniquecount:SetText(BA.UN or addon.constants.ITEM_UNIQUE_COUNT_DEFAULT);
 	self.gameplay.stack:SetChecked((BA.ST or 0) > 0);
-	self.gameplay.stackcount:SetText(BA.ST or "20");
+	self.gameplay.stackcount:SetText(BA.ST or addon.constants.ITEM_STACK_COUNT_DEFAULT);
 	self.gameplay.use:SetChecked(BA.US or false);
 	self.gameplay.usetext:SetText(US.AC or "");
 	self.gameplay.wearable:SetChecked(BA.WA or false);
 	self.display.container:SetChecked(BA.CT or false);
 	self.gameplay.noAdd:SetChecked(BA.PA or false);
 	self.gameplay.mute = true;
-	self.gameplay.pickSound:SetSelectedValue(BA.PS or 1186);
-	self.gameplay.dropSound:SetSelectedValue(BA.DS or 1203);
+	self.gameplay.pickSound:SetSelectedValue(BA.PS or addon.constants.ITEM_PICK_SOUND_DEFAULT);
+	self.gameplay.dropSound:SetSelectedValue(BA.DS or addon.constants.ITEM_DROP_SOUND_DEFAULT);
 	self.gameplay.mute = nil;
 
 	local containerData = BA.CT and BA.CO or TRP3_API.globals.empty;
-	self.display.containerType:SetSelectedValue(containerData.SI or "5x4");
+	self.display.containerType:SetSelectedValue(containerData.SI or addon.constants.ITEM_BAG_SIZE_DEFAULT);
 	self.display.containerDurability:SetText(containerData.DU or "0");
 	self.display.containerMaxweight:SetText(containerData.MW or "0");
 	self.display.containerOnlyinner:SetChecked(containerData.OI or false);
 
-	self.display.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or "TEMP"));
+	self.display.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or addon.constants.OBJECT_ICON_DEFAULT));
 	self.display.icon.selectedIcon = BA.IC;
 
 	self:UpdatePreview();
@@ -160,8 +160,8 @@ function TRP3_Tools_EditorItemMixin:InterfaceToClass(targetClass, _targetCursor)
 	targetClass.BA.VA = tonumber(self.gameplay.value:GetText()) or 0;
 	targetClass.BA.WE = tonumber(self.gameplay.weight:GetText()) or 0;
 	targetClass.BA.SB = self.gameplay.soulbound:GetChecked();
-	targetClass.BA.UN = self.gameplay.unique:GetChecked() and tonumber(self.gameplay.uniquecount:GetText());
-	targetClass.BA.ST = self.gameplay.stack:GetChecked() and tonumber(self.gameplay.stackcount:GetText());
+	targetClass.BA.UN = self.gameplay.unique:GetChecked() and (tonumber(self.gameplay.uniquecount:GetText()) or addon.constants.ITEM_UNIQUE_COUNT_DEFAULT);
+	targetClass.BA.ST = self.gameplay.stack:GetChecked() and (tonumber(self.gameplay.stackcount:GetText()) or addon.constants.ITEM_STACK_COUNT_DEFAULT);
 	targetClass.BA.WA = self.gameplay.wearable:GetChecked();
 	targetClass.BA.CT = self.display.container:GetChecked();
 	targetClass.BA.PA = self.gameplay.noAdd:GetChecked();
@@ -173,12 +173,12 @@ function TRP3_Tools_EditorItemMixin:InterfaceToClass(targetClass, _targetCursor)
 		targetClass.US.AC = nil;
 		targetClass.US.SC = nil;
 	end
-	targetClass.BA.PS = self.gameplay.pickSound:GetSelectedValue() or 1186;
-	targetClass.BA.DS = self.gameplay.dropSound:GetSelectedValue() or 1203;
+	targetClass.BA.PS = self.gameplay.pickSound:GetSelectedValue() or addon.constants.ITEM_PICK_SOUND_DEFAULT;
+	targetClass.BA.DS = self.gameplay.dropSound:GetSelectedValue() or addon.constants.ITEM_DROP_SOUND_DEFAULT;
 
 	if targetClass.BA.CT then
 		targetClass.CO = targetClass.CO or {};
-		targetClass.CO.SI = self.display.containerType:GetSelectedValue() or "5x4";
+		targetClass.CO.SI = self.display.containerType:GetSelectedValue() or addon.constants.ITEM_BAG_SIZE_DEFAULT;
 		local row, column = targetClass.CO.SI:match("(%d)x(%d)");
 		targetClass.CO.SR = row;
 		targetClass.CO.SC = column;

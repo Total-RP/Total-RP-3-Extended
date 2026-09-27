@@ -129,7 +129,7 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 		if gameplay.hasDuration:GetChecked() then
 			local currDuration = tonumber(gameplay.duration:GetText());
 			if not currDuration or currDuration <= 0 then
-				gameplay.duration:SetText("300");
+				gameplay.duration:SetText(addon.constants.AURA_DURATION_DEFAULT);
 			end
 			gameplay.duration:Show();
 		else
@@ -145,7 +145,7 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 		if gameplay.hasInterval:GetChecked() then
 			local currInterval = tonumber(gameplay.interval:GetText());
 			if not currInterval or currInterval <= 0 then
-				gameplay.interval:SetText("10");
+				gameplay.interval:SetText(addon.constants.AURA_INTERVAL_DEFAULT);
 			end
 			gameplay.interval:Show();
 		else
@@ -174,13 +174,13 @@ function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, _curs
 	self.display.overlay:SetText(BA.OV or "");
 	self.display.helpful:SetChecked(BA.HE or false);
 
-	self.display.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or "TEMP"));
+	self.display.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or addon.constants.OBJECT_ICON_DEFAULT));
 	self.display.icon.selectedIcon = BA.IC;
 
 	local hasDuration = BA.DU ~= nil;
 	self.gameplay.hasDuration:SetChecked(hasDuration);
 	self.gameplay.duration:SetShown(hasDuration);
-	self.gameplay.duration:SetText(("%0.1f"):format(BA.DU or 300):gsub("%.0+", "")); --  getting rid of ugly floating point artifacts
+	self.gameplay.duration:SetText(addon.utils.formatDecimal(BA.DU or addon.constants.AURA_DURATION_DEFAULT, 1));
 
 	self.gameplay.alwaysActive:SetChecked(BA.AA or false);
 	self.gameplay.ensureExpiry:SetChecked(BA.EE or false);
@@ -194,7 +194,7 @@ function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, _curs
 	local hasInterval = BA.IV ~= nil;
 	self.gameplay.hasInterval:SetChecked(hasInterval);
 	self.gameplay.interval:SetShown(hasInterval);
-	self.gameplay.interval:SetText(("%0.1f"):format(BA.IV or 10):gsub("%.0+", ""));
+	self.gameplay.interval:SetText(addon.utils.formatDecimal(BA.IV or addon.constants.AURA_INTERVAL_DEFAULT, 1));
 	self.gameplay.inspectable:SetChecked(BA.WE or false);
 
 	self:UpdatePreview();
@@ -218,7 +218,7 @@ function TRP3_Tools_EditorAuraMixin:InterfaceToClass(targetClass, _targetCursor)
 	targetClass.BA.IC = self.display.icon.selectedIcon;
 
 	if self.gameplay.hasDuration:GetChecked() then
-		targetClass.BA.DU = self.gameplay.duration:GetNumber();
+		targetClass.BA.DU = tonumber(self.gameplay.duration:GetText()) or addon.constants.AURA_DURATION_DEFAULT;
 		if targetClass.BA.DU <= 0 then
 			targetClass.BA.DU = nil;
 		end
@@ -233,7 +233,7 @@ function TRP3_Tools_EditorAuraMixin:InterfaceToClass(targetClass, _targetCursor)
 	targetClass.BA.WE = self.gameplay.inspectable:GetChecked();
 
 	if self.gameplay.hasInterval:GetChecked() then
-		targetClass.BA.IV = math.max(self.gameplay.interval:GetNumber(), 0.1); -- because I say so
+		targetClass.BA.IV = math.max(tonumber(self.gameplay.interval:GetText()) or addon.constants.AURA_INTERVAL_DEFAULT, addon.constants.AURA_INTERVAL_MIN);
 	else
 		targetClass.BA.IV = nil;
 	end
