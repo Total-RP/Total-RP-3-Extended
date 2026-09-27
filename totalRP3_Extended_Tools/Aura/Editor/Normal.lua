@@ -332,8 +332,15 @@ function TRP3_API.extended.tools.initAuraEditorNormal(ToolFrame)
 		display.preview.aura.class.BA.CC = gameplay.cancellable:GetChecked();
 		TRP3_AuraTooltip:Attach(display.preview);
 	end);
-	display.preview:SetScript("OnMouseUp", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, display.preview.aura.class.BA.IC});
+	display.preview:SetScript("OnMouseUp", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, display.preview.aura.class.BA.IC});
+		elseif button == "RightButton" then
+			local icon = display.preview.aura.class.BA.IC or "TEMP";
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onIconSelected(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
+		end
 	end);
 
 	gameplay.title:SetText(loc.AU_GAMEPLAY_ATT);

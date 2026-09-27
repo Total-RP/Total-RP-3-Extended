@@ -374,8 +374,17 @@ function TRP3_API.extended.tools.initQuest(ToolFrame)
 	-- Preview
 	main.preview.Name:SetText(loc.EDITOR_PREVIEW);
 	main.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
-	main.preview:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, main.preview.selectedIcon});
+	setTooltipForSameFrame(main.preview, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	main.preview:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	main.preview:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, main.preview.selectedIcon});
+		elseif button == "RightButton" then
+			local icon = main.preview.selectedIcon or "TEMP";
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onIconSelected(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
+		end
 	end);
 
 	-- Auto reveal

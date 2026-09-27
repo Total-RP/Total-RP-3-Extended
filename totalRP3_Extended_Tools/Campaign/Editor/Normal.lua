@@ -510,8 +510,17 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	npc.editor.name.title:SetText(loc.CA_NPC_EDITOR_NAME);
 	npc.editor.fulltitle.title:SetText(loc.CA_NPC_EDITOR_TITLE);
 	npc.editor.description.title:SetText(loc.CA_NPC_EDITOR_DESC);
-	npc.editor.icon:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected, nil, nil, npc.editor.icon.selectedIcon});
+	setTooltipForSameFrame(npc.editor.icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	npc.editor.icon:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	npc.editor.icon:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected, nil, nil, npc.editor.icon.selectedIcon});
+		elseif button == "RightButton" then
+			local icon = npc.editor.icon.selectedIcon or TRP3_InterfaceIcons.ProfileDefault;
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onNPCIconSelected(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
+		end
 	end);
 	npc.editor.save:SetScript("OnClick", function(self)
 		onNPCSaved();
