@@ -170,6 +170,12 @@ stds.wow = {
 			},
 		},
 
+		C_UIFileAsset = {
+			fields = {
+				"IsKnownFile",
+			},
+		},
+
 		InputUtil = {
 			fields = {
 				"IsMouseOver",
@@ -198,6 +204,7 @@ stds.wow = {
 		"DoEmote",
 		"Enum",
 		"EventRegistry",
+		"GameTooltip_SetTitle",
 		"GetAchievementInfo",
 		"GetCVar",
 		"GetGuildInfo",

@@ -249,7 +249,7 @@ local function containerSlotUpdate(self, elapsed)
 		local class = self.class;
 		local icon = getBaseClassDataSafe(class);
 		self.Icon:Show();
-		self.Icon:SetTexture("Interface\\ICONS\\" .. icon);
+		TRP3_IconUtil.SetTextureToIcon(self.Icon, icon);
 		if class.BA and class.BA.QE then
 			self.Quest:Show();
 		end
@@ -313,7 +313,7 @@ end
 local function slotOnDragStart(self)
 	if self.info and not TRP3_API.inventory.isInTransaction(self.info) then
 		StackSplitFrame:Hide();
-		SetCursor("Interface\\ICONS\\" .. ((self.class and self.class.BA.IC) or "inv_misc_questionmark")) ;
+		TRP3_IconUtil.SetCursor((self.class and self.class.BA.IC) or "inv_misc_questionmark");
 		if self.additionalOnDragHandler then
 			self.additionalOnDragHandler(self);
 		end
@@ -441,7 +441,7 @@ local function GetContainerDropTarget()
 end
 
 local function slotOnDragStop(slotFrom)
-	ResetCursor();
+	TRP3_IconUtil.ClearCursor();
 	if slotFrom.info and not TRP3_API.inventory.isInTransaction(slotFrom.info) then
 		local dropTargetType, slotTo = GetContainerDropTarget();
 		local container1, slot1ID;
@@ -693,7 +693,7 @@ end
 
 local function decorateContainer(containerFrame, class)
 	local icon, name = getBaseClassDataSafe(class);
-	containerFrame.Icon:SetTexture("Interface\\ICONS\\" .. icon);
+	TRP3_IconUtil.SetTextureToIcon(containerFrame.Icon, icon);
 	containerFrame.Title:SetText(name);
 end
 TRP3_API.inventory.decorateContainer = decorateContainer;
@@ -905,7 +905,7 @@ local function presentLoot(loot, onLootCallback, forceLoot, checker, onDiscardCa
 		return;
 	end
 	if loot then
-		lootFrame.Icon:SetTexture("Interface\\ICONS\\" .. (loot.BA.IC or "Garrison_silverchest"));
+		TRP3_IconUtil.SetTextureToIcon(lootFrame.Icon, loot.BA.IC or "Garrison_silverchest");
 		lootFrame.Title:SetText((loot.BA.NA or loc.LOOT));
 
 		local slotCounter = 1;

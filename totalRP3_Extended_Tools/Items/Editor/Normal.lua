@@ -23,8 +23,8 @@ local TUTORIAL, CONTAINER_TUTORIAL;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onIconSelected(icon)
-	display.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
-	display.preview.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(display.preview.Icon, icon or "TEMP");
+	display.preview.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function refreshCheck()
@@ -407,14 +407,25 @@ function TRP3_API.extended.tools.initItemEditorNormal(ToolFrame)
 	-- Preview
 	display.preview.Name:SetText(loc.EDITOR_PREVIEW);
 	display.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
+	setTooltipForSameFrame(display.preview, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	display.preview:SetScript("OnEnter", function(self)
+		TRP3_RefreshTooltipForFrame(self);
 		TRP3_API.inventory.showItemTooltip(self, {madeBy = Globals.player_id}, storeDataMain(), true);
 	end);
 	display.preview:SetScript("OnLeave", function(self)
+		TRP3_MainTooltip:Hide();
 		TRP3_ItemTooltip:Hide();
 	end);
-	display.preview:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, display.preview.selectedIcon});
+	display.preview:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	display.preview:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, display.preview.selectedIcon});
+		elseif button == "RightButton" then
+			local icon = display.preview.selectedIcon or "TEMP";
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onIconSelected(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
+		end
 	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

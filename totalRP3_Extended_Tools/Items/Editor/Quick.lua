@@ -61,8 +61,8 @@ local function onConvert()
 end
 
 local function onIconSelected(icon)
-	editor.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
-	editor.preview.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(editor.preview.Icon, icon or "TEMP");
+	editor.preview.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function loadData(data)
@@ -178,14 +178,25 @@ function TRP3_API.extended.tools.initItemQuickEditor(ToolFrame)
 	-- Preview
 	editor.preview.Name:SetText(loc.EDITOR_PREVIEW);
 	editor.preview.InfoText:SetText(loc.EDITOR_ICON_SELECT);
+	setTooltipForSameFrame(editor.preview, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	editor.preview:SetScript("OnEnter", function(self)
+		TRP3_RefreshTooltipForFrame(self);
 		TRP3_API.inventory.showItemTooltip(self, Globals.empty, injectUIData({BA={}}), true);
 	end);
 	editor.preview:SetScript("OnLeave", function(self)
+		TRP3_MainTooltip:Hide();
 		TRP3_ItemTooltip:Hide();
 	end);
-	editor.preview:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = editor, point = "LEFT", parentPoint = "RIGHT"}, {onIconSelected, nil, nil, editor.preview.selectedIcon});
+	editor.preview:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	editor.preview:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = editor, point = "LEFT", parentPoint = "RIGHT"}, {onIconSelected, nil, nil, editor.preview.selectedIcon});
+		elseif button == "RightButton" then
+			local icon = editor.preview.selectedIcon or "TEMP";
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onIconSelected(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
+		end
 	end);
 
 	-- Save

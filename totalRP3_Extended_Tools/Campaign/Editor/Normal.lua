@@ -33,8 +33,8 @@ local questClipboardID;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onIconSelected(icon)
-	main.vignette.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
-	main.vignette.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(main.vignette.Icon, icon or "TEMP");
+	main.vignette.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function onCampaignPortraitSelected(portrait)
@@ -44,7 +44,7 @@ end
 
 local function onNPCIconSelected(icon)
 	TRP3_API.ui.frame.setupIconButton(npc.editor.icon, icon);
-	npc.editor.icon.selectedIcon = icon;
+	npc.editor.icon.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function decorateNPCLine(line, npcID)
@@ -268,7 +268,8 @@ local function load()
 	main.name:SetText(data.BA.NA or "");
 	main.description.scroll.text:SetText(data.BA.DE or "");
 	onIconSelected(data.BA.IC);
-	onCampaignPortraitSelected(data.BA.IM)
+	onCampaignPortraitSelected(data.BA.IM);
+	main.portrait:GenerateMenu();
 
 	notes.frame.scroll.text:SetText(data.NT or "");
 
@@ -403,16 +404,21 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	setTooltipAll(main.description.dummy, "RIGHT", 0, 5, loc.CA_DESCRIPTION, loc.CA_DESCRIPTION_TT);
 
 	local CAMPAIGN_PORTRAITS = {
+		"Air-ExtraButton",
 		"AirStrike",
 		"Amber",
+		"Ardenweald-ExtraButton",
+		"Bastion-ExtraButton",
 		"BrewmoonKeg",
 		"ChampionLight",
 		"Default",
 		"Engineering",
+		"ExtraButton-Generic",
 		"EyeofTerrok",
 		"Fel",
 		"FengBarrier",
 		"FengShroud",
+		"Fire-ExtraButton",
 		"GarrZoneAbility-Armory",
 		"GarrZoneAbility-BarracksAlliance",
 		"GarrZoneAbility-BarracksHorde",
@@ -424,11 +430,23 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 		"GarrZoneAbility-TrainingPit",
 		"GarrZoneAbility-Workshop",
 		"GreenstoneKeg",
+		"HearthOfAzeroth-ExtraButton-Active",
+		"HearthOfAzeroth-ExtraButton-Disabled",
+		"Housing-ExtraButton",
 		"HozuBar",
 		"LightningKeg",
+		"Maldraxxus-ExtraButton",
+		"Nerubian-ExtraButton",
 		"Smash",
 		"SoulSwap",
+		"StormBlue-ExtraButton",
+		"StormPurple-ExtraButton",
+		"StormWhite-ExtraButto",
+		"StormWhite-ExtraButton",
+		"StormYellow-ExtraButton",
 		"Ultraxion",
+		"Venthyr-ExtraButton",
+		"Water-ExtraButton",
 		"Ysera",
 	}
 
@@ -437,18 +455,41 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	main.vignette:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = self, point = "TOP", parentPoint = "BOTTOM"}, {onIconSelected, nil, nil, main.vignette.selectedIcon});
-		else
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateTitle(loc.CA_IMAGE_TT);
-				for _, portrait in pairs(CAMPAIGN_PORTRAITS) do
-					local portraitOption = description:CreateButton(TRP3_API.formats.dropDownElements:format(loc.CA_IMAGE, portrait), onCampaignPortraitSelected, portrait);
-					TRP3_MenuUtil.SetElementTooltip(portraitOption, ("|TInterface\\ExtraButton\\%s:96:192|t"):format(portrait));
-				end
-			end);
+		elseif button == "RightButton" then
+			local icon = main.vignette.selectedIcon or "TEMP";
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onIconSelected(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 		end
 	end);
-	setTooltipAll(main.vignette, "RIGHT", 0, 5, loc.CA_ICON,
-		("|cffffff00%s: |cff00ff00%s\n"):format(loc.CM_CLICK, loc.CA_ICON_TT) .. ("|cffffff00%s: |cff00ff00%s"):format(loc.CM_R_CLICK, loc.CA_IMAGE_TT));
+	setTooltipAll(main.vignette, "RIGHT", 0, 5, loc.CA_ICON, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+
+	-- Portrait
+	local function IsPortraitSelected(portrait)
+		return main.vignette.selectedPortrait == portrait;
+	end
+
+	main.portrait:SetupMenu(function(_, description)
+		description:SetMinimumWidth(220);
+
+		-- Make the dropdown list have a scrollbar over 20 options.
+		local optionHeight = 20; -- 20 is the default height.
+		local maxLines = 20;
+		local maxScrollExtent = optionHeight * maxLines;
+		description:SetScrollMode(maxScrollExtent);
+
+		for _, portrait in ipairs(CAMPAIGN_PORTRAITS) do
+			-- Skip portraits whose texture doesn't exist on this client.
+			if C_UIFileAsset.IsKnownFile("Interface\\ExtraButton\\" .. portrait) then
+				local portraitOption = description:CreateRadio(portrait, IsPortraitSelected, onCampaignPortraitSelected, portrait);
+				portraitOption:SetTooltip(function(tooltip)
+					GameTooltip_SetTitle(tooltip, ("|TInterface\\ExtraButton\\%s:96:192|t"):format(portrait));
+				end);
+			end
+		end
+	end);
+	main.portrait:SetWidth(150);
+	main.portrait.title:SetText(loc.CA_IMAGE);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- NOTES
@@ -510,8 +551,17 @@ function TRP3_API.extended.tools.initCampaignEditorNormal(ToolFrame)
 	npc.editor.name.title:SetText(loc.CA_NPC_EDITOR_NAME);
 	npc.editor.fulltitle.title:SetText(loc.CA_NPC_EDITOR_TITLE);
 	npc.editor.description.title:SetText(loc.CA_NPC_EDITOR_DESC);
-	npc.editor.icon:SetScript("OnClick", function(self)
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected, nil, nil, npc.editor.icon.selectedIcon});
+	setTooltipForSameFrame(npc.editor.icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	npc.editor.icon:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	npc.editor.icon:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = npc.editor, point = "RIGHT", parentPoint = "LEFT"}, {onNPCIconSelected, nil, nil, npc.editor.icon.selectedIcon});
+		elseif button == "RightButton" then
+			local icon = npc.editor.icon.selectedIcon or TRP3_InterfaceIcons.ProfileDefault;
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onNPCIconSelected(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
+		end
 	end);
 	npc.editor.save:SetScript("OnClick", function(self)
 		onNPCSaved();

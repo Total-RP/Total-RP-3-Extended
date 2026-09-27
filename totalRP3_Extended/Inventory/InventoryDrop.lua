@@ -164,8 +164,8 @@ local stashContainer;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 
 local iconHandler = function(icon)
-	stashEditFrame.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-	stashEditFrame.icon.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(stashEditFrame.icon.Icon, icon);
+	stashEditFrame.icon.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function openStashEditor(stashIndex)
@@ -229,7 +229,7 @@ end
 
 function showStash(stashInfo, stashIndex, sharedData)
 	if stashInfo then
-		stashContainer.Icon:SetTexture("Interface\\ICONS\\" .. (stashInfo.BA.IC or "TEMP"));
+		TRP3_IconUtil.SetTextureToIcon(stashContainer.Icon, stashInfo.BA.IC or "TEMP");
 		stashContainer.Title:SetText((stashInfo.BA.NA or loc.DR_STASHES_NAME));
 
 		if not sharedData or not stashContainer.sync then
@@ -909,11 +909,19 @@ function dropFrame.init()
 	stashEditFrame.ok:SetScript("OnClick", function() saveStash() end);
 
 	stashEditFrame.name.title:SetText(loc.DR_STASHES_NAME .. " (" .. loc.DR_STASHES_MAX .. ")");
-	setTooltipForSameFrame(stashEditFrame.icon, "RIGHT", 0, 5, loc.EDITOR_ICON);
-	stashEditFrame.icon:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
-			{ parent = stashEditFrame.icon, point = "LEFT", parentPoint = "RIGHT", x = 15 },
-			{ iconHandler, nil, nil, stashEditFrame.icon.selectedIcon });
+	setTooltipForSameFrame(stashEditFrame.icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	stashEditFrame.icon:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	stashEditFrame.icon:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
+				{ parent = stashEditFrame.icon, point = "LEFT", parentPoint = "RIGHT", x = 15 },
+				{ iconHandler, nil, nil, stashEditFrame.icon.selectedIcon });
+		elseif button == "RightButton" then
+			local icon = stashEditFrame.icon.selectedIcon or "TEMP";
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) iconHandler(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
+		end
 	end);
 	stashEditFrame.hidden.Text:SetText(loc.DR_STASHES_HIDE);
 	setTooltipForSameFrame(stashEditFrame.hidden, "RIGHT", 0, 5, loc.DR_STASHES_HIDE, loc.DR_STASHES_HIDE_TT);
