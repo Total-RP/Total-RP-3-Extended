@@ -154,7 +154,7 @@
 				</Anchors>
 
 				<Frames>
-					<DropdownButton parentKey="list" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentScriptList">
+					<DropdownButton parentKey="list" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="Link to workflow" type="string"/>
 						</KeyValues>
@@ -190,7 +190,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame name="$parentConstraintList" parentKey="list" inherits="TRP3_Tools_ScriptConstraintEditorTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ScriptConstraintEditorTemplate">
 						<Anchors>
 							<Anchor point="TOP" y="-10"/>
 							<Anchor point="LEFT" x="30"/>
@@ -221,7 +221,7 @@
 				</Anchors>
 			</Button>
 
-			<Frame name="$parentObjectEventList" parentKey="objectEventList" inherits="TRP3_Tools_ListTemplate">
+			<Frame parentKey="objectEventList" inherits="TRP3_Tools_ListTemplate">
 				<KeyValues>
 					<KeyValue key="listElementTemplate" value="TRP3_Tools_ScriptObjectEventListElementTemplate" type="string"/>
 					<KeyValue key="listElementMixin" value="TRP3_Tools_ScriptObjectEventListElementMixin" type="global"/>
@@ -234,7 +234,7 @@
 				</Anchors>
 			</Frame>
 
-			<Button parentKey="gameEventButton" text="OK" inherits="TRP3_CommonButton" name="$parentAddTriggerButton">
+			<Button parentKey="gameEventButton" text="OK" inherits="TRP3_CommonButton">
 				<Size x="100" y="22"/>
 				<Anchors>
 					<Anchor point="BOTTOM" y="20"/>
@@ -254,7 +254,7 @@
 				</Anchors>
 			</EditBox>
 
-			<Frame name="$parentGameEventTree" parentKey="gameEventTree" inherits="TRP3_Tools_TreeTemplate">
+			<Frame parentKey="gameEventTree" inherits="TRP3_Tools_TreeTemplate">
 				<KeyValues>
 					<KeyValue key="treeNodeTemplate" value="TRP3_Tools_ScriptGameEventTreeNodeTemplate" type="string"/>
 					<KeyValue key="treeNodeMixin" value="TRP3_Tools_ScriptGameEventTreeNodeMixin" type="global"/>

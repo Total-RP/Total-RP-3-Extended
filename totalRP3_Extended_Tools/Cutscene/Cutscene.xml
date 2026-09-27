@@ -104,7 +104,7 @@
 		</KeyValues>
 		<Frames>
 
-			<Frame name="TRP3_Tools_EditorCutsceneChoicePopupOptionEditor" parentKey="optionEditor" inherits="BackdropTemplate" hidden="true">
+			<Frame parentKey="optionEditor" inherits="BackdropTemplate" hidden="true">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_24_5555" type="global"/>
 				</KeyValues>
@@ -296,7 +296,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="alternate" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentAlternate">
+					<CheckButton parentKey="alternate" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="Switch dialog direction automatically" type="string"/>
 							<KeyValue key="helpText" value="Automatically switch direction and speaker when a new step is added. Useful when you're creating a conversation style dialog between two actors." type="string"/>
@@ -307,7 +307,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<Frame name="$parentStepList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_CutsceneStepListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_CutsceneStepListElementMixin" type="global"/>
@@ -346,7 +346,7 @@
 						</Anchors>
 					</Frame>
 
-					<DropdownButton parentKey="workflow" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentWorkflow">
+					<DropdownButton parentKey="workflow" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="Workflow" type="string"/>
 						</KeyValues>
@@ -357,7 +357,7 @@
 						</Anchors>
 					</DropdownButton>
 
-					<CheckButton parentKey="loot" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentLoot">
+					<CheckButton parentKey="loot" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_LOOT}" type="string"/>
 							<KeyValue key="helpText" value="${DI_LOOT_TT}" type="string"/>
@@ -368,7 +368,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<Button parentKey="choices" name="$parentChoices" text="${DI_CHOICES}" inherits="TRP3_CommonButton">
+					<Button parentKey="choices" text="${DI_CHOICES}" inherits="TRP3_CommonButton">
 						<Size y="22"/>
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.workflow"/>
@@ -377,7 +377,7 @@
 						</Anchors>
 					</Button>
 
-					<CheckButton parentKey="endpoint" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentLoot">
+					<CheckButton parentKey="endpoint" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_END}" type="string"/>
 							<KeyValue key="helpText" value="${DI_END_TT}" type="string"/>
@@ -400,7 +400,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="direction" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentDirection">
+					<CheckButton parentKey="direction" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_NAME_DIRECTION}" type="string"/>
 							<KeyValue key="helpText" value="${DI_NAME_DIRECTION}" type="string"/>
@@ -411,7 +411,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<DropdownButton parentKey="directionValue" hidden="true" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentDirectionValue">
+					<DropdownButton parentKey="directionValue" hidden="true" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_NAME_DIRECTION}" type="string"/>
 						</KeyValues>
@@ -422,7 +422,7 @@
 						</Anchors>
 					</DropdownButton>
 
-					<CheckButton parentKey="name" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentName">
+					<CheckButton parentKey="name" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_NAME}" type="string"/>
 							<KeyValue key="helpText" value="${DI_NAME_TT}" type="string"/>
@@ -445,7 +445,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="background" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentBackground">
+					<CheckButton parentKey="background" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_BKG}" type="string"/>
 							<KeyValue key="helpText" value="${DI_BKG}" type="string"/>
@@ -475,7 +475,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="image" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentImage">
+					<CheckButton parentKey="image" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_IMAGE}" type="string"/>
 							<KeyValue key="helpText" value="${DI_IMAGE}" type="string"/>
@@ -513,7 +513,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="leftUnit" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentLeftUnit">
+					<CheckButton parentKey="leftUnit" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_LEFT_UNIT}" type="string"/>
 							<KeyValue key="helpText" value="${DI_UNIT_TT}" type="string"/>
@@ -547,7 +547,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="rightUnit" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentRightUnit">
+					<CheckButton parentKey="rightUnit" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DI_RIGHT_UNIT}" type="string"/>
 							<KeyValue key="helpText" value="${DI_UNIT_TT}" type="string"/>

@@ -61,7 +61,7 @@
 				<Frames>
 					<Frame parentKey="creations">
 						<Frames>
-							<Frame name="$parentFilterTabs" parentKey="filterTabs" inherits="TRP3_Tools_TabBarTemplate" mixin="TRP3_Tools_FilterTabsMixin">
+							<Frame parentKey="filterTabs" inherits="TRP3_Tools_TabBarTemplate" mixin="TRP3_Tools_FilterTabsMixin">
 								<KeyValues>
 									<KeyValue key="minTabWidth" value="60" type="number"/>
 									<KeyValue key="maxTabWidth" value="240" type="number"/>
@@ -74,7 +74,7 @@
 								</Anchors>
 							</Frame>
 
-							<EditBox name="$parentSearchBox" parentKey="searchBox" inherits="SearchBoxTemplate" autoFocus="false" historyLines="32" bytes="256" >
+							<EditBox parentKey="searchBox" inherits="SearchBoxTemplate" autoFocus="false" historyLines="32" bytes="256" >
 								<KeyValues>
 									<KeyValue key="instructionsFontObject" value="UserScaledFontGameDisableSmall" type="global"/>
 								</KeyValues>
@@ -96,7 +96,7 @@
 								<FontString inherits="UserScaledFontGameHighlight" justifyH="LEFT"/>
 							</EditBox>
 
-							<Frame name="$parentCreationsList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+							<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 								<KeyValues>
 									<KeyValue key="listElementTemplate" value="TRP3_Tools_CreationsListElementTemplate" type="string"/>
 									<KeyValue key="listElementMixin" value="TRP3_Tools_CreationsListElementMixin" type="global"/>
@@ -234,7 +234,7 @@
 				</Frames>
 			</Frame>
 
-			<Frame parentKey="export" name="$parentExport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+			<Frame parentKey="export" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
 				<Size x="500" y="300"/>
 
 				<Anchors>
@@ -297,7 +297,7 @@
 				</Frames>
 			</Frame>
 
-			<Frame parentKey="import" name="$parentImport" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+			<Frame parentKey="import" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
 				<Size x="500" y="300"/>
 
 				<Anchors>
@@ -470,7 +470,7 @@
 				</Anchors>
 			</EditBox>
 
-			<CheckButton parentKey="persistent" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentPersistent">
+			<CheckButton parentKey="persistent" inherits="TRP3_Tools_CheckBoxTemplate">
 				<KeyValues>
 					<KeyValue key="titleText" value="Save filter" type="string"/>
 					<KeyValue key="helpText" value="Keep this filter across sessions" type="string"/>
@@ -521,7 +521,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_FilterBuilderListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_FilterBuilderListElementMixin" type="global"/>

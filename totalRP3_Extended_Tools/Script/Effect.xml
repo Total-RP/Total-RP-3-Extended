@@ -127,7 +127,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame name="$parentConstraintList" parentKey="list" inherits="TRP3_Tools_ScriptConstraintEditorTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ScriptConstraintEditorTemplate">
 						<Anchors>
 							<Anchor point="TOP" y="-10"/>
 							<Anchor point="LEFT" x="30"/>
@@ -151,7 +151,7 @@
 			</Frame>
 
 
-			<Frame name="$parentEffectTree" parentKey="effectTree" inherits="TRP3_Tools_TreeTemplate">
+			<Frame parentKey="effectTree" inherits="TRP3_Tools_TreeTemplate">
 				<KeyValues>
 					<KeyValue key="treeNodeTemplate" value="TRP3_Tools_ScriptEffectTreeNodeTemplate" type="string"/>
 					<KeyValue key="treeNodeMixin" value="TRP3_Tools_ScriptEffectTreeNodeMixin" type="global"/>

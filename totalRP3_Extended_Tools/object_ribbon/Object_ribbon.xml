@@ -193,19 +193,19 @@
 						</Anchors>
 					</Button>
 
-					<Frame parentKey="bag5x4" inherits="TRP3_Container5x4Template" name="$parent5x4" movable="false">
+					<Frame parentKey="bag5x4" inherits="TRP3_Container5x4Template" movable="false">
 						<Anchors>
 							<Anchor point="TOP" y="-10" relativePoint="BOTTOM"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="bag2x4" inherits="TRP3_Container2x4Template" name="$parent2x4" movable="false">
+					<Frame parentKey="bag2x4" inherits="TRP3_Container2x4Template" movable="false">
 						<Anchors>
 							<Anchor point="TOP" y="-10" relativePoint="BOTTOM"/>
 						</Anchors>
 					</Frame>
 
-					<Frame parentKey="bag1x4" inherits="TRP3_Container1x4Template" name="$parent1x4" movable="false">
+					<Frame parentKey="bag1x4" inherits="TRP3_Container1x4Template" movable="false">
 						<Anchors>
 							<Anchor point="TOP" y="-10" relativePoint="BOTTOM"/>
 						</Anchors>

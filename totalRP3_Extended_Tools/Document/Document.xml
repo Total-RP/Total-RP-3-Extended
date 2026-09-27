@@ -74,7 +74,7 @@
 					<Anchor point="RIGHT" relativePoint="CENTER" x="-4"/>
 				</Anchors>
 				<Frames>
-					<Button parentKey="background" text="${UI_BKG_BUTTON}" inherits="TRP3_CommonButton" name="$parentBackground">
+					<Button parentKey="background" text="${UI_BKG_BUTTON}" inherits="TRP3_CommonButton">
 						<Size y="22"/>
 						<Anchors>
 							<Anchor point="TOP" y="-45"/>
@@ -83,7 +83,7 @@
 						</Anchors>
 					</Button>
 
-					<DropdownButton parentKey="border" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentBorder">
+					<DropdownButton parentKey="border" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DO_PAGE_BORDER}" type="string"/>
 						</KeyValues>
@@ -118,7 +118,7 @@
 						</Anchors>
 					</EditBox>
 
-					<DropdownButton parentKey="h1_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentH1Font">
+					<DropdownButton parentKey="h1_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.height"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
@@ -126,7 +126,7 @@
 						</Anchors>
 					</DropdownButton>
 
-					<CheckButton parentKey="tile" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentVertile">
+					<CheckButton parentKey="tile" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DO_PAGE_TILING}" type="string"/>
 							<KeyValue key="helpText" value="${DO_PAGE_TILING_TT}" type="string"/>
@@ -137,7 +137,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<DropdownButton parentKey="h2_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentH2Font">
+					<DropdownButton parentKey="h2_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.h1_font"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
@@ -145,7 +145,7 @@
 						</Anchors>
 					</DropdownButton>
 
-					<CheckButton parentKey="resizable" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentHoritile">
+					<CheckButton parentKey="resizable" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${DO_PAGE_RESIZE}" type="string"/>
 							<KeyValue key="helpText" value="${DO_PAGE_RESIZE_TT}" type="string"/>
@@ -156,7 +156,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<DropdownButton parentKey="h3_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentH3Font">
+					<DropdownButton parentKey="h3_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.h2_font"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
@@ -164,7 +164,7 @@
 						</Anchors>
 					</DropdownButton>
 
-					<DropdownButton parentKey="p_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentPFont">
+					<DropdownButton parentKey="p_font" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.h3_font"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
@@ -172,7 +172,7 @@
 						</Anchors>
 					</DropdownButton>
 
-					<Button parentKey="importBook" text="Import book" inherits="TRP3_CommonButton" name="$parentImportBook">
+					<Button parentKey="importBook" text="Import book" inherits="TRP3_CommonButton">
 						<Size y="22"/>
 						<Anchors>
 							<Anchor point="TOP" y="-55" relativePoint="BOTTOM" relativeKey="$parent.resizable"/>
@@ -181,7 +181,7 @@
 						</Anchors>
 					</Button>
 
-					<Frame name="$parentPageList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_DocumentPageListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_DocumentPageListElementMixin" type="global"/>

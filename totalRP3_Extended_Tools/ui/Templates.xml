@@ -462,7 +462,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="$parentText" parentKey="title" text="" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
+				<FontString parentKey="title" text="" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="5" y="5"/>
 						<Anchor point="TOPRIGHT" x="0" y="5"/>
@@ -498,7 +498,7 @@
 
 	<EditBox name="TRP3_Tools_TitledHelpEditBoxTemplate" inherits="TRP3_Tools_TitledEditBoxTemplate" virtual="true" mixin="TRP3_Tools_TitledHelpEditBoxMixin">
 		<Frames>
-			<Button name="$parentHelp" parentKey="help" inherits="TRP3_HelpButton" hidden="true">
+			<Button parentKey="help" inherits="TRP3_HelpButton" hidden="true">
 				<Size x="14" y="14"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="-2"/>
@@ -526,7 +526,7 @@
 
 	<EditBox name="TRP3_Tools_TitledSuggestiveHelpEditBoxTemplate" inherits="TRP3_Tools_TitledEditBoxTemplate" virtual="true" mixin="TRP3_Tools_TitledSuggestiveHelpEditBoxMixin">
 		<Frames>
-			<Button name="$parentSuggestion" parentKey="suggestion" text="...">
+			<Button parentKey="suggestion" text="...">
 				<Size x="27" y="27"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="0"/>
@@ -544,7 +544,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="$parentHelp" parentKey="help" inherits="TRP3_HelpButton" hidden="true">
+			<Button parentKey="help" inherits="TRP3_HelpButton" hidden="true">
 				<Size x="14" y="14"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="-2" relativePoint="LEFT" relativeKey="$parent.suggestion"/>
@@ -678,7 +678,7 @@
 			<KeyValue key="expandable" value="true" type="boolean"/>
 		</KeyValues>
 		<Frames>
-			<Button name="$parentSuggestion" parentKey="suggestion" frameLevel="100" text="...">
+			<Button parentKey="suggestion" frameLevel="100" text="...">
 				<Size x="27" y="27"/>
 				<Anchors>
 					<Anchor point="TOPRIGHT"/>
@@ -696,7 +696,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="$parentExpand" parentKey="expand" frameLevel="100" text="+">
+			<Button parentKey="expand" frameLevel="100" text="+">
 				<Size x="27" y="27"/>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT"/>

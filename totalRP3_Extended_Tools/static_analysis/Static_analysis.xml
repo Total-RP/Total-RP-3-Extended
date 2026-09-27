@@ -97,7 +97,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_StaticAnalysisListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_StaticAnalysisListElementMixin" type="global"/>

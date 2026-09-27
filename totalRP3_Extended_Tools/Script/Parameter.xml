@@ -212,7 +212,10 @@
 
 	<Frame name="TRP3_Tools_ScriptParameterLootTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterLootMixin">
 		<Frames>
-			<Frame parentKey="bag" scale="0.8" inherits="TRP3_Container2x4Template" name="$parent2x4" frameLevel="50" hidden="false" toplevel="false" movable="false" clampedToScreen="false">
+			<!-- TODO: TRP3_API.inventory.initContainerSlots requires this frame to have a name
+				I gave it a fixed name, knowing that this template is going to be used exactly once
+			-->
+			<Frame parentKey="bag" scale="0.8" inherits="TRP3_Container2x4Template" name="TRP3_Tools_ScriptParameterLootContainer2x4" frameLevel="50" hidden="false" toplevel="false" movable="false" clampedToScreen="false">
 				<Anchors>
 					<Anchor point="TOPLEFT"/>
 				</Anchors>

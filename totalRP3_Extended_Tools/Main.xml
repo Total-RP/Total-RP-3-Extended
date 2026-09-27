@@ -111,7 +111,7 @@
 		</Anchors>
 		<Frames>
 
-			<Frame name="$parentTabs" inherits="TRP3_Tools_TabBarTemplate" mixin="TRP3_ToolFrameTabsMixin">
+			<Frame parentKey="TabBar" inherits="TRP3_Tools_TabBarTemplate" mixin="TRP3_ToolFrameTabsMixin">
 				<KeyValues>
 					<KeyValue key="minTabWidth" value="150" type="number"/>
 					<KeyValue key="maxTabWidth" value="300" type="number"/>
@@ -124,31 +124,31 @@
 				</Anchors>
 			</Frame>
 
-			<Frame name="$parentDatabase" inherits="TRP3_Tools_DatabaseTemplate" hidden="true" parentKey="database">
+			<Frame inherits="TRP3_Tools_DatabaseTemplate" hidden="true" parentKey="database">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parentTabs" relativePoint="BOTTOMLEFT" x="-6" y="2"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.TabBar" relativePoint="BOTTOMLEFT" x="-6" y="2"/>
 					<Anchor point="BOTTOMRIGHT" x="-24" y="24"/>
 				</Anchors>
 			</Frame>
 
-			<Frame name="$parentEditor" inherits="TRP3_Tools_EditorTemplate" hidden="true" parentKey="editor">
+			<Frame inherits="TRP3_Tools_EditorTemplate" hidden="true" parentKey="editor">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parentTabs" relativePoint="BOTTOMLEFT" x="-6" y="2"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.TabBar" relativePoint="BOTTOMLEFT" x="-6" y="2"/>
 					<Anchor point="BOTTOMRIGHT" x="-24" y="24"/>
 				</Anchors>
 			</Frame>
 
-			<Frame name="$parentBackers" parentKey="backers" hidden="true" inherits="BackdropTemplate">
+			<Frame parentKey="backers" hidden="true" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_24_5555" type="global"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parentTabs" relativePoint="BOTTOMLEFT" x="-6" y="2"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.TabBar" relativePoint="BOTTOMLEFT" x="-6" y="2"/>
 					<Anchor point="BOTTOMRIGHT" x="-24" y="24"/>
 				</Anchors>
 
 				<Frames>
-					<ScrollFrame name="$parentBackers" parentKey="scroll" inherits="ScrollFrameTemplate">
+					<ScrollFrame parentKey="scroll" inherits="ScrollFrameTemplate">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="8" y="-8"/>
 							<Anchor point="BOTTOMRIGHT" x="-28" y="8"/>
@@ -208,13 +208,13 @@
 							</Layer>
 						</Layers>
 						<ScrollChild>
-							<Frame name="$parentScrollChild" parentKey="child">
+							<Frame parentKey="child">
 								<Size x="10" y="10"/>
 								<Anchors>
 									<Anchor point="TOPLEFT" x="0" y="0"/>
 								</Anchors>
 								<Frames>
-									<SimpleHTML name="$parentHTML" parentKey="HTML">
+									<SimpleHTML parentKey="HTML">
 										<Size x="800" y="200"/>
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
@@ -236,7 +236,7 @@
 
 			<Frame parentKey="disclaimer" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parentTabs" relativePoint="BOTTOMLEFT" x="-6" y="4"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.TabBar" relativePoint="BOTTOMLEFT" x="-6" y="4"/>
 					<Anchor point="BOTTOMRIGHT" x="-24" y="24"/>
 				</Anchors>
 				<Frames>
@@ -284,7 +284,7 @@
 				</Anchors>
 			</Button>
 
-			<Frame name="$parentModalOverlay" parentKey="modalOverlay" inherits="TRP3_Tools_ModalOverlay">
+			<Frame parentKey="modalOverlay" inherits="TRP3_Tools_ModalOverlay">
 				<Anchors>
 					<Anchor point="TOP" y="-22"/>
 					<Anchor point="LEFT" x="22"/>

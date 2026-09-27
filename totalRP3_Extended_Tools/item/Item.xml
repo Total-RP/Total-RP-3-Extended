@@ -52,7 +52,7 @@
 						</Anchors>
 					</EditBox>
 
-					<DropdownButton parentKey="quality" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentQuality">
+					<DropdownButton parentKey="quality" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_FIELD_QUALITY}" type="string"/>
 						</KeyValues>
@@ -103,7 +103,7 @@
 						</Layers>
 					</Button>
 
-					<Frame name="$parentDescription" parentKey="description" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
+					<Frame parentKey="description" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_TT_DESCRIPTION}" type="string"/>
 							<KeyValue key="helpText" value="${IT_TT_DESCRIPTION_TT}" type="string"/>
@@ -116,7 +116,7 @@
 						</Anchors>
 					</Frame>
 
-					<CheckButton parentKey="quest" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentQuest">
+					<CheckButton parentKey="quest" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_QUEST}" type="string"/>
 							<KeyValue key="helpText" value="${IT_QUEST_TT}" type="string"/>
@@ -127,7 +127,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="container" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentContainer">
+					<CheckButton parentKey="container" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_CON}" type="string"/>
 							<KeyValue key="helpText" value="${IT_CONTAINER_TT}" type="string"/>
@@ -138,7 +138,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<DropdownButton parentKey="containerType" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentType">
+					<DropdownButton parentKey="containerType" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_CO_SIZE}" type="string"/>
 						</KeyValues>
@@ -173,7 +173,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="containerOnlyinner" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentContainer">
+					<CheckButton parentKey="containerOnlyinner" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_CO_ONLY_INNER}" type="string"/>
 							<KeyValue key="helpText" value="${IT_CO_ONLY_INNER_TT}" type="string"/>
@@ -221,7 +221,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="soulbound" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentSoulbound">
+					<CheckButton parentKey="soulbound" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="ITEM_SOULBOUND" type="global"/>
 							<KeyValue key="helpText" value="${IT_SOULBOUND_TT}" type="string"/>
@@ -232,7 +232,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="wearable" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentWearable">
+					<CheckButton parentKey="wearable" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_WEARABLE}" type="string"/>
 							<KeyValue key="helpText" value="${IT_WEARABLE_TT}" type="string"/>
@@ -243,7 +243,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="unique" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentUnique">
+					<CheckButton parentKey="unique" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="ITEM_UNIQUE" type="global"/>
 							<KeyValue key="helpText" value="${IT_UNIQUE_TT}" type="string"/>
@@ -266,7 +266,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="stack" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentStack">
+					<CheckButton parentKey="stack" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_STACK}" type="string"/>
 							<KeyValue key="helpText" value="${IT_STACK_TT}" type="string"/>
@@ -289,7 +289,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="use" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentUse">
+					<CheckButton parentKey="use" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_USE}" type="string"/>
 							<KeyValue key="helpText" value="${IT_USE_TT}" type="string"/>
@@ -312,7 +312,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="component" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentComponent">
+					<CheckButton parentKey="component" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_TT_REAGENT}" type="string"/>
 							<KeyValue key="helpText" value="${IT_TT_REAGENT_TT}" type="string"/>
@@ -323,7 +323,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="crafted" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentCrafted">
+					<CheckButton parentKey="crafted" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_CRAFTED}" type="string"/>
 							<KeyValue key="helpText" value="${IT_CRAFTED_TT}" type="string"/>
@@ -334,7 +334,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="noAdd" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentNoAdd">
+					<CheckButton parentKey="noAdd" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_NO_ADD}" type="string"/>
 							<KeyValue key="helpText" value="${IT_NO_ADD_TT}" type="string"/>
@@ -345,7 +345,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<DropdownButton parentKey="pickSound" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentPickSound">
+					<DropdownButton parentKey="pickSound" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_PU_SOUND}" type="string"/>
 						</KeyValues>
@@ -356,7 +356,7 @@
 						</Anchors>
 					</DropdownButton>
 
-					<DropdownButton parentKey="dropSound" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentDropSound">
+					<DropdownButton parentKey="dropSound" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${IT_DR_SOUND}" type="string"/>
 						</KeyValues>

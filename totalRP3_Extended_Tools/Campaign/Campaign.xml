@@ -106,7 +106,7 @@
 						</Anchors>
 					</EditBox>
 
-					<DropdownButton parentKey="vignette" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentVignette">
+					<DropdownButton parentKey="vignette" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${CA_IMAGE}" type="string"/>
 							<KeyValue key="helpText" value="${CA_IMAGE_TT}" type="string"/>
@@ -211,7 +211,7 @@
 					<Anchor point="RIGHT"/>
 				</Anchors>
 				<Frames>
-					<Frame name="$parentNPCList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_CampaignNPCListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_CampaignNPCListElementMixin" type="global"/>
@@ -224,7 +224,7 @@
 						</Anchors>
 					</Frame>
 
-					<Frame name="$parentNPCEditor" parentKey="sharedNPCEditor" enableMouse="true" hidden="true">
+					<Frame parentKey="sharedNPCEditor" enableMouse="true" hidden="true">
 						<Frames>
 							<EditBox parentKey="id" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
 								<KeyValues>

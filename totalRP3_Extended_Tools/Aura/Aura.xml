@@ -82,7 +82,7 @@
 						</Anchors>
 					</Frame>
 
-					<CheckButton parentKey="helpful" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentHelpful">
+					<CheckButton parentKey="helpful" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${AU_FIELD_HELPFUL}" type="string"/>
 							<KeyValue key="helpText" value="${AU_FIELD_HELPFUL_TT}" type="string"/>
@@ -105,7 +105,7 @@
 						</Anchors>
 					</EditBox>
 
-					<Button parentKey="borderPicker" name="$parentBorderColorPicker" inherits="TRP3_ColorPickerButton">
+					<Button parentKey="borderPicker" inherits="TRP3_ColorPickerButton">
 						<Anchors>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeKey="$parent.category"/>
 						</Anchors>
@@ -152,7 +152,7 @@
 				</Anchors>
 				<Frames>
 
-					<CheckButton parentKey="hasDuration" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentHasDuration">
+					<CheckButton parentKey="hasDuration" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${AU_FIELD_HAS_DURATION}" type="string"/>
 							<KeyValue key="helpText" value="${AU_FIELD_HAS_DURATION_TT}" type="string"/>
@@ -175,7 +175,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="alwaysActive" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentAlwaysActive">
+					<CheckButton parentKey="alwaysActive" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${AU_FIELD_ALWAYS_ACTIVE}" type="string"/>
 							<KeyValue key="helpText" value="${AU_FIELD_ALWAYS_ACTIVE_TT}" type="string"/>
@@ -186,7 +186,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="ensureExpiry" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentEnsureExpiry">
+					<CheckButton parentKey="ensureExpiry" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${AU_FIELD_ENSURE_EXPIRY}" type="string"/>
 							<KeyValue key="helpText" value="${AU_FIELD_ENSURE_EXPIRY_TT}" type="string"/>
@@ -197,7 +197,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="cancellable" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentCancellable">
+					<CheckButton parentKey="cancellable" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${AU_FIELD_CANCELLABLE}" type="string"/>
 							<KeyValue key="helpText" value="${AU_FIELD_CANCELLABLE_TT}" type="string"/>
@@ -208,7 +208,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="hasInterval" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentHasTicks">
+					<CheckButton parentKey="hasInterval" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${AU_FIELD_HAS_INTERVAL}" type="string"/>
 							<KeyValue key="helpText" value="${AU_FIELD_HAS_INTERVAL_TT}" type="string"/>
@@ -231,7 +231,7 @@
 						</Anchors>
 					</EditBox>
 
-					<CheckButton parentKey="inspectable" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentInspectable">
+					<CheckButton parentKey="inspectable" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${AU_FIELD_INSPECTABLE}" type="string"/>
 							<KeyValue key="helpText" value="${AU_FIELD_INSPECTABLE_TT}" type="string"/>
@@ -242,7 +242,7 @@
 						</Anchors>
 					</CheckButton>
 
-					<CheckButton parentKey="boundToCampaign" inherits="TRP3_Tools_CheckBoxTemplate" name="$parentBoundToCampaign">
+					<CheckButton parentKey="boundToCampaign" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
 							<KeyValue key="titleText" value="${AU_FIELD_BOUND_TO_CAMPAIGN}" type="string"/>
 							<KeyValue key="helpText" value="${AU_FIELD_BOUND_TO_CAMPAIGN_TT}" type="string"/>

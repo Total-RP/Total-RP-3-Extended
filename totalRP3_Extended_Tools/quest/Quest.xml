@@ -153,7 +153,7 @@
 					<Anchor point="RIGHT"/>
 				</Anchors>
 				<Frames>
-					<Frame name="$parentObjectiveList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_QuestObjectiveListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_QuestObjectiveListElementMixin" type="global"/>
@@ -166,7 +166,7 @@
 						</Anchors>
 					</Frame>
 
-					<Frame name="$parentObjectiveEditor" parentKey="sharedObjectiveEditor" enableMouse="true" hidden="true">
+					<Frame parentKey="sharedObjectiveEditor" enableMouse="true" hidden="true">
 						<Frames>
 							<EditBox parentKey="id" inherits="TRP3_Tools_TitledHelpEditBoxTemplate">
 								<KeyValues>

@@ -517,7 +517,7 @@ end
 
 local function onInit()
 	toolFrame = TRP3_ToolFrame;
-	tabBar = TRP3_ToolFrameTabs;
+	tabBar = TRP3_ToolFrame.TabBar;
 
 	if not TRP3_Tools_Parameters then
 		TRP3_Tools_Parameters = {};

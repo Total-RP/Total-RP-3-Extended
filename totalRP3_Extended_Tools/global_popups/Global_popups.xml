@@ -93,7 +93,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_ObjectsBrowserListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_ObjectsBrowserListElementMixin" type="global"/>
@@ -225,7 +225,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_EmotesBrowserListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_EmotesBrowserListElementMixin" type="global"/>
@@ -438,7 +438,7 @@
 				</Scripts>
 			</Button>
 
-			<DropdownButton parentKey="instanceSelection" inherits="TRP3_Tools_TitledDropdownButtonTemplate" name="$parentInstanceSelection">
+			<DropdownButton parentKey="instanceSelection" inherits="TRP3_Tools_TitledDropdownButtonTemplate">
 				<Anchors>
 					<Anchor point="TOP" y="-35"/>
 					<Anchor point="LEFT" x="10"/>
@@ -460,7 +460,7 @@
 				</Anchors>
 
 				<Frames>
-					<Frame name="$parentList" parentKey="list" inherits="TRP3_Tools_ListTemplate">
+					<Frame parentKey="list" inherits="TRP3_Tools_ListTemplate">
 						<KeyValues>
 							<KeyValue key="listElementTemplate" value="TRP3_Tools_VariableInspectorListElementTemplate" type="string"/>
 							<KeyValue key="listElementMixin" value="TRP3_Tools_VariableInspectorListElementMixin" type="global"/>
