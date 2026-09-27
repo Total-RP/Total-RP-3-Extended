@@ -124,6 +124,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.description"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -135,6 +136,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.quest"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -181,6 +183,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.containerMaxweight"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 				</Frames>
@@ -229,6 +232,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.value"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -240,6 +244,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.weight"/>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -251,6 +256,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.soulbound"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -274,6 +280,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.unique"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -297,6 +304,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.stack"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -320,6 +328,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.use"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -331,6 +340,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.usetext"/>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -342,6 +352,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.crafted"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 

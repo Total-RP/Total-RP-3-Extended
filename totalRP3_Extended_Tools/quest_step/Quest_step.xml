@@ -67,6 +67,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.post"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -78,6 +79,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.auto"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 

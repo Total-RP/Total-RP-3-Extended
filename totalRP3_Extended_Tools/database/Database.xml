@@ -478,6 +478,7 @@
 				<Anchors>
 					<Anchor point="TOP" y="-35"/>
 					<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
 			</CheckButton>
 

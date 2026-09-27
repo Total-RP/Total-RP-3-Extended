@@ -140,7 +140,8 @@
 							<KeyValue key="helpText" value="Show only objects within this creation" type="string"/>
 						</KeyValues>
 						<Anchors>
-							<Anchor point="LEFT" x="10" relativePoint="RIGHT" relativeKey="$parent.box"/>
+							<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeKey="$parent.box"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 				</Frames>

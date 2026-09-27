@@ -304,6 +304,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.distance"/>
 							<Anchor point="LEFT" x="20"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -365,6 +366,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.text"/>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -385,6 +387,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.loot"/>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -408,6 +411,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-58" relativePoint="BOTTOM" relativeKey="$parent.choices"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -430,6 +434,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.direction"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -453,6 +458,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.name"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -483,6 +489,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.background"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -521,6 +528,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.image"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -555,6 +563,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.leftUnit"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 

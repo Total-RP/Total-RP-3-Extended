@@ -90,6 +90,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.flavor"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -160,6 +161,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-45"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -183,6 +185,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.hasDuration"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -194,6 +197,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.duration"/>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="CENTER"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -205,6 +209,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.alwaysActive"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -216,6 +221,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.cancellable"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -239,6 +245,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.hasInterval"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 
@@ -250,6 +257,7 @@
 						<Anchors>
 							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.inspectable"/>
 							<Anchor point="LEFT" x="20" y="0"/>
+							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
 

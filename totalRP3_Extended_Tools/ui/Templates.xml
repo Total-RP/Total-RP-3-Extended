@@ -571,7 +571,37 @@
 	</EditBox>
 
 	<CheckButton name="TRP3_Tools_CheckBoxTemplate" inherits="TRP3_CheckBox" virtual="true" mixin="TRP3_Tools_CheckBoxMixin">
-		<Size x="25" y="25"/>
+		<Size x="100" y="25"/> <!-- original atlas is 30 x 29 -->
+		<NormalTexture atlas="checkbox-minimal">
+			<Size x="26" y="25"/>
+			<Anchors>
+				<Anchor point="TOPLEFT"/>
+			</Anchors>
+		</NormalTexture>
+		<PushedTexture atlas="checkbox-minimal">
+			<Size x="26" y="25"/>
+			<Anchors>
+				<Anchor point="TOPLEFT"/>
+			</Anchors>
+		</PushedTexture>
+		<CheckedTexture atlas="checkmark-minimal">
+			<Size x="26" y="25"/>
+			<Anchors>
+				<Anchor point="TOPLEFT"/>
+			</Anchors>
+		</CheckedTexture>
+		<DisabledCheckedTexture atlas="checkmark-minimal-disabled">
+			<Size x="26" y="25"/>
+			<Anchors>
+				<Anchor point="TOPLEFT"/>
+			</Anchors>
+		</DisabledCheckedTexture>
+		<ButtonText parentKey="Text" justifyH="LEFT">
+			<Anchors>
+				<Anchor point="LEFT" x="30" y="0"/>
+				<Anchor point="RIGHT"/>
+			</Anchors>
+		</ButtonText>
 	</CheckButton>
 
 	<DropdownButton name="TRP3_Tools_TitledDropdownButtonTemplate" mixin="WowStyle1DropdownMixin,TRP3_Tools_TitledDropdownButtonMixin" virtual="true">

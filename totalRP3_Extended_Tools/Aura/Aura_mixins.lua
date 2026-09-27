@@ -153,9 +153,6 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 		end
 	end);
 
-	-- text might be longer in some localizations, let's ensure it doesn't clip out of frame
-	gameplay.ensureExpiry.Text:SetPoint("RIGHT", gameplay, "RIGHT", -20, 0);
-	gameplay.ensureExpiry.Text:SetJustifyH("LEFT");
 end
 
 function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, _cursor)

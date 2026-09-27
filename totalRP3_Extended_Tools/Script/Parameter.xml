@@ -115,17 +115,18 @@
 					<Anchor point="LEFT"/>
 				</Anchors>
 			</EditBox>
-			<CheckButton parentKey="soundFileId" inherits="TRP3_Tools_CheckBoxTemplate">
-				<Anchors>
-					<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeKey="$parent.id"/>
-				</Anchors>
-			</CheckButton>
 			<Button parentKey="play" inherits="TRP3_CommonButton">
 				<Size x="90" y="22"/>
 				<Anchors>
 					<Anchor point="RIGHT"/>
 				</Anchors>
 			</Button>
+			<CheckButton parentKey="soundFileId" inherits="TRP3_Tools_CheckBoxTemplate">
+				<Anchors>
+					<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeKey="$parent.id"/>
+					<Anchor point="RIGHT" x="-10" y="0" relativePoint="LEFT" relativeKey="$parent.play"/>
+				</Anchors>
+			</CheckButton>
 		</Frames>
 	</Frame>
 
@@ -135,6 +136,7 @@
 			<CheckButton parentKey="value" inherits="TRP3_Tools_CheckBoxTemplate">
 				<Anchors>
 					<Anchor point="LEFT"/>
+					<Anchor point="RIGHT"/>
 				</Anchors>
 			</CheckButton>
 		</Frames>
