@@ -64,6 +64,7 @@ stds.wow = {
 
 		"date",
 		"floor",
+		"ipairs_reverse",
 		"min",
 		"mod",
 		"sqrt",
@@ -74,6 +75,7 @@ stds.wow = {
 		"strsplit",
 		"strtrim",
 		"tContains",
+		"tDeleteItem",
 		"time",
 		"tinsert",
 		"tInvert",
@@ -156,6 +158,12 @@ stds.wow = {
 			},
 		},
 
+		C_Texture = {
+			fields = {
+				"GetAtlasInfo",
+			},
+		},
+
 		C_Timer = {
 			fields = {
 				"After",
@@ -176,6 +184,12 @@ stds.wow = {
 			},
 		},
 
+		SOUNDKIT = {
+			fields = {
+				"IG_CHARACTER_INFO_TAB",
+			},
+		},
+
 		"Ambiguate",
 		"APIDocumentation_LoadUI",
 		"CameraZoomIn",
@@ -190,15 +204,22 @@ stds.wow = {
 		"CombatLogGetCurrentEventInfo",
 		"CopyTable",
 		"CountTable",
+		"CreateAnchor",
+		"CreateDataProvider",
 		"CreateFrame",
 		"CreateFramePool",
+		"CreateFramePoolCollection",
 		"CreateFromMixins",
 		"CreateMacro",
+		"CreateScrollBoxListLinearView",
+		"CreateScrollBoxListTreeListView",
+		"CreateTreeDataProvider",
 		"DismissCompanion",
 		"DoEmote",
 		"Enum",
 		"EventRegistry",
 		"GetAchievementInfo",
+		"GetCursorPosition",
 		"GetCVar",
 		"GetGuildInfo",
 		"GetMacroIndexByName",
@@ -215,8 +236,16 @@ stds.wow = {
 		"IsControlKeyDown",
 		"IsInInstance",
 		"IsModifiedClick",
+		"IsModifierKeyDown",
 		"issecurevariable",
 		"IsShiftKeyDown",
+		"ItemTextFrame",
+		"ItemTextGetPage",
+		"ItemTextPrevPage",
+		"ItemTextGetItem",
+		"ItemTextGetText",
+		"ItemTextHasNextPage",
+		"ItemTextNextPage",
 		"Mixin",
 		"NavBar_AddButton",
 		"NavBar_ButtonOnEnter",
@@ -225,8 +254,10 @@ stds.wow = {
 		"NavBar_Reset",
 		"nop",
 		"PickupMacro",
+		"PlaySound",
 		"ReloadUI",
 		"ResetCursor",
+		"ScrollUtil",
 		"SaveView",
 		"SetCursor",
 		"SetView",

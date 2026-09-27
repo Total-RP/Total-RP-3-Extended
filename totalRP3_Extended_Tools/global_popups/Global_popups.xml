@@ -27,7 +27,7 @@
 	<Button name="TRP3_Tools_ObjectsBrowserListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_ObjectsBrowserListElementMixin">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="title" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="title" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="LEFT" x="8"/>
 						<Anchor point="RIGHT" x="-8"/>
@@ -153,14 +153,14 @@
 	<Button name="TRP3_Tools_EmotesBrowserListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_EmotesBrowserListElementMixin">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="token" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="token" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
 					<Size x="125"/>
 					<Anchors>
 						<Anchor point="LEFT" x="8"/>
 					</Anchors>
 					<Color b="0.95" r="0.95" g="0.95"/>
 				</FontString>
-				<FontString parentKey="command" inherits="GameFontNormal" maxLines="1" justifyH="RIGHT" justifyV="CENTER">
+				<FontString parentKey="command" inherits="GameFontNormal" maxLines="1" justifyH="RIGHT" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="LEFT" x="4" relativePoint="RIGHT" relativeKey="$parent.token"/>
 						<Anchor point="RIGHT" x="-8"/>
@@ -360,14 +360,14 @@
 	<Button name="TRP3_Tools_VariableInspectorListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_VariableInspectorListElementMixin">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="key" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="key" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="MIDDLE">
 					<Size x="200"/>
 					<Anchors>
 						<Anchor point="LEFT" x="8"/>
 					</Anchors>
 					<Color b="0.95" r="0.95" g="0.95"/>
 				</FontString>
-				<FontString parentKey="value" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="value" inherits="GameFontNormal" maxLines="1" justifyH="LEFT" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="LEFT" x="4" relativePoint="RIGHT" relativeKey="$parent.key"/>
 						<Anchor point="RIGHT" x="-32"/>
@@ -415,7 +415,7 @@
 					</Anchors>
 					<Color b="0.95" r="0.95" g="0.95"/>
 				</FontString>
-				<FontString parentKey="errorText" inherits="GameFontNormal" justifyH="CENTER" justifyV="CENTER">
+				<FontString parentKey="errorText" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE">
 					<Size x="400" y="50"/>
 					<Anchors>
 						<Anchor point="CENTER"/>

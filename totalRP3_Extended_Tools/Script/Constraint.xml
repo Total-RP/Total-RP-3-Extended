@@ -9,7 +9,7 @@
 	<Button name="TRP3_Tools_ScriptConstraintEditorListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_ScriptConstraintEditorListElementMixin">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="open" text="(" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="open" text="(" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="MIDDLE">
 					<Size x="10" y="22"/>
 					<Anchors>
 						<Anchor point="TOP" y="-8"/>
@@ -18,7 +18,7 @@
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
 
-				<FontString parentKey="close" text=")" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="CENTER">
+				<FontString parentKey="close" text=")" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="MIDDLE">
 					<Size x="10" y="22"/>
 					<Anchors>
 						<Anchor point="TOP" y="-8"/>
@@ -27,7 +27,7 @@
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
 
-				<FontString parentKey="expression" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="expression" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
 					<Size y="22"/>
 					<Anchors>
 						<Anchor point="TOP" y="-8"/>

@@ -10,7 +10,7 @@
 	<Button name="TRP3_Tools_DocumentPageListElementTemplate" inherits="TRP3_Tools_ListElementTemplate" virtual="true" mixin="TRP3_Tools_DocumentPageListElementMixin">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="label" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="LEFT" x="8"/>
 						<Anchor point="RIGHT" x="-8"/>

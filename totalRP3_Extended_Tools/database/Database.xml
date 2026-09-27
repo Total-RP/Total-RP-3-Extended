@@ -15,14 +15,14 @@
 						<Anchor point="LEFT" x="8"/>
 					</Anchors>
 				</Texture>
-				<FontString parentKey="link" text="" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="link" text="" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
 					<Size x="10000" y="24"/> <!-- textures are not properly centered if the string is too long to fit... unless you trick the system into thinking the line is obscenely long :-) -->
 					<Anchors>
 						<Anchor point="LEFT" x="2" relativePoint="RIGHT" relativeKey="$parent.typeIcon"/>
 						<Anchor point="RIGHT" x="-120"/>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="creator" text="" maxLines="1" inherits="GameFontNormal" justifyH="RIGHT" justifyV="CENTER">
+				<FontString parentKey="creator" text="" maxLines="1" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE">
 					<Size x="10000" y="24"/>
 					<Anchors>
 						<Anchor point="LEFT" x="-120" relativePoint="RIGHT"/>
@@ -373,7 +373,7 @@
 		<Size x="1" y="40"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="open" text="(" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="open" text="(" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="MIDDLE">
 					<Size x="10" y="22"/>
 					<Anchors>
 						<Anchor point="TOP" y="-8"/>
@@ -381,7 +381,7 @@
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
-				<FontString parentKey="close" text=")" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="CENTER">
+				<FontString parentKey="close" text=")" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="MIDDLE">
 					<Size x="10" y="22"/>
 					<Anchors>
 						<Anchor point="TOP" y="-8"/>

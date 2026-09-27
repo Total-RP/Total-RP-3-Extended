@@ -128,7 +128,7 @@
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
-								<FontString parentKey="label" text="${EDITOR_ICON_SELECT}" maxLines="2" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+								<FontString parentKey="label" text="${EDITOR_ICON_SELECT}" maxLines="2" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
 									<Size x="120" y="26"/>
 									<Anchors>
 										<Anchor point="LEFT" x="35"/>

@@ -31,7 +31,7 @@
 						<Anchor point="LEFT" x="32"/>
 					</Anchors>
 				</Texture>
-				<FontString parentKey="link" text="" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="link" text="" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="TOP"/>
 						<Anchor point="BOTTOM"/>

@@ -133,13 +133,13 @@
 					<Anchor point="TOPLEFT" x="32" y="0"/>
 					<Anchor point="BOTTOMRIGHT" x="-32" y="0"/>
 				</Anchors>
-				<Scrollchild>
+				<ScrollChild>
 					<Frame parentKey="scrollChild">
 						<Anchors>
 							<Anchor point="TOPLEFT"/>
 						</Anchors>
 					</Frame>
-				</Scrollchild>
+				</ScrollChild>
 			</ScrollFrame>
 
 		</Frames>

@@ -30,7 +30,7 @@
 						<Anchor point="LEFT" x="8"/>
 					</Anchors>
 				</Texture>
-				<FontString parentKey="label" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="CENTER">
+				<FontString parentKey="label" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="LEFT" x="30"/>
 						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.delete" x="-2"/>
@@ -60,7 +60,7 @@
 
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" maxLines="1" justifyV="CENTER">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" maxLines="1" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="TOP" y="-5" />
 						<Anchor point="LEFT" x="10" />
@@ -70,7 +70,7 @@
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
 
-				<FontString parentKey="next" inherits="GameFontNormal" justifyH="RIGHT" maxLines="1" justifyV="CENTER">
+				<FontString parentKey="next" inherits="GameFontNormal" justifyH="RIGHT" maxLines="1" justifyV="MIDDLE">
 					<Anchors>
 						<Anchor point="TOP" y="-5" />
 						<Anchor point="LEFT" x="-110" relativePoint="RIGHT"/>
