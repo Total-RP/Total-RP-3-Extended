@@ -169,6 +169,7 @@ local iconHandler = function(icon)
 end
 
 local function openStashEditor(stashIndex)
+	TRP3_IconBrowserFrame:Hide();
 	stashEditFrame.stashIndex = stashIndex;
 	if stashIndex then
 		stashEditFrame.title:SetText(loc.DR_STASHES_EDIT);
