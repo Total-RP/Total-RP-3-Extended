@@ -61,8 +61,8 @@ local function onConvert()
 end
 
 local function onIconSelected(icon)
-	editor.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
-	editor.preview.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(editor.preview.Icon, icon or "TEMP");
+	editor.preview.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function loadData(data)

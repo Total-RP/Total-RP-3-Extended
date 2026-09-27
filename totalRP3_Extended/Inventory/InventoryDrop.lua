@@ -164,8 +164,8 @@ local stashContainer;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 
 local iconHandler = function(icon)
-	stashEditFrame.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-	stashEditFrame.icon.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(stashEditFrame.icon.Icon, icon);
+	stashEditFrame.icon.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function openStashEditor(stashIndex)
@@ -229,7 +229,7 @@ end
 
 function showStash(stashInfo, stashIndex, sharedData)
 	if stashInfo then
-		stashContainer.Icon:SetTexture("Interface\\ICONS\\" .. (stashInfo.BA.IC or "TEMP"));
+		TRP3_IconUtil.SetTextureToIcon(stashContainer.Icon, stashInfo.BA.IC or "TEMP");
 		stashContainer.Title:SetText((stashInfo.BA.NA or loc.DR_STASHES_NAME));
 
 		if not sharedData or not stashContainer.sync then

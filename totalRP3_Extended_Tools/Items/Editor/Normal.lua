@@ -23,8 +23,8 @@ local TUTORIAL, CONTAINER_TUTORIAL;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onIconSelected(icon)
-	display.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
-	display.preview.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(display.preview.Icon, icon or "TEMP");
+	display.preview.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function refreshCheck()

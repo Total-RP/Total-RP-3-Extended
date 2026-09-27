@@ -30,8 +30,8 @@ local stepClipboardID;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onIconSelected(icon)
-	main.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
-	main.preview.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(main.preview.Icon, icon or "TEMP");
+	main.preview.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function decorateObjectiveLine(line, objectiveID)

@@ -103,7 +103,7 @@ local function loadDataInner()
 end
 
 local function onIconSelected(icon)
-	display.preview.aura.class.BA.IC = icon;
+	display.preview.aura.class.BA.IC = TRP3_IconUtil.SerializeIcon(icon);
 	display.preview:SetAuraAndShow(display.preview.aura);
 end
 

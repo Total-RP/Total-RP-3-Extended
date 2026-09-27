@@ -408,9 +408,9 @@ local function inv_loot_init()
 	-- Icon
 	setTooltipForSameFrame(editor.icon, "RIGHT", 0, 5, loc.EDITOR_ICON);
 	local iconHandler = function(icon)
-		editor.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-		editor.bag.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-		editor.icon.selectedIcon = icon;
+		TRP3_IconUtil.SetTextureToIcon(editor.icon.Icon, icon);
+		TRP3_IconUtil.SetTextureToIcon(editor.bag.Icon, icon);
+		editor.icon.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 	end
 	editor.icon:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,

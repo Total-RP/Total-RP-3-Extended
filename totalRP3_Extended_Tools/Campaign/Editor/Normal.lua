@@ -33,8 +33,8 @@ local questClipboardID;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onIconSelected(icon)
-	main.vignette.Icon:SetTexture("Interface\\ICONS\\" .. (icon or "TEMP"));
-	main.vignette.selectedIcon = icon;
+	TRP3_IconUtil.SetTextureToIcon(main.vignette.Icon, icon or "TEMP");
+	main.vignette.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function onCampaignPortraitSelected(portrait)
@@ -44,7 +44,7 @@ end
 
 local function onNPCIconSelected(icon)
 	TRP3_API.ui.frame.setupIconButton(npc.editor.icon, icon);
-	npc.editor.icon.selectedIcon = icon;
+	npc.editor.icon.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 end
 
 local function decorateNPCLine(line, npcID)
