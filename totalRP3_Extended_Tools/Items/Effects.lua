@@ -477,6 +477,7 @@ local function inv_loot_init()
 		editor.drop:SetChecked(data[4] or false);
 		iconHandler(data[2] or "inv_misc_bag_07");
 		editor.bag.editor:Hide();
+		TRP3_IconBrowserFrame:Hide();
 		for index, slot in pairs(editor.bag.slots) do
 			slot.info = nil;
 			slot.class = nil;
