@@ -4,10 +4,6 @@
 -->
 <Bindings>
 	<Binding name="TRP3_EXTENDED_TOOLS" category="BINDING_HEADER_TRP3">
-		if TRP3_ToolFrame:IsVisible() then
-			TRP3_ToolFrame:Hide();
-		else
-			TRP3_API.extended.tools.showFrame();
-		end
+		TRP3_API.extended.tools.toggleFrame();
 	</Binding>
 </Bindings>
