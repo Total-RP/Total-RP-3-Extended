@@ -319,7 +319,7 @@ function TRP3_Tools_EditorScriptMixin:OnScriptSelected(scriptId, overwriteScroll
 			table.insert(effects, {
 				title   = addon.script.getEffectTitle(effect),
 				preview = addon.script.getEffectPreview(effect),
-				icon    = "Interface\\Icons\\" .. addon.script.getEffectIcon(effect),
+				icon    = TRP3_API.utils.getIconTexture(addon.script.getEffectIcon(effect)),
 				constraint = self:ConstraintToPreview(effect.constraint, "IF"),
 				security = addon.script.getEffectSecurity(effect)
 			});

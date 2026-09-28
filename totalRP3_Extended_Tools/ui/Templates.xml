@@ -812,4 +812,28 @@
 		</Scripts>
 	</Button>
 
+	<Button name="TRP3_Tools_IconPickerButtonTemplate" inherits="TRP3_BorderedIconButtonTemplate" virtual="true" mixin="TRP3_Tools_IconPickerButtonMixin">
+		<!-- TODO: Yes, I am aware of the irony that I just did away with the "text outside of frame" for checkboxes,
+			but I'm willing to risk it, as the icon text is typically short.
+		 -->
+		<Size x="40" y="40"/>
+		<NormalFont style="GameFontNormalSmall"/>
+		<DisabledFont style="GameFontDisableSmall"/>
+		<ButtonText parentKey="Text" justifyH="LEFT">
+			<Anchors>
+				<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0"/>
+			</Anchors>
+		</ButtonText>
+		<Scripts>
+			<OnLoad method="Initialize"/>
+			<OnClick method="OnClick"/>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
 </Ui>

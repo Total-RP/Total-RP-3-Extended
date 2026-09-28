@@ -9,16 +9,6 @@ function TRP3_Tools_EditorQuestMixin:Initialize()
 	self.main.description:SetupSuggestions("Tag", addon.editor.populateObjectTagMenu);
 	self.objective.sharedObjectiveEditor.text:SetupSuggestions("Tag", addon.editor.populateObjectTagMenu);
 
-	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.main.icon, "RIGHT", 0, 5, "Quest icon", loc.EDITOR_ICON_SELECT);
-	self.main.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon)
-				self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-				self.main.icon.selectedIcon = icon;
-			end,
-			nil,
-			nil,
-			self.main.icon.selectedIcon});
-	end);
 end
 
 function TRP3_Tools_EditorQuestMixin:ClassToInterface(class, _creationClass, _cursor)
@@ -28,8 +18,7 @@ function TRP3_Tools_EditorQuestMixin:ClassToInterface(class, _creationClass, _cu
 	self.main.description:SetText(BA.DE or "");
 	self.main.auto:SetChecked(BA.IN or false);
 	self.main.progress:SetChecked(BA.PR or false);
-	self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or addon.constants.OBJECT_ICON_DEFAULT));
-	self.main.icon.selectedIcon = BA.IC;
+	self.main.icon:SetIcon(BA.IC or addon.constants.OBJECT_ICON_DEFAULT);
 
 	local objectives = {};
 	for objectiveId, objectiveData in pairs(class.OB or TRP3_API.globals.empty) do
@@ -55,7 +44,7 @@ function TRP3_Tools_EditorQuestMixin:InterfaceToClass(targetClass, _targetCursor
 	targetClass.BA = targetClass.BA or {};
 	targetClass.BA.NA = TRP3_API.utils.str.emptyToNil(strtrim(self.main.name:GetText()));
 	targetClass.BA.DE = TRP3_API.utils.str.emptyToNil(strtrim(self.main.description:GetText()));
-	targetClass.BA.IC = self.main.icon.selectedIcon;
+	targetClass.BA.IC = self.main.icon:GetIcon();
 	targetClass.BA.IN = self.main.auto:GetChecked();
 	targetClass.BA.PR = self.main.progress:GetChecked();
 

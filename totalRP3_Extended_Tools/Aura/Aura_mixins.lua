@@ -4,7 +4,7 @@ local loc = TRP3_API.loc;
 TRP3_Tools_EditorAuraMixin = CreateFromMixins(TRP3_Tools_EditorObjectMixin);
 
 function TRP3_Tools_EditorAuraMixin:UpdatePreview(doFullUpdate)
-	self.preview.class.BA.IC = self.display.icon.selectedIcon;
+	self.preview.class.BA.IC = self.display.icon:GetIcon();
 	self.preview.class.BA.OV = TRP3_API.utils.str.emptyToNil(strtrim(self.display.overlay:GetText()));
 
 	local r, g, b = self.display.borderPicker.red, self.display.borderPicker.green, self.display.borderPicker.blue;
@@ -102,18 +102,8 @@ function TRP3_Tools_EditorAuraMixin:Initialize()
 		.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
 		.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
-	TRP3_API.ui.tooltip.setTooltipForSameFrame(display.icon, "RIGHT", 0, 5, "Aura icon", "select an aura icon");
-	display.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {
-			function(icon)
-				display.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-				display.icon.selectedIcon = icon;
-				self:UpdatePreview();
-			end,
-			nil,
-			nil,
-			display.icon.selectedIcon
-		});
+	display.icon:RegisterCallback("OnIconChanged", function()
+		self:UpdatePreview();
 	end);
 
 	self.preview = {
@@ -171,8 +161,7 @@ function TRP3_Tools_EditorAuraMixin:ClassToInterface(class, creationClass, _curs
 	self.display.overlay:SetText(BA.OV or "");
 	self.display.helpful:SetChecked(BA.HE or false);
 
-	self.display.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or addon.constants.OBJECT_ICON_DEFAULT));
-	self.display.icon.selectedIcon = BA.IC;
+	self.display.icon:SetIcon(BA.IC or addon.constants.OBJECT_ICON_DEFAULT);
 
 	local hasDuration = BA.DU ~= nil;
 	self.gameplay.hasDuration:SetChecked(hasDuration);
@@ -212,7 +201,7 @@ function TRP3_Tools_EditorAuraMixin:InterfaceToClass(targetClass, _targetCursor)
 	targetClass.BA.FL = TRP3_API.utils.str.emptyToNil(strtrim(self.display.flavor:GetText()));
 	targetClass.BA.OV = TRP3_API.utils.str.emptyToNil(strtrim(self.display.overlay:GetText()));
 	targetClass.BA.HE = self.display.helpful:GetChecked();
-	targetClass.BA.IC = self.display.icon.selectedIcon;
+	targetClass.BA.IC = self.display.icon:GetIcon();
 
 	if self.gameplay.hasDuration:GetChecked() then
 		targetClass.BA.DU = tonumber(self.gameplay.duration:GetText()) or addon.constants.AURA_DURATION_DEFAULT;

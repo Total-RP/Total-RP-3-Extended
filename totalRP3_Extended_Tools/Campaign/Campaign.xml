@@ -118,20 +118,14 @@
 						</Anchors>
 					</DropdownButton>
 
-					<Button parentKey="icon" inherits="TRP3_IconButton">
+					<Button parentKey="icon" text="${CA_ICON}" inherits="TRP3_Tools_IconPickerButtonTemplate">
+						<KeyValues>
+							<KeyValue key="helpText" value="${CA_ICON_TT}" type="string"/>
+						</KeyValues>
 						<Anchors>
-							<Anchor point="LEFT" x="20" relativePoint="RIGHT" relativeKey="$parent.vignette"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+							<Anchor point="TOP" x="0" y="-27"/>
 						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-								<FontString parentKey="label" text="${CA_ICON}" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
-									<Size x="100" y="20"/>
-									<Anchors>
-										<Anchor point="LEFT" x="35"/>
-									</Anchors>
-								</FontString>
-							</Layer>
-						</Layers>
 					</Button>
 
 					<Frame parentKey="description" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
@@ -272,9 +266,12 @@
 								</Anchors>
 							</EditBox>
 
-							<Button parentKey="icon" inherits="TRP3_IconButton">
+							<Button parentKey="icon" text="" inherits="TRP3_Tools_IconPickerButtonTemplate">
+								<KeyValues>
+									<KeyValue key="helpText" value="" type="string"/>
+								</KeyValues>
 								<Anchors>
-									<Anchor point="TOP" y="-14" relativePoint="BOTTOM" relativeKey="$parent.title"/>
+									<Anchor point="TOP" y="-33" relativePoint="BOTTOM" relativeKey="$parent.title"/>
 									<Anchor point="LEFT" x="20"/>
 								</Anchors>
 							</Button>

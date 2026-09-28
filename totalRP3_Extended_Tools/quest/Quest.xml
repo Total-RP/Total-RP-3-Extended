@@ -122,22 +122,15 @@
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>
 					</CheckButton>
-
-					<Button parentKey="icon" inherits="TRP3_IconButton">
+					
+					<Button parentKey="icon" text="Quest icon TODO" inherits="TRP3_Tools_IconPickerButtonTemplate">
+						<KeyValues>
+							<KeyValue key="helpText" value="${EDITOR_ICON_SELECT}" type="string"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOP" y="-33" relativePoint="BOTTOM" relativeKey="$parent.description"/>
 							<Anchor point="LEFT" x="10" relativePoint="CENTER"/>
 						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-								<FontString parentKey="label" text="${EDITOR_ICON_SELECT}" maxLines="2" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
-									<Size x="120" y="26"/>
-									<Anchors>
-										<Anchor point="LEFT" x="35"/>
-									</Anchors>
-								</FontString>
-							</Layer>
-						</Layers>
 					</Button>
 
 				</Frames>

@@ -36,17 +36,8 @@ function TRP3_Tools_EditorItemMixin:Initialize()
 	-- Container Size
 	TRP3_API.ui.listbox.setupListBox(display.containerType, containerTypes);
 
-	TRP3_API.ui.tooltip.setTooltipForSameFrame(display.icon, "RIGHT", 0, 5, loc.OP_OP_INV_ICON, "select an item icon");
-	display.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {
-			function(icon)
-				display.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-				display.icon.selectedIcon = icon;
-				self:UpdatePreview();
-			end,
-			nil,
-			nil,
-			display.icon.selectedIcon});
+	display.icon:RegisterCallback("OnIconChanged", function()
+		self:UpdatePreview();
 	end);
 
 	local gameplay = self.gameplay;
@@ -137,8 +128,7 @@ function TRP3_Tools_EditorItemMixin:ClassToInterface(class, _, _cursor)
 	self.display.containerMaxweight:SetText(containerData.MW or "0");
 	self.display.containerOnlyinner:SetChecked(containerData.OI or false);
 
-	self.display.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or addon.constants.OBJECT_ICON_DEFAULT));
-	self.display.icon.selectedIcon = BA.IC;
+	self.display.icon:SetIcon(BA.IC or addon.constants.OBJECT_ICON_DEFAULT);
 
 	self:UpdatePreview();
 	self:UpdateElementVisibility();
@@ -156,7 +146,7 @@ function TRP3_Tools_EditorItemMixin:InterfaceToClass(targetClass, _targetCursor)
 	targetClass.BA.CO = self.gameplay.component:GetChecked();
 	targetClass.BA.CR = self.gameplay.crafted:GetChecked();
 	targetClass.BA.QE = self.display.quest:GetChecked();
-	targetClass.BA.IC = self.display.icon.selectedIcon;
+	targetClass.BA.IC = self.display.icon:GetIcon();
 	targetClass.BA.VA = tonumber(self.gameplay.value:GetText()) or 0;
 	targetClass.BA.WE = tonumber(self.gameplay.weight:GetText()) or 0;
 	targetClass.BA.SB = self.gameplay.soulbound:GetChecked();

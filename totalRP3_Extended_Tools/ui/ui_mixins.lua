@@ -2,6 +2,9 @@ local _, addon = ...
 
 TRP3_Tools_ListMixin = {};
 
+
+ -- TODO https://warcraft.wiki.gg/wiki/Making_scrollable_frames
+ -- # Custom Element Factories
 function TRP3_Tools_ListMixin:Initialize()
 	local model = CreateDataProvider();
 	local view = CreateScrollBoxListLinearView();
@@ -966,4 +969,41 @@ TRP3_Tools_DeleteButtonMixin = {};
 
 function TRP3_Tools_DeleteButtonMixin:Initialize()
 	TRP3_API.ui.tooltip.setTooltipForSameFrame(self, "BOTTOMRIGHT", 0, 0, DELETE);
+end
+
+TRP3_Tools_IconPickerButtonMixin = CreateFromMixins(CallbackRegistryMixin);
+TRP3_Tools_IconPickerButtonMixin:GenerateCallbackEvents({"OnIconChanged"});
+
+function TRP3_Tools_IconPickerButtonMixin:Initialize()
+	CallbackRegistryMixin.OnLoad(self);
+	self.selectedIcon = "INV_MISC_QUESTIONMARK"; -- TODO: the same initial texture as TRP3_IconTextureTemplate, maybe link it better
+end
+
+function TRP3_Tools_IconPickerButtonMixin:Localize(transform)
+	self:SetText(transform(self:GetText()));
+	self.helpText  = transform(self.helpText);
+	TRP3_API.ui.tooltip.setTooltipForSameFrame(self, "BOTTOMRIGHT", 0, 0, self:GetText(), self.helpText);
+end
+
+function TRP3_Tools_IconPickerButtonMixin:OnClick()
+	addon.modal:ShowModal(TRP3_API.popup.ICONS, {
+		function(iconName, _iconInfo)
+			-- TODO: this is in preparation for the icon consolidation
+			-- Check if iconName or iconInfo.??? should be used
+			self:SetIcon(iconName or "INV_MISC_QUESTIONMARK");
+		end,
+		nil, -- onCancelCallback
+		nil, -- scale
+		self.selectedIcon
+	});
+end
+
+function TRP3_Tools_IconPickerButtonMixin:SetIcon(icon)
+	self.selectedIcon = icon;
+	self:SetIconTexture(self.selectedIcon);
+	self:TriggerEvent("OnIconChanged", self, self.selectedIcon);
+end
+
+function TRP3_Tools_IconPickerButtonMixin:GetIcon()
+	return self.selectedIcon;
 end

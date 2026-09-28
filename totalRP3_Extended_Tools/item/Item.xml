@@ -87,21 +87,27 @@
 						</Anchors>
 					</EditBox>
 
-					<Button parentKey="icon" inherits="TRP3_IconButton">
+					<Button parentKey="icon" text="${OP_OP_INV_ICON}" inherits="TRP3_Tools_IconPickerButtonTemplate">
+						<KeyValues>
+							<KeyValue key="helpText" value="Select an item icon TODO" type="string"/>
+						</KeyValues>
 						<Anchors>
-							<Anchor point="TOP" y="-12" relativePoint="BOTTOM" relativeKey="$parent.left"/>
-							<Anchor point="LEFT" x="23" y="0"/>
+							<Anchor point="TOP" y="-27" relativePoint="BOTTOM" relativeKey="$parent.left"/>
+							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-								<FontString parentKey="label" text="${OP_OP_INV_ICON}" maxLines="1" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
-									<Anchors>
-										<Anchor point="LEFT" x="35"/>
-									</Anchors>
-								</FontString>
-							</Layer>
-						</Layers>
 					</Button>
+
+					<CheckButton parentKey="quest" inherits="TRP3_Tools_CheckBoxTemplate">
+						<KeyValues>
+							<KeyValue key="titleText" value="${IT_QUEST}" type="string"/>
+							<KeyValue key="helpText" value="${IT_QUEST_TT}" type="string"/>
+						</KeyValues>
+						<Anchors>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.right"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" relativePoint="CENTER" x="10" y="0"/>
+						</Anchors>
+					</CheckButton>
 
 					<Frame parentKey="description" inherits="TRP3_Tools_TitledSuggestiveHelpTextAreaTemplate">
 						<KeyValues>
@@ -110,23 +116,11 @@
 						</KeyValues>
 						<Size x="0" y="105"/>
 						<Anchors>
-							<Anchor point="TOP" y="-55" relativePoint="BOTTOM" relativeKey="$parent.left"/>
+							<Anchor point="TOP" y="-95" relativePoint="BOTTOM" relativeKey="$parent.left"/>
 							<Anchor point="RIGHT" x="-20" y="0"/>
 							<Anchor point="LEFT" x="20" y="0"/>
 						</Anchors>
 					</Frame>
-
-					<CheckButton parentKey="quest" inherits="TRP3_Tools_CheckBoxTemplate">
-						<KeyValues>
-							<KeyValue key="titleText" value="${IT_QUEST}" type="string"/>
-							<KeyValue key="helpText" value="${IT_QUEST_TT}" type="string"/>
-						</KeyValues>
-						<Anchors>
-							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.description"/>
-							<Anchor point="LEFT" x="20" y="0"/>
-							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
-						</Anchors>
-					</CheckButton>
 
 					<CheckButton parentKey="container" inherits="TRP3_Tools_CheckBoxTemplate">
 						<KeyValues>
@@ -134,7 +128,7 @@
 							<KeyValue key="helpText" value="${IT_CONTAINER_TT}" type="string"/>
 						</KeyValues>
 						<Anchors>
-							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.quest"/>
+							<Anchor point="TOP" y="-15" relativePoint="BOTTOM" relativeKey="$parent.description"/>
 							<Anchor point="LEFT" x="20" y="0"/>
 							<Anchor point="RIGHT" relativePoint="CENTER" x="-10" y="0"/>
 						</Anchors>

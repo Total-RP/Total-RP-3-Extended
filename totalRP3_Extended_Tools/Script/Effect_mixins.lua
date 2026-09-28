@@ -165,7 +165,7 @@ function TRP3_Tools_EditorEffectMixin:SetEffect(effectId)
 	end
 
 	self.effect.titleText:SetText(addon.script.getEffectTitle(self.effectData));
-	self.effect.icon.Icon:SetTexture("Interface\\Icons\\" .. addon.script.getEffectIcon(self.effectData));
+	self.effect.icon.Icon:SetTexture(TRP3_API.utils.getIconTexture(addon.script.getEffectIcon(self.effectData)));
 end
 
 function TRP3_Tools_EditorEffectMixin:ShowEffectMenu(noCancel)
@@ -193,7 +193,7 @@ function TRP3_Tools_EditorEffectMixin:ShowEffectMenu(noCancel)
 				title = effect.title,
 				id = effect.id,
 				tooltip = effect.description,
-				icon = "Interface\\Icons\\" .. effect.icon
+				icon = TRP3_API.utils.getIconTexture(effect.icon)
 			});
 		end
 		recentCategoryNode:SetCollapsed(false);
@@ -208,7 +208,7 @@ function TRP3_Tools_EditorEffectMixin:ShowEffectMenu(noCancel)
 				title = effect[1],
 				id = effect[2],
 				tooltip = effect[3],
-				icon = "Interface\\Icons\\" .. effect[4]
+				icon = TRP3_API.utils.getIconTexture(effect[4])
 			});
 		end
 		categoryNode:SetCollapsed(true);

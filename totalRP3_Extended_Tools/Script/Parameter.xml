@@ -192,24 +192,12 @@
 
 	<Frame name="TRP3_Tools_ScriptParameterIconTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterIconMixin">
 		<Frames>
-			<Button parentKey="icon" inherits="TRP3_IconButton">
+			<Button parentKey="icon" inherits="TRP3_Tools_IconPickerButtonTemplate">
 				<Anchors>
 					<Anchor point="LEFT" x="4"/>
 				</Anchors>
 			</Button>
 		</Frames>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString parentKey="title" inherits="GameFontNormal" justifyH="LEFT">
-					<Size y="25" />
-					<Anchors>
-						<Anchor point="LEFT" x="15" relativePoint="RIGHT" relativeKey="$parent.icon"/>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
-				</FontString>
-			</Layer>
-		</Layers>
 	</Frame>
 
 	<Frame name="TRP3_Tools_ScriptParameterLootTemplate" virtual="true" mixin="TRP3_Tools_ScriptParameterLootMixin">

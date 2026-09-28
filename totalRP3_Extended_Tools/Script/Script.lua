@@ -785,13 +785,13 @@ function addon.script.getTriggerPreview(objectType, triggerId, triggerType)
 	local icon, whenText, tooltipTitle, tooltipText;
 	if triggerType == addon.script.triggerType.OBJECT then
 		local t = addon.script.getObjectTrigger(objectType, triggerId);
-		icon         = "Interface\\Icons\\" .. t.icon;
+		icon         = TRP3_API.utils.getIconTexture(t.icon);
 		whenText     = t.conditionText:format(t.id or "nil");
 		tooltipTitle = t.text:format(t.id or "nil");
 		tooltipText  = t.tt;
 	elseif triggerType == addon.script.triggerType.ACTION then
 		local t = addon.script.getActionTrigger(triggerId);
-		icon         = "Interface\\Icons\\" .. t.icon;
+		icon         = TRP3_API.utils.getIconTexture(t.icon);
 		whenText     = ("When the player uses the action %s"):format(t:GetFormattedText(triggerId));
 		tooltipTitle = t.text:format(triggerId or "nil");
 		tooltipText  = loc.QUEST_TU_1; -- TODO

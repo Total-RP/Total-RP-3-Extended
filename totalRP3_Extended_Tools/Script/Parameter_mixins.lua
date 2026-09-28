@@ -385,28 +385,25 @@ end
 TRP3_Tools_ScriptParameterIconMixin = CreateFromMixins(TRP3_Tools_ScriptParameterMixin);
 
 function TRP3_Tools_ScriptParameterIconMixin:Setup(widgetContext, parameter)
-	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.icon, "RIGHT", 0, 5, parameter.description);
-	self.title:SetText(parameter.title);
-	if parameter.onChange then
-		self.onChangeCallback = function()
-			parameter.onChange(self, widgetContext);
-		end
-	else
-		self.onChangeCallback = function() end;
+	self.icon:SetText(parameter.title);
+	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.icon, "RIGHT", 0, 5, parameter.title, parameter.description);
+	if self.iconCallbackOwner then
+		self.icon:UnregisterCallback("OnIconChanged", self.iconCallbackOwner);
+		self.iconCallbackOwner = nil;
 	end
-	self.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon) self:SetValue(icon); end, nil, nil, self.icon.selectedIcon});
-	end);
+	if parameter.onChange then
+		self.iconCallbackOwner = self.icon:RegisterCallback("OnIconChanged", function()
+			parameter.onChange(self, widgetContext);
+		end);
+	end
 end
 
 function TRP3_Tools_ScriptParameterIconMixin:SetValue(value)
-	self.icon.Icon:SetTexture("Interface\\ICONS\\" .. value);
-	self.icon.selectedIcon = value;
-	self.onChangeCallback();
+	self.icon:SetIcon(value);
 end
 
 function TRP3_Tools_ScriptParameterIconMixin:GetValue()
-	return self.icon.selectedIcon;
+	return self.icon:GetIcon();
 end
 
 function TRP3_Tools_ScriptParameterIconMixin:GetGridDimensions()
@@ -580,11 +577,11 @@ local function populateEffectContextMenu(parent, callback)
 			if type(effectOrCategory[2]) == "table" then
 				local subMenu = menu:CreateButton(effectOrCategory[1]);
 				for _, effect in ipairs(effectOrCategory[2]) do
-					local button = subMenu:CreateButton(("|TInterface\\ICONS\\%s:16:16|t %s"):format(effect[4], effect[1]), callback, effect[2]);
+					local button = subMenu:CreateButton(TRP3_API.utils.str.icon(effect[4], 16) .. " " .. effect[1], callback, effect[2]);
 					TRP3_MenuUtil.SetElementTooltip(button, effect[3]);
 				end
 			else
-				local button = menu:CreateButton(("|TInterface\\ICONS\\%s:16:16|t %s"):format(effectOrCategory[4], effectOrCategory[1]), callback, effectOrCategory[2]);
+				local button = menu:CreateButton(TRP3_API.utils.str.icon(effectOrCategory[4], 16) .. " " .. effectOrCategory[1], callback, effectOrCategory[2]);
 				TRP3_MenuUtil.SetElementTooltip(button, effectOrCategory[3]);
 			end
 		end

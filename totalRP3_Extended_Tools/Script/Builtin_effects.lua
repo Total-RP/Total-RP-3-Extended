@@ -820,7 +820,7 @@ function addon.script.registerBuiltinEffects()
 				type        = "icon",
 				default     = "inv_misc_bag_07",
 				onChange    = function(widget, widgets)
-					widgets[3].bag.Icon:SetTexture("Interface\\ICONS\\" .. widget:GetValue());
+					widgets[3].bag.Icon:SetTexture(TRP3_API.utils.getIconTexture(widget:GetValue()));
 				end,
 				layoutLeft  = 1
 			},

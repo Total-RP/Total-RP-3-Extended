@@ -283,7 +283,7 @@ function addon.utils.getObjectIconAndLink(class, relativeId)
 		end
 		name = relativeId or loc.TYPE_QUEST_STEP;
 	else
-		icon = "interface\\icons\\" .. icon;
+		icon = TRP3_API.utils.getIconTexture(icon);
 	end
 	if class.TY == TRP3_DB.types.ITEM or class.TY == TRP3_DB.types.CAMPAIGN then
 		name = "[" .. name .. "]";

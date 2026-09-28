@@ -52,27 +52,11 @@ function TRP3_Tools_EditorCampaignMixin:Initialize()
 	end
 	TRP3_API.ui.listbox.setupListBox(self.main.vignette, vignetteMenu, function(_value) self:UpdatePreview(); end);
 
-	TRP3_API.ui.tooltip.setTooltipForSameFrame(self.main.icon, "RIGHT", 0, 5, loc.CA_ICON, loc.CA_ICON_TT);
-	self.main.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {
-			function(icon)
-				self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-				self.main.icon.selectedIcon = icon;
-				self:UpdatePreview();
-			end,
-			nil,
-			nil,
-			self.main.icon.selectedIcon
-		});
+	self.main.icon:RegisterCallback("OnIconChanged", function()
+		self:UpdatePreview();
 	end);
 
 	local sharedNPCEditor = self.npc.sharedNPCEditor;
-	sharedNPCEditor.icon:SetScript("OnClick", function()
-		addon.modal:ShowModal(TRP3_API.popup.ICONS, {function(icon)
-				TRP3_API.ui.frame.setupIconButton(sharedNPCEditor.icon, icon);
-				sharedNPCEditor.icon.selectedIcon = icon;
-			end, nil, nil, sharedNPCEditor.icon.selectedIcon});
-	end);
 
 	sharedNPCEditor.target:SetScript("OnClick", function()
 		if UnitExists("target") then
@@ -91,8 +75,7 @@ function TRP3_Tools_EditorCampaignMixin:ClassToInterface(class, _creationClass, 
 	local BA = class.BA or TRP3_API.globals.empty;
 	self.main.name:SetText(BA.NA or "");
 	self.main.description:SetText(BA.DE or "");
-	self.main.icon.Icon:SetTexture("Interface\\ICONS\\" .. (BA.IC or addon.constants.OBJECT_ICON_DEFAULT));
-	self.main.icon.selectedIcon = BA.IC;
+	self.main.icon:SetIcon(BA.IC or addon.constants.OBJECT_ICON_DEFAULT);
 	self.main.vignette:SetSelectedValue(BA.IM or "GarrZoneAbility-Stables");
 	self:UpdatePreview();
 
@@ -122,7 +105,7 @@ function TRP3_Tools_EditorCampaignMixin:InterfaceToClass(targetClass, _targetCur
 
 	targetClass.BA.NA = TRP3_API.utils.str.emptyToNil(strtrim(self.main.name:GetText()));
 	targetClass.BA.DE = TRP3_API.utils.str.emptyToNil(strtrim(self.main.description:GetText()));
-	targetClass.BA.IC = self.main.icon.selectedIcon;
+	targetClass.BA.IC = self.main.icon:GetIcon();
 	targetClass.BA.IM = self.main.vignette:GetSelectedValue();
 
 	targetClass.ND = targetClass.ND or {}; -- TODO maybe set nil if empty?
@@ -140,8 +123,8 @@ function TRP3_Tools_EditorCampaignMixin:InterfaceToClass(targetClass, _targetCur
 end
 
 function TRP3_Tools_EditorCampaignMixin:UpdatePreview()
-	self.main.previewIcon:SetTexture("Interface\\ICONS\\" .. (self.main.icon.selectedIcon or addon.constants.OBJECT_ICON_DEFAULT));
-	self.main.previewIconBorder:SetTexture("Interface\\ExtraButton\\" .. self.main.vignette:GetSelectedValue());
+	self.main.previewIcon:SetTexture(TRP3_API.utils.getIconTexture(self.main.icon:GetIcon() or addon.constants.OBJECT_ICON_DEFAULT));
+	self.main.previewIconBorder:SetTexture("Interface\\ExtraButton\\" .. (self.main.vignette:GetSelectedValue() or "GarrZoneAbility-Stables"));
 	self.main.previewName:SetText(self.main.name:GetText());
 end
 
@@ -226,8 +209,7 @@ function TRP3_Tools_CampaignNPCListElementMixin:Refresh()
 		self.editor.name:SetText(self.data.NA or "");
 		self.editor.title:SetText(self.data.FT or "");
 		self.editor.description:SetText(self.data.DE or "");
-		TRP3_API.ui.frame.setupIconButton(self.editor.icon, self.data.IC or TRP3_InterfaceIcons.ProfileDefault);
-		self.editor.icon.selectedIcon = self.data.IC or TRP3_InterfaceIcons.ProfileDefault;
+		self.editor.icon:SetIcon(self.data.IC or TRP3_InterfaceIcons.ProfileDefault);
 		self.editor:Show();
 	else
 		self.icon:Show();
@@ -266,7 +248,7 @@ function TRP3_Tools_CampaignNPCListElementMixin:Reset()
 		self.data.NA = TRP3_API.utils.str.emptyToNil(strtrim(self.editor.name:GetText()));
 		self.data.FT = TRP3_API.utils.str.emptyToNil(strtrim(self.editor.title:GetText()));
 		self.data.DE = TRP3_API.utils.str.emptyToNil(strtrim(self.editor.description:GetText()));
-		self.data.IC = self.editor.icon.selectedIcon or TRP3_InterfaceIcons.ProfileDefault;
+		self.data.IC = self.editor.icon:GetIcon() or TRP3_InterfaceIcons.ProfileDefault;
 		self.editor:SetParent(nil);
 		self.editor:Hide();
 		self.editor = nil;

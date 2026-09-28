@@ -63,7 +63,7 @@ local function onConvert()
 end
 
 local function onIconSelected(icon)
-	editor.preview.Icon:SetTexture("Interface\\ICONS\\" .. (icon or addon.constants.OBJECT_ICON_DEFAULT));
+	editor.preview.Icon:SetTexture(TRP3_API.utils.getIconTexture(icon or addon.constants.OBJECT_ICON_DEFAULT));
 	editor.preview.selectedIcon = icon;
 end
 
