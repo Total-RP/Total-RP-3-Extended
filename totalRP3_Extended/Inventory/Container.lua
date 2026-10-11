@@ -178,55 +178,55 @@ local function showItemTooltip(frame, slotInfo, itemClass, forceAlt, anchor)
 	if title and title:len() > 0 then
 		local r, g, b = TRP3_API.Colors.White:GetRGB();
 		TRP3_ItemTooltip:AddLine(title, r, g, b,true);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		TRP3_ItemTooltip:GetLeftLine(i):SetFontObject(GameFontNormalLarge);
+		TRP3_ItemTooltip:GetLeftLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if (left and left:len() > 0) or (right and right:len() > 0) then
 		local r, g, b = TRP3_API.Colors.White:GetRGB();
 		TRP3_ItemTooltip:AddDoubleLine(left or "", right or "", r, g, b, r, g, b);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		_G["TRP3_ItemTooltipTextRight"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_ItemTooltipTextRight"..i]:SetNonSpaceWrap(true);
+		TRP3_ItemTooltip:GetLeftLine(i):SetFontObject(GameFontNormal);
+		TRP3_ItemTooltip:GetLeftLine(i):SetNonSpaceWrap(true);
+		TRP3_ItemTooltip:GetRightLine(i):SetFontObject(GameFontNormal);
+		TRP3_ItemTooltip:GetRightLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if text1 and text1:len() > 0 then
 		local r, g, b = TRP3_API.Colors.Yellow:GetRGB();	-- corresponds to color("o") = FFAA00 for the description
 		TRP3_ItemTooltip:AddLine(text1, r, g, b,true);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		TRP3_ItemTooltip:GetLeftLine(i):SetFontObject(GameFontNormal);
+		TRP3_ItemTooltip:GetLeftLine(i):SetSpacing(2);
+		TRP3_ItemTooltip:GetLeftLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if text1_lower and text1_lower:len() > 0 then
 		local r, g, b = TRP3_API.Colors.Green:GetRGB();	-- corresponds to color("g") = 00FF00 for the use text
 		TRP3_ItemTooltip:AddLine(text1_lower, r, g, b,true);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		TRP3_ItemTooltip:GetLeftLine(i):SetFontObject(GameFontNormal);
+		TRP3_ItemTooltip:GetLeftLine(i):SetSpacing(2);
+		TRP3_ItemTooltip:GetLeftLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if (extension1 and extension1:len() > 0) or (extension2 and extension2:len() > 0) then
 		local r, g, b = TRP3_API.Colors.White:GetRGB();
 		TRP3_ItemTooltip:AddDoubleLine(extension1 or "", extension2 or "", r, g, b, r, g, b);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		_G["TRP3_ItemTooltipTextRight"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_ItemTooltipTextRight"..i]:SetNonSpaceWrap(true);
+		TRP3_ItemTooltip:GetLeftLine(i):SetFontObject(GameFontNormal);
+		TRP3_ItemTooltip:GetLeftLine(i):SetNonSpaceWrap(true);
+		TRP3_ItemTooltip:GetRightLine(i):SetFontObject(GameFontNormal);
+		TRP3_ItemTooltip:GetRightLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if text2 and text2:len() > 0 then
 		local r, g, b = TRP3_API.Colors.White:GetRGB();
 		TRP3_ItemTooltip:AddLine(text2, r, g, b,true);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		TRP3_ItemTooltip:GetLeftLine(i):SetFontObject(GameFontNormalSmall);
+		TRP3_ItemTooltip:GetLeftLine(i):SetSpacing(2);
+		TRP3_ItemTooltip:GetLeftLine(i):SetNonSpaceWrap(true);
 		--i = i + 1;
 	end
 
