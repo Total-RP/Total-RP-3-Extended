@@ -7,7 +7,7 @@ local _, Private_TRP3E = ...;
 local SecuredMacroCommandsEnclave = Private_TRP3E.SecuredMacroCommandsEnclave
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local _G, assert, tostring, tinsert, pairs, time = _G, assert, tostring, tinsert, pairs, time;
+local assert, tostring, tinsert, pairs, time = assert, tostring, tinsert, pairs, time;
 local CreateFrame, ToggleFrame, IsAltKeyDown = CreateFrame, ToggleFrame, IsAltKeyDown;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local loc = TRP3_API.loc;
