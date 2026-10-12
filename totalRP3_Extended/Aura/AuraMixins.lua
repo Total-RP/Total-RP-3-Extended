@@ -22,34 +22,34 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 	local i = 1;
 	if title or category then
 		self:AddDoubleLine(TRP3_API.Colors.Yellow(title or ""), TRP3_API.Colors.Yellow(category or ""), 1, 1, 1, 1, 1, 1);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
-		_G["TRP3_AuraTooltipTextRight"..i]:SetFontObject(GameFontNormalLarge);
-		_G["TRP3_AuraTooltipTextRight"..i]:SetNonSpaceWrap(true);
+		self:GetLeftLine(i):SetFontObject(GameFontNormalLarge);
+		self:GetLeftLine(i):SetNonSpaceWrap(true);
+		self:GetRightLine(i):SetFontObject(GameFontNormalLarge);
+		self:GetRightLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if description and description:len() > 0 then
 		self:AddLine(TRP3_API.Colors.White(description), 1, 1, 1, true);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		self:GetLeftLine(i):SetFontObject(GameFontNormal);
+		self:GetLeftLine(i):SetSpacing(2);
+		self:GetLeftLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if flavor and flavor:len() > 0 then
 		self:AddLine(flavorTextColor(flavor), 1, 1, 1, true);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		self:GetLeftLine(i):SetFontObject(GameFontNormal);
+		self:GetLeftLine(i):SetSpacing(2);
+		self:GetLeftLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
 	if expiry and expiry:len() > 0 then
 		self:AddLine(TRP3_API.Colors.Yellow(expiry), 1, 1, 1, true);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		self:GetLeftLine(i):SetFontObject(GameFontNormal);
+		self:GetLeftLine(i):SetSpacing(2);
+		self:GetLeftLine(i):SetNonSpaceWrap(true);
 		i = i + 1;
 	end
 
@@ -58,9 +58,9 @@ function TRP3_AuraTooltipMixin:Refresh(newOwner)
 		i = i + 1;
 
 		self:AddLine(cancelText, 1, 1, 1, true);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetSpacing(2);
-		_G["TRP3_AuraTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		self:GetLeftLine(i):SetFontObject(GameFontNormalSmall);
+		self:GetLeftLine(i):SetSpacing(2);
+		self:GetLeftLine(i):SetNonSpaceWrap(true);
 	end
 	self:Show();
 end
