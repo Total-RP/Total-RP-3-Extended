@@ -78,6 +78,7 @@ local function loadData(data)
 end
 
 function TRP3_API.extended.tools.openItemQuickEditor(anchoredFrame, callback, classID, fromInv, noSave)
+	TRP3_IconBrowserFrame:Hide();
 	onCreatedCallback = callback;
 	editor.classID = classID;
 	editor.convert:Hide();

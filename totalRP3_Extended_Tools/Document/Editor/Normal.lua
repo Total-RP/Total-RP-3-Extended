@@ -116,6 +116,7 @@ local currentTab, tabGroup;
 
 local function onTabChanged(tabWidget, tab) -- luacheck: ignore 212
 	assert(toolFrame.fullClassID, "fullClassID is nil");
+	TRP3_IconBrowserFrame:Hide();
 
 	-- Hide all
 	currentTab = tab or TABS.MAIN;
