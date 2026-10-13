@@ -406,16 +406,24 @@ local function inv_loot_init()
 
 
 	-- Icon
-	setTooltipForSameFrame(editor.icon, "RIGHT", 0, 5, loc.EDITOR_ICON);
+	setTooltipForSameFrame(editor.icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	local iconHandler = function(icon)
-		editor.icon.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-		editor.bag.Icon:SetTexture("Interface\\ICONS\\" .. icon);
-		editor.icon.selectedIcon = icon;
+		TRP3_IconUtil.SetTextureToIcon(editor.icon.Icon, icon);
+		TRP3_IconUtil.SetTextureToIcon(editor.bag.Icon, icon);
+		editor.icon.selectedIcon = TRP3_IconUtil.SerializeIcon(icon);
 	end
-	editor.icon:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
-			{parent = editor.icon, point = "LEFT", parentPoint = "RIGHT", x = 15},
-			{iconHandler, nil, nil, editor.icon.selectedIcon});
+	editor.icon:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	editor.icon:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS,
+				{parent = editor.icon, point = "LEFT", parentPoint = "RIGHT", x = 15},
+				{iconHandler, nil, nil, editor.icon.selectedIcon});
+		elseif button == "RightButton" then
+			local icon = editor.icon.selectedIcon or "inv_misc_bag_07";
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) iconHandler(copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
+		end
 	end);
 
 	-- Loot

@@ -100,7 +100,7 @@ local function decorateSlot(slot, slotData, count, class)
 		slot.name:SetText(slotData.n or UNKNOWN);
 	end
 
-	slot.Icon:SetTexture("Interface\\ICONS\\" .. (class.BA.IC or slotData.i or "temp"));
+	TRP3_IconUtil.SetTextureToIcon(slot.Icon, class.BA.IC or slotData.i or "temp");
 	if count > 1 then
 		slot.Quantity:Show();
 		slot.Quantity:SetText(count);

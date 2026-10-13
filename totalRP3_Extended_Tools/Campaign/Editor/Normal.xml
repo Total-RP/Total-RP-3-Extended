@@ -124,6 +124,12 @@
 						</Anchors>
 					</Button>
 
+					<Frame parentKey="portrait" inherits="TRP3_TitledDropdown">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.vignette" x="0" y="-20"/>
+						</Anchors>
+					</Frame>
+
 					<Frame parentKey="description" inherits="TRP3_TextArea">
 						<Size x="0" y="0"/>
 						<Layers>

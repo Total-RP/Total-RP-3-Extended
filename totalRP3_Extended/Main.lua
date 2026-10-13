@@ -725,6 +725,7 @@ local function onStart()
 end
 
 Globals.extended_version = 1061;
+-- TODO: Update for Forever (atlas, etc.)
 Globals.required_trp3_build = 151;
 
 --@debug@
