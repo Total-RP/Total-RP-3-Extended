@@ -1,3 +1,15 @@
+# Changelog for version 2.3.6
+
+## Added
+
+- Added support for icons without official filenames, as well as class/race icons.
+- Added 17 new campaign portrait options. Portraits are now selected using a scrolling dropdown.
+- Added copy/paste icon right-click menus on all icon browser buttons.
+
+## Fixed
+
+- Fixed the icon browser not closing properly when switching tabs.
+
 # Changelog for version 2.3.5
 
 ## Fixed
