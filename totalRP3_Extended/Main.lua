@@ -724,9 +724,8 @@ local function onStart()
 	dashboard.extendedlogo:SetTexture("Interface\\AddOns\\totalRP3_Extended\\resources\\extendedlogooverlay");
 end
 
-Globals.extended_version = 1061;
--- TODO: Update for Forever (atlas, etc.)
-Globals.required_trp3_build = 151;
+Globals.extended_version = 1062;
+Globals.required_trp3_build = 167;
 
 --@debug@
 Globals.extended_display_version = "v-dev";
