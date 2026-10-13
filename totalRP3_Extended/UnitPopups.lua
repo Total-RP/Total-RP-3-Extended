@@ -90,7 +90,9 @@ function TRP3_API.extended.unitpopups.init()
 	};
 
 	for _, unitType in pairs(unitTypesAllowed) do
-		tinsert(TRP3_UnitPopupsModule.MenuEntries[unitType], "ExtendedOpenExchange");
-		tinsert(TRP3_UnitPopupsModule.MenuEntries[unitType], "ExtendedCharacterInspection");
+		if TRP3_UnitPopupsModule.MenuEntries[unitType] then
+			tinsert(TRP3_UnitPopupsModule.MenuEntries[unitType], "ExtendedOpenExchange");
+			tinsert(TRP3_UnitPopupsModule.MenuEntries[unitType], "ExtendedCharacterInspection");
+		end
 	end
 end
