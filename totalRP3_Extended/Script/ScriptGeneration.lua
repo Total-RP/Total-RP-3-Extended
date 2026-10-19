@@ -700,16 +700,16 @@ end
 local directReplacement;
 directReplacement = {
 	["wow:target"] = function()
-		return UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+		return TRP3_NameUtil.GetUnmodifiedName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["wow:player"] = function()
-		return UnitName("player") or UNKNOWN;
+		return TRP3_NameUtil.GetUnmodifiedName("player") or UNKNOWN;
 	end,
 	["wow:target:id"] = function()
-		return TRP3_API.utils.str.getUnitID("target") or UnitName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+		return TRP3_API.utils.str.getUnitID("target") or TRP3_NameUtil.GetUnmodifiedName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["wow:player:id"] = function()
-		return TRP3_API.utils.str.getUnitID("player") or UnitName("player") or "";
+		return TRP3_API.utils.str.getUnitID("player") or TRP3_NameUtil.GetUnmodifiedName("player") or "";
 	end,
 	["wow:player:race"] = function()
 		local race = UnitRace("player");
@@ -734,10 +734,10 @@ directReplacement = {
 		return TRP3_API.quest.GetCampaignNPCName("target") or TRP3_API.r.name("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["trp:player:first"] = function()
-		return TRP3_API.profile.getData("player/characteristics").FN or "";
+		return TRP3_API.profile.getData("player/characteristics").FN or TRP3_API.globals.player_given_name or "";
 	end,
 	["trp:player:last"] = function()
-		return TRP3_API.profile.getData("player/characteristics").LN or "";
+		return TRP3_API.profile.getData("player/characteristics").LN or TRP3_API.globals.player_family_name or "";
 	end,
 
 	["trp:player:class"] = function()
@@ -752,7 +752,8 @@ directReplacement = {
 		if UnitIsUnit("target", "player") then
 			return directReplacement["trp:player:first"]();
 		end
-		local defaultName = UnitName("target");
+		local defaultFullName = TRP3_NameUtil.GetUnmodifiedName("target");
+		local defaultFirstName = TRP3_NameUtil.ExtractGivenName(defaultFullName);
 		local unitID = getUnitID("target");
 		if unitID and isUnitIDKnown(unitID) then
 			local profile = getUnitIDCurrentProfile(unitID);
@@ -760,13 +761,14 @@ directReplacement = {
 				return profile.characteristics.FN;
 			end
 		end
-		return defaultName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+		return defaultFirstName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["trp:target:last"] = function()
 		if UnitIsUnit("target", "player") then
 			return directReplacement["trp:player:last"]();
 		end
-		local defaultName = UnitName("target");
+		local defaultFullName = TRP3_NameUtil.GetUnmodifiedName("target");
+		local defaultLastName = TRP3_NameUtil.ExtractFamilyName(defaultFullName);
 		local unitID = getUnitID("target");
 		if unitID and isUnitIDKnown(unitID) then
 			local profile = getUnitIDCurrentProfile(unitID);
@@ -774,7 +776,7 @@ directReplacement = {
 				return profile.characteristics.LN;
 			end
 		end
-		return defaultName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+		return defaultLastName or defaultFullName or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["trp:target:class"] = function()
 		if UnitIsUnit("target", "player") then
