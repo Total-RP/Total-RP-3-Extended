@@ -139,8 +139,10 @@ local function requestCharacterInspection(unitID)
 			end
 		end
 
-		inspectionFrame.Main.Model:SetUnit("target");
-		inspectionFrame.Main.Model.Title:SetText(UnitName("target"));
+		if TRP3_NameUtil.GetQualifiedName("target") == unitID then
+			inspectionFrame.Main.Model:SetUnit("target");
+		end
+		inspectionFrame.Main.Model.Title:SetText(TRP3_API.register.getUnitRPNameWithID(unitID));
 		inspectionFrame.Main.Model.WeightText:Hide();
 		inspectionFrame.Main.Model.ValueText:Hide();
 		inspectionFrame.Main.Model.Loading:Show();
