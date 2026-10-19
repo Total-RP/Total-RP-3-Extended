@@ -753,7 +753,7 @@ directReplacement = {
 			return directReplacement["trp:player:first"]();
 		end
 		local defaultFullName = TRP3_NameUtil.GetUnmodifiedName("target");
-		local defaultFirstName = TRP3_NameUtil.DecomposeFullName(defaultFullName)
+		local defaultFirstName = TRP3_NameUtil.ExtractGivenName(defaultFullName);
 		local unitID = getUnitID("target");
 		if unitID and isUnitIDKnown(unitID) then
 			local profile = getUnitIDCurrentProfile(unitID);
@@ -768,7 +768,7 @@ directReplacement = {
 			return directReplacement["trp:player:last"]();
 		end
 		local defaultFullName = TRP3_NameUtil.GetUnmodifiedName("target");
-		local _, defaultLastName = TRP3_NameUtil.DecomposeFullName(defaultFullName)
+		local defaultLastName = TRP3_NameUtil.ExtractFamilyName(defaultFullName);
 		local unitID = getUnitID("target");
 		if unitID and isUnitIDKnown(unitID) then
 			local profile = getUnitIDCurrentProfile(unitID);
