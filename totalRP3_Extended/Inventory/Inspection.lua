@@ -141,6 +141,8 @@ local function requestCharacterInspection(unitID)
 
 		if TRP3_NameUtil.GetQualifiedName("target") == unitID then
 			inspectionFrame.Main.Model:SetUnit("target");
+		else
+			inspectionFrame.Main.Model:SetUnit("none");
 		end
 		inspectionFrame.Main.Model.Title:SetText(TRP3_API.register.getUnitRPNameWithID(unitID));
 		inspectionFrame.Main.Model.WeightText:Hide();
