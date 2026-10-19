@@ -5,9 +5,7 @@ TRP3_API.extended.unitpopups = {};
 
 local function ShouldShowExtendedOpenExchange(contextData)
 	local unit = contextData.unit;
-	local name = contextData.name;
-	local server = contextData.server;
-	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+	local fullName = TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData);
 
 	if UnitIsPlayer(unit) and fullName ~= TRP3_API.globals.player_id and not TRP3_API.register.isIDIgnored(fullName) and TRP3_API.register.isUnitKnown(unit) then
 		local character = TRP3_API.register.getUnitIDCharacter(fullName);
@@ -18,9 +16,7 @@ end
 
 local function ShouldShowExtendedCharacterInspection(contextData)
 	local unit = contextData.unit;
-	local name = contextData.name;
-	local server = contextData.server;
-	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+	local fullName = TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData);
 
 	if UnitIsPlayer(unit) and fullName ~= TRP3_API.globals.player_id and not TRP3_API.register.isIDIgnored(fullName) and TRP3_API.register.isUnitKnown(unit) then
 		local character = TRP3_API.register.getUnitIDCharacter(fullName);
@@ -35,9 +31,7 @@ local function CreateExtendedOpenExchange(menuDescription, contextData)
 	end
 
 	local function OnClick(contextData)  -- luacheck: no redefined
-		local name = contextData.name;
-		local server = contextData.server;
-		local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+		local fullName = TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData);
 
 		if not string.find(fullName, UNKNOWNOBJECT, 1, true) then
 			TRP3_API.inventory.startEmptyExchangeWithUnit(fullName);
@@ -56,9 +50,7 @@ local function CreateExtendedCharacterInspection(menuDescription, contextData)
 	end
 
 	local function OnClick(contextData)  -- luacheck: no redefined
-		local name = contextData.name;
-		local server = contextData.server;
-		local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+		local fullName = TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData);
 
 		if not string.find(fullName, UNKNOWNOBJECT, 1, true) then
 			TRP3_API.inventory.requestCharacterInspection(fullName);
