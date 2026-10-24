@@ -700,16 +700,16 @@ end
 local directReplacement;
 directReplacement = {
 	["wow:target"] = function()
-		return TRP3_NameUtil.GetUnmodifiedName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+		return TRP3_NameUtil.GetDisplayName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["wow:player"] = function()
-		return TRP3_NameUtil.GetUnmodifiedName("player") or UNKNOWN;
+		return TRP3_NameUtil.GetDisplayName("player") or UNKNOWN;
 	end,
 	["wow:target:id"] = function()
-		return TRP3_API.utils.str.getUnitID("target") or TRP3_NameUtil.GetUnmodifiedName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
+		return TRP3_API.utils.str.getUnitID("target") or TRP3_NameUtil.GetDisplayName("target") or SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 	end,
 	["wow:player:id"] = function()
-		return TRP3_API.utils.str.getUnitID("player") or TRP3_NameUtil.GetUnmodifiedName("player") or "";
+		return TRP3_API.utils.str.getUnitID("player") or TRP3_NameUtil.GetDisplayName("player") or "";
 	end,
 	["wow:player:race"] = function()
 		local race = UnitRace("player");
@@ -752,7 +752,7 @@ directReplacement = {
 		if UnitIsUnit("target", "player") then
 			return directReplacement["trp:player:first"]();
 		end
-		local defaultFullName = TRP3_NameUtil.GetUnmodifiedName("target");
+		local defaultFullName = TRP3_NameUtil.GetDisplayName("target");
 		local defaultFirstName = TRP3_NameUtil.ExtractGivenName(defaultFullName);
 		local unitID = getUnitID("target");
 		if unitID and isUnitIDKnown(unitID) then
@@ -767,7 +767,7 @@ directReplacement = {
 		if UnitIsUnit("target", "player") then
 			return directReplacement["trp:player:last"]();
 		end
-		local defaultFullName = TRP3_NameUtil.GetUnmodifiedName("target");
+		local defaultFullName = TRP3_NameUtil.GetDisplayName("target");
 		local defaultLastName = TRP3_NameUtil.ExtractFamilyName(defaultFullName);
 		local unitID = getUnitID("target");
 		if unitID and isUnitIDKnown(unitID) then
