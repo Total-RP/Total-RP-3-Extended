@@ -44,11 +44,11 @@ end
 --region String operands
 
 local unitNameOperand = Operand("unit_name", {
-	["UnitName"] = "UnitName"
+	["GetDisplayName"] = "TRP3_NameUtil.GetDisplayName"
 });
 
 function unitNameOperand:CodeReplacement(args)
-	return ([[UnitName("%s")]]):format(getUnitId(args))
+	return ([[GetDisplayName("%s")]]):format(getUnitId(args))
 end
 
 local unitIdOperand = Operand("unit_id", {

@@ -60,7 +60,7 @@ local function getSpeechChannel(speechPrefix)
 end
 
 local function getSpeech(text, speechPrefix)
-	return getSpeechPrefixText(speechPrefix, UnitName("player"), text);
+	return getSpeechPrefixText(speechPrefix, TRP3_API.register.getPlayerCompleteName(), text);
 end
 TRP3_API.ui.misc.getSpeech = getSpeech;
 
