@@ -147,7 +147,9 @@ broadcast.registerCommand(STASHES_SCAN_COMMAND, function(sender, mapID)
 		if stash.uiMapID == tonumber(mapID) and not stash.BA.NS then
 			local total = CountTable(stash.item);
 			if total > 0 then
-				broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, stash.mapX, stash.mapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total, stash.CR);
+				local formattedMapX = string.format("%.3f", stash.mapX);
+				local formattedMapY = string.format("%.3f", stash.mapY);
+				broadcast.sendP2PMessage(sender, STASHES_SCAN_COMMAND, formattedMapX, formattedMapY, stash.BA.NA or loc.DR_STASHES_NAME, stash.BA.IC or "TEMP", total, stash.CR);
 			end
 		end
 	end
