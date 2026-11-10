@@ -1,3 +1,16 @@
+# Changelog for version 2.3.7
+
+## Changed
+
+- Inspection frame now displays the RP name instead of the character name.
+- Speech: Player effect preview now displays the RP name instead of the character name.
+
+## Fixed
+
+- Preset name variables now correctly handle Forever surnames.
+- Unit name operand now correctly display the full name in Forever.
+- Fixed an error when right-clicking players in some cases on Forever.
+
 # Changelog for version 2.3.6
 
 ## Added
