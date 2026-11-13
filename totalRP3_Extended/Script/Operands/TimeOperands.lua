@@ -51,3 +51,11 @@ local dateDayOfWeekOperand = NumericOperand("date_day_of_week", {
 function dateDayOfWeekOperand:CodeReplacement()
 	return "date(\"*t\").wday";
 end
+
+local dateTimestampOperand = NumericOperand("date_timestamp", {
+	["time"] = "time"
+})
+
+function dateTimestampOperand:CodeReplacement()
+	return "time()";
+end

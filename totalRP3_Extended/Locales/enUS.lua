@@ -1098,6 +1098,8 @@ We should begin with some examples:
 	OP_OP_DATE_YEAR_TT = "The current year, local time.",
 	OP_OP_DATE_DAY_OF_WEEK = "Date: Day of the week",
 	OP_OP_DATE_DAY_OF_WEEK_TT = "The current day of the week, local time. From 1 (Sunday) to 7 (Saturday).",
+	OP_OP_DATE_TIMESTAMP = "Date: Timestamp",
+	OP_OP_DATE_TIMESTAMP_TT = "The current UNIX timestamp in seconds.",
 
 -- Test
 	COND_EDITOR = "Condition editor",

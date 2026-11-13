@@ -827,6 +827,17 @@ local function date_day_of_week_init()
 	});
 end
 
+local function date_timestamp_init()
+	registerOperandEditor("date_timestamp", {
+		title = loc.OP_OP_DATE_TIMESTAMP,
+		description = loc.OP_OP_DATE_TIMESTAMP_TT,
+		returnType = 1,
+		getText = function(args) -- luacheck: ignore 212
+			return loc.OP_OP_DATE_TIMESTAMP;
+		end,
+	});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -901,5 +912,6 @@ function TRP3_ConditionEditor.initOperands()
 	date_month_init();
 	date_year_init();
 	date_day_of_week_init();
+	date_timestamp_init();
 
 end
