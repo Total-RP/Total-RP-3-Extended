@@ -34,7 +34,6 @@ totalRP3_Extended.xsd">
 
 	<!-- Sub-Modules -->
 	<Include file="Misc\Utils.lua"/>
-	<Include file="Misc\CastingBarFrame.xml"/>
 	<Include file="Misc\Cast.xml"/>
 	<Include file="Misc\Sounds.xml"/>
 	<Include file="Inventory\Inventory.xml"/>
